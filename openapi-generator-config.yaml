@@ -1,0 +1,19 @@
+generatorName: python
+inputSpec: spec/vertesia-openapi.json
+outputDir: .
+
+globalProperties:
+  modelTests: "false"
+  apiTests: "false"
+  modelDocs: "false"
+  apiDocs: "false"
+
+additionalProperties:
+  packageName: vertesia_client.openapi
+  projectName: vertesia-client
+  packageVersion: 1.2.0
+  packageUrl: https://github.com/vertesia/vertesia-client-python
+  author: Vertesia
+  authorEmail: contact@vertesia.com
+  licenseInfo: Apache-2.0
+  disallowAdditionalPropertiesIfNotPresent: false

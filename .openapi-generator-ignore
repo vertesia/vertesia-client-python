@@ -1,0 +1,24 @@
+# Hand-written SDK surface and repository metadata.
+.env.example
+.github/**
+.gitignore
+.openapi-generator-ignore
+README.md
+pyproject.toml
+openapi-generator-config.yaml
+scripts/**
+spec/**
+test/**
+vertesia_client/__init__.py
+vertesia_client/client.py
+
+# Root files emitted by the Python generator that are intentionally replaced by
+# the public SDK repository files above.
+.gitlab-ci.yml
+.travis.yml
+git_push.sh
+requirements.txt
+setup.cfg
+setup.py
+test-requirements.txt
+tox.ini

@@ -1,0 +1,30 @@
+name: Generated Code Guard
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Reject generated OpenAPI changes in PRs
+        shell: bash
+        run: |
+          changed_files="$(git diff --name-only "${{ github.event.pull_request.base.sha }}" "${{ github.event.pull_request.head.sha }}")"
+
+          generated_changes="$(echo "$changed_files" | grep -E '^(vertesia_client/openapi|spec)/' || true)"
+          if [[ -n "$generated_changes" ]]; then
+            echo "Generated files under vertesia_client/openapi/ and spec/ are updated only by internal generation automation." >&2
+            echo "Move hand-written SDK changes outside those directories, or let the sync automation regenerate them." >&2
+            echo "" >&2
+            echo "Generated files changed:" >&2
+            echo "$generated_changes" >&2
+            exit 1
+          fi
