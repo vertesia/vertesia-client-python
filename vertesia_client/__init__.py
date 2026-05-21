@@ -1,4 +1,4 @@
-"""Vertesia Python SDK."""
+"""Vertesia Python client."""
 
 from vertesia_client.client import Client, ClientOptions, VertesiaClientError
 

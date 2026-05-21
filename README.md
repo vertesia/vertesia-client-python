@@ -1,6 +1,6 @@
 # Vertesia Python Client
 
-Python SDK for the Vertesia API.
+Python client for the Vertesia API.
 
 ```sh
 pip install vertesia-client
@@ -22,7 +22,7 @@ sets the stable `x-api-version` header.
 
 ## Authentication
 
-Use an `sk-` secret key when you want the SDK to exchange credentials through
+Use an `sk-` secret key when you want the client to exchange credentials through
 STS:
 
 ```python
@@ -57,7 +57,7 @@ Use `preview` when you need the hosted preview API:
 client = Client(region="us1", preview=True, api_key="sk-...")
 ```
 
-For public SDK usage, prefer the default global API or a hosted Vertesia region.
+For public client usage, prefer the default global API or a hosted Vertesia region.
 Studio and Store requests are routed through the same public API host.
 
 `site` is available as an advanced override when you need to provide the exact
@@ -110,7 +110,7 @@ python -m unittest discover -s test
 
 Live integration tests are opt-in. They run only when `VERTESIA_LIVE_TESTS=1`
 and `VERTESIA_API_KEY` is set to a non-placeholder `sk-` secret key. For
-Vertesia developers running the SDK tests locally:
+Vertesia developers running the client tests locally:
 
 ```sh
 cp .env.example .env
@@ -129,7 +129,7 @@ This repository is generated from the Vertesia OpenAPI specification. Generated
 code is committed so Python consumers can install released packages without
 running OpenAPI Generator.
 
-The public OpenAPI contract for the committed SDK is tracked at
+The public OpenAPI contract for the committed client is tracked at
 `spec/vertesia-openapi.json` and `spec/vertesia-openapi.yaml`. The JSON file is
 the source used to generate the committed client source; the YAML file is
 included for tools and readers that prefer YAML.
@@ -145,7 +145,7 @@ Generated files under `vertesia_client/openapi/` and `spec/` are owned by
 internal generation automation. Do not edit or commit them manually. Pull
 requests that change either directory are rejected by CI.
 
-Hand-written SDK surface changes, such as `Client`, tests, examples, README,
+Hand-written client surface changes, such as `Client`, tests, examples, README,
 workflows, and generator configuration, should go through normal pull request
 review.
 
@@ -160,7 +160,7 @@ git add vertesia_client/openapi spec pyproject.toml .openapi-generator
 ## Compatibility
 
 The generated Python models ignore unknown response fields, so newer server
-fields do not break older SDKs. Unknown enum values are accepted for forward
+fields do not break older clients. Unknown enum values are accepted for forward
 compatibility as well: standalone generated enum classes preserve the raw
 unknown value, and inline enum validators do not reject values that already
 match the underlying JSON type.

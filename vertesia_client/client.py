@@ -54,12 +54,12 @@ TOKEN_REFRESH_WINDOW_SECONDS = 60
 
 
 class VertesiaClientError(ValueError):
-    """Raised when the SDK facade cannot be configured or authenticated."""
+    """Raised when the client facade cannot be configured or authenticated."""
 
 
 @dataclass(frozen=True)
 class ClientOptions:
-    """Options for the high-level Vertesia SDK client."""
+    """Options for the high-level Vertesia client."""
 
     region: str | None = None
     preview: bool = False
@@ -217,7 +217,7 @@ class GeneratedAPIGroup:
 
 
 class Client:
-    """High-level Vertesia SDK facade over the generated OpenAPI client."""
+    """High-level Vertesia client facade over the generated OpenAPI client."""
 
     def __init__(self, options: ClientOptions | None = None, **kwargs: Any) -> None:
         if options is not None and kwargs:
