@@ -57,6 +57,8 @@ vertesia_client/openapi/models/adapt_tables_request.py
 vertesia_client/openapi/models/adapted_table.py
 vertesia_client/openapi/models/advance_process_payload.py
 vertesia_client/openapi/models/agent_artifact_url_response.py
+vertesia_client/openapi/models/agent_message_details.py
+vertesia_client/openapi/models/agent_message_details_files_inner.py
 vertesia_client/openapi/models/agent_message_type.py
 vertesia_client/openapi/models/agent_run.py
 vertesia_client/openapi/models/agent_run_archive_state.py
@@ -211,6 +213,7 @@ vertesia_client/openapi/models/content_object_type_ref.py
 vertesia_client/openapi/models/content_object_user_permissions.py
 vertesia_client/openapi/models/content_source.py
 vertesia_client/openapi/models/conversation_activity_state.py
+vertesia_client/openapi/models/conversation_file.py
 vertesia_client/openapi/models/conversation_state.py
 vertesia_client/openapi/models/conversation_state_end_conversation.py
 vertesia_client/openapi/models/conversation_strip_options.py
@@ -316,6 +319,7 @@ vertesia_client/openapi/models/dsl_child_workflow_step.py
 vertesia_client/openapi/models/dsl_child_workflow_step_options.py
 vertesia_client/openapi/models/dsl_retry_policy.py
 vertesia_client/openapi/models/dsl_workflow_definition.py
+vertesia_client/openapi/models/dsl_workflow_definition_response.py
 vertesia_client/openapi/models/dsl_workflow_spec.py
 vertesia_client/openapi/models/dsl_workflow_spec_with_activities.py
 vertesia_client/openapi/models/dsl_workflow_spec_with_steps.py
@@ -364,6 +368,7 @@ vertesia_client/openapi/models/file_bucket_response.py
 vertesia_client/openapi/models/file_list_response.py
 vertesia_client/openapi/models/file_metadata_response.py
 vertesia_client/openapi/models/file_metadata_update_result.py
+vertesia_client/openapi/models/file_processing_status.py
 vertesia_client/openapi/models/find_payload.py
 vertesia_client/openapi/models/generate_interaction_payload.py
 vertesia_client/openapi/models/generate_test_data_payload.py
@@ -426,6 +431,7 @@ vertesia_client/openapi/models/interaction_search_query.py
 vertesia_client/openapi/models/interaction_status.py
 vertesia_client/openapi/models/interaction_tags.py
 vertesia_client/openapi/models/interaction_update_payload.py
+vertesia_client/openapi/models/interaction_update_payload_result_schema.py
 vertesia_client/openapi/models/interaction_visibility.py
 vertesia_client/openapi/models/interactions_export_payload.py
 vertesia_client/openapi/models/interactions_export_payload_versions_inner.py
@@ -450,7 +456,6 @@ vertesia_client/openapi/models/load_balancing_env_config.py
 vertesia_client/openapi/models/load_balancing_env_entry_config.py
 vertesia_client/openapi/models/location.py
 vertesia_client/openapi/models/magic_pdf_configuration.py
-vertesia_client/openapi/models/map_string_any.py
 vertesia_client/openapi/models/markdown_rendition_format.py
 vertesia_client/openapi/models/mcp_o_auth_connect_response.py
 vertesia_client/openapi/models/mcp_o_auth_disconnect_response.py

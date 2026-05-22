@@ -2,8 +2,8 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Vertesia API",
-    "version": "1.2.0",
-    "description": "The Vertesia API provides project-scoped access to interaction execution and content workflows. Use it to run interactions, inspect execution history, stream run progress, replay previous executions, and search content objects and collections. Authenticate requests with a bearer token, or use the official `@vertesia/client` SDK for typed access from Node.js applications.",
+    "version": "1.3.0",
+    "description": "The Vertesia API provides project-scoped access to interaction execution and content workflows. Use it to run interactions, inspect execution history, stream run progress, replay previous executions, and search content objects and collections. Authenticate requests with a bearer token, or use the official `@vertesia/client` package for typed access from Node.js applications.",
     "contact": {
       "name": "Vertesia",
       "url": "https://vertesiahq.com/"
@@ -15,7 +15,7 @@
     "x-scalar-sdk-installation": [
       {
         "lang": "Node",
-        "description": "Install the **Vertesia SDK** from npm:",
+        "description": "Install the **Vertesia Client** from npm:",
         "source": "npm install @vertesia/client"
       }
     ]
@@ -77,7 +77,8 @@
             "$ref": "#/components/schemas/ProjectConfiguration"
           },
           "integrations": {
-            "$ref": "#/components/schemas/Map_string_any"
+            "type": "object",
+            "additionalProperties": true
           },
           "plugins": {
             "type": "array",
@@ -158,7 +159,8 @@
             "$ref": "#/components/schemas/ProjectConfiguration"
           },
           "integrations": {
-            "$ref": "#/components/schemas/Map_string_any"
+            "type": "object",
+            "additionalProperties": true
           },
           "plugins": {
             "type": "array",
@@ -1653,6 +1655,9 @@
                 "$ref": "#/components/schemas/JSONSchema"
               },
               {
+                "$ref": "#/components/schemas/SchemaRef"
+              },
+              {
                 "type": "null"
               }
             ]
@@ -1761,6 +1766,9 @@
             "anyOf": [
               {
                 "$ref": "#/components/schemas/JSONSchema"
+              },
+              {
+                "$ref": "#/components/schemas/SchemaRef"
               },
               {
                 "type": "null"
@@ -2400,6 +2408,9 @@
             "anyOf": [
               {
                 "$ref": "#/components/schemas/JSONSchema"
+              },
+              {
+                "$ref": "#/components/schemas/SchemaRef"
               },
               {
                 "type": "null"
@@ -3319,6 +3330,9 @@
             "anyOf": [
               {
                 "$ref": "#/components/schemas/JSONSchema"
+              },
+              {
+                "$ref": "#/components/schemas/SchemaRef"
               },
               {
                 "type": "null"
@@ -5549,18 +5563,6 @@
           "each_turn"
         ]
       },
-      "Map_string_any": {
-        "type": "object",
-        "properties": {
-          "size": {
-            "type": "number"
-          }
-        },
-        "required": [
-          "size"
-        ],
-        "additionalProperties": false
-      },
       "GladiaConfiguration": {
         "type": "object",
         "properties": {
@@ -6264,6 +6266,14 @@
           "properties": {
             "$ref": "#/components/schemas/JSONSchemaProperties"
           },
+          "items": {
+            "$ref": "#/components/schemas/JSONSchema"
+          },
+          "format": {
+            "type": "string"
+          },
+          "editor": {},
+          "default": {},
           "additionalProperties": {
             "anyOf": [
               {
@@ -9204,7 +9214,9 @@
             "type": "string",
             "const": "json"
           },
-          "value": {}
+          "value": {
+            "$ref": "#/components/schemas/JSONValue"
+          }
         },
         "required": [
           "type",
@@ -10152,8 +10164,7 @@
         },
         "required": [
           "id",
-          "goal",
-          "instructions"
+          "goal"
         ],
         "additionalProperties": false
       },
@@ -10712,6 +10723,9 @@
                 "$ref": "#/components/schemas/JSONSchema"
               },
               {
+                "$ref": "#/components/schemas/SchemaRef"
+              },
+              {
                 "type": "null"
               }
             ]
@@ -10859,8 +10873,7 @@
         "required": [
           "interaction",
           "type"
-        ],
-        "additionalProperties": false
+        ]
       },
       "ConversationVisibility": {
         "type": "string",
@@ -10891,6 +10904,9 @@
             "anyOf": [
               {
                 "$ref": "#/components/schemas/JSONSchema"
+              },
+              {
+                "$ref": "#/components/schemas/SchemaRef"
               },
               {
                 "type": "null"
@@ -10953,8 +10969,7 @@
         "required": [
           "interaction",
           "type"
-        ],
-        "additionalProperties": false
+        ]
       },
       "PromptModalities": {
         "type": "object",
@@ -11874,6 +11889,15 @@
       "WebsiteCredentialRecord": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "string"
+          },
+          "credential_ref": {
+            "type": "string"
+          },
+          "project": {
+            "type": "string"
+          },
           "name": {
             "type": "string"
           },
@@ -11889,7 +11913,7 @@
           "username_hint": {
             "type": "string"
           },
-          "username_secret": {
+          "username_secret_enabled": {
             "type": "boolean"
           },
           "properties": {
@@ -11914,21 +11938,12 @@
           "notes": {
             "type": "string"
           },
-          "totp": {
+          "totp_metadata": {
             "$ref": "#/components/schemas/WebsiteCredentialTotpMetadata"
           },
           "expires_at": {
             "type": "string",
             "description": "Optional ISO timestamp after which the credential is no longer usable. Expired credentials are hidden from lookup and cannot be filled."
-          },
-          "id": {
-            "type": "string"
-          },
-          "credential_ref": {
-            "type": "string"
-          },
-          "project": {
-            "type": "string"
           },
           "created_at": {
             "type": "string"
@@ -11953,15 +11968,16 @@
           }
         },
         "required": [
+          "id",
           "credential_ref",
-          "has_oauth",
+          "project",
+          "name",
+          "websites",
+          "username_secret_enabled",
+          "has_username_secret",
           "has_password",
           "has_totp",
-          "has_username_secret",
-          "id",
-          "name",
-          "project",
-          "websites"
+          "has_oauth"
         ],
         "additionalProperties": false
       },
@@ -12844,7 +12860,8 @@
           "memo": {
             "anyOf": [
               {
-                "type": "object"
+                "type": "object",
+                "additionalProperties": {}
               },
               {
                 "type": "null"
@@ -14838,7 +14855,8 @@
           "debug": {
             "type": "boolean"
           }
-        }
+        },
+        "additionalProperties": {}
       },
       "DocAnalyzerResultResponse": {
         "type": "object",
@@ -15313,6 +15331,93 @@
         "items": {
           "$ref": "#/components/schemas/WorkflowDefinitionRef"
         }
+      },
+      "DSLWorkflowDefinitionResponse": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Human-readable name or title"
+          },
+          "description": {
+            "type": "string",
+            "description": "Optional detailed description of the object"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Optional array of categorization tags"
+          },
+          "steps": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DSLWorkflowStep"
+            }
+          },
+          "activities": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DSLActivitySpec"
+            }
+          },
+          "vars": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "options": {
+            "$ref": "#/components/schemas/DSLActivityOptions"
+          },
+          "result": {
+            "type": "string"
+          },
+          "debug_mode": {
+            "type": "boolean"
+          },
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the object"
+          },
+          "updated_by": {
+            "type": "string",
+            "description": "Identifier of the user who last modified the object"
+          },
+          "created_by": {
+            "type": "string",
+            "description": "Identifier of the user who created the object"
+          },
+          "created_at": {
+            "type": "string",
+            "description": "ISO timestamp of when the object was created"
+          },
+          "updated_at": {
+            "type": "string",
+            "description": "ISO timestamp of when the object was last updated"
+          },
+          "input_schema": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "spec_format": {
+            "type": "string",
+            "enum": [
+              "steps",
+              "activities"
+            ]
+          }
+        },
+        "required": [
+          "created_at",
+          "created_by",
+          "id",
+          "name",
+          "spec_format",
+          "updated_at",
+          "updated_by",
+          "vars"
+        ],
+        "additionalProperties": false
       },
       "DSLWorkflowDefinition": {
         "type": "object",
@@ -15963,7 +16068,10 @@
             }
           },
           "type": {
-            "type": "string"
+            "type": [
+              "string",
+              "null"
+            ]
           },
           "query": {
             "type": "object",
@@ -18547,6 +18655,14 @@
             "description": "Workstream ID (only when not \"main\")"
           },
           "d": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AgentMessageDetails"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "description": "Type-specific details"
           },
           "f": {
@@ -18592,6 +18708,170 @@
           14
         ]
       },
+      "AgentMessageDetails": {
+        "type": "object",
+        "properties": {
+          "event_class": {
+            "type": "string"
+          },
+          "tool": {
+            "type": "string"
+          },
+          "tools": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "streamed": {
+            "type": "boolean"
+          },
+          "display_role": {
+            "type": "string"
+          },
+          "activity_id": {
+            "type": "string"
+          },
+          "activity_group_id": {
+            "type": "string"
+          },
+          "batch_id": {
+            "type": "string"
+          },
+          "tool_run_id": {
+            "type": "string"
+          },
+          "tool_status": {
+            "type": "string",
+            "enum": [
+              "running",
+              "completed",
+              "error",
+              "warning"
+            ]
+          },
+          "tool_iteration": {
+            "type": "number"
+          },
+          "observation": {},
+          "workflow_run_id": {
+            "type": "string"
+          },
+          "outputFiles": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "files": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/ConversationFile"
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "plan": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PlanTask"
+            }
+          },
+          "streaming_id": {
+            "type": "string"
+          },
+          "chunk_index": {
+            "type": "number"
+          },
+          "is_final": {
+            "type": "boolean"
+          },
+          "_optimistic": {
+            "type": "boolean"
+          },
+          "_messageId": {
+            "type": "string"
+          }
+        }
+      },
+      "ConversationFile": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique ID for tracking this file (generated client-side)"
+          },
+          "name": {
+            "type": "string",
+            "description": "Original filename"
+          },
+          "content_type": {
+            "type": "string",
+            "description": "MIME type"
+          },
+          "size": {
+            "type": "number",
+            "description": "Size in bytes"
+          },
+          "status": {
+            "$ref": "#/components/schemas/FileProcessingStatus",
+            "description": "Current processing status"
+          },
+          "artifact_path": {
+            "type": "string",
+            "description": "Artifact path (e.g., \"files/document.pdf\") - set after upload"
+          },
+          "reference": {
+            "type": "string",
+            "description": "Full artifact reference URI (e.g., \"artifact:files/document.pdf\")"
+          },
+          "md_path": {
+            "type": "string",
+            "description": "Path to extracted text markdown (e.g., \"files/document.pdf.md\")"
+          },
+          "text_extracted": {
+            "type": "boolean",
+            "description": "Whether text extraction completed successfully"
+          },
+          "error": {
+            "type": "string",
+            "description": "Error message if status is ERROR"
+          },
+          "started_at": {
+            "type": "number",
+            "description": "Timestamp when upload started"
+          },
+          "completed_at": {
+            "type": "number",
+            "description": "Timestamp when processing completed"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "content_type",
+          "size",
+          "status",
+          "started_at"
+        ],
+        "additionalProperties": false,
+        "description": "Represents a file being processed in a conversation workflow."
+      },
+      "FileProcessingStatus": {
+        "type": "string",
+        "enum": [
+          "uploading",
+          "processing",
+          "ready",
+          "error"
+        ],
+        "description": "Status of a file being processed for conversation use."
+      },
       "Partial_AgentMessage": {
         "type": "object",
         "properties": {
@@ -18607,7 +18887,9 @@
           "message": {
             "type": "string"
           },
-          "details": {},
+          "details": {
+            "$ref": "#/components/schemas/AgentMessageDetails"
+          },
           "workstream_id": {
             "type": "string"
           }
@@ -20627,8 +20909,7 @@
             "description": "External identifier for integration with other systems"
           },
           "properties": {
-            "type": "object",
-            "additionalProperties": true,
+            "$ref": "#/components/schemas/JSONObject",
             "description": "The object properties. This is a JSON object that describes the object, matching the object type schema"
           },
           "metadata": {
@@ -29797,7 +30078,7 @@
         "x-codeSamples": [
           {
             "lang": "TypeScript",
-            "label": "Vertesia SDK",
+            "label": "Vertesia Client",
             "source": "import { VertesiaClient } from '@vertesia/client';\n\nconst client = new VertesiaClient({\n    site: 'api.vertesia.io',\n    apikey: '<YOUR_API_KEY>',\n});\n\nconst run = await client.runs.create({\n    interaction: '<INTERACTION_ID>',\n    data: {\n        question: 'Summarize this document',\n    },\n    config: {\n        environment: '<ENVIRONMENT_ID>',\n        model: '<MODEL_ID>',\n    },\n});\n\nconsole.log(run);"
           }
         ],
@@ -30100,7 +30381,7 @@
         "x-codeSamples": [
           {
             "lang": "TypeScript",
-            "label": "Vertesia SDK",
+            "label": "Vertesia Client",
             "source": "import { VertesiaClient } from '@vertesia/client';\n\nconst client = new VertesiaClient({\n    site: 'api.vertesia.io',\n    apikey: '<YOUR_API_KEY>',\n});\n\nconst runs = await client.runs.list({\n    limit: 10,\n    offset: 0,\n    filters: {\n        status: 'completed',\n        interaction: '<INTERACTION_ID>',\n    },\n});\n\nconsole.log(runs);"
           }
         ],
@@ -30189,7 +30470,7 @@
         "x-codeSamples": [
           {
             "lang": "TypeScript",
-            "label": "Vertesia SDK",
+            "label": "Vertesia Client",
             "source": "import { VertesiaClient } from '@vertesia/client';\n\nconst client = new VertesiaClient({\n    site: 'api.vertesia.io',\n    apikey: '<YOUR_API_KEY>',\n});\n\nconst runs = await client.runs.search({\n    limit: 10,\n    offset: 0,\n    query: {\n        status: 'completed',\n        interaction: '<INTERACTION_ID>',\n        start: '2026-04-01T00:00:00.000Z',\n        end: '2026-04-30T23:59:59.999Z',\n    },\n});\n\nconsole.log(runs);"
           }
         ],
@@ -30297,7 +30578,7 @@
         "x-codeSamples": [
           {
             "lang": "TypeScript",
-            "label": "Vertesia SDK",
+            "label": "Vertesia Client",
             "source": "import { VertesiaClient } from '@vertesia/client';\n\nconst client = new VertesiaClient({\n    site: 'api.vertesia.io',\n    apikey: '<YOUR_API_KEY>',\n});\n\nconst run = await client.runs.retrieve('<RUN_ID>');\nconsole.log(run);"
           }
         ],
@@ -30421,7 +30702,7 @@
         "x-codeSamples": [
           {
             "lang": "TypeScript",
-            "label": "Vertesia SDK",
+            "label": "Vertesia Client",
             "source": "import { VertesiaClient } from '@vertesia/client';\n\nconst client = new VertesiaClient({\n    site: 'api.vertesia.io',\n    apikey: '<YOUR_API_KEY>',\n});\n\nconst run = await client.runs.put('/<RUN_ID>', {\n    payload: {\n        tags: ['reviewed'],\n    },\n});\nconsole.log(run);"
           }
         ],
@@ -30514,7 +30795,7 @@
         "x-codeSamples": [
           {
             "lang": "TypeScript",
-            "label": "Vertesia SDK",
+            "label": "Vertesia Client",
             "source": "import { VertesiaClient } from '@vertesia/client';\n\nconst client = new VertesiaClient({\n    site: 'api.vertesia.io',\n    apikey: '<YOUR_API_KEY>',\n});\n\nconst deleted = await client.runs.del('/<RUN_ID>');\nconsole.log(deleted);"
           }
         ],
@@ -30612,7 +30893,7 @@
         "x-codeSamples": [
           {
             "lang": "TypeScript",
-            "label": "Vertesia SDK",
+            "label": "Vertesia Client",
             "source": "import { VertesiaClient } from '@vertesia/client';\n\nconst client = new VertesiaClient({\n    site: 'api.vertesia.io',\n    apikey: '<YOUR_API_KEY>',\n});\n\nconst events = await client.runs.get('/<RUN_ID>/stream', {\n    query: {\n        access_token: '<YOUR_JWT_TOKEN>',\n    },\n    reader: 'sse',\n});\n\nconsole.log(events);"
           }
         ],
@@ -40955,6 +41236,14 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          {
+            "name": "hydrate_payloads",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
           }
         ],
         "responses": {
@@ -48668,7 +48957,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DSLWorkflowDefinition"
+                  "$ref": "#/components/schemas/DSLWorkflowDefinitionResponse"
                 }
               }
             }
@@ -49204,6 +49493,14 @@
                 "tasks",
                 "agent"
               ]
+            }
+          },
+          {
+            "name": "hydrate_payloads",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
             }
           }
         ],
@@ -50181,7 +50478,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DSLWorkflowDefinition"
+                  "$ref": "#/components/schemas/DSLWorkflowDefinitionResponse"
                 }
               }
             }
@@ -50257,7 +50554,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DSLWorkflowDefinition"
+                  "$ref": "#/components/schemas/DSLWorkflowDefinitionResponse"
                 }
               }
             }
