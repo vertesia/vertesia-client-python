@@ -511,6 +511,7 @@ from vertesia_client.openapi.models.plan import Plan
 from vertesia_client.openapi.models.plan_task import PlanTask
 from vertesia_client.openapi.models.post_agent_run_update_payload import PostAgentRunUpdatePayload
 from vertesia_client.openapi.models.post_agent_run_update_response import PostAgentRunUpdateResponse
+from vertesia_client.openapi.models.principal_identity import PrincipalIdentity
 from vertesia_client.openapi.models.process_context_definition import ProcessContextDefinition
 from vertesia_client.openapi.models.process_context_response import ProcessContextResponse
 from vertesia_client.openapi.models.process_definition import ProcessDefinition

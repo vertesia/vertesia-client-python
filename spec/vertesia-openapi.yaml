@@ -2492,6 +2492,38 @@ components:
       required:
         - interaction
       additionalProperties: false
+    PrincipalIdentity:
+      type: object
+      properties:
+        clearance:
+          type: number
+        compartments:
+          type: array
+          items:
+            type: string
+        email:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        properties:
+          type: object
+          additionalProperties: true
+        id:
+          type: string
+      required:
+        - clearance
+        - compartments
+        - id
+        - properties
+        - tags
+      additionalProperties: false
+      description: "Response shape of the `/iam/users/identity` endpoint: the current
+        principal's  {@link  PrincipalContext }  plus its id. Distinct from
+        `PrincipalContext` itself because the id is identity metadata, not a
+        merged BLP field — adding it to `PrincipalContext` would unintentionally
+        expose `$principal.id` to PrincipalSet rule evaluation."
     User:
       type: object
       properties:
@@ -4081,6 +4113,8 @@ components:
         intake:
           $ref: "#/components/schemas/ModelDefault"
         analysis:
+          $ref: "#/components/schemas/ModelDefault"
+        agent:
           $ref: "#/components/schemas/ModelDefault"
         non_applicable:
           $ref: "#/components/schemas/ModelDefault"
@@ -25313,6 +25347,69 @@ paths:
         file: ../../apps/studio-server/src/api/iam/groups.ts
         className: UserGroupResource
         methodName: removeMember
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260319"
+        description: Optional Vertesia API version header. Use `20260319` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /iam/users/identity:
+    get:
+      operationId: GetCurrentUserIdentity
+      tags:
+        - Users
+      summary: Retrieve the current user's identity
+      description: >-
+        Returns the current user id plus the merged ABAC principal context
+        (clearance, compartments, email, tags, properties). Conceptually an
+        OIDC-style userinfo / identity-token endpoint: takes no parameters,
+        derives the subject from the JWT, and rejects non-user principals (API
+        keys, service accounts) with 400. Use this client-side to preview how
+        PrincipalSet rules will evaluate for the signed-in user.
+
+
+        **Required permissions:** `account:member`
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters: []
+      responses:
+        "200":
+          description: The current user's principal identity (id + resolved context).
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrincipalIdentity"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - account:member
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/iam/users.ts
+        className: UsersResource
+        methodName: getIdentity
     parameters:
       - name: x-api-version
         in: header

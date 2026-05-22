@@ -537,6 +537,7 @@ vertesia_client/openapi/models/plan.py
 vertesia_client/openapi/models/plan_task.py
 vertesia_client/openapi/models/post_agent_run_update_payload.py
 vertesia_client/openapi/models/post_agent_run_update_response.py
+vertesia_client/openapi/models/principal_identity.py
 vertesia_client/openapi/models/process_context_definition.py
 vertesia_client/openapi/models/process_context_response.py
 vertesia_client/openapi/models/process_definition.py

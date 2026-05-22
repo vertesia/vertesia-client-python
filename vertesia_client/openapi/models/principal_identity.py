@@ -17,23 +17,23 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict
-from typing import Any, ClassVar, Dict, Optional
-from vertesia_client.openapi.models.model_default import ModelDefault
+from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr
+from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class SystemDefaults(BaseModel):
+class PrincipalIdentity(BaseModel):
     """
-    SystemDefaults
+    Response shape of the `/iam/users/identity` endpoint: the current principal's  {@link  PrincipalContext }  plus its id. Distinct from `PrincipalContext` itself because the id is identity metadata, not a merged BLP field — adding it to `PrincipalContext` would unintentionally expose `$principal.id` to PrincipalSet rule evaluation.
     """ # noqa: E501
-    content_type: Optional[ModelDefault] = None
-    intake: Optional[ModelDefault] = None
-    analysis: Optional[ModelDefault] = None
-    agent: Optional[ModelDefault] = None
-    non_applicable: Optional[ModelDefault] = None
-    __properties: ClassVar[List[str]] = ["content_type", "intake", "analysis", "agent", "non_applicable"]
+    clearance: Union[StrictFloat, StrictInt]
+    compartments: List[StrictStr]
+    email: Optional[StrictStr] = None
+    tags: List[StrictStr]
+    properties: Dict[str, Any]
+    id: StrictStr
+    __properties: ClassVar[List[str]] = ["clearance", "compartments", "email", "tags", "properties", "id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -53,7 +53,7 @@ class SystemDefaults(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of SystemDefaults from a JSON string"""
+        """Create an instance of PrincipalIdentity from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -74,26 +74,11 @@ class SystemDefaults(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of content_type
-        if self.content_type:
-            _dict['content_type'] = self.content_type.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of intake
-        if self.intake:
-            _dict['intake'] = self.intake.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of analysis
-        if self.analysis:
-            _dict['analysis'] = self.analysis.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of agent
-        if self.agent:
-            _dict['agent'] = self.agent.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of non_applicable
-        if self.non_applicable:
-            _dict['non_applicable'] = self.non_applicable.to_dict()
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of SystemDefaults from a dict"""
+        """Create an instance of PrincipalIdentity from a dict"""
         if obj is None:
             return None
 
@@ -101,11 +86,12 @@ class SystemDefaults(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "content_type": ModelDefault.from_dict(obj["content_type"]) if obj.get("content_type") is not None else None,
-            "intake": ModelDefault.from_dict(obj["intake"]) if obj.get("intake") is not None else None,
-            "analysis": ModelDefault.from_dict(obj["analysis"]) if obj.get("analysis") is not None else None,
-            "agent": ModelDefault.from_dict(obj["agent"]) if obj.get("agent") is not None else None,
-            "non_applicable": ModelDefault.from_dict(obj["non_applicable"]) if obj.get("non_applicable") is not None else None
+            "clearance": obj.get("clearance"),
+            "compartments": obj.get("compartments"),
+            "email": obj.get("email"),
+            "tags": obj.get("tags"),
+            "properties": obj.get("properties"),
+            "id": obj.get("id")
         })
         return _obj
 

@@ -559,6 +559,7 @@ __all__ = [
     "PlanTask",
     "PostAgentRunUpdatePayload",
     "PostAgentRunUpdateResponse",
+    "PrincipalIdentity",
     "ProcessContextDefinition",
     "ProcessContextResponse",
     "ProcessDefinition",
@@ -1340,6 +1341,7 @@ from vertesia_client.openapi.models.plan import Plan as Plan
 from vertesia_client.openapi.models.plan_task import PlanTask as PlanTask
 from vertesia_client.openapi.models.post_agent_run_update_payload import PostAgentRunUpdatePayload as PostAgentRunUpdatePayload
 from vertesia_client.openapi.models.post_agent_run_update_response import PostAgentRunUpdateResponse as PostAgentRunUpdateResponse
+from vertesia_client.openapi.models.principal_identity import PrincipalIdentity as PrincipalIdentity
 from vertesia_client.openapi.models.process_context_definition import ProcessContextDefinition as ProcessContextDefinition
 from vertesia_client.openapi.models.process_context_response import ProcessContextResponse as ProcessContextResponse
 from vertesia_client.openapi.models.process_definition import ProcessDefinition as ProcessDefinition
