@@ -3,6 +3,8 @@
 .github/**
 .gitignore
 .openapi-generator-ignore
+AGENTS.md
+CLAUDE.md
 README.md
 pyproject.toml
 openapi-generator-config.yaml
