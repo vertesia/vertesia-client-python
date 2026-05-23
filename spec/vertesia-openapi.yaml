@@ -3221,60 +3221,6 @@ components:
       type: array
       items:
         $ref: "#/components/schemas/AppInstallationListEntry"
-    AppPackage:
-      type: object
-      properties:
-        ui:
-          $ref: "#/components/schemas/AppUIConfig"
-          description: The UI configuration of the app
-        tools:
-          type: array
-          items:
-            $ref: "#/components/schemas/AgentToolDefinition"
-          description: A list of tools exposed by the app.
-        skills:
-          type: array
-          items:
-            $ref: "#/components/schemas/AgentToolDefinition"
-          description: A list of skills (`learn_*` tools) exposed by the app. Kept
-            separate from `tools` so clients can render them distinctly —
-            consumers that don't care (e.g. the worker building a combined tool
-            registry) should concatenate the two lists.
-        interactions:
-          type: array
-          items:
-            $ref: "#/components/schemas/CatalogInteractionRef"
-          description: A list of interactions exposed by the app
-        types:
-          type: array
-          items:
-            $ref: "#/components/schemas/InCodeTypeDefinition"
-          description: A list of types.
-        processes:
-          type: array
-          items:
-            $ref: "#/components/schemas/InCodeProcessDefinition"
-          description: A list of process definitions exposed by the app.
-        templates:
-          type: array
-          items:
-            $ref: "#/components/schemas/RenderingTemplateDefinitionRef"
-          description: Templates provided by the app.
-        widgets:
-          $ref: "#/components/schemas/AppWidgetInfoMap"
-          description: Widgets provided by the app.
-        activities:
-          type: array
-          items:
-            $ref: "#/components/schemas/RemoteActivityDefinition"
-          description: "Remote activities exposed by the app for use in DSL workflows.
-            Activities are discovered via `?scope=activities` and referenced in
-            workflow steps using colon-separated names:
-            `app:<app_name>:<collection>:<activity_name>`."
-        settings_schema:
-          $ref: "#/components/schemas/JSONSchema"
-          description: A JSON chema for the app installation settings.
-      additionalProperties: false
     AppInstallationArray:
       type: array
       items:
@@ -8923,97 +8869,6 @@ components:
         - project
         - updated_at
       additionalProperties: false
-    AppWidgetInfoMap:
-      type: object
-      additionalProperties:
-        $ref: "#/components/schemas/AppWidgetInfo"
-    AppWidgetInfo:
-      type: object
-      properties:
-        collection:
-          type: string
-        skill:
-          type: string
-        url:
-          type: string
-      required:
-        - collection
-        - skill
-        - url
-      additionalProperties: false
-    RemoteActivityDefinition:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Activity name (snake_case, unique within the collection)
-        collection:
-          type: string
-          description: Collection name this activity belongs to
-        title:
-          type: string
-          description: Display title
-        description:
-          type: string
-          description: Description of what the activity does
-        input_schema:
-          type: object
-          additionalProperties: true
-          description: JSON Schema for the activity input parameters
-        output_schema:
-          type: object
-          additionalProperties: true
-          description: JSON Schema for the activity output
-        url:
-          type: string
-          description: The activity execution URL. Can be absolute or relative to the tool
-            server base URL. If not provided, the collection-specific activities
-            endpoint is used.
-        options:
-          $ref: "#/components/schemas/DSLActivityOptions"
-          description: Suggested timeout and retry configuration
-      required:
-        - name
-      additionalProperties: false
-      description: "Definition of a remote activity exposed by a tool server for use
-        in DSL workflows. Remote activities are identified in workflow steps
-        using colon-separated names:
-        `app:<app_name>:<collection>:<activity_name>` (e.g.
-        `app:my-nlp-app:examples:word_count`)."
-    DSLActivityOptions:
-      type: object
-      properties:
-        startToCloseTimeout:
-          $ref: "#/components/schemas/DurationValue"
-        scheduleToStartTimeout:
-          $ref: "#/components/schemas/DurationValue"
-        scheduleToCloseTimeout:
-          $ref: "#/components/schemas/DurationValue"
-        retry:
-          $ref: "#/components/schemas/DSLRetryPolicy"
-      additionalProperties: false
-      description: The payload for a DSL activity options.
-    DurationValue:
-      type:
-        - string
-        - number
-    DSLRetryPolicy:
-      type: object
-      properties:
-        backoffCoefficient:
-          type: number
-        initialInterval:
-          $ref: "#/components/schemas/DurationValue"
-        maximumAttempts:
-          type: number
-        maximumInterval:
-          $ref: "#/components/schemas/DurationValue"
-        nonRetryableErrorTypes:
-          type: array
-          items:
-            type: string
-      additionalProperties: false
-      description: The payload for a DSL retry policy.
     OAuthClientType:
       type: string
       enum:
@@ -16333,6 +16188,40 @@ components:
         - type
         - query
       additionalProperties: false
+    DSLActivityOptions:
+      type: object
+      properties:
+        startToCloseTimeout:
+          $ref: "#/components/schemas/DurationValue"
+        scheduleToStartTimeout:
+          $ref: "#/components/schemas/DurationValue"
+        scheduleToCloseTimeout:
+          $ref: "#/components/schemas/DurationValue"
+        retry:
+          $ref: "#/components/schemas/DSLRetryPolicy"
+      additionalProperties: false
+      description: The payload for a DSL activity options.
+    DurationValue:
+      type:
+        - string
+        - number
+    DSLRetryPolicy:
+      type: object
+      properties:
+        backoffCoefficient:
+          type: number
+        initialInterval:
+          $ref: "#/components/schemas/DurationValue"
+        maximumAttempts:
+          type: number
+        maximumInterval:
+          $ref: "#/components/schemas/DurationValue"
+        nonRetryableErrorTypes:
+          type: array
+          items:
+            type: string
+      additionalProperties: false
+      description: The payload for a DSL retry policy.
     DSLChildWorkflowStep:
       type: object
       properties:
@@ -26251,220 +26140,6 @@ paths:
         file: ../../apps/studio-server/src/api/apps.ts
         className: AppsResource
         methodName: listAllInstallations
-    parameters:
-      - name: x-api-version
-        in: header
-        required: false
-        schema:
-          type: string
-          example: "20260319"
-        description: Optional Vertesia API version header. Use `20260319` for the
-          current stable API shape.
-        x-vertesia-global-header: true
-  /apps/studio-tools/package:
-    get:
-      operationId: GetStudioToolsPackage
-      tags:
-        - Apps
-      summary: Get the Studio tools package
-      description: Returns the opt-in Studio tools and skills app package for
-        principals allowed to use the Studio Assistant tool catalog.
-      security:
-        - bearerAuth: []
-        - OpenID: []
-      parameters:
-        - name: scope
-          in: query
-          required: false
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Studio tools app package.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/AppPackage"
-        "500":
-          description: Internal server error.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-              example:
-                error: Internal Server Error
-                status: 500
-                message: Internal server error.
-        4XX:
-          description: Client error.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-              example:
-                error: Bad Request
-                status: 400
-                message: Request validation failed.
-      x-vertesia-permissions: []
-      x-vertesia-source:
-        file: ../../apps/studio-server/src/api/apps.ts
-        className: AppsResource
-        methodName: getStudioToolsPackage
-    post:
-      operationId: PostStudioToolsPackage
-      tags:
-        - Apps
-      summary: Post the Studio tools package request
-      description: Returns the opt-in Studio tools and skills app package for agents
-        that fetch packages with POST.
-      security:
-        - bearerAuth: []
-        - OpenID: []
-      parameters:
-        - name: scope
-          in: query
-          required: false
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Studio tools app package.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/AppPackage"
-        "500":
-          description: Internal server error.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-              example:
-                error: Internal Server Error
-                status: 500
-                message: Internal server error.
-        4XX:
-          description: Client error.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-              example:
-                error: Bad Request
-                status: 400
-                message: Request validation failed.
-      x-vertesia-permissions: []
-      x-vertesia-source:
-        file: ../../apps/studio-server/src/api/apps.ts
-        className: AppsResource
-        methodName: postStudioToolsPackage
-    parameters:
-      - name: x-api-version
-        in: header
-        required: false
-        schema:
-          type: string
-          example: "20260319"
-        description: Optional Vertesia API version header. Use `20260319` for the
-          current stable API shape.
-        x-vertesia-global-header: true
-  /apps/default/package:
-    get:
-      operationId: GetDefaultAppPackage
-      tags:
-        - Apps
-      summary: Get the default app package
-      description: Returns the always-on default skills package available to every
-        authenticated principal.
-      security:
-        - bearerAuth: []
-        - OpenID: []
-      parameters:
-        - name: scope
-          in: query
-          required: false
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Default app package.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/AppPackage"
-        "500":
-          description: Internal server error.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-              example:
-                error: Internal Server Error
-                status: 500
-                message: Internal server error.
-        4XX:
-          description: Client error.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-              example:
-                error: Bad Request
-                status: 400
-                message: Request validation failed.
-      x-vertesia-permissions: []
-      x-vertesia-source:
-        file: ../../apps/studio-server/src/api/apps.ts
-        className: AppsResource
-        methodName: getDefaultPackage
-    post:
-      operationId: PostDefaultAppPackage
-      tags:
-        - Apps
-      summary: Post the default app package request
-      description: Returns the always-on default skills package for agents that fetch
-        packages with POST.
-      security:
-        - bearerAuth: []
-        - OpenID: []
-      parameters:
-        - name: scope
-          in: query
-          required: false
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Default app package.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/AppPackage"
-        "500":
-          description: Internal server error.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-              example:
-                error: Internal Server Error
-                status: 500
-                message: Internal server error.
-        4XX:
-          description: Client error.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-              example:
-                error: Bad Request
-                status: 400
-                message: Request validation failed.
-      x-vertesia-permissions: []
-      x-vertesia-source:
-        file: ../../apps/studio-server/src/api/apps.ts
-        className: AppsResource
-        methodName: postDefaultPackage
     parameters:
       - name: x-api-version
         in: header

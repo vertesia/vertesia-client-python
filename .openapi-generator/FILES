@@ -100,11 +100,9 @@ vertesia_client/openapi/models/app_installation_provider_binding.py
 vertesia_client/openapi/models/app_installation_with_manifest.py
 vertesia_client/openapi/models/app_manifest.py
 vertesia_client/openapi/models/app_manifest_data.py
-vertesia_client/openapi/models/app_package.py
 vertesia_client/openapi/models/app_tool_collection.py
 vertesia_client/openapi/models/app_ui_config.py
 vertesia_client/openapi/models/app_ui_nav_item.py
-vertesia_client/openapi/models/app_widget_info.py
 vertesia_client/openapi/models/ask_user_webhook_configuration.py
 vertesia_client/openapi/models/ask_user_webhook_configuration_input.py
 vertesia_client/openapi/models/async_completion_options.py
@@ -603,7 +601,6 @@ vertesia_client/openapi/models/query_validation_result.py
 vertesia_client/openapi/models/rate_limit_request_payload.py
 vertesia_client/openapi/models/rate_limit_request_response.py
 vertesia_client/openapi/models/reasoning_effort.py
-vertesia_client/openapi/models/remote_activity_definition.py
 vertesia_client/openapi/models/render_markdown_payload.py
 vertesia_client/openapi/models/render_markdown_start_response.py
 vertesia_client/openapi/models/render_markdown_status_response.py

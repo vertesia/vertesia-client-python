@@ -74,11 +74,9 @@ from vertesia_client.openapi.models.app_installation_provider_binding import App
 from vertesia_client.openapi.models.app_installation_with_manifest import AppInstallationWithManifest
 from vertesia_client.openapi.models.app_manifest import AppManifest
 from vertesia_client.openapi.models.app_manifest_data import AppManifestData
-from vertesia_client.openapi.models.app_package import AppPackage
 from vertesia_client.openapi.models.app_tool_collection import AppToolCollection
 from vertesia_client.openapi.models.app_ui_config import AppUIConfig
 from vertesia_client.openapi.models.app_ui_nav_item import AppUINavItem
-from vertesia_client.openapi.models.app_widget_info import AppWidgetInfo
 from vertesia_client.openapi.models.ask_user_webhook_configuration import AskUserWebhookConfiguration
 from vertesia_client.openapi.models.ask_user_webhook_configuration_input import AskUserWebhookConfigurationInput
 from vertesia_client.openapi.models.async_completion_options import AsyncCompletionOptions
@@ -577,7 +575,6 @@ from vertesia_client.openapi.models.query_validation_result import QueryValidati
 from vertesia_client.openapi.models.rate_limit_request_payload import RateLimitRequestPayload
 from vertesia_client.openapi.models.rate_limit_request_response import RateLimitRequestResponse
 from vertesia_client.openapi.models.reasoning_effort import ReasoningEffort
-from vertesia_client.openapi.models.remote_activity_definition import RemoteActivityDefinition
 from vertesia_client.openapi.models.render_markdown_payload import RenderMarkdownPayload
 from vertesia_client.openapi.models.render_markdown_start_response import RenderMarkdownStartResponse
 from vertesia_client.openapi.models.render_markdown_status_response import RenderMarkdownStatusResponse

@@ -122,11 +122,9 @@ __all__ = [
     "AppInstallationWithManifest",
     "AppManifest",
     "AppManifestData",
-    "AppPackage",
     "AppToolCollection",
     "AppUIConfig",
     "AppUINavItem",
-    "AppWidgetInfo",
     "AskUserWebhookConfiguration",
     "AskUserWebhookConfigurationInput",
     "AsyncCompletionOptions",
@@ -625,7 +623,6 @@ __all__ = [
     "RateLimitRequestPayload",
     "RateLimitRequestResponse",
     "ReasoningEffort",
-    "RemoteActivityDefinition",
     "RenderMarkdownPayload",
     "RenderMarkdownStartResponse",
     "RenderMarkdownStatusResponse",
@@ -904,11 +901,9 @@ from vertesia_client.openapi.models.app_installation_provider_binding import App
 from vertesia_client.openapi.models.app_installation_with_manifest import AppInstallationWithManifest as AppInstallationWithManifest
 from vertesia_client.openapi.models.app_manifest import AppManifest as AppManifest
 from vertesia_client.openapi.models.app_manifest_data import AppManifestData as AppManifestData
-from vertesia_client.openapi.models.app_package import AppPackage as AppPackage
 from vertesia_client.openapi.models.app_tool_collection import AppToolCollection as AppToolCollection
 from vertesia_client.openapi.models.app_ui_config import AppUIConfig as AppUIConfig
 from vertesia_client.openapi.models.app_ui_nav_item import AppUINavItem as AppUINavItem
-from vertesia_client.openapi.models.app_widget_info import AppWidgetInfo as AppWidgetInfo
 from vertesia_client.openapi.models.ask_user_webhook_configuration import AskUserWebhookConfiguration as AskUserWebhookConfiguration
 from vertesia_client.openapi.models.ask_user_webhook_configuration_input import AskUserWebhookConfigurationInput as AskUserWebhookConfigurationInput
 from vertesia_client.openapi.models.async_completion_options import AsyncCompletionOptions as AsyncCompletionOptions
@@ -1407,7 +1402,6 @@ from vertesia_client.openapi.models.query_validation_result import QueryValidati
 from vertesia_client.openapi.models.rate_limit_request_payload import RateLimitRequestPayload as RateLimitRequestPayload
 from vertesia_client.openapi.models.rate_limit_request_response import RateLimitRequestResponse as RateLimitRequestResponse
 from vertesia_client.openapi.models.reasoning_effort import ReasoningEffort as ReasoningEffort
-from vertesia_client.openapi.models.remote_activity_definition import RemoteActivityDefinition as RemoteActivityDefinition
 from vertesia_client.openapi.models.render_markdown_payload import RenderMarkdownPayload as RenderMarkdownPayload
 from vertesia_client.openapi.models.render_markdown_start_response import RenderMarkdownStartResponse as RenderMarkdownStartResponse
 from vertesia_client.openapi.models.render_markdown_status_response import RenderMarkdownStatusResponse as RenderMarkdownStatusResponse
