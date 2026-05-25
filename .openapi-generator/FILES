@@ -602,6 +602,9 @@ vertesia_client/openapi/models/query_validation_result.py
 vertesia_client/openapi/models/rate_limit_request_payload.py
 vertesia_client/openapi/models/rate_limit_request_response.py
 vertesia_client/openapi/models/reasoning_effort.py
+vertesia_client/openapi/models/reindex_agent_runs_payload.py
+vertesia_client/openapi/models/reindex_agent_runs_response.py
+vertesia_client/openapi/models/reindex_agent_runs_response_errors_inner.py
 vertesia_client/openapi/models/render_markdown_payload.py
 vertesia_client/openapi/models/render_markdown_start_response.py
 vertesia_client/openapi/models/render_markdown_status_response.py

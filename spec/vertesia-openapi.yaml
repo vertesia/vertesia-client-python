@@ -10245,6 +10245,63 @@ components:
         bulk_concurrency:
           type: number
       additionalProperties: false
+    ReindexAgentRunsResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        backend:
+          $ref: "#/components/schemas/ElasticsearchBackend"
+        index_name:
+          type: string
+        recreated:
+          type: boolean
+        total:
+          type: number
+        scanned:
+          type: number
+        indexed:
+          type: number
+        failed:
+          type: number
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              message:
+                type: string
+            required:
+              - id
+              - message
+            additionalProperties: false
+      required:
+        - status
+        - backend
+        - index_name
+        - recreated
+        - total
+        - scanned
+        - indexed
+        - failed
+      additionalProperties: false
+    ReindexAgentRunsPayload:
+      type: object
+      properties:
+        recreate_index:
+          type: boolean
+          description: Drop any existing agent-runs index/alias family and recreate the
+            stable concrete index before indexing. Defaults to true.
+        batch_size:
+          type: number
+          description: Number of MongoDB records to scan per batch. Defaults to 500.
+        limit:
+          type: number
+          description: Optional cap for partial/manual repair runs. Omit for all agent
+            runs in the project.
+      additionalProperties: false
     DriftAnalysisStatusResponse:
       type: object
       properties:
@@ -31254,6 +31311,72 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/StartProjectReindexPayload"
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260319"
+        description: Optional Vertesia API version header. Use `20260319` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /indexing/agent-runs/reindex:
+    post:
+      operationId: ReindexAgentRuns
+      tags:
+        - Commands
+      summary: Reindex agent runs
+      description: >-
+        Rebuilds the current project agent-run Elasticsearch index directly from
+        MongoDB. By default this recreates the stable agent-runs index before
+        indexing.
+
+
+        **Required permissions:** `content:admin`
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters: []
+      responses:
+        "200":
+          description: Agent-run reindex result.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReindexAgentRunsResponse"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - content:admin
+      x-vertesia-source:
+        file: ../../apps/zeno-server/src/api/commands/elasticsearch.ts
+        className: ElasticsearchResource
+        methodName: reindexAgentRuns
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReindexAgentRunsPayload"
     parameters:
       - name: x-api-version
         in: header

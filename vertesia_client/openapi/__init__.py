@@ -624,6 +624,9 @@ __all__ = [
     "RateLimitRequestPayload",
     "RateLimitRequestResponse",
     "ReasoningEffort",
+    "ReindexAgentRunsPayload",
+    "ReindexAgentRunsResponse",
+    "ReindexAgentRunsResponseErrorsInner",
     "RenderMarkdownPayload",
     "RenderMarkdownStartResponse",
     "RenderMarkdownStatusResponse",
@@ -1404,6 +1407,9 @@ from vertesia_client.openapi.models.query_validation_result import QueryValidati
 from vertesia_client.openapi.models.rate_limit_request_payload import RateLimitRequestPayload as RateLimitRequestPayload
 from vertesia_client.openapi.models.rate_limit_request_response import RateLimitRequestResponse as RateLimitRequestResponse
 from vertesia_client.openapi.models.reasoning_effort import ReasoningEffort as ReasoningEffort
+from vertesia_client.openapi.models.reindex_agent_runs_payload import ReindexAgentRunsPayload as ReindexAgentRunsPayload
+from vertesia_client.openapi.models.reindex_agent_runs_response import ReindexAgentRunsResponse as ReindexAgentRunsResponse
+from vertesia_client.openapi.models.reindex_agent_runs_response_errors_inner import ReindexAgentRunsResponseErrorsInner as ReindexAgentRunsResponseErrorsInner
 from vertesia_client.openapi.models.render_markdown_payload import RenderMarkdownPayload as RenderMarkdownPayload
 from vertesia_client.openapi.models.render_markdown_start_response import RenderMarkdownStartResponse as RenderMarkdownStartResponse
 from vertesia_client.openapi.models.render_markdown_status_response import RenderMarkdownStatusResponse as RenderMarkdownStatusResponse
