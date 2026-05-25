@@ -299,6 +299,7 @@ from vertesia_client.openapi.models.drift_analysis_status_response import DriftA
 from vertesia_client.openapi.models.durable_task_status import DurableTaskStatus
 from vertesia_client.openapi.models.duration_value import DurationValue
 from vertesia_client.openapi.models.dynamic_scaling_types import DynamicScalingTypes
+from vertesia_client.openapi.models.elasticsearch_backend import ElasticsearchBackend
 from vertesia_client.openapi.models.email_channel import EmailChannel
 from vertesia_client.openapi.models.embedding import Embedding
 from vertesia_client.openapi.models.embedding_output import EmbeddingOutput
@@ -541,6 +542,7 @@ from vertesia_client.openapi.models.project_model_defaults import ProjectModelDe
 from vertesia_client.openapi.models.project_plugins_update_payload import ProjectPluginsUpdatePayload
 from vertesia_client.openapi.models.project_ref import ProjectRef
 from vertesia_client.openapi.models.project_roles import ProjectRoles
+from vertesia_client.openapi.models.project_search_tier import ProjectSearchTier
 from vertesia_client.openapi.models.project_token_request import ProjectTokenRequest
 from vertesia_client.openapi.models.project_tool_info import ProjectToolInfo
 from vertesia_client.openapi.models.promote_dashboard_version_payload import PromoteDashboardVersionPayload

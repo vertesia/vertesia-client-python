@@ -325,6 +325,7 @@ vertesia_client/openapi/models/dsl_workflow_step.py
 vertesia_client/openapi/models/durable_task_status.py
 vertesia_client/openapi/models/duration_value.py
 vertesia_client/openapi/models/dynamic_scaling_types.py
+vertesia_client/openapi/models/elasticsearch_backend.py
 vertesia_client/openapi/models/email_channel.py
 vertesia_client/openapi/models/embedding.py
 vertesia_client/openapi/models/embedding_output.py
@@ -567,6 +568,7 @@ vertesia_client/openapi/models/project_model_defaults.py
 vertesia_client/openapi/models/project_plugins_update_payload.py
 vertesia_client/openapi/models/project_ref.py
 vertesia_client/openapi/models/project_roles.py
+vertesia_client/openapi/models/project_search_tier.py
 vertesia_client/openapi/models/project_token_request.py
 vertesia_client/openapi/models/project_tool_info.py
 vertesia_client/openapi/models/promote_dashboard_version_payload.py

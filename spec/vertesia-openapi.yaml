@@ -180,6 +180,17 @@ components:
               description: Enable indexing for content objects in this project. When enabled,
                 content changes trigger indexing workflows. Defaults to true -
                 indexing is always on when ES infrastructure is available.
+            search_tier:
+              $ref: "#/components/schemas/ProjectSearchTier"
+              description: Search tier for this project. standard uses the regional hosted
+                Elasticsearch deployment. performance uses the regional
+                serverless Elasticsearch project. Defaults to standard when
+                omitted.
+            backend:
+              $ref: "#/components/schemas/ElasticsearchBackend"
+              description: Elasticsearch backend override for this project. Prefer search_tier
+                for project configuration unless an explicit backend override is
+                needed.
           additionalProperties: false
           description: Indexing configuration for this project. Controls whether indexing
             and querying are enabled at the project level.
@@ -243,6 +254,17 @@ components:
               description: Enable indexing for content objects in this project. When enabled,
                 content changes trigger indexing workflows. Defaults to true -
                 indexing is always on when ES infrastructure is available.
+            search_tier:
+              $ref: "#/components/schemas/ProjectSearchTier"
+              description: Search tier for this project. standard uses the regional hosted
+                Elasticsearch deployment. performance uses the regional
+                serverless Elasticsearch project. Defaults to standard when
+                omitted.
+            backend:
+              $ref: "#/components/schemas/ElasticsearchBackend"
+              description: Elasticsearch backend override for this project. Prefer search_tier
+                for project configuration unless an explicit backend override is
+                needed.
           additionalProperties: false
           description: Indexing configuration for this project. Controls whether indexing
             and querying are enabled at the project level.
@@ -4087,6 +4109,16 @@ components:
       required:
         - enabled
       additionalProperties: false
+    ProjectSearchTier:
+      type: string
+      enum:
+        - standard
+        - performance
+    ElasticsearchBackend:
+      type: string
+      enum:
+        - serverless
+        - hosted
     BrowserUseProjectConfiguration:
       type: object
       properties:

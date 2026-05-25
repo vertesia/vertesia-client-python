@@ -19,6 +19,8 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool
 from typing import Any, ClassVar, Dict, Optional
+from vertesia_client.openapi.models.elasticsearch_backend import ElasticsearchBackend
+from vertesia_client.openapi.models.project_search_tier import ProjectSearchTier
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -28,7 +30,9 @@ class ProjectConfigurationIndexing(BaseModel):
     Indexing configuration for this project. Controls whether indexing and querying are enabled at the project level.
     """ # noqa: E501
     enabled: Optional[StrictBool] = Field(default=None, description="Enable indexing for content objects in this project. When enabled, content changes trigger indexing workflows. Defaults to true - indexing is always on when ES infrastructure is available.")
-    __properties: ClassVar[List[str]] = ["enabled"]
+    search_tier: Optional[ProjectSearchTier] = Field(default=None, description="Search tier for this project. standard uses the regional hosted Elasticsearch deployment. performance uses the regional serverless Elasticsearch project. Defaults to standard when omitted.")
+    backend: Optional[ElasticsearchBackend] = Field(default=None, description="Elasticsearch backend override for this project. Prefer search_tier for project configuration unless an explicit backend override is needed.")
+    __properties: ClassVar[List[str]] = ["enabled", "search_tier", "backend"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -81,7 +85,9 @@ class ProjectConfigurationIndexing(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "enabled": obj.get("enabled")
+            "enabled": obj.get("enabled"),
+            "search_tier": obj.get("search_tier"),
+            "backend": obj.get("backend")
         })
         return _obj
 
