@@ -407,7 +407,6 @@ __all__ = [
     "GithubConfiguration",
     "GladiaConfiguration",
     "GladiaConfigurationInput",
-    "GoogleProjectTokenResponse",
     "GroqOptions",
     "HumanTaskDefinition",
     "ICreateProjectPayload",
@@ -1188,7 +1187,6 @@ from vertesia_client.openapi.models.get_upload_url_payload import GetUploadUrlPa
 from vertesia_client.openapi.models.github_configuration import GithubConfiguration as GithubConfiguration
 from vertesia_client.openapi.models.gladia_configuration import GladiaConfiguration as GladiaConfiguration
 from vertesia_client.openapi.models.gladia_configuration_input import GladiaConfigurationInput as GladiaConfigurationInput
-from vertesia_client.openapi.models.google_project_token_response import GoogleProjectTokenResponse as GoogleProjectTokenResponse
 from vertesia_client.openapi.models.groq_options import GroqOptions as GroqOptions
 from vertesia_client.openapi.models.human_task_definition import HumanTaskDefinition as HumanTaskDefinition
 from vertesia_client.openapi.models.i_create_project_payload import ICreateProjectPayload as ICreateProjectPayload

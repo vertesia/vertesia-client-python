@@ -2972,22 +2972,6 @@
           "$ref": "#/components/schemas/User"
         }
       },
-      "GoogleProjectTokenResponse": {
-        "type": "object",
-        "properties": {
-          "principal": {
-            "type": "string"
-          },
-          "token": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "principal",
-          "token"
-        ],
-        "additionalProperties": false
-      },
       "StripeBillingStatusResponse": {
         "type": "object",
         "properties": {
@@ -31734,88 +31718,6 @@
           "file": "../../apps/studio-server/src/api/account.ts",
           "className": "AccountResource",
           "methodName": "getUsers"
-        }
-      },
-      "parameters": [
-        {
-          "name": "x-api-version",
-          "in": "header",
-          "required": false,
-          "schema": {
-            "type": "string",
-            "example": "20260319"
-          },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
-          "x-vertesia-global-header": true
-        }
-      ]
-    },
-    "/account/google-token": {
-      "get": {
-        "operationId": "GetAccountGoogleToken",
-        "tags": [
-          "Accounts"
-        ],
-        "summary": "Get a Google token",
-        "description": "Returns a Google workload identity token for the current project context.\n\n**Required permissions:** `project:integration_read`",
-        "security": [
-          {
-            "bearerAuth": []
-          },
-          {
-            "OpenID": []
-          }
-        ],
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Google token response.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GoogleProjectTokenResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                },
-                "example": {
-                  "error": "Internal Server Error",
-                  "status": 500,
-                  "message": "Internal server error."
-                }
-              }
-            }
-          },
-          "4XX": {
-            "description": "Client error.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                },
-                "example": {
-                  "error": "Bad Request",
-                  "status": 400,
-                  "message": "Request validation failed."
-                }
-              }
-            }
-          }
-        },
-        "x-vertesia-permissions": [
-          "project:integration_read"
-        ],
-        "x-vertesia-source": {
-          "file": "../../apps/studio-server/src/api/account.ts",
-          "className": "AccountResource",
-          "methodName": "getGoogleToken"
         }
       },
       "parameters": [

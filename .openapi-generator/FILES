@@ -385,7 +385,6 @@ vertesia_client/openapi/models/get_upload_url_payload.py
 vertesia_client/openapi/models/github_configuration.py
 vertesia_client/openapi/models/gladia_configuration.py
 vertesia_client/openapi/models/gladia_configuration_input.py
-vertesia_client/openapi/models/google_project_token_response.py
 vertesia_client/openapi/models/groq_options.py
 vertesia_client/openapi/models/human_task_definition.py
 vertesia_client/openapi/models/i_create_project_payload.py

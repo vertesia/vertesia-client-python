@@ -359,7 +359,6 @@ from vertesia_client.openapi.models.get_upload_url_payload import GetUploadUrlPa
 from vertesia_client.openapi.models.github_configuration import GithubConfiguration
 from vertesia_client.openapi.models.gladia_configuration import GladiaConfiguration
 from vertesia_client.openapi.models.gladia_configuration_input import GladiaConfigurationInput
-from vertesia_client.openapi.models.google_project_token_response import GoogleProjectTokenResponse
 from vertesia_client.openapi.models.groq_options import GroqOptions
 from vertesia_client.openapi.models.human_task_definition import HumanTaskDefinition
 from vertesia_client.openapi.models.i_create_project_payload import ICreateProjectPayload
