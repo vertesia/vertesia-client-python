@@ -10186,6 +10186,34 @@ components:
             errors:
               type: number
               description: Documents that failed to index
+            embeddings_written:
+              type: number
+              description: Embedding vectors written to target index
+            skipped_embeddings:
+              type: number
+              description: Embedding vectors skipped because they were invalid or
+                dimension-mismatched
+            embeddings_text_written:
+              type: number
+              description: Text embedding vectors written to target index
+            embeddings_image_written:
+              type: number
+              description: Image embedding vectors written to target index
+            embeddings_properties_written:
+              type: number
+              description: Properties embedding vectors written to target index
+            embeddings_text_skipped:
+              type: number
+              description: Text embedding vectors skipped because they were invalid or
+                dimension-mismatched
+            embeddings_image_skipped:
+              type: number
+              description: Image embedding vectors skipped because they were invalid or
+                dimension-mismatched
+            embeddings_properties_skipped:
+              type: number
+              description: Properties embedding vectors skipped because they were invalid or
+                dimension-mismatched
             docs_per_second:
               type: number
               description: Documents processed per second

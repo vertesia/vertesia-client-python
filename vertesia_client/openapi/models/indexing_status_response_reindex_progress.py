@@ -34,13 +34,21 @@ class IndexingStatusResponseReindexProgress(BaseModel):
     scanned: Union[StrictFloat, StrictInt] = Field(description="Documents scanned from source")
     written: Union[StrictFloat, StrictInt] = Field(description="Documents written to target index")
     errors: Union[StrictFloat, StrictInt] = Field(description="Documents that failed to index")
+    embeddings_written: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Embedding vectors written to target index")
+    skipped_embeddings: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Embedding vectors skipped because they were invalid or dimension-mismatched")
+    embeddings_text_written: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Text embedding vectors written to target index")
+    embeddings_image_written: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Image embedding vectors written to target index")
+    embeddings_properties_written: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Properties embedding vectors written to target index")
+    embeddings_text_skipped: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Text embedding vectors skipped because they were invalid or dimension-mismatched")
+    embeddings_image_skipped: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Image embedding vectors skipped because they were invalid or dimension-mismatched")
+    embeddings_properties_skipped: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Properties embedding vectors skipped because they were invalid or dimension-mismatched")
     docs_per_second: Union[StrictFloat, StrictInt] = Field(description="Documents processed per second")
     elapsed_seconds: Union[StrictFloat, StrictInt] = Field(description="Elapsed time in seconds")
     estimated_seconds_remaining: Optional[Union[StrictFloat, StrictInt]] = Field(description="Estimated seconds remaining (null if unknown)")
     percent_complete: Union[StrictFloat, StrictInt] = Field(description="Percentage complete (0-100)")
     alias: StrictStr = Field(description="Source alias")
     target_index: StrictStr = Field(description="Target index name")
-    __properties: ClassVar[List[str]] = ["total_shards", "completed_shards", "failed_shards", "status", "scanned", "written", "errors", "docs_per_second", "elapsed_seconds", "estimated_seconds_remaining", "percent_complete", "alias", "target_index"]
+    __properties: ClassVar[List[str]] = ["total_shards", "completed_shards", "failed_shards", "status", "scanned", "written", "errors", "embeddings_written", "skipped_embeddings", "embeddings_text_written", "embeddings_image_written", "embeddings_properties_written", "embeddings_text_skipped", "embeddings_image_skipped", "embeddings_properties_skipped", "docs_per_second", "elapsed_seconds", "estimated_seconds_remaining", "percent_complete", "alias", "target_index"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -105,6 +113,14 @@ class IndexingStatusResponseReindexProgress(BaseModel):
             "scanned": obj.get("scanned"),
             "written": obj.get("written"),
             "errors": obj.get("errors"),
+            "embeddings_written": obj.get("embeddings_written"),
+            "skipped_embeddings": obj.get("skipped_embeddings"),
+            "embeddings_text_written": obj.get("embeddings_text_written"),
+            "embeddings_image_written": obj.get("embeddings_image_written"),
+            "embeddings_properties_written": obj.get("embeddings_properties_written"),
+            "embeddings_text_skipped": obj.get("embeddings_text_skipped"),
+            "embeddings_image_skipped": obj.get("embeddings_image_skipped"),
+            "embeddings_properties_skipped": obj.get("embeddings_properties_skipped"),
             "docs_per_second": obj.get("docs_per_second"),
             "elapsed_seconds": obj.get("elapsed_seconds"),
             "estimated_seconds_remaining": obj.get("estimated_seconds_remaining"),
