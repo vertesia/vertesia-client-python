@@ -3985,6 +3985,10 @@
             },
             "description": "Free-form tags used for classification and filtering. Platform apps carry `\"system\"` so UIs can skip install/uninstall/manage-permission controls that don't apply to synthetic installations."
           },
+          "access_control": {
+            "$ref": "#/components/schemas/AppAccessControl",
+            "description": "Access control policy for the app. Defaults to 'all' (ACE-gated everywhere) when undefined. See  {@link  AppAccessControl }  for semantics. May be overridden on the AppInstallation."
+          },
           "id": {
             "type": "string"
           },
@@ -4103,6 +4107,10 @@
               "type": "string"
             },
             "description": "Free-form tags used for classification and filtering. Platform apps carry `\"system\"` so UIs can skip install/uninstall/manage-permission controls that don't apply to synthetic installations."
+          },
+          "access_control": {
+            "$ref": "#/components/schemas/AppAccessControl",
+            "description": "Access control policy for the app. Defaults to 'all' (ACE-gated everywhere) when undefined. See  {@link  AppAccessControl }  for semantics. May be overridden on the AppInstallation."
           }
         },
         "required": [
@@ -4158,6 +4166,10 @@
             },
             "description": "OAuth bindings created at install time via oauth_providers provisioning. Maps provider key → OAuth provider ObjectId. Multiple collections sharing the same provider all resolve to the same OAuth provider."
           },
+          "access_control": {
+            "$ref": "#/components/schemas/AppAccessControl",
+            "description": "Per-installation override of the manifest's access_control policy. When set, takes precedence over the manifest value. When undefined, the manifest value (or 'all' default) applies."
+          },
           "created_at": {
             "type": "string"
           },
@@ -4183,6 +4195,17 @@
           "settings": {
             "type": "object",
             "additionalProperties": true
+          },
+          "access_control": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AppAccessControl"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Per-installation override of the manifest's `access_control` policy. When provided, takes precedence over the manifest default for every access check. Sibling of `settings` — admin-controlled, not part of the app's own settings JSON.\n\nThree send-time semantics on update:  - Field omitted entirely from the payload → leave the existing override unchanged.  - Explicit `null` → clear the override, fall back to the manifest default.  - String enum → set the override to that value.\n\n(On install, the same shape applies; omit or pass `null` to use the manifest default.)"
           },
           "oauth_params": {
             "$ref": "#/components/schemas/AppOAuthCollectionParams",
@@ -4231,6 +4254,10 @@
               "$ref": "#/components/schemas/AppInstallationProviderBinding"
             },
             "description": "OAuth bindings created at install time via oauth_providers provisioning. Maps provider key → OAuth provider ObjectId. Multiple collections sharing the same provider all resolve to the same OAuth provider."
+          },
+          "access_control": {
+            "$ref": "#/components/schemas/AppAccessControl",
+            "description": "Per-installation override of the manifest's access_control policy. When set, takes precedence over the manifest value. When undefined, the manifest value (or 'all' default) applies."
           },
           "created_at": {
             "type": "string"
@@ -11387,6 +11414,15 @@
           "templates"
         ]
       },
+      "AppAccessControl": {
+        "type": "string",
+        "enum": [
+          "all",
+          "ui",
+          "none"
+        ],
+        "description": "Access control policy for an app installation. Declares which access surfaces are gated by per-user ACEs.\n\n- 'all' (default): every surface (UI portal, tool/endpoint use, contributions) requires   an explicit app_member ACE — the historical behavior.\n- 'ui': UI portal visibility requires an ACE, but tool/endpoint use and contributions   are open to anyone in the project.\n- 'none': fully open within the project — no ACE required for any surface.\n\nDeclared on the manifest as the app's default. May be overridden per-installation."
+      },
       "AppInstallationOAuthBinding": {
         "type": "object",
         "properties": {
@@ -11599,6 +11635,10 @@
               "$ref": "#/components/schemas/AppInstallationProviderBinding"
             },
             "description": "OAuth bindings created at install time via oauth_providers provisioning. Maps provider key → OAuth provider ObjectId. Multiple collections sharing the same provider all resolve to the same OAuth provider."
+          },
+          "access_control": {
+            "$ref": "#/components/schemas/AppAccessControl",
+            "description": "Per-installation override of the manifest's access_control policy. When set, takes precedence over the manifest value. When undefined, the manifest value (or 'all' default) applies."
           },
           "created_at": {
             "type": "string"

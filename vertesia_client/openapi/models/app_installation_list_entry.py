@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
+from vertesia_client.openapi.models.app_access_control import AppAccessControl
 from vertesia_client.openapi.models.app_installation_o_auth_binding import AppInstallationOAuthBinding
 from vertesia_client.openapi.models.app_installation_provider_binding import AppInstallationProviderBinding
 from vertesia_client.openapi.models.app_manifest import AppManifest
@@ -36,11 +37,12 @@ class AppInstallationListEntry(BaseModel):
     tool_allowlist: Optional[List[StrictStr]] = Field(default=None, description="Admin-managed allowlist of tool names permitted for this installation. When undefined, all tools from the app are permitted. When set, only listed tool names are available for agent configuration and execution.")
     oauth_bindings: Optional[List[AppInstallationOAuthBinding]] = Field(default=None, description="OAuth bindings created at install time via oauth_config provisioning. Maps collection identity (id or name) → OAuth provider ObjectId. Used by the runtime to resolve the correct OAuth provider without relying on manifest names.")
     provider_bindings: Optional[List[AppInstallationProviderBinding]] = Field(default=None, description="OAuth bindings created at install time via oauth_providers provisioning. Maps provider key → OAuth provider ObjectId. Multiple collections sharing the same provider all resolve to the same OAuth provider.")
+    access_control: Optional[AppAccessControl] = Field(default=None, description="Per-installation override of the manifest's access_control policy. When set, takes precedence over the manifest value. When undefined, the manifest value (or 'all' default) applies.")
     created_at: StrictStr
     updated_at: StrictStr
     manifest: Optional[AppManifest]
     oauth_collection_ids: Optional[List[StrictStr]] = None
-    __properties: ClassVar[List[str]] = ["id", "project", "settings", "tool_allowlist", "oauth_bindings", "provider_bindings", "created_at", "updated_at", "manifest", "oauth_collection_ids"]
+    __properties: ClassVar[List[str]] = ["id", "project", "settings", "tool_allowlist", "oauth_bindings", "provider_bindings", "access_control", "created_at", "updated_at", "manifest", "oauth_collection_ids"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -121,6 +123,7 @@ class AppInstallationListEntry(BaseModel):
             "tool_allowlist": obj.get("tool_allowlist"),
             "oauth_bindings": [AppInstallationOAuthBinding.from_dict(_item) for _item in obj["oauth_bindings"]] if obj.get("oauth_bindings") is not None else None,
             "provider_bindings": [AppInstallationProviderBinding.from_dict(_item) for _item in obj["provider_bindings"]] if obj.get("provider_bindings") is not None else None,
+            "access_control": obj.get("access_control"),
             "created_at": obj.get("created_at"),
             "updated_at": obj.get("updated_at"),
             "manifest": AppManifest.from_dict(obj["manifest"]) if obj.get("manifest") is not None else None,

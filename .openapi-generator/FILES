@@ -90,6 +90,7 @@ vertesia_client/openapi/models/api_key_read_response.py
 vertesia_client/openapi/models/api_key_token_request.py
 vertesia_client/openapi/models/api_key_types.py
 vertesia_client/openapi/models/api_key_with_value.py
+vertesia_client/openapi/models/app_access_control.py
 vertesia_client/openapi/models/app_available_in.py
 vertesia_client/openapi/models/app_capabilities.py
 vertesia_client/openapi/models/app_installation.py

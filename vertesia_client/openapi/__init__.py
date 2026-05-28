@@ -112,6 +112,7 @@ __all__ = [
     "ApiKeyTokenRequest",
     "ApiKeyTypes",
     "ApiKeyWithValue",
+    "AppAccessControl",
     "AppAvailableIn",
     "AppCapabilities",
     "AppInstallation",
@@ -895,6 +896,7 @@ from vertesia_client.openapi.models.api_key_read_response import ApiKeyReadRespo
 from vertesia_client.openapi.models.api_key_token_request import ApiKeyTokenRequest as ApiKeyTokenRequest
 from vertesia_client.openapi.models.api_key_types import ApiKeyTypes as ApiKeyTypes
 from vertesia_client.openapi.models.api_key_with_value import ApiKeyWithValue as ApiKeyWithValue
+from vertesia_client.openapi.models.app_access_control import AppAccessControl as AppAccessControl
 from vertesia_client.openapi.models.app_available_in import AppAvailableIn as AppAvailableIn
 from vertesia_client.openapi.models.app_capabilities import AppCapabilities as AppCapabilities
 from vertesia_client.openapi.models.app_installation import AppInstallation as AppInstallation

@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, Optional
+from vertesia_client.openapi.models.app_access_control import AppAccessControl
 from vertesia_client.openapi.models.o_auth_client_credentials import OAuthClientCredentials
 from typing import Optional, Set
 from typing_extensions import Self
@@ -30,9 +31,10 @@ class AppInstallationPayload(BaseModel):
     """ # noqa: E501
     app_id: StrictStr
     settings: Optional[Dict[str, Any]] = None
+    access_control: Optional[AppAccessControl] = Field(default=None, description="Per-installation override of the manifest's `access_control` policy. When provided, takes precedence over the manifest default for every access check. Sibling of `settings` — admin-controlled, not part of the app's own settings JSON.  Three send-time semantics on update:  - Field omitted entirely from the payload → leave the existing override unchanged.  - Explicit `null` → clear the override, fall back to the manifest default.  - String enum → set the override to that value.  (On install, the same shape applies; omit or pass `null` to use the manifest default.)")
     oauth_params: Optional[Dict[str, OAuthClientCredentials]] = Field(default=None, description="OAuth credentials for each collection, keyed by collection.id. Legacy callers may still use collection.name for older manifests. Collected from the user at install time for collections with oauth_config.required_at_install.")
     oauth_provider_params: Optional[Dict[str, OAuthClientCredentials]] = Field(default=None, description="OAuth credentials for named providers, keyed by the provider key from oauth_providers. Collected from the user at install time for providers with required_at_install. Separate from oauth_params to avoid key collisions between provider keys and collection ids.")
-    __properties: ClassVar[List[str]] = ["app_id", "settings", "oauth_params", "oauth_provider_params"]
+    __properties: ClassVar[List[str]] = ["app_id", "settings", "access_control", "oauth_params", "oauth_provider_params"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -87,6 +89,11 @@ class AppInstallationPayload(BaseModel):
                 if self.oauth_provider_params[_key_oauth_provider_params]:
                     _field_dict[_key_oauth_provider_params] = self.oauth_provider_params[_key_oauth_provider_params].to_dict()
             _dict['oauth_provider_params'] = _field_dict
+        # set to None if access_control (nullable) is None
+        # and model_fields_set contains the field
+        if self.access_control is None and "access_control" in self.model_fields_set:
+            _dict['access_control'] = None
+
         return _dict
 
     @classmethod
@@ -101,6 +108,7 @@ class AppInstallationPayload(BaseModel):
         _obj = cls.model_validate({
             "app_id": obj.get("app_id"),
             "settings": obj.get("settings"),
+            "access_control": obj.get("access_control"),
             "oauth_params": dict(
                 (_k, OAuthClientCredentials.from_dict(_v))
                 for _k, _v in obj["oauth_params"].items()

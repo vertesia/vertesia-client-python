@@ -64,6 +64,7 @@ from vertesia_client.openapi.models.api_key_read_response import ApiKeyReadRespo
 from vertesia_client.openapi.models.api_key_token_request import ApiKeyTokenRequest
 from vertesia_client.openapi.models.api_key_types import ApiKeyTypes
 from vertesia_client.openapi.models.api_key_with_value import ApiKeyWithValue
+from vertesia_client.openapi.models.app_access_control import AppAccessControl
 from vertesia_client.openapi.models.app_available_in import AppAvailableIn
 from vertesia_client.openapi.models.app_capabilities import AppCapabilities
 from vertesia_client.openapi.models.app_installation import AppInstallation

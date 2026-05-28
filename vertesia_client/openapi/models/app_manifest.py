@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
+from vertesia_client.openapi.models.app_access_control import AppAccessControl
 from vertesia_client.openapi.models.app_capabilities import AppCapabilities
 from vertesia_client.openapi.models.app_ui_config import AppUIConfig
 from vertesia_client.openapi.models.json_schema import JSONSchema
@@ -50,11 +51,12 @@ class AppManifest(BaseModel):
     endpoint_overrides: Optional[Dict[str, StrictStr]] = Field(default=None, description="Optional endpoint overrides keyed by environment name. When resolving the app endpoint, if the current environment name matches a key, the corresponding URL is used instead of the main `endpoint`. Only dev environment names are allowed as keys (starting with \"desktop-\" or \"dev-\").")
     version: Optional[StrictStr] = Field(default=None, description="Optional app version string (e.g. \"1.0.0\") — informational.")
     tags: Optional[List[StrictStr]] = Field(default=None, description="Free-form tags used for classification and filtering. Platform apps carry `\"system\"` so UIs can skip install/uninstall/manage-permission controls that don't apply to synthetic installations.")
+    access_control: Optional[AppAccessControl] = Field(default=None, description="Access control policy for the app. Defaults to 'all' (ACE-gated everywhere) when undefined. See  {@link  AppAccessControl }  for semantics. May be overridden on the AppInstallation.")
     id: StrictStr
     account: Optional[StrictStr] = Field(default=None, description="The owning account. Undefined for apps imported from a master region.")
     created_at: StrictStr
     updated_at: StrictStr
-    __properties: ClassVar[List[str]] = ["name", "visibility", "title", "description", "publisher", "icon", "color", "status", "ui", "tool_collections", "oauth_providers", "interactions", "settings_schema", "capabilities", "endpoint", "endpoint_overrides", "version", "tags", "id", "account", "created_at", "updated_at"]
+    __properties: ClassVar[List[str]] = ["name", "visibility", "title", "description", "publisher", "icon", "color", "status", "ui", "tool_collections", "oauth_providers", "interactions", "settings_schema", "capabilities", "endpoint", "endpoint_overrides", "version", "tags", "access_control", "id", "account", "created_at", "updated_at"]
 
     @field_validator('visibility')
     def visibility_validate_enum(cls, value):
@@ -160,6 +162,7 @@ class AppManifest(BaseModel):
             "endpoint_overrides": obj.get("endpoint_overrides"),
             "version": obj.get("version"),
             "tags": obj.get("tags"),
+            "access_control": obj.get("access_control"),
             "id": obj.get("id"),
             "account": obj.get("account"),
             "created_at": obj.get("created_at"),
