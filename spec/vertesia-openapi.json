@@ -621,7 +621,7 @@
         "properties": {
           "id": {
             "type": "string",
-            "description": "The unique identifier for this CompositeApp configuration  Undefined if the configuration doesn't exists yet."
+            "description": "The unique identifier for this CompositeApp configuration Undefined if the configuration doesn't exists yet."
           },
           "project": {
             "type": "string",
@@ -3936,7 +3936,7 @@
           },
           "ui": {
             "$ref": "#/components/schemas/AppUIConfig",
-            "description": "The UI configuration of the app. If not specified and the app \"ui\" is in the app capabilities  then the ui configuration will be fetched from the endpoint property."
+            "description": "The UI configuration of the app. If not specified and the app \"ui\" is in the app capabilities then the ui configuration will be fetched from the endpoint property."
           },
           "tool_collections": {
             "type": "array",
@@ -3968,7 +3968,7 @@
           },
           "endpoint": {
             "type": "string",
-            "description": "The app endpoint URL This URL should return a JSON object describing the contributions provided by the app. The object shape must satisfies AppPackage interface. The endpoint must support GET method and a `scope` parameter to filter which resources are included in the returned AppPackage: The supported scope values are:\n- ui\n- tools\n- interactions\n- types\n- processes\n- settings\n- all (the default if no scope is provided)  You can also use comma-separated values to combine scopes (e.g. \"ui,tools\").\n\nExample: \n- ?scope=ui,tools - returns only the UI configuration"
+            "description": "The app endpoint URL This URL should return a JSON object describing the contributions provided by the app. The object shape must satisfies AppPackage interface. The endpoint must support GET method and a `scope` parameter to filter which resources are included in the returned AppPackage: The supported scope values are:\n- ui\n- tools\n- interactions\n- types\n- processes\n- settings\n- all (the default if no scope is provided)  You can also use comma-separated values to combine scopes (e.g. \"ui,tools\").\n\nExample:\n- ?scope=ui,tools - returns only the UI configuration"
           },
           "endpoint_overrides": {
             "$ref": "#/components/schemas/StringValueMap",
@@ -4055,7 +4055,7 @@
           },
           "ui": {
             "$ref": "#/components/schemas/AppUIConfig",
-            "description": "The UI configuration of the app. If not specified and the app \"ui\" is in the app capabilities  then the ui configuration will be fetched from the endpoint property."
+            "description": "The UI configuration of the app. If not specified and the app \"ui\" is in the app capabilities then the ui configuration will be fetched from the endpoint property."
           },
           "tool_collections": {
             "type": "array",
@@ -4087,7 +4087,7 @@
           },
           "endpoint": {
             "type": "string",
-            "description": "The app endpoint URL This URL should return a JSON object describing the contributions provided by the app. The object shape must satisfies AppPackage interface. The endpoint must support GET method and a `scope` parameter to filter which resources are included in the returned AppPackage: The supported scope values are:\n- ui\n- tools\n- interactions\n- types\n- processes\n- settings\n- all (the default if no scope is provided)  You can also use comma-separated values to combine scopes (e.g. \"ui,tools\").\n\nExample: \n- ?scope=ui,tools - returns only the UI configuration"
+            "description": "The app endpoint URL This URL should return a JSON object describing the contributions provided by the app. The object shape must satisfies AppPackage interface. The endpoint must support GET method and a `scope` parameter to filter which resources are included in the returned AppPackage: The supported scope values are:\n- ui\n- tools\n- interactions\n- types\n- processes\n- settings\n- all (the default if no scope is provided)  You can also use comma-separated values to combine scopes (e.g. \"ui,tools\").\n\nExample:\n- ?scope=ui,tools - returns only the UI configuration"
           },
           "endpoint_overrides": {
             "$ref": "#/components/schemas/StringValueMap",
@@ -11506,7 +11506,7 @@
           },
           "url": {
             "type": "string",
-            "description": "The tool execution URL. It can be an absolute URL or a path in which case the URL is obtained  using the base URL of the tool server API. Ex: http://tool-server.com/api/ Example of relative URLs: \"tools/my-tool-collection\" or \"/api/tools/my-tool-collection\""
+            "description": "The tool execution URL. It can be an absolute URL or a path in which case the URL is obtained using the base URL of the tool server API. Ex: http://tool-server.com/api/ Example of relative URLs: \"tools/my-tool-collection\" or \"/api/tools/my-tool-collection\""
           },
           "category": {
             "type": "string",
@@ -13302,6 +13302,14 @@
             "x-deprecated-message": "Now derived from indexing_enabled - queries automatically route to index when indexing is enabled",
             "description": "Deprecated: Now derived from indexing_enabled - queries automatically route to index when indexing is enabled"
           },
+          "backend": {
+            "$ref": "#/components/schemas/ElasticsearchBackend",
+            "description": "Resolved Elasticsearch backend serving this project"
+          },
+          "search_tier": {
+            "$ref": "#/components/schemas/ProjectSearchTier",
+            "description": "Resolved search tier for this project"
+          },
           "index": {
             "type": "object",
             "properties": {
@@ -13420,6 +13428,14 @@
                 "type": "number",
                 "description": "Properties embedding vectors skipped because they were invalid or dimension-mismatched"
               },
+              "properties_values_trimmed": {
+                "type": "number",
+                "description": "Oversized property string values dropped during transform (size-based pruning)"
+              },
+              "properties_bytes_dropped": {
+                "type": "number",
+                "description": "Total bytes dropped from oversized property values"
+              },
               "docs_per_second": {
                 "type": "number",
                 "description": "Documents processed per second"
@@ -13471,6 +13487,8 @@
           "infrastructure_enabled",
           "indexing_enabled",
           "query_enabled",
+          "backend",
+          "search_tier",
           "index",
           "mongo_document_count",
           "reindex_in_progress"
@@ -15955,7 +15973,7 @@
           },
           "skip_head_sync": {
             "type": "boolean",
-            "description": "A flag to indicate whether to track and sync member HEAD revisions.  The default is to sync HEAD revisions for collection members (skip_head_sync: false)"
+            "description": "A flag to indicate whether to track and sync member HEAD revisions. The default is to sync HEAD revisions for collection members (skip_head_sync: false)"
           },
           "parents": {
             "description": "The parent collections if any. A collection can have multiple parents.",

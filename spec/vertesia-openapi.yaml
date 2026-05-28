@@ -467,8 +467,8 @@ components:
       properties:
         id:
           type: string
-          description: The unique identifier for this CompositeApp
-            configuration  Undefined if the configuration doesn't exists yet.
+          description: The unique identifier for this CompositeApp configuration Undefined
+            if the configuration doesn't exists yet.
         project:
           type: string
           description: The project this CompositeApp belongs to
@@ -2857,8 +2857,8 @@ components:
         ui:
           $ref: "#/components/schemas/AppUIConfig"
           description: The UI configuration of the app. If not specified and the app "ui"
-            is in the app capabilities  then the ui configuration will be
-            fetched from the endpoint property.
+            is in the app capabilities then the ui configuration will be fetched
+            from the endpoint property.
         tool_collections:
           type: array
           items:
@@ -2920,7 +2920,7 @@ components:
             comma-separated values to combine scopes (e.g. "ui,tools").
 
 
-            Example: 
+            Example:
 
             - ?scope=ui,tools - returns only the UI configuration
         endpoint_overrides:
@@ -3000,8 +3000,8 @@ components:
         ui:
           $ref: "#/components/schemas/AppUIConfig"
           description: The UI configuration of the app. If not specified and the app "ui"
-            is in the app capabilities  then the ui configuration will be
-            fetched from the endpoint property.
+            is in the app capabilities then the ui configuration will be fetched
+            from the endpoint property.
         tool_collections:
           type: array
           items:
@@ -3063,7 +3063,7 @@ components:
             comma-separated values to combine scopes (e.g. "ui,tools").
 
 
-            Example: 
+            Example:
 
             - ?scope=ui,tools - returns only the UI configuration
         endpoint_overrides:
@@ -8776,9 +8776,9 @@ components:
         url:
           type: string
           description: 'The tool execution URL. It can be an absolute URL or a path in
-            which case the URL is obtained  using the base URL of the tool
-            server API. Ex: http://tool-server.com/api/ Example of relative
-            URLs: "tools/my-tool-collection" or "/api/tools/my-tool-collection"'
+            which case the URL is obtained using the base URL of the tool server
+            API. Ex: http://tool-server.com/api/ Example of relative URLs:
+            "tools/my-tool-collection" or "/api/tools/my-tool-collection"'
         category:
           type: string
           description: The tool category if any - for UI purposes.
@@ -10120,6 +10120,12 @@ components:
             route to index when indexing is enabled
           description: "Deprecated: Now derived from indexing_enabled - queries
             automatically route to index when indexing is enabled"
+        backend:
+          $ref: "#/components/schemas/ElasticsearchBackend"
+          description: Resolved Elasticsearch backend serving this project
+        search_tier:
+          $ref: "#/components/schemas/ProjectSearchTier"
+          description: Resolved search tier for this project
         index:
           type: object
           properties:
@@ -10214,6 +10220,13 @@ components:
               type: number
               description: Properties embedding vectors skipped because they were invalid or
                 dimension-mismatched
+            properties_values_trimmed:
+              type: number
+              description: Oversized property string values dropped during transform
+                (size-based pruning)
+            properties_bytes_dropped:
+              type: number
+              description: Total bytes dropped from oversized property values
             docs_per_second:
               type: number
               description: Documents processed per second
@@ -10254,6 +10267,8 @@ components:
         - infrastructure_enabled
         - indexing_enabled
         - query_enabled
+        - backend
+        - search_tier
         - index
         - mongo_document_count
         - reindex_in_progress
@@ -12083,7 +12098,7 @@ components:
         skip_head_sync:
           type: boolean
           description: "A flag to indicate whether to track and sync member HEAD
-            revisions.  The default is to sync HEAD revisions for collection
+            revisions. The default is to sync HEAD revisions for collection
             members (skip_head_sync: false)"
         parents:
           description: The parent collections if any. A collection can have multiple

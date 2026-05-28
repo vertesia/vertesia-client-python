@@ -38,7 +38,7 @@ class CompositeAppConfig(BaseModel):
     """
     CompositeApp shell configuration. This is the main configuration interface for storing CompositeApp settings. Used as the MongoDB model for persisting CompositeApp configurations.
     """ # noqa: E501
-    id: Optional[StrictStr] = Field(default=None, description="The unique identifier for this CompositeApp configuration  Undefined if the configuration doesn't exists yet.")
+    id: Optional[StrictStr] = Field(default=None, description="The unique identifier for this CompositeApp configuration Undefined if the configuration doesn't exists yet.")
     project: StrictStr = Field(description="The project this CompositeApp belongs to")
     card: Optional[CompositeAppCardOverrides] = Field(default=None, description="Card display overrides (includes visibility)")
     logo: Optional[CompositeAppLogoOverrides] = Field(default=None, description="Optional logo overrides (replaces default Vertesia logo)")

@@ -42,13 +42,15 @@ class IndexingStatusResponseReindexProgress(BaseModel):
     embeddings_text_skipped: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Text embedding vectors skipped because they were invalid or dimension-mismatched")
     embeddings_image_skipped: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Image embedding vectors skipped because they were invalid or dimension-mismatched")
     embeddings_properties_skipped: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Properties embedding vectors skipped because they were invalid or dimension-mismatched")
+    properties_values_trimmed: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Oversized property string values dropped during transform (size-based pruning)")
+    properties_bytes_dropped: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Total bytes dropped from oversized property values")
     docs_per_second: Union[StrictFloat, StrictInt] = Field(description="Documents processed per second")
     elapsed_seconds: Union[StrictFloat, StrictInt] = Field(description="Elapsed time in seconds")
     estimated_seconds_remaining: Optional[Union[StrictFloat, StrictInt]] = Field(description="Estimated seconds remaining (null if unknown)")
     percent_complete: Union[StrictFloat, StrictInt] = Field(description="Percentage complete (0-100)")
     alias: StrictStr = Field(description="Source alias")
     target_index: StrictStr = Field(description="Target index name")
-    __properties: ClassVar[List[str]] = ["total_shards", "completed_shards", "failed_shards", "status", "scanned", "written", "errors", "embeddings_written", "skipped_embeddings", "embeddings_text_written", "embeddings_image_written", "embeddings_properties_written", "embeddings_text_skipped", "embeddings_image_skipped", "embeddings_properties_skipped", "docs_per_second", "elapsed_seconds", "estimated_seconds_remaining", "percent_complete", "alias", "target_index"]
+    __properties: ClassVar[List[str]] = ["total_shards", "completed_shards", "failed_shards", "status", "scanned", "written", "errors", "embeddings_written", "skipped_embeddings", "embeddings_text_written", "embeddings_image_written", "embeddings_properties_written", "embeddings_text_skipped", "embeddings_image_skipped", "embeddings_properties_skipped", "properties_values_trimmed", "properties_bytes_dropped", "docs_per_second", "elapsed_seconds", "estimated_seconds_remaining", "percent_complete", "alias", "target_index"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -121,6 +123,8 @@ class IndexingStatusResponseReindexProgress(BaseModel):
             "embeddings_text_skipped": obj.get("embeddings_text_skipped"),
             "embeddings_image_skipped": obj.get("embeddings_image_skipped"),
             "embeddings_properties_skipped": obj.get("embeddings_properties_skipped"),
+            "properties_values_trimmed": obj.get("properties_values_trimmed"),
+            "properties_bytes_dropped": obj.get("properties_bytes_dropped"),
             "docs_per_second": obj.get("docs_per_second"),
             "elapsed_seconds": obj.get("elapsed_seconds"),
             "estimated_seconds_remaining": obj.get("estimated_seconds_remaining"),

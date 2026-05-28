@@ -41,7 +41,7 @@ class Collection(BaseModel):
     dynamic: StrictBool = Field(description="A flag to indicate if the collection is dynamic or static. If the collection is dynamic, the members are determined by a query using the query field. If the collection is static, the members are explicitly defined using the members array.")
     status: CollectionStatus
     type: Optional[ContentObjectTypeRef] = None
-    skip_head_sync: StrictBool = Field(description="A flag to indicate whether to track and sync member HEAD revisions.  The default is to sync HEAD revisions for collection members (skip_head_sync: false)")
+    skip_head_sync: StrictBool = Field(description="A flag to indicate whether to track and sync member HEAD revisions. The default is to sync HEAD revisions for collection members (skip_head_sync: false)")
     parents: Optional[List[StrictStr]] = Field(default=None, description="The parent collections if any. A collection can have multiple parents.")
     table_layout: Optional[List[ColumnLayout]] = Field(default=None, description="The table layout to use for the collection. The layout defined in the type could serve as a fallback if not defined here.")
     allowed_types: Optional[List[StrictStr]] = Field(default=None, description="The allowed types for the collection.")

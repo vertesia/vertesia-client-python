@@ -31,7 +31,7 @@ class AgentToolDefinition(BaseModel):
     name: StrictStr
     description: Optional[StrictStr] = None
     input_schema: Dict[str, Any]
-    url: Optional[StrictStr] = Field(default=None, description="The tool execution URL. It can be an absolute URL or a path in which case the URL is obtained  using the base URL of the tool server API. Ex: http://tool-server.com/api/ Example of relative URLs: \"tools/my-tool-collection\" or \"/api/tools/my-tool-collection\"")
+    url: Optional[StrictStr] = Field(default=None, description="The tool execution URL. It can be an absolute URL or a path in which case the URL is obtained using the base URL of the tool server API. Ex: http://tool-server.com/api/ Example of relative URLs: \"tools/my-tool-collection\" or \"/api/tools/my-tool-collection\"")
     category: Optional[StrictStr] = Field(default=None, description="The tool category if any - for UI purposes.")
     default: Optional[StrictBool] = Field(default=None, description="Whether this tool is available by default. - true/undefined: Tool is always available to agents - false: Tool is only available when enabled by a skill via `tools`")
     tools: Optional[List[StrictStr]] = Field(default=None, description="For skill tools (`learn_*`): the tool names this skill enables when called. Matches the `tools:` key used in SKILL.md frontmatter and built-in skill definitions — one name across the whole stack.")

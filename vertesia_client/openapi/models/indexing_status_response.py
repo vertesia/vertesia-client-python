@@ -19,8 +19,10 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from vertesia_client.openapi.models.elasticsearch_backend import ElasticsearchBackend
 from vertesia_client.openapi.models.indexing_status_response_index import IndexingStatusResponseIndex
 from vertesia_client.openapi.models.indexing_status_response_reindex_progress import IndexingStatusResponseReindexProgress
+from vertesia_client.openapi.models.project_search_tier import ProjectSearchTier
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -32,12 +34,14 @@ class IndexingStatusResponse(BaseModel):
     infrastructure_enabled: StrictBool = Field(description="Whether indexing infrastructure is available globally")
     indexing_enabled: StrictBool = Field(description="Whether indexing is enabled for this project")
     query_enabled: StrictBool = Field(description="Deprecated: Now derived from indexing_enabled - queries automatically route to index when indexing is enabled")
+    backend: ElasticsearchBackend = Field(description="Resolved Elasticsearch backend serving this project")
+    search_tier: ProjectSearchTier = Field(description="Resolved search tier for this project")
     index: IndexingStatusResponseIndex
     mongo_document_count: Union[StrictFloat, StrictInt] = Field(description="MongoDB document count for comparison")
     reindex_in_progress: StrictBool = Field(description="Whether a reindex is currently in progress")
     reindex_progress: Optional[IndexingStatusResponseReindexProgress] = None
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["infrastructure_enabled", "indexing_enabled", "query_enabled", "index", "mongo_document_count", "reindex_in_progress", "reindex_progress"]
+    __properties: ClassVar[List[str]] = ["infrastructure_enabled", "indexing_enabled", "query_enabled", "backend", "search_tier", "index", "mongo_document_count", "reindex_in_progress", "reindex_progress"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -106,6 +110,8 @@ class IndexingStatusResponse(BaseModel):
             "infrastructure_enabled": obj.get("infrastructure_enabled"),
             "indexing_enabled": obj.get("indexing_enabled"),
             "query_enabled": obj.get("query_enabled"),
+            "backend": obj.get("backend"),
+            "search_tier": obj.get("search_tier"),
             "index": IndexingStatusResponseIndex.from_dict(obj["index"]) if obj.get("index") is not None else None,
             "mongo_document_count": obj.get("mongo_document_count"),
             "reindex_in_progress": obj.get("reindex_in_progress"),
