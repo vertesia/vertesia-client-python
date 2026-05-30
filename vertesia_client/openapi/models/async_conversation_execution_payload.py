@@ -27,7 +27,6 @@ from vertesia_client.openapi.models.execution_run_workflow import ExecutionRunWo
 from vertesia_client.openapi.models.in_code_prompt import InCodePrompt
 from vertesia_client.openapi.models.interaction_execution_configuration import InteractionExecutionConfiguration
 from vertesia_client.openapi.models.interaction_update_payload_result_schema import InteractionUpdatePayloadResultSchema
-from vertesia_client.openapi.models.tool_definition import ToolDefinition
 from vertesia_client.openapi.models.user_channel import UserChannel
 from typing import Optional, Set
 from typing_extensions import Self
@@ -44,7 +43,6 @@ class AsyncConversationExecutionPayload(BaseModel):
     do_validate: Optional[StrictBool] = None
     tags: Optional[List[StrictStr]] = None
     conversation: Optional[Any] = None
-    tool_definitions: Optional[List[ToolDefinition]] = Field(default=None, description="The tools to be used in the execution")
     workflow: Optional[ExecutionRunWorkflow] = Field(default=None, description="The workflow related to this Interaction Run.")
     prompts: Optional[List[InCodePrompt]] = Field(default=None, description="Only used by ad-hoc interactions which defines the prompt in the execution payload itself These are temporary interactions using \"tmp:\" suffix.")
     async_completion: Optional[AsyncCompletionOptions] = Field(default=None, description="Options for async completion and/or streaming LLM response chunks to Redis. Used by agent workflows for async activity completion and real-time streaming.", alias="asyncCompletion")
@@ -73,7 +71,7 @@ class AsyncConversationExecutionPayload(BaseModel):
     agent_run_id: Optional[StrictStr] = Field(default=None, description="The AgentRun MongoDB _id. Used for artifact storage paths: agents/{agent_run_id}/ Flows into ConversationState and down to workstreams. Undefined for legacy workflows started before the AgentRun system.")
     schedule_id: Optional[StrictStr] = Field(default=None, description="The Schedule MongoDB _id. Set when this execution was triggered by a Temporal schedule. Used by the workflow to create an AgentRun on first run if agent_run_id is absent.")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["interaction", "data", "config", "result_schema", "do_validate", "tags", "conversation", "tool_definitions", "workflow", "prompts", "asyncCompletion", "type", "notify_endpoints", "task_queue", "visibility", "tool_names", "max_iterations", "interactive", "user_channels", "disable_interaction_tools", "search_scope", "collection_id", "checkpoint_tokens", "strip_options", "task_id", "launch_id", "debug_mode", "max_nested_conversation_depth", "parent_metadata", "non_blocking_subagents", "restart_from_workflow_run_id", "source_first_workflow_run_id", "is_fork", "agent_run_id", "schedule_id"]
+    __properties: ClassVar[List[str]] = ["interaction", "data", "config", "result_schema", "do_validate", "tags", "conversation", "workflow", "prompts", "asyncCompletion", "type", "notify_endpoints", "task_queue", "visibility", "tool_names", "max_iterations", "interactive", "user_channels", "disable_interaction_tools", "search_scope", "collection_id", "checkpoint_tokens", "strip_options", "task_id", "launch_id", "debug_mode", "max_nested_conversation_depth", "parent_metadata", "non_blocking_subagents", "restart_from_workflow_run_id", "source_first_workflow_run_id", "is_fork", "agent_run_id", "schedule_id"]
 
     @field_validator('type')
     def type_validate_enum(cls, value):
@@ -127,13 +125,6 @@ class AsyncConversationExecutionPayload(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of result_schema
         if self.result_schema:
             _dict['result_schema'] = self.result_schema.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of each item in tool_definitions (list)
-        _items = []
-        if self.tool_definitions:
-            for _item_tool_definitions in self.tool_definitions:
-                if _item_tool_definitions:
-                    _items.append(_item_tool_definitions.to_dict())
-            _dict['tool_definitions'] = _items
         # override the default output from pydantic by calling `to_dict()` of workflow
         if self.workflow:
             _dict['workflow'] = self.workflow.to_dict()
@@ -196,7 +187,6 @@ class AsyncConversationExecutionPayload(BaseModel):
             "do_validate": obj.get("do_validate"),
             "tags": obj.get("tags"),
             "conversation": obj.get("conversation"),
-            "tool_definitions": [ToolDefinition.from_dict(_item) for _item in obj["tool_definitions"]] if obj.get("tool_definitions") is not None else None,
             "workflow": ExecutionRunWorkflow.from_dict(obj["workflow"]) if obj.get("workflow") is not None else None,
             "prompts": [InCodePrompt.from_dict(_item) for _item in obj["prompts"]] if obj.get("prompts") is not None else None,
             "asyncCompletion": AsyncCompletionOptions.from_dict(obj["asyncCompletion"]) if obj.get("asyncCompletion") is not None else None,

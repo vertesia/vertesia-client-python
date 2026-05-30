@@ -409,6 +409,7 @@ __all__ = [
     "GladiaConfiguration",
     "GladiaConfigurationInput",
     "GroqOptions",
+    "HttpTimeoutOptions",
     "HumanTaskDefinition",
     "ICreateProjectPayload",
     "ImageMetadata",
@@ -1193,6 +1194,7 @@ from vertesia_client.openapi.models.github_configuration import GithubConfigurat
 from vertesia_client.openapi.models.gladia_configuration import GladiaConfiguration as GladiaConfiguration
 from vertesia_client.openapi.models.gladia_configuration_input import GladiaConfigurationInput as GladiaConfigurationInput
 from vertesia_client.openapi.models.groq_options import GroqOptions as GroqOptions
+from vertesia_client.openapi.models.http_timeout_options import HttpTimeoutOptions as HttpTimeoutOptions
 from vertesia_client.openapi.models.human_task_definition import HumanTaskDefinition as HumanTaskDefinition
 from vertesia_client.openapi.models.i_create_project_payload import ICreateProjectPayload as ICreateProjectPayload
 from vertesia_client.openapi.models.image_metadata import ImageMetadata as ImageMetadata

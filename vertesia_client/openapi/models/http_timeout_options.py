@@ -17,29 +17,21 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
-from typing import Any, ClassVar, Dict, Optional
-from vertesia_client.openapi.models.config_modes import ConfigModes
-from vertesia_client.openapi.models.http_timeout_options import HttpTimeoutOptions
-from vertesia_client.openapi.models.model_options import ModelOptions
-from vertesia_client.openapi.models.run_data_storage_level import RunDataStorageLevel
+from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt
+from typing import Any, ClassVar, Dict, Optional, Union
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class InteractionExecutionConfiguration(BaseModel):
+class HttpTimeoutOptions(BaseModel):
     """
-    InteractionExecutionConfiguration
+    HTTP timeouts applied to a driver's upstream LLM-provider calls.  All values are in milliseconds. Drivers should map these onto whatever HTTP client their SDK uses; the defaults applied in `@llumiverse/core/createDriverHttpAgent` are:   - headersTimeout:   60_000   - bodyTimeout:      60_000   - connectTimeout:   10_000   - keepAliveTimeout: 30_000  The defaults are deliberately tighter than Node's undici default (5 minutes for headers/body) so a hung upstream surfaces quickly. Bump `bodyTimeout` for streaming flows that have legitimate silent gaps (e.g. tool-using agents).
     """ # noqa: E501
-    id: Optional[StrictStr] = None
-    environment: Optional[StrictStr] = None
-    model: Optional[StrictStr] = None
-    do_validate: Optional[StrictBool] = None
-    run_data: Optional[RunDataStorageLevel] = None
-    config_mode: Optional[ConfigModes] = Field(default=None, alias="configMode")
-    model_options: Optional[ModelOptions] = None
-    http_timeout: Optional[HttpTimeoutOptions] = Field(default=None, description="Per-run HTTP timeouts for upstream LLM-provider calls.")
-    __properties: ClassVar[List[str]] = ["id", "environment", "model", "do_validate", "run_data", "configMode", "model_options", "http_timeout"]
+    headers_timeout: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Time (ms) to wait for the first response byte after the request is sent.", alias="headersTimeout")
+    body_timeout: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Time (ms) between body chunks once streaming has started.", alias="bodyTimeout")
+    connect_timeout: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="TCP/TLS connect timeout (ms).", alias="connectTimeout")
+    keep_alive_timeout: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Idle socket reuse timeout (ms).", alias="keepAliveTimeout")
+    __properties: ClassVar[List[str]] = ["headersTimeout", "bodyTimeout", "connectTimeout", "keepAliveTimeout"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -59,7 +51,7 @@ class InteractionExecutionConfiguration(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of InteractionExecutionConfiguration from a JSON string"""
+        """Create an instance of HttpTimeoutOptions from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -80,17 +72,11 @@ class InteractionExecutionConfiguration(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of model_options
-        if self.model_options:
-            _dict['model_options'] = self.model_options.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of http_timeout
-        if self.http_timeout:
-            _dict['http_timeout'] = self.http_timeout.to_dict()
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of InteractionExecutionConfiguration from a dict"""
+        """Create an instance of HttpTimeoutOptions from a dict"""
         if obj is None:
             return None
 
@@ -98,14 +84,10 @@ class InteractionExecutionConfiguration(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "id": obj.get("id"),
-            "environment": obj.get("environment"),
-            "model": obj.get("model"),
-            "do_validate": obj.get("do_validate"),
-            "run_data": obj.get("run_data"),
-            "configMode": obj.get("configMode"),
-            "model_options": ModelOptions.from_dict(obj["model_options"]) if obj.get("model_options") is not None else None,
-            "http_timeout": HttpTimeoutOptions.from_dict(obj["http_timeout"]) if obj.get("http_timeout") is not None else None
+            "headersTimeout": obj.get("headersTimeout"),
+            "bodyTimeout": obj.get("bodyTimeout"),
+            "connectTimeout": obj.get("connectTimeout"),
+            "keepAliveTimeout": obj.get("keepAliveTimeout")
         })
         return _obj
 

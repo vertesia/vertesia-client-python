@@ -24,7 +24,6 @@ from vertesia_client.openapi.models.execution_run_workflow import ExecutionRunWo
 from vertesia_client.openapi.models.in_code_prompt import InCodePrompt
 from vertesia_client.openapi.models.interaction_execution_configuration import InteractionExecutionConfiguration
 from vertesia_client.openapi.models.interaction_update_payload_result_schema import InteractionUpdatePayloadResultSchema
-from vertesia_client.openapi.models.tool_definition import ToolDefinition
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -40,7 +39,6 @@ class AsyncInteractionExecutionPayload(BaseModel):
     do_validate: Optional[StrictBool] = None
     tags: Optional[List[StrictStr]] = None
     conversation: Optional[Any] = None
-    tool_definitions: Optional[List[ToolDefinition]] = Field(default=None, description="The tools to be used in the execution")
     workflow: Optional[ExecutionRunWorkflow] = Field(default=None, description="The workflow related to this Interaction Run.")
     prompts: Optional[List[InCodePrompt]] = Field(default=None, description="Only used by ad-hoc interactions which defines the prompt in the execution payload itself These are temporary interactions using \"tmp:\" suffix.")
     async_completion: Optional[AsyncCompletionOptions] = Field(default=None, description="Options for async completion and/or streaming LLM response chunks to Redis. Used by agent workflows for async activity completion and real-time streaming.", alias="asyncCompletion")
@@ -49,7 +47,7 @@ class AsyncInteractionExecutionPayload(BaseModel):
     task_queue: Optional[StrictStr] = None
     include_previous_error: Optional[StrictBool] = Field(default=None, description="Only used for non conversation workflows to include the error on next retry. If tools is defined this is not used")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["interaction", "data", "config", "result_schema", "do_validate", "tags", "conversation", "tool_definitions", "workflow", "prompts", "asyncCompletion", "type", "notify_endpoints", "task_queue", "include_previous_error"]
+    __properties: ClassVar[List[str]] = ["interaction", "data", "config", "result_schema", "do_validate", "tags", "conversation", "workflow", "prompts", "asyncCompletion", "type", "notify_endpoints", "task_queue", "include_previous_error"]
 
     @field_validator('type')
     def type_validate_enum(cls, value):
@@ -103,13 +101,6 @@ class AsyncInteractionExecutionPayload(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of result_schema
         if self.result_schema:
             _dict['result_schema'] = self.result_schema.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of each item in tool_definitions (list)
-        _items = []
-        if self.tool_definitions:
-            for _item_tool_definitions in self.tool_definitions:
-                if _item_tool_definitions:
-                    _items.append(_item_tool_definitions.to_dict())
-            _dict['tool_definitions'] = _items
         # override the default output from pydantic by calling `to_dict()` of workflow
         if self.workflow:
             _dict['workflow'] = self.workflow.to_dict()
@@ -162,7 +153,6 @@ class AsyncInteractionExecutionPayload(BaseModel):
             "do_validate": obj.get("do_validate"),
             "tags": obj.get("tags"),
             "conversation": obj.get("conversation"),
-            "tool_definitions": [ToolDefinition.from_dict(_item) for _item in obj["tool_definitions"]] if obj.get("tool_definitions") is not None else None,
             "workflow": ExecutionRunWorkflow.from_dict(obj["workflow"]) if obj.get("workflow") is not None else None,
             "prompts": [InCodePrompt.from_dict(_item) for _item in obj["prompts"]] if obj.get("prompts") is not None else None,
             "asyncCompletion": AsyncCompletionOptions.from_dict(obj["asyncCompletion"]) if obj.get("asyncCompletion") is not None else None,

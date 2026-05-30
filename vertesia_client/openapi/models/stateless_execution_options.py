@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, Optional
+from vertesia_client.openapi.models.http_timeout_options import HttpTimeoutOptions
 from vertesia_client.openapi.models.json_schema import JSONSchema
 from vertesia_client.openapi.models.modalities import Modalities
 from vertesia_client.openapi.models.model_options import ModelOptions
@@ -36,8 +37,9 @@ class StatelessExecutionOptions(BaseModel):
     result_schema: Optional[JSONSchema] = None
     include_original_response: Optional[StrictBool] = Field(default=None, description="If set to true the original response from the target LLM will be included in the response under the original_response field. This is useful for debugging and for some advanced use cases. It is ignored on streaming requests")
     model_options: Optional[ModelOptions] = None
+    http_timeout: Optional[HttpTimeoutOptions] = Field(default=None, description="Per-call HTTP timeouts for upstream LLM-provider calls. These override the driver's default `DriverOptions.httpTimeout` for this execution only.", alias="httpTimeout")
     output_modality: Optional[Modalities] = Field(default=None, description="Deprecated: This is deprecated. Use CompletionResult.type information instead.")
-    __properties: ClassVar[List[str]] = ["model", "format", "result_schema", "include_original_response", "model_options", "output_modality"]
+    __properties: ClassVar[List[str]] = ["model", "format", "result_schema", "include_original_response", "model_options", "httpTimeout", "output_modality"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -87,6 +89,9 @@ class StatelessExecutionOptions(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of model_options
         if self.model_options:
             _dict['model_options'] = self.model_options.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of http_timeout
+        if self.http_timeout:
+            _dict['httpTimeout'] = self.http_timeout.to_dict()
         return _dict
 
     @classmethod
@@ -104,6 +109,7 @@ class StatelessExecutionOptions(BaseModel):
             "result_schema": JSONSchema.from_dict(obj["result_schema"]) if obj.get("result_schema") is not None else None,
             "include_original_response": obj.get("include_original_response"),
             "model_options": ModelOptions.from_dict(obj["model_options"]) if obj.get("model_options") is not None else None,
+            "httpTimeout": HttpTimeoutOptions.from_dict(obj["httpTimeout"]) if obj.get("httpTimeout") is not None else None,
             "output_modality": obj.get("output_modality")
         })
         return _obj

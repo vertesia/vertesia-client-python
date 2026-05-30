@@ -6894,6 +6894,9 @@ components:
           $ref: "#/components/schemas/ConfigModes"
         model_options:
           $ref: "#/components/schemas/ModelOptions"
+        http_timeout:
+          $ref: "#/components/schemas/HttpTimeoutOptions"
+          description: Per-run HTTP timeouts for upstream LLM-provider calls.
       additionalProperties: false
     ConfigModes:
       type: string
@@ -6901,6 +6904,38 @@ components:
         - RUN_AND_INTERACTION_CONFIG
         - RUN_CONFIG_ONLY
         - INTERACTION_CONFIG_ONLY
+    HttpTimeoutOptions:
+      type: object
+      properties:
+        headersTimeout:
+          type: number
+          description: Time (ms) to wait for the first response byte after the request is
+            sent.
+        bodyTimeout:
+          type: number
+          description: Time (ms) between body chunks once streaming has started.
+        connectTimeout:
+          type: number
+          description: TCP/TLS connect timeout (ms).
+        keepAliveTimeout:
+          type: number
+          description: Idle socket reuse timeout (ms).
+      additionalProperties: false
+      description: >-
+        HTTP timeouts applied to a driver's upstream LLM-provider calls.
+
+
+        All values are in milliseconds. Drivers should map these onto whatever
+        HTTP client their SDK uses; the defaults applied in
+        `@llumiverse/core/createDriverHttpAgent` are:   -
+        headersTimeout:   60_000   - bodyTimeout:      60_000   -
+        connectTimeout:   10_000   - keepAliveTimeout: 30_000
+
+
+        The defaults are deliberately tighter than Node's undici default (5
+        minutes for headers/body) so a hung upstream surfaces quickly. Bump
+        `bodyTimeout` for streaming flows that have legitimate silent gaps (e.g.
+        tool-using agents).
     GeneratedInteractionDefinition:
       type: object
       properties:
@@ -7016,6 +7051,11 @@ components:
             on streaming requests
         model_options:
           $ref: "#/components/schemas/ModelOptions"
+        httpTimeout:
+          $ref: "#/components/schemas/HttpTimeoutOptions"
+          description: Per-call HTTP timeouts for upstream LLM-provider calls. These
+            override the driver's default `DriverOptions.httpTimeout` for this
+            execution only.
         output_modality:
           $ref: "#/components/schemas/Modalities"
           deprecated: true
@@ -8113,11 +8153,6 @@ components:
             starts the conversation. If conversation is falsy then no
             conversation is returned back. For regular executions the
             conversation is not returned back to save memory.
-        tool_definitions:
-          type: array
-          items:
-            $ref: "#/components/schemas/ToolDefinition"
-          description: The tools to be used in the execution
         workflow:
           $ref: "#/components/schemas/ExecutionRunWorkflow"
           description: The workflow related to this Interaction Run.
@@ -8290,11 +8325,6 @@ components:
             starts the conversation. If conversation is falsy then no
             conversation is returned back. For regular executions the
             conversation is not returned back to save memory.
-        tool_definitions:
-          type: array
-          items:
-            $ref: "#/components/schemas/ToolDefinition"
-          description: The tools to be used in the execution
         workflow:
           $ref: "#/components/schemas/ExecutionRunWorkflow"
           description: The workflow related to this Interaction Run.

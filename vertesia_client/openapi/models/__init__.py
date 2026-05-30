@@ -361,6 +361,7 @@ from vertesia_client.openapi.models.github_configuration import GithubConfigurat
 from vertesia_client.openapi.models.gladia_configuration import GladiaConfiguration
 from vertesia_client.openapi.models.gladia_configuration_input import GladiaConfigurationInput
 from vertesia_client.openapi.models.groq_options import GroqOptions
+from vertesia_client.openapi.models.http_timeout_options import HttpTimeoutOptions
 from vertesia_client.openapi.models.human_task_definition import HumanTaskDefinition
 from vertesia_client.openapi.models.i_create_project_payload import ICreateProjectPayload
 from vertesia_client.openapi.models.image_metadata import ImageMetadata
