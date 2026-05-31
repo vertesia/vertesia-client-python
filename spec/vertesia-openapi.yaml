@@ -7980,6 +7980,8 @@ components:
         - consumer
         - executor
         - reader
+        - auditor
+        - support
         - billing
         - member
         - app_member
@@ -8441,6 +8443,7 @@ components:
         - project:settings_write
         - api_key:create
         - api_key:read
+        - api_key:secret_read
         - api_key:update
         - api_key:delete
         - account:read
@@ -8448,15 +8451,19 @@ components:
         - account:admin
         - account:billing
         - billing:read
+        - audit:read
         - account:member
         - content:read
+        - content:read_all
         - content:write
         - content:delete
         - content:admin
         - content:superadmin
+        - workflow:read
         - workflow:run
         - workflow:admin
         - workflow:superadmin
+        - agent_run:read
         - task:read
         - task:manage
         - iam:impersonate
@@ -24044,7 +24051,7 @@ paths:
       description: |-
         Returns a generated auth token derived from a retrievable API key value.
 
-        **Required permissions:** `api_key:read`
+        **Required permissions:** `api_key:secret_read`
       security:
         - bearerAuth: []
         - OpenID: []
@@ -24082,7 +24089,7 @@ paths:
                 status: 400
                 message: Request validation failed.
       x-vertesia-permissions:
-        - api_key:read
+        - api_key:secret_read
       x-vertesia-source:
         file: ../../apps/studio-server/src/api/apikeys.ts
         className: ApiKeysResource
@@ -24108,7 +24115,8 @@ paths:
         principal, action, and time range.
 
 
-        **Required permissions:** Any of `project:admin`, `account:admin`
+        **Required permissions:** Any of `project:admin`, `account:admin`,
+        `audit:read`
       security:
         - bearerAuth: []
         - OpenID: []
@@ -24252,6 +24260,7 @@ paths:
       x-vertesia-permissions:
         - project:admin
         - account:admin
+        - audit:read
       x-vertesia-source:
         file: ../../apps/studio-server/src/api/audit-trail.ts
         className: AuditTrailResource
@@ -28870,7 +28879,7 @@ paths:
         range, schedule, type, pagination cursor or offset, and sort order.
 
 
-        **Required permissions:** `workflow:run`
+        **Required permissions:** Any of `agent_run:read`, `workflow:run`
       security:
         - bearerAuth: []
         - OpenID: []
@@ -29044,6 +29053,7 @@ paths:
                 status: 400
                 message: Request validation failed.
       x-vertesia-permissions:
+        - agent_run:read
         - workflow:run
       x-vertesia-source:
         file: ../../apps/zeno-server/src/api/agents.ts
@@ -29071,7 +29081,7 @@ paths:
         range.
 
 
-        **Required permissions:** `workflow:run`
+        **Required permissions:** Any of `agent_run:read`, `workflow:run`
       security:
         - bearerAuth: []
         - OpenID: []
@@ -29235,6 +29245,7 @@ paths:
                 status: 400
                 message: Request validation failed.
       x-vertesia-permissions:
+        - agent_run:read
         - workflow:run
       x-vertesia-source:
         file: ../../apps/zeno-server/src/api/agents.ts
@@ -29259,7 +29270,7 @@ paths:
       description: |-
         Retrieves a single agent run by stable agent run ID.
 
-        **Required permissions:** `workflow:run`
+        **Required permissions:** Any of `agent_run:read`, `workflow:run`
       security:
         - bearerAuth: []
         - OpenID: []
@@ -29297,6 +29308,7 @@ paths:
                 status: 400
                 message: Request validation failed.
       x-vertesia-permissions:
+        - agent_run:read
         - workflow:run
       x-vertesia-source:
         file: ../../apps/zeno-server/src/api/agents.ts
@@ -29510,7 +29522,7 @@ paths:
         timestamp cursor.
 
 
-        **Required permissions:** `workflow:run`
+        **Required permissions:** Any of `agent_run:read`, `workflow:run`
       security:
         - bearerAuth: []
         - OpenID: []
@@ -29553,6 +29565,7 @@ paths:
                 status: 400
                 message: Request validation failed.
       x-vertesia-permissions:
+        - agent_run:read
         - workflow:run
       x-vertesia-source:
         file: ../../apps/zeno-server/src/api/agents.ts
@@ -29636,7 +29649,7 @@ paths:
         messages.
 
 
-        **Required permissions:** `workflow:run`
+        **Required permissions:** Any of `agent_run:read`, `workflow:run`
       security:
         - bearerAuth: []
         - OpenID: []
@@ -29684,6 +29697,7 @@ paths:
                 status: 400
                 message: Request validation failed.
       x-vertesia-permissions:
+        - agent_run:read
         - workflow:run
       x-vertesia-source:
         file: ../../apps/zeno-server/src/api/agents.ts
@@ -29710,7 +29724,7 @@ paths:
         files are excluded by default.
 
 
-        **Required permissions:** `workflow:run`
+        **Required permissions:** Any of `agent_run:read`, `workflow:run`
       security:
         - bearerAuth: []
         - OpenID: []
@@ -29760,6 +29774,7 @@ paths:
                 status: 400
                 message: Request validation failed.
       x-vertesia-permissions:
+        - agent_run:read
         - workflow:run
       x-vertesia-source:
         file: ../../apps/zeno-server/src/api/agents.ts
@@ -29786,7 +29801,7 @@ paths:
         supplied.
 
 
-        **Required permissions:** `workflow:run`
+        **Required permissions:** Any of `agent_run:read`, `workflow:run`
       security:
         - bearerAuth: []
         - OpenID: []
@@ -29847,6 +29862,7 @@ paths:
                 status: 400
                 message: Request validation failed.
       x-vertesia-permissions:
+        - agent_run:read
         - workflow:run
       x-vertesia-source:
         file: ../../apps/zeno-server/src/api/agents.ts
@@ -29936,7 +29952,7 @@ paths:
         including processed history.
 
 
-        **Required permissions:** `workflow:run`
+        **Required permissions:** Any of `agent_run:read`, `workflow:run`
       security:
         - bearerAuth: []
         - OpenID: []
@@ -29984,6 +30000,7 @@ paths:
                 status: 400
                 message: Request validation failed.
       x-vertesia-permissions:
+        - agent_run:read
         - workflow:run
       x-vertesia-source:
         file: ../../apps/zeno-server/src/api/agents.ts
@@ -30010,7 +30027,7 @@ paths:
         run.
 
 
-        **Required permissions:** `workflow:run`
+        **Required permissions:** Any of `agent_run:read`, `workflow:run`
       security:
         - bearerAuth: []
         - OpenID: []
@@ -30048,6 +30065,7 @@ paths:
                 status: 400
                 message: Request validation failed.
       x-vertesia-permissions:
+        - agent_run:read
         - workflow:run
       x-vertesia-source:
         file: ../../apps/zeno-server/src/api/agents.ts
@@ -30074,7 +30092,7 @@ paths:
         process run.
 
 
-        **Required permissions:** `workflow:run`
+        **Required permissions:** Any of `agent_run:read`, `workflow:run`
       security:
         - bearerAuth: []
         - OpenID: []
@@ -30112,6 +30130,7 @@ paths:
                 status: 400
                 message: Request validation failed.
       x-vertesia-permissions:
+        - agent_run:read
         - workflow:run
       x-vertesia-source:
         file: ../../apps/zeno-server/src/api/agents.ts
@@ -30138,7 +30157,7 @@ paths:
         history artifacts when available for long-running executions.
 
 
-        **Required permissions:** `workflow:run`
+        **Required permissions:** Any of `agent_run:read`, `workflow:run`
       security:
         - bearerAuth: []
         - OpenID: []
@@ -30176,6 +30195,7 @@ paths:
                 status: 400
                 message: Request validation failed.
       x-vertesia-permissions:
+        - agent_run:read
         - workflow:run
       x-vertesia-source:
         file: ../../apps/zeno-server/src/api/agents.ts
@@ -30410,7 +30430,7 @@ paths:
         agent run.
 
 
-        **Required permissions:** `workflow:run`
+        **Required permissions:** Any of `agent_run:read`, `workflow:run`
       security:
         - bearerAuth: []
         - OpenID: []
@@ -30453,6 +30473,7 @@ paths:
                 status: 400
                 message: Request validation failed.
       x-vertesia-permissions:
+        - agent_run:read
         - workflow:run
       x-vertesia-source:
         file: ../../apps/zeno-server/src/api/agents.ts
@@ -30479,7 +30500,7 @@ paths:
         workflow runs.
 
 
-        **Required permissions:** `workflow:run`
+        **Required permissions:** Any of `agent_run:read`, `workflow:run`
       security:
         - bearerAuth: []
         - OpenID: []
@@ -30517,6 +30538,7 @@ paths:
                 status: 400
                 message: Request validation failed.
       x-vertesia-permissions:
+        - agent_run:read
         - workflow:run
       x-vertesia-source:
         file: ../../apps/zeno-server/src/api/agents.ts
@@ -31659,7 +31681,7 @@ paths:
         include every revision document.
 
 
-        **Required permissions:** `workflow:run`
+        **Required permissions:** Any of `workflow:read`, `workflow:run`
       security:
         - bearerAuth: []
         - OpenID: []
@@ -31712,6 +31734,7 @@ paths:
                 status: 400
                 message: Request validation failed.
       x-vertesia-permissions:
+        - workflow:read
         - workflow:run
       x-vertesia-source:
         file: ../../apps/zeno-server/src/api/processes.ts
@@ -31794,7 +31817,7 @@ paths:
         containing the requested process id.
 
 
-        **Required permissions:** `workflow:run`
+        **Required permissions:** Any of `workflow:read`, `workflow:run`
       security:
         - bearerAuth: []
         - OpenID: []
@@ -31832,6 +31855,7 @@ paths:
                 status: 400
                 message: Request validation failed.
       x-vertesia-permissions:
+        - workflow:read
         - workflow:run
       x-vertesia-source:
         file: ../../apps/zeno-server/src/api/processes.ts
@@ -31856,7 +31880,7 @@ paths:
       description: |-
         Retrieves a process definition by id.
 
-        **Required permissions:** `workflow:run`
+        **Required permissions:** Any of `workflow:read`, `workflow:run`
       security:
         - bearerAuth: []
         - OpenID: []
@@ -31894,6 +31918,7 @@ paths:
                 status: 400
                 message: Request validation failed.
       x-vertesia-permissions:
+        - workflow:read
         - workflow:run
       x-vertesia-source:
         file: ../../apps/zeno-server/src/api/processes.ts
@@ -35196,7 +35221,10 @@ paths:
       tags:
         - Workflow Rules
       summary: List workflow rules
-      description: Lists workflow rules available in the current project.
+      description: |-
+        Lists workflow rules available in the current project.
+
+        **Required permissions:** Any of `workflow:read`, `workflow:admin`
       security:
         - bearerAuth: []
         - OpenID: []
@@ -35228,7 +35256,9 @@ paths:
                 error: Bad Request
                 status: 400
                 message: Request validation failed.
-      x-vertesia-permissions: []
+      x-vertesia-permissions:
+        - workflow:read
+        - workflow:admin
       x-vertesia-source:
         file: ../../apps/zeno-server/src/api/workflows.ts
         className: WorkflowsResource
@@ -35306,7 +35336,7 @@ paths:
       description: |-
         Lists DSL workflow definitions in the current project.
 
-        **Required permissions:** `workflow:admin`
+        **Required permissions:** Any of `workflow:read`, `workflow:admin`
       security:
         - bearerAuth: []
         - OpenID: []
@@ -35339,6 +35369,7 @@ paths:
                 status: 400
                 message: Request validation failed.
       x-vertesia-permissions:
+        - workflow:read
         - workflow:admin
       x-vertesia-source:
         file: ../../apps/zeno-server/src/api/workflows.ts
@@ -35419,7 +35450,7 @@ paths:
         scoping.
 
 
-        **Required permissions:** `workflow:admin`
+        **Required permissions:** Any of `workflow:read`, `workflow:admin`
       security:
         - bearerAuth: []
         - OpenID: []
@@ -35452,6 +35483,7 @@ paths:
                 status: 400
                 message: Request validation failed.
       x-vertesia-permissions:
+        - workflow:read
         - workflow:admin
       x-vertesia-source:
         file: ../../apps/zeno-server/src/api/workflows.ts
@@ -35482,7 +35514,7 @@ paths:
       description: |-
         Retrieves compact workflow updates published since the provided offset.
 
-        **Required permissions:** `workflow:run`
+        **Required permissions:** Any of `workflow:read`, `workflow:run`
       security:
         - bearerAuth: []
         - OpenID: []
@@ -35530,6 +35562,7 @@ paths:
                 status: 400
                 message: Request validation failed.
       x-vertesia-permissions:
+        - workflow:read
         - workflow:run
       x-vertesia-source:
         file: ../../apps/zeno-server/src/api/workflows.ts
@@ -35554,7 +35587,7 @@ paths:
       description: |-
         Streams workflow messages and updates for a workflow run.
 
-        **Required permissions:** `workflow:run`
+        **Required permissions:** Any of `workflow:read`, `workflow:run`
       security:
         - bearerAuth: []
         - OpenID: []
@@ -35607,6 +35640,7 @@ paths:
                 status: 400
                 message: Request validation failed.
       x-vertesia-permissions:
+        - workflow:read
         - workflow:run
       x-vertesia-source:
         file: ../../apps/zeno-server/src/api/workflows.ts
@@ -35701,7 +35735,7 @@ paths:
         execution history.
 
 
-        **Required permissions:** `workflow:run`
+        **Required permissions:** Any of `workflow:read`, `workflow:run`
       security:
         - bearerAuth: []
         - OpenID: []
@@ -35763,6 +35797,7 @@ paths:
                 status: 400
                 message: Request validation failed.
       x-vertesia-permissions:
+        - workflow:read
         - workflow:run
       x-vertesia-source:
         file: ../../apps/zeno-server/src/api/workflows.ts
@@ -35865,7 +35900,7 @@ paths:
       description: |-
         Executes a named query against a workflow run.
 
-        **Required permissions:** `workflow:run`
+        **Required permissions:** Any of `workflow:read`, `workflow:run`
       security:
         - bearerAuth: []
         - OpenID: []
@@ -35913,6 +35948,7 @@ paths:
                 status: 400
                 message: Request validation failed.
       x-vertesia-permissions:
+        - workflow:read
         - workflow:run
       x-vertesia-source:
         file: ../../apps/zeno-server/src/api/workflows.ts
@@ -36136,7 +36172,7 @@ paths:
       description: |-
         Retrieves a workflow rule by ID.
 
-        **Required permissions:** `workflow:admin`
+        **Required permissions:** Any of `workflow:read`, `workflow:admin`
       security:
         - bearerAuth: []
         - OpenID: []
@@ -36174,6 +36210,7 @@ paths:
                 status: 400
                 message: Request validation failed.
       x-vertesia-permissions:
+        - workflow:read
         - workflow:admin
       x-vertesia-source:
         file: ../../apps/zeno-server/src/api/workflows.ts
@@ -36319,7 +36356,7 @@ paths:
       description: |-
         Lists workflow runs started from a specific workflow rule.
 
-        **Required permissions:** `workflow:admin`
+        **Required permissions:** Any of `workflow:read`, `workflow:admin`
       security:
         - bearerAuth: []
         - OpenID: []
@@ -36357,6 +36394,7 @@ paths:
                 status: 400
                 message: Request validation failed.
       x-vertesia-permissions:
+        - workflow:read
         - workflow:admin
       x-vertesia-source:
         file: ../../apps/zeno-server/src/api/workflows.ts
@@ -36381,7 +36419,7 @@ paths:
       description: |-
         Retrieves a DSL workflow definition by ID.
 
-        **Required permissions:** `workflow:admin`
+        **Required permissions:** Any of `workflow:read`, `workflow:admin`
       security:
         - bearerAuth: []
         - OpenID: []
@@ -36419,6 +36457,7 @@ paths:
                 status: 400
                 message: Request validation failed.
       x-vertesia-permissions:
+        - workflow:read
         - workflow:admin
       x-vertesia-source:
         file: ../../apps/zeno-server/src/api/workflows.ts

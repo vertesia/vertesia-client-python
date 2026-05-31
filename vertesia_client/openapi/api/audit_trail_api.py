@@ -69,7 +69,7 @@ class AuditTrailApi:
     ) -> AuditTrailResponse:
         """List audit trail events
 
-        Lists audit trail events with optional filtering by project, resource, principal, action, and time range.  **Required permissions:** Any of `project:admin`, `account:admin`
+        Lists audit trail events with optional filtering by project, resource, principal, action, and time range.  **Required permissions:** Any of `project:admin`, `account:admin`, `audit:read`
 
         :param actions: Filter by action types
         :type actions: List[str]
@@ -186,7 +186,7 @@ class AuditTrailApi:
     ) -> ApiResponse[AuditTrailResponse]:
         """List audit trail events
 
-        Lists audit trail events with optional filtering by project, resource, principal, action, and time range.  **Required permissions:** Any of `project:admin`, `account:admin`
+        Lists audit trail events with optional filtering by project, resource, principal, action, and time range.  **Required permissions:** Any of `project:admin`, `account:admin`, `audit:read`
 
         :param actions: Filter by action types
         :type actions: List[str]
@@ -303,7 +303,7 @@ class AuditTrailApi:
     ) -> RESTResponseType:
         """List audit trail events
 
-        Lists audit trail events with optional filtering by project, resource, principal, action, and time range.  **Required permissions:** Any of `project:admin`, `account:admin`
+        Lists audit trail events with optional filtering by project, resource, principal, action, and time range.  **Required permissions:** Any of `project:admin`, `account:admin`, `audit:read`
 
         :param actions: Filter by action types
         :type actions: List[str]

@@ -1006,7 +1006,7 @@ class WorkflowRunsApi:
     ) -> WorkflowRunWithDetails:
         """Retrieve a workflow run
 
-        Retrieves workflow run status, timing, input, result, and optional execution history.  **Required permissions:** `workflow:run`
+        Retrieves workflow run status, timing, input, result, and optional execution history.  **Required permissions:** Any of `workflow:read`, `workflow:run`
 
         :param workflow_id: (required)
         :type workflow_id: str
@@ -1095,7 +1095,7 @@ class WorkflowRunsApi:
     ) -> ApiResponse[WorkflowRunWithDetails]:
         """Retrieve a workflow run
 
-        Retrieves workflow run status, timing, input, result, and optional execution history.  **Required permissions:** `workflow:run`
+        Retrieves workflow run status, timing, input, result, and optional execution history.  **Required permissions:** Any of `workflow:read`, `workflow:run`
 
         :param workflow_id: (required)
         :type workflow_id: str
@@ -1184,7 +1184,7 @@ class WorkflowRunsApi:
     ) -> RESTResponseType:
         """Retrieve a workflow run
 
-        Retrieves workflow run status, timing, input, result, and optional execution history.  **Required permissions:** `workflow:run`
+        Retrieves workflow run status, timing, input, result, and optional execution history.  **Required permissions:** Any of `workflow:read`, `workflow:run`
 
         :param workflow_id: (required)
         :type workflow_id: str
@@ -1353,7 +1353,7 @@ class WorkflowRunsApi:
     ) -> WorkflowRunUpdatesResponse:
         """Get workflow run updates
 
-        Retrieves compact workflow updates published since the provided offset.  **Required permissions:** `workflow:run`
+        Retrieves compact workflow updates published since the provided offset.  **Required permissions:** Any of `workflow:read`, `workflow:run`
 
         :param workflow_id: (required)
         :type workflow_id: str
@@ -1434,7 +1434,7 @@ class WorkflowRunsApi:
     ) -> ApiResponse[WorkflowRunUpdatesResponse]:
         """Get workflow run updates
 
-        Retrieves compact workflow updates published since the provided offset.  **Required permissions:** `workflow:run`
+        Retrieves compact workflow updates published since the provided offset.  **Required permissions:** Any of `workflow:read`, `workflow:run`
 
         :param workflow_id: (required)
         :type workflow_id: str
@@ -1515,7 +1515,7 @@ class WorkflowRunsApi:
     ) -> RESTResponseType:
         """Get workflow run updates
 
-        Retrieves compact workflow updates published since the provided offset.  **Required permissions:** `workflow:run`
+        Retrieves compact workflow updates published since the provided offset.  **Required permissions:** Any of `workflow:read`, `workflow:run`
 
         :param workflow_id: (required)
         :type workflow_id: str
@@ -1666,7 +1666,7 @@ class WorkflowRunsApi:
     ) -> ListWorkflowRunsResponse:
         """List runs for a workflow rule
 
-        Lists workflow runs started from a specific workflow rule.  **Required permissions:** `workflow:admin`
+        Lists workflow runs started from a specific workflow rule.  **Required permissions:** Any of `workflow:read`, `workflow:admin`
 
         :param rule_id: (required)
         :type rule_id: str
@@ -1739,7 +1739,7 @@ class WorkflowRunsApi:
     ) -> ApiResponse[ListWorkflowRunsResponse]:
         """List runs for a workflow rule
 
-        Lists workflow runs started from a specific workflow rule.  **Required permissions:** `workflow:admin`
+        Lists workflow runs started from a specific workflow rule.  **Required permissions:** Any of `workflow:read`, `workflow:admin`
 
         :param rule_id: (required)
         :type rule_id: str
@@ -1812,7 +1812,7 @@ class WorkflowRunsApi:
     ) -> RESTResponseType:
         """List runs for a workflow rule
 
-        Lists workflow runs started from a specific workflow rule.  **Required permissions:** `workflow:admin`
+        Lists workflow runs started from a specific workflow rule.  **Required permissions:** Any of `workflow:read`, `workflow:admin`
 
         :param rule_id: (required)
         :type rule_id: str
@@ -1949,7 +1949,7 @@ class WorkflowRunsApi:
     ) -> ListWorkflowRunsResponse:
         """List workflow runs
 
-        Lists workflow runs with filtering, pagination, and optional rule scoping.  **Required permissions:** `workflow:admin`
+        Lists workflow runs with filtering, pagination, and optional rule scoping.  **Required permissions:** Any of `workflow:read`, `workflow:admin`
 
         :param list_workflow_runs_payload: (required)
         :type list_workflow_runs_payload: ListWorkflowRunsPayload
@@ -2022,7 +2022,7 @@ class WorkflowRunsApi:
     ) -> ApiResponse[ListWorkflowRunsResponse]:
         """List workflow runs
 
-        Lists workflow runs with filtering, pagination, and optional rule scoping.  **Required permissions:** `workflow:admin`
+        Lists workflow runs with filtering, pagination, and optional rule scoping.  **Required permissions:** Any of `workflow:read`, `workflow:admin`
 
         :param list_workflow_runs_payload: (required)
         :type list_workflow_runs_payload: ListWorkflowRunsPayload
@@ -2095,7 +2095,7 @@ class WorkflowRunsApi:
     ) -> RESTResponseType:
         """List workflow runs
 
-        Lists workflow runs with filtering, pagination, and optional rule scoping.  **Required permissions:** `workflow:admin`
+        Lists workflow runs with filtering, pagination, and optional rule scoping.  **Required permissions:** Any of `workflow:read`, `workflow:admin`
 
         :param list_workflow_runs_payload: (required)
         :type list_workflow_runs_payload: ListWorkflowRunsPayload
@@ -2558,7 +2558,7 @@ class WorkflowRunsApi:
     ) -> object:
         """Query a workflow run
 
-        Executes a named query against a workflow run.  **Required permissions:** `workflow:run`
+        Executes a named query against a workflow run.  **Required permissions:** Any of `workflow:read`, `workflow:run`
 
         :param workflow_id: (required)
         :type workflow_id: str
@@ -2639,7 +2639,7 @@ class WorkflowRunsApi:
     ) -> ApiResponse[object]:
         """Query a workflow run
 
-        Executes a named query against a workflow run.  **Required permissions:** `workflow:run`
+        Executes a named query against a workflow run.  **Required permissions:** Any of `workflow:read`, `workflow:run`
 
         :param workflow_id: (required)
         :type workflow_id: str
@@ -2720,7 +2720,7 @@ class WorkflowRunsApi:
     ) -> RESTResponseType:
         """Query a workflow run
 
-        Executes a named query against a workflow run.  **Required permissions:** `workflow:run`
+        Executes a named query against a workflow run.  **Required permissions:** Any of `workflow:read`, `workflow:run`
 
         :param workflow_id: (required)
         :type workflow_id: str
@@ -3213,7 +3213,7 @@ class WorkflowRunsApi:
     ) -> str:
         """Stream workflow run updates
 
-        Streams workflow messages and updates for a workflow run.  **Required permissions:** `workflow:run`
+        Streams workflow messages and updates for a workflow run.  **Required permissions:** Any of `workflow:read`, `workflow:run`
 
         :param workflow_id: (required)
         :type workflow_id: str
@@ -3298,7 +3298,7 @@ class WorkflowRunsApi:
     ) -> ApiResponse[str]:
         """Stream workflow run updates
 
-        Streams workflow messages and updates for a workflow run.  **Required permissions:** `workflow:run`
+        Streams workflow messages and updates for a workflow run.  **Required permissions:** Any of `workflow:read`, `workflow:run`
 
         :param workflow_id: (required)
         :type workflow_id: str
@@ -3383,7 +3383,7 @@ class WorkflowRunsApi:
     ) -> RESTResponseType:
         """Stream workflow run updates
 
-        Streams workflow messages and updates for a workflow run.  **Required permissions:** `workflow:run`
+        Streams workflow messages and updates for a workflow run.  **Required permissions:** Any of `workflow:read`, `workflow:run`
 
         :param workflow_id: (required)
         :type workflow_id: str

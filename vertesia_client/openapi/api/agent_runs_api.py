@@ -1590,7 +1590,7 @@ class AgentRunsApi:
     ) -> AgentRun:
         """Retrieve an agent run
 
-        Retrieves a single agent run by stable agent run ID.  **Required permissions:** `workflow:run`
+        Retrieves a single agent run by stable agent run ID.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
         :param agent_run_id: (required)
         :type agent_run_id: str
@@ -1663,7 +1663,7 @@ class AgentRunsApi:
     ) -> ApiResponse[AgentRun]:
         """Retrieve an agent run
 
-        Retrieves a single agent run by stable agent run ID.  **Required permissions:** `workflow:run`
+        Retrieves a single agent run by stable agent run ID.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
         :param agent_run_id: (required)
         :type agent_run_id: str
@@ -1736,7 +1736,7 @@ class AgentRunsApi:
     ) -> RESTResponseType:
         """Retrieve an agent run
 
-        Retrieves a single agent run by stable agent run ID.  **Required permissions:** `workflow:run`
+        Retrieves a single agent run by stable agent run ID.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
         :param agent_run_id: (required)
         :type agent_run_id: str
@@ -1877,7 +1877,7 @@ class AgentRunsApi:
     ) -> AgentArtifactUrlResponse:
         """Get an agent run artifact
 
-        Downloads an artifact or returns a signed download URL when `url=1` is supplied.  **Required permissions:** `workflow:run`
+        Downloads an artifact or returns a signed download URL when `url=1` is supplied.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
         :param agent_run_id: (required)
         :type agent_run_id: str
@@ -1966,7 +1966,7 @@ class AgentRunsApi:
     ) -> ApiResponse[AgentArtifactUrlResponse]:
         """Get an agent run artifact
 
-        Downloads an artifact or returns a signed download URL when `url=1` is supplied.  **Required permissions:** `workflow:run`
+        Downloads an artifact or returns a signed download URL when `url=1` is supplied.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
         :param agent_run_id: (required)
         :type agent_run_id: str
@@ -2055,7 +2055,7 @@ class AgentRunsApi:
     ) -> RESTResponseType:
         """Get an agent run artifact
 
-        Downloads an artifact or returns a signed download URL when `url=1` is supplied.  **Required permissions:** `workflow:run`
+        Downloads an artifact or returns a signed download URL when `url=1` is supplied.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
         :param agent_run_id: (required)
         :type agent_run_id: str
@@ -2223,7 +2223,7 @@ class AgentRunsApi:
     ) -> WorkflowRunWithDetails:
         """Get child agent run details
 
-        Fetches detailed workflow execution state for a child workflow of an agent run.  **Required permissions:** `workflow:run`
+        Fetches detailed workflow execution state for a child workflow of an agent run.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
         :param agent_run_id: (required)
         :type agent_run_id: str
@@ -2300,7 +2300,7 @@ class AgentRunsApi:
     ) -> ApiResponse[WorkflowRunWithDetails]:
         """Get child agent run details
 
-        Fetches detailed workflow execution state for a child workflow of an agent run.  **Required permissions:** `workflow:run`
+        Fetches detailed workflow execution state for a child workflow of an agent run.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
         :param agent_run_id: (required)
         :type agent_run_id: str
@@ -2377,7 +2377,7 @@ class AgentRunsApi:
     ) -> RESTResponseType:
         """Get child agent run details
 
-        Fetches detailed workflow execution state for a child workflow of an agent run.  **Required permissions:** `workflow:run`
+        Fetches detailed workflow execution state for a child workflow of an agent run.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
         :param agent_run_id: (required)
         :type agent_run_id: str
@@ -2522,7 +2522,7 @@ class AgentRunsApi:
     ) -> WorkflowRunWithDetails:
         """Get agent run details
 
-        Fetches detailed workflow execution state for an agent run, optionally including processed history.  **Required permissions:** `workflow:run`
+        Fetches detailed workflow execution state for an agent run, optionally including processed history.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
         :param agent_run_id: (required)
         :type agent_run_id: str
@@ -2603,7 +2603,7 @@ class AgentRunsApi:
     ) -> ApiResponse[WorkflowRunWithDetails]:
         """Get agent run details
 
-        Fetches detailed workflow execution state for an agent run, optionally including processed history.  **Required permissions:** `workflow:run`
+        Fetches detailed workflow execution state for an agent run, optionally including processed history.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
         :param agent_run_id: (required)
         :type agent_run_id: str
@@ -2684,7 +2684,7 @@ class AgentRunsApi:
     ) -> RESTResponseType:
         """Get agent run details
 
-        Fetches detailed workflow execution state for an agent run, optionally including processed history.  **Required permissions:** `workflow:run`
+        Fetches detailed workflow execution state for an agent run, optionally including processed history.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
         :param agent_run_id: (required)
         :type agent_run_id: str
@@ -2837,7 +2837,7 @@ class AgentRunsApi:
     ) -> ProcessContextResponse:
         """Get process run context
 
-        Returns the current node and the current process context snapshot for a process run.  **Required permissions:** `workflow:run`
+        Returns the current node and the current process context snapshot for a process run.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
         :param agent_run_id: (required)
         :type agent_run_id: str
@@ -2910,7 +2910,7 @@ class AgentRunsApi:
     ) -> ApiResponse[ProcessContextResponse]:
         """Get process run context
 
-        Returns the current node and the current process context snapshot for a process run.  **Required permissions:** `workflow:run`
+        Returns the current node and the current process context snapshot for a process run.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
         :param agent_run_id: (required)
         :type agent_run_id: str
@@ -2983,7 +2983,7 @@ class AgentRunsApi:
     ) -> RESTResponseType:
         """Get process run context
 
-        Returns the current node and the current process context snapshot for a process run.  **Required permissions:** `workflow:run`
+        Returns the current node and the current process context snapshot for a process run.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
         :param agent_run_id: (required)
         :type agent_run_id: str
@@ -3120,7 +3120,7 @@ class AgentRunsApi:
     ) -> ProcessHistoryResponse:
         """Get process run history
 
-        Returns the hydrated node history for a process run, loading full history artifacts when available for long-running executions.  **Required permissions:** `workflow:run`
+        Returns the hydrated node history for a process run, loading full history artifacts when available for long-running executions.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
         :param agent_run_id: (required)
         :type agent_run_id: str
@@ -3193,7 +3193,7 @@ class AgentRunsApi:
     ) -> ApiResponse[ProcessHistoryResponse]:
         """Get process run history
 
-        Returns the hydrated node history for a process run, loading full history artifacts when available for long-running executions.  **Required permissions:** `workflow:run`
+        Returns the hydrated node history for a process run, loading full history artifacts when available for long-running executions.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
         :param agent_run_id: (required)
         :type agent_run_id: str
@@ -3266,7 +3266,7 @@ class AgentRunsApi:
     ) -> RESTResponseType:
         """Get process run history
 
-        Returns the hydrated node history for a process run, loading full history artifacts when available for long-running executions.  **Required permissions:** `workflow:run`
+        Returns the hydrated node history for a process run, loading full history artifacts when available for long-running executions.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
         :param agent_run_id: (required)
         :type agent_run_id: str
@@ -3404,7 +3404,7 @@ class AgentRunsApi:
     ) -> List[str]:
         """List agent run artifacts
 
-        Lists user-visible artifact paths for an agent run. Internal artifact files are excluded by default.  **Required permissions:** `workflow:run`
+        Lists user-visible artifact paths for an agent run. Internal artifact files are excluded by default.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
         :param agent_run_id: (required)
         :type agent_run_id: str
@@ -3481,7 +3481,7 @@ class AgentRunsApi:
     ) -> ApiResponse[List[str]]:
         """List agent run artifacts
 
-        Lists user-visible artifact paths for an agent run. Internal artifact files are excluded by default.  **Required permissions:** `workflow:run`
+        Lists user-visible artifact paths for an agent run. Internal artifact files are excluded by default.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
         :param agent_run_id: (required)
         :type agent_run_id: str
@@ -3558,7 +3558,7 @@ class AgentRunsApi:
     ) -> RESTResponseType:
         """List agent run artifacts
 
-        Lists user-visible artifact paths for an agent run. Internal artifact files are excluded by default.  **Required permissions:** `workflow:run`
+        Lists user-visible artifact paths for an agent run. Internal artifact files are excluded by default.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
         :param agent_run_id: (required)
         :type agent_run_id: str
@@ -3703,7 +3703,7 @@ class AgentRunsApi:
     ) -> ListWorkflowRunsResponse:
         """List child agent runs
 
-        Lists child workflows or sub-agent executions associated with an agent run.  **Required permissions:** `workflow:run`
+        Lists child workflows or sub-agent executions associated with an agent run.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
         :param agent_run_id: (required)
         :type agent_run_id: str
@@ -3776,7 +3776,7 @@ class AgentRunsApi:
     ) -> ApiResponse[ListWorkflowRunsResponse]:
         """List child agent runs
 
-        Lists child workflows or sub-agent executions associated with an agent run.  **Required permissions:** `workflow:run`
+        Lists child workflows or sub-agent executions associated with an agent run.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
         :param agent_run_id: (required)
         :type agent_run_id: str
@@ -3849,7 +3849,7 @@ class AgentRunsApi:
     ) -> RESTResponseType:
         """List child agent runs
 
-        Lists child workflows or sub-agent executions associated with an agent run.  **Required permissions:** `workflow:run`
+        Lists child workflows or sub-agent executions associated with an agent run.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
         :param agent_run_id: (required)
         :type agent_run_id: str
@@ -3987,7 +3987,7 @@ class AgentRunsApi:
     ) -> AgentRunUpdatesResponse:
         """List agent run updates
 
-        Returns stored compact messages for an agent run after an optional timestamp cursor.  **Required permissions:** `workflow:run`
+        Returns stored compact messages for an agent run after an optional timestamp cursor.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
         :param agent_run_id: (required)
         :type agent_run_id: str
@@ -4064,7 +4064,7 @@ class AgentRunsApi:
     ) -> ApiResponse[AgentRunUpdatesResponse]:
         """List agent run updates
 
-        Returns stored compact messages for an agent run after an optional timestamp cursor.  **Required permissions:** `workflow:run`
+        Returns stored compact messages for an agent run after an optional timestamp cursor.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
         :param agent_run_id: (required)
         :type agent_run_id: str
@@ -4141,7 +4141,7 @@ class AgentRunsApi:
     ) -> RESTResponseType:
         """List agent run updates
 
-        Returns stored compact messages for an agent run after an optional timestamp cursor.  **Required permissions:** `workflow:run`
+        Returns stored compact messages for an agent run after an optional timestamp cursor.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
         :param agent_run_id: (required)
         :type agent_run_id: str
@@ -4300,7 +4300,7 @@ class AgentRunsApi:
     ) -> ListAgentRunsResponse:
         """List agent runs
 
-        Lists agent runs with filters for ID, status, interaction, starter, date range, schedule, type, pagination cursor or offset, and sort order.  **Required permissions:** `workflow:run`
+        Lists agent runs with filters for ID, status, interaction, starter, date range, schedule, type, pagination cursor or offset, and sort order.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
         :param id: Filter by agent run ID
         :type id: str
@@ -4429,7 +4429,7 @@ class AgentRunsApi:
     ) -> ApiResponse[ListAgentRunsResponse]:
         """List agent runs
 
-        Lists agent runs with filters for ID, status, interaction, starter, date range, schedule, type, pagination cursor or offset, and sort order.  **Required permissions:** `workflow:run`
+        Lists agent runs with filters for ID, status, interaction, starter, date range, schedule, type, pagination cursor or offset, and sort order.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
         :param id: Filter by agent run ID
         :type id: str
@@ -4558,7 +4558,7 @@ class AgentRunsApi:
     ) -> RESTResponseType:
         """List agent runs
 
-        Lists agent runs with filters for ID, status, interaction, starter, date range, schedule, type, pagination cursor or offset, and sort order.  **Required permissions:** `workflow:run`
+        Lists agent runs with filters for ID, status, interaction, starter, date range, schedule, type, pagination cursor or offset, and sort order.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
         :param id: Filter by agent run ID
         :type id: str
@@ -5774,7 +5774,7 @@ class AgentRunsApi:
     ) -> SearchAgentRunsResponse:
         """Search agent runs
 
-        Searches indexed agent runs with full-text query support and filters for status, interaction, starter, categories, tags, content type, and date range.  **Required permissions:** `workflow:run`
+        Searches indexed agent runs with full-text query support and filters for status, interaction, starter, categories, tags, content type, and date range.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
         :param query: Full-text search across name, title, topic, interaction_name, and content
         :type query: str
@@ -5895,7 +5895,7 @@ class AgentRunsApi:
     ) -> ApiResponse[SearchAgentRunsResponse]:
         """Search agent runs
 
-        Searches indexed agent runs with full-text query support and filters for status, interaction, starter, categories, tags, content type, and date range.  **Required permissions:** `workflow:run`
+        Searches indexed agent runs with full-text query support and filters for status, interaction, starter, categories, tags, content type, and date range.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
         :param query: Full-text search across name, title, topic, interaction_name, and content
         :type query: str
@@ -6016,7 +6016,7 @@ class AgentRunsApi:
     ) -> RESTResponseType:
         """Search agent runs
 
-        Searches indexed agent runs with full-text query support and filters for status, interaction, starter, categories, tags, content type, and date range.  **Required permissions:** `workflow:run`
+        Searches indexed agent runs with full-text query support and filters for status, interaction, starter, categories, tags, content type, and date range.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
         :param query: Full-text search across name, title, topic, interaction_name, and content
         :type query: str
@@ -6276,7 +6276,7 @@ class AgentRunsApi:
     ) -> str:
         """Stream an agent run
 
-        Opens a Server-Sent Events stream for live and archived agent run messages.  **Required permissions:** `workflow:run`
+        Opens a Server-Sent Events stream for live and archived agent run messages.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
         :param agent_run_id: (required)
         :type agent_run_id: str
@@ -6357,7 +6357,7 @@ class AgentRunsApi:
     ) -> ApiResponse[str]:
         """Stream an agent run
 
-        Opens a Server-Sent Events stream for live and archived agent run messages.  **Required permissions:** `workflow:run`
+        Opens a Server-Sent Events stream for live and archived agent run messages.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
         :param agent_run_id: (required)
         :type agent_run_id: str
@@ -6438,7 +6438,7 @@ class AgentRunsApi:
     ) -> RESTResponseType:
         """Stream an agent run
 
-        Opens a Server-Sent Events stream for live and archived agent run messages.  **Required permissions:** `workflow:run`
+        Opens a Server-Sent Events stream for live and archived agent run messages.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
         :param agent_run_id: (required)
         :type agent_run_id: str
@@ -6592,7 +6592,7 @@ class AgentRunsApi:
     ) -> str:
         """Stream agent run details
 
-        Streams Temporal history events for an agent run across continue-as-new workflow runs.  **Required permissions:** `workflow:run`
+        Streams Temporal history events for an agent run across continue-as-new workflow runs.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
         :param agent_run_id: (required)
         :type agent_run_id: str
@@ -6665,7 +6665,7 @@ class AgentRunsApi:
     ) -> ApiResponse[str]:
         """Stream agent run details
 
-        Streams Temporal history events for an agent run across continue-as-new workflow runs.  **Required permissions:** `workflow:run`
+        Streams Temporal history events for an agent run across continue-as-new workflow runs.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
         :param agent_run_id: (required)
         :type agent_run_id: str
@@ -6738,7 +6738,7 @@ class AgentRunsApi:
     ) -> RESTResponseType:
         """Stream agent run details
 
-        Streams Temporal history events for an agent run across continue-as-new workflow runs.  **Required permissions:** `workflow:run`
+        Streams Temporal history events for an agent run across continue-as-new workflow runs.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
         :param agent_run_id: (required)
         :type agent_run_id: str

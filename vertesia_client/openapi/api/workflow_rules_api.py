@@ -640,7 +640,7 @@ class WorkflowRulesApi:
     ) -> WorkflowRule:
         """Retrieve a workflow rule
 
-        Retrieves a workflow rule by ID.  **Required permissions:** `workflow:admin`
+        Retrieves a workflow rule by ID.  **Required permissions:** Any of `workflow:read`, `workflow:admin`
 
         :param rule_id: (required)
         :type rule_id: str
@@ -713,7 +713,7 @@ class WorkflowRulesApi:
     ) -> ApiResponse[WorkflowRule]:
         """Retrieve a workflow rule
 
-        Retrieves a workflow rule by ID.  **Required permissions:** `workflow:admin`
+        Retrieves a workflow rule by ID.  **Required permissions:** Any of `workflow:read`, `workflow:admin`
 
         :param rule_id: (required)
         :type rule_id: str
@@ -786,7 +786,7 @@ class WorkflowRulesApi:
     ) -> RESTResponseType:
         """Retrieve a workflow rule
 
-        Retrieves a workflow rule by ID.  **Required permissions:** `workflow:admin`
+        Retrieves a workflow rule by ID.  **Required permissions:** Any of `workflow:read`, `workflow:admin`
 
         :param rule_id: (required)
         :type rule_id: str
@@ -922,7 +922,7 @@ class WorkflowRulesApi:
     ) -> List[WorkflowRuleItem]:
         """List workflow rules
 
-        Lists workflow rules available in the current project.
+        Lists workflow rules available in the current project.  **Required permissions:** Any of `workflow:read`, `workflow:admin`
 
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
@@ -991,7 +991,7 @@ class WorkflowRulesApi:
     ) -> ApiResponse[List[WorkflowRuleItem]]:
         """List workflow rules
 
-        Lists workflow rules available in the current project.
+        Lists workflow rules available in the current project.  **Required permissions:** Any of `workflow:read`, `workflow:admin`
 
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
@@ -1060,7 +1060,7 @@ class WorkflowRulesApi:
     ) -> RESTResponseType:
         """List workflow rules
 
-        Lists workflow rules available in the current project.
+        Lists workflow rules available in the current project.  **Required permissions:** Any of `workflow:read`, `workflow:admin`
 
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str

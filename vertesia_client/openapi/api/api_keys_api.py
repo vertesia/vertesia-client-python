@@ -942,7 +942,7 @@ class APIKeysApi:
     ) -> AuthTokenResponse:
         """Get an API key token
 
-        Returns a generated auth token derived from a retrievable API key value.  **Required permissions:** `api_key:read`
+        Returns a generated auth token derived from a retrievable API key value.  **Required permissions:** `api_key:secret_read`
 
         :param key_id: (required)
         :type key_id: str
@@ -1015,7 +1015,7 @@ class APIKeysApi:
     ) -> ApiResponse[AuthTokenResponse]:
         """Get an API key token
 
-        Returns a generated auth token derived from a retrievable API key value.  **Required permissions:** `api_key:read`
+        Returns a generated auth token derived from a retrievable API key value.  **Required permissions:** `api_key:secret_read`
 
         :param key_id: (required)
         :type key_id: str
@@ -1088,7 +1088,7 @@ class APIKeysApi:
     ) -> RESTResponseType:
         """Get an API key token
 
-        Returns a generated auth token derived from a retrievable API key value.  **Required permissions:** `api_key:read`
+        Returns a generated auth token derived from a retrievable API key value.  **Required permissions:** `api_key:secret_read`
 
         :param key_id: (required)
         :type key_id: str

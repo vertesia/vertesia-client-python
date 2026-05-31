@@ -34,6 +34,8 @@ class ProjectRoles(str, Enum):
     CONSUMER = 'consumer'
     EXECUTOR = 'executor'
     READER = 'reader'
+    AUDITOR = 'auditor'
+    SUPPORT = 'support'
     BILLING = 'billing'
     MEMBER = 'member'
     APP_MEMBER = 'app_member'

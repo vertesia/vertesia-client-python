@@ -642,7 +642,7 @@ class ProcessesApi:
     ) -> ProcessDefinition:
         """Retrieve a process definition
 
-        Retrieves a process definition by id.  **Required permissions:** `workflow:run`
+        Retrieves a process definition by id.  **Required permissions:** Any of `workflow:read`, `workflow:run`
 
         :param process_id: (required)
         :type process_id: str
@@ -715,7 +715,7 @@ class ProcessesApi:
     ) -> ApiResponse[ProcessDefinition]:
         """Retrieve a process definition
 
-        Retrieves a process definition by id.  **Required permissions:** `workflow:run`
+        Retrieves a process definition by id.  **Required permissions:** Any of `workflow:read`, `workflow:run`
 
         :param process_id: (required)
         :type process_id: str
@@ -788,7 +788,7 @@ class ProcessesApi:
     ) -> RESTResponseType:
         """Retrieve a process definition
 
-        Retrieves a process definition by id.  **Required permissions:** `workflow:run`
+        Retrieves a process definition by id.  **Required permissions:** Any of `workflow:read`, `workflow:run`
 
         :param process_id: (required)
         :type process_id: str
@@ -925,7 +925,7 @@ class ProcessesApi:
     ) -> List[ProcessDefinition]:
         """List process definition versions
 
-        Lists all revisions for the process definition revision bucket containing the requested process id.  **Required permissions:** `workflow:run`
+        Lists all revisions for the process definition revision bucket containing the requested process id.  **Required permissions:** Any of `workflow:read`, `workflow:run`
 
         :param process_id: (required)
         :type process_id: str
@@ -998,7 +998,7 @@ class ProcessesApi:
     ) -> ApiResponse[List[ProcessDefinition]]:
         """List process definition versions
 
-        Lists all revisions for the process definition revision bucket containing the requested process id.  **Required permissions:** `workflow:run`
+        Lists all revisions for the process definition revision bucket containing the requested process id.  **Required permissions:** Any of `workflow:read`, `workflow:run`
 
         :param process_id: (required)
         :type process_id: str
@@ -1071,7 +1071,7 @@ class ProcessesApi:
     ) -> RESTResponseType:
         """List process definition versions
 
-        Lists all revisions for the process definition revision bucket containing the requested process id.  **Required permissions:** `workflow:run`
+        Lists all revisions for the process definition revision bucket containing the requested process id.  **Required permissions:** Any of `workflow:read`, `workflow:run`
 
         :param process_id: (required)
         :type process_id: str
@@ -1211,7 +1211,7 @@ class ProcessesApi:
     ) -> List[ProcessDefinition]:
         """List process definitions
 
-        Lists process definitions in the current project with optional status, process id, pagination, and revision filters. By default only the latest head revision for each process is returned; set `all_versions=true` to include every revision document.  **Required permissions:** `workflow:run`
+        Lists process definitions in the current project with optional status, process id, pagination, and revision filters. By default only the latest head revision for each process is returned; set `all_versions=true` to include every revision document.  **Required permissions:** Any of `workflow:read`, `workflow:run`
 
         :param process:
         :type process: str
@@ -1296,7 +1296,7 @@ class ProcessesApi:
     ) -> ApiResponse[List[ProcessDefinition]]:
         """List process definitions
 
-        Lists process definitions in the current project with optional status, process id, pagination, and revision filters. By default only the latest head revision for each process is returned; set `all_versions=true` to include every revision document.  **Required permissions:** `workflow:run`
+        Lists process definitions in the current project with optional status, process id, pagination, and revision filters. By default only the latest head revision for each process is returned; set `all_versions=true` to include every revision document.  **Required permissions:** Any of `workflow:read`, `workflow:run`
 
         :param process:
         :type process: str
@@ -1381,7 +1381,7 @@ class ProcessesApi:
     ) -> RESTResponseType:
         """List process definitions
 
-        Lists process definitions in the current project with optional status, process id, pagination, and revision filters. By default only the latest head revision for each process is returned; set `all_versions=true` to include every revision document.  **Required permissions:** `workflow:run`
+        Lists process definitions in the current project with optional status, process id, pagination, and revision filters. By default only the latest head revision for each process is returned; set `all_versions=true` to include every revision document.  **Required permissions:** Any of `workflow:read`, `workflow:run`
 
         :param process:
         :type process: str

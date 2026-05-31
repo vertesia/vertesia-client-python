@@ -10576,6 +10576,8 @@
           "consumer",
           "executor",
           "reader",
+          "auditor",
+          "support",
           "billing",
           "member",
           "app_member",
@@ -11101,6 +11103,7 @@
           "project:settings_write",
           "api_key:create",
           "api_key:read",
+          "api_key:secret_read",
           "api_key:update",
           "api_key:delete",
           "account:read",
@@ -11108,15 +11111,19 @@
           "account:admin",
           "account:billing",
           "billing:read",
+          "audit:read",
           "account:member",
           "content:read",
+          "content:read_all",
           "content:write",
           "content:delete",
           "content:admin",
           "content:superadmin",
+          "workflow:read",
           "workflow:run",
           "workflow:admin",
           "workflow:superadmin",
+          "agent_run:read",
           "task:read",
           "task:manage",
           "iam:impersonate",
@@ -32440,7 +32447,7 @@
           "API Keys"
         ],
         "summary": "Get an API key token",
-        "description": "Returns a generated auth token derived from a retrievable API key value.\n\n**Required permissions:** `api_key:read`",
+        "description": "Returns a generated auth token derived from a retrievable API key value.\n\n**Required permissions:** `api_key:secret_read`",
         "security": [
           {
             "bearerAuth": []
@@ -32502,7 +32509,7 @@
           }
         },
         "x-vertesia-permissions": [
-          "api_key:read"
+          "api_key:secret_read"
         ],
         "x-vertesia-source": {
           "file": "../../apps/studio-server/src/api/apikeys.ts",
@@ -32531,7 +32538,7 @@
           "Audit Trail"
         ],
         "summary": "List audit trail events",
-        "description": "Lists audit trail events with optional filtering by project, resource, principal, action, and time range.\n\n**Required permissions:** Any of `project:admin`, `account:admin`",
+        "description": "Lists audit trail events with optional filtering by project, resource, principal, action, and time range.\n\n**Required permissions:** Any of `project:admin`, `account:admin`, `audit:read`",
         "security": [
           {
             "bearerAuth": []
@@ -32732,7 +32739,8 @@
         },
         "x-vertesia-permissions": [
           "project:admin",
-          "account:admin"
+          "account:admin",
+          "audit:read"
         ],
         "x-vertesia-source": {
           "file": "../../apps/studio-server/src/api/audit-trail.ts",
@@ -39485,7 +39493,7 @@
           "Agent Runs"
         ],
         "summary": "List agent runs",
-        "description": "Lists agent runs with filters for ID, status, interaction, starter, date range, schedule, type, pagination cursor or offset, and sort order.\n\n**Required permissions:** `workflow:run`",
+        "description": "Lists agent runs with filters for ID, status, interaction, starter, date range, schedule, type, pagination cursor or offset, and sort order.\n\n**Required permissions:** Any of `agent_run:read`, `workflow:run`",
         "security": [
           {
             "bearerAuth": []
@@ -39733,6 +39741,7 @@
           }
         },
         "x-vertesia-permissions": [
+          "agent_run:read",
           "workflow:run"
         ],
         "x-vertesia-source": {
@@ -39762,7 +39771,7 @@
           "Agent Runs"
         ],
         "summary": "Search agent runs",
-        "description": "Searches indexed agent runs with full-text query support and filters for status, interaction, starter, categories, tags, content type, and date range.\n\n**Required permissions:** `workflow:run`",
+        "description": "Searches indexed agent runs with full-text query support and filters for status, interaction, starter, categories, tags, content type, and date range.\n\n**Required permissions:** Any of `agent_run:read`, `workflow:run`",
         "security": [
           {
             "bearerAuth": []
@@ -39981,6 +39990,7 @@
           }
         },
         "x-vertesia-permissions": [
+          "agent_run:read",
           "workflow:run"
         ],
         "x-vertesia-source": {
@@ -40010,7 +40020,7 @@
           "Agent Runs"
         ],
         "summary": "Retrieve an agent run",
-        "description": "Retrieves a single agent run by stable agent run ID.\n\n**Required permissions:** `workflow:run`",
+        "description": "Retrieves a single agent run by stable agent run ID.\n\n**Required permissions:** Any of `agent_run:read`, `workflow:run`",
         "security": [
           {
             "bearerAuth": []
@@ -40072,6 +40082,7 @@
           }
         },
         "x-vertesia-permissions": [
+          "agent_run:read",
           "workflow:run"
         ],
         "x-vertesia-source": {
@@ -40369,7 +40380,7 @@
           "Agent Runs"
         ],
         "summary": "List agent run updates",
-        "description": "Returns stored compact messages for an agent run after an optional timestamp cursor.\n\n**Required permissions:** `workflow:run`",
+        "description": "Returns stored compact messages for an agent run after an optional timestamp cursor.\n\n**Required permissions:** Any of `agent_run:read`, `workflow:run`",
         "security": [
           {
             "bearerAuth": []
@@ -40439,6 +40450,7 @@
           }
         },
         "x-vertesia-permissions": [
+          "agent_run:read",
           "workflow:run"
         ],
         "x-vertesia-source": {
@@ -40554,7 +40566,7 @@
           "Agent Runs"
         ],
         "summary": "Stream an agent run",
-        "description": "Opens a Server-Sent Events stream for live and archived agent run messages.\n\n**Required permissions:** `workflow:run`",
+        "description": "Opens a Server-Sent Events stream for live and archived agent run messages.\n\n**Required permissions:** Any of `agent_run:read`, `workflow:run`",
         "security": [
           {
             "bearerAuth": []
@@ -40632,6 +40644,7 @@
           }
         },
         "x-vertesia-permissions": [
+          "agent_run:read",
           "workflow:run"
         ],
         "x-vertesia-source": {
@@ -40661,7 +40674,7 @@
           "Agent Runs"
         ],
         "summary": "List agent run artifacts",
-        "description": "Lists user-visible artifact paths for an agent run. Internal artifact files are excluded by default.\n\n**Required permissions:** `workflow:run`",
+        "description": "Lists user-visible artifact paths for an agent run. Internal artifact files are excluded by default.\n\n**Required permissions:** Any of `agent_run:read`, `workflow:run`",
         "security": [
           {
             "bearerAuth": []
@@ -40740,6 +40753,7 @@
           }
         },
         "x-vertesia-permissions": [
+          "agent_run:read",
           "workflow:run"
         ],
         "x-vertesia-source": {
@@ -40769,7 +40783,7 @@
           "Agent Runs"
         ],
         "summary": "Get an agent run artifact",
-        "description": "Downloads an artifact or returns a signed download URL when `url=1` is supplied.\n\n**Required permissions:** `workflow:run`",
+        "description": "Downloads an artifact or returns a signed download URL when `url=1` is supplied.\n\n**Required permissions:** Any of `agent_run:read`, `workflow:run`",
         "security": [
           {
             "bearerAuth": []
@@ -40867,6 +40881,7 @@
           }
         },
         "x-vertesia-permissions": [
+          "agent_run:read",
           "workflow:run"
         ],
         "x-vertesia-source": {
@@ -40988,7 +41003,7 @@
           "Agent Runs"
         ],
         "summary": "Get agent run details",
-        "description": "Fetches detailed workflow execution state for an agent run, optionally including processed history.\n\n**Required permissions:** `workflow:run`",
+        "description": "Fetches detailed workflow execution state for an agent run, optionally including processed history.\n\n**Required permissions:** Any of `agent_run:read`, `workflow:run`",
         "security": [
           {
             "bearerAuth": []
@@ -41066,6 +41081,7 @@
           }
         },
         "x-vertesia-permissions": [
+          "agent_run:read",
           "workflow:run"
         ],
         "x-vertesia-source": {
@@ -41095,7 +41111,7 @@
           "Agent Runs"
         ],
         "summary": "List child agent runs",
-        "description": "Lists child workflows or sub-agent executions associated with an agent run.\n\n**Required permissions:** `workflow:run`",
+        "description": "Lists child workflows or sub-agent executions associated with an agent run.\n\n**Required permissions:** Any of `agent_run:read`, `workflow:run`",
         "security": [
           {
             "bearerAuth": []
@@ -41157,6 +41173,7 @@
           }
         },
         "x-vertesia-permissions": [
+          "agent_run:read",
           "workflow:run"
         ],
         "x-vertesia-source": {
@@ -41186,7 +41203,7 @@
           "Agent Runs"
         ],
         "summary": "Get process run context",
-        "description": "Returns the current node and the current process context snapshot for a process run.\n\n**Required permissions:** `workflow:run`",
+        "description": "Returns the current node and the current process context snapshot for a process run.\n\n**Required permissions:** Any of `agent_run:read`, `workflow:run`",
         "security": [
           {
             "bearerAuth": []
@@ -41248,6 +41265,7 @@
           }
         },
         "x-vertesia-permissions": [
+          "agent_run:read",
           "workflow:run"
         ],
         "x-vertesia-source": {
@@ -41277,7 +41295,7 @@
           "Agent Runs"
         ],
         "summary": "Get process run history",
-        "description": "Returns the hydrated node history for a process run, loading full history artifacts when available for long-running executions.\n\n**Required permissions:** `workflow:run`",
+        "description": "Returns the hydrated node history for a process run, loading full history artifacts when available for long-running executions.\n\n**Required permissions:** Any of `agent_run:read`, `workflow:run`",
         "security": [
           {
             "bearerAuth": []
@@ -41339,6 +41357,7 @@
           }
         },
         "x-vertesia-permissions": [
+          "agent_run:read",
           "workflow:run"
         ],
         "x-vertesia-source": {
@@ -41669,7 +41688,7 @@
           "Agent Runs"
         ],
         "summary": "Get child agent run details",
-        "description": "Fetches detailed workflow execution state for a child workflow of an agent run.\n\n**Required permissions:** `workflow:run`",
+        "description": "Fetches detailed workflow execution state for a child workflow of an agent run.\n\n**Required permissions:** Any of `agent_run:read`, `workflow:run`",
         "security": [
           {
             "bearerAuth": []
@@ -41739,6 +41758,7 @@
           }
         },
         "x-vertesia-permissions": [
+          "agent_run:read",
           "workflow:run"
         ],
         "x-vertesia-source": {
@@ -41768,7 +41788,7 @@
           "Agent Runs"
         ],
         "summary": "Stream agent run details",
-        "description": "Streams Temporal history events for an agent run across continue-as-new workflow runs.\n\n**Required permissions:** `workflow:run`",
+        "description": "Streams Temporal history events for an agent run across continue-as-new workflow runs.\n\n**Required permissions:** Any of `agent_run:read`, `workflow:run`",
         "security": [
           {
             "bearerAuth": []
@@ -41830,6 +41850,7 @@
           }
         },
         "x-vertesia-permissions": [
+          "agent_run:read",
           "workflow:run"
         ],
         "x-vertesia-source": {
@@ -43429,7 +43450,7 @@
           "Processes"
         ],
         "summary": "List process definitions",
-        "description": "Lists process definitions in the current project with optional status, process id, pagination, and revision filters. By default only the latest head revision for each process is returned; set `all_versions=true` to include every revision document.\n\n**Required permissions:** `workflow:run`",
+        "description": "Lists process definitions in the current project with optional status, process id, pagination, and revision filters. By default only the latest head revision for each process is returned; set `all_versions=true` to include every revision document.\n\n**Required permissions:** Any of `workflow:read`, `workflow:run`",
         "security": [
           {
             "bearerAuth": []
@@ -43515,6 +43536,7 @@
           }
         },
         "x-vertesia-permissions": [
+          "workflow:read",
           "workflow:run"
         ],
         "x-vertesia-source": {
@@ -43621,7 +43643,7 @@
           "Processes"
         ],
         "summary": "List process definition versions",
-        "description": "Lists all revisions for the process definition revision bucket containing the requested process id.\n\n**Required permissions:** `workflow:run`",
+        "description": "Lists all revisions for the process definition revision bucket containing the requested process id.\n\n**Required permissions:** Any of `workflow:read`, `workflow:run`",
         "security": [
           {
             "bearerAuth": []
@@ -43683,6 +43705,7 @@
           }
         },
         "x-vertesia-permissions": [
+          "workflow:read",
           "workflow:run"
         ],
         "x-vertesia-source": {
@@ -43712,7 +43735,7 @@
           "Processes"
         ],
         "summary": "Retrieve a process definition",
-        "description": "Retrieves a process definition by id.\n\n**Required permissions:** `workflow:run`",
+        "description": "Retrieves a process definition by id.\n\n**Required permissions:** Any of `workflow:read`, `workflow:run`",
         "security": [
           {
             "bearerAuth": []
@@ -43774,6 +43797,7 @@
           }
         },
         "x-vertesia-permissions": [
+          "workflow:read",
           "workflow:run"
         ],
         "x-vertesia-source": {
@@ -48586,7 +48610,7 @@
           "Workflow Rules"
         ],
         "summary": "List workflow rules",
-        "description": "Lists workflow rules available in the current project.",
+        "description": "Lists workflow rules available in the current project.\n\n**Required permissions:** Any of `workflow:read`, `workflow:admin`",
         "security": [
           {
             "bearerAuth": []
@@ -48638,7 +48662,10 @@
             }
           }
         },
-        "x-vertesia-permissions": [],
+        "x-vertesia-permissions": [
+          "workflow:read",
+          "workflow:admin"
+        ],
         "x-vertesia-source": {
           "file": "../../apps/zeno-server/src/api/workflows.ts",
           "className": "WorkflowsResource",
@@ -48743,7 +48770,7 @@
           "Workflow Definitions"
         ],
         "summary": "List workflow definitions",
-        "description": "Lists DSL workflow definitions in the current project.\n\n**Required permissions:** `workflow:admin`",
+        "description": "Lists DSL workflow definitions in the current project.\n\n**Required permissions:** Any of `workflow:read`, `workflow:admin`",
         "security": [
           {
             "bearerAuth": []
@@ -48796,6 +48823,7 @@
           }
         },
         "x-vertesia-permissions": [
+          "workflow:read",
           "workflow:admin"
         ],
         "x-vertesia-source": {
@@ -48902,7 +48930,7 @@
           "Workflow Runs"
         ],
         "summary": "List workflow runs",
-        "description": "Lists workflow runs with filtering, pagination, and optional rule scoping.\n\n**Required permissions:** `workflow:admin`",
+        "description": "Lists workflow runs with filtering, pagination, and optional rule scoping.\n\n**Required permissions:** Any of `workflow:read`, `workflow:admin`",
         "security": [
           {
             "bearerAuth": []
@@ -48955,6 +48983,7 @@
           }
         },
         "x-vertesia-permissions": [
+          "workflow:read",
           "workflow:admin"
         ],
         "x-vertesia-source": {
@@ -48994,7 +49023,7 @@
           "Workflow Runs"
         ],
         "summary": "Get workflow run updates",
-        "description": "Retrieves compact workflow updates published since the provided offset.\n\n**Required permissions:** `workflow:run`",
+        "description": "Retrieves compact workflow updates published since the provided offset.\n\n**Required permissions:** Any of `workflow:read`, `workflow:run`",
         "security": [
           {
             "bearerAuth": []
@@ -49072,6 +49101,7 @@
           }
         },
         "x-vertesia-permissions": [
+          "workflow:read",
           "workflow:run"
         ],
         "x-vertesia-source": {
@@ -49101,7 +49131,7 @@
           "Workflow Runs"
         ],
         "summary": "Stream workflow run updates",
-        "description": "Streams workflow messages and updates for a workflow run.\n\n**Required permissions:** `workflow:run`",
+        "description": "Streams workflow messages and updates for a workflow run.\n\n**Required permissions:** Any of `workflow:read`, `workflow:run`",
         "security": [
           {
             "bearerAuth": []
@@ -49187,6 +49217,7 @@
           }
         },
         "x-vertesia-permissions": [
+          "workflow:read",
           "workflow:run"
         ],
         "x-vertesia-source": {
@@ -49317,7 +49348,7 @@
           "Workflow Runs"
         ],
         "summary": "Retrieve a workflow run",
-        "description": "Retrieves workflow run status, timing, input, result, and optional execution history.\n\n**Required permissions:** `workflow:run`",
+        "description": "Retrieves workflow run status, timing, input, result, and optional execution history.\n\n**Required permissions:** Any of `workflow:read`, `workflow:run`",
         "security": [
           {
             "bearerAuth": []
@@ -49416,6 +49447,7 @@
           }
         },
         "x-vertesia-permissions": [
+          "workflow:read",
           "workflow:run"
         ],
         "x-vertesia-source": {
@@ -49562,7 +49594,7 @@
           "Workflow Runs"
         ],
         "summary": "Query a workflow run",
-        "description": "Executes a named query against a workflow run.\n\n**Required permissions:** `workflow:run`",
+        "description": "Executes a named query against a workflow run.\n\n**Required permissions:** Any of `workflow:read`, `workflow:run`",
         "security": [
           {
             "bearerAuth": []
@@ -49640,6 +49672,7 @@
           }
         },
         "x-vertesia-permissions": [
+          "workflow:read",
           "workflow:run"
         ],
         "x-vertesia-source": {
@@ -49963,7 +49996,7 @@
           "Workflow Rules"
         ],
         "summary": "Retrieve a workflow rule",
-        "description": "Retrieves a workflow rule by ID.\n\n**Required permissions:** `workflow:admin`",
+        "description": "Retrieves a workflow rule by ID.\n\n**Required permissions:** Any of `workflow:read`, `workflow:admin`",
         "security": [
           {
             "bearerAuth": []
@@ -50025,6 +50058,7 @@
           }
         },
         "x-vertesia-permissions": [
+          "workflow:read",
           "workflow:admin"
         ],
         "x-vertesia-source": {
@@ -50231,7 +50265,7 @@
           "Workflow Runs"
         ],
         "summary": "List runs for a workflow rule",
-        "description": "Lists workflow runs started from a specific workflow rule.\n\n**Required permissions:** `workflow:admin`",
+        "description": "Lists workflow runs started from a specific workflow rule.\n\n**Required permissions:** Any of `workflow:read`, `workflow:admin`",
         "security": [
           {
             "bearerAuth": []
@@ -50293,6 +50327,7 @@
           }
         },
         "x-vertesia-permissions": [
+          "workflow:read",
           "workflow:admin"
         ],
         "x-vertesia-source": {
@@ -50322,7 +50357,7 @@
           "Workflow Definitions"
         ],
         "summary": "Retrieve a workflow definition",
-        "description": "Retrieves a DSL workflow definition by ID.\n\n**Required permissions:** `workflow:admin`",
+        "description": "Retrieves a DSL workflow definition by ID.\n\n**Required permissions:** Any of `workflow:read`, `workflow:admin`",
         "security": [
           {
             "bearerAuth": []
@@ -50384,6 +50419,7 @@
           }
         },
         "x-vertesia-permissions": [
+          "workflow:read",
           "workflow:admin"
         ],
         "x-vertesia-source": {
