@@ -10332,6 +10332,26 @@ components:
             properties_bytes_dropped:
               type: number
               description: Total bytes dropped from oversized property values
+            batches_flushed:
+              type: number
+              description: Total batcher flushes across all completed shards (cumulative)
+            bulk_chunks_written:
+              type: number
+              description: Total ES bulk requests sent across all completed shards
+                (cumulative)
+            bulk_errors:
+              type: number
+              description: Total per-document ES bulk-item failures across all shards
+                (cumulative). Counts docs ES rejected — they aren't in the
+                indexed set.
+            avg_docs_per_batch:
+              type: number
+              description: Average documents per batch flush (written / batches_flushed) —
+                useful to spot under/over-batching
+            avg_chunks_per_batch:
+              type: number
+              description: Average chunks per batch (>1 means bulk_size_bytes cap is splitting
+                batches frequently)
             docs_per_second:
               type: number
               description: Documents processed per second

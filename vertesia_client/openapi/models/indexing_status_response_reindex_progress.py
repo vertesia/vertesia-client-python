@@ -44,13 +44,18 @@ class IndexingStatusResponseReindexProgress(BaseModel):
     embeddings_properties_skipped: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Properties embedding vectors skipped because they were invalid or dimension-mismatched")
     properties_values_trimmed: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Oversized property string values dropped during transform (size-based pruning)")
     properties_bytes_dropped: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Total bytes dropped from oversized property values")
+    batches_flushed: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Total batcher flushes across all completed shards (cumulative)")
+    bulk_chunks_written: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Total ES bulk requests sent across all completed shards (cumulative)")
+    bulk_errors: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Total per-document ES bulk-item failures across all shards (cumulative). Counts docs ES rejected — they aren't in the indexed set.")
+    avg_docs_per_batch: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Average documents per batch flush (written / batches_flushed) — useful to spot under/over-batching")
+    avg_chunks_per_batch: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Average chunks per batch (>1 means bulk_size_bytes cap is splitting batches frequently)")
     docs_per_second: Union[StrictFloat, StrictInt] = Field(description="Documents processed per second")
     elapsed_seconds: Union[StrictFloat, StrictInt] = Field(description="Elapsed time in seconds")
     estimated_seconds_remaining: Optional[Union[StrictFloat, StrictInt]] = Field(description="Estimated seconds remaining (null if unknown)")
     percent_complete: Union[StrictFloat, StrictInt] = Field(description="Percentage complete (0-100)")
     alias: StrictStr = Field(description="Source alias")
     target_index: StrictStr = Field(description="Target index name")
-    __properties: ClassVar[List[str]] = ["total_shards", "completed_shards", "failed_shards", "status", "scanned", "written", "errors", "embeddings_written", "skipped_embeddings", "embeddings_text_written", "embeddings_image_written", "embeddings_properties_written", "embeddings_text_skipped", "embeddings_image_skipped", "embeddings_properties_skipped", "properties_values_trimmed", "properties_bytes_dropped", "docs_per_second", "elapsed_seconds", "estimated_seconds_remaining", "percent_complete", "alias", "target_index"]
+    __properties: ClassVar[List[str]] = ["total_shards", "completed_shards", "failed_shards", "status", "scanned", "written", "errors", "embeddings_written", "skipped_embeddings", "embeddings_text_written", "embeddings_image_written", "embeddings_properties_written", "embeddings_text_skipped", "embeddings_image_skipped", "embeddings_properties_skipped", "properties_values_trimmed", "properties_bytes_dropped", "batches_flushed", "bulk_chunks_written", "bulk_errors", "avg_docs_per_batch", "avg_chunks_per_batch", "docs_per_second", "elapsed_seconds", "estimated_seconds_remaining", "percent_complete", "alias", "target_index"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -125,6 +130,11 @@ class IndexingStatusResponseReindexProgress(BaseModel):
             "embeddings_properties_skipped": obj.get("embeddings_properties_skipped"),
             "properties_values_trimmed": obj.get("properties_values_trimmed"),
             "properties_bytes_dropped": obj.get("properties_bytes_dropped"),
+            "batches_flushed": obj.get("batches_flushed"),
+            "bulk_chunks_written": obj.get("bulk_chunks_written"),
+            "bulk_errors": obj.get("bulk_errors"),
+            "avg_docs_per_batch": obj.get("avg_docs_per_batch"),
+            "avg_chunks_per_batch": obj.get("avg_chunks_per_batch"),
             "docs_per_second": obj.get("docs_per_second"),
             "elapsed_seconds": obj.get("elapsed_seconds"),
             "estimated_seconds_remaining": obj.get("estimated_seconds_remaining"),
