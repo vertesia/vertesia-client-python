@@ -4506,6 +4506,21 @@
           "$ref": "#/components/schemas/OAuthClient"
         }
       },
+      "OAuthClientScopeMetadata": {
+        "type": "object",
+        "properties": {
+          "supported_scopes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "supported_scopes"
+        ],
+        "additionalProperties": false
+      },
       "OAuthClient": {
         "type": "object",
         "properties": {
@@ -28244,7 +28259,7 @@
           "Interactions"
         ],
         "summary": "Delete an interaction",
-        "description": "Deletes an interaction from the current project.\n\n**Required permissions:** `interaction:write`",
+        "description": "Deletes an interaction from the current project. Pass ?cascade=true to also delete every interaction that lists this one as its parent (forward-only — never deletes ancestors).\n\n**Required permissions:** `interaction:write`",
         "security": [
           {
             "bearerAuth": []
@@ -37026,6 +37041,88 @@
               }
             }
           }
+        }
+      },
+      "parameters": [
+        {
+          "name": "x-api-version",
+          "in": "header",
+          "required": false,
+          "schema": {
+            "type": "string",
+            "example": "20260319"
+          },
+          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "x-vertesia-global-header": true
+        }
+      ]
+    },
+    "/oauth-clients/scope-metadata": {
+      "get": {
+        "operationId": "GetOAuthClientScopeMetadata",
+        "tags": [
+          "OAuth Clients"
+        ],
+        "summary": "Retrieve OAuth client scope metadata",
+        "description": "Returns the OAuth scopes supported by the Vertesia OAuth server for client configuration.\n\n**Required permissions:** `account:admin`",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OpenID": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OAuth client scope metadata.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthClientScopeMetadata"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [
+          "account:admin"
+        ],
+        "x-vertesia-source": {
+          "file": "../../apps/studio-server/src/api/oauth-clients.ts",
+          "className": "OAuthClientsResource",
+          "methodName": "scopeMetadata"
         }
       },
       "parameters": [

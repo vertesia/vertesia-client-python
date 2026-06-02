@@ -508,6 +508,7 @@ __all__ = [
     "OAuthClient",
     "OAuthClientCreateResponse",
     "OAuthClientCredentials",
+    "OAuthClientScopeMetadata",
     "OAuthClientStatus",
     "OAuthClientType",
     "OAuthGrant",
@@ -1293,6 +1294,7 @@ from vertesia_client.openapi.models.o_auth_authorize_response import OAuthAuthor
 from vertesia_client.openapi.models.o_auth_client import OAuthClient as OAuthClient
 from vertesia_client.openapi.models.o_auth_client_create_response import OAuthClientCreateResponse as OAuthClientCreateResponse
 from vertesia_client.openapi.models.o_auth_client_credentials import OAuthClientCredentials as OAuthClientCredentials
+from vertesia_client.openapi.models.o_auth_client_scope_metadata import OAuthClientScopeMetadata as OAuthClientScopeMetadata
 from vertesia_client.openapi.models.o_auth_client_status import OAuthClientStatus as OAuthClientStatus
 from vertesia_client.openapi.models.o_auth_client_type import OAuthClientType as OAuthClientType
 from vertesia_client.openapi.models.o_auth_grant import OAuthGrant as OAuthGrant

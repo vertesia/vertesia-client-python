@@ -460,6 +460,7 @@ from vertesia_client.openapi.models.o_auth_authorize_response import OAuthAuthor
 from vertesia_client.openapi.models.o_auth_client import OAuthClient
 from vertesia_client.openapi.models.o_auth_client_create_response import OAuthClientCreateResponse
 from vertesia_client.openapi.models.o_auth_client_credentials import OAuthClientCredentials
+from vertesia_client.openapi.models.o_auth_client_scope_metadata import OAuthClientScopeMetadata
 from vertesia_client.openapi.models.o_auth_client_status import OAuthClientStatus
 from vertesia_client.openapi.models.o_auth_client_type import OAuthClientType
 from vertesia_client.openapi.models.o_auth_grant import OAuthGrant

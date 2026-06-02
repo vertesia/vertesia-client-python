@@ -486,6 +486,7 @@ vertesia_client/openapi/models/o_auth_authorize_response.py
 vertesia_client/openapi/models/o_auth_client.py
 vertesia_client/openapi/models/o_auth_client_create_response.py
 vertesia_client/openapi/models/o_auth_client_credentials.py
+vertesia_client/openapi/models/o_auth_client_scope_metadata.py
 vertesia_client/openapi/models/o_auth_client_status.py
 vertesia_client/openapi/models/o_auth_client_type.py
 vertesia_client/openapi/models/o_auth_grant.py

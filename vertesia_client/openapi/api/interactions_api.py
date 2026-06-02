@@ -677,7 +677,7 @@ class InteractionsApi:
     ) -> DeleteByIdResult:
         """Delete an interaction
 
-        Deletes an interaction from the current project.  **Required permissions:** `interaction:write`
+        Deletes an interaction from the current project. Pass ?cascade=true to also delete every interaction that lists this one as its parent (forward-only — never deletes ancestors).  **Required permissions:** `interaction:write`
 
         :param interaction_id: (required)
         :type interaction_id: str
@@ -750,7 +750,7 @@ class InteractionsApi:
     ) -> ApiResponse[DeleteByIdResult]:
         """Delete an interaction
 
-        Deletes an interaction from the current project.  **Required permissions:** `interaction:write`
+        Deletes an interaction from the current project. Pass ?cascade=true to also delete every interaction that lists this one as its parent (forward-only — never deletes ancestors).  **Required permissions:** `interaction:write`
 
         :param interaction_id: (required)
         :type interaction_id: str
@@ -823,7 +823,7 @@ class InteractionsApi:
     ) -> RESTResponseType:
         """Delete an interaction
 
-        Deletes an interaction from the current project.  **Required permissions:** `interaction:write`
+        Deletes an interaction from the current project. Pass ?cascade=true to also delete every interaction that lists this one as its parent (forward-only — never deletes ancestors).  **Required permissions:** `interaction:write`
 
         :param interaction_id: (required)
         :type interaction_id: str
