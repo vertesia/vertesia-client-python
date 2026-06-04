@@ -40,7 +40,7 @@ class ExecutionEnvironment(BaseModel):
     api_key: Optional[StrictStr] = Field(default=None, alias="apiKey")
     apikey_hint: Optional[StrictStr] = Field(default=None, description="Hint showing first and last characters of the API key (e.g. \"AKIA...3xQf\"). Stored alongside the encrypted key so the UI can display which key is configured.")
     config: Optional[Any] = None
-    settings: Optional[ExecutionEnvironmentSettings] = None
+    settings: Optional[ExecutionEnvironmentSettings] = Field(default=None, description="Additional provider-specific settings passed through to the driver. For example, custom headers for Apigee-proxied endpoints.")
     account: StrictStr
     allowed_projects: Optional[List[StrictStr]] = None
     created_by: StrictStr

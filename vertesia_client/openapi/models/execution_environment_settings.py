@@ -13,124 +13,89 @@
 
 
 from __future__ import annotations
-from inspect import getfullargspec
-import json
 import pprint
 import re  # noqa: F401
-from pydantic import BaseModel, ConfigDict, Field, StrictStr, ValidationError, field_validator
-from typing import Any, Dict, Optional
-from vertesia_client.openapi.models.vertex_ai_environment_settings import VertexAIEnvironmentSettings
-from typing import Union, Any, List, Set, TYPE_CHECKING, Optional, Dict
-from typing_extensions import Literal, Self
-from pydantic import Field
+import json
 
-EXECUTIONENVIRONMENTSETTINGS_ANY_OF_SCHEMAS = ["Dict[str, object]", "VertexAIEnvironmentSettings"]
+from pydantic import BaseModel, ConfigDict, StrictStr
+from typing import Any, ClassVar, Dict, List, Optional
+from typing import Optional, Set
+from typing_extensions import Self
+from pydantic_core import to_jsonable_python
 
 class ExecutionEnvironmentSettings(BaseModel):
     """
-    Additional provider-specific settings passed through to the driver. For example, custom headers for Apigee-proxied endpoints.
-    """
+    ExecutionEnvironmentSettings
+    """ # noqa: E501
+    bucket_access_principal: Optional[StrictStr] = None
+    additional_properties: Dict[str, Any] = {}
+    __properties: ClassVar[List[str]] = ["bucket_access_principal"]
 
-    # data type: Dict[str, object]
-    anyof_schema_1_validator: Optional[Dict[str, Any]] = None
-    # data type: VertexAIEnvironmentSettings
-    anyof_schema_2_validator: Optional[VertexAIEnvironmentSettings] = None
-    if TYPE_CHECKING:
-        actual_instance: Optional[Union[Dict[str, object], VertexAIEnvironmentSettings]] = None
-    else:
-        actual_instance: Any = None
-    any_of_schemas: Set[str] = { "Dict[str, object]", "VertexAIEnvironmentSettings" }
+    model_config = ConfigDict(
+        validate_by_name=True,
+        validate_by_alias=True,
+        validate_assignment=True,
+        protected_namespaces=(),
+    )
 
-    model_config = {
-        "validate_assignment": True,
-        "protected_namespaces": (),
-    }
-
-    def __init__(self, *args, **kwargs) -> None:
-        if args:
-            if len(args) > 1:
-                raise ValueError("If a position argument is used, only 1 is allowed to set `actual_instance`")
-            if kwargs:
-                raise ValueError("If a position argument is used, keyword arguments cannot be used.")
-            super().__init__(actual_instance=args[0])
-        else:
-            super().__init__(**kwargs)
-
-    @field_validator('actual_instance')
-    def actual_instance_must_validate_anyof(cls, v):
-        instance = ExecutionEnvironmentSettings.model_construct()
-        error_messages = []
-        # validate data type: Dict[str, object]
-        try:
-            instance.anyof_schema_1_validator = v
-            return v
-        except (ValidationError, ValueError) as e:
-            error_messages.append(str(e))
-        # validate data type: VertexAIEnvironmentSettings
-        if not isinstance(v, VertexAIEnvironmentSettings):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `VertexAIEnvironmentSettings`")
-        else:
-            return v
-
-        if error_messages:
-            # no match
-            raise ValueError("No match found when setting the actual_instance in ExecutionEnvironmentSettings with anyOf schemas: Dict[str, object], VertexAIEnvironmentSettings. Details: " + ", ".join(error_messages))
-        else:
-            return v
-
-    @classmethod
-    def from_dict(cls, obj: Dict[str, Any]) -> Self:
-        return cls.from_json(json.dumps(obj))
-
-    @classmethod
-    def from_json(cls, json_str: str) -> Self:
-        """Returns the object represented by the json string"""
-        instance = cls.model_construct()
-        error_messages = []
-        # deserialize data into Dict[str, object]
-        try:
-            # validation
-            instance.anyof_schema_1_validator = json.loads(json_str)
-            # assign value to actual_instance
-            instance.actual_instance = instance.anyof_schema_1_validator
-            return instance
-        except (ValidationError, ValueError) as e:
-            error_messages.append(str(e))
-        # anyof_schema_2_validator: Optional[VertexAIEnvironmentSettings] = None
-        try:
-            instance.actual_instance = VertexAIEnvironmentSettings.from_json(json_str)
-            return instance
-        except (ValidationError, ValueError) as e:
-             error_messages.append(str(e))
-
-        if error_messages:
-            # no match
-            raise ValueError("No match found when deserializing the JSON string into ExecutionEnvironmentSettings with anyOf schemas: Dict[str, object], VertexAIEnvironmentSettings. Details: " + ", ".join(error_messages))
-        else:
-            return instance
-
-    def to_json(self) -> str:
-        """Returns the JSON representation of the actual instance"""
-        if self.actual_instance is None:
-            return "null"
-
-        if hasattr(self.actual_instance, "to_json") and callable(self.actual_instance.to_json):
-            return self.actual_instance.to_json()
-        else:
-            return json.dumps(self.actual_instance)
-
-    def to_dict(self) -> Optional[Union[Dict[str, Any], Dict[str, object], VertexAIEnvironmentSettings]]:
-        """Returns the dict representation of the actual instance"""
-        if self.actual_instance is None:
-            return None
-
-        if hasattr(self.actual_instance, "to_dict") and callable(self.actual_instance.to_dict):
-            return self.actual_instance.to_dict()
-        else:
-            return self.actual_instance
 
     def to_str(self) -> str:
-        """Returns the string representation of the actual instance"""
-        return pprint.pformat(self.model_dump())
+        """Returns the string representation of the model using alias"""
+        return pprint.pformat(self.model_dump(by_alias=True))
+
+    def to_json(self) -> str:
+        """Returns the JSON representation of the model using alias"""
+        return json.dumps(to_jsonable_python(self.to_dict()))
+
+    @classmethod
+    def from_json(cls, json_str: str) -> Optional[Self]:
+        """Create an instance of ExecutionEnvironmentSettings from a JSON string"""
+        return cls.from_dict(json.loads(json_str))
+
+    def to_dict(self) -> Dict[str, Any]:
+        """Return the dictionary representation of the model using alias.
+
+        This has the following differences from calling pydantic's
+        `self.model_dump(by_alias=True)`:
+
+        * `None` is only added to the output dict for nullable fields that
+          were set at model initialization. Other fields with value `None`
+          are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
+        """
+        excluded_fields: Set[str] = set([
+            "additional_properties",
+        ])
+
+        _dict = self.model_dump(
+            by_alias=True,
+            exclude=excluded_fields,
+            exclude_none=True,
+        )
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
+        return _dict
+
+    @classmethod
+    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
+        """Create an instance of ExecutionEnvironmentSettings from a dict"""
+        if obj is None:
+            return None
+
+        if not isinstance(obj, dict):
+            return cls.model_validate(obj)
+
+        _obj = cls.model_validate({
+            "bucket_access_principal": obj.get("bucket_access_principal")
+        })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
+        return _obj
 
 

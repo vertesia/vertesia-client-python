@@ -754,7 +754,6 @@ __all__ = [
     "VectorSearchQuery",
     "VertesiaSDKToolCollectionObject",
     "VertexAIClaudeOptions",
-    "VertexAIEnvironmentSettings",
     "VertexAIGeminiOptions",
     "VertexAIOptions",
     "VideoMetadata",
@@ -1542,7 +1541,6 @@ from vertesia_client.openapi.models.validate_url_response import ValidateUrlResp
 from vertesia_client.openapi.models.vector_search_query import VectorSearchQuery as VectorSearchQuery
 from vertesia_client.openapi.models.vertesia_sdk_tool_collection_object import VertesiaSDKToolCollectionObject as VertesiaSDKToolCollectionObject
 from vertesia_client.openapi.models.vertex_ai_claude_options import VertexAIClaudeOptions as VertexAIClaudeOptions
-from vertesia_client.openapi.models.vertex_ai_environment_settings import VertexAIEnvironmentSettings as VertexAIEnvironmentSettings
 from vertesia_client.openapi.models.vertex_ai_gemini_options import VertexAIGeminiOptions as VertexAIGeminiOptions
 from vertesia_client.openapi.models.vertex_ai_options import VertexAIOptions as VertexAIOptions
 from vertesia_client.openapi.models.video_metadata import VideoMetadata as VideoMetadata

@@ -38,7 +38,7 @@ class ExecutionEnvironmentCreatePayload(BaseModel):
     enabled_models: Optional[List[AIModel]] = None
     api_key: Optional[StrictStr] = Field(default=None, alias="apiKey")
     config: Optional[Any] = None
-    settings: Optional[ExecutionEnvironmentSettings] = None
+    settings: Optional[ExecutionEnvironmentSettings] = Field(default=None, description="Additional provider-specific settings passed through to the driver. For example, custom headers for Apigee-proxied endpoints.")
     allowed_projects: Optional[List[StrictStr]] = None
     __properties: ClassVar[List[str]] = ["name", "provider", "description", "endpoint_url", "default_model", "enabled_models", "apiKey", "config", "settings", "allowed_projects"]
 
