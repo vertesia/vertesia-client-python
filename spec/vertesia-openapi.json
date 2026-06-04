@@ -737,8 +737,15 @@
           },
           "config": {},
           "settings": {
-            "type": "object",
-            "additionalProperties": true,
+            "anyOf": [
+              {
+                "type": "object",
+                "additionalProperties": true
+              },
+              {
+                "$ref": "#/components/schemas/VertexAIEnvironmentSettings"
+              }
+            ],
             "description": "Additional provider-specific settings passed through to the driver. For example, custom headers for Apigee-proxied endpoints."
           },
           "account": {
@@ -805,8 +812,15 @@
           },
           "config": {},
           "settings": {
-            "type": "object",
-            "additionalProperties": true,
+            "anyOf": [
+              {
+                "type": "object",
+                "additionalProperties": true
+              },
+              {
+                "$ref": "#/components/schemas/VertexAIEnvironmentSettings"
+              }
+            ],
             "description": "Additional provider-specific settings passed through to the driver. For example, custom headers for Apigee-proxied endpoints."
           },
           "allowed_projects": {
@@ -851,8 +865,15 @@
           },
           "config": {},
           "settings": {
-            "type": "object",
-            "additionalProperties": true,
+            "anyOf": [
+              {
+                "type": "object",
+                "additionalProperties": true
+              },
+              {
+                "$ref": "#/components/schemas/VertexAIEnvironmentSettings"
+              }
+            ],
             "description": "Additional provider-specific settings passed through to the driver. For example, custom headers for Apigee-proxied endpoints."
           },
           "allowed_projects": {
@@ -7201,6 +7222,15 @@
           "unknown",
           "legacy"
         ]
+      },
+      "VertexAIEnvironmentSettings": {
+        "type": "object",
+        "properties": {
+          "bucket_access_principal": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
       },
       "MediatorEnvConfig": {
         "type": "object",

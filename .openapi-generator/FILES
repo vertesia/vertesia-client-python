@@ -354,6 +354,7 @@ vertesia_client/openapi/models/execution_environment_config_update_payload.py
 vertesia_client/openapi/models/execution_environment_config_update_payload_config.py
 vertesia_client/openapi/models/execution_environment_create_payload.py
 vertesia_client/openapi/models/execution_environment_ref.py
+vertesia_client/openapi/models/execution_environment_settings.py
 vertesia_client/openapi/models/execution_environment_update_payload.py
 vertesia_client/openapi/models/execution_run.py
 vertesia_client/openapi/models/execution_run_doc_ref.py
@@ -731,6 +732,7 @@ vertesia_client/openapi/models/validate_url_response.py
 vertesia_client/openapi/models/vector_search_query.py
 vertesia_client/openapi/models/vertesia_sdk_tool_collection_object.py
 vertesia_client/openapi/models/vertex_ai_claude_options.py
+vertesia_client/openapi/models/vertex_ai_environment_settings.py
 vertesia_client/openapi/models/vertex_ai_gemini_options.py
 vertesia_client/openapi/models/vertex_ai_options.py
 vertesia_client/openapi/models/video_metadata.py

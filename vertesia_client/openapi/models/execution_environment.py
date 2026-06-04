@@ -20,6 +20,7 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from vertesia_client.openapi.models.ai_model import AIModel
+from vertesia_client.openapi.models.execution_environment_settings import ExecutionEnvironmentSettings
 from vertesia_client.openapi.models.supported_providers import SupportedProviders
 from typing import Optional, Set
 from typing_extensions import Self
@@ -39,14 +40,13 @@ class ExecutionEnvironment(BaseModel):
     api_key: Optional[StrictStr] = Field(default=None, alias="apiKey")
     apikey_hint: Optional[StrictStr] = Field(default=None, description="Hint showing first and last characters of the API key (e.g. \"AKIA...3xQf\"). Stored alongside the encrypted key so the UI can display which key is configured.")
     config: Optional[Any] = None
-    settings: Optional[Dict[str, Any]] = Field(default=None, description="Additional provider-specific settings passed through to the driver. For example, custom headers for Apigee-proxied endpoints.")
+    settings: Optional[ExecutionEnvironmentSettings] = None
     account: StrictStr
     allowed_projects: Optional[List[StrictStr]] = None
     created_by: StrictStr
     updated_by: StrictStr
     created_at: StrictStr
     updated_at: StrictStr
-    additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["id", "name", "provider", "description", "endpoint_url", "default_model", "enabled_models", "apiKey", "apikey_hint", "config", "settings", "account", "allowed_projects", "created_by", "updated_by", "created_at", "updated_at"]
 
     model_config = ConfigDict(
@@ -79,10 +79,8 @@ class ExecutionEnvironment(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
-        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
-            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -97,11 +95,9 @@ class ExecutionEnvironment(BaseModel):
                 if _item_enabled_models:
                     _items.append(_item_enabled_models.to_dict())
             _dict['enabled_models'] = _items
-        # puts key-value pairs in additional_properties in the top level
-        if self.additional_properties is not None:
-            for _key, _value in self.additional_properties.items():
-                _dict[_key] = _value
-
+        # override the default output from pydantic by calling `to_dict()` of settings
+        if self.settings:
+            _dict['settings'] = self.settings.to_dict()
         # set to None if config (nullable) is None
         # and model_fields_set contains the field
         if self.config is None and "config" in self.model_fields_set:
@@ -129,7 +125,7 @@ class ExecutionEnvironment(BaseModel):
             "apiKey": obj.get("apiKey"),
             "apikey_hint": obj.get("apikey_hint"),
             "config": obj.get("config"),
-            "settings": obj.get("settings"),
+            "settings": ExecutionEnvironmentSettings.from_dict(obj["settings"]) if obj.get("settings") is not None else None,
             "account": obj.get("account"),
             "allowed_projects": obj.get("allowed_projects"),
             "created_by": obj.get("created_by"),
@@ -137,11 +133,6 @@ class ExecutionEnvironment(BaseModel):
             "created_at": obj.get("created_at"),
             "updated_at": obj.get("updated_at")
         })
-        # store additional fields in additional_properties
-        for _key in obj.keys():
-            if _key not in cls.__properties:
-                _obj.additional_properties[_key] = obj.get(_key)
-
         return _obj
 
 

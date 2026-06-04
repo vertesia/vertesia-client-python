@@ -376,6 +376,7 @@ __all__ = [
     "ExecutionEnvironmentConfigUpdatePayloadConfig",
     "ExecutionEnvironmentCreatePayload",
     "ExecutionEnvironmentRef",
+    "ExecutionEnvironmentSettings",
     "ExecutionEnvironmentUpdatePayload",
     "ExecutionRun",
     "ExecutionRunDocRef",
@@ -753,6 +754,7 @@ __all__ = [
     "VectorSearchQuery",
     "VertesiaSDKToolCollectionObject",
     "VertexAIClaudeOptions",
+    "VertexAIEnvironmentSettings",
     "VertexAIGeminiOptions",
     "VertexAIOptions",
     "VideoMetadata",
@@ -1162,6 +1164,7 @@ from vertesia_client.openapi.models.execution_environment_config_update_payload 
 from vertesia_client.openapi.models.execution_environment_config_update_payload_config import ExecutionEnvironmentConfigUpdatePayloadConfig as ExecutionEnvironmentConfigUpdatePayloadConfig
 from vertesia_client.openapi.models.execution_environment_create_payload import ExecutionEnvironmentCreatePayload as ExecutionEnvironmentCreatePayload
 from vertesia_client.openapi.models.execution_environment_ref import ExecutionEnvironmentRef as ExecutionEnvironmentRef
+from vertesia_client.openapi.models.execution_environment_settings import ExecutionEnvironmentSettings as ExecutionEnvironmentSettings
 from vertesia_client.openapi.models.execution_environment_update_payload import ExecutionEnvironmentUpdatePayload as ExecutionEnvironmentUpdatePayload
 from vertesia_client.openapi.models.execution_run import ExecutionRun as ExecutionRun
 from vertesia_client.openapi.models.execution_run_doc_ref import ExecutionRunDocRef as ExecutionRunDocRef
@@ -1539,6 +1542,7 @@ from vertesia_client.openapi.models.validate_url_response import ValidateUrlResp
 from vertesia_client.openapi.models.vector_search_query import VectorSearchQuery as VectorSearchQuery
 from vertesia_client.openapi.models.vertesia_sdk_tool_collection_object import VertesiaSDKToolCollectionObject as VertesiaSDKToolCollectionObject
 from vertesia_client.openapi.models.vertex_ai_claude_options import VertexAIClaudeOptions as VertexAIClaudeOptions
+from vertesia_client.openapi.models.vertex_ai_environment_settings import VertexAIEnvironmentSettings as VertexAIEnvironmentSettings
 from vertesia_client.openapi.models.vertex_ai_gemini_options import VertexAIGeminiOptions as VertexAIGeminiOptions
 from vertesia_client.openapi.models.vertex_ai_options import VertexAIOptions as VertexAIOptions
 from vertesia_client.openapi.models.video_metadata import VideoMetadata as VideoMetadata
