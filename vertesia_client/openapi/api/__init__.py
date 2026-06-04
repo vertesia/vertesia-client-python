@@ -30,6 +30,7 @@ from vertesia_client.openapi.api.roles_api import RolesApi
 from vertesia_client.openapi.api.secrets_api import SecretsApi
 from vertesia_client.openapi.api.tasks_api import TasksApi
 from vertesia_client.openapi.api.token_service_api import TokenServiceApi
+from vertesia_client.openapi.api.tools_api import ToolsApi
 from vertesia_client.openapi.api.user_groups_api import UserGroupsApi
 from vertesia_client.openapi.api.users_api import UsersApi
 from vertesia_client.openapi.api.workflow_definitions_api import WorkflowDefinitionsApi

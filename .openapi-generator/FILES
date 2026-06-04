@@ -29,6 +29,7 @@ vertesia_client/openapi/api/roles_api.py
 vertesia_client/openapi/api/secrets_api.py
 vertesia_client/openapi/api/tasks_api.py
 vertesia_client/openapi/api/token_service_api.py
+vertesia_client/openapi/api/tools_api.py
 vertesia_client/openapi/api/user_groups_api.py
 vertesia_client/openapi/api/users_api.py
 vertesia_client/openapi/api/workflow_definitions_api.py
@@ -74,6 +75,7 @@ vertesia_client/openapi/models/agent_task.py
 vertesia_client/openapi/models/agent_task_error.py
 vertesia_client/openapi/models/agent_token_request.py
 vertesia_client/openapi/models/agent_tool_definition.py
+vertesia_client/openapi/models/aggregated_tool.py
 vertesia_client/openapi/models/ai_model.py
 vertesia_client/openapi/models/ai_model_status.py
 vertesia_client/openapi/models/alter_table_operation.py
@@ -703,7 +705,10 @@ vertesia_client/openapi/models/tool_collection_auth_type.py
 vertesia_client/openapi/models/tool_collection_object.py
 vertesia_client/openapi/models/tool_definition.py
 vertesia_client/openapi/models/tool_reference.py
+vertesia_client/openapi/models/tool_source.py
 vertesia_client/openapi/models/tool_use.py
+vertesia_client/openapi/models/tool_validation_result.py
+vertesia_client/openapi/models/tool_validation_result_collisions_inner.py
 vertesia_client/openapi/models/transcript.py
 vertesia_client/openapi/models/transcript_segment.py
 vertesia_client/openapi/models/transient_token_user_invite_token_data_array.py
@@ -727,6 +732,8 @@ vertesia_client/openapi/models/user_channel.py
 vertesia_client/openapi/models/user_group.py
 vertesia_client/openapi/models/user_ref.py
 vertesia_client/openapi/models/user_token_request.py
+vertesia_client/openapi/models/validate_tool_names_payload.py
+vertesia_client/openapi/models/validate_tool_names_response.py
 vertesia_client/openapi/models/validate_url_request.py
 vertesia_client/openapi/models/validate_url_response.py
 vertesia_client/openapi/models/vector_search_query.py

@@ -4048,6 +4048,40 @@ components:
       required:
         - browser_workflow_id
       additionalProperties: false
+    AggregatedToolArray:
+      type: array
+      items:
+        $ref: "#/components/schemas/AggregatedTool"
+    ValidateToolNamesResponse:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/ToolValidationResult"
+          description: One entry per requested name, in the same order.
+        invalid_count:
+          type: number
+          description: Convenience count of `results.filter(r => !r.valid).length`.
+      required:
+        - results
+        - invalid_count
+      additionalProperties: false
+      description: Response from `POST /tools/validate`.
+    ValidateToolNamesPayload:
+      type: object
+      properties:
+        names:
+          type: array
+          items:
+            type: string
+          description: Bare tool names as they appear in
+            `agent_runner_options.tool_names`. `+`/`-` prefixes are stripped
+            before lookup.
+      required:
+        - names
+      additionalProperties: false
+      description: Request payload for `POST /tools/validate`.
     ProjectRef:
       type: object
       properties:
@@ -9338,6 +9372,122 @@ components:
             usable. Expired credentials are hidden from lookup and cannot be
             filled.
       additionalProperties: false
+    AggregatedTool:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name as referenced from `agent_runner_options.tool_names`. For
+            interaction skills this is `learn_<endpoint>`.
+        source:
+          $ref: "#/components/schemas/ToolSource"
+        description:
+          type: string
+        title:
+          type: string
+        is_default:
+          type: boolean
+          description: Whether the tool is part of the default toolkit when no explicit
+            `tool_names` is provided.
+        annotations:
+          $ref: "#/components/schemas/MCPToolAnnotations"
+        unlocked_tools:
+          type: array
+          items:
+            type: string
+          description: "For skills (`learn_*`): tool names this skill unlocks when invoked."
+        app_install_id:
+          type: string
+          description: "Present when `source === 'app'`: the app installation that
+            provides this tool."
+        app_name:
+          type: string
+          description: "Present when `source === 'app'`: the app's manifest name (used for
+            `principal.apps` filtering)."
+        interaction_id:
+          type: string
+          description: "Present when `source === 'interaction'`: the interaction document
+            id."
+        is_agent:
+          type: boolean
+          description: "Present when `source === 'interaction'`: true if the interaction
+            has `agent_runner_options.is_agent === true`. Lets UI consumers
+            distinguish sub-agents (autonomous, run-to-completion) from regular
+            interaction tools."
+      required:
+        - name
+        - source
+      additionalProperties: false
+      description: A single tool entry in the unified registry, regardless of where it
+        came from. Returned by `GET /tools` and the resolution map of `POST
+        /tools/validate`.
+    ToolSource:
+      type: string
+      enum:
+        - builtin
+        - app
+        - interaction
+      description: >-
+        Origin of a tool in the unified project-scoped tool registry.
+
+
+        - `builtin`: anything statically registered on the worker — workflow
+        builtins, studio agent tools, and sys skills
+
+        - `app`: tools contributed by an installed app for the project
+
+        - `interaction`: a project interaction exposed via `tag=tool` /
+        `is_tool=true` / `is_skill=true`
+
+
+        Skill semantics (the tool unlocks others when invoked) are NOT part of
+        the source. They are identified universally by the `learn_` prefix in
+        the tool name. This matches how the runtime registry stores them and
+        avoids splitting one logical origin into two sources.
+    ToolValidationResult:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name the caller asked about.
+        valid:
+          type: boolean
+          description: True if the name resolves to exactly one tool in the project's
+            unified registry.
+        source:
+          $ref: "#/components/schemas/ToolSource"
+          description: "When `valid`: which source the tool came from."
+        app_install_id:
+          type: string
+          description: "When `valid` and `source === 'app'`: the app installation that
+            provides the tool."
+        app_name:
+          type: string
+          description: "When `valid` and `source === 'app'`: the app's manifest name."
+        suggestion:
+          type: string
+          description: "When `!valid` and a close match exists: the suggested replacement
+            name (Levenshtein-based)."
+        collisions:
+          type: array
+          items:
+            type: object
+            properties:
+              source:
+                $ref: "#/components/schemas/ToolSource"
+              app_install_id:
+                type: string
+            required:
+              - source
+            additionalProperties: false
+          description: Populated when a name appears in more than one source. Validation
+            does not fail on this, but exposes the ambiguity so callers can
+            surface a warning (last-write-wins resolution applies).
+      required:
+        - name
+        - valid
+      additionalProperties: false
+      description: Per-name resolution result for `POST /tools/validate`.
     ErrorResponse:
       type: object
       description: Standard JSON error response returned by the server error handler.
@@ -28832,6 +28982,189 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/WebsiteCredentialFillRequest"
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260319"
+        description: Optional Vertesia API version header. Use `20260319` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /tools:
+    get:
+      operationId: ListAgentTools
+      tags:
+        - Tools
+      summary: List all tools available in the project
+      description: Returns the unified project-scoped tool registry visible to the
+        current principal. Sources can be filtered via the `sources` query
+        string.
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters:
+        - name: sources
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - builtin
+                - app
+                - interaction
+              description: >-
+                Origin of a tool in the unified project-scoped tool registry.
+
+
+                - `builtin`: anything statically registered on the worker —
+                workflow builtins, studio agent tools, and sys skills
+
+                - `app`: tools contributed by an installed app for the project
+
+                - `interaction`: a project interaction exposed via `tag=tool` /
+                `is_tool=true` / `is_skill=true`
+
+
+                Skill semantics (the tool unlocks others when invoked) are NOT
+                part of the source. They are identified universally by the
+                `learn_` prefix in the tool name. This matches how the runtime
+                registry stores them and avoids splitting one logical origin
+                into two sources.
+            description: Include only these sources.
+          description: Include only these sources.
+          style: form
+          explode: true
+        - name: exclude
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - builtin
+                - app
+                - interaction
+              description: >-
+                Origin of a tool in the unified project-scoped tool registry.
+
+
+                - `builtin`: anything statically registered on the worker —
+                workflow builtins, studio agent tools, and sys skills
+
+                - `app`: tools contributed by an installed app for the project
+
+                - `interaction`: a project interaction exposed via `tag=tool` /
+                `is_tool=true` / `is_skill=true`
+
+
+                Skill semantics (the tool unlocks others when invoked) are NOT
+                part of the source. They are identified universally by the
+                `learn_` prefix in the tool name. This matches how the runtime
+                registry stores them and avoids splitting one logical origin
+                into two sources.
+            description: Drop these sources from the result (and skip their fetch). Applied
+              after `sources`.
+          description: Drop these sources from the result (and skip their fetch). Applied
+            after `sources`.
+          style: form
+          explode: true
+      responses:
+        "200":
+          description: Aggregated tool list.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AggregatedToolArray"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions: []
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/tools.ts
+        className: ToolsResource
+        methodName: list
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260319"
+        description: Optional Vertesia API version header. Use `20260319` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /tools/validate:
+    post:
+      operationId: ValidateAgentToolNames
+      tags:
+        - Tools
+      summary: Validate tool names against the project registry
+      description: Resolves each name to its source or reports it as invalid with a
+        suggestion.
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters: []
+      responses:
+        "200":
+          description: Per-name validation results.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidateToolNamesResponse"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions: []
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/tools.ts
+        className: ToolsResource
+        methodName: validate
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ValidateToolNamesPayload"
     parameters:
       - name: x-api-version
         in: header

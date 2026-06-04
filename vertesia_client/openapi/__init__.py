@@ -47,6 +47,7 @@ __all__ = [
     "SecretsApi",
     "TasksApi",
     "TokenServiceApi",
+    "ToolsApi",
     "UserGroupsApi",
     "UsersApi",
     "WorkflowDefinitionsApi",
@@ -98,6 +99,7 @@ __all__ = [
     "AgentTaskError",
     "AgentTokenRequest",
     "AgentToolDefinition",
+    "AggregatedTool",
     "AlterTableOperation",
     "AlterTableOperationOneOf",
     "AlterTableOperationOneOf1",
@@ -725,7 +727,10 @@ __all__ = [
     "ToolCollectionObject",
     "ToolDefinition",
     "ToolReference",
+    "ToolSource",
     "ToolUse",
+    "ToolValidationResult",
+    "ToolValidationResultCollisionsInner",
     "Transcript",
     "TranscriptSegment",
     "TransientTokenUserInviteTokenDataArray",
@@ -749,6 +754,8 @@ __all__ = [
     "UserGroup",
     "UserRef",
     "UserTokenRequest",
+    "ValidateToolNamesPayload",
+    "ValidateToolNamesResponse",
     "ValidateUrlRequest",
     "ValidateUrlResponse",
     "VectorSearchQuery",
@@ -830,6 +837,7 @@ from vertesia_client.openapi.api.roles_api import RolesApi as RolesApi
 from vertesia_client.openapi.api.secrets_api import SecretsApi as SecretsApi
 from vertesia_client.openapi.api.tasks_api import TasksApi as TasksApi
 from vertesia_client.openapi.api.token_service_api import TokenServiceApi as TokenServiceApi
+from vertesia_client.openapi.api.tools_api import ToolsApi as ToolsApi
 from vertesia_client.openapi.api.user_groups_api import UserGroupsApi as UserGroupsApi
 from vertesia_client.openapi.api.users_api import UsersApi as UsersApi
 from vertesia_client.openapi.api.workflow_definitions_api import WorkflowDefinitionsApi as WorkflowDefinitionsApi
@@ -885,6 +893,7 @@ from vertesia_client.openapi.models.agent_task import AgentTask as AgentTask
 from vertesia_client.openapi.models.agent_task_error import AgentTaskError as AgentTaskError
 from vertesia_client.openapi.models.agent_token_request import AgentTokenRequest as AgentTokenRequest
 from vertesia_client.openapi.models.agent_tool_definition import AgentToolDefinition as AgentToolDefinition
+from vertesia_client.openapi.models.aggregated_tool import AggregatedTool as AggregatedTool
 from vertesia_client.openapi.models.alter_table_operation import AlterTableOperation as AlterTableOperation
 from vertesia_client.openapi.models.alter_table_operation_one_of import AlterTableOperationOneOf as AlterTableOperationOneOf
 from vertesia_client.openapi.models.alter_table_operation_one_of1 import AlterTableOperationOneOf1 as AlterTableOperationOneOf1
@@ -1512,7 +1521,10 @@ from vertesia_client.openapi.models.tool_collection_auth_type import ToolCollect
 from vertesia_client.openapi.models.tool_collection_object import ToolCollectionObject as ToolCollectionObject
 from vertesia_client.openapi.models.tool_definition import ToolDefinition as ToolDefinition
 from vertesia_client.openapi.models.tool_reference import ToolReference as ToolReference
+from vertesia_client.openapi.models.tool_source import ToolSource as ToolSource
 from vertesia_client.openapi.models.tool_use import ToolUse as ToolUse
+from vertesia_client.openapi.models.tool_validation_result import ToolValidationResult as ToolValidationResult
+from vertesia_client.openapi.models.tool_validation_result_collisions_inner import ToolValidationResultCollisionsInner as ToolValidationResultCollisionsInner
 from vertesia_client.openapi.models.transcript import Transcript as Transcript
 from vertesia_client.openapi.models.transcript_segment import TranscriptSegment as TranscriptSegment
 from vertesia_client.openapi.models.transient_token_user_invite_token_data_array import TransientTokenUserInviteTokenDataArray as TransientTokenUserInviteTokenDataArray
@@ -1536,6 +1548,8 @@ from vertesia_client.openapi.models.user_channel import UserChannel as UserChann
 from vertesia_client.openapi.models.user_group import UserGroup as UserGroup
 from vertesia_client.openapi.models.user_ref import UserRef as UserRef
 from vertesia_client.openapi.models.user_token_request import UserTokenRequest as UserTokenRequest
+from vertesia_client.openapi.models.validate_tool_names_payload import ValidateToolNamesPayload as ValidateToolNamesPayload
+from vertesia_client.openapi.models.validate_tool_names_response import ValidateToolNamesResponse as ValidateToolNamesResponse
 from vertesia_client.openapi.models.validate_url_request import ValidateUrlRequest as ValidateUrlRequest
 from vertesia_client.openapi.models.validate_url_response import ValidateUrlResponse as ValidateUrlResponse
 from vertesia_client.openapi.models.vector_search_query import VectorSearchQuery as VectorSearchQuery
