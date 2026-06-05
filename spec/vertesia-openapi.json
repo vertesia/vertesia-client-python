@@ -10660,6 +10660,8 @@
           "manager",
           "developer",
           "application",
+          "automation",
+          "content_processor",
           "consumer",
           "executor",
           "reader",
@@ -23809,7 +23811,7 @@
           "roles": {
             "type": "array",
             "items": {
-              "type": "string"
+              "$ref": "#/components/schemas/ProjectRoles"
             }
           },
           "name": {

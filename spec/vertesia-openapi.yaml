@@ -8056,6 +8056,8 @@ components:
         - manager
         - developer
         - application
+        - automation
+        - content_processor
         - consumer
         - executor
         - reader
@@ -18086,7 +18088,7 @@ components:
         roles:
           type: array
           items:
-            type: string
+            $ref: "#/components/schemas/ProjectRoles"
         name:
           type: string
       required:
