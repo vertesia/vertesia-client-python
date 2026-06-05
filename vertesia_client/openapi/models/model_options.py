@@ -17,16 +17,30 @@ import json
 import pprint
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, ValidationError, field_validator
 from typing import Any, List, Optional
-from vertesia_client.openapi.models.bedrock_options import BedrockOptions
+from vertesia_client.openapi.models.bedrock_ai21_options import BedrockAI21Options
+from vertesia_client.openapi.models.bedrock_claude_options import BedrockClaudeOptions
+from vertesia_client.openapi.models.bedrock_cohere_command_options import BedrockCohereCommandOptions
+from vertesia_client.openapi.models.bedrock_converse_options import BedrockConverseOptions
+from vertesia_client.openapi.models.bedrock_gpt_oss_options import BedrockGptOssOptions
+from vertesia_client.openapi.models.bedrock_mistral_options import BedrockMistralOptions
+from vertesia_client.openapi.models.bedrock_nova_options import BedrockNovaOptions
+from vertesia_client.openapi.models.bedrock_palmyra_options import BedrockPalmyraOptions
 from vertesia_client.openapi.models.groq_options import GroqOptions
-from vertesia_client.openapi.models.open_ai_options import OpenAiOptions
+from vertesia_client.openapi.models.imagen_options import ImagenOptions
+from vertesia_client.openapi.models.nova_canvas_options import NovaCanvasOptions
+from vertesia_client.openapi.models.open_ai_dalle_options import OpenAiDalleOptions
+from vertesia_client.openapi.models.open_ai_gpt_image_options import OpenAiGptImageOptions
+from vertesia_client.openapi.models.open_ai_text_options import OpenAiTextOptions
+from vertesia_client.openapi.models.open_ai_thinking_options import OpenAiThinkingOptions
 from vertesia_client.openapi.models.text_fallback_options import TextFallbackOptions
-from vertesia_client.openapi.models.vertex_ai_options import VertexAIOptions
+from vertesia_client.openapi.models.twelvelabs_pegasus_options import TwelvelabsPegasusOptions
+from vertesia_client.openapi.models.vertex_ai_claude_options import VertexAIClaudeOptions
+from vertesia_client.openapi.models.vertex_ai_gemini_options import VertexAIGeminiOptions
 from pydantic import StrictStr, Field
 from typing import Union, List, Set, Optional, Dict
 from typing_extensions import Literal, Self
 
-MODELOPTIONS_ONE_OF_SCHEMAS = ["BedrockOptions", "GroqOptions", "OpenAiOptions", "TextFallbackOptions", "VertexAIOptions"]
+MODELOPTIONS_ONE_OF_SCHEMAS = ["BedrockAI21Options", "BedrockClaudeOptions", "BedrockCohereCommandOptions", "BedrockConverseOptions", "BedrockGptOssOptions", "BedrockMistralOptions", "BedrockNovaOptions", "BedrockPalmyraOptions", "GroqOptions", "ImagenOptions", "NovaCanvasOptions", "OpenAiDalleOptions", "OpenAiGptImageOptions", "OpenAiTextOptions", "OpenAiThinkingOptions", "TextFallbackOptions", "TwelvelabsPegasusOptions", "VertexAIClaudeOptions", "VertexAIGeminiOptions"]
 
 class ModelOptions(BaseModel):
     """
@@ -34,16 +48,44 @@ class ModelOptions(BaseModel):
     """
     # data type: TextFallbackOptions
     oneof_schema_1_validator: Optional[TextFallbackOptions] = None
-    # data type: VertexAIOptions
-    oneof_schema_2_validator: Optional[VertexAIOptions] = None
-    # data type: BedrockOptions
-    oneof_schema_3_validator: Optional[BedrockOptions] = None
-    # data type: OpenAiOptions
-    oneof_schema_4_validator: Optional[OpenAiOptions] = None
+    # data type: ImagenOptions
+    oneof_schema_2_validator: Optional[ImagenOptions] = None
+    # data type: VertexAIClaudeOptions
+    oneof_schema_3_validator: Optional[VertexAIClaudeOptions] = None
+    # data type: VertexAIGeminiOptions
+    oneof_schema_4_validator: Optional[VertexAIGeminiOptions] = None
+    # data type: NovaCanvasOptions
+    oneof_schema_5_validator: Optional[NovaCanvasOptions] = None
+    # data type: BedrockConverseOptions
+    oneof_schema_6_validator: Optional[BedrockConverseOptions] = None
+    # data type: BedrockNovaOptions
+    oneof_schema_7_validator: Optional[BedrockNovaOptions] = None
+    # data type: BedrockMistralOptions
+    oneof_schema_8_validator: Optional[BedrockMistralOptions] = None
+    # data type: BedrockAI21Options
+    oneof_schema_9_validator: Optional[BedrockAI21Options] = None
+    # data type: BedrockCohereCommandOptions
+    oneof_schema_10_validator: Optional[BedrockCohereCommandOptions] = None
+    # data type: BedrockClaudeOptions
+    oneof_schema_11_validator: Optional[BedrockClaudeOptions] = None
+    # data type: BedrockPalmyraOptions
+    oneof_schema_12_validator: Optional[BedrockPalmyraOptions] = None
+    # data type: BedrockGptOssOptions
+    oneof_schema_13_validator: Optional[BedrockGptOssOptions] = None
+    # data type: TwelvelabsPegasusOptions
+    oneof_schema_14_validator: Optional[TwelvelabsPegasusOptions] = None
+    # data type: OpenAiThinkingOptions
+    oneof_schema_15_validator: Optional[OpenAiThinkingOptions] = None
+    # data type: OpenAiTextOptions
+    oneof_schema_16_validator: Optional[OpenAiTextOptions] = None
+    # data type: OpenAiDalleOptions
+    oneof_schema_17_validator: Optional[OpenAiDalleOptions] = None
+    # data type: OpenAiGptImageOptions
+    oneof_schema_18_validator: Optional[OpenAiGptImageOptions] = None
     # data type: GroqOptions
-    oneof_schema_5_validator: Optional[GroqOptions] = None
-    actual_instance: Optional[Union[BedrockOptions, GroqOptions, OpenAiOptions, TextFallbackOptions, VertexAIOptions]] = None
-    one_of_schemas: Set[str] = { "BedrockOptions", "GroqOptions", "OpenAiOptions", "TextFallbackOptions", "VertexAIOptions" }
+    oneof_schema_19_validator: Optional[GroqOptions] = None
+    actual_instance: Optional[Union[BedrockAI21Options, BedrockClaudeOptions, BedrockCohereCommandOptions, BedrockConverseOptions, BedrockGptOssOptions, BedrockMistralOptions, BedrockNovaOptions, BedrockPalmyraOptions, GroqOptions, ImagenOptions, NovaCanvasOptions, OpenAiDalleOptions, OpenAiGptImageOptions, OpenAiTextOptions, OpenAiThinkingOptions, TextFallbackOptions, TwelvelabsPegasusOptions, VertexAIClaudeOptions, VertexAIGeminiOptions]] = None
+    one_of_schemas: Set[str] = { "BedrockAI21Options", "BedrockClaudeOptions", "BedrockCohereCommandOptions", "BedrockConverseOptions", "BedrockGptOssOptions", "BedrockMistralOptions", "BedrockNovaOptions", "BedrockPalmyraOptions", "GroqOptions", "ImagenOptions", "NovaCanvasOptions", "OpenAiDalleOptions", "OpenAiGptImageOptions", "OpenAiTextOptions", "OpenAiThinkingOptions", "TextFallbackOptions", "TwelvelabsPegasusOptions", "VertexAIClaudeOptions", "VertexAIGeminiOptions" }
 
     model_config = ConfigDict(
         validate_assignment=True,
@@ -74,19 +116,89 @@ class ModelOptions(BaseModel):
             error_messages.append(f"Error! Input type `{type(v)}` is not `TextFallbackOptions`")
         else:
             match += 1
-        # validate data type: VertexAIOptions
-        if not isinstance(v, VertexAIOptions):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `VertexAIOptions`")
+        # validate data type: ImagenOptions
+        if not isinstance(v, ImagenOptions):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `ImagenOptions`")
         else:
             match += 1
-        # validate data type: BedrockOptions
-        if not isinstance(v, BedrockOptions):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `BedrockOptions`")
+        # validate data type: VertexAIClaudeOptions
+        if not isinstance(v, VertexAIClaudeOptions):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `VertexAIClaudeOptions`")
         else:
             match += 1
-        # validate data type: OpenAiOptions
-        if not isinstance(v, OpenAiOptions):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `OpenAiOptions`")
+        # validate data type: VertexAIGeminiOptions
+        if not isinstance(v, VertexAIGeminiOptions):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `VertexAIGeminiOptions`")
+        else:
+            match += 1
+        # validate data type: NovaCanvasOptions
+        if not isinstance(v, NovaCanvasOptions):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `NovaCanvasOptions`")
+        else:
+            match += 1
+        # validate data type: BedrockConverseOptions
+        if not isinstance(v, BedrockConverseOptions):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `BedrockConverseOptions`")
+        else:
+            match += 1
+        # validate data type: BedrockNovaOptions
+        if not isinstance(v, BedrockNovaOptions):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `BedrockNovaOptions`")
+        else:
+            match += 1
+        # validate data type: BedrockMistralOptions
+        if not isinstance(v, BedrockMistralOptions):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `BedrockMistralOptions`")
+        else:
+            match += 1
+        # validate data type: BedrockAI21Options
+        if not isinstance(v, BedrockAI21Options):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `BedrockAI21Options`")
+        else:
+            match += 1
+        # validate data type: BedrockCohereCommandOptions
+        if not isinstance(v, BedrockCohereCommandOptions):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `BedrockCohereCommandOptions`")
+        else:
+            match += 1
+        # validate data type: BedrockClaudeOptions
+        if not isinstance(v, BedrockClaudeOptions):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `BedrockClaudeOptions`")
+        else:
+            match += 1
+        # validate data type: BedrockPalmyraOptions
+        if not isinstance(v, BedrockPalmyraOptions):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `BedrockPalmyraOptions`")
+        else:
+            match += 1
+        # validate data type: BedrockGptOssOptions
+        if not isinstance(v, BedrockGptOssOptions):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `BedrockGptOssOptions`")
+        else:
+            match += 1
+        # validate data type: TwelvelabsPegasusOptions
+        if not isinstance(v, TwelvelabsPegasusOptions):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `TwelvelabsPegasusOptions`")
+        else:
+            match += 1
+        # validate data type: OpenAiThinkingOptions
+        if not isinstance(v, OpenAiThinkingOptions):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `OpenAiThinkingOptions`")
+        else:
+            match += 1
+        # validate data type: OpenAiTextOptions
+        if not isinstance(v, OpenAiTextOptions):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `OpenAiTextOptions`")
+        else:
+            match += 1
+        # validate data type: OpenAiDalleOptions
+        if not isinstance(v, OpenAiDalleOptions):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `OpenAiDalleOptions`")
+        else:
+            match += 1
+        # validate data type: OpenAiGptImageOptions
+        if not isinstance(v, OpenAiGptImageOptions):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `OpenAiGptImageOptions`")
         else:
             match += 1
         # validate data type: GroqOptions
@@ -96,10 +208,10 @@ class ModelOptions(BaseModel):
             match += 1
         if match > 1:
             # more than 1 match
-            raise ValueError("Multiple matches found when setting `actual_instance` in ModelOptions with oneOf schemas: BedrockOptions, GroqOptions, OpenAiOptions, TextFallbackOptions, VertexAIOptions. Details: " + ", ".join(error_messages))
+            raise ValueError("Multiple matches found when setting `actual_instance` in ModelOptions with oneOf schemas: BedrockAI21Options, BedrockClaudeOptions, BedrockCohereCommandOptions, BedrockConverseOptions, BedrockGptOssOptions, BedrockMistralOptions, BedrockNovaOptions, BedrockPalmyraOptions, GroqOptions, ImagenOptions, NovaCanvasOptions, OpenAiDalleOptions, OpenAiGptImageOptions, OpenAiTextOptions, OpenAiThinkingOptions, TextFallbackOptions, TwelvelabsPegasusOptions, VertexAIClaudeOptions, VertexAIGeminiOptions. Details: " + ", ".join(error_messages))
         elif match == 0:
             # no match
-            raise ValueError("No match found when setting `actual_instance` in ModelOptions with oneOf schemas: BedrockOptions, GroqOptions, OpenAiOptions, TextFallbackOptions, VertexAIOptions. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when setting `actual_instance` in ModelOptions with oneOf schemas: BedrockAI21Options, BedrockClaudeOptions, BedrockCohereCommandOptions, BedrockConverseOptions, BedrockGptOssOptions, BedrockMistralOptions, BedrockNovaOptions, BedrockPalmyraOptions, GroqOptions, ImagenOptions, NovaCanvasOptions, OpenAiDalleOptions, OpenAiGptImageOptions, OpenAiTextOptions, OpenAiThinkingOptions, TextFallbackOptions, TwelvelabsPegasusOptions, VertexAIClaudeOptions, VertexAIGeminiOptions. Details: " + ", ".join(error_messages))
         else:
             return v
 
@@ -120,21 +232,105 @@ class ModelOptions(BaseModel):
             match += 1
         except (ValidationError, ValueError) as e:
             error_messages.append(str(e))
-        # deserialize data into VertexAIOptions
+        # deserialize data into ImagenOptions
         try:
-            instance.actual_instance = VertexAIOptions.from_json(json_str)
+            instance.actual_instance = ImagenOptions.from_json(json_str)
             match += 1
         except (ValidationError, ValueError) as e:
             error_messages.append(str(e))
-        # deserialize data into BedrockOptions
+        # deserialize data into VertexAIClaudeOptions
         try:
-            instance.actual_instance = BedrockOptions.from_json(json_str)
+            instance.actual_instance = VertexAIClaudeOptions.from_json(json_str)
             match += 1
         except (ValidationError, ValueError) as e:
             error_messages.append(str(e))
-        # deserialize data into OpenAiOptions
+        # deserialize data into VertexAIGeminiOptions
         try:
-            instance.actual_instance = OpenAiOptions.from_json(json_str)
+            instance.actual_instance = VertexAIGeminiOptions.from_json(json_str)
+            match += 1
+        except (ValidationError, ValueError) as e:
+            error_messages.append(str(e))
+        # deserialize data into NovaCanvasOptions
+        try:
+            instance.actual_instance = NovaCanvasOptions.from_json(json_str)
+            match += 1
+        except (ValidationError, ValueError) as e:
+            error_messages.append(str(e))
+        # deserialize data into BedrockConverseOptions
+        try:
+            instance.actual_instance = BedrockConverseOptions.from_json(json_str)
+            match += 1
+        except (ValidationError, ValueError) as e:
+            error_messages.append(str(e))
+        # deserialize data into BedrockNovaOptions
+        try:
+            instance.actual_instance = BedrockNovaOptions.from_json(json_str)
+            match += 1
+        except (ValidationError, ValueError) as e:
+            error_messages.append(str(e))
+        # deserialize data into BedrockMistralOptions
+        try:
+            instance.actual_instance = BedrockMistralOptions.from_json(json_str)
+            match += 1
+        except (ValidationError, ValueError) as e:
+            error_messages.append(str(e))
+        # deserialize data into BedrockAI21Options
+        try:
+            instance.actual_instance = BedrockAI21Options.from_json(json_str)
+            match += 1
+        except (ValidationError, ValueError) as e:
+            error_messages.append(str(e))
+        # deserialize data into BedrockCohereCommandOptions
+        try:
+            instance.actual_instance = BedrockCohereCommandOptions.from_json(json_str)
+            match += 1
+        except (ValidationError, ValueError) as e:
+            error_messages.append(str(e))
+        # deserialize data into BedrockClaudeOptions
+        try:
+            instance.actual_instance = BedrockClaudeOptions.from_json(json_str)
+            match += 1
+        except (ValidationError, ValueError) as e:
+            error_messages.append(str(e))
+        # deserialize data into BedrockPalmyraOptions
+        try:
+            instance.actual_instance = BedrockPalmyraOptions.from_json(json_str)
+            match += 1
+        except (ValidationError, ValueError) as e:
+            error_messages.append(str(e))
+        # deserialize data into BedrockGptOssOptions
+        try:
+            instance.actual_instance = BedrockGptOssOptions.from_json(json_str)
+            match += 1
+        except (ValidationError, ValueError) as e:
+            error_messages.append(str(e))
+        # deserialize data into TwelvelabsPegasusOptions
+        try:
+            instance.actual_instance = TwelvelabsPegasusOptions.from_json(json_str)
+            match += 1
+        except (ValidationError, ValueError) as e:
+            error_messages.append(str(e))
+        # deserialize data into OpenAiThinkingOptions
+        try:
+            instance.actual_instance = OpenAiThinkingOptions.from_json(json_str)
+            match += 1
+        except (ValidationError, ValueError) as e:
+            error_messages.append(str(e))
+        # deserialize data into OpenAiTextOptions
+        try:
+            instance.actual_instance = OpenAiTextOptions.from_json(json_str)
+            match += 1
+        except (ValidationError, ValueError) as e:
+            error_messages.append(str(e))
+        # deserialize data into OpenAiDalleOptions
+        try:
+            instance.actual_instance = OpenAiDalleOptions.from_json(json_str)
+            match += 1
+        except (ValidationError, ValueError) as e:
+            error_messages.append(str(e))
+        # deserialize data into OpenAiGptImageOptions
+        try:
+            instance.actual_instance = OpenAiGptImageOptions.from_json(json_str)
             match += 1
         except (ValidationError, ValueError) as e:
             error_messages.append(str(e))
@@ -147,10 +343,10 @@ class ModelOptions(BaseModel):
 
         if match > 1:
             # more than 1 match
-            raise ValueError("Multiple matches found when deserializing the JSON string into ModelOptions with oneOf schemas: BedrockOptions, GroqOptions, OpenAiOptions, TextFallbackOptions, VertexAIOptions. Details: " + ", ".join(error_messages))
+            raise ValueError("Multiple matches found when deserializing the JSON string into ModelOptions with oneOf schemas: BedrockAI21Options, BedrockClaudeOptions, BedrockCohereCommandOptions, BedrockConverseOptions, BedrockGptOssOptions, BedrockMistralOptions, BedrockNovaOptions, BedrockPalmyraOptions, GroqOptions, ImagenOptions, NovaCanvasOptions, OpenAiDalleOptions, OpenAiGptImageOptions, OpenAiTextOptions, OpenAiThinkingOptions, TextFallbackOptions, TwelvelabsPegasusOptions, VertexAIClaudeOptions, VertexAIGeminiOptions. Details: " + ", ".join(error_messages))
         elif match == 0:
             # no match
-            raise ValueError("No match found when deserializing the JSON string into ModelOptions with oneOf schemas: BedrockOptions, GroqOptions, OpenAiOptions, TextFallbackOptions, VertexAIOptions. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when deserializing the JSON string into ModelOptions with oneOf schemas: BedrockAI21Options, BedrockClaudeOptions, BedrockCohereCommandOptions, BedrockConverseOptions, BedrockGptOssOptions, BedrockMistralOptions, BedrockNovaOptions, BedrockPalmyraOptions, GroqOptions, ImagenOptions, NovaCanvasOptions, OpenAiDalleOptions, OpenAiGptImageOptions, OpenAiTextOptions, OpenAiThinkingOptions, TextFallbackOptions, TwelvelabsPegasusOptions, VertexAIClaudeOptions, VertexAIGeminiOptions. Details: " + ", ".join(error_messages))
         else:
             return instance
 
@@ -164,7 +360,7 @@ class ModelOptions(BaseModel):
         else:
             return json.dumps(self.actual_instance)
 
-    def to_dict(self) -> Optional[Union[Dict[str, Any], BedrockOptions, GroqOptions, OpenAiOptions, TextFallbackOptions, VertexAIOptions]]:
+    def to_dict(self) -> Optional[Union[Dict[str, Any], BedrockAI21Options, BedrockClaudeOptions, BedrockCohereCommandOptions, BedrockConverseOptions, BedrockGptOssOptions, BedrockMistralOptions, BedrockNovaOptions, BedrockPalmyraOptions, GroqOptions, ImagenOptions, NovaCanvasOptions, OpenAiDalleOptions, OpenAiGptImageOptions, OpenAiTextOptions, OpenAiThinkingOptions, TextFallbackOptions, TwelvelabsPegasusOptions, VertexAIClaudeOptions, VertexAIGeminiOptions]]:
         """Returns the dict representation of the actual instance"""
         if self.actual_instance is None:
             return None

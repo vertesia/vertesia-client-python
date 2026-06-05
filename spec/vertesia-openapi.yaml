@@ -292,6 +292,16 @@ components:
       type: object
       discriminator:
         propertyName: integration
+        mapping:
+          gladia: "#/components/schemas/GladiaConfiguration"
+          github: "#/components/schemas/GithubConfiguration"
+          aws: "#/components/schemas/AwsConfiguration"
+          magic_pdf: "#/components/schemas/MagicPdfConfiguration"
+          serper: "#/components/schemas/SerperConfiguration"
+          exa: "#/components/schemas/ExaConfiguration"
+          linkup: "#/components/schemas/LinkupConfiguration"
+          resend: "#/components/schemas/ResendConfiguration"
+          ask_user_webhook: "#/components/schemas/AskUserWebhookConfiguration"
       required:
         - integration
       oneOf:
@@ -308,6 +318,16 @@ components:
       type: object
       discriminator:
         propertyName: integration
+        mapping:
+          gladia: "#/components/schemas/GladiaConfigurationInput"
+          github: "#/components/schemas/GithubConfiguration"
+          aws: "#/components/schemas/AwsConfiguration"
+          magic_pdf: "#/components/schemas/MagicPdfConfiguration"
+          serper: "#/components/schemas/SerperConfigurationInput"
+          exa: "#/components/schemas/ExaConfigurationInput"
+          linkup: "#/components/schemas/LinkupConfigurationInput"
+          resend: "#/components/schemas/ResendConfigurationInput"
+          ask_user_webhook: "#/components/schemas/AskUserWebhookConfigurationInput"
       required:
         - integration
       oneOf:
@@ -2471,6 +2491,9 @@ components:
       type: object
       discriminator:
         propertyName: type
+        mapping:
+          conversation: "#/components/schemas/AsyncConversationExecutionPayload"
+          interaction: "#/components/schemas/AsyncInteractionExecutionPayload"
       required:
         - type
       oneOf:
@@ -4061,7 +4084,9 @@ components:
             $ref: "#/components/schemas/ToolValidationResult"
           description: One entry per requested name, in the same order.
         invalid_count:
-          type: number
+          type: integer
+          format: int32
+          minimum: 0
           description: Convenience count of `results.filter(r => !r.valid).length`.
       required:
         - results
@@ -5600,6 +5625,11 @@ components:
         - $ref: "#/components/schemas/EmbeddingsApiAudioInput"
       discriminator:
         propertyName: type
+        mapping:
+          text: "#/components/schemas/EmbeddingsApiTextInput"
+          image: "#/components/schemas/EmbeddingsApiImageInput"
+          video: "#/components/schemas/EmbeddingsApiVideoInput"
+          audio: "#/components/schemas/EmbeddingsApiAudioInput"
       required:
         - type
     EmbeddingsApiTextInput:
@@ -6100,24 +6130,48 @@ components:
       type: object
       discriminator:
         propertyName: _option_id
+        mapping:
+          text-fallback: "#/components/schemas/TextFallbackOptions"
+          vertexai-imagen: "#/components/schemas/ImagenOptions"
+          vertexai-claude: "#/components/schemas/VertexAIClaudeOptions"
+          vertexai-gemini: "#/components/schemas/VertexAIGeminiOptions"
+          bedrock-nova-canvas: "#/components/schemas/NovaCanvasOptions"
+          bedrock-converse: "#/components/schemas/BedrockConverseOptions"
+          bedrock-nova: "#/components/schemas/BedrockNovaOptions"
+          bedrock-mistral: "#/components/schemas/BedrockMistralOptions"
+          bedrock-ai21: "#/components/schemas/BedrockAI21Options"
+          bedrock-cohere-command: "#/components/schemas/BedrockCohereCommandOptions"
+          bedrock-claude: "#/components/schemas/BedrockClaudeOptions"
+          bedrock-palmyra: "#/components/schemas/BedrockPalmyraOptions"
+          bedrock-gpt-oss: "#/components/schemas/BedrockGptOssOptions"
+          bedrock-twelvelabs-pegasus: "#/components/schemas/TwelvelabsPegasusOptions"
+          openai-thinking: "#/components/schemas/OpenAiThinkingOptions"
+          openai-text: "#/components/schemas/OpenAiTextOptions"
+          openai-dalle: "#/components/schemas/OpenAiDalleOptions"
+          openai-gpt-image: "#/components/schemas/OpenAiGptImageOptions"
+          groq-deepseek-thinking: "#/components/schemas/GroqOptions"
       required:
         - _option_id
       oneOf:
         - $ref: "#/components/schemas/TextFallbackOptions"
-        - $ref: "#/components/schemas/VertexAIOptions"
-        - $ref: "#/components/schemas/BedrockOptions"
-        - $ref: "#/components/schemas/OpenAiOptions"
-        - $ref: "#/components/schemas/GroqOptions"
-    VertexAIOptions:
-      type: object
-      discriminator:
-        propertyName: _option_id
-      required:
-        - _option_id
-      oneOf:
         - $ref: "#/components/schemas/ImagenOptions"
         - $ref: "#/components/schemas/VertexAIClaudeOptions"
         - $ref: "#/components/schemas/VertexAIGeminiOptions"
+        - $ref: "#/components/schemas/NovaCanvasOptions"
+        - $ref: "#/components/schemas/BedrockConverseOptions"
+        - $ref: "#/components/schemas/BedrockNovaOptions"
+        - $ref: "#/components/schemas/BedrockMistralOptions"
+        - $ref: "#/components/schemas/BedrockAI21Options"
+        - $ref: "#/components/schemas/BedrockCohereCommandOptions"
+        - $ref: "#/components/schemas/BedrockClaudeOptions"
+        - $ref: "#/components/schemas/BedrockPalmyraOptions"
+        - $ref: "#/components/schemas/BedrockGptOssOptions"
+        - $ref: "#/components/schemas/TwelvelabsPegasusOptions"
+        - $ref: "#/components/schemas/OpenAiThinkingOptions"
+        - $ref: "#/components/schemas/OpenAiTextOptions"
+        - $ref: "#/components/schemas/OpenAiDalleOptions"
+        - $ref: "#/components/schemas/OpenAiGptImageOptions"
+        - $ref: "#/components/schemas/GroqOptions"
     ImagenOptions:
       type: object
       properties:
@@ -6336,24 +6390,6 @@ components:
         - LOW
         - MINIMAL
         - THINKING_LEVEL_UNSPECIFIED
-    BedrockOptions:
-      type: object
-      discriminator:
-        propertyName: _option_id
-      required:
-        - _option_id
-      oneOf:
-        - $ref: "#/components/schemas/NovaCanvasOptions"
-        - $ref: "#/components/schemas/BedrockConverseOptions"
-        - $ref: "#/components/schemas/BedrockNovaOptions"
-        - $ref: "#/components/schemas/BedrockMistralOptions"
-        - $ref: "#/components/schemas/BedrockAI21Options"
-        - $ref: "#/components/schemas/BedrockCohereCommandOptions"
-        - $ref: "#/components/schemas/BedrockClaudeOptions"
-        - $ref: "#/components/schemas/BedrockPalmyraOptions"
-        - $ref: "#/components/schemas/BedrockGptOssOptions"
-        - $ref: "#/components/schemas/TwelvelabsPegasusOptions"
-      description: Union type of all Bedrock options
     NovaCanvasOptions:
       type: object
       properties:
@@ -6611,17 +6647,6 @@ components:
       required:
         - _option_id
       additionalProperties: false
-    OpenAiOptions:
-      type: object
-      discriminator:
-        propertyName: _option_id
-      required:
-        - _option_id
-      oneOf:
-        - $ref: "#/components/schemas/OpenAiThinkingOptions"
-        - $ref: "#/components/schemas/OpenAiTextOptions"
-        - $ref: "#/components/schemas/OpenAiDalleOptions"
-        - $ref: "#/components/schemas/OpenAiGptImageOptions"
     OpenAiThinkingOptions:
       type: object
       properties:
@@ -6882,6 +6907,10 @@ components:
       type: object
       discriminator:
         propertyName: type
+        mapping:
+          text: "#/components/schemas/TextResult"
+          json: "#/components/schemas/JsonResult"
+          image: "#/components/schemas/ImageResult"
       required:
         - type
       oneOf:
@@ -7861,6 +7890,9 @@ components:
       type: object
       discriminator:
         propertyName: type
+        mapping:
+          email: "#/components/schemas/EmailChannel"
+          interactive: "#/components/schemas/InteractiveChannel"
       required:
         - type
       oneOf:
@@ -8628,6 +8660,9 @@ components:
       type: object
       discriminator:
         propertyName: type
+        mapping:
+          mcp: "#/components/schemas/MCPToolCollectionObject"
+          vertesia_sdk: "#/components/schemas/VertesiaSDKToolCollectionObject"
       required:
         - type
       oneOf:
@@ -9517,6 +9552,11 @@ components:
       type: object
       discriminator:
         propertyName: operation
+        mapping:
+          generic: "#/components/schemas/BulkOperationResult"
+          create: "#/components/schemas/BulkObjectCreateResult"
+          update: "#/components/schemas/BulkObjectUpdateResult"
+          delete: "#/components/schemas/BulkObjectDeleteResult"
       required:
         - operation
       oneOf:
@@ -10069,6 +10109,10 @@ components:
       type: object
       discriminator:
         propertyName: run_type
+        mapping:
+          autonomous: "#/components/schemas/AutonomousRunResponse"
+          supervised: "#/components/schemas/SupervisedRunResponse"
+          programmatic: "#/components/schemas/ProgrammaticRunResponse"
       required:
         - run_type
       oneOf:
@@ -12692,6 +12736,9 @@ components:
       type: object
       discriminator:
         propertyName: schema_format
+        mapping:
+          full: "#/components/schemas/DataStoreFullSchemaResponse"
+          ai: "#/components/schemas/DataSchemaForAI"
       required:
         - schema_format
       oneOf:
@@ -13759,6 +13806,9 @@ components:
       type: object
       discriminator:
         propertyName: ref_type
+        mapping:
+          stored: "#/components/schemas/StoredTypeRef"
+          incode: "#/components/schemas/InCodeTypeRef"
       required:
         - ref_type
       oneOf:
@@ -14785,6 +14835,11 @@ components:
       type: object
       discriminator:
         propertyName: type
+        mapping:
+          activity: "#/components/schemas/ActivityTask"
+          childWorkflow: "#/components/schemas/ChildWorkflowTask"
+          signal: "#/components/schemas/SignalTask"
+          timer: "#/components/schemas/TimerTask"
       required:
         - type
       oneOf:
@@ -16269,6 +16324,9 @@ components:
         - $ref: "#/components/schemas/DocTableJson"
       discriminator:
         propertyName: format
+        mapping:
+          application/csv: "#/components/schemas/DocTableCsv"
+          application/json: "#/components/schemas/DocTableJson"
       required:
         - format
     DocTableCsv:
@@ -16478,6 +16536,9 @@ components:
       type: object
       discriminator:
         propertyName: type
+        mapping:
+          activity: "#/components/schemas/DSLActivityStep"
+          workflow: "#/components/schemas/DSLChildWorkflowStep"
       required:
         - type
       oneOf:
@@ -16703,6 +16764,9 @@ components:
       type: object
       discriminator:
         propertyName: spec_format
+        mapping:
+          steps: "#/components/schemas/DSLWorkflowSpecWithSteps"
+          activities: "#/components/schemas/DSLWorkflowSpecWithActivities"
       required:
         - spec_format
       oneOf:
@@ -17845,6 +17909,13 @@ components:
       type: object
       discriminator:
         propertyName: type
+        mapping:
+          apikey: "#/components/schemas/ApiKeyTokenRequest"
+          user: "#/components/schemas/UserTokenRequest"
+          project: "#/components/schemas/ProjectTokenRequest"
+          environment: "#/components/schemas/EnvironmentTokenRequest"
+          agent: "#/components/schemas/AgentTokenRequest"
+          service_account: "#/components/schemas/ServiceAccountTokenRequest"
       required:
         - type
       oneOf:

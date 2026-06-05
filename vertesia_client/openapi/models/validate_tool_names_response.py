@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt
-from typing import Any, ClassVar, Dict, List, Union
+from pydantic import BaseModel, ConfigDict, Field
+from typing import Any, ClassVar, Dict, List
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.tool_validation_result import ToolValidationResult
 from typing import Optional, Set
 from typing_extensions import Self
@@ -29,7 +30,7 @@ class ValidateToolNamesResponse(BaseModel):
     Response from `POST /tools/validate`.
     """ # noqa: E501
     results: List[ToolValidationResult] = Field(description="One entry per requested name, in the same order.")
-    invalid_count: Union[StrictFloat, StrictInt] = Field(description="Convenience count of `results.filter(r => !r.valid).length`.")
+    invalid_count: Annotated[int, Field(strict=True, ge=0)] = Field(description="Convenience count of `results.filter(r => !r.valid).length`.")
     __properties: ClassVar[List[str]] = ["results", "invalid_count"]
 
     model_config = ConfigDict(

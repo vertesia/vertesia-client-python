@@ -106,7 +106,6 @@ from vertesia_client.openapi.models.bedrock_converse_options import BedrockConve
 from vertesia_client.openapi.models.bedrock_gpt_oss_options import BedrockGptOssOptions
 from vertesia_client.openapi.models.bedrock_mistral_options import BedrockMistralOptions
 from vertesia_client.openapi.models.bedrock_nova_options import BedrockNovaOptions
-from vertesia_client.openapi.models.bedrock_options import BedrockOptions
 from vertesia_client.openapi.models.bedrock_palmyra_options import BedrockPalmyraOptions
 from vertesia_client.openapi.models.billing_method import BillingMethod
 from vertesia_client.openapi.models.branch_definition import BranchDefinition
@@ -487,7 +486,6 @@ from vertesia_client.openapi.models.ok_boolean import OkBoolean
 from vertesia_client.openapi.models.onboarding_progress import OnboardingProgress
 from vertesia_client.openapi.models.open_ai_dalle_options import OpenAiDalleOptions
 from vertesia_client.openapi.models.open_ai_gpt_image_options import OpenAiGptImageOptions
-from vertesia_client.openapi.models.open_ai_options import OpenAiOptions
 from vertesia_client.openapi.models.open_ai_text_options import OpenAiTextOptions
 from vertesia_client.openapi.models.open_ai_thinking_options import OpenAiThinkingOptions
 from vertesia_client.openapi.models.parallel_collect_definition import ParallelCollectDefinition
@@ -713,7 +711,6 @@ from vertesia_client.openapi.models.vector_search_query import VectorSearchQuery
 from vertesia_client.openapi.models.vertesia_sdk_tool_collection_object import VertesiaSDKToolCollectionObject
 from vertesia_client.openapi.models.vertex_ai_claude_options import VertexAIClaudeOptions
 from vertesia_client.openapi.models.vertex_ai_gemini_options import VertexAIGeminiOptions
-from vertesia_client.openapi.models.vertex_ai_options import VertexAIOptions
 from vertesia_client.openapi.models.video_metadata import VideoMetadata
 from vertesia_client.openapi.models.virtual_env_entry import VirtualEnvEntry
 from vertesia_client.openapi.models.website_credential_capability import WebsiteCredentialCapability
