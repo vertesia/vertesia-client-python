@@ -33,6 +33,7 @@ class Permission(str, Enum):
     RUN_COLON_READ = 'run:read'
     RUN_COLON_WRITE = 'run:write'
     ENVIRONMENT_COLON_ADMIN = 'environment:admin'
+    APP_COLON_MANAGE = 'app:manage'
     PROJECT_COLON_ADMIN = 'project:admin'
     PROJECT_COLON_INTEGRATION_READ = 'project:integration_read'
     PROJECT_COLON_SETTINGS_WRITE = 'project:settings_write'

@@ -8519,6 +8519,7 @@ components:
         - run:read
         - run:write
         - environment:admin
+        - app:manage
         - project:admin
         - project:integration_read
         - project:settings_write
