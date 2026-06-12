@@ -28,9 +28,9 @@ class InCodeTypeRef(BaseModel):
     InCodeTypeRef
     """ # noqa: E501
     ref_type: StrictStr
-    code: StrictStr = Field(description="Namespaced identifier for in-code types (e.g. \"sys:Invoice\", \"app:myapp:Contract\")")
+    id: StrictStr = Field(description="Namespaced identifier for in-code types (e.g. \"sys:Invoice\", \"app:myapp:Contract\")")
     name: StrictStr
-    __properties: ClassVar[List[str]] = ["ref_type", "code", "name"]
+    __properties: ClassVar[List[str]] = ["ref_type", "id", "name"]
 
     @field_validator('ref_type')
     def ref_type_validate_enum(cls, value):
@@ -89,7 +89,7 @@ class InCodeTypeRef(BaseModel):
 
         _obj = cls.model_validate({
             "ref_type": obj.get("ref_type"),
-            "code": obj.get("code"),
+            "id": obj.get("id"),
             "name": obj.get("name")
         })
         return _obj

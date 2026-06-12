@@ -26,10 +26,10 @@ from vertesia_client.openapi.models.execution_environment_ref import ExecutionEn
 from vertesia_client.openapi.models.execution_run_status import ExecutionRunStatus
 from vertesia_client.openapi.models.execution_run_workflow import ExecutionRunWorkflow
 from vertesia_client.openapi.models.execution_token_usage import ExecutionTokenUsage
-from vertesia_client.openapi.models.interaction import Interaction
 from vertesia_client.openapi.models.interaction_execution_configuration import InteractionExecutionConfiguration
 from vertesia_client.openapi.models.interaction_execution_error import InteractionExecutionError
 from vertesia_client.openapi.models.interaction_execution_result_evaluation import InteractionExecutionResultEvaluation
+from vertesia_client.openapi.models.interaction_ref import InteractionRef
 from vertesia_client.openapi.models.json_schema import JSONSchema
 from vertesia_client.openapi.models.modalities import Modalities
 from vertesia_client.openapi.models.project_ref import ProjectRef
@@ -48,8 +48,7 @@ class ExecutionRun(BaseModel):
     result: List[CompletionResult]
     parameters: Optional[Any]
     tags: Optional[List[StrictStr]] = None
-    interaction: Optional[Interaction] = None
-    interaction_code: Optional[StrictStr] = None
+    interaction: Optional[InteractionRef] = Field(default=None, description="Interaction reference. Stored interactions may be populated as full Interaction documents; in-code interactions are represented as refs whose `id` is the namespaced interaction id.")
     environment: ExecutionEnvironmentRef = Field(description="Environment reference - populated with full object in API responses")
     model_id: Optional[StrictStr] = Field(default=None, alias="modelId")
     result_schema: Optional[JSONSchema] = None
@@ -72,7 +71,7 @@ class ExecutionRun(BaseModel):
     updated_by: StrictStr
     workflow: Optional[ExecutionRunWorkflow] = Field(default=None, description="The Vertesia Workflow related to this Interaction Run.  This is only set when the interaction is executed as part of a workflow.")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["id", "parent", "evaluation", "result", "parameters", "tags", "interaction", "interaction_code", "environment", "modelId", "result_schema", "ttl", "status", "finish_reason", "prompt", "token_use", "chunks", "execution_time", "created_at", "updated_at", "account", "project", "config", "error", "source", "output_modality", "created_by", "updated_by", "workflow"]
+    __properties: ClassVar[List[str]] = ["id", "parent", "evaluation", "result", "parameters", "tags", "interaction", "environment", "modelId", "result_schema", "ttl", "status", "finish_reason", "prompt", "token_use", "chunks", "execution_time", "created_at", "updated_at", "account", "project", "config", "error", "source", "output_modality", "created_by", "updated_by", "workflow"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -191,8 +190,7 @@ class ExecutionRun(BaseModel):
             "result": [CompletionResult.from_dict(_item) for _item in obj["result"]] if obj.get("result") is not None else None,
             "parameters": obj.get("parameters"),
             "tags": obj.get("tags"),
-            "interaction": Interaction.from_dict(obj["interaction"]) if obj.get("interaction") is not None else None,
-            "interaction_code": obj.get("interaction_code"),
+            "interaction": InteractionRef.from_dict(obj["interaction"]) if obj.get("interaction") is not None else None,
             "environment": ExecutionEnvironmentRef.from_dict(obj["environment"]) if obj.get("environment") is not None else None,
             "modelId": obj.get("modelId"),
             "result_schema": JSONSchema.from_dict(obj["result_schema"]) if obj.get("result_schema") is not None else None,

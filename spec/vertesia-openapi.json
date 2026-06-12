@@ -1899,9 +1899,6 @@
               "type": "string"
             }
           },
-          "interaction_code": {
-            "type": "string"
-          },
           "environment": {
             "$ref": "#/components/schemas/ExecutionEnvironmentRef",
             "description": "Environment reference - populated with full object in API responses"
@@ -2338,9 +2335,6 @@
               "type": "string"
             }
           },
-          "interaction_code": {
-            "type": "string"
-          },
           "environment": {
             "$ref": "#/components/schemas/ExecutionEnvironmentRef",
             "description": "Environment reference - populated with full object in API responses"
@@ -2693,9 +2687,6 @@
             "items": {
               "type": "string"
             }
-          },
-          "interaction_code": {
-            "type": "string"
           },
           "environment": {
             "$ref": "#/components/schemas/ExecutionEnvironmentRef",
@@ -9692,10 +9683,8 @@
             }
           },
           "interaction": {
-            "$ref": "#/components/schemas/Interaction"
-          },
-          "interaction_code": {
-            "type": "string"
+            "$ref": "#/components/schemas/ExecutionRunInteraction",
+            "description": "Interaction reference. Stored interactions may be populated as full Interaction documents; in-code interactions are represented as refs whose `id` is the namespaced interaction id."
           },
           "environment": {
             "$ref": "#/components/schemas/ExecutionEnvironmentRef",
@@ -9789,6 +9778,9 @@
         "additionalProperties": {
           "type": "number"
         }
+      },
+      "ExecutionRunInteraction": {
+        "$ref": "#/components/schemas/InteractionRef"
       },
       "ExecutionRunStatus": {
         "type": "string",
@@ -13298,11 +13290,7 @@
           },
           "interaction_id": {
             "type": "string",
-            "description": "Filter by saved-interaction ObjectId"
-          },
-          "interaction_code": {
-            "type": "string",
-            "description": "Filter by in-code interaction code (e.g. \"@sys:chat\")"
+            "description": "Filter by interaction id: stored ObjectId or namespaced in-code id"
           },
           "principal_id": {
             "type": "string",
@@ -18135,7 +18123,7 @@
             "type": "string",
             "const": "incode"
           },
-          "code": {
+          "id": {
             "type": "string",
             "description": "Namespaced identifier for in-code types (e.g. \"sys:Invoice\", \"app:myapp:Contract\")"
           },
@@ -18145,7 +18133,7 @@
         },
         "required": [
           "ref_type",
-          "code",
+          "id",
           "name"
         ],
         "additionalProperties": false

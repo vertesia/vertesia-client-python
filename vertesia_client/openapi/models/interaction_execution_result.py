@@ -48,7 +48,6 @@ class InteractionExecutionResult(BaseModel):
     result: List[CompletionResult]
     parameters: Dict[str, Any] = Field(description="The parameters used to create the interaction. If the parameters contains the special property \"@memory\" it will be used to locate a memory pack and the other properties will be used as the memory pack mapping.")
     tags: Optional[List[StrictStr]] = None
-    interaction_code: Optional[StrictStr] = None
     environment: ExecutionEnvironmentRef = Field(description="Environment reference - populated with full object in API responses")
     model_id: Optional[StrictStr] = Field(default=None, alias="modelId")
     result_schema: Optional[JSONSchema] = None
@@ -75,7 +74,7 @@ class InteractionExecutionResult(BaseModel):
     conversation: Optional[Any] = None
     options: Optional[StatelessExecutionOptions] = None
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["id", "parent", "evaluation", "result", "parameters", "tags", "interaction_code", "environment", "modelId", "result_schema", "ttl", "status", "finish_reason", "prompt", "token_use", "chunks", "execution_time", "created_at", "updated_at", "config", "error", "source", "output_modality", "created_by", "updated_by", "workflow", "account", "project", "interaction", "tool_use", "conversation", "options"]
+    __properties: ClassVar[List[str]] = ["id", "parent", "evaluation", "result", "parameters", "tags", "environment", "modelId", "result_schema", "ttl", "status", "finish_reason", "prompt", "token_use", "chunks", "execution_time", "created_at", "updated_at", "config", "error", "source", "output_modality", "created_by", "updated_by", "workflow", "account", "project", "interaction", "tool_use", "conversation", "options"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -195,7 +194,6 @@ class InteractionExecutionResult(BaseModel):
             "result": [CompletionResult.from_dict(_item) for _item in obj["result"]] if obj.get("result") is not None else None,
             "parameters": obj.get("parameters"),
             "tags": obj.get("tags"),
-            "interaction_code": obj.get("interaction_code"),
             "environment": ExecutionEnvironmentRef.from_dict(obj["environment"]) if obj.get("environment") is not None else None,
             "modelId": obj.get("modelId"),
             "result_schema": JSONSchema.from_dict(obj["result_schema"]) if obj.get("result_schema") is not None else None,

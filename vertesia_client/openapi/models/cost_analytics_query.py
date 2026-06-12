@@ -41,14 +41,13 @@ class CostAnalyticsQuery(BaseModel):
     workflow_run_id: Optional[StrictStr] = Field(default=None, description="Filter by Temporal workflow run ID")
     run_id: Optional[StrictStr] = Field(default=None, description="Filter by interaction execution run ID")
     agent_run_id: Optional[StrictStr] = Field(default=None, description="Filter by agent run ID")
-    interaction_id: Optional[StrictStr] = Field(default=None, description="Filter by saved-interaction ObjectId")
-    interaction_code: Optional[StrictStr] = Field(default=None, description="Filter by in-code interaction code (e.g. \"@sys:chat\")")
+    interaction_id: Optional[StrictStr] = Field(default=None, description="Filter by interaction id: stored ObjectId or namespaced in-code id")
     principal_id: Optional[StrictStr] = Field(default=None, description="Filter by principal (bare user or API key id; matched against the suffix of principal_id)")
     account_id: Optional[StrictStr] = Field(default=None, description="Filter by account ID (set automatically by server)")
     scope: Optional[StrictStr] = Field(default=None, description="Scope: 'project' (default, current project) or 'org' (all projects in account)")
     pricing_source: Optional[StrictStr] = Field(default=None, description="Pricing source: 'list' (latest daily prices) or 'historical' (daily effective prices over the query range). Default: 'list'")
     no_cache: Optional[StrictBool] = Field(default=None, description="Skip cache and force fresh query")
-    __properties: ClassVar[List[str]] = ["from", "to", "group_by", "resolution", "model", "environment_id", "provider", "project_id", "workflow_id", "workflow_run_id", "run_id", "agent_run_id", "interaction_id", "interaction_code", "principal_id", "account_id", "scope", "pricing_source", "no_cache"]
+    __properties: ClassVar[List[str]] = ["from", "to", "group_by", "resolution", "model", "environment_id", "provider", "project_id", "workflow_id", "workflow_run_id", "run_id", "agent_run_id", "interaction_id", "principal_id", "account_id", "scope", "pricing_source", "no_cache"]
 
     @field_validator('group_by')
     def group_by_validate_enum(cls, value):
@@ -152,7 +151,6 @@ class CostAnalyticsQuery(BaseModel):
             "run_id": obj.get("run_id"),
             "agent_run_id": obj.get("agent_run_id"),
             "interaction_id": obj.get("interaction_id"),
-            "interaction_code": obj.get("interaction_code"),
             "principal_id": obj.get("principal_id"),
             "account_id": obj.get("account_id"),
             "scope": obj.get("scope"),

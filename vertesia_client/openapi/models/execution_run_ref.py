@@ -46,7 +46,6 @@ class ExecutionRunRef(BaseModel):
     parent: Optional[InteractionExecutionResultParent] = None
     evaluation: Optional[InteractionExecutionResultEvaluation] = None
     tags: Optional[List[StrictStr]] = None
-    interaction_code: Optional[StrictStr] = None
     environment: ExecutionEnvironmentRef = Field(description="Environment reference - populated with full object in API responses")
     model_id: Optional[StrictStr] = Field(default=None, alias="modelId")
     result_schema: Optional[JSONSchema] = None
@@ -70,7 +69,7 @@ class ExecutionRunRef(BaseModel):
     workflow: Optional[ExecutionRunWorkflow] = Field(default=None, description="The Vertesia Workflow related to this Interaction Run.  This is only set when the interaction is executed as part of a workflow.")
     interaction: Optional[InteractionRef] = None
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["id", "parent", "evaluation", "tags", "interaction_code", "environment", "modelId", "result_schema", "ttl", "status", "finish_reason", "prompt", "token_use", "chunks", "execution_time", "created_at", "updated_at", "account", "project", "config", "error", "source", "output_modality", "created_by", "updated_by", "workflow", "interaction"]
+    __properties: ClassVar[List[str]] = ["id", "parent", "evaluation", "tags", "environment", "modelId", "result_schema", "ttl", "status", "finish_reason", "prompt", "token_use", "chunks", "execution_time", "created_at", "updated_at", "account", "project", "config", "error", "source", "output_modality", "created_by", "updated_by", "workflow", "interaction"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -175,7 +174,6 @@ class ExecutionRunRef(BaseModel):
             "parent": InteractionExecutionResultParent.from_dict(obj["parent"]) if obj.get("parent") is not None else None,
             "evaluation": InteractionExecutionResultEvaluation.from_dict(obj["evaluation"]) if obj.get("evaluation") is not None else None,
             "tags": obj.get("tags"),
-            "interaction_code": obj.get("interaction_code"),
             "environment": ExecutionEnvironmentRef.from_dict(obj["environment"]) if obj.get("environment") is not None else None,
             "modelId": obj.get("modelId"),
             "result_schema": JSONSchema.from_dict(obj["result_schema"]) if obj.get("result_schema") is not None else None,
