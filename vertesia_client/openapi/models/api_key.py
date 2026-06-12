@@ -22,7 +22,7 @@ from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, Optional
 from vertesia_client.openapi.models.api_key_types import ApiKeyTypes
 from vertesia_client.openapi.models.project_ref import ProjectRef
-from vertesia_client.openapi.models.project_roles import ProjectRoles
+from vertesia_client.openapi.models.system_roles import SystemRoles
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -34,7 +34,7 @@ class ApiKey(BaseModel):
     id: StrictStr
     name: StrictStr
     type: ApiKeyTypes
-    role: ProjectRoles
+    role: SystemRoles
     masked_value: Optional[StrictStr] = Field(default=None, alias="maskedValue")
     can_retrieve_value: Optional[StrictBool] = None
     account: StrictStr

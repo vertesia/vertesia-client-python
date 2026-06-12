@@ -17,21 +17,21 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, StrictStr
 from typing import Any, ClassVar, Dict, List
-from vertesia_client.openapi.models.permission import Permission
-from vertesia_client.openapi.models.project_roles import ProjectRoles
+from vertesia_client.openapi.models.role_domain import RoleDomain
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
 class RoleDefinition(BaseModel):
     """
-    RoleDefinition
+    Wire shape of a role returned by the IAM `/roles` endpoint.  Permissions are typed `string[]` because role names span multiple partitions (system, content, future tasks/etc.) and each partition has its own vocabulary. For the tightly-typed system-only view (with `permissions: Permission[]`) use `SystemRoleDefinition` and the `/roles/system` endpoint.  NOTE: this interface is intentionally non-generic. The OpenAPI generator doesn't handle TypeScript generics cleanly in array response types and produces a degenerate `RoleDefinitionArray` schema. Keeping the wire shapes concrete avoids that. `SystemRoleDefinition` extends and narrows `permissions` to `Permission[]`.
     """ # noqa: E501
-    name: ProjectRoles
-    permissions: List[Permission]
-    __properties: ClassVar[List[str]] = ["name", "permissions"]
+    name: StrictStr
+    permissions: List[StrictStr]
+    domain: RoleDomain
+    __properties: ClassVar[List[str]] = ["name", "permissions", "domain"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -85,7 +85,8 @@ class RoleDefinition(BaseModel):
 
         _obj = cls.model_validate({
             "name": obj.get("name"),
-            "permissions": obj.get("permissions")
+            "permissions": obj.get("permissions"),
+            "domain": obj.get("domain")
         })
         return _obj
 

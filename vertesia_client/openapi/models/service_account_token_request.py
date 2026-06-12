@@ -19,8 +19,8 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
-from vertesia_client.openapi.models.project_roles import ProjectRoles
 from vertesia_client.openapi.models.signing_algorithm import SigningAlgorithm
+from vertesia_client.openapi.models.system_roles import SystemRoles
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -34,7 +34,7 @@ class ServiceAccountTokenRequest(BaseModel):
     algorithm: Optional[SigningAlgorithm] = Field(default=None, description="Signing algorithm - defaults to ES256. Use RS256 for Azure AD compatibility.")
     account_id: StrictStr
     project_id: StrictStr
-    roles: Optional[List[ProjectRoles]] = None
+    roles: Optional[List[SystemRoles]] = None
     name: Optional[StrictStr] = None
     __properties: ClassVar[List[str]] = ["type", "audience", "algorithm", "account_id", "project_id", "roles", "name"]
 

@@ -543,7 +543,6 @@ from vertesia_client.openapi.models.project_integration_list_response import Pro
 from vertesia_client.openapi.models.project_model_defaults import ProjectModelDefaults
 from vertesia_client.openapi.models.project_plugins_update_payload import ProjectPluginsUpdatePayload
 from vertesia_client.openapi.models.project_ref import ProjectRef
-from vertesia_client.openapi.models.project_roles import ProjectRoles
 from vertesia_client.openapi.models.project_search_tier import ProjectSearchTier
 from vertesia_client.openapi.models.project_token_request import ProjectTokenRequest
 from vertesia_client.openapi.models.project_tool_info import ProjectToolInfo
@@ -601,6 +600,7 @@ from vertesia_client.openapi.models.retry_process_node_payload import RetryProce
 from vertesia_client.openapi.models.revert_process_definition_payload import RevertProcessDefinitionPayload
 from vertesia_client.openapi.models.revision_info import RevisionInfo
 from vertesia_client.openapi.models.role_definition import RoleDefinition
+from vertesia_client.openapi.models.role_domain import RoleDomain
 from vertesia_client.openapi.models.run_analytics_group_by import RunAnalyticsGroupBy
 from vertesia_client.openapi.models.run_analytics_query import RunAnalyticsQuery
 from vertesia_client.openapi.models.run_analytics_result import RunAnalyticsResult
@@ -654,6 +654,8 @@ from vertesia_client.openapi.models.supported_integrations_resend import Support
 from vertesia_client.openapi.models.supported_integrations_serper import SupportedIntegrationsSerper
 from vertesia_client.openapi.models.supported_providers import SupportedProviders
 from vertesia_client.openapi.models.system_defaults import SystemDefaults
+from vertesia_client.openapi.models.system_role_definition import SystemRoleDefinition
+from vertesia_client.openapi.models.system_roles import SystemRoles
 from vertesia_client.openapi.models.task import Task
 from vertesia_client.openapi.models.task_field import TaskField
 from vertesia_client.openapi.models.task_field_type import TaskFieldType

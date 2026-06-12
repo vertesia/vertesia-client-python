@@ -22,7 +22,7 @@ from typing import Any, ClassVar, Dict, List, Optional
 from vertesia_client.openapi.models.access_control_principal_type import AccessControlPrincipalType
 from vertesia_client.openapi.models.access_control_resource_type import AccessControlResourceType
 from vertesia_client.openapi.models.ace_conditions import AceConditions
-from vertesia_client.openapi.models.project_roles import ProjectRoles
+from vertesia_client.openapi.models.system_roles import SystemRoles
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -31,7 +31,7 @@ class AccessControlEntry(BaseModel):
     """
     AccessControlEntry
     """ # noqa: E501
-    role: ProjectRoles
+    role: SystemRoles
     resource_type: AccessControlResourceType
     resource: StrictStr
     principal_type: AccessControlPrincipalType

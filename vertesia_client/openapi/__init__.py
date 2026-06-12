@@ -592,7 +592,6 @@ __all__ = [
     "ProjectModelDefaults",
     "ProjectPluginsUpdatePayload",
     "ProjectRef",
-    "ProjectRoles",
     "ProjectSearchTier",
     "ProjectTokenRequest",
     "ProjectToolInfo",
@@ -650,6 +649,7 @@ __all__ = [
     "RevertProcessDefinitionPayload",
     "RevisionInfo",
     "RoleDefinition",
+    "RoleDomain",
     "RunAnalyticsGroupBy",
     "RunAnalyticsQuery",
     "RunAnalyticsResult",
@@ -703,6 +703,8 @@ __all__ = [
     "SupportedIntegrationsSerper",
     "SupportedProviders",
     "SystemDefaults",
+    "SystemRoleDefinition",
+    "SystemRoles",
     "Task",
     "TaskField",
     "TaskFieldType",
@@ -1383,7 +1385,6 @@ from vertesia_client.openapi.models.project_integration_list_response import Pro
 from vertesia_client.openapi.models.project_model_defaults import ProjectModelDefaults as ProjectModelDefaults
 from vertesia_client.openapi.models.project_plugins_update_payload import ProjectPluginsUpdatePayload as ProjectPluginsUpdatePayload
 from vertesia_client.openapi.models.project_ref import ProjectRef as ProjectRef
-from vertesia_client.openapi.models.project_roles import ProjectRoles as ProjectRoles
 from vertesia_client.openapi.models.project_search_tier import ProjectSearchTier as ProjectSearchTier
 from vertesia_client.openapi.models.project_token_request import ProjectTokenRequest as ProjectTokenRequest
 from vertesia_client.openapi.models.project_tool_info import ProjectToolInfo as ProjectToolInfo
@@ -1441,6 +1442,7 @@ from vertesia_client.openapi.models.retry_process_node_payload import RetryProce
 from vertesia_client.openapi.models.revert_process_definition_payload import RevertProcessDefinitionPayload as RevertProcessDefinitionPayload
 from vertesia_client.openapi.models.revision_info import RevisionInfo as RevisionInfo
 from vertesia_client.openapi.models.role_definition import RoleDefinition as RoleDefinition
+from vertesia_client.openapi.models.role_domain import RoleDomain as RoleDomain
 from vertesia_client.openapi.models.run_analytics_group_by import RunAnalyticsGroupBy as RunAnalyticsGroupBy
 from vertesia_client.openapi.models.run_analytics_query import RunAnalyticsQuery as RunAnalyticsQuery
 from vertesia_client.openapi.models.run_analytics_result import RunAnalyticsResult as RunAnalyticsResult
@@ -1494,6 +1496,8 @@ from vertesia_client.openapi.models.supported_integrations_resend import Support
 from vertesia_client.openapi.models.supported_integrations_serper import SupportedIntegrationsSerper as SupportedIntegrationsSerper
 from vertesia_client.openapi.models.supported_providers import SupportedProviders as SupportedProviders
 from vertesia_client.openapi.models.system_defaults import SystemDefaults as SystemDefaults
+from vertesia_client.openapi.models.system_role_definition import SystemRoleDefinition as SystemRoleDefinition
+from vertesia_client.openapi.models.system_roles import SystemRoles as SystemRoles
 from vertesia_client.openapi.models.task import Task as Task
 from vertesia_client.openapi.models.task_field import TaskField as TaskField
 from vertesia_client.openapi.models.task_field_type import TaskFieldType as TaskFieldType

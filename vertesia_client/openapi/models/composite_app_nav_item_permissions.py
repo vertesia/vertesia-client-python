@@ -29,7 +29,7 @@ class CompositeAppNavItemPermissions(BaseModel):
     """ # noqa: E501
     groups_allowed: Optional[List[StrictStr]] = Field(default=None, description="Group IDs whose members can see this item.", alias="groupsAllowed")
     users_allowed: Optional[List[StrictStr]] = Field(default=None, description="User IDs who can see this item.", alias="usersAllowed")
-    roles_allowed: Optional[List[StrictStr]] = Field(default=None, description="ProjectRoles values (e.g. \"developer\", \"manager\") whose holders can see this item.", alias="rolesAllowed")
+    roles_allowed: Optional[List[StrictStr]] = Field(default=None, description="SystemRoles values (e.g. \"developer\", \"manager\") whose holders can see this item.", alias="rolesAllowed")
     __properties: ClassVar[List[str]] = ["groupsAllowed", "usersAllowed", "rolesAllowed"]
 
     model_config = ConfigDict(

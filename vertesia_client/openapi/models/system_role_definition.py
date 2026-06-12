@@ -18,19 +18,21 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, StrictStr
-from typing import Any, ClassVar, Dict
-from vertesia_client.openapi.models.system_roles import SystemRoles
+from typing import Any, ClassVar, Dict, List
+from vertesia_client.openapi.models.permission import Permission
+from vertesia_client.openapi.models.role_domain import RoleDomain
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class InviteUserRequestPayload(BaseModel):
+class SystemRoleDefinition(BaseModel):
     """
-    InviteUserRequestPayload
+    Tightly-typed view of a system-domain role: permissions are central `Permission` enum values. Returned by `client.iam.roles.listSystem()` and by the server's `/roles/system` endpoint.
     """ # noqa: E501
-    email: StrictStr
-    role: SystemRoles
-    __properties: ClassVar[List[str]] = ["email", "role"]
+    name: StrictStr
+    permissions: List[Permission]
+    domain: RoleDomain
+    __properties: ClassVar[List[str]] = ["name", "permissions", "domain"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -50,7 +52,7 @@ class InviteUserRequestPayload(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of InviteUserRequestPayload from a JSON string"""
+        """Create an instance of SystemRoleDefinition from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -75,7 +77,7 @@ class InviteUserRequestPayload(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of InviteUserRequestPayload from a dict"""
+        """Create an instance of SystemRoleDefinition from a dict"""
         if obj is None:
             return None
 
@@ -83,8 +85,9 @@ class InviteUserRequestPayload(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "email": obj.get("email"),
-            "role": obj.get("role")
+            "name": obj.get("name"),
+            "permissions": obj.get("permissions"),
+            "domain": obj.get("domain")
         })
         return _obj
 

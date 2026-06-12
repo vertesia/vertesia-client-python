@@ -2917,7 +2917,7 @@
             "type": "string"
           },
           "role": {
-            "$ref": "#/components/schemas/ProjectRoles"
+            "$ref": "#/components/schemas/SystemRoles"
           }
         },
         "required": [
@@ -3028,7 +3028,7 @@
             "$ref": "#/components/schemas/ApiKeyTypes"
           },
           "role": {
-            "$ref": "#/components/schemas/ProjectRoles"
+            "$ref": "#/components/schemas/SystemRoles"
           },
           "maskedValue": {
             "type": "string"
@@ -3097,7 +3097,7 @@
             "$ref": "#/components/schemas/ApiKeyTypes"
           },
           "role": {
-            "$ref": "#/components/schemas/ProjectRoles"
+            "$ref": "#/components/schemas/SystemRoles"
           },
           "maskedValue": {
             "type": "string"
@@ -3163,7 +3163,7 @@
             "$ref": "#/components/schemas/ApiKeyTypes"
           },
           "role": {
-            "$ref": "#/components/schemas/ProjectRoles"
+            "$ref": "#/components/schemas/SystemRoles"
           },
           "maskedValue": {
             "type": "string"
@@ -3245,7 +3245,7 @@
             "$ref": "#/components/schemas/ApiKeyTypes"
           },
           "role": {
-            "$ref": "#/components/schemas/ProjectRoles"
+            "$ref": "#/components/schemas/SystemRoles"
           },
           "maskedValue": {
             "type": "string"
@@ -3626,7 +3626,7 @@
         "type": "object",
         "properties": {
           "role": {
-            "$ref": "#/components/schemas/ProjectRoles"
+            "$ref": "#/components/schemas/SystemRoles"
           },
           "resource_type": {
             "$ref": "#/components/schemas/AccessControlResourceType"
@@ -3686,7 +3686,7 @@
         "additionalProperties": false,
         "properties": {
           "role": {
-            "$ref": "#/components/schemas/ProjectRoles"
+            "$ref": "#/components/schemas/SystemRoles"
           },
           "resource_type": {
             "$ref": "#/components/schemas/AccessControlResourceType"
@@ -3735,7 +3735,7 @@
         "additionalProperties": false,
         "properties": {
           "role": {
-            "$ref": "#/components/schemas/ProjectRoles"
+            "$ref": "#/components/schemas/SystemRoles"
           },
           "resource_type": {
             "$ref": "#/components/schemas/AccessControlResourceType"
@@ -3776,6 +3776,12 @@
         "type": "array",
         "items": {
           "$ref": "#/components/schemas/RoleDefinition"
+        }
+      },
+      "SystemRoleDefinitionArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/SystemRoleDefinition"
         }
       },
       "UserGroupArray": {
@@ -7071,7 +7077,7 @@
             "items": {
               "type": "string"
             },
-            "description": "ProjectRoles values (e.g. \"developer\", \"manager\") whose holders can see this item."
+            "description": "SystemRoles values (e.g. \"developer\", \"manager\") whose holders can see this item."
           }
         },
         "additionalProperties": false,
@@ -10648,7 +10654,7 @@
           "invoice"
         ]
       },
-      "ProjectRoles": {
+      "SystemRoles": {
         "type": "string",
         "enum": [
           "owner",
@@ -11158,20 +11164,58 @@
         "type": "object",
         "properties": {
           "name": {
-            "$ref": "#/components/schemas/ProjectRoles"
+            "type": "string"
+          },
+          "permissions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "domain": {
+            "$ref": "#/components/schemas/RoleDomain"
+          }
+        },
+        "required": [
+          "name",
+          "permissions",
+          "domain"
+        ],
+        "additionalProperties": false,
+        "description": "Wire shape of a role returned by the IAM `/roles` endpoint.\n\nPermissions are typed `string[]` because role names span multiple partitions (system, content, future tasks/etc.) and each partition has its own vocabulary. For the tightly-typed system-only view (with `permissions: Permission[]`) use `SystemRoleDefinition` and the `/roles/system` endpoint.\n\nNOTE: this interface is intentionally non-generic. The OpenAPI generator doesn't handle TypeScript generics cleanly in array response types and produces a degenerate `RoleDefinitionArray` schema. Keeping the wire shapes concrete avoids that. `SystemRoleDefinition` extends and narrows `permissions` to `Permission[]`."
+      },
+      "RoleDomain": {
+        "type": "string",
+        "enum": [
+          "system",
+          "content",
+          "tasks"
+        ],
+        "description": "Logical grouping of roles by the service area that owns them. One domain may declare roles applicable to multiple scopes (e.g. the `content` domain owns roles applicable to both `document` and `collection` scopes). The `system` domain owns the built-in foundational roles (currently exposed as `SystemRoles`) — registered first so domain partitions cannot shadow them."
+      },
+      "SystemRoleDefinition": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
           },
           "permissions": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Permission"
             }
+          },
+          "domain": {
+            "$ref": "#/components/schemas/RoleDomain"
           }
         },
         "required": [
+          "domain",
           "name",
           "permissions"
         ],
-        "additionalProperties": false
+        "additionalProperties": false,
+        "description": "Tightly-typed view of a system-domain role: permissions are central `Permission` enum values. Returned by `client.iam.roles.listSystem()` and by the server's `/roles/system` endpoint."
       },
       "Permission": {
         "type": "string",
@@ -23822,7 +23866,7 @@
           "roles": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ProjectRoles"
+              "$ref": "#/components/schemas/SystemRoles"
             }
           },
           "name": {
@@ -33942,7 +33986,7 @@
           "Roles"
         ],
         "summary": "List built-in roles",
-        "description": "Lists the built-in roles and the permissions included in each role.",
+        "description": "Lists every built-in role across all partitions (system, content, …) and the permissions each role grants.",
         "security": [
           {
             "bearerAuth": []
@@ -33999,6 +34043,86 @@
           "file": "../../apps/studio-server/src/api/iam/roles.ts",
           "className": "RolesResource",
           "methodName": "listRoles"
+        }
+      },
+      "parameters": [
+        {
+          "name": "x-api-version",
+          "in": "header",
+          "required": false,
+          "schema": {
+            "type": "string",
+            "example": "20260319"
+          },
+          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "x-vertesia-global-header": true
+        }
+      ]
+    },
+    "/iam/roles/system": {
+      "get": {
+        "operationId": "ListSystemRoles",
+        "tags": [
+          "Roles"
+        ],
+        "summary": "List system roles",
+        "description": "Lists system-domain roles only. Permissions are `Permission` enum values — suited for client-side permission gating (button visibility, route guards). ABAC roles are excluded and must be consumed via the JWT `content_security` claim at the data layer.",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OpenID": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "System roles and their permissions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SystemRoleDefinitionArray"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [],
+        "x-vertesia-source": {
+          "file": "../../apps/studio-server/src/api/iam/roles.ts",
+          "className": "RolesResource",
+          "methodName": "listSystemRoles"
         }
       },
       "parameters": [

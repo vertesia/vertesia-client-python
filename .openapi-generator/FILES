@@ -570,7 +570,6 @@ vertesia_client/openapi/models/project_integration_list_response.py
 vertesia_client/openapi/models/project_model_defaults.py
 vertesia_client/openapi/models/project_plugins_update_payload.py
 vertesia_client/openapi/models/project_ref.py
-vertesia_client/openapi/models/project_roles.py
 vertesia_client/openapi/models/project_search_tier.py
 vertesia_client/openapi/models/project_token_request.py
 vertesia_client/openapi/models/project_tool_info.py
@@ -628,6 +627,7 @@ vertesia_client/openapi/models/retry_process_node_payload.py
 vertesia_client/openapi/models/revert_process_definition_payload.py
 vertesia_client/openapi/models/revision_info.py
 vertesia_client/openapi/models/role_definition.py
+vertesia_client/openapi/models/role_domain.py
 vertesia_client/openapi/models/run_analytics_group_by.py
 vertesia_client/openapi/models/run_analytics_query.py
 vertesia_client/openapi/models/run_analytics_result.py
@@ -681,6 +681,8 @@ vertesia_client/openapi/models/supported_integrations_resend.py
 vertesia_client/openapi/models/supported_integrations_serper.py
 vertesia_client/openapi/models/supported_providers.py
 vertesia_client/openapi/models/system_defaults.py
+vertesia_client/openapi/models/system_role_definition.py
+vertesia_client/openapi/models/system_roles.py
 vertesia_client/openapi/models/task.py
 vertesia_client/openapi/models/task_field.py
 vertesia_client/openapi/models/task_field_type.py
