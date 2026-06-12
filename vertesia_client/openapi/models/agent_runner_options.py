@@ -37,7 +37,8 @@ class AgentRunnerOptions(BaseModel):
     tool_names: Optional[List[StrictStr]] = Field(default=None, description="Array of default tool names available to this agent. For interactions: defines default tools. For execution payloads: you can use + and - to add or remove from default, if no sign, then list replaces default.")
     search_scope: Optional[AgentSearchScope] = Field(default=None, description="On which scope should the search be applied by the search_tool. Only supports 'collection' scope or undefined for now.")
     collection_id: Optional[StrictStr] = Field(default=None, description="The ID of the collection to restrict agent operations to. When specified, the agent's search and retrieval operations are limited to documents within this collection'.")
-    __properties: ClassVar[List[str]] = ["is_agent", "is_tool", "is_skill", "context_triggers", "skill_priority", "tool_names", "search_scope", "collection_id"]
+    request_template: Optional[StrictStr] = Field(default=None, description="Optional user-facing template for rendering run input as the first conversation entry. Supports {{field_name}}, {{nested.field}}, {{items.0.name}}, and {{json}} placeholders resolved from the run data.")
+    __properties: ClassVar[List[str]] = ["is_agent", "is_tool", "is_skill", "context_triggers", "skill_priority", "tool_names", "search_scope", "collection_id", "request_template"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -100,7 +101,8 @@ class AgentRunnerOptions(BaseModel):
             "skill_priority": obj.get("skill_priority"),
             "tool_names": obj.get("tool_names"),
             "search_scope": obj.get("search_scope"),
-            "collection_id": obj.get("collection_id")
+            "collection_id": obj.get("collection_id"),
+            "request_template": obj.get("request_template")
         })
         return _obj
 

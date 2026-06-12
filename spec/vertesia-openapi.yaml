@@ -5854,6 +5854,12 @@ components:
           description: The ID of the collection to restrict agent operations to. When
             specified, the agent's search and retrieval operations are limited
             to documents within this collection'.
+        request_template:
+          type: string
+          description: Optional user-facing template for rendering run input as the first
+            conversation entry. Supports {{field_name}}, {{nested.field}},
+            {{items.0.name}}, and {{json}} placeholders resolved from the run
+            data.
       additionalProperties: false
       description: Configuration options for Agent Runner functionality. These options
         control how interactions are exposed and executed in the Agent Runner.
@@ -14546,6 +14552,13 @@ components:
           type: array
           items:
             type: string
+        tool_event:
+          type: string
+          enum:
+            - started
+            - progress
+            - completed
+            - failed
         streamed:
           type: boolean
         display_role:
@@ -14558,6 +14571,8 @@ components:
           type: string
         tool_run_id:
           type: string
+        tool_use_id:
+          type: string
         tool_status:
           type: string
           enum:
@@ -14566,6 +14581,10 @@ components:
             - error
             - warning
         tool_iteration:
+          type: number
+        message_to_human:
+          type: string
+        duration_ms:
           type: number
         observation: {}
         workflow_run_id:

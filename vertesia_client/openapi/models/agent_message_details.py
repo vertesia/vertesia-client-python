@@ -32,14 +32,18 @@ class AgentMessageDetails(BaseModel):
     event_class: Optional[StrictStr] = None
     tool: Optional[StrictStr] = None
     tools: Optional[List[StrictStr]] = None
+    tool_event: Optional[StrictStr] = None
     streamed: Optional[StrictBool] = None
     display_role: Optional[StrictStr] = None
     activity_id: Optional[StrictStr] = None
     activity_group_id: Optional[StrictStr] = None
     batch_id: Optional[StrictStr] = None
     tool_run_id: Optional[StrictStr] = None
+    tool_use_id: Optional[StrictStr] = None
     tool_status: Optional[StrictStr] = None
     tool_iteration: Optional[Union[StrictFloat, StrictInt]] = None
+    message_to_human: Optional[StrictStr] = None
+    duration_ms: Optional[Union[StrictFloat, StrictInt]] = None
     observation: Optional[Any] = None
     workflow_run_id: Optional[StrictStr] = None
     output_files: Optional[List[StrictStr]] = Field(default=None, alias="outputFiles")
@@ -51,7 +55,15 @@ class AgentMessageDetails(BaseModel):
     optimistic: Optional[StrictBool] = Field(default=None, alias="_optimistic")
     message_id: Optional[StrictStr] = Field(default=None, alias="_messageId")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["event_class", "tool", "tools", "streamed", "display_role", "activity_id", "activity_group_id", "batch_id", "tool_run_id", "tool_status", "tool_iteration", "observation", "workflow_run_id", "outputFiles", "files", "plan", "streaming_id", "chunk_index", "is_final", "_optimistic", "_messageId"]
+    __properties: ClassVar[List[str]] = ["event_class", "tool", "tools", "tool_event", "streamed", "display_role", "activity_id", "activity_group_id", "batch_id", "tool_run_id", "tool_use_id", "tool_status", "tool_iteration", "message_to_human", "duration_ms", "observation", "workflow_run_id", "outputFiles", "files", "plan", "streaming_id", "chunk_index", "is_final", "_optimistic", "_messageId"]
+
+    @field_validator('tool_event')
+    def tool_event_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        return value
 
     @field_validator('tool_status')
     def tool_status_validate_enum(cls, value):
@@ -141,14 +153,18 @@ class AgentMessageDetails(BaseModel):
             "event_class": obj.get("event_class"),
             "tool": obj.get("tool"),
             "tools": obj.get("tools"),
+            "tool_event": obj.get("tool_event"),
             "streamed": obj.get("streamed"),
             "display_role": obj.get("display_role"),
             "activity_id": obj.get("activity_id"),
             "activity_group_id": obj.get("activity_group_id"),
             "batch_id": obj.get("batch_id"),
             "tool_run_id": obj.get("tool_run_id"),
+            "tool_use_id": obj.get("tool_use_id"),
             "tool_status": obj.get("tool_status"),
             "tool_iteration": obj.get("tool_iteration"),
+            "message_to_human": obj.get("message_to_human"),
+            "duration_ms": obj.get("duration_ms"),
             "observation": obj.get("observation"),
             "workflow_run_id": obj.get("workflow_run_id"),
             "outputFiles": obj.get("outputFiles"),
