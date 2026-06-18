@@ -7689,6 +7689,11 @@ components:
           description: Activity ID from the latest LLM call (for deduplication with
             streamed content). Set by streamToRedis when completing async
             activities.
+        latest_streaming_id:
+          type: string
+          description: Stable streaming ID from the latest LLM call. Unlike Temporal
+            activity IDs, this is scoped to the concrete workflow run that
+            produced the stream, so it remains safe across continue-as-new.
         skill_tool_map:
           $ref: "#/components/schemas/StringArrayMap"
           description: Mapping of skill names to their related tools. When a skill is
@@ -14593,6 +14598,8 @@ components:
     AgentMessageDetails:
       type: object
       properties:
+        ack:
+          type: string
         event_class:
           type: string
         tool:
@@ -14636,6 +14643,12 @@ components:
         duration_ms:
           type: number
         observation: {}
+        token_usage:
+          $ref: "#/components/schemas/ExecutionTokenUsage"
+        checkpoint_at:
+          type: number
+        checkpoint_threshold:
+          type: number
         workflow_run_id:
           type: string
         outputFiles:
@@ -14654,6 +14667,11 @@ components:
             $ref: "#/components/schemas/PlanTask"
         streaming_id:
           type: string
+        streaming_id_scope:
+          type: string
+          enum:
+            - workflow_run
+            - workstream
         chunk_index:
           type: number
         is_final:
@@ -14662,6 +14680,13 @@ components:
           type: boolean
         _messageId:
           type: string
+        _deliveryStatus:
+          type: string
+          enum:
+            - sending
+            - received
+            - consumed
+            - failed
     ConversationFile:
       type: object
       properties:

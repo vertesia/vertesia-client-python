@@ -20,6 +20,7 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from vertesia_client.openapi.models.agent_message_details_files_inner import AgentMessageDetailsFilesInner
+from vertesia_client.openapi.models.execution_token_usage import ExecutionTokenUsage
 from vertesia_client.openapi.models.plan_task import PlanTask
 from typing import Optional, Set
 from typing_extensions import Self
@@ -29,6 +30,7 @@ class AgentMessageDetails(BaseModel):
     """
     AgentMessageDetails
     """ # noqa: E501
+    ack: Optional[StrictStr] = None
     event_class: Optional[StrictStr] = None
     tool: Optional[StrictStr] = None
     tools: Optional[List[StrictStr]] = None
@@ -45,17 +47,22 @@ class AgentMessageDetails(BaseModel):
     message_to_human: Optional[StrictStr] = None
     duration_ms: Optional[Union[StrictFloat, StrictInt]] = None
     observation: Optional[Any] = None
+    token_usage: Optional[ExecutionTokenUsage] = None
+    checkpoint_at: Optional[Union[StrictFloat, StrictInt]] = None
+    checkpoint_threshold: Optional[Union[StrictFloat, StrictInt]] = None
     workflow_run_id: Optional[StrictStr] = None
     output_files: Optional[List[StrictStr]] = Field(default=None, alias="outputFiles")
     files: Optional[List[AgentMessageDetailsFilesInner]] = None
     plan: Optional[List[PlanTask]] = None
     streaming_id: Optional[StrictStr] = None
+    streaming_id_scope: Optional[StrictStr] = None
     chunk_index: Optional[Union[StrictFloat, StrictInt]] = None
     is_final: Optional[StrictBool] = None
     optimistic: Optional[StrictBool] = Field(default=None, alias="_optimistic")
     message_id: Optional[StrictStr] = Field(default=None, alias="_messageId")
+    delivery_status: Optional[StrictStr] = Field(default=None, alias="_deliveryStatus")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["event_class", "tool", "tools", "tool_event", "streamed", "display_role", "activity_id", "activity_group_id", "batch_id", "tool_run_id", "tool_use_id", "tool_status", "tool_iteration", "message_to_human", "duration_ms", "observation", "workflow_run_id", "outputFiles", "files", "plan", "streaming_id", "chunk_index", "is_final", "_optimistic", "_messageId"]
+    __properties: ClassVar[List[str]] = ["ack", "event_class", "tool", "tools", "tool_event", "streamed", "display_role", "activity_id", "activity_group_id", "batch_id", "tool_run_id", "tool_use_id", "tool_status", "tool_iteration", "message_to_human", "duration_ms", "observation", "token_usage", "checkpoint_at", "checkpoint_threshold", "workflow_run_id", "outputFiles", "files", "plan", "streaming_id", "streaming_id_scope", "chunk_index", "is_final", "_optimistic", "_messageId", "_deliveryStatus"]
 
     @field_validator('tool_event')
     def tool_event_validate_enum(cls, value):
@@ -67,6 +74,22 @@ class AgentMessageDetails(BaseModel):
 
     @field_validator('tool_status')
     def tool_status_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        return value
+
+    @field_validator('streaming_id_scope')
+    def streaming_id_scope_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        return value
+
+    @field_validator('delivery_status')
+    def delivery_status_validate_enum(cls, value):
         """Validates the enum"""
         if value is None:
             return value
@@ -114,6 +137,9 @@ class AgentMessageDetails(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of token_usage
+        if self.token_usage:
+            _dict['token_usage'] = self.token_usage.to_dict()
         # override the default output from pydantic by calling `to_dict()` of each item in files (list)
         _items = []
         if self.files:
@@ -150,6 +176,7 @@ class AgentMessageDetails(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "ack": obj.get("ack"),
             "event_class": obj.get("event_class"),
             "tool": obj.get("tool"),
             "tools": obj.get("tools"),
@@ -166,15 +193,20 @@ class AgentMessageDetails(BaseModel):
             "message_to_human": obj.get("message_to_human"),
             "duration_ms": obj.get("duration_ms"),
             "observation": obj.get("observation"),
+            "token_usage": ExecutionTokenUsage.from_dict(obj["token_usage"]) if obj.get("token_usage") is not None else None,
+            "checkpoint_at": obj.get("checkpoint_at"),
+            "checkpoint_threshold": obj.get("checkpoint_threshold"),
             "workflow_run_id": obj.get("workflow_run_id"),
             "outputFiles": obj.get("outputFiles"),
             "files": [AgentMessageDetailsFilesInner.from_dict(_item) for _item in obj["files"]] if obj.get("files") is not None else None,
             "plan": [PlanTask.from_dict(_item) for _item in obj["plan"]] if obj.get("plan") is not None else None,
             "streaming_id": obj.get("streaming_id"),
+            "streaming_id_scope": obj.get("streaming_id_scope"),
             "chunk_index": obj.get("chunk_index"),
             "is_final": obj.get("is_final"),
             "_optimistic": obj.get("_optimistic"),
-            "_messageId": obj.get("_messageId")
+            "_messageId": obj.get("_messageId"),
+            "_deliveryStatus": obj.get("_deliveryStatus")
         })
         # store additional fields in additional_properties
         for _key in obj.keys():

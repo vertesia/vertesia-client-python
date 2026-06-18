@@ -67,13 +67,14 @@ class ConversationState(BaseModel):
     end_conversation: Optional[ConversationStateEndConversation] = None
     unlocked_tools: Optional[List[StrictStr]] = Field(default=None, description="Tools that have been unlocked by skills during the conversation. These tools were initially hidden (default: false) but became available when a skill with tools was called.")
     latest_activity_id: Optional[StrictStr] = Field(default=None, description="Activity ID from the latest LLM call (for deduplication with streamed content). Set by streamToRedis when completing async activities.")
+    latest_streaming_id: Optional[StrictStr] = Field(default=None, description="Stable streaming ID from the latest LLM call. Unlike Temporal activity IDs, this is scoped to the concrete workflow run that produced the stream, so it remains safe across continue-as-new.")
     skill_tool_map: Optional[Dict[str, List[StrictStr]]] = Field(default=None, description="Mapping of skill names to their related tools. When a skill is called, its related tools are added to unlocked_tools.")
     active_activity_group_id: Optional[StrictStr] = Field(default=None, description="Current activity group ID for internal tool-execution progress messages. All updates emitted during one tool-execution cycle should share this ID.")
     finish_reason: Optional[StrictStr] = Field(default=None, description="LLM stop reason from the latest call (e.g., \"stop\", \"length\", \"tool_use\")")
     agent_run_id: Optional[StrictStr] = Field(default=None, description="The AgentRun ID (MongoDB _id) that owns this conversation. Used for artifact storage paths: agents/{agent_run_id}/ Undefined for legacy workflows started before the AgentRun system.")
     launch_id: Optional[StrictStr] = Field(default=None, description="For workstreams: the launch ID assigned by the parent workflow. When set, artifacts are stored under agents/{agent_run_id}/workstreams/{launch_id}/ to consolidate all artifacts under the parent agent run.")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["run", "environment", "options", "tool_use", "output", "token_usage", "parent", "ancestors", "task_id", "plan", "debug", "strip_options", "conversation_artifacts_base_url", "tool_reference", "active_tool_names", "pinned_tool_names", "tool_activation_metadata", "used_skills", "available_skills", "streaming_enabled", "user_channels", "resolvedInteraction", "end_conversation", "unlocked_tools", "latest_activity_id", "skill_tool_map", "active_activity_group_id", "finish_reason", "agent_run_id", "launch_id"]
+    __properties: ClassVar[List[str]] = ["run", "environment", "options", "tool_use", "output", "token_usage", "parent", "ancestors", "task_id", "plan", "debug", "strip_options", "conversation_artifacts_base_url", "tool_reference", "active_tool_names", "pinned_tool_names", "tool_activation_metadata", "used_skills", "available_skills", "streaming_enabled", "user_channels", "resolvedInteraction", "end_conversation", "unlocked_tools", "latest_activity_id", "latest_streaming_id", "skill_tool_map", "active_activity_group_id", "finish_reason", "agent_run_id", "launch_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -239,6 +240,7 @@ class ConversationState(BaseModel):
             "end_conversation": ConversationStateEndConversation.from_dict(obj["end_conversation"]) if obj.get("end_conversation") is not None else None,
             "unlocked_tools": obj.get("unlocked_tools"),
             "latest_activity_id": obj.get("latest_activity_id"),
+            "latest_streaming_id": obj.get("latest_streaming_id"),
             "skill_tool_map": obj.get("skill_tool_map"),
             "active_activity_group_id": obj.get("active_activity_group_id"),
             "finish_reason": obj.get("finish_reason"),
