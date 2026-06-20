@@ -34,8 +34,9 @@ class DataColumnForAI(BaseModel):
     semantic_type: Optional[SemanticColumnType] = Field(default=None, description="Semantic type")
     nullable: StrictBool = Field(description="Whether nullable")
     primary_key: StrictBool = Field(description="Whether primary key")
+    auto_increment: StrictBool = Field(description="Whether sequence-backed auto-increment is enabled")
     examples: Optional[List[StrictStr]] = Field(default=None, description="Example values")
-    __properties: ClassVar[List[str]] = ["type", "description", "semantic_type", "nullable", "primary_key", "examples"]
+    __properties: ClassVar[List[str]] = ["type", "description", "semantic_type", "nullable", "primary_key", "auto_increment", "examples"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -93,6 +94,7 @@ class DataColumnForAI(BaseModel):
             "semantic_type": obj.get("semantic_type"),
             "nullable": obj.get("nullable"),
             "primary_key": obj.get("primary_key"),
+            "auto_increment": obj.get("auto_increment"),
             "examples": obj.get("examples")
         })
         return _obj

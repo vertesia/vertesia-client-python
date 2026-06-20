@@ -17,29 +17,21 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional
-from vertesia_client.openapi.models.data_column_type import DataColumnType
-from vertesia_client.openapi.models.semantic_column_type import SemanticColumnType
+from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
+from typing import Any, ClassVar, Dict, List, Union
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class DataColumn(BaseModel):
+class DataStoreMutateRowsResult(BaseModel):
     """
-    Column definition for a data table.
+    Result from mutating rows in a data store.
     """ # noqa: E501
-    name: StrictStr = Field(description="Column name (must be valid SQL identifier)")
-    type: DataColumnType = Field(description="Data type")
-    description: Optional[StrictStr] = Field(default=None, description="Human-readable description")
-    nullable: Optional[StrictBool] = Field(default=None, description="Whether the column allows NULL values")
-    default: Optional[StrictStr] = Field(default=None, description="Default value (SQL expression as string)")
-    primary_key: Optional[StrictBool] = Field(default=None, description="Whether this is the primary key")
-    auto_increment: Optional[StrictBool] = Field(default=None, description="Whether this column should use a sequence-backed auto-increment default")
-    unique: Optional[StrictBool] = Field(default=None, description="Whether values must be unique")
-    semantic_type: Optional[SemanticColumnType] = Field(default=None, description="Semantic type for AI understanding")
-    examples: Optional[List[StrictStr]] = Field(default=None, description="Example values for AI context")
-    __properties: ClassVar[List[str]] = ["name", "type", "description", "nullable", "default", "primary_key", "auto_increment", "unique", "semantic_type", "examples"]
+    version_id: StrictStr = Field(description="Resulting data store version ID")
+    affected_tables: List[StrictStr] = Field(description="Tables affected by the statement")
+    row_counts: Dict[str, Union[StrictFloat, StrictInt]] = Field(description="Current row counts for affected tables after the mutation")
+    execution_time_ms: Union[StrictFloat, StrictInt] = Field(description="Statement execution time in milliseconds")
+    __properties: ClassVar[List[str]] = ["version_id", "affected_tables", "row_counts", "execution_time_ms"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -59,7 +51,7 @@ class DataColumn(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of DataColumn from a JSON string"""
+        """Create an instance of DataStoreMutateRowsResult from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -84,7 +76,7 @@ class DataColumn(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of DataColumn from a dict"""
+        """Create an instance of DataStoreMutateRowsResult from a dict"""
         if obj is None:
             return None
 
@@ -92,16 +84,10 @@ class DataColumn(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "name": obj.get("name"),
-            "type": obj.get("type"),
-            "description": obj.get("description"),
-            "nullable": obj.get("nullable"),
-            "default": obj.get("default"),
-            "primary_key": obj.get("primary_key"),
-            "auto_increment": obj.get("auto_increment"),
-            "unique": obj.get("unique"),
-            "semantic_type": obj.get("semantic_type"),
-            "examples": obj.get("examples")
+            "version_id": obj.get("version_id"),
+            "affected_tables": obj.get("affected_tables"),
+            "row_counts": obj.get("row_counts"),
+            "execution_time_ms": obj.get("execution_time_ms")
         })
         return _obj
 

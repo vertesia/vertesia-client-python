@@ -13194,6 +13194,48 @@ components:
         - tables
         - expires_in
       additionalProperties: false
+    DataStoreMutateRowsResult:
+      type: object
+      properties:
+        version_id:
+          type: string
+          description: Resulting data store version ID
+        affected_tables:
+          type: array
+          items:
+            type: string
+          description: Tables affected by the statement
+        row_counts:
+          $ref: "#/components/schemas/NumberValueMap"
+          description: Current row counts for affected tables after the mutation
+        execution_time_ms:
+          type: number
+          description: Statement execution time in milliseconds
+      required:
+        - version_id
+        - affected_tables
+        - row_counts
+        - execution_time_ms
+      additionalProperties: false
+      description: Result from mutating rows in a data store.
+    DataStoreMutateRowsPayload:
+      type: object
+      properties:
+        sql:
+          type: string
+          description: SQL statement. Only UPDATE and DELETE statements are accepted.
+        message:
+          type: string
+          description: Commit message recorded on the resulting data store version.
+        allow_full_table:
+          type: boolean
+          description: Allow UPDATE/DELETE statements without a WHERE clause. Defaults to
+            false.
+      required:
+        - sql
+        - message
+      additionalProperties: false
+      description: Payload for mutating data rows with a single SQL statement.
     QueryValidationResult:
       type: object
       properties:
@@ -17208,6 +17250,10 @@ components:
         primary_key:
           type: boolean
           description: Whether this is the primary key
+        auto_increment:
+          type: boolean
+          description: Whether this column should use a sequence-backed auto-increment
+            default
         unique:
           type: boolean
           description: Whether values must be unique
@@ -17459,6 +17505,9 @@ components:
         primary_key:
           type: boolean
           description: Whether primary key
+        auto_increment:
+          type: boolean
+          description: Whether sequence-backed auto-increment is enabled
         examples:
           type: array
           items:
@@ -17468,6 +17517,7 @@ components:
         - type
         - nullable
         - primary_key
+        - auto_increment
       additionalProperties: false
       description: Simplified column representation for AI agents.
     DataForeignKeyForAI:
@@ -17668,6 +17718,10 @@ components:
         primary_key:
           type: boolean
           description: Whether this is the primary key
+        auto_increment:
+          type: boolean
+          description: Whether this column should use a sequence-backed auto-increment
+            default
         unique:
           type: boolean
           description: Whether values must be unique
@@ -40126,6 +40180,76 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/QueryPayload"
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260319"
+        description: Optional Vertesia API version header. Use `20260319` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /data/{storeId}/mutate:
+    post:
+      operationId: MutateDataStoreRows
+      tags:
+        - Data
+      summary: Mutate data store rows
+      description: >-
+        Executes a single UPDATE or DELETE statement against the latest data
+        store state and creates a new version.
+
+
+        **Required permissions:** `content:write`
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters:
+        - name: storeId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Row mutation result.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DataStoreMutateRowsResult"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - content:write
+      x-vertesia-source:
+        file: ../../apps/zeno-server/src/api/data/index.ts
+        className: DataStoreResource
+        methodName: mutateRows
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DataStoreMutateRowsPayload"
     parameters:
       - name: x-api-version
         in: header

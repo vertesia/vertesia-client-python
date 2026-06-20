@@ -34,10 +34,11 @@ class PartialOmitDataColumnName(BaseModel):
     nullable: Optional[StrictBool] = Field(default=None, description="Whether the column allows NULL values")
     default: Optional[StrictStr] = Field(default=None, description="Default value (SQL expression as string)")
     primary_key: Optional[StrictBool] = Field(default=None, description="Whether this is the primary key")
+    auto_increment: Optional[StrictBool] = Field(default=None, description="Whether this column should use a sequence-backed auto-increment default")
     unique: Optional[StrictBool] = Field(default=None, description="Whether values must be unique")
     semantic_type: Optional[SemanticColumnType] = Field(default=None, description="Semantic type for AI understanding")
     examples: Optional[List[StrictStr]] = Field(default=None, description="Example values for AI context")
-    __properties: ClassVar[List[str]] = ["type", "description", "nullable", "default", "primary_key", "unique", "semantic_type", "examples"]
+    __properties: ClassVar[List[str]] = ["type", "description", "nullable", "default", "primary_key", "auto_increment", "unique", "semantic_type", "examples"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -95,6 +96,7 @@ class PartialOmitDataColumnName(BaseModel):
             "nullable": obj.get("nullable"),
             "default": obj.get("default"),
             "primary_key": obj.get("primary_key"),
+            "auto_increment": obj.get("auto_increment"),
             "unique": obj.get("unique"),
             "semantic_type": obj.get("semantic_type"),
             "examples": obj.get("examples")

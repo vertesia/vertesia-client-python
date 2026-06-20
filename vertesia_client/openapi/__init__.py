@@ -316,6 +316,8 @@ __all__ = [
     "DataStoreDownloadInfo",
     "DataStoreFullSchemaResponse",
     "DataStoreItem",
+    "DataStoreMutateRowsPayload",
+    "DataStoreMutateRowsResult",
     "DataStoreSchemaResponse",
     "DataStoreStatus",
     "DataStoreTableDetail",
@@ -1109,6 +1111,8 @@ from vertesia_client.openapi.models.data_store_archive_result import DataStoreAr
 from vertesia_client.openapi.models.data_store_download_info import DataStoreDownloadInfo as DataStoreDownloadInfo
 from vertesia_client.openapi.models.data_store_full_schema_response import DataStoreFullSchemaResponse as DataStoreFullSchemaResponse
 from vertesia_client.openapi.models.data_store_item import DataStoreItem as DataStoreItem
+from vertesia_client.openapi.models.data_store_mutate_rows_payload import DataStoreMutateRowsPayload as DataStoreMutateRowsPayload
+from vertesia_client.openapi.models.data_store_mutate_rows_result import DataStoreMutateRowsResult as DataStoreMutateRowsResult
 from vertesia_client.openapi.models.data_store_schema_response import DataStoreSchemaResponse as DataStoreSchemaResponse
 from vertesia_client.openapi.models.data_store_status import DataStoreStatus as DataStoreStatus
 from vertesia_client.openapi.models.data_store_table_detail import DataStoreTableDetail as DataStoreTableDetail

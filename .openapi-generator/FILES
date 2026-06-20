@@ -282,6 +282,8 @@ vertesia_client/openapi/models/data_store_archive_result.py
 vertesia_client/openapi/models/data_store_download_info.py
 vertesia_client/openapi/models/data_store_full_schema_response.py
 vertesia_client/openapi/models/data_store_item.py
+vertesia_client/openapi/models/data_store_mutate_rows_payload.py
+vertesia_client/openapi/models/data_store_mutate_rows_result.py
 vertesia_client/openapi/models/data_store_schema_response.py
 vertesia_client/openapi/models/data_store_status.py
 vertesia_client/openapi/models/data_store_table_detail.py

@@ -18,28 +18,19 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional
-from vertesia_client.openapi.models.data_column_type import DataColumnType
-from vertesia_client.openapi.models.semantic_column_type import SemanticColumnType
+from typing import Any, ClassVar, Dict, Optional
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class DataColumn(BaseModel):
+class DataStoreMutateRowsPayload(BaseModel):
     """
-    Column definition for a data table.
+    Payload for mutating data rows with a single SQL statement.
     """ # noqa: E501
-    name: StrictStr = Field(description="Column name (must be valid SQL identifier)")
-    type: DataColumnType = Field(description="Data type")
-    description: Optional[StrictStr] = Field(default=None, description="Human-readable description")
-    nullable: Optional[StrictBool] = Field(default=None, description="Whether the column allows NULL values")
-    default: Optional[StrictStr] = Field(default=None, description="Default value (SQL expression as string)")
-    primary_key: Optional[StrictBool] = Field(default=None, description="Whether this is the primary key")
-    auto_increment: Optional[StrictBool] = Field(default=None, description="Whether this column should use a sequence-backed auto-increment default")
-    unique: Optional[StrictBool] = Field(default=None, description="Whether values must be unique")
-    semantic_type: Optional[SemanticColumnType] = Field(default=None, description="Semantic type for AI understanding")
-    examples: Optional[List[StrictStr]] = Field(default=None, description="Example values for AI context")
-    __properties: ClassVar[List[str]] = ["name", "type", "description", "nullable", "default", "primary_key", "auto_increment", "unique", "semantic_type", "examples"]
+    sql: StrictStr = Field(description="SQL statement. Only UPDATE and DELETE statements are accepted.")
+    message: StrictStr = Field(description="Commit message recorded on the resulting data store version.")
+    allow_full_table: Optional[StrictBool] = Field(default=None, description="Allow UPDATE/DELETE statements without a WHERE clause. Defaults to false.")
+    __properties: ClassVar[List[str]] = ["sql", "message", "allow_full_table"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -59,7 +50,7 @@ class DataColumn(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of DataColumn from a JSON string"""
+        """Create an instance of DataStoreMutateRowsPayload from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -84,7 +75,7 @@ class DataColumn(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of DataColumn from a dict"""
+        """Create an instance of DataStoreMutateRowsPayload from a dict"""
         if obj is None:
             return None
 
@@ -92,16 +83,9 @@ class DataColumn(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "name": obj.get("name"),
-            "type": obj.get("type"),
-            "description": obj.get("description"),
-            "nullable": obj.get("nullable"),
-            "default": obj.get("default"),
-            "primary_key": obj.get("primary_key"),
-            "auto_increment": obj.get("auto_increment"),
-            "unique": obj.get("unique"),
-            "semantic_type": obj.get("semantic_type"),
-            "examples": obj.get("examples")
+            "sql": obj.get("sql"),
+            "message": obj.get("message"),
+            "allow_full_table": obj.get("allow_full_table")
         })
         return _obj
 
