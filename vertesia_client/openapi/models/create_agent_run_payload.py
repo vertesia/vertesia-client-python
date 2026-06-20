@@ -40,6 +40,7 @@ class CreateAgentRunPayload(BaseModel):
     interactive: Optional[StrictBool] = Field(default=None, description="Whether the agent accepts user input")
     tool_names: Optional[List[StrictStr]] = Field(default=None, description="Tools configured for this run (+/- syntax supported)")
     collection_id: Optional[StrictStr] = Field(default=None, description="Scoped collection (if any)")
+    disabled_mcp_collections: Optional[List[StrictStr]] = Field(default=None, description="Denylist of MCP tool-collection ids deactivated for this run. `undefined`/empty means all installed/connected MCP collections are active (back-compat, and new servers stay active by default). Listed collections are excluded even if connected.")
     content_type: Optional[ContentObjectTypeRef] = Field(default=None, description="Content type linked to this run — defines the schema for `properties`")
     visibility: Optional[ConversationVisibility] = Field(default=None, description="Conversation visibility")
     tags: Optional[List[StrictStr]] = Field(default=None, description="User-defined or system tags for categorization")
@@ -57,7 +58,7 @@ class CreateAgentRunPayload(BaseModel):
     debug_mode: Optional[StrictBool] = Field(default=None, description="Enable debug mode for verbose logging")
     started_by: Optional[StrictStr] = Field(default=None, description="Principal ref of the user who initiated the run (for server-to-server forwarding)")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["interaction", "data", "config", "interactive", "tool_names", "collection_id", "content_type", "visibility", "tags", "categories", "properties", "source", "schedule_id", "source_type", "type", "search_scope", "user_channels", "checkpoint_tokens", "max_iterations", "notify_endpoints", "debug_mode", "started_by"]
+    __properties: ClassVar[List[str]] = ["interaction", "data", "config", "interactive", "tool_names", "collection_id", "disabled_mcp_collections", "content_type", "visibility", "tags", "categories", "properties", "source", "schedule_id", "source_type", "type", "search_scope", "user_channels", "checkpoint_tokens", "max_iterations", "notify_endpoints", "debug_mode", "started_by"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -139,6 +140,7 @@ class CreateAgentRunPayload(BaseModel):
             "interactive": obj.get("interactive"),
             "tool_names": obj.get("tool_names"),
             "collection_id": obj.get("collection_id"),
+            "disabled_mcp_collections": obj.get("disabled_mcp_collections"),
             "content_type": ContentObjectTypeRef.from_dict(obj["content_type"]) if obj.get("content_type") is not None else None,
             "visibility": obj.get("visibility"),
             "tags": obj.get("tags"),

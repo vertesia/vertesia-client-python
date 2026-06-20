@@ -43,6 +43,7 @@ class AutonomousRunResponse(BaseModel):
     interactive: Optional[StrictBool] = Field(default=None, description="Whether the agent accepts user input")
     tool_names: Optional[List[StrictStr]] = Field(default=None, description="Tools configured for this run (+/- syntax supported)")
     collection_id: Optional[StrictStr] = Field(default=None, description="Scoped collection (if any)")
+    disabled_mcp_collections: Optional[List[StrictStr]] = Field(default=None, description="Denylist of MCP tool-collection ids deactivated for this run. `undefined`/empty means all installed/connected MCP collections are active (back-compat, and new servers stay active by default). Listed collections are excluded even if connected.")
     content_type: Optional[ContentObjectTypeRef] = Field(default=None, description="Content type linked to this run — defines the schema for `properties`")
     visibility: Optional[ConversationVisibility] = Field(default=None, description="Conversation/process visibility")
     tags: Optional[List[StrictStr]] = Field(default=None, description="User-defined or system tags for categorization")
@@ -78,7 +79,7 @@ class AutonomousRunResponse(BaseModel):
     last_archive_error: Optional[StrictStr] = Field(default=None, description="Last archive error message (when archive_state === 'failed')")
     forked_from: Optional[StrictStr] = Field(default=None, description="Source agent run ID when this run was forked (enables message history chaining)")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["interaction", "data", "config", "interactive", "tool_names", "collection_id", "content_type", "visibility", "tags", "categories", "properties", "source", "schedule_id", "source_type", "type", "id", "run_kind", "run_type", "account", "project", "workflow_id", "first_workflow_run_id", "artifacts_path", "status", "activity_state", "started_by", "started_at", "completed_at", "title", "archive_state", "created_at", "updated_at", "interaction_name", "interactionRef", "topic", "lessons_learned", "archived_at", "archive_version", "last_archive_error", "forked_from"]
+    __properties: ClassVar[List[str]] = ["interaction", "data", "config", "interactive", "tool_names", "collection_id", "disabled_mcp_collections", "content_type", "visibility", "tags", "categories", "properties", "source", "schedule_id", "source_type", "type", "id", "run_kind", "run_type", "account", "project", "workflow_id", "first_workflow_run_id", "artifacts_path", "status", "activity_state", "started_by", "started_at", "completed_at", "title", "archive_state", "created_at", "updated_at", "interaction_name", "interactionRef", "topic", "lessons_learned", "archived_at", "archive_version", "last_archive_error", "forked_from"]
 
     @field_validator('run_kind')
     def run_kind_validate_enum(cls, value):
@@ -166,6 +167,7 @@ class AutonomousRunResponse(BaseModel):
             "interactive": obj.get("interactive"),
             "tool_names": obj.get("tool_names"),
             "collection_id": obj.get("collection_id"),
+            "disabled_mcp_collections": obj.get("disabled_mcp_collections"),
             "content_type": ContentObjectTypeRef.from_dict(obj["content_type"]) if obj.get("content_type") is not None else None,
             "visibility": obj.get("visibility"),
             "tags": obj.get("tags"),

@@ -57,6 +57,7 @@ class AsyncConversationExecutionPayload(BaseModel):
     disable_interaction_tools: Optional[StrictBool] = Field(default=None, description="Whether to disable the generation of interaction tools or not.")
     search_scope: Optional[AgentSearchScopeCollection] = Field(default=None, description="On which scope should the searched by applied, by the search_tool. Only supports collection scope or null for now.")
     collection_id: Optional[StrictStr] = Field(default=None, description="The collection in which this workflow is executing")
+    disabled_mcp_collections: Optional[List[StrictStr]] = Field(default=None, description="Denylist of MCP tool-collection ids deactivated for this conversation. `undefined`/empty means all installed/connected MCP collections are active (back-compat, and new servers stay active by default). Listed collections are excluded even if connected. Can be updated mid-conversation via the MCP config signal.")
     checkpoint_tokens: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="The token threshold in thousands (K) for creating checkpoints. If total tokens exceed this value, a checkpoint will be created. If not specified, the default is computed from the selected model context window (75%).")
     strip_options: Optional[ConversationStripOptions] = Field(default=None, description="Configuration for stripping large data (images, text) from conversation history to prevent JSON serialization issues and reduce storage bloat.")
     task_id: Optional[StrictStr] = Field(default=None, description="In child execution workflow, this is the curent task_id")
@@ -71,7 +72,7 @@ class AsyncConversationExecutionPayload(BaseModel):
     agent_run_id: Optional[StrictStr] = Field(default=None, description="The AgentRun MongoDB _id. Used for artifact storage paths: agents/{agent_run_id}/ Flows into ConversationState and down to workstreams. Undefined for legacy workflows started before the AgentRun system.")
     schedule_id: Optional[StrictStr] = Field(default=None, description="The Schedule MongoDB _id. Set when this execution was triggered by a Temporal schedule. Used by the workflow to create an AgentRun on first run if agent_run_id is absent.")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["interaction", "data", "config", "result_schema", "do_validate", "tags", "conversation", "workflow", "prompts", "asyncCompletion", "type", "notify_endpoints", "task_queue", "visibility", "tool_names", "max_iterations", "interactive", "user_channels", "disable_interaction_tools", "search_scope", "collection_id", "checkpoint_tokens", "strip_options", "task_id", "launch_id", "debug_mode", "max_nested_conversation_depth", "parent_metadata", "non_blocking_subagents", "restart_from_workflow_run_id", "source_first_workflow_run_id", "is_fork", "agent_run_id", "schedule_id"]
+    __properties: ClassVar[List[str]] = ["interaction", "data", "config", "result_schema", "do_validate", "tags", "conversation", "workflow", "prompts", "asyncCompletion", "type", "notify_endpoints", "task_queue", "visibility", "tool_names", "max_iterations", "interactive", "user_channels", "disable_interaction_tools", "search_scope", "collection_id", "disabled_mcp_collections", "checkpoint_tokens", "strip_options", "task_id", "launch_id", "debug_mode", "max_nested_conversation_depth", "parent_metadata", "non_blocking_subagents", "restart_from_workflow_run_id", "source_first_workflow_run_id", "is_fork", "agent_run_id", "schedule_id"]
 
     @field_validator('type')
     def type_validate_enum(cls, value):
@@ -201,6 +202,7 @@ class AsyncConversationExecutionPayload(BaseModel):
             "disable_interaction_tools": obj.get("disable_interaction_tools"),
             "search_scope": obj.get("search_scope"),
             "collection_id": obj.get("collection_id"),
+            "disabled_mcp_collections": obj.get("disabled_mcp_collections"),
             "checkpoint_tokens": obj.get("checkpoint_tokens"),
             "strip_options": ConversationStripOptions.from_dict(obj["strip_options"]) if obj.get("strip_options") is not None else None,
             "task_id": obj.get("task_id"),

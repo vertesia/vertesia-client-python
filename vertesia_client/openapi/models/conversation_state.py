@@ -25,6 +25,7 @@ from vertesia_client.openapi.models.conversation_state_end_conversation import C
 from vertesia_client.openapi.models.conversation_strip_options import ConversationStripOptions
 from vertesia_client.openapi.models.execution_run_doc_ref import ExecutionRunDocRef
 from vertesia_client.openapi.models.execution_token_usage import ExecutionTokenUsage
+from vertesia_client.openapi.models.pending_mcp_connection import PendingMcpConnection
 from vertesia_client.openapi.models.plan import Plan
 from vertesia_client.openapi.models.resolved_interaction_execution_info import ResolvedInteractionExecutionInfo
 from vertesia_client.openapi.models.stateless_execution_options import StatelessExecutionOptions
@@ -69,12 +70,14 @@ class ConversationState(BaseModel):
     latest_activity_id: Optional[StrictStr] = Field(default=None, description="Activity ID from the latest LLM call (for deduplication with streamed content). Set by streamToRedis when completing async activities.")
     latest_streaming_id: Optional[StrictStr] = Field(default=None, description="Stable streaming ID from the latest LLM call. Unlike Temporal activity IDs, this is scoped to the concrete workflow run that produced the stream, so it remains safe across continue-as-new.")
     skill_tool_map: Optional[Dict[str, List[StrictStr]]] = Field(default=None, description="Mapping of skill names to their related tools. When a skill is called, its related tools are added to unlocked_tools.")
+    disabled_mcp_collections: Optional[List[StrictStr]] = Field(default=None, description="Denylist of MCP tool-collection ids deactivated for this conversation. `undefined`/empty means all installed/connected MCP collections are active. Updated mid-conversation via the MCP config signal; consumed when tools are re-discovered.")
+    pending_mcp_connections: Optional[List[PendingMcpConnection]] = Field(default=None, description="MCP servers that are active (not disabled) and accessible to the user but not yet OAuth-connected. Surfaced to the agent (via discover_tools) so it can offer to connect.")
     active_activity_group_id: Optional[StrictStr] = Field(default=None, description="Current activity group ID for internal tool-execution progress messages. All updates emitted during one tool-execution cycle should share this ID.")
     finish_reason: Optional[StrictStr] = Field(default=None, description="LLM stop reason from the latest call (e.g., \"stop\", \"length\", \"tool_use\")")
     agent_run_id: Optional[StrictStr] = Field(default=None, description="The AgentRun ID (MongoDB _id) that owns this conversation. Used for artifact storage paths: agents/{agent_run_id}/ Undefined for legacy workflows started before the AgentRun system.")
     launch_id: Optional[StrictStr] = Field(default=None, description="For workstreams: the launch ID assigned by the parent workflow. When set, artifacts are stored under agents/{agent_run_id}/workstreams/{launch_id}/ to consolidate all artifacts under the parent agent run.")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["run", "environment", "options", "tool_use", "output", "token_usage", "parent", "ancestors", "task_id", "plan", "debug", "strip_options", "conversation_artifacts_base_url", "tool_reference", "active_tool_names", "pinned_tool_names", "tool_activation_metadata", "used_skills", "available_skills", "streaming_enabled", "user_channels", "resolvedInteraction", "end_conversation", "unlocked_tools", "latest_activity_id", "latest_streaming_id", "skill_tool_map", "active_activity_group_id", "finish_reason", "agent_run_id", "launch_id"]
+    __properties: ClassVar[List[str]] = ["run", "environment", "options", "tool_use", "output", "token_usage", "parent", "ancestors", "task_id", "plan", "debug", "strip_options", "conversation_artifacts_base_url", "tool_reference", "active_tool_names", "pinned_tool_names", "tool_activation_metadata", "used_skills", "available_skills", "streaming_enabled", "user_channels", "resolvedInteraction", "end_conversation", "unlocked_tools", "latest_activity_id", "latest_streaming_id", "skill_tool_map", "disabled_mcp_collections", "pending_mcp_connections", "active_activity_group_id", "finish_reason", "agent_run_id", "launch_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -193,6 +196,13 @@ class ConversationState(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of end_conversation
         if self.end_conversation:
             _dict['end_conversation'] = self.end_conversation.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of each item in pending_mcp_connections (list)
+        _items = []
+        if self.pending_mcp_connections:
+            for _item_pending_mcp_connections in self.pending_mcp_connections:
+                if _item_pending_mcp_connections:
+                    _items.append(_item_pending_mcp_connections.to_dict())
+            _dict['pending_mcp_connections'] = _items
         # puts key-value pairs in additional_properties in the top level
         if self.additional_properties is not None:
             for _key, _value in self.additional_properties.items():
@@ -242,6 +252,8 @@ class ConversationState(BaseModel):
             "latest_activity_id": obj.get("latest_activity_id"),
             "latest_streaming_id": obj.get("latest_streaming_id"),
             "skill_tool_map": obj.get("skill_tool_map"),
+            "disabled_mcp_collections": obj.get("disabled_mcp_collections"),
+            "pending_mcp_connections": [PendingMcpConnection.from_dict(_item) for _item in obj["pending_mcp_connections"]] if obj.get("pending_mcp_connections") is not None else None,
             "active_activity_group_id": obj.get("active_activity_group_id"),
             "finish_reason": obj.get("finish_reason"),
             "agent_run_id": obj.get("agent_run_id"),

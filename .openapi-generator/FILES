@@ -535,6 +535,7 @@ vertesia_client/openapi/models/partial_website_credential_metadata.py
 vertesia_client/openapi/models/pdf_rendering_metadata.py
 vertesia_client/openapi/models/pdf_to_richtext_options.py
 vertesia_client/openapi/models/pending_activity.py
+vertesia_client/openapi/models/pending_mcp_connection.py
 vertesia_client/openapi/models/permission.py
 vertesia_client/openapi/models/pick_content_object_type_item_id_name_description_tags_object_schema_table_layout_is_chunkable_strict_mode.py
 vertesia_client/openapi/models/plan.py

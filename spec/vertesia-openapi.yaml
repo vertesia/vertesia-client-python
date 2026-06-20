@@ -7698,6 +7698,21 @@ components:
           $ref: "#/components/schemas/StringArrayMap"
           description: Mapping of skill names to their related tools. When a skill is
             called, its related tools are added to unlocked_tools.
+        disabled_mcp_collections:
+          type: array
+          items:
+            type: string
+          description: Denylist of MCP tool-collection ids deactivated for this
+            conversation. `undefined`/empty means all installed/connected MCP
+            collections are active. Updated mid-conversation via the MCP config
+            signal; consumed when tools are re-discovered.
+        pending_mcp_connections:
+          type: array
+          items:
+            $ref: "#/components/schemas/PendingMcpConnection"
+          description: MCP servers that are active (not disabled) and accessible to the
+            user but not yet OAuth-connected. Surfaced to the agent (via
+            discover_tools) so it can offer to connect.
         active_activity_group_id:
           type: string
           description: Current activity group ID for internal tool-execution progress
@@ -7957,6 +7972,35 @@ components:
         type: array
         items:
           type: string
+    PendingMcpConnection:
+      type: object
+      properties:
+        app_install_id:
+          type: string
+          description: The app installation id owning the collection (used for OAuth
+            operations).
+        collection_id:
+          type: string
+          description: The MCP tool-collection id.
+        name:
+          type: string
+          description: Human-readable label for the server/collection.
+        description:
+          type: string
+          description: Manifest description of what the server provides (used for
+            discovery).
+        namespace:
+          type: string
+          description: Tool-name prefix for this collection.
+      required:
+        - app_install_id
+        - collection_id
+        - name
+      additionalProperties: false
+      description: An MCP server the user can connect to but hasn't yet (active +
+        accessible, no OAuth token). Built at tool-discovery time and stored on
+        the conversation state so the agent can discover it (by description) and
+        ask the user to connect.
     StreamingTelemetryContext:
       type: object
       properties:
@@ -8310,6 +8354,15 @@ components:
         collection_id:
           type: string
           description: The collection in which this workflow is executing
+        disabled_mcp_collections:
+          type: array
+          items:
+            type: string
+          description: Denylist of MCP tool-collection ids deactivated for this
+            conversation. `undefined`/empty means all installed/connected MCP
+            collections are active (back-compat, and new servers stay active by
+            default). Listed collections are excluded even if connected. Can be
+            updated mid-conversation via the MCP config signal.
         checkpoint_tokens:
           type: number
           description: The token threshold in thousands (K) for creating checkpoints. If
@@ -9680,6 +9733,14 @@ components:
         collection_id:
           type: string
           description: Scoped collection (if any)
+        disabled_mcp_collections:
+          type: array
+          items:
+            type: string
+          description: Denylist of MCP tool-collection ids deactivated for this run.
+            `undefined`/empty means all installed/connected MCP collections are
+            active (back-compat, and new servers stay active by default). Listed
+            collections are excluded even if connected.
         content_type:
           $ref: "#/components/schemas/ContentObjectTypeRef"
           description: Content type linked to this run — defines the schema for `properties`
@@ -9846,6 +9907,14 @@ components:
         collection_id:
           type: string
           description: Scoped collection (if any)
+        disabled_mcp_collections:
+          type: array
+          items:
+            type: string
+          description: Denylist of MCP tool-collection ids deactivated for this run.
+            `undefined`/empty means all installed/connected MCP collections are
+            active (back-compat, and new servers stay active by default). Listed
+            collections are excluded even if connected.
         content_type:
           $ref: "#/components/schemas/ContentObjectTypeRef"
           description: Content type linked to this run — defines the schema for `properties`
@@ -14012,6 +14081,14 @@ components:
         collection_id:
           type: string
           description: Scoped collection (if any)
+        disabled_mcp_collections:
+          type: array
+          items:
+            type: string
+          description: Denylist of MCP tool-collection ids deactivated for this run.
+            `undefined`/empty means all installed/connected MCP collections are
+            active (back-compat, and new servers stay active by default). Listed
+            collections are excluded even if connected.
         content_type:
           $ref: "#/components/schemas/ContentObjectTypeRef"
           description: Content type linked to this run — defines the schema for `properties`

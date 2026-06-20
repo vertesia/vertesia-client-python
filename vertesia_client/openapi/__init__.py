@@ -557,6 +557,7 @@ __all__ = [
     "PdfRenderingMetadata",
     "PdfToRichtextOptions",
     "PendingActivity",
+    "PendingMcpConnection",
     "Permission",
     "PickContentObjectTypeItemIdNameDescriptionTagsObjectSchemaTableLayoutIsChunkableStrictMode",
     "Plan",
@@ -1352,6 +1353,7 @@ from vertesia_client.openapi.models.partial_website_credential_metadata import P
 from vertesia_client.openapi.models.pdf_rendering_metadata import PdfRenderingMetadata as PdfRenderingMetadata
 from vertesia_client.openapi.models.pdf_to_richtext_options import PdfToRichtextOptions as PdfToRichtextOptions
 from vertesia_client.openapi.models.pending_activity import PendingActivity as PendingActivity
+from vertesia_client.openapi.models.pending_mcp_connection import PendingMcpConnection as PendingMcpConnection
 from vertesia_client.openapi.models.permission import Permission as Permission
 from vertesia_client.openapi.models.pick_content_object_type_item_id_name_description_tags_object_schema_table_layout_is_chunkable_strict_mode import PickContentObjectTypeItemIdNameDescriptionTagsObjectSchemaTableLayoutIsChunkableStrictMode as PickContentObjectTypeItemIdNameDescriptionTagsObjectSchemaTableLayoutIsChunkableStrictMode
 from vertesia_client.openapi.models.plan import Plan as Plan
