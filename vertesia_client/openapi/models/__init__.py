@@ -49,6 +49,8 @@ from vertesia_client.openapi.models.agent_search_scope_collection import AgentSe
 from vertesia_client.openapi.models.agent_task import AgentTask
 from vertesia_client.openapi.models.agent_task_error import AgentTaskError
 from vertesia_client.openapi.models.agent_token_request import AgentTokenRequest
+from vertesia_client.openapi.models.agent_tool_approval_class import AgentToolApprovalClass
+from vertesia_client.openapi.models.agent_tool_approval_mode import AgentToolApprovalMode
 from vertesia_client.openapi.models.agent_tool_definition import AgentToolDefinition
 from vertesia_client.openapi.models.aggregated_tool import AggregatedTool
 from vertesia_client.openapi.models.alter_table_operation import AlterTableOperation
@@ -509,6 +511,7 @@ from vertesia_client.openapi.models.pdf_rendering_metadata import PdfRenderingMe
 from vertesia_client.openapi.models.pdf_to_richtext_options import PdfToRichtextOptions
 from vertesia_client.openapi.models.pending_activity import PendingActivity
 from vertesia_client.openapi.models.pending_mcp_connection import PendingMcpConnection
+from vertesia_client.openapi.models.pending_tool_approval_results import PendingToolApprovalResults
 from vertesia_client.openapi.models.permission import Permission
 from vertesia_client.openapi.models.pick_content_object_type_item_id_name_description_tags_object_schema_table_layout_is_chunkable_strict_mode import PickContentObjectTypeItemIdNameDescriptionTagsObjectSchemaTableLayoutIsChunkableStrictMode
 from vertesia_client.openapi.models.plan import Plan
@@ -677,10 +680,12 @@ from vertesia_client.openapi.models.thinking_level import ThinkingLevel
 from vertesia_client.openapi.models.time_resolution import TimeResolution
 from vertesia_client.openapi.models.timer_task import TimerTask
 from vertesia_client.openapi.models.tool_activation_metadata import ToolActivationMetadata
+from vertesia_client.openapi.models.tool_approval_grant import ToolApprovalGrant
 from vertesia_client.openapi.models.tool_collection_auth_type import ToolCollectionAuthType
 from vertesia_client.openapi.models.tool_collection_object import ToolCollectionObject
 from vertesia_client.openapi.models.tool_definition import ToolDefinition
 from vertesia_client.openapi.models.tool_reference import ToolReference
+from vertesia_client.openapi.models.tool_result import ToolResult
 from vertesia_client.openapi.models.tool_source import ToolSource
 from vertesia_client.openapi.models.tool_use import ToolUse
 from vertesia_client.openapi.models.tool_validation_result import ToolValidationResult

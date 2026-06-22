@@ -74,6 +74,8 @@ vertesia_client/openapi/models/agent_search_scope_collection.py
 vertesia_client/openapi/models/agent_task.py
 vertesia_client/openapi/models/agent_task_error.py
 vertesia_client/openapi/models/agent_token_request.py
+vertesia_client/openapi/models/agent_tool_approval_class.py
+vertesia_client/openapi/models/agent_tool_approval_mode.py
 vertesia_client/openapi/models/agent_tool_definition.py
 vertesia_client/openapi/models/aggregated_tool.py
 vertesia_client/openapi/models/ai_model.py
@@ -536,6 +538,7 @@ vertesia_client/openapi/models/pdf_rendering_metadata.py
 vertesia_client/openapi/models/pdf_to_richtext_options.py
 vertesia_client/openapi/models/pending_activity.py
 vertesia_client/openapi/models/pending_mcp_connection.py
+vertesia_client/openapi/models/pending_tool_approval_results.py
 vertesia_client/openapi/models/permission.py
 vertesia_client/openapi/models/pick_content_object_type_item_id_name_description_tags_object_schema_table_layout_is_chunkable_strict_mode.py
 vertesia_client/openapi/models/plan.py
@@ -704,10 +707,12 @@ vertesia_client/openapi/models/thinking_level.py
 vertesia_client/openapi/models/time_resolution.py
 vertesia_client/openapi/models/timer_task.py
 vertesia_client/openapi/models/tool_activation_metadata.py
+vertesia_client/openapi/models/tool_approval_grant.py
 vertesia_client/openapi/models/tool_collection_auth_type.py
 vertesia_client/openapi/models/tool_collection_object.py
 vertesia_client/openapi/models/tool_definition.py
 vertesia_client/openapi/models/tool_reference.py
+vertesia_client/openapi/models/tool_result.py
 vertesia_client/openapi/models/tool_source.py
 vertesia_client/openapi/models/tool_use.py
 vertesia_client/openapi/models/tool_validation_result.py

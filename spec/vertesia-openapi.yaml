@@ -7582,6 +7582,22 @@ components:
           items:
             $ref: "#/components/schemas/ToolUse"
           description: The tools to call next.
+        tool_approval_mode:
+          $ref: "#/components/schemas/AgentToolApprovalMode"
+          description: Effective side-effecting tool approval mode for this interactive
+            conversation.
+        tool_approval_grants:
+          $ref: "#/components/schemas/ToolApprovalGrantMap"
+          description: Run-scoped, exact-target grants created by "allow this action for
+            this run".
+        pending_tool_approval_results:
+          $ref: "#/components/schemas/PendingToolApprovalResults"
+          description: Buffered tool results held while approval denial pauses until the
+            next user message.
+        latest_user_message:
+          type: string
+          description: Compact, redacted latest user intent for reviewer-style system
+            interactions.
         output:
           type: array
           items:
@@ -7742,6 +7758,88 @@ components:
       additionalProperties: false
       description: Conversation state passed between workflow activities. Contains all
         context needed to continue a multi-turn agent conversation.
+    AgentToolApprovalMode:
+      type: string
+      enum:
+        - ask
+        - auto_review
+        - full_control
+    ToolApprovalGrantMap:
+      type: object
+      additionalProperties:
+        $ref: "#/components/schemas/ToolApprovalGrant"
+    ToolApprovalGrant:
+      type: object
+      properties:
+        key:
+          type: string
+        tool_name:
+          type: string
+        target:
+          type: string
+        granted_at:
+          type: string
+      required:
+        - key
+        - tool_name
+        - granted_at
+      additionalProperties: false
+    PendingToolApprovalResults:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/ToolResult"
+        reason:
+          type: string
+          enum:
+            - denied
+            - denied_with_feedback
+            - timeout
+            - reviewer_denied
+        message:
+          type: string
+        created_at:
+          type: string
+      required:
+        - results
+        - reason
+        - message
+        - created_at
+      additionalProperties: false
+    ToolResult:
+      type: object
+      properties:
+        content:
+          type: string
+        is_error:
+          type: boolean
+        files:
+          type: array
+          items:
+            type: string
+        display_message:
+          type: string
+          description: Optional message to display in the UI instead of the content. Use
+            this when the content is large or technical (e.g., document text)
+            and you want to show a friendly message to the user.
+        meta:
+          type: object
+          additionalProperties: true
+          description: Can contain metadata returned by the tool executor.
+        tool_use_id:
+          type: string
+        thought_signature:
+          type: string
+          description: Gemini thinking models require thought_signature to be passed back
+            with tool results. Copy this from the ToolUse.thought_signature that
+            requested this tool call.
+      required:
+        - content
+        - is_error
+        - tool_use_id
+      additionalProperties: false
     WorkflowAncestor:
       type: object
       properties:
@@ -8317,6 +8415,9 @@ components:
           description: An array of endpoint URLs to be notified upon execution
         task_queue:
           type: string
+        tool_approval_mode:
+          $ref: "#/components/schemas/AgentToolApprovalMode"
+          description: Effective tool approval mode for interactive agent conversations.
         visibility:
           $ref: "#/components/schemas/ConversationVisibility"
           description: Visibility determine if the conversation should be seen by the user
@@ -9099,18 +9200,11 @@ components:
         annotations:
           $ref: "#/components/schemas/MCPToolAnnotations"
           description: MCP tool annotations providing hints about tool behavior and safety.
-        requires_user_confirmation:
-          type: boolean
-          description: >-
-            When true, agents must obtain explicit user confirmation via
-            `ask_user` (Yes/No) before invoking this tool. If the user answers
-            No, the tool must not run and should return an error indicating the
-            user declined.
-
-
-            Stronger than `annotations.destructiveHint` (which is only a hint) —
-            this is a hard contract the agent is expected to honor. Set on tools
-            that perform irreversible or destructive actions (e.g. delete_*).
+        approval_class:
+          $ref: "#/components/schemas/AgentToolApprovalClass"
+          description: Approval classification used by interactive agent approval modes.
+            Use `requires_confirmation` for actions that must prompt even in
+            full-control mode.
       additionalProperties: false
       required:
         - input_schema
@@ -9138,6 +9232,28 @@ components:
             local environment
       additionalProperties: false
       description: Metadata hints from MCP tool annotations (per MCP spec).
+    AgentToolApprovalClass:
+      type: string
+      enum:
+        - read_only
+        - side_effecting
+        - control
+        - requires_confirmation
+      description: >-
+        Approval behavior class for a tool exposed to agents.
+
+
+        - `read_only`: reads or inspects state without changing Vertesia,
+        external systems, or user-visible artifacts.
+
+        - `side_effecting`: can create, update, delete, send, execute, schedule,
+        or otherwise change state.
+
+        - `control`: affects agent control flow or tool availability, not user
+        data or external systems.
+
+        - `requires_confirmation`: high-impact action that must ask the user
+        even in interactive full-control mode.
     AppInstallationListEntry:
       type: object
       properties:
@@ -9725,6 +9841,9 @@ components:
         interactive:
           type: boolean
           description: Whether the agent accepts user input
+        tool_approval_mode:
+          $ref: "#/components/schemas/AgentToolApprovalMode"
+          description: How side-effecting tool actions are approved for interactive runs.
         tool_names:
           type: array
           items:
@@ -9899,6 +10018,9 @@ components:
         interactive:
           type: boolean
           description: Whether the agent accepts user input
+        tool_approval_mode:
+          $ref: "#/components/schemas/AgentToolApprovalMode"
+          description: How side-effecting tool actions are approved for interactive runs.
         tool_names:
           type: array
           items:
@@ -14073,6 +14195,9 @@ components:
         interactive:
           type: boolean
           description: Whether the agent accepts user input
+        tool_approval_mode:
+          $ref: "#/components/schemas/AgentToolApprovalMode"
+          description: How side-effecting tool actions are approved for interactive runs.
         tool_names:
           type: array
           items:

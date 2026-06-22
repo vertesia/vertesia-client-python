@@ -21,6 +21,7 @@ from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, Stri
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from vertesia_client.openapi.models.agent_run_type import AgentRunType
 from vertesia_client.openapi.models.agent_search_scope import AgentSearchScope
+from vertesia_client.openapi.models.agent_tool_approval_mode import AgentToolApprovalMode
 from vertesia_client.openapi.models.content_object_type_ref import ContentObjectTypeRef
 from vertesia_client.openapi.models.conversation_visibility import ConversationVisibility
 from vertesia_client.openapi.models.interaction_execution_configuration import InteractionExecutionConfiguration
@@ -38,6 +39,7 @@ class CreateAgentRunPayload(BaseModel):
     data: Optional[Dict[str, Any]] = Field(default=None, description="Input parameters, typed per interaction")
     config: Optional[InteractionExecutionConfiguration] = Field(default=None, description="Execution configuration (environment, model, model_options, etc.)")
     interactive: Optional[StrictBool] = Field(default=None, description="Whether the agent accepts user input")
+    tool_approval_mode: Optional[AgentToolApprovalMode] = Field(default=None, description="How side-effecting tool actions are approved for interactive runs.")
     tool_names: Optional[List[StrictStr]] = Field(default=None, description="Tools configured for this run (+/- syntax supported)")
     collection_id: Optional[StrictStr] = Field(default=None, description="Scoped collection (if any)")
     disabled_mcp_collections: Optional[List[StrictStr]] = Field(default=None, description="Denylist of MCP tool-collection ids deactivated for this run. `undefined`/empty means all installed/connected MCP collections are active (back-compat, and new servers stay active by default). Listed collections are excluded even if connected.")
@@ -58,7 +60,7 @@ class CreateAgentRunPayload(BaseModel):
     debug_mode: Optional[StrictBool] = Field(default=None, description="Enable debug mode for verbose logging")
     started_by: Optional[StrictStr] = Field(default=None, description="Principal ref of the user who initiated the run (for server-to-server forwarding)")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["interaction", "data", "config", "interactive", "tool_names", "collection_id", "disabled_mcp_collections", "content_type", "visibility", "tags", "categories", "properties", "source", "schedule_id", "source_type", "type", "search_scope", "user_channels", "checkpoint_tokens", "max_iterations", "notify_endpoints", "debug_mode", "started_by"]
+    __properties: ClassVar[List[str]] = ["interaction", "data", "config", "interactive", "tool_approval_mode", "tool_names", "collection_id", "disabled_mcp_collections", "content_type", "visibility", "tags", "categories", "properties", "source", "schedule_id", "source_type", "type", "search_scope", "user_channels", "checkpoint_tokens", "max_iterations", "notify_endpoints", "debug_mode", "started_by"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -138,6 +140,7 @@ class CreateAgentRunPayload(BaseModel):
             "data": obj.get("data"),
             "config": InteractionExecutionConfiguration.from_dict(obj["config"]) if obj.get("config") is not None else None,
             "interactive": obj.get("interactive"),
+            "tool_approval_mode": obj.get("tool_approval_mode"),
             "tool_names": obj.get("tool_names"),
             "collection_id": obj.get("collection_id"),
             "disabled_mcp_collections": obj.get("disabled_mcp_collections"),

@@ -23,6 +23,7 @@ from typing import Any, ClassVar, Dict, List, Optional, Union
 from vertesia_client.openapi.models.agent_run_archive_state import AgentRunArchiveState
 from vertesia_client.openapi.models.agent_run_status import AgentRunStatus
 from vertesia_client.openapi.models.agent_run_type import AgentRunType
+from vertesia_client.openapi.models.agent_tool_approval_mode import AgentToolApprovalMode
 from vertesia_client.openapi.models.content_object_type_ref import ContentObjectTypeRef
 from vertesia_client.openapi.models.conversation_activity_state import ConversationActivityState
 from vertesia_client.openapi.models.conversation_visibility import ConversationVisibility
@@ -41,6 +42,7 @@ class AutonomousRunResponse(BaseModel):
     data: Optional[Dict[str, Any]] = Field(default=None, description="Input parameters, typed per interaction")
     config: Optional[InteractionExecutionConfiguration] = Field(default=None, description="Execution configuration (environment, model, model_options, etc.)")
     interactive: Optional[StrictBool] = Field(default=None, description="Whether the agent accepts user input")
+    tool_approval_mode: Optional[AgentToolApprovalMode] = Field(default=None, description="How side-effecting tool actions are approved for interactive runs.")
     tool_names: Optional[List[StrictStr]] = Field(default=None, description="Tools configured for this run (+/- syntax supported)")
     collection_id: Optional[StrictStr] = Field(default=None, description="Scoped collection (if any)")
     disabled_mcp_collections: Optional[List[StrictStr]] = Field(default=None, description="Denylist of MCP tool-collection ids deactivated for this run. `undefined`/empty means all installed/connected MCP collections are active (back-compat, and new servers stay active by default). Listed collections are excluded even if connected.")
@@ -79,7 +81,7 @@ class AutonomousRunResponse(BaseModel):
     last_archive_error: Optional[StrictStr] = Field(default=None, description="Last archive error message (when archive_state === 'failed')")
     forked_from: Optional[StrictStr] = Field(default=None, description="Source agent run ID when this run was forked (enables message history chaining)")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["interaction", "data", "config", "interactive", "tool_names", "collection_id", "disabled_mcp_collections", "content_type", "visibility", "tags", "categories", "properties", "source", "schedule_id", "source_type", "type", "id", "run_kind", "run_type", "account", "project", "workflow_id", "first_workflow_run_id", "artifacts_path", "status", "activity_state", "started_by", "started_at", "completed_at", "title", "archive_state", "created_at", "updated_at", "interaction_name", "interactionRef", "topic", "lessons_learned", "archived_at", "archive_version", "last_archive_error", "forked_from"]
+    __properties: ClassVar[List[str]] = ["interaction", "data", "config", "interactive", "tool_approval_mode", "tool_names", "collection_id", "disabled_mcp_collections", "content_type", "visibility", "tags", "categories", "properties", "source", "schedule_id", "source_type", "type", "id", "run_kind", "run_type", "account", "project", "workflow_id", "first_workflow_run_id", "artifacts_path", "status", "activity_state", "started_by", "started_at", "completed_at", "title", "archive_state", "created_at", "updated_at", "interaction_name", "interactionRef", "topic", "lessons_learned", "archived_at", "archive_version", "last_archive_error", "forked_from"]
 
     @field_validator('run_kind')
     def run_kind_validate_enum(cls, value):
@@ -165,6 +167,7 @@ class AutonomousRunResponse(BaseModel):
             "data": obj.get("data"),
             "config": InteractionExecutionConfiguration.from_dict(obj["config"]) if obj.get("config") is not None else None,
             "interactive": obj.get("interactive"),
+            "tool_approval_mode": obj.get("tool_approval_mode"),
             "tool_names": obj.get("tool_names"),
             "collection_id": obj.get("collection_id"),
             "disabled_mcp_collections": obj.get("disabled_mcp_collections"),

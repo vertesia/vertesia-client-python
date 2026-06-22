@@ -20,6 +20,7 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from vertesia_client.openapi.models.agent_search_scope_collection import AgentSearchScopeCollection
+from vertesia_client.openapi.models.agent_tool_approval_mode import AgentToolApprovalMode
 from vertesia_client.openapi.models.async_completion_options import AsyncCompletionOptions
 from vertesia_client.openapi.models.conversation_strip_options import ConversationStripOptions
 from vertesia_client.openapi.models.conversation_visibility import ConversationVisibility
@@ -49,6 +50,7 @@ class AsyncConversationExecutionPayload(BaseModel):
     type: StrictStr
     notify_endpoints: Optional[List[StrictStr]] = Field(default=None, description="An array of endpoint URLs to be notified upon execution")
     task_queue: Optional[StrictStr] = None
+    tool_approval_mode: Optional[AgentToolApprovalMode] = Field(default=None, description="Effective tool approval mode for interactive agent conversations.")
     visibility: Optional[ConversationVisibility] = Field(default=None, description="Visibility determine if the conversation should be seen by the user only or by anyone with access to the project If not specified, the default is project")
     tool_names: Optional[List[StrictStr]] = Field(default=None, description="The tools to use, list of tool or function names. You can use + and - to add or remove from default, if no sign, then list replaces default")
     max_iterations: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="The maximum number of iterations in case of a conversation. If <=0 the default of 20 will be used.")
@@ -72,7 +74,7 @@ class AsyncConversationExecutionPayload(BaseModel):
     agent_run_id: Optional[StrictStr] = Field(default=None, description="The AgentRun MongoDB _id. Used for artifact storage paths: agents/{agent_run_id}/ Flows into ConversationState and down to workstreams. Undefined for legacy workflows started before the AgentRun system.")
     schedule_id: Optional[StrictStr] = Field(default=None, description="The Schedule MongoDB _id. Set when this execution was triggered by a Temporal schedule. Used by the workflow to create an AgentRun on first run if agent_run_id is absent.")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["interaction", "data", "config", "result_schema", "do_validate", "tags", "conversation", "workflow", "prompts", "asyncCompletion", "type", "notify_endpoints", "task_queue", "visibility", "tool_names", "max_iterations", "interactive", "user_channels", "disable_interaction_tools", "search_scope", "collection_id", "disabled_mcp_collections", "checkpoint_tokens", "strip_options", "task_id", "launch_id", "debug_mode", "max_nested_conversation_depth", "parent_metadata", "non_blocking_subagents", "restart_from_workflow_run_id", "source_first_workflow_run_id", "is_fork", "agent_run_id", "schedule_id"]
+    __properties: ClassVar[List[str]] = ["interaction", "data", "config", "result_schema", "do_validate", "tags", "conversation", "workflow", "prompts", "asyncCompletion", "type", "notify_endpoints", "task_queue", "tool_approval_mode", "visibility", "tool_names", "max_iterations", "interactive", "user_channels", "disable_interaction_tools", "search_scope", "collection_id", "disabled_mcp_collections", "checkpoint_tokens", "strip_options", "task_id", "launch_id", "debug_mode", "max_nested_conversation_depth", "parent_metadata", "non_blocking_subagents", "restart_from_workflow_run_id", "source_first_workflow_run_id", "is_fork", "agent_run_id", "schedule_id"]
 
     @field_validator('type')
     def type_validate_enum(cls, value):
@@ -194,6 +196,7 @@ class AsyncConversationExecutionPayload(BaseModel):
             "type": obj.get("type"),
             "notify_endpoints": obj.get("notify_endpoints"),
             "task_queue": obj.get("task_queue"),
+            "tool_approval_mode": obj.get("tool_approval_mode"),
             "visibility": obj.get("visibility"),
             "tool_names": obj.get("tool_names"),
             "max_iterations": obj.get("max_iterations"),

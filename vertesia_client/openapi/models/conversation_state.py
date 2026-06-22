@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
+from vertesia_client.openapi.models.agent_tool_approval_mode import AgentToolApprovalMode
 from vertesia_client.openapi.models.available_skill import AvailableSkill
 from vertesia_client.openapi.models.completion_result import CompletionResult
 from vertesia_client.openapi.models.conversation_state_end_conversation import ConversationStateEndConversation
@@ -26,10 +27,12 @@ from vertesia_client.openapi.models.conversation_strip_options import Conversati
 from vertesia_client.openapi.models.execution_run_doc_ref import ExecutionRunDocRef
 from vertesia_client.openapi.models.execution_token_usage import ExecutionTokenUsage
 from vertesia_client.openapi.models.pending_mcp_connection import PendingMcpConnection
+from vertesia_client.openapi.models.pending_tool_approval_results import PendingToolApprovalResults
 from vertesia_client.openapi.models.plan import Plan
 from vertesia_client.openapi.models.resolved_interaction_execution_info import ResolvedInteractionExecutionInfo
 from vertesia_client.openapi.models.stateless_execution_options import StatelessExecutionOptions
 from vertesia_client.openapi.models.tool_activation_metadata import ToolActivationMetadata
+from vertesia_client.openapi.models.tool_approval_grant import ToolApprovalGrant
 from vertesia_client.openapi.models.tool_reference import ToolReference
 from vertesia_client.openapi.models.tool_use import ToolUse
 from vertesia_client.openapi.models.used_skill import UsedSkill
@@ -47,6 +50,10 @@ class ConversationState(BaseModel):
     environment: StrictStr = Field(description="The execution environment with provider info for LLM calls.")
     options: StatelessExecutionOptions = Field(description="The options to use on the next call.")
     tool_use: Optional[List[ToolUse]] = Field(default=None, description="The tools to call next.")
+    tool_approval_mode: Optional[AgentToolApprovalMode] = Field(default=None, description="Effective side-effecting tool approval mode for this interactive conversation.")
+    tool_approval_grants: Optional[Dict[str, ToolApprovalGrant]] = Field(default=None, description="Run-scoped, exact-target grants created by \"allow this action for this run\".")
+    pending_tool_approval_results: Optional[PendingToolApprovalResults] = Field(default=None, description="Buffered tool results held while approval denial pauses until the next user message.")
+    latest_user_message: Optional[StrictStr] = Field(default=None, description="Compact, redacted latest user intent for reviewer-style system interactions.")
     output: List[CompletionResult] = Field(description="The output of the this conversation step")
     token_usage: Optional[ExecutionTokenUsage] = Field(default=None, description="The token usage of the this conversation step")
     parent: Optional[WorkflowAncestor] = Field(default=None, description="If a sub workflow execution, contains the parent's info")
@@ -77,7 +84,7 @@ class ConversationState(BaseModel):
     agent_run_id: Optional[StrictStr] = Field(default=None, description="The AgentRun ID (MongoDB _id) that owns this conversation. Used for artifact storage paths: agents/{agent_run_id}/ Undefined for legacy workflows started before the AgentRun system.")
     launch_id: Optional[StrictStr] = Field(default=None, description="For workstreams: the launch ID assigned by the parent workflow. When set, artifacts are stored under agents/{agent_run_id}/workstreams/{launch_id}/ to consolidate all artifacts under the parent agent run.")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["run", "environment", "options", "tool_use", "output", "token_usage", "parent", "ancestors", "task_id", "plan", "debug", "strip_options", "conversation_artifacts_base_url", "tool_reference", "active_tool_names", "pinned_tool_names", "tool_activation_metadata", "used_skills", "available_skills", "streaming_enabled", "user_channels", "resolvedInteraction", "end_conversation", "unlocked_tools", "latest_activity_id", "latest_streaming_id", "skill_tool_map", "disabled_mcp_collections", "pending_mcp_connections", "active_activity_group_id", "finish_reason", "agent_run_id", "launch_id"]
+    __properties: ClassVar[List[str]] = ["run", "environment", "options", "tool_use", "tool_approval_mode", "tool_approval_grants", "pending_tool_approval_results", "latest_user_message", "output", "token_usage", "parent", "ancestors", "task_id", "plan", "debug", "strip_options", "conversation_artifacts_base_url", "tool_reference", "active_tool_names", "pinned_tool_names", "tool_activation_metadata", "used_skills", "available_skills", "streaming_enabled", "user_channels", "resolvedInteraction", "end_conversation", "unlocked_tools", "latest_activity_id", "latest_streaming_id", "skill_tool_map", "disabled_mcp_collections", "pending_mcp_connections", "active_activity_group_id", "finish_reason", "agent_run_id", "launch_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -133,6 +140,16 @@ class ConversationState(BaseModel):
                 if _item_tool_use:
                     _items.append(_item_tool_use.to_dict())
             _dict['tool_use'] = _items
+        # override the default output from pydantic by calling `to_dict()` of each value in tool_approval_grants (dict)
+        _field_dict = {}
+        if self.tool_approval_grants:
+            for _key_tool_approval_grants in self.tool_approval_grants:
+                if self.tool_approval_grants[_key_tool_approval_grants]:
+                    _field_dict[_key_tool_approval_grants] = self.tool_approval_grants[_key_tool_approval_grants].to_dict()
+            _dict['tool_approval_grants'] = _field_dict
+        # override the default output from pydantic by calling `to_dict()` of pending_tool_approval_results
+        if self.pending_tool_approval_results:
+            _dict['pending_tool_approval_results'] = self.pending_tool_approval_results.to_dict()
         # override the default output from pydantic by calling `to_dict()` of each item in output (list)
         _items = []
         if self.output:
@@ -224,6 +241,15 @@ class ConversationState(BaseModel):
             "environment": obj.get("environment"),
             "options": StatelessExecutionOptions.from_dict(obj["options"]) if obj.get("options") is not None else None,
             "tool_use": [ToolUse.from_dict(_item) for _item in obj["tool_use"]] if obj.get("tool_use") is not None else None,
+            "tool_approval_mode": obj.get("tool_approval_mode"),
+            "tool_approval_grants": dict(
+                (_k, ToolApprovalGrant.from_dict(_v))
+                for _k, _v in obj["tool_approval_grants"].items()
+            )
+            if obj.get("tool_approval_grants") is not None
+            else None,
+            "pending_tool_approval_results": PendingToolApprovalResults.from_dict(obj["pending_tool_approval_results"]) if obj.get("pending_tool_approval_results") is not None else None,
+            "latest_user_message": obj.get("latest_user_message"),
             "output": [CompletionResult.from_dict(_item) for _item in obj["output"]] if obj.get("output") is not None else None,
             "token_usage": ExecutionTokenUsage.from_dict(obj["token_usage"]) if obj.get("token_usage") is not None else None,
             "parent": WorkflowAncestor.from_dict(obj["parent"]) if obj.get("parent") is not None else None,

@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
+from vertesia_client.openapi.models.agent_tool_approval_class import AgentToolApprovalClass
 from vertesia_client.openapi.models.mcp_tool_annotations import MCPToolAnnotations
 from typing import Optional, Set
 from typing_extensions import Self
@@ -36,8 +37,8 @@ class AgentToolDefinition(BaseModel):
     default: Optional[StrictBool] = Field(default=None, description="Whether this tool is available by default. - true/undefined: Tool is always available to agents - false: Tool is only available when enabled by a skill via `tools`")
     tools: Optional[List[StrictStr]] = Field(default=None, description="For skill tools (`learn_*`): the tool names this skill enables when called. Matches the `tools:` key used in SKILL.md frontmatter and built-in skill definitions — one name across the whole stack.")
     annotations: Optional[MCPToolAnnotations] = Field(default=None, description="MCP tool annotations providing hints about tool behavior and safety.")
-    requires_user_confirmation: Optional[StrictBool] = Field(default=None, description="When true, agents must obtain explicit user confirmation via `ask_user` (Yes/No) before invoking this tool. If the user answers No, the tool must not run and should return an error indicating the user declined.  Stronger than `annotations.destructiveHint` (which is only a hint) — this is a hard contract the agent is expected to honor. Set on tools that perform irreversible or destructive actions (e.g. delete_*).")
-    __properties: ClassVar[List[str]] = ["name", "description", "input_schema", "url", "category", "default", "tools", "annotations", "requires_user_confirmation"]
+    approval_class: Optional[AgentToolApprovalClass] = Field(default=None, description="Approval classification used by interactive agent approval modes. Use `requires_confirmation` for actions that must prompt even in full-control mode.")
+    __properties: ClassVar[List[str]] = ["name", "description", "input_schema", "url", "category", "default", "tools", "annotations", "approval_class"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -101,7 +102,7 @@ class AgentToolDefinition(BaseModel):
             "default": obj.get("default"),
             "tools": obj.get("tools"),
             "annotations": MCPToolAnnotations.from_dict(obj["annotations"]) if obj.get("annotations") is not None else None,
-            "requires_user_confirmation": obj.get("requires_user_confirmation")
+            "approval_class": obj.get("approval_class")
         })
         return _obj
 
