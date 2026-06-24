@@ -721,6 +721,7 @@ from vertesia_client.openapi.models.vector_search_query import VectorSearchQuery
 from vertesia_client.openapi.models.vertesia_sdk_tool_collection_object import VertesiaSDKToolCollectionObject
 from vertesia_client.openapi.models.vertex_ai_claude_options import VertexAIClaudeOptions
 from vertesia_client.openapi.models.vertex_ai_gemini_options import VertexAIGeminiOptions
+from vertesia_client.openapi.models.vertex_ai_grok_options import VertexAIGrokOptions
 from vertesia_client.openapi.models.video_metadata import VideoMetadata
 from vertesia_client.openapi.models.virtual_env_entry import VirtualEnvEntry
 from vertesia_client.openapi.models.website_credential_capability import WebsiteCredentialCapability

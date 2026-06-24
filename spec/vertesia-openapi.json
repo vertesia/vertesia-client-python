@@ -4595,6 +4595,10 @@
           "fixed_project_id": {
             "type": "string"
           },
+          "restrict_to_owner_account": {
+            "type": "boolean",
+            "description": "When true (the default for new clients), the client may only be authorized for projects in its owning account/organization. Set to false to allow authorization for any project the approving user can access, regardless of account — required for OAuth/MCP clients used across organizations. The owning account itself is internal and not exposed here."
+          },
           "metadata": {
             "type": "object",
             "additionalProperties": true
@@ -4686,6 +4690,10 @@
           "fixed_project_id": {
             "type": "string"
           },
+          "restrict_to_owner_account": {
+            "type": "boolean",
+            "description": "When true (the default for new clients), the client may only be authorized for projects in its owning account/organization. Set to false to allow authorization for any project the approving user can access, regardless of account — required for OAuth/MCP clients used across organizations. The owning account itself is internal and not exposed here."
+          },
           "metadata": {
             "type": "object",
             "additionalProperties": true
@@ -4774,6 +4782,9 @@
           "fixed_project_id": {
             "type": "string"
           },
+          "restrict_to_owner_account": {
+            "type": "boolean"
+          },
           "client_secret": {
             "type": "string"
           },
@@ -4835,6 +4846,9 @@
           },
           "fixed_project_id": {
             "type": "string"
+          },
+          "restrict_to_owner_account": {
+            "type": "boolean"
           },
           "client_secret": {
             "type": "string"
@@ -8150,6 +8164,7 @@
             "vertexai-imagen": "#/components/schemas/ImagenOptions",
             "vertexai-claude": "#/components/schemas/VertexAIClaudeOptions",
             "vertexai-gemini": "#/components/schemas/VertexAIGeminiOptions",
+            "vertexai-grok": "#/components/schemas/VertexAIGrokOptions",
             "bedrock-nova-canvas": "#/components/schemas/NovaCanvasOptions",
             "bedrock-converse": "#/components/schemas/BedrockConverseOptions",
             "bedrock-nova": "#/components/schemas/BedrockNovaOptions",
@@ -8182,6 +8197,9 @@
           },
           {
             "$ref": "#/components/schemas/VertexAIGeminiOptions"
+          },
+          {
+            "$ref": "#/components/schemas/VertexAIGrokOptions"
           },
           {
             "$ref": "#/components/schemas/NovaCanvasOptions"
@@ -8529,6 +8547,34 @@
           "MINIMAL",
           "THINKING_LEVEL_UNSPECIFIED"
         ]
+      },
+      "VertexAIGrokOptions": {
+        "type": "object",
+        "properties": {
+          "_option_id": {
+            "type": "string",
+            "const": "vertexai-grok"
+          },
+          "max_tokens": {
+            "type": "number"
+          },
+          "temperature": {
+            "type": "number"
+          },
+          "top_p": {
+            "type": "number"
+          },
+          "stop_sequence": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "_option_id"
+        ],
+        "additionalProperties": false
       },
       "NovaCanvasOptions": {
         "type": "object",
@@ -37617,7 +37663,7 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": "OAuth clients.",
+            "description": "OAuth clients owned by the current account.",
             "content": {
               "application/json": {
                 "schema": {

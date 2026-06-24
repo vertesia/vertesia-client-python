@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr
+from pydantic import BaseModel, ConfigDict, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from vertesia_client.openapi.models.o_auth_client_type import OAuthClientType
 from vertesia_client.openapi.models.o_auth_grant_type import OAuthGrantType
@@ -42,9 +42,10 @@ class CreateOAuthClientPayload(BaseModel):
     default_scopes: Optional[List[StrictStr]] = None
     project_binding_mode: Optional[OAuthProjectBindingMode] = None
     fixed_project_id: Optional[StrictStr] = None
+    restrict_to_owner_account: Optional[StrictBool] = None
     client_secret: Optional[StrictStr] = None
     metadata: Optional[Dict[str, Any]] = None
-    __properties: ClassVar[List[str]] = ["client_name", "client_type", "redirect_uris", "grant_types", "response_types", "token_endpoint_auth_method", "allowed_scopes", "default_scopes", "project_binding_mode", "fixed_project_id", "client_secret", "metadata"]
+    __properties: ClassVar[List[str]] = ["client_name", "client_type", "redirect_uris", "grant_types", "response_types", "token_endpoint_auth_method", "allowed_scopes", "default_scopes", "project_binding_mode", "fixed_project_id", "restrict_to_owner_account", "client_secret", "metadata"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -107,6 +108,7 @@ class CreateOAuthClientPayload(BaseModel):
             "default_scopes": obj.get("default_scopes"),
             "project_binding_mode": obj.get("project_binding_mode"),
             "fixed_project_id": obj.get("fixed_project_id"),
+            "restrict_to_owner_account": obj.get("restrict_to_owner_account"),
             "client_secret": obj.get("client_secret"),
             "metadata": obj.get("metadata")
         })

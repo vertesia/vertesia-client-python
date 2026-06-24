@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictBool, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from vertesia_client.openapi.models.o_auth_client_status import OAuthClientStatus
 from vertesia_client.openapi.models.o_auth_client_type import OAuthClientType
@@ -46,13 +46,14 @@ class OAuthClient(BaseModel):
     status: OAuthClientStatus
     project_binding_mode: OAuthProjectBindingMode
     fixed_project_id: Optional[StrictStr] = None
+    restrict_to_owner_account: Optional[StrictBool] = Field(default=None, description="When true (the default for new clients), the client may only be authorized for projects in its owning account/organization. Set to false to allow authorization for any project the approving user can access, regardless of account — required for OAuth/MCP clients used across organizations. The owning account itself is internal and not exposed here.")
     metadata: Optional[Dict[str, Any]] = None
     created_by: Optional[StrictStr] = None
     client_secret_configured: Optional[StrictBool] = None
     created_at: StrictStr
     updated_at: StrictStr
     client_id: StrictStr
-    __properties: ClassVar[List[str]] = ["client_name", "client_type", "redirect_uris", "grant_types", "response_types", "token_endpoint_auth_method", "allowed_scopes", "default_scopes", "registration_source", "status", "project_binding_mode", "fixed_project_id", "metadata", "created_by", "client_secret_configured", "created_at", "updated_at", "client_id"]
+    __properties: ClassVar[List[str]] = ["client_name", "client_type", "redirect_uris", "grant_types", "response_types", "token_endpoint_auth_method", "allowed_scopes", "default_scopes", "registration_source", "status", "project_binding_mode", "fixed_project_id", "restrict_to_owner_account", "metadata", "created_by", "client_secret_configured", "created_at", "updated_at", "client_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -117,6 +118,7 @@ class OAuthClient(BaseModel):
             "status": obj.get("status"),
             "project_binding_mode": obj.get("project_binding_mode"),
             "fixed_project_id": obj.get("fixed_project_id"),
+            "restrict_to_owner_account": obj.get("restrict_to_owner_account"),
             "metadata": obj.get("metadata"),
             "created_by": obj.get("created_by"),
             "client_secret_configured": obj.get("client_secret_configured"),

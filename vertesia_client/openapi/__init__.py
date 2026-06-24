@@ -770,6 +770,7 @@ __all__ = [
     "VertesiaSDKToolCollectionObject",
     "VertexAIClaudeOptions",
     "VertexAIGeminiOptions",
+    "VertexAIGrokOptions",
     "VideoMetadata",
     "VirtualEnvEntry",
     "WebsiteCredentialCapability",
@@ -1571,6 +1572,7 @@ from vertesia_client.openapi.models.vector_search_query import VectorSearchQuery
 from vertesia_client.openapi.models.vertesia_sdk_tool_collection_object import VertesiaSDKToolCollectionObject as VertesiaSDKToolCollectionObject
 from vertesia_client.openapi.models.vertex_ai_claude_options import VertexAIClaudeOptions as VertexAIClaudeOptions
 from vertesia_client.openapi.models.vertex_ai_gemini_options import VertexAIGeminiOptions as VertexAIGeminiOptions
+from vertesia_client.openapi.models.vertex_ai_grok_options import VertexAIGrokOptions as VertexAIGrokOptions
 from vertesia_client.openapi.models.video_metadata import VideoMetadata as VideoMetadata
 from vertesia_client.openapi.models.virtual_env_entry import VirtualEnvEntry as VirtualEnvEntry
 from vertesia_client.openapi.models.website_credential_capability import WebsiteCredentialCapability as WebsiteCredentialCapability
