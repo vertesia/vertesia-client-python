@@ -7755,6 +7755,23 @@ components:
           $ref: "#/components/schemas/StringArrayMap"
           description: Mapping of skill names to their related tools. When a skill is
             called, its related tools are added to unlocked_tools.
+        skill_instructions_delivered:
+          type: array
+          items:
+            type: string
+          description: >-
+            Names of skills whose full instructions are already present in the
+            live conversation history (i.e. were delivered by a prior
+            `learn_<skill>` call). Used to make skill re-activation idempotent:
+            a repeat call returns a short "already active" acknowledgement
+            instead of re-dumping the instructions.
+
+
+            Unlike `unlocked_tools`/`skill_tool_map` (which must survive a
+            checkpoint so tools stay unlocked), this list is reset when a
+            checkpoint compacts the conversation, because the summary no longer
+            carries the skill instructions and the next call must re-deliver
+            them.
         disabled_mcp_collections:
           type: array
           items:
