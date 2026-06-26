@@ -44,6 +44,7 @@ class VideoMetadata(BaseModel):
     transcript: Optional[Transcript] = None
     dimensions: Optional[Dimensions] = None
     has_audio: Optional[StrictBool] = Field(default=None, alias="hasAudio")
+    additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["type", "size", "languages", "location", "generation_runs", "etag", "renditions", "duration", "transcript", "dimensions", "hasAudio"]
 
     model_config = ConfigDict(
@@ -76,8 +77,10 @@ class VideoMetadata(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -108,6 +111,11 @@ class VideoMetadata(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of dimensions
         if self.dimensions:
             _dict['dimensions'] = self.dimensions.to_dict()
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
         return _dict
 
     @classmethod
@@ -132,6 +140,11 @@ class VideoMetadata(BaseModel):
             "dimensions": Dimensions.from_dict(obj["dimensions"]) if obj.get("dimensions") is not None else None,
             "hasAudio": obj.get("hasAudio")
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 

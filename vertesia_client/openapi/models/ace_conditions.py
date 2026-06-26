@@ -19,17 +19,19 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field
 from typing import Any, ClassVar, Dict, Optional
+from vertesia_client.openapi.models.abac_scope import AbacScope
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
 class AceConditions(BaseModel):
     """
-    Conditions attached to an ACE for dynamic matching. - `principal_props`: matched against user/group properties at token time (PrincipalSet). - `resource_props`: matched against content properties at query time (ContentSet).
+    Conditions attached to an ACE for dynamic matching. - `principal_props`: matched against user/group properties at token time (PrincipalSet). - `resource_props`: matched against object properties at query time (ResourceSet).
     """ # noqa: E501
     principal_props: Optional[Dict[str, Any]] = Field(default=None, description="Property conditions matched against user/group properties at token time (PrincipalSet).")
-    resource_props: Optional[Dict[str, Any]] = Field(default=None, description="Property conditions matched against content properties at query time (ContentSet).")
-    __properties: ClassVar[List[str]] = ["principal_props", "resource_props"]
+    resource_props: Optional[Dict[str, Any]] = Field(default=None, description="Property conditions matched against object properties at query time (ResourceSet).")
+    scope: Optional[AbacScope] = Field(default=None, description="Kind of object the `resource_props` matches. Used to disambiguate which partition's roles apply (e.g. content roles vs task roles) and to form the JWT `content_security` key prefix (`{scope}:{verb}`). Absent → `'document'` (default; emits bare `read`/`write`/`delete` keys for backward compatibility).")
+    __properties: ClassVar[List[str]] = ["principal_props", "resource_props", "scope"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -83,7 +85,8 @@ class AceConditions(BaseModel):
 
         _obj = cls.model_validate({
             "principal_props": obj.get("principal_props"),
-            "resource_props": obj.get("resource_props")
+            "resource_props": obj.get("resource_props"),
+            "scope": obj.get("scope")
         })
         return _obj
 

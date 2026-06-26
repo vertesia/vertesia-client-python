@@ -22,7 +22,6 @@ from typing import Any, ClassVar, Dict, List, Optional
 from vertesia_client.openapi.models.access_control_principal_type import AccessControlPrincipalType
 from vertesia_client.openapi.models.access_control_resource_type import AccessControlResourceType
 from vertesia_client.openapi.models.ace_conditions import AceConditions
-from vertesia_client.openapi.models.system_roles import SystemRoles
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -31,7 +30,7 @@ class ACEUpdatePayload(BaseModel):
     """
     ACEUpdatePayload
     """ # noqa: E501
-    role: Optional[SystemRoles] = None
+    role: Optional[StrictStr] = Field(default=None, description="Role name. Typed as `string` because role names now span multiple partitions: `SystemRoles` enum values for system-domain roles, and bare strings for ABAC-domain roles (e.g. `'content:reader'`, `'content:writer'`, `'content:manager'`). Mongoose schema validates the value against the registered role catalog via `getAllRoleNames()`.")
     resource_type: Optional[AccessControlResourceType] = None
     resource: Optional[StrictStr] = None
     principal_type: Optional[AccessControlPrincipalType] = None

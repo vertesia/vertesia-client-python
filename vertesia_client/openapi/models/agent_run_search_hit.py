@@ -23,6 +23,7 @@ from vertesia_client.openapi.models.agent_run_status import AgentRunStatus
 from vertesia_client.openapi.models.agent_run_type import AgentRunType
 from vertesia_client.openapi.models.content_object_type_ref import ContentObjectTypeRef
 from vertesia_client.openapi.models.conversation_activity_state import ConversationActivityState
+from vertesia_client.openapi.models.event_ref import EventRef
 from vertesia_client.openapi.models.run_kind import RunKind
 from vertesia_client.openapi.models.run_type import RunType
 from typing import Optional, Set
@@ -54,11 +55,13 @@ class AgentRunSearchHit(BaseModel):
     content_type: Optional[ContentObjectTypeRef] = Field(default=None, description="Content type")
     tool_names: Optional[List[StrictStr]] = Field(default=None, description="Tools configured for this run")
     schedule_id: Optional[StrictStr] = Field(default=None, description="Schedule ID (if schedule-triggered)")
+    event_subscription_id: Optional[StrictStr] = Field(default=None, description="Event subscription ID (if event-triggered)")
+    event_ref: Optional[EventRef] = Field(default=None, description="Event reference (if event-triggered)")
     source_type: Optional[AgentRunType] = Field(default=None, description="How the run was created")
     type: Optional[AgentRunType] = Field(default=None, description="Deprecated: Use source_type for creation source and run_type for runtime mode.")
     created_at: StrictStr = Field(description="Created timestamp")
     updated_at: StrictStr = Field(description="Updated timestamp")
-    __properties: ClassVar[List[str]] = ["id", "score", "interaction", "run_type", "run_kind", "interaction_name", "status", "activity_state", "started_at", "completed_at", "started_by", "title", "topic", "lessons_learned", "tags", "categories", "interactive", "collection_id", "content_type", "tool_names", "schedule_id", "source_type", "type", "created_at", "updated_at"]
+    __properties: ClassVar[List[str]] = ["id", "score", "interaction", "run_type", "run_kind", "interaction_name", "status", "activity_state", "started_at", "completed_at", "started_by", "title", "topic", "lessons_learned", "tags", "categories", "interactive", "collection_id", "content_type", "tool_names", "schedule_id", "event_subscription_id", "event_ref", "source_type", "type", "created_at", "updated_at"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -102,6 +105,9 @@ class AgentRunSearchHit(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of content_type
         if self.content_type:
             _dict['content_type'] = self.content_type.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of event_ref
+        if self.event_ref:
+            _dict['event_ref'] = self.event_ref.to_dict()
         return _dict
 
     @classmethod
@@ -135,6 +141,8 @@ class AgentRunSearchHit(BaseModel):
             "content_type": ContentObjectTypeRef.from_dict(obj["content_type"]) if obj.get("content_type") is not None else None,
             "tool_names": obj.get("tool_names"),
             "schedule_id": obj.get("schedule_id"),
+            "event_subscription_id": obj.get("event_subscription_id"),
+            "event_ref": EventRef.from_dict(obj["event_ref"]) if obj.get("event_ref") is not None else None,
             "source_type": obj.get("source_type"),
             "type": obj.get("type"),
             "created_at": obj.get("created_at"),

@@ -25,6 +25,7 @@ from vertesia_client.openapi.models.agent_run_status import AgentRunStatus
 from vertesia_client.openapi.models.agent_run_type import AgentRunType
 from vertesia_client.openapi.models.conversation_activity_state import ConversationActivityState
 from vertesia_client.openapi.models.conversation_visibility import ConversationVisibility
+from vertesia_client.openapi.models.event_ref import EventRef
 from vertesia_client.openapi.models.process_definition_body import ProcessDefinitionBody
 from vertesia_client.openapi.models.process_run_config import ProcessRunConfig
 from vertesia_client.openapi.models.process_state import ProcessState
@@ -57,6 +58,8 @@ class SupervisedRunResponse(BaseModel):
     source: Optional[RunSource] = Field(default=None, description="How the run was started")
     source_type: Optional[AgentRunType] = Field(default=None, description="Replacement for legacy AgentRun.type")
     schedule_id: Optional[StrictStr] = Field(default=None, description="Schedule ID — set when this run was triggered by a Temporal schedule")
+    event_subscription_id: Optional[StrictStr] = Field(default=None, description="Event subscription ID — set when this run was triggered by the event bus.")
+    event_ref: Optional[EventRef] = Field(default=None, description="Event reference — set when this run was triggered by the event bus.")
     archive_state: Optional[AgentRunArchiveState] = Field(default=None, description="Archive lifecycle state")
     created_at: datetime = Field(description="Timestamp when the document was created")
     updated_at: datetime = Field(description="Timestamp when the document was last updated")
@@ -65,7 +68,7 @@ class SupervisedRunResponse(BaseModel):
     process_version: Optional[Union[StrictFloat, StrictInt]] = None
     process_state: ProcessState
     config: Optional[ProcessRunConfig] = None
-    __properties: ClassVar[List[str]] = ["run_type", "id", "run_kind", "account", "project", "workflow_id", "first_workflow_run_id", "artifacts_path", "status", "activity_state", "visibility", "started_by", "started_at", "completed_at", "title", "tags", "categories", "source", "source_type", "schedule_id", "archive_state", "created_at", "updated_at", "process_id", "process_definition_snapshot", "process_version", "process_state", "config"]
+    __properties: ClassVar[List[str]] = ["run_type", "id", "run_kind", "account", "project", "workflow_id", "first_workflow_run_id", "artifacts_path", "status", "activity_state", "visibility", "started_by", "started_at", "completed_at", "title", "tags", "categories", "source", "source_type", "schedule_id", "event_subscription_id", "event_ref", "archive_state", "created_at", "updated_at", "process_id", "process_definition_snapshot", "process_version", "process_state", "config"]
 
     @field_validator('run_type')
     def run_type_validate_enum(cls, value):
@@ -119,6 +122,9 @@ class SupervisedRunResponse(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of source
         if self.source:
             _dict['source'] = self.source.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of event_ref
+        if self.event_ref:
+            _dict['event_ref'] = self.event_ref.to_dict()
         # override the default output from pydantic by calling `to_dict()` of process_definition_snapshot
         if self.process_definition_snapshot:
             _dict['process_definition_snapshot'] = self.process_definition_snapshot.to_dict()
@@ -160,6 +166,8 @@ class SupervisedRunResponse(BaseModel):
             "source": RunSource.from_dict(obj["source"]) if obj.get("source") is not None else None,
             "source_type": obj.get("source_type"),
             "schedule_id": obj.get("schedule_id"),
+            "event_subscription_id": obj.get("event_subscription_id"),
+            "event_ref": EventRef.from_dict(obj["event_ref"]) if obj.get("event_ref") is not None else None,
             "archive_state": obj.get("archive_state"),
             "created_at": obj.get("created_at"),
             "updated_at": obj.get("updated_at"),

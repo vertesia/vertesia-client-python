@@ -20,7 +20,7 @@ import json
 from pydantic import BaseModel, ConfigDict
 from typing import Any, ClassVar, Dict, List, Optional
 from vertesia_client.openapi.models.computed_facet_response import ComputedFacetResponse
-from vertesia_client.openapi.models.content_object_item import ContentObjectItem
+from vertesia_client.openapi.models.content_object_item_api_response import ContentObjectItemApiResponse
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -29,7 +29,7 @@ class ObjectSearchResponse(BaseModel):
     """
     ObjectSearchResponse
     """ # noqa: E501
-    results: List[ContentObjectItem]
+    results: List[ContentObjectItemApiResponse]
     facets: ComputedFacetResponse
     aggregations: Optional[Dict[str, Any]] = None
     __properties: ClassVar[List[str]] = ["results", "facets", "aggregations"]
@@ -95,7 +95,7 @@ class ObjectSearchResponse(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "results": [ContentObjectItem.from_dict(_item) for _item in obj["results"]] if obj.get("results") is not None else None,
+            "results": [ContentObjectItemApiResponse.from_dict(_item) for _item in obj["results"]] if obj.get("results") is not None else None,
             "facets": ComputedFacetResponse.from_dict(obj["facets"]) if obj.get("facets") is not None else None,
             "aggregations": obj.get("aggregations")
         })

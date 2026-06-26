@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
 from vertesia_client.openapi.models.workflow_rule_input_type import WorkflowRuleInputType
 from typing import Optional, Set
@@ -43,8 +43,18 @@ class WorkflowRule(BaseModel):
     debug: Optional[StrictBool] = Field(default=False, description="Debug mode for the rule")
     customer_override: Optional[StrictBool] = Field(default=None, description="Customer override for the rule When set to true the rule will not be updated by the system")
     task_queue: Optional[StrictStr] = Field(default=None, description="Optional task queue name to use when starting workflows for this rule")
+    event_subscription_migration_status: Optional[StrictStr] = Field(default=None, description="Event subscription migration status for legacy workflow-rule cutover.")
+    event_subscription_migration_error: Optional[StrictStr] = Field(default=None, description="Migration failure or unsupported-match reason, when applicable.")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["id", "name", "description", "tags", "updated_by", "created_by", "created_at", "updated_at", "endpoint", "input_type", "match", "config", "debug", "customer_override", "task_queue"]
+    __properties: ClassVar[List[str]] = ["id", "name", "description", "tags", "updated_by", "created_by", "created_at", "updated_at", "endpoint", "input_type", "match", "config", "debug", "customer_override", "task_queue", "event_subscription_migration_status", "event_subscription_migration_error"]
+
+    @field_validator('event_subscription_migration_status')
+    def event_subscription_migration_status_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -118,7 +128,9 @@ class WorkflowRule(BaseModel):
             "config": obj.get("config"),
             "debug": obj.get("debug") if obj.get("debug") is not None else False,
             "customer_override": obj.get("customer_override"),
-            "task_queue": obj.get("task_queue")
+            "task_queue": obj.get("task_queue"),
+            "event_subscription_migration_status": obj.get("event_subscription_migration_status"),
+            "event_subscription_migration_error": obj.get("event_subscription_migration_error")
         })
         # store additional fields in additional_properties
         for _key in obj.keys():

@@ -13,49 +13,124 @@
 
 
 from __future__ import annotations
+from inspect import getfullargspec
 import json
-from enum import Enum
-from typing_extensions import Self
+import pprint
+import re  # noqa: F401
+from pydantic import BaseModel, ConfigDict, Field, StrictStr, ValidationError, field_validator
+from typing import Optional
+from vertesia_client.openapi.models.known_audit_action import KnownAuditAction
+from typing import Union, Any, List, Set, TYPE_CHECKING, Optional, Dict
+from typing_extensions import Literal, Self
+from pydantic import Field
 
+AUDITACTION_ANY_OF_SCHEMAS = ["KnownAuditAction", "str"]
 
-class AuditAction(str, Enum):
+class AuditAction(BaseModel):
     """
     AuditAction
     """
 
-    """
-    allowed enum values
-    """
-    CREATE = 'create'
-    UPDATE = 'update'
-    DELETE = 'delete'
-    BULK_CREATE = 'bulk_create'
-    BULK_CHANGE_TYPE = 'bulk_change_type'
-    BULK_UPDATE = 'bulk_update'
-    BULK_DELETE = 'bulk_delete'
-    ATTACH = 'attach'
-    DETACH = 'detach'
-    CREDENTIALS_FILL = 'credentials_fill'
-    CREDENTIALS_TOTP_GENERATION = 'credentials_totp_generation'
-    PUBLISH = 'publish'
-    UNPUBLISH = 'unpublish'
-    INFERENCE = 'inference'
-    EMBEDDING = 'embedding'
-    IMAGE_GENERATION = 'image_generation'
+    # data type: KnownAuditAction
+    anyof_schema_1_validator: Optional[KnownAuditAction] = None
+    # data type: str
+    anyof_schema_2_validator: Optional[StrictStr] = None
+    if TYPE_CHECKING:
+        actual_instance: Optional[Union[KnownAuditAction, str]] = None
+    else:
+        actual_instance: Any = None
+    any_of_schemas: Set[str] = { "KnownAuditAction", "str" }
+
+    model_config = {
+        "validate_assignment": True,
+        "protected_namespaces": (),
+    }
+
+    def __init__(self, *args, **kwargs) -> None:
+        if args:
+            if len(args) > 1:
+                raise ValueError("If a position argument is used, only 1 is allowed to set `actual_instance`")
+            if kwargs:
+                raise ValueError("If a position argument is used, keyword arguments cannot be used.")
+            super().__init__(actual_instance=args[0])
+        else:
+            super().__init__(**kwargs)
+
+    @field_validator('actual_instance')
+    def actual_instance_must_validate_anyof(cls, v):
+        instance = AuditAction.model_construct()
+        error_messages = []
+        # validate data type: KnownAuditAction
+        if not isinstance(v, KnownAuditAction):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `KnownAuditAction`")
+        else:
+            return v
+
+        # validate data type: str
+        try:
+            instance.anyof_schema_2_validator = v
+            return v
+        except (ValidationError, ValueError) as e:
+            error_messages.append(str(e))
+        if error_messages:
+            # no match
+            raise ValueError("No match found when setting the actual_instance in AuditAction with anyOf schemas: KnownAuditAction, str. Details: " + ", ".join(error_messages))
+        else:
+            return v
 
     @classmethod
-    def _missing_(cls, value: object) -> Self:
-        if not isinstance(value, str):
-            raise ValueError(f"{value!r} is not a valid {cls.__name__}")
-        unknown = str.__new__(cls, value)
-        unknown._name_ = "UNKNOWN_DEFAULT_OPEN_API"
-        unknown._value_ = value
-        cls._value2member_map_[value] = unknown
-        return unknown
+    def from_dict(cls, obj: Dict[str, Any]) -> Self:
+        return cls.from_json(json.dumps(obj))
 
     @classmethod
     def from_json(cls, json_str: str) -> Self:
-        """Create an instance of AuditAction from a JSON string"""
-        return cls(json.loads(json_str))
+        """Returns the object represented by the json string"""
+        instance = cls.model_construct()
+        error_messages = []
+        # anyof_schema_1_validator: Optional[KnownAuditAction] = None
+        try:
+            instance.actual_instance = KnownAuditAction.from_json(json_str)
+            return instance
+        except (ValidationError, ValueError) as e:
+             error_messages.append(str(e))
+        # deserialize data into str
+        try:
+            # validation
+            instance.anyof_schema_2_validator = json.loads(json_str)
+            # assign value to actual_instance
+            instance.actual_instance = instance.anyof_schema_2_validator
+            return instance
+        except (ValidationError, ValueError) as e:
+            error_messages.append(str(e))
+
+        if error_messages:
+            # no match
+            raise ValueError("No match found when deserializing the JSON string into AuditAction with anyOf schemas: KnownAuditAction, str. Details: " + ", ".join(error_messages))
+        else:
+            return instance
+
+    def to_json(self) -> str:
+        """Returns the JSON representation of the actual instance"""
+        if self.actual_instance is None:
+            return "null"
+
+        if hasattr(self.actual_instance, "to_json") and callable(self.actual_instance.to_json):
+            return self.actual_instance.to_json()
+        else:
+            return json.dumps(self.actual_instance)
+
+    def to_dict(self) -> Optional[Union[Dict[str, Any], KnownAuditAction, str]]:
+        """Returns the dict representation of the actual instance"""
+        if self.actual_instance is None:
+            return None
+
+        if hasattr(self.actual_instance, "to_dict") and callable(self.actual_instance.to_dict):
+            return self.actual_instance.to_dict()
+        else:
+            return self.actual_instance
+
+    def to_str(self) -> str:
+        """Returns the string representation of the actual instance"""
+        return pprint.pformat(self.model_dump())
 
 

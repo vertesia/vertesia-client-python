@@ -21,6 +21,7 @@ from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, Stri
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from vertesia_client.openapi.models.audit_action import AuditAction
 from vertesia_client.openapi.models.audit_meter import AuditMeter
+from vertesia_client.openapi.models.event_category import EventCategory
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -30,6 +31,16 @@ class AuditTrailEvent(BaseModel):
     AuditTrailEvent
     """ # noqa: E501
     event_type: StrictStr
+    event_id: Optional[StrictStr] = None
+    event_category: Optional[EventCategory] = None
+    source: Optional[StrictStr] = None
+    root_event_id: Optional[StrictStr] = None
+    caused_by_event_id: Optional[StrictStr] = None
+    hop_count: Optional[Union[StrictFloat, StrictInt]] = None
+    audit_trail: Optional[StrictBool] = None
+    replay_of: Optional[StrictStr] = None
+    replay_root_event_id: Optional[StrictStr] = None
+    replayed_by: Optional[StrictStr] = None
     action: AuditAction
     resource_type: StrictStr
     resource_id: StrictStr
@@ -50,7 +61,7 @@ class AuditTrailEvent(BaseModel):
     meters: Optional[List[AuditMeter]] = Field(default=None, description="Generic metering data for cost attribution and usage tracking")
     details: Optional[Dict[str, Any]] = Field(default=None, description="Event-specific metadata — shape varies by action/resource_type")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["event_type", "action", "resource_type", "resource_id", "timestamp", "request_id", "status", "success", "principal_id", "principal_type", "effective_principal_id", "roles", "account_id", "project_id", "tenant_id", "account_name", "project_name", "provider", "meters", "details"]
+    __properties: ClassVar[List[str]] = ["event_type", "event_id", "event_category", "source", "root_event_id", "caused_by_event_id", "hop_count", "audit_trail", "replay_of", "replay_root_event_id", "replayed_by", "action", "resource_type", "resource_id", "timestamp", "request_id", "status", "success", "principal_id", "principal_type", "effective_principal_id", "roles", "account_id", "project_id", "tenant_id", "account_name", "project_name", "provider", "meters", "details"]
 
     @field_validator('event_type')
     def event_type_validate_enum(cls, value):
@@ -98,6 +109,9 @@ class AuditTrailEvent(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of action
+        if self.action:
+            _dict['action'] = self.action.to_dict()
         # override the default output from pydantic by calling `to_dict()` of each item in meters (list)
         _items = []
         if self.meters:
@@ -109,6 +123,11 @@ class AuditTrailEvent(BaseModel):
         if self.additional_properties is not None:
             for _key, _value in self.additional_properties.items():
                 _dict[_key] = _value
+
+        # set to None if source (nullable) is None
+        # and model_fields_set contains the field
+        if self.source is None and "source" in self.model_fields_set:
+            _dict['source'] = None
 
         # set to None if principal_id (nullable) is None
         # and model_fields_set contains the field
@@ -168,7 +187,17 @@ class AuditTrailEvent(BaseModel):
 
         _obj = cls.model_validate({
             "event_type": obj.get("event_type"),
-            "action": obj.get("action"),
+            "event_id": obj.get("event_id"),
+            "event_category": obj.get("event_category"),
+            "source": obj.get("source"),
+            "root_event_id": obj.get("root_event_id"),
+            "caused_by_event_id": obj.get("caused_by_event_id"),
+            "hop_count": obj.get("hop_count"),
+            "audit_trail": obj.get("audit_trail"),
+            "replay_of": obj.get("replay_of"),
+            "replay_root_event_id": obj.get("replay_root_event_id"),
+            "replayed_by": obj.get("replayed_by"),
+            "action": AuditAction.from_dict(obj["action"]) if obj.get("action") is not None else None,
             "resource_type": obj.get("resource_type"),
             "resource_id": obj.get("resource_id"),
             "timestamp": obj.get("timestamp"),

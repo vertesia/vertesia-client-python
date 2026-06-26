@@ -18,7 +18,7 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr
-from typing import Any, ClassVar, Dict, Union
+from typing import Any, ClassVar, Dict, Optional, Union
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -27,9 +27,9 @@ class ContentObjectApiResponseTokens(BaseModel):
     """
     ContentObjectApiResponseTokens
     """ # noqa: E501
-    count: Union[StrictFloat, StrictInt]
-    encoding: StrictStr
-    etag: StrictStr
+    count: Optional[Union[StrictFloat, StrictInt]] = None
+    encoding: Optional[StrictStr] = None
+    etag: Optional[StrictStr] = None
     __properties: ClassVar[List[str]] = ["count", "encoding", "etag"]
 
     model_config = ConfigDict(

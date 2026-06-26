@@ -14,6 +14,9 @@ from vertesia_client.openapi.api.content_object_types_api import ContentObjectTy
 from vertesia_client.openapi.api.costs_api import CostsApi
 from vertesia_client.openapi.api.data_api import DataApi
 from vertesia_client.openapi.api.environments_api import EnvironmentsApi
+from vertesia_client.openapi.api.event_ingest_channels_api import EventIngestChannelsApi
+from vertesia_client.openapi.api.event_subscriptions_api import EventSubscriptionsApi
+from vertesia_client.openapi.api.events_api import EventsApi
 from vertesia_client.openapi.api.files_api import FilesApi
 from vertesia_client.openapi.api.interaction_runs_api import InteractionRunsApi
 from vertesia_client.openapi.api.interactions_api import InteractionsApi
@@ -24,6 +27,7 @@ from vertesia_client.openapi.api.objects_api import ObjectsApi
 from vertesia_client.openapi.api.processes_api import ProcessesApi
 from vertesia_client.openapi.api.projects_api import ProjectsApi
 from vertesia_client.openapi.api.prompt_templates_api import PromptTemplatesApi
+from vertesia_client.openapi.api.quota_api import QuotaApi
 from vertesia_client.openapi.api.remote_mcp_connections_api import RemoteMCPConnectionsApi
 from vertesia_client.openapi.api.rendering_api import RenderingApi
 from vertesia_client.openapi.api.roles_api import RolesApi

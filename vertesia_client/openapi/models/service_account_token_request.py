@@ -36,7 +36,8 @@ class ServiceAccountTokenRequest(BaseModel):
     project_id: StrictStr
     roles: Optional[List[SystemRoles]] = None
     name: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["type", "audience", "algorithm", "account_id", "project_id", "roles", "name"]
+    email: Optional[StrictStr] = None
+    __properties: ClassVar[List[str]] = ["type", "audience", "algorithm", "account_id", "project_id", "roles", "name", "email"]
 
     @field_validator('type')
     def type_validate_enum(cls, value):
@@ -100,7 +101,8 @@ class ServiceAccountTokenRequest(BaseModel):
             "account_id": obj.get("account_id"),
             "project_id": obj.get("project_id"),
             "roles": obj.get("roles"),
-            "name": obj.get("name")
+            "name": obj.get("name"),
+            "email": obj.get("email")
         })
         return _obj
 

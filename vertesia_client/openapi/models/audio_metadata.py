@@ -41,6 +41,7 @@ class AudioMetadata(BaseModel):
     renditions: Optional[List[Rendition]] = None
     duration: Optional[Union[StrictFloat, StrictInt]] = None
     transcript: Optional[Transcript] = None
+    additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["type", "size", "languages", "location", "generation_runs", "etag", "renditions", "duration", "transcript"]
 
     model_config = ConfigDict(
@@ -73,8 +74,10 @@ class AudioMetadata(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -102,6 +105,11 @@ class AudioMetadata(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of transcript
         if self.transcript:
             _dict['transcript'] = self.transcript.to_dict()
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
         return _dict
 
     @classmethod
@@ -124,6 +132,11 @@ class AudioMetadata(BaseModel):
             "duration": obj.get("duration"),
             "transcript": Transcript.from_dict(obj["transcript"]) if obj.get("transcript") is not None else None
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 

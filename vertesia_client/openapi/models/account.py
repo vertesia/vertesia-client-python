@@ -17,11 +17,12 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr
-from typing import Any, ClassVar, Dict, List
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from typing import Any, ClassVar, Dict, List, Optional
 from vertesia_client.openapi.models.account_billing import AccountBilling
 from vertesia_client.openapi.models.account_onboarding import AccountOnboarding
 from vertesia_client.openapi.models.account_type import AccountType
+from vertesia_client.openapi.models.quota_tier import QuotaTier
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -37,12 +38,13 @@ class Account(BaseModel):
     datacenter: StrictStr
     account_type: AccountType
     billing: AccountBilling
+    quota_tier: Optional[QuotaTier] = Field(default=None, description="Quota/rate-limit tier. Unset → the deployment default tier (env `QUOTA_BASE_TIER`).")
     created_by: StrictStr
     updated_by: StrictStr
     created_at: StrictStr
     updated_at: StrictStr
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["id", "name", "email_domains", "onboarding", "datacenter", "account_type", "billing", "created_by", "updated_by", "created_at", "updated_at"]
+    __properties: ClassVar[List[str]] = ["id", "name", "email_domains", "onboarding", "datacenter", "account_type", "billing", "quota_tier", "created_by", "updated_by", "created_at", "updated_at"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -115,6 +117,7 @@ class Account(BaseModel):
             "datacenter": obj.get("datacenter"),
             "account_type": obj.get("account_type"),
             "billing": AccountBilling.from_dict(obj["billing"]) if obj.get("billing") is not None else None,
+            "quota_tier": obj.get("quota_tier"),
             "created_by": obj.get("created_by"),
             "updated_by": obj.get("updated_by"),
             "created_at": obj.get("created_at"),

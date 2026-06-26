@@ -20,6 +20,7 @@ import json
 from pydantic import BaseModel, ConfigDict, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from vertesia_client.openapi.models.account_billing import AccountBilling
+from vertesia_client.openapi.models.quota_tier import QuotaTier
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -31,7 +32,8 @@ class UpdateAccountPayload(BaseModel):
     name: Optional[StrictStr] = None
     email_domains: Optional[List[StrictStr]] = None
     billing: Optional[AccountBilling] = None
-    __properties: ClassVar[List[str]] = ["name", "email_domains", "billing"]
+    quota_tier: Optional[QuotaTier] = None
+    __properties: ClassVar[List[str]] = ["name", "email_domains", "billing", "quota_tier"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -89,7 +91,8 @@ class UpdateAccountPayload(BaseModel):
         _obj = cls.model_validate({
             "name": obj.get("name"),
             "email_domains": obj.get("email_domains"),
-            "billing": AccountBilling.from_dict(obj["billing"]) if obj.get("billing") is not None else None
+            "billing": AccountBilling.from_dict(obj["billing"]) if obj.get("billing") is not None else None,
+            "quota_tier": obj.get("quota_tier")
         })
         return _obj
 

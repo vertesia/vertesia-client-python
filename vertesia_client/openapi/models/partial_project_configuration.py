@@ -22,6 +22,7 @@ from typing import Any, ClassVar, Dict, List, Optional
 from vertesia_client.openapi.models.browser_use_project_configuration import BrowserUseProjectConfiguration
 from vertesia_client.openapi.models.project_configuration_embeddings import ProjectConfigurationEmbeddings
 from vertesia_client.openapi.models.project_configuration_indexing import ProjectConfigurationIndexing
+from vertesia_client.openapi.models.project_intake_configuration import ProjectIntakeConfiguration
 from vertesia_client.openapi.models.project_model_defaults import ProjectModelDefaults
 from vertesia_client.openapi.models.resource_visibility import ResourceVisibility
 from typing import Optional, Set
@@ -41,11 +42,12 @@ class PartialProjectConfiguration(BaseModel):
     storage_bucket: Optional[StrictStr] = None
     agent_streaming_enabled: Optional[StrictBool] = Field(default=None, description="Enable real-time streaming of agent LLM responses to clients. When enabled, LLM responses are streamed chunk-by-chunk via Redis pub/sub. Defaults to true if not specified.")
     indexing: Optional[ProjectConfigurationIndexing] = None
+    intake: Optional[ProjectIntakeConfiguration] = Field(default=None, description="Standard content intake behavior.")
     main_language: Optional[StrictStr] = Field(default=None, description="Primary language for full-text search analysis. ISO 639-1 code (e.g., 'en', 'fr', 'ja', 'de'). Determines which Elasticsearch analyzer is used for the text field. Defaults to 'en' (English/standard analyzer).  Changing this value requires a full reindex to take effect.")
     browser_use: Optional[BrowserUseProjectConfiguration] = Field(default=None, description="Project defaults and caps for browser_use agent workstreams.")
     pdf_template_object_id: Optional[StrictStr] = Field(default=None, description="Object ID of a content object containing a custom LaTeX template (.latex file) to use as the branded PDF template. When set, \"Export as Branded PDF\" uses this template instead of the built-in Vertesia default template.")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["human_context", "defaults", "default_visibility", "sync_content_properties", "embeddings", "datacenter", "storage_bucket", "agent_streaming_enabled", "indexing", "main_language", "browser_use", "pdf_template_object_id"]
+    __properties: ClassVar[List[str]] = ["human_context", "defaults", "default_visibility", "sync_content_properties", "embeddings", "datacenter", "storage_bucket", "agent_streaming_enabled", "indexing", "intake", "main_language", "browser_use", "pdf_template_object_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -97,6 +99,9 @@ class PartialProjectConfiguration(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of indexing
         if self.indexing:
             _dict['indexing'] = self.indexing.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of intake
+        if self.intake:
+            _dict['intake'] = self.intake.to_dict()
         # override the default output from pydantic by calling `to_dict()` of browser_use
         if self.browser_use:
             _dict['browser_use'] = self.browser_use.to_dict()
@@ -126,6 +131,7 @@ class PartialProjectConfiguration(BaseModel):
             "storage_bucket": obj.get("storage_bucket"),
             "agent_streaming_enabled": obj.get("agent_streaming_enabled"),
             "indexing": ProjectConfigurationIndexing.from_dict(obj["indexing"]) if obj.get("indexing") is not None else None,
+            "intake": ProjectIntakeConfiguration.from_dict(obj["intake"]) if obj.get("intake") is not None else None,
             "main_language": obj.get("main_language"),
             "browser_use": BrowserUseProjectConfiguration.from_dict(obj["browser_use"]) if obj.get("browser_use") is not None else None,
             "pdf_template_object_id": obj.get("pdf_template_object_id")

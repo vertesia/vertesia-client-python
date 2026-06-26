@@ -15,9 +15,10 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
+from pydantic import Field, StrictBool, StrictFloat, StrictInt, StrictStr
 from typing import List, Optional, Union
 from typing_extensions import Annotated
+from vertesia_client.openapi.models.audit_action import AuditAction
 from vertesia_client.openapi.models.audit_trail_response import AuditTrailResponse
 
 from vertesia_client.openapi.api_client import ApiClient, RequestSerialized
@@ -41,7 +42,7 @@ class AuditTrailApi:
     @validate_call
     def list_audit_trail_events(
         self,
-        actions: Annotated[Optional[List[StrictStr]], Field(description="Filter by action types")] = None,
+        actions: Annotated[Optional[List[AuditAction]], Field(description="Filter by action types")] = None,
         resource_types: Annotated[Optional[List[StrictStr]], Field(description="Filter by resource types")] = None,
         resource_id: Annotated[Optional[StrictStr], Field(description="Filter by resource ID")] = None,
         principal_id: Annotated[Optional[StrictStr], Field(description="Filter by exact actor principal ref (matches principal_id column).")] = None,
@@ -72,7 +73,7 @@ class AuditTrailApi:
         Lists audit trail events with optional filtering by project, resource, principal, action, and time range.  **Required permissions:** Any of `project:admin`, `account:admin`, `audit:read`
 
         :param actions: Filter by action types
-        :type actions: List[str]
+        :type actions: List[AuditAction]
         :param resource_types: Filter by resource types
         :type resource_types: List[str]
         :param resource_id: Filter by resource ID
@@ -158,7 +159,7 @@ class AuditTrailApi:
     @validate_call
     def list_audit_trail_events_with_http_info(
         self,
-        actions: Annotated[Optional[List[StrictStr]], Field(description="Filter by action types")] = None,
+        actions: Annotated[Optional[List[AuditAction]], Field(description="Filter by action types")] = None,
         resource_types: Annotated[Optional[List[StrictStr]], Field(description="Filter by resource types")] = None,
         resource_id: Annotated[Optional[StrictStr], Field(description="Filter by resource ID")] = None,
         principal_id: Annotated[Optional[StrictStr], Field(description="Filter by exact actor principal ref (matches principal_id column).")] = None,
@@ -189,7 +190,7 @@ class AuditTrailApi:
         Lists audit trail events with optional filtering by project, resource, principal, action, and time range.  **Required permissions:** Any of `project:admin`, `account:admin`, `audit:read`
 
         :param actions: Filter by action types
-        :type actions: List[str]
+        :type actions: List[AuditAction]
         :param resource_types: Filter by resource types
         :type resource_types: List[str]
         :param resource_id: Filter by resource ID
@@ -275,7 +276,7 @@ class AuditTrailApi:
     @validate_call
     def list_audit_trail_events_without_preload_content(
         self,
-        actions: Annotated[Optional[List[StrictStr]], Field(description="Filter by action types")] = None,
+        actions: Annotated[Optional[List[AuditAction]], Field(description="Filter by action types")] = None,
         resource_types: Annotated[Optional[List[StrictStr]], Field(description="Filter by resource types")] = None,
         resource_id: Annotated[Optional[StrictStr], Field(description="Filter by resource ID")] = None,
         principal_id: Annotated[Optional[StrictStr], Field(description="Filter by exact actor principal ref (matches principal_id column).")] = None,
@@ -306,7 +307,7 @@ class AuditTrailApi:
         Lists audit trail events with optional filtering by project, resource, principal, action, and time range.  **Required permissions:** Any of `project:admin`, `account:admin`, `audit:read`
 
         :param actions: Filter by action types
-        :type actions: List[str]
+        :type actions: List[AuditAction]
         :param resource_types: Filter by resource types
         :type resource_types: List[str]
         :param resource_id: Filter by resource ID

@@ -28,6 +28,7 @@ class AgentRunType(str, Enum):
     """
     API = 'api'
     SCHEDULE = 'schedule'
+    EVENT_SUBSCRIPTION = 'event_subscription'
 
     @classmethod
     def _missing_(cls, value: object) -> Self:

@@ -27,6 +27,7 @@ from vertesia_client.openapi.models.agent_tool_approval_mode import AgentToolApp
 from vertesia_client.openapi.models.content_object_type_ref import ContentObjectTypeRef
 from vertesia_client.openapi.models.conversation_activity_state import ConversationActivityState
 from vertesia_client.openapi.models.conversation_visibility import ConversationVisibility
+from vertesia_client.openapi.models.event_ref import EventRef
 from vertesia_client.openapi.models.interaction_execution_configuration import InteractionExecutionConfiguration
 from vertesia_client.openapi.models.interaction_ref import InteractionRef
 from vertesia_client.openapi.models.run_source import RunSource
@@ -69,6 +70,8 @@ class AgentRun(BaseModel):
     started_at: datetime = Field(description="When the run started")
     completed_at: Optional[datetime] = Field(default=None, description="When the run completed (or failed/cancelled)")
     title: Optional[StrictStr] = Field(default=None, description="Conversation title (short, human-readable)")
+    event_subscription_id: Optional[StrictStr] = Field(default=None, description="Event subscription ID — set when this run was triggered by the event bus.")
+    event_ref: Optional[EventRef] = Field(default=None, description="Event reference — set when this run was triggered by the event bus.")
     archive_state: Optional[AgentRunArchiveState] = Field(default=None, description="Archive lifecycle state")
     created_at: datetime = Field(description="Timestamp when the document was created")
     updated_at: datetime = Field(description="Timestamp when the document was last updated")
@@ -81,7 +84,7 @@ class AgentRun(BaseModel):
     last_archive_error: Optional[StrictStr] = Field(default=None, description="Last archive error message (when archive_state === 'failed')")
     forked_from: Optional[StrictStr] = Field(default=None, description="Source agent run ID when this run was forked (enables message history chaining)")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["interaction", "data", "config", "interactive", "tool_approval_mode", "tool_names", "collection_id", "disabled_mcp_collections", "content_type", "visibility", "tags", "categories", "properties", "source", "schedule_id", "source_type", "type", "id", "run_kind", "run_type", "account", "project", "workflow_id", "first_workflow_run_id", "artifacts_path", "status", "activity_state", "started_by", "started_at", "completed_at", "title", "archive_state", "created_at", "updated_at", "interaction_name", "interactionRef", "topic", "lessons_learned", "archived_at", "archive_version", "last_archive_error", "forked_from"]
+    __properties: ClassVar[List[str]] = ["interaction", "data", "config", "interactive", "tool_approval_mode", "tool_names", "collection_id", "disabled_mcp_collections", "content_type", "visibility", "tags", "categories", "properties", "source", "schedule_id", "source_type", "type", "id", "run_kind", "run_type", "account", "project", "workflow_id", "first_workflow_run_id", "artifacts_path", "status", "activity_state", "started_by", "started_at", "completed_at", "title", "event_subscription_id", "event_ref", "archive_state", "created_at", "updated_at", "interaction_name", "interactionRef", "topic", "lessons_learned", "archived_at", "archive_version", "last_archive_error", "forked_from"]
 
     @field_validator('run_kind')
     def run_kind_validate_enum(cls, value):
@@ -143,6 +146,9 @@ class AgentRun(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of source
         if self.source:
             _dict['source'] = self.source.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of event_ref
+        if self.event_ref:
+            _dict['event_ref'] = self.event_ref.to_dict()
         # override the default output from pydantic by calling `to_dict()` of interaction_ref
         if self.interaction_ref:
             _dict['interactionRef'] = self.interaction_ref.to_dict()
@@ -194,6 +200,8 @@ class AgentRun(BaseModel):
             "started_at": obj.get("started_at"),
             "completed_at": obj.get("completed_at"),
             "title": obj.get("title"),
+            "event_subscription_id": obj.get("event_subscription_id"),
+            "event_ref": EventRef.from_dict(obj["event_ref"]) if obj.get("event_ref") is not None else None,
             "archive_state": obj.get("archive_state"),
             "created_at": obj.get("created_at"),
             "updated_at": obj.get("updated_at"),

@@ -21,6 +21,7 @@ from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
 from vertesia_client.openapi.models.app_access_control import AppAccessControl
 from vertesia_client.openapi.models.app_capabilities import AppCapabilities
+from vertesia_client.openapi.models.app_manifest_source import AppManifestSource
 from vertesia_client.openapi.models.app_ui_config import AppUIConfig
 from vertesia_client.openapi.models.json_schema import JSONSchema
 from vertesia_client.openapi.models.mcpo_auth_config import MCPOAuthConfig
@@ -54,9 +55,10 @@ class AppManifest(BaseModel):
     access_control: Optional[AppAccessControl] = Field(default=None, description="Access control policy for the app. Defaults to 'all' (ACE-gated everywhere) when undefined. See  {@link  AppAccessControl }  for semantics. May be overridden on the AppInstallation.")
     id: StrictStr
     account: Optional[StrictStr] = Field(default=None, description="The owning account. Undefined for apps imported from a master region.")
+    source: Optional[AppManifestSource] = Field(default=None, description="Source metadata for generated or synced app manifests.")
     created_at: StrictStr
     updated_at: StrictStr
-    __properties: ClassVar[List[str]] = ["name", "visibility", "title", "description", "publisher", "icon", "color", "status", "ui", "tool_collections", "oauth_providers", "interactions", "settings_schema", "capabilities", "endpoint", "endpoint_overrides", "version", "tags", "access_control", "id", "account", "created_at", "updated_at"]
+    __properties: ClassVar[List[str]] = ["name", "visibility", "title", "description", "publisher", "icon", "color", "status", "ui", "tool_collections", "oauth_providers", "interactions", "settings_schema", "capabilities", "endpoint", "endpoint_overrides", "version", "tags", "access_control", "id", "account", "source", "created_at", "updated_at"]
 
     @field_validator('visibility')
     def visibility_validate_enum(cls, value):
@@ -127,6 +129,9 @@ class AppManifest(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of settings_schema
         if self.settings_schema:
             _dict['settings_schema'] = self.settings_schema.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of source
+        if self.source:
+            _dict['source'] = self.source.to_dict()
         return _dict
 
     @classmethod
@@ -165,6 +170,7 @@ class AppManifest(BaseModel):
             "access_control": obj.get("access_control"),
             "id": obj.get("id"),
             "account": obj.get("account"),
+            "source": AppManifestSource.from_dict(obj["source"]) if obj.get("source") is not None else None,
             "created_at": obj.get("created_at"),
             "updated_at": obj.get("updated_at")
         })

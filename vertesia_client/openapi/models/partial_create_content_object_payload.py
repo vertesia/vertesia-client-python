@@ -22,7 +22,6 @@ from typing import Any, ClassVar, Dict, List, Optional, Union
 from vertesia_client.openapi.models.content_object_status import ContentObjectStatus
 from vertesia_client.openapi.models.content_object_user_permissions import ContentObjectUserPermissions
 from vertesia_client.openapi.models.content_source import ContentSource
-from vertesia_client.openapi.models.create_content_object_payload_metadata import CreateContentObjectPayloadMetadata
 from vertesia_client.openapi.models.create_content_object_payload_tokens import CreateContentObjectPayloadTokens
 from vertesia_client.openapi.models.generation_run_metadata import GenerationRunMetadata
 from vertesia_client.openapi.models.inherited_property_metadata import InheritedPropertyMetadata
@@ -53,7 +52,7 @@ class PartialCreateContentObjectPayload(BaseModel):
     content: Optional[ContentSource] = Field(default=None, description="Content source information, typically a link to an object store")
     external_id: Optional[StrictStr] = Field(default=None, description="External identifier for integration with other systems")
     properties: Optional[Dict[str, Any]] = Field(default=None, description="The object properties. This is a JSON object that describes the object, matching the object type schema")
-    metadata: Optional[CreateContentObjectPayloadMetadata] = None
+    metadata: Optional[Dict[str, Any]] = Field(default=None, description="Technical metadata of the object")
     tokens: Optional[CreateContentObjectPayloadTokens] = None
     revision: Optional[RevisionInfo] = Field(default=None, description="Revision information. This is used to track the history of the object.")
     is_deleted: Optional[StrictBool] = Field(default=None, description="Soft delete flag. When true, the object should be considered deleted but is still retained in the database for historical purposes.")
@@ -125,9 +124,6 @@ class PartialCreateContentObjectPayload(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of content
         if self.content:
             _dict['content'] = self.content.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of metadata
-        if self.metadata:
-            _dict['metadata'] = self.metadata.to_dict()
         # override the default output from pydantic by calling `to_dict()` of tokens
         if self.tokens:
             _dict['tokens'] = self.tokens.to_dict()
@@ -168,7 +164,7 @@ class PartialCreateContentObjectPayload(BaseModel):
             "content": ContentSource.from_dict(obj["content"]) if obj.get("content") is not None else None,
             "external_id": obj.get("external_id"),
             "properties": obj.get("properties"),
-            "metadata": CreateContentObjectPayloadMetadata.from_dict(obj["metadata"]) if obj.get("metadata") is not None else None,
+            "metadata": obj.get("metadata"),
             "tokens": CreateContentObjectPayloadTokens.from_dict(obj["tokens"]) if obj.get("tokens") is not None else None,
             "revision": RevisionInfo.from_dict(obj["revision"]) if obj.get("revision") is not None else None,
             "is_deleted": obj.get("is_deleted"),

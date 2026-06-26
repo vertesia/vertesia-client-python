@@ -30,7 +30,7 @@ class ListWorkflowRunsPayload(BaseModel):
     """ # noqa: E501
     document_id: Optional[StrictStr] = Field(default=None, description="The document ID passed to a workflow run.")
     event_name: Optional[StrictStr] = Field(default=None, description="The event name that triggered the workflow.")
-    rule_id: Optional[StrictStr] = Field(default=None, description="The workflow rule ID that triggered the workflow.")
+    rule_id: Optional[StrictStr] = Field(default=None, description="Legacy workflow rule ID filter, when applicable.")
     start: Optional[StrictStr] = Field(default=None, description="The start time for filtering workflow runs.")
     end: Optional[StrictStr] = Field(default=None, description="The end time for filtering workflow runs.")
     status: Optional[StrictStr] = Field(default=None, description="The status of the workflow run.")

@@ -194,6 +194,9 @@ components:
           additionalProperties: false
           description: Indexing configuration for this project. Controls whether indexing
             and querying are enabled at the project level.
+        intake:
+          $ref: "#/components/schemas/ProjectIntakeConfiguration"
+          description: Standard content intake behavior.
         main_language:
           type: string
           description: >-
@@ -268,6 +271,9 @@ components:
           additionalProperties: false
           description: Indexing configuration for this project. Controls whether indexing
             and querying are enabled at the project level.
+        intake:
+          $ref: "#/components/schemas/ProjectIntakeConfiguration"
+          description: Standard content intake behavior.
         main_language:
           type: string
           description: >-
@@ -2010,6 +2016,66 @@ components:
         interaction:
           $ref: "#/components/schemas/InteractionRef"
       additionalProperties: false
+    QuotaStandingResponse:
+      type: object
+      properties:
+        tenant_id:
+          type: string
+        available:
+          type: boolean
+          description: False when the limiter store (Redis) was unavailable, so
+            `api`/`admission` are empty because standing could not be read — NOT
+            because there are no limits. Limiters fail open in this case.
+        base_tier:
+          type: string
+          description: Deployment base tier (env QUOTA_BASE_TIER); `default` = the static
+            limits stand.
+        effective_tier:
+          type: string
+          description: "Tier used to compute the API limits below: explicit account
+            `quota_tier`, else account_type derived tier, else `base_tier` when
+            the account tier could not be resolved."
+        api:
+          type: array
+          items:
+            $ref: "#/components/schemas/QuotaStandingResource"
+          description: Per-resource API rate-limit standing (effective limits + current
+            usage).
+        admission:
+          type: object
+          properties:
+            classes:
+              type: array
+              items:
+                $ref: "#/components/schemas/QuotaStandingAdmissionClass"
+            note:
+              type: string
+          required:
+            - classes
+            - note
+          additionalProperties: false
+          description: "Workflow admission: per-tenant active slots per probed class. The
+            budget itself is global and discovered (AIMD), not a per-tenant
+            number — this is occupancy, not a limit."
+        llm:
+          type: object
+          properties:
+            note:
+              type: string
+          required:
+            - note
+          additionalProperties: false
+          description: The LLM interaction limiter is shared per environment/model, not
+            per tenant.
+      required:
+        - tenant_id
+        - available
+        - base_tier
+        - effective_tier
+        - api
+        - admission
+        - llm
+      additionalProperties: false
     Account:
       type: object
       properties:
@@ -2039,6 +2105,10 @@ components:
           $ref: "#/components/schemas/AccountType"
         billing:
           $ref: "#/components/schemas/AccountBilling"
+        quota_tier:
+          $ref: "#/components/schemas/QuotaTier"
+          description: Quota/rate-limit tier. Unset → the deployment default tier (env
+            `QUOTA_BASE_TIER`).
         created_by:
           type: string
         updated_by:
@@ -2071,6 +2141,8 @@ components:
             type: string
         billing:
           $ref: "#/components/schemas/AccountBilling"
+        quota_tier:
+          $ref: "#/components/schemas/QuotaTier"
       additionalProperties: false
     AccountProjectsResponse:
       type: object
@@ -2632,7 +2704,13 @@ components:
       type: object
       properties:
         role:
-          $ref: "#/components/schemas/SystemRoles"
+          type: string
+          description: "Role name. Typed as `string` because role names now span multiple
+            partitions: `SystemRoles` enum values for system-domain roles, and
+            bare strings for ABAC-domain roles (e.g. `'content:reader'`,
+            `'content:writer'`, `'content:manager'`). Mongoose schema validates
+            the value against the registered role catalog via
+            `getAllRoleNames()`."
         resource_type:
           $ref: "#/components/schemas/AccessControlResourceType"
         resource:
@@ -2676,7 +2754,13 @@ components:
       additionalProperties: false
       properties:
         role:
-          $ref: "#/components/schemas/SystemRoles"
+          type: string
+          description: "Role name. Typed as `string` because role names now span multiple
+            partitions: `SystemRoles` enum values for system-domain roles, and
+            bare strings for ABAC-domain roles (e.g. `'content:reader'`,
+            `'content:writer'`, `'content:manager'`). Mongoose schema validates
+            the value against the registered role catalog via
+            `getAllRoleNames()`."
         resource_type:
           $ref: "#/components/schemas/AccessControlResourceType"
         resource:
@@ -2712,7 +2796,13 @@ components:
       additionalProperties: false
       properties:
         role:
-          $ref: "#/components/schemas/SystemRoles"
+          type: string
+          description: "Role name. Typed as `string` because role names now span multiple
+            partitions: `SystemRoles` enum values for system-domain roles, and
+            bare strings for ABAC-domain roles (e.g. `'content:reader'`,
+            `'content:writer'`, `'content:manager'`). Mongoose schema validates
+            the value against the registered role catalog via
+            `getAllRoleNames()`."
         resource_type:
           $ref: "#/components/schemas/AccessControlResourceType"
         resource:
@@ -2968,6 +3058,9 @@ components:
         account:
           type: string
           description: The owning account. Undefined for apps imported from a master region.
+        source:
+          $ref: "#/components/schemas/AppManifestSource"
+          description: Source metadata for generated or synced app manifests.
         created_at:
           type: string
         updated_at:
@@ -4231,6 +4324,33 @@ components:
       enum:
         - serverless
         - hosted
+    ProjectIntakeConfiguration:
+      type: object
+      properties:
+        generate_toc:
+          type: boolean
+          description: Generate table-of-content sections during standard document intake.
+            Defaults to false.
+        generate_toc_max_size:
+          type: number
+          description: Skip table-of-content generation when the document text exceeds
+            this many characters. Avoids sending very large documents through
+            the TOC interactions. Unset means no limit.
+        generate_content_type:
+          type: boolean
+          description: Select or assign a content type during standard intake. Defaults to
+            true.
+        generate_properties:
+          type: boolean
+          description: Extract document properties after content type assignment. Defaults
+            to true.
+        default_content_type:
+          type: string
+          description: Default content type assigned during intake when type selection
+            finds no matching type. A type id resolvable in this project (a
+            stored `oid:` type, an `app:` type, or a `sys:` type). Defaults to
+            the platform `sys:GenericDocument` when unset.
+      additionalProperties: false
     BrowserUseProjectConfiguration:
       type: object
       properties:
@@ -8236,6 +8356,61 @@ components:
       enum:
         - asc
         - desc
+    QuotaStandingResource:
+      type: object
+      properties:
+        resource:
+          type: string
+        name:
+          type: string
+        burst:
+          $ref: "#/components/schemas/QuotaStandingWindow"
+        quota:
+          $ref: "#/components/schemas/QuotaStandingWindow"
+      required:
+        - resource
+        - name
+        - burst
+        - quota
+      additionalProperties: false
+    QuotaStandingWindow:
+      type: object
+      properties:
+        limit:
+          type: number
+          description: Effective limit for this window (after effective account tier +
+            per-tenant override).
+        used:
+          type: number
+          description: Requests used in the current window.
+        remaining:
+          type: number
+          description: Requests remaining (max(0, limit - used)).
+        window_ms:
+          type: number
+      required:
+        - limit
+        - used
+        - remaining
+        - window_ms
+      additionalProperties: false
+      description: A caller's own quota standing (GET /api/v1/quota/standing) — "where
+        am I". API rate limits are genuinely per-tenant; workflow admission and
+        the LLM limiter are global/discovered, so they are reported as posture,
+        not per-tenant numbers.
+    QuotaStandingAdmissionClass:
+      type: object
+      properties:
+        class:
+          type: string
+          description: Workflow class (e.g. ExecuteConversationWorkflow).
+        tenant_active:
+          type: number
+          description: This tenant's currently active (leased) slots for the class.
+      required:
+        - class
+        - tenant_active
+      additionalProperties: false
     AccountType:
       type: string
       enum:
@@ -8260,6 +8435,24 @@ components:
       enum:
         - stripe
         - invoice
+    QuotaTier:
+      type: string
+      enum:
+        - standard
+        - enterprise
+      description: >-
+        Quota/rate-limit tier assigned to an account. Code-defined tiers live in
+        `@dglabs/quota` (`QUOTA_TIERS`); these names must match its keys.
+
+        - `standard` — protective baseline limits (the default for most
+        accounts).
+
+        - `enterprise` — high limits for contracted customers / internal /
+        partners.
+
+
+        An account with no explicit `quota_tier` derives its tier from its
+        `account_type`.
     SystemRoles:
       type: string
       enum:
@@ -8288,6 +8481,28 @@ components:
         event_type:
           type: string
           const: audit
+        event_id:
+          type: string
+        event_category:
+          $ref: "#/components/schemas/EventCategory"
+        source:
+          type:
+            - string
+            - "null"
+        root_event_id:
+          type: string
+        caused_by_event_id:
+          type: string
+        hop_count:
+          type: number
+        audit_trail:
+          type: boolean
+        replay_of:
+          type: string
+        replay_root_event_id:
+          type: string
+        replayed_by:
+          type: string
         action:
           $ref: "#/components/schemas/AuditAction"
         resource_type:
@@ -8372,7 +8587,20 @@ components:
         - account_name
         - project_name
       additionalProperties: false
+    EventCategory:
+      type: string
+      enum:
+        - content
+        - workflow
+        - security
+        - billing
+        - system
+        - external
     AuditAction:
+      anyOf:
+        - $ref: "#/components/schemas/KnownAuditAction"
+        - type: string
+    KnownAuditAction:
       type: string
       enum:
         - create
@@ -8700,8 +8928,15 @@ components:
             time (PrincipalSet).
         resource_props:
           $ref: "#/components/schemas/PropertyConditions"
-          description: Property conditions matched against content properties at query
-            time (ContentSet).
+          description: Property conditions matched against object properties at query time
+            (ResourceSet).
+        scope:
+          $ref: "#/components/schemas/AbacScope"
+          description: Kind of object the `resource_props` matches. Used to disambiguate
+            which partition's roles apply (e.g. content roles vs task roles) and
+            to form the JWT `content_security` key prefix (`{scope}:{verb}`).
+            Absent → `'document'` (default; emits bare `read`/`write`/`delete`
+            keys for backward compatibility).
       additionalProperties: false
       description: >-
         Conditions attached to an ACE for dynamic matching.
@@ -8709,8 +8944,8 @@ components:
         - `principal_props`: matched against user/group properties at token time
         (PrincipalSet).
 
-        - `resource_props`: matched against content properties at query time
-        (ContentSet).
+        - `resource_props`: matched against object properties at query time
+        (ResourceSet).
     PropertyConditions:
       $ref: "#/components/schemas/PropertyConditionValueMap"
     PropertyConditionValueMap:
@@ -8720,6 +8955,12 @@ components:
     PropertyConditionValue:
       description: A single condition value. Resolved and evaluated dynamically by
         token/content security code.
+    AbacScope:
+      type: string
+      enum:
+        - document
+        - collection
+        - task
     RoleDefinition:
       type: object
       properties:
@@ -9137,6 +9378,28 @@ components:
 
         Declared on the manifest as the app's default. May be overridden
         per-installation.
+    AppManifestSource:
+      type: object
+      properties:
+        kind:
+          type: string
+          const: git
+        git:
+          type: object
+          properties:
+            url:
+              type: string
+            default_branch:
+              type: string
+            development_branch:
+              type: string
+          required:
+            - url
+          additionalProperties: false
+      required:
+        - kind
+        - git
+      additionalProperties: false
     AppInstallationOAuthBinding:
       type: object
       properties:
@@ -10001,6 +10264,13 @@ components:
         title:
           type: string
           description: Conversation title (short, human-readable)
+        event_subscription_id:
+          type: string
+          description: Event subscription ID — set when this run was triggered by the
+            event bus.
+        event_ref:
+          $ref: "#/components/schemas/EventRef"
+          description: Event reference — set when this run was triggered by the event bus.
         archive_state:
           $ref: "#/components/schemas/AgentRunArchiveState"
           description: Archive lifecycle state
@@ -11377,8 +11647,7 @@ components:
         external_id:
           type: string
         properties:
-          type: object
-          additionalProperties: true
+          $ref: "#/components/schemas/JSONObject"
         metadata:
           type: object
           additionalProperties: true
@@ -11391,10 +11660,6 @@ components:
               type: string
             etag:
               type: string
-          required:
-            - count
-            - encoding
-            - etag
           additionalProperties: false
         revision:
           $ref: "#/components/schemas/ContentObjectApiRevision"
@@ -11502,12 +11767,8 @@ components:
           description: The object properties. This is a JSON object that describes the
             object, matching the object type schema
         metadata:
-          anyOf:
-            - $ref: "#/components/schemas/VideoMetadata"
-            - $ref: "#/components/schemas/AudioMetadata"
-            - $ref: "#/components/schemas/ImageMetadata"
-            - $ref: "#/components/schemas/DocumentMetadata"
-            - $ref: "#/components/schemas/ContentMetadata"
+          type: object
+          additionalProperties: true
           description: Technical metadata of the object
         tokens:
           type: object
@@ -11518,10 +11779,6 @@ components:
               type: string
             etag:
               type: string
-          required:
-            - count
-            - encoding
-            - etag
           additionalProperties: false
           description: Token information
         revision:
@@ -11576,7 +11833,7 @@ components:
         results:
           type: array
           items:
-            $ref: "#/components/schemas/ContentObjectItem"
+            $ref: "#/components/schemas/ContentObjectItemApiResponse"
         facets:
           $ref: "#/components/schemas/ComputedFacetResponse"
         aggregations:
@@ -11737,12 +11994,8 @@ components:
           description: The object properties. This is a JSON object that describes the
             object, matching the object type schema
         metadata:
-          anyOf:
-            - $ref: "#/components/schemas/VideoMetadata"
-            - $ref: "#/components/schemas/AudioMetadata"
-            - $ref: "#/components/schemas/ImageMetadata"
-            - $ref: "#/components/schemas/DocumentMetadata"
-            - $ref: "#/components/schemas/ContentMetadata"
+          type: object
+          additionalProperties: true
           description: Technical metadata of the object
         tokens:
           type: object
@@ -11753,10 +12006,6 @@ components:
               type: string
             etag:
               type: string
-          required:
-            - count
-            - encoding
-            - etag
           additionalProperties: false
           description: Token information
         revision:
@@ -12211,6 +12460,16 @@ components:
         task_queue:
           type: string
           description: Optional task queue name to use when starting workflows for this rule
+        event_subscription_migration_status:
+          type: string
+          enum:
+            - migrated
+            - unsupported_match
+            - failed
+          description: Event subscription migration status for legacy workflow-rule cutover.
+        event_subscription_migration_error:
+          type: string
+          description: Migration failure or unsupported-match reason, when applicable.
       additionalProperties: false
       required:
         - created_at
@@ -12242,6 +12501,16 @@ components:
         task_queue:
           type: string
           description: Optional task queue name to use when starting workflows for this rule
+        event_subscription_migration_status:
+          type: string
+          enum:
+            - migrated
+            - unsupported_match
+            - failed
+          description: Event subscription migration status for legacy workflow-rule cutover.
+        event_subscription_migration_error:
+          type: string
+          description: Migration failure or unsupported-match reason, when applicable.
         endpoint:
           type: string
         input_type:
@@ -12404,7 +12673,7 @@ components:
           description: The event name that triggered the workflow.
         rule_id:
           type: string
-          description: The workflow rule ID that triggered the workflow.
+          description: Legacy workflow rule ID filter, when applicable.
         start:
           type: string
           description: The start time for filtering workflow runs.
@@ -12645,6 +12914,301 @@ components:
       required:
         - success
         - count
+      additionalProperties: false
+    ListEventDeliveriesResponse:
+      type: object
+      properties:
+        deliveries:
+          type: array
+          items:
+            $ref: "#/components/schemas/EventDeliverySummary"
+      required:
+        - deliveries
+      additionalProperties: false
+    ListEventDeliveriesPayload:
+      type: object
+      properties:
+        limit:
+          type: number
+        event_id:
+          type: string
+        resource_id:
+          type: string
+        subscription_id:
+          type: string
+        status:
+          type: array
+          items:
+            $ref: "#/components/schemas/EventDeliveryIntentStatus"
+        outbox_status:
+          type: array
+          items:
+            $ref: "#/components/schemas/EventOutboxStatus"
+      additionalProperties: false
+    EventSubscriptionArray:
+      type: array
+      items:
+        $ref: "#/components/schemas/EventSubscription"
+    EventSubscriptionMutationResponse:
+      type: object
+      properties:
+        subscription:
+          $ref: "#/components/schemas/EventSubscription"
+        webhook_signing_secret:
+          type: string
+      required:
+        - subscription
+      additionalProperties: false
+    CreateEventSubscriptionPayload:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        scope:
+          type: string
+          enum:
+            - account
+            - project
+        filter:
+          $ref: "#/components/schemas/EventSubscriptionFilter"
+        target:
+          $ref: "#/components/schemas/EventDeliveryTargetInput"
+        run_as_role:
+          $ref: "#/components/schemas/SystemRoles"
+          description: Identity the delivery runs as. Required at creation so a
+            subscription never silently runs as the originating (possibly
+            deleted) user. Use "automation" for the standard identity.
+        enabled:
+          type: boolean
+        priority:
+          $ref: "#/components/schemas/EventPriority"
+      required:
+        - name
+        - filter
+        - target
+        - run_as_role
+      additionalProperties: false
+    EventSubscription:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        account_id:
+          type: string
+        project_id:
+          type: string
+        scope:
+          type: string
+          enum:
+            - account
+            - project
+        filter:
+          $ref: "#/components/schemas/EventSubscriptionFilter"
+        target:
+          $ref: "#/components/schemas/EventDeliveryTarget"
+        run_as_role:
+          $ref: "#/components/schemas/SystemRoles"
+        is_system:
+          type: boolean
+        protected:
+          type: boolean
+        enabled:
+          type: boolean
+        priority:
+          $ref: "#/components/schemas/EventPriority"
+        created_by:
+          type: string
+        updated_by:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        migrated_from_workflow_rule_id:
+          type: string
+        overrides_system_subscription_id:
+          type: string
+          description: System subscription ID replaced by this stored subscription. Set
+            only for tenant-specific system overrides created by migrations or
+            platform code.
+        customer_override:
+          type: boolean
+          description: True when this system subscription was created from a legacy
+            customer override.
+      required:
+        - id
+        - name
+        - account_id
+        - scope
+        - filter
+        - target
+        - run_as_role
+        - is_system
+        - protected
+        - enabled
+      additionalProperties: false
+    UpdateEventSubscriptionPayload:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        filter:
+          $ref: "#/components/schemas/EventSubscriptionFilter"
+        target:
+          $ref: "#/components/schemas/EventDeliveryTargetInput"
+        run_as_role:
+          $ref: "#/components/schemas/SystemRoles"
+        enabled:
+          type: boolean
+        priority:
+          $ref: "#/components/schemas/EventPriority"
+      additionalProperties: false
+    EventIngestChannelArray:
+      type: array
+      items:
+        $ref: "#/components/schemas/EventIngestChannel"
+    EventIngestChannelMutationResponse:
+      type: object
+      properties:
+        channel:
+          $ref: "#/components/schemas/EventIngestChannel"
+        ingest_token:
+          type: string
+          description: Returned once on creation or rotation; it cannot be retrieved later.
+        signing_secret:
+          type: string
+          description: Returned once on creation or rotation of the signing secret; it
+            cannot be retrieved later.
+      required:
+        - channel
+      additionalProperties: false
+    CreateEventIngestChannelPayload:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        source:
+          type: string
+          description: Defaults to a slug derived from the name.
+        default_action:
+          type: string
+        default_resource_type:
+          type: string
+        transform:
+          $ref: "#/components/schemas/EventIngestTransform"
+        signature:
+          $ref: "#/components/schemas/EventIngestSignatureConfig"
+        priority:
+          $ref: "#/components/schemas/EventPriority"
+        enabled:
+          type: boolean
+      required:
+        - name
+      additionalProperties: false
+    EventIngestChannel:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        account_id:
+          type: string
+        project_id:
+          type: string
+        source:
+          type: string
+          description: Source label stamped on ingested events as `external:<source>`.
+        enabled:
+          type: boolean
+        default_action:
+          type: string
+          description: Action used when the ingest payload does not specify one.
+        default_resource_type:
+          type: string
+          description: Resource type used when the ingest payload does not specify one.
+        transform:
+          $ref: "#/components/schemas/EventIngestTransform"
+          description: Optional mapping from raw third-party payloads to event fields.
+        signature:
+          $ref: "#/components/schemas/EventIngestSignatureConfig"
+          description: Optional HMAC signature verification config.
+        priority:
+          $ref: "#/components/schemas/EventPriority"
+        has_token:
+          type: boolean
+          description: "Server-managed: whether an ingest token is active for this channel."
+        token_hint:
+          type: string
+          description: "Server-managed: last characters of the active token, for
+            identification."
+        created_by:
+          type: string
+        updated_by:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+      required:
+        - id
+        - name
+        - account_id
+        - project_id
+        - source
+        - enabled
+        - priority
+        - has_token
+      additionalProperties: false
+      description: "An inbound channel that lets external systems publish events into
+        the platform event bus. Events ingested through a channel get
+        `event_category: 'external'` and `source: 'external:<source>'`, and are
+        matched against event subscriptions like any other platform event."
+    UpdateEventIngestChannelPayload:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        source:
+          type: string
+        default_action:
+          type: string
+        default_resource_type:
+          type: string
+        transform:
+          anyOf:
+            - $ref: "#/components/schemas/EventIngestTransform"
+            - type: "null"
+          description: Pass null to remove the transform.
+        signature:
+          anyOf:
+            - $ref: "#/components/schemas/EventIngestSignatureConfig"
+            - type: "null"
+          description: Pass null to remove signature verification.
+        priority:
+          $ref: "#/components/schemas/EventPriority"
+        enabled:
+          type: boolean
+        rotate_token:
+          type: boolean
+          description: Request rotation of the channel ingest token on update.
+        rotate_signing_secret:
+          type: boolean
+          description: Request rotation of the HMAC signing secret on update.
       additionalProperties: false
     MigrationListResponse: {}
     RunMigrationResponse:
@@ -14206,6 +14770,7 @@ components:
       enum:
         - api
         - schedule
+        - event_subscription
       description: How the agent run was created.
     AgentRunStatus:
       type: string
@@ -14221,6 +14786,49 @@ components:
       enum:
         - working
         - idle
+    EventRef:
+      type: object
+      properties:
+        event_id:
+          type: string
+        root_event_id:
+          type: string
+        caused_by_event_id:
+          type: string
+        hop_count:
+          type: number
+        event_category:
+          $ref: "#/components/schemas/EventCategory"
+        action:
+          type: string
+        resource_type:
+          type: string
+        resource_id:
+          type: string
+        account_id:
+          type:
+            - string
+            - "null"
+        project_id:
+          type:
+            - string
+            - "null"
+        tenant_id:
+          type:
+            - string
+            - "null"
+      required:
+        - event_id
+        - root_event_id
+        - hop_count
+        - event_category
+        - action
+        - resource_type
+        - resource_id
+        - account_id
+        - project_id
+        - tenant_id
+      additionalProperties: false
     AgentRunArchiveState:
       type: string
       enum:
@@ -14354,6 +14962,13 @@ components:
         title:
           type: string
           description: Conversation title (short, human-readable)
+        event_subscription_id:
+          type: string
+          description: Event subscription ID — set when this run was triggered by the
+            event bus.
+        event_ref:
+          $ref: "#/components/schemas/EventRef"
+          description: Event reference — set when this run was triggered by the event bus.
         archive_state:
           $ref: "#/components/schemas/AgentRunArchiveState"
           description: Archive lifecycle state
@@ -14485,6 +15100,13 @@ components:
         schedule_id:
           type: string
           description: Schedule ID — set when this run was triggered by a Temporal schedule
+        event_subscription_id:
+          type: string
+          description: Event subscription ID — set when this run was triggered by the
+            event bus.
+        event_ref:
+          $ref: "#/components/schemas/EventRef"
+          description: Event reference — set when this run was triggered by the event bus.
         archive_state:
           $ref: "#/components/schemas/AgentRunArchiveState"
           description: Archive lifecycle state
@@ -14519,6 +15141,11 @@ components:
         - started_by
         - status
         - updated_at
+    ProcessRunType:
+      type: string
+      enum:
+        - supervised
+        - programmatic
     ProcessState:
       type: object
       properties:
@@ -14695,6 +15322,13 @@ components:
         schedule_id:
           type: string
           description: Schedule ID — set when this run was triggered by a Temporal schedule
+        event_subscription_id:
+          type: string
+          description: Event subscription ID — set when this run was triggered by the
+            event bus.
+        event_ref:
+          $ref: "#/components/schemas/EventRef"
+          description: Event reference — set when this run was triggered by the event bus.
         archive_state:
           $ref: "#/components/schemas/AgentRunArchiveState"
           description: Archive lifecycle state
@@ -14817,6 +15451,12 @@ components:
         schedule_id:
           type: string
           description: Schedule ID (if schedule-triggered)
+        event_subscription_id:
+          type: string
+          description: Event subscription ID (if event-triggered)
+        event_ref:
+          $ref: "#/components/schemas/EventRef"
+          description: Event reference (if event-triggered)
         source_type:
           $ref: "#/components/schemas/AgentRunType"
           description: How the run was created
@@ -16466,119 +17106,6 @@ components:
       enum:
         - normal
         - low
-    ContentObjectItem:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Unique identifier for the object
-        name:
-          type: string
-          description: Human-readable name or title
-        description:
-          type: string
-          description: Optional detailed description of the object
-        tags:
-          type: array
-          items:
-            type: string
-          description: Optional array of categorization tags
-        updated_by:
-          type: string
-          description: Identifier of the user who last modified the object
-        created_by:
-          type: string
-          description: Identifier of the user who created the object
-        created_at:
-          type: string
-          description: ISO timestamp of when the object was created
-        updated_at:
-          type: string
-          description: ISO timestamp of when the object was last updated
-        parent:
-          type: string
-        location:
-          type: string
-          description: An optional path based location for the object
-        status:
-          $ref: "#/components/schemas/ContentObjectStatus"
-          description: |-
-            Object status.
-            - created: the object was created and is being processed
-            - processing: the object is being processed
-            - completed: the object was processed and is ready to use
-            - failed: the object processing failed
-            - archived: the object was archived and is no longer available
-        type:
-          $ref: "#/components/schemas/ContentObjectTypeRef"
-          description: Object type id.
-        content:
-          $ref: "#/components/schemas/ContentSource"
-          description: Content source information, typically a link to an object store
-        external_id:
-          type: string
-          description: External identifier for integration with other systems
-        properties:
-          $ref: "#/components/schemas/JSONObject"
-          description: The object properties. This is a JSON object that describes the
-            object, matching the object type schema
-        metadata:
-          anyOf:
-            - $ref: "#/components/schemas/VideoMetadata"
-            - $ref: "#/components/schemas/AudioMetadata"
-            - $ref: "#/components/schemas/ImageMetadata"
-            - $ref: "#/components/schemas/DocumentMetadata"
-            - $ref: "#/components/schemas/ContentMetadata"
-          description: Technical metadata of the object
-        tokens:
-          type: object
-          properties:
-            count:
-              type: number
-            encoding:
-              type: string
-            etag:
-              type: string
-          required:
-            - count
-            - encoding
-            - etag
-          additionalProperties: false
-          description: Token information
-        revision:
-          $ref: "#/components/schemas/RevisionInfo"
-          description: Revision information. This is used to track the history of the
-            object.
-        is_deleted:
-          type: boolean
-          description: Soft delete flag. When true, the object should be considered
-            deleted but is still retained in the database for historical
-            purposes.
-        is_locked:
-          type: boolean
-          description: Soft lock flag. When true, the object should be considered
-            read-only and modification attempts should be rejected.
-        score:
-          type: number
-          description: The document score, used for ranking and sorting.
-        user_permissions:
-          $ref: "#/components/schemas/ContentObjectUserPermissions"
-          description: "Computed per-request: the current user's effective permissions on
-            this object."
-      required:
-        - created_at
-        - created_by
-        - id
-        - location
-        - name
-        - properties
-        - revision
-        - status
-        - updated_at
-        - updated_by
-      additionalProperties: false
-      description: The content object item is a simplified version of the
-        ContentObject that is returned by the store API when listing objects.
     ContentObjectItemApiResponse:
       type: object
       properties:
@@ -16621,8 +17148,7 @@ components:
         external_id:
           type: string
         properties:
-          type: object
-          additionalProperties: true
+          $ref: "#/components/schemas/JSONObject"
         metadata:
           type: object
           additionalProperties: true
@@ -16635,10 +17161,6 @@ components:
               type: string
             etag:
               type: string
-          required:
-            - count
-            - encoding
-            - etag
           additionalProperties: false
         revision:
           $ref: "#/components/schemas/ContentObjectApiRevision"
@@ -17383,6 +17905,646 @@ components:
         - mimetype
       additionalProperties: false
       description: File reference with URL and mimetype
+    EventDeliverySummary:
+      type: object
+      properties:
+        event_id:
+          type: string
+        event_category:
+          $ref: "#/components/schemas/EventCategory"
+        action:
+          type: string
+        resource_type:
+          type: string
+        resource_id:
+          type: string
+        source:
+          type: string
+        priority:
+          $ref: "#/components/schemas/EventPriority"
+        status:
+          $ref: "#/components/schemas/EventOutboxStatus"
+        matched_subscription_count:
+          type: number
+        materialized_intent_count:
+          type: number
+        routing_attempt_count:
+          type: number
+        routing_error:
+          type:
+            - string
+            - "null"
+        routed_at:
+          type:
+            - string
+            - "null"
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        intents:
+          type: array
+          items:
+            $ref: "#/components/schemas/EventDeliveryIntentSummary"
+      required:
+        - event_id
+        - event_category
+        - action
+        - resource_type
+        - resource_id
+        - source
+        - priority
+        - status
+        - matched_subscription_count
+        - materialized_intent_count
+        - routing_attempt_count
+        - created_at
+        - updated_at
+        - intents
+      additionalProperties: false
+    EventPriority:
+      type: string
+      enum:
+        - high
+        - normal
+        - low
+    EventOutboxStatus:
+      type: string
+      enum:
+        - pending
+        - routing
+        - routed
+        - partially_routed
+        - failed
+        - dropped
+    EventDeliveryIntentSummary:
+      type: object
+      properties:
+        id:
+          type: string
+        event_id:
+          type: string
+        subscription_id:
+          type: string
+        subscription_name:
+          type: string
+        target_type:
+          type: string
+          enum:
+            - workflow
+            - webhook
+            - agent
+            - process
+        workflow_class:
+          type:
+            - string
+            - "null"
+        priority:
+          $ref: "#/components/schemas/EventPriority"
+        status:
+          $ref: "#/components/schemas/EventDeliveryIntentStatus"
+        attempt_count:
+          type: number
+        workflow_id:
+          type:
+            - string
+            - "null"
+        workflow_run_id:
+          type:
+            - string
+            - "null"
+        response_status:
+          type:
+            - number
+            - "null"
+        last_error:
+          type:
+            - string
+            - "null"
+        next_attempt_at:
+          type:
+            - string
+            - "null"
+        started_at:
+          type:
+            - string
+            - "null"
+        completed_at:
+          type:
+            - string
+            - "null"
+        semantic_evaluation:
+          anyOf:
+            - $ref: "#/components/schemas/SemanticEvaluationRecord"
+            - type: "null"
+        created_at:
+          type: string
+        updated_at:
+          type: string
+      required:
+        - id
+        - event_id
+        - subscription_id
+        - subscription_name
+        - target_type
+        - priority
+        - status
+        - attempt_count
+        - created_at
+        - updated_at
+      additionalProperties: false
+    EventDeliveryIntentStatus:
+      type: string
+      enum:
+        - pending
+        - evaluating
+        - starting
+        - running
+        - succeeded
+        - retrying
+        - failed
+        - cancelled
+        - skipped
+    SemanticEvaluationRecord:
+      type: object
+      properties:
+        status:
+          $ref: "#/components/schemas/SemanticEvaluationStatus"
+        evaluator_type:
+          type: string
+          enum:
+            - interaction
+            - agent
+        mode:
+          $ref: "#/components/schemas/SemanticConditionMode"
+        matched:
+          type: boolean
+        rationale:
+          type: string
+        error:
+          type: string
+        workflow_id:
+          type: string
+          description: Temporal workflow id of the evaluation agent run (agent evaluator
+            only).
+        agent_run_id:
+          type: string
+        evaluated_at:
+          type: string
+      required:
+        - status
+        - evaluator_type
+        - mode
+      additionalProperties: false
+    SemanticEvaluationStatus:
+      type: string
+      enum:
+        - pending
+        - running
+        - matched
+        - not_matched
+        - error
+    SemanticConditionMode:
+      type: string
+      enum:
+        - enforce
+        - shadow
+    EventSubscriptionFilter:
+      type: object
+      properties:
+        event_category:
+          type: array
+          items:
+            anyOf:
+              - $ref: "#/components/schemas/EventCategory"
+              - type: string
+                const: "*"
+        exclude_event_category:
+          type: array
+          items:
+            $ref: "#/components/schemas/EventCategory"
+        action:
+          type: array
+          items:
+            type: string
+        resource_type:
+          type: array
+          items:
+            type: string
+        condition:
+          $ref: "#/components/schemas/JsonLogicRule"
+        semantic_condition:
+          $ref: "#/components/schemas/EventSemanticCondition"
+          description: LLM-evaluated predicate applied after all structural filters have
+            matched.
+      additionalProperties: false
+    EventSemanticCondition:
+      type: object
+      properties:
+        instruction:
+          type: string
+          description: Natural-language predicate, e.g. "the document appears to be a
+            signed contract amendment".
+        evaluator:
+          $ref: "#/components/schemas/SemanticEvaluator"
+          description: Defaults to the interaction evaluator.
+        mode:
+          $ref: "#/components/schemas/SemanticConditionMode"
+          description: "enforce: a negative verdict skips delivery. shadow: the verdict is
+            recorded on the delivery intent but never blocks delivery. Defaults
+            to enforce."
+        on_error:
+          $ref: "#/components/schemas/SemanticConditionOnError"
+          description: "What to do when evaluation errors out after retries: fail_open
+            delivers anyway, fail_closed does not deliver. Defaults to
+            fail_closed."
+      required:
+        - instruction
+      additionalProperties: false
+      description: A natural-language predicate evaluated by an LLM after all
+        structural filters (categories, actions, resource types, JSONLogic
+        condition) have matched.
+    SemanticEvaluator:
+      type: object
+      oneOf:
+        - $ref: "#/components/schemas/InteractionSemanticEvaluator"
+        - $ref: "#/components/schemas/AgentSemanticEvaluator"
+      discriminator:
+        propertyName: type
+        mapping:
+          interaction: "#/components/schemas/InteractionSemanticEvaluator"
+          agent: "#/components/schemas/AgentSemanticEvaluator"
+      required:
+        - type
+    InteractionSemanticEvaluator:
+      type: object
+      properties:
+        type:
+          type: string
+          const: interaction
+        interaction_ref:
+          type: string
+          description: Optional stored interaction ref used as the classifier. When
+            omitted a built-in ad-hoc classifier prompt is used.
+        config:
+          $ref: "#/components/schemas/InteractionExecutionConfiguration"
+        enrich_with_content:
+          type: boolean
+          description: Include an excerpt of the content object text when the event
+            resource is a content object.
+        max_content_chars:
+          type: number
+          description: Maximum characters of content text included in the classifier prompt.
+      required:
+        - type
+      additionalProperties: false
+      description: Evaluates the semantic condition with a single LLM call (no tools).
+        The event envelope — optionally enriched with an excerpt of the content
+        object text — is classified against the instruction.
+    AgentSemanticEvaluator:
+      type: object
+      properties:
+        type:
+          type: string
+          const: agent
+        interaction_ref:
+          type: string
+          description: Agent interaction ref. Defaults to the general-purpose system agent.
+        tool_names:
+          type: array
+          items:
+            type: string
+        max_iterations:
+          type: number
+        config:
+          $ref: "#/components/schemas/InteractionExecutionConfiguration"
+      required:
+        - type
+      additionalProperties: false
+      description: Evaluates the semantic condition with a non-interactive agent run
+        that may use tools to enrich its decision (fetch documents, inspect
+        processes, ...). Slower and more expensive than the interaction
+        evaluator; the delivery intent stays in `evaluating` until the agent
+        completes.
+    SemanticConditionOnError:
+      type: string
+      enum:
+        - fail_open
+        - fail_closed
+    EventDeliveryTarget:
+      type: object
+      oneOf:
+        - $ref: "#/components/schemas/WorkflowEventDeliveryTarget"
+        - $ref: "#/components/schemas/WebhookEventDeliveryTarget"
+        - $ref: "#/components/schemas/AgentEventDeliveryTarget"
+        - $ref: "#/components/schemas/ProcessEventDeliveryTarget"
+      discriminator:
+        propertyName: type
+        mapping:
+          workflow: "#/components/schemas/WorkflowEventDeliveryTarget"
+          webhook: "#/components/schemas/WebhookEventDeliveryTarget"
+          agent: "#/components/schemas/AgentEventDeliveryTarget"
+          process: "#/components/schemas/ProcessEventDeliveryTarget"
+      required:
+        - type
+    WorkflowEventDeliveryTarget:
+      type: object
+      properties:
+        type:
+          type: string
+          const: workflow
+        endpoint:
+          type: string
+        workflow_class:
+          type: string
+        task_queue:
+          type: string
+        vars:
+          type: object
+          additionalProperties: true
+        input_type:
+          $ref: "#/components/schemas/WorkflowRuleInputType"
+        migrated_rule_name:
+          type: string
+      required:
+        - type
+        - endpoint
+      additionalProperties: false
+    WebhookEventDeliveryTarget:
+      type: object
+      properties:
+        type:
+          type: string
+          const: webhook
+        url:
+          type: string
+        has_secret:
+          type: boolean
+          description: "Server-managed: whether a signing secret is stored. Set by the
+            server, never by callers."
+        secret_label:
+          type: string
+          description: "Server-managed: label of the active signing secret."
+        signing_mode:
+          $ref: "#/components/schemas/WebhookSigningMode"
+        payload_mode:
+          $ref: "#/components/schemas/WebhookPayloadMode"
+        headers:
+          $ref: "#/components/schemas/StringValueMap"
+        encrypted_headers:
+          type: boolean
+        timeout_ms:
+          type: number
+        result_path:
+          type: string
+        custom_data:
+          type: object
+          additionalProperties: true
+      required:
+        - type
+        - url
+        - has_secret
+      additionalProperties: false
+    WebhookSigningMode:
+      type: string
+      enum:
+        - signed
+        - legacy_unsigned
+    WebhookPayloadMode:
+      type: string
+      enum:
+        - event_envelope
+        - legacy_notify_endpoint
+        - workflow_notification
+      description: >-
+        Webhook delivery body format:
+
+        - event_envelope: the full platform event + delivery metadata (default
+        for new subscriptions)
+
+        - legacy_notify_endpoint: pre-2025-10 notify_endpoints body {workflowId,
+        runId, status, result}
+
+        - workflow_notification: post-COMPLETION_RESULT_V1 notify_endpoints
+        body   {workflow_id, workflow_name, workflow_run_id, event_name, detail}
+    AgentEventDeliveryTarget:
+      type: object
+      properties:
+        type:
+          type: string
+          const: agent
+        interaction_ref:
+          type: string
+          description: Interaction ID, app ref, or system ref. Defaults to the
+            general-purpose system agent.
+        data:
+          type: object
+          additionalProperties: true
+        config:
+          $ref: "#/components/schemas/InteractionExecutionConfiguration"
+        interactive:
+          type: boolean
+        visibility:
+          $ref: "#/components/schemas/ConversationVisibility"
+        tags:
+          type: array
+          items:
+            type: string
+        categories:
+          type: array
+          items:
+            type: string
+        tool_names:
+          type: array
+          items:
+            type: string
+        max_iterations:
+          type: number
+        debug_mode:
+          type: boolean
+      required:
+        - type
+      additionalProperties: false
+    ProcessEventDeliveryTarget:
+      type: object
+      properties:
+        type:
+          type: string
+          const: process
+        process_ref:
+          type: string
+          description: Stored process ID, app ref, or system ref. Required unless
+            process_definition is supplied.
+        process_version:
+          type: number
+        process_definition:
+          $ref: "#/components/schemas/ProcessDefinitionBody"
+        run_type:
+          $ref: "#/components/schemas/ProcessRunType"
+        data:
+          type: object
+          additionalProperties: true
+        config:
+          type: object
+          additionalProperties: true
+        visibility:
+          $ref: "#/components/schemas/ConversationVisibility"
+        tags:
+          type: array
+          items:
+            type: string
+        categories:
+          type: array
+          items:
+            type: string
+      required:
+        - type
+      additionalProperties: false
+    EventDeliveryTargetInput:
+      type: object
+      oneOf:
+        - $ref: "#/components/schemas/WorkflowEventDeliveryTargetInput"
+        - $ref: "#/components/schemas/WebhookEventDeliveryTargetInput"
+        - $ref: "#/components/schemas/AgentEventDeliveryTarget"
+        - $ref: "#/components/schemas/ProcessEventDeliveryTarget"
+      discriminator:
+        propertyName: type
+        mapping:
+          workflow: "#/components/schemas/WorkflowEventDeliveryTargetInput"
+          webhook: "#/components/schemas/WebhookEventDeliveryTargetInput"
+          agent: "#/components/schemas/AgentEventDeliveryTarget"
+          process: "#/components/schemas/ProcessEventDeliveryTarget"
+      required:
+        - type
+    WorkflowEventDeliveryTargetInput:
+      type: object
+      properties:
+        type:
+          type: string
+          const: workflow
+        endpoint:
+          type: string
+        workflow_class:
+          type: string
+        task_queue:
+          type: string
+        vars:
+          type: object
+          additionalProperties: true
+        input_type:
+          $ref: "#/components/schemas/WorkflowRuleInputType"
+      required:
+        - type
+        - endpoint
+      additionalProperties: false
+    WebhookEventDeliveryTargetInput:
+      type: object
+      additionalProperties: false
+      properties:
+        rotate_signing_secret:
+          type: boolean
+          description: Request rotation of the stored signing secret on update.
+        type:
+          type: string
+          const: webhook
+        url:
+          type: string
+        signing_mode:
+          $ref: "#/components/schemas/WebhookSigningMode"
+        payload_mode:
+          $ref: "#/components/schemas/WebhookPayloadMode"
+        headers:
+          $ref: "#/components/schemas/StringValueMap"
+        encrypted_headers:
+          type: boolean
+        timeout_ms:
+          type: number
+        result_path:
+          type: string
+        custom_data:
+          type: object
+          additionalProperties: true
+      required:
+        - type
+        - url
+    EventIngestTransform:
+      type: object
+      properties:
+        action_path:
+          type: string
+          description: Dot-path to the value used as `event.action`, e.g. `event.type`.
+        resource_type_path:
+          type: string
+          description: Dot-path to the value used as `event.resource_type`.
+        resource_id_path:
+          type: string
+          description: Dot-path to the value used as `event.resource_id`.
+        idempotency_key_path:
+          type: string
+          description: Dot-path to a deduplication key (same semantics as
+            `idempotency_key`).
+        timestamp_path:
+          type: string
+          description: Dot-path to an ISO 8601 event timestamp.
+        static_details:
+          type: object
+          additionalProperties: true
+          description: Static fields merged into `event.details`.
+      additionalProperties: false
+      description: Declarative mapping from a raw third-party webhook body to platform
+        event fields, for senders that cannot shape their payload (GitHub,
+        Slack, DocuSign, Salesforce, ...). Each `*_path` is a dot-path into the
+        JSON body (array indices supported, e.g. `commits.0.id`). Extracted
+        values override the channel defaults; the full raw body is always
+        preserved under `event.details.payload`.
+    EventIngestSignatureConfig:
+      type: object
+      properties:
+        header:
+          type: string
+          description: Request header carrying the signature, e.g. `x-hub-signature-256`.
+        algorithm:
+          $ref: "#/components/schemas/EventIngestSignatureAlgorithm"
+        encoding:
+          $ref: "#/components/schemas/EventIngestSignatureEncoding"
+        prefix:
+          type: string
+          description: Literal prefix stripped from the header value before comparison,
+            e.g. `sha256=`.
+        has_secret:
+          type: boolean
+          description: "Server-managed: whether a signing secret is stored for this
+            channel."
+        secret_hint:
+          type: string
+          description: "Server-managed: label/hint of the stored signing secret."
+      required:
+        - header
+      additionalProperties: false
+      description: "Optional HMAC signature verification for an ingest channel. When
+        configured, the server recomputes `HMAC(algorithm, signing_secret,
+        rawBody)` and compares it (timing-safe) to the value in `header`, after
+        stripping `prefix`. Covers GitHub-style `X-Hub-Signature-256:
+        sha256=<hex>` and a plain Salesforce Apex-callout HMAC."
+    EventIngestSignatureAlgorithm:
+      type: string
+      enum:
+        - sha256
+        - sha1
+      description: >-
+        How an ingest channel authenticates inbound requests in addition to the
+        channel ingest token:
+
+        - none (default): token only.
+
+        - hmac: the sender signs the raw request body with a shared secret
+        (GitHub/Stripe style) and the   server verifies the signature. The token
+        may then be optional (`token_optional`).
+    EventIngestSignatureEncoding:
+      type: string
+      enum:
+        - hex
+        - base64
     DataStoreItem:
       type: object
       properties:
@@ -18498,6 +19660,8 @@ components:
           items:
             $ref: "#/components/schemas/SystemRoles"
         name:
+          type: string
+        email:
           type: string
       required:
         - account_id
@@ -23734,6 +24898,66 @@ paths:
         description: Optional Vertesia API version header. Use `20260319` for the
           current stable API shape.
         x-vertesia-global-header: true
+  /quota/standing:
+    get:
+      operationId: GetQuotaStanding
+      tags:
+        - Quota
+      summary: Get quota standing
+      description: >-
+        The calling tenant's quota standing: effective API rate limits and
+        current usage, workflow-admission active slots, and the LLM limiter
+        posture.
+
+
+        **Required permissions:** `account:member`
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters: []
+      responses:
+        "200":
+          description: The caller's quota standing.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QuotaStandingResponse"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - account:member
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/quota.ts
+        className: QuotaResource
+        methodName: getStanding
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260319"
+        description: Optional Vertesia API version header. Use `20260319` for the
+          current stable API shape.
+        x-vertesia-global-header: true
   /account:
     get:
       operationId: GetCurrentAccount
@@ -24794,28 +26018,9 @@ paths:
           schema:
             type: array
             items:
-              type: string
-              enum:
-                - create
-                - update
-                - delete
-                - bulk_create
-                - bulk_change_type
-                - bulk_update
-                - bulk_delete
-                - attach
-                - detach
-                - credentials_fill
-                - credentials_totp_generation
-                - publish
-                - unpublish
-                - inference
-                - embedding
-                - image_generation
+              $ref: "#/components/schemas/AuditAction"
             description: Filter by action types
           description: Filter by action types
-          style: form
-          explode: true
         - name: resourceTypes
           in: query
           required: false
@@ -29941,6 +31146,7 @@ paths:
             enum:
               - api
               - schedule
+              - event_subscription
             description: Filter by run type
           description: Filter by run type
           style: form
@@ -34188,6 +35394,13 @@ paths:
           required: false
           schema:
             type: boolean
+            deprecated: true
+            x-deprecated-message: Events are now always emitted. This suppresses the
+              Temporal-backed delivery targets (workflow, agent, and process) —
+              webhook deliveries still fire.
+            description: "Deprecated: Events are now always emitted. This suppresses the
+              Temporal-backed delivery targets (workflow, agent, and process) —
+              webhook deliveries still fire."
       responses:
         "200":
           description: The updated content object.
@@ -38093,6 +39306,630 @@ paths:
         file: ../../apps/zeno-server/src/api/files.ts
         className: FilesResource
         methodName: deleteFile
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260319"
+        description: Optional Vertesia API version header. Use `20260319` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /events/deliveries/search:
+    post:
+      operationId: SearchEventDeliveries
+      tags:
+        - Events
+      summary: Search event deliveries
+      description: >-
+        Lists recent event outbox rows with their materialized delivery intents
+        for the current project.
+
+
+        **Required permissions:** `workflow:read`
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters: []
+      responses:
+        "200":
+          description: Recent event delivery state.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListEventDeliveriesResponse"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - workflow:read
+      x-vertesia-source:
+        file: ../../apps/zeno-server/src/api/events.ts
+        className: EventDeliveriesResource
+        methodName: searchDeliveries
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ListEventDeliveriesPayload"
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260319"
+        description: Optional Vertesia API version header. Use `20260319` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /events/subscriptions:
+    get:
+      operationId: ListEventSubscriptions
+      tags:
+        - Event Subscriptions
+      summary: List event subscriptions
+      description: |-
+        Lists event subscriptions visible to the current project.
+
+        **Required permissions:** `workflow:read`
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters: []
+      responses:
+        "200":
+          description: Event subscriptions.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EventSubscriptionArray"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - workflow:read
+      x-vertesia-source:
+        file: ../../apps/zeno-server/src/api/event-subscriptions.ts
+        className: EventSubscriptionsResource
+        methodName: listSubscriptions
+    post:
+      operationId: CreateEventSubscription
+      tags:
+        - Event Subscriptions
+      summary: Create an event subscription
+      description: >-
+        Creates a workflow, webhook, agent, or process event subscription for
+        the current account or project.
+
+
+        **Required permissions:** `workflow:admin`
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters: []
+      responses:
+        "200":
+          description: The created event subscription.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EventSubscriptionMutationResponse"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - workflow:admin
+      x-vertesia-source:
+        file: ../../apps/zeno-server/src/api/event-subscriptions.ts
+        className: EventSubscriptionsResource
+        methodName: createSubscription
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateEventSubscriptionPayload"
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260319"
+        description: Optional Vertesia API version header. Use `20260319` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /events/subscriptions/{subscriptionId}:
+    get:
+      operationId: GetEventSubscription
+      tags:
+        - Event Subscriptions
+      summary: Retrieve an event subscription
+      description: |-
+        Retrieves one event subscription visible to the current project.
+
+        **Required permissions:** `workflow:read`
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters:
+        - name: subscriptionId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The requested event subscription.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EventSubscription"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - workflow:read
+      x-vertesia-source:
+        file: ../../apps/zeno-server/src/api/event-subscriptions.ts
+        className: EventSubscriptionResource
+        methodName: getSubscription
+    put:
+      operationId: UpdateEventSubscription
+      tags:
+        - Event Subscriptions
+      summary: Update an event subscription
+      description: >-
+        Updates an event subscription. Scope, system ownership, and protection
+        flags are immutable.
+
+
+        **Required permissions:** `workflow:admin`
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters:
+        - name: subscriptionId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The updated event subscription.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EventSubscriptionMutationResponse"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - workflow:admin
+      x-vertesia-source:
+        file: ../../apps/zeno-server/src/api/event-subscriptions.ts
+        className: EventSubscriptionResource
+        methodName: updateSubscription
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateEventSubscriptionPayload"
+    delete:
+      operationId: DeleteEventSubscription
+      tags:
+        - Event Subscriptions
+      summary: Delete an event subscription
+      description: >-
+        Deletes an event subscription. Existing materialized deliveries are not
+        cancelled.
+
+
+        **Required permissions:** `workflow:admin`
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters:
+        - name: subscriptionId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Deleted event subscription status.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteCountResult"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - workflow:admin
+      x-vertesia-source:
+        file: ../../apps/zeno-server/src/api/event-subscriptions.ts
+        className: EventSubscriptionResource
+        methodName: deleteSubscription
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260319"
+        description: Optional Vertesia API version header. Use `20260319` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /events/channels:
+    get:
+      operationId: ListEventIngestChannels
+      tags:
+        - Event Ingest Channels
+      summary: List event ingest channels
+      description: "**Required permissions:** `workflow:read`"
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters: []
+      responses:
+        "200":
+          description: Event ingest channels of the current project.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EventIngestChannelArray"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - workflow:read
+      x-vertesia-source:
+        file: ../../apps/zeno-server/src/api/event-ingest-channels.ts
+        className: EventIngestChannelsResource
+        methodName: listChannels
+    post:
+      operationId: CreateEventIngestChannel
+      tags:
+        - Event Ingest Channels
+      summary: Create an event ingest channel
+      description: >-
+        Creates an inbound channel for publishing external events. The ingest
+        token is returned once in the response and cannot be retrieved later.
+
+
+        **Required permissions:** `workflow:admin`
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters: []
+      responses:
+        "200":
+          description: The created event ingest channel.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EventIngestChannelMutationResponse"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - workflow:admin
+      x-vertesia-source:
+        file: ../../apps/zeno-server/src/api/event-ingest-channels.ts
+        className: EventIngestChannelsResource
+        methodName: createChannel
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateEventIngestChannelPayload"
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260319"
+        description: Optional Vertesia API version header. Use `20260319` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /events/channels/{channelId}:
+    get:
+      operationId: GetEventIngestChannel
+      tags:
+        - Event Ingest Channels
+      summary: Retrieve an event ingest channel
+      description: "**Required permissions:** `workflow:read`"
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters:
+        - name: channelId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The requested event ingest channel.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EventIngestChannel"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - workflow:read
+      x-vertesia-source:
+        file: ../../apps/zeno-server/src/api/event-ingest-channels.ts
+        className: EventIngestChannelResource
+        methodName: getChannel
+    put:
+      operationId: UpdateEventIngestChannel
+      tags:
+        - Event Ingest Channels
+      summary: Update an event ingest channel
+      description: >-
+        Updates a channel. Set rotate_token to true to rotate the ingest token:
+        the new token is returned once in the response.
+
+
+        **Required permissions:** `workflow:admin`
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters:
+        - name: channelId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The updated event ingest channel.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EventIngestChannelMutationResponse"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - workflow:admin
+      x-vertesia-source:
+        file: ../../apps/zeno-server/src/api/event-ingest-channels.ts
+        className: EventIngestChannelResource
+        methodName: updateChannel
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateEventIngestChannelPayload"
+    delete:
+      operationId: DeleteEventIngestChannel
+      tags:
+        - Event Ingest Channels
+      summary: Delete an event ingest channel
+      description: "**Required permissions:** `workflow:admin`"
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters:
+        - name: channelId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Deleted event ingest channel status.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteCountResult"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - workflow:admin
+      x-vertesia-source:
+        file: ../../apps/zeno-server/src/api/event-ingest-channels.ts
+        className: EventIngestChannelResource
+        methodName: deleteChannel
     parameters:
       - name: x-api-version
         in: header
