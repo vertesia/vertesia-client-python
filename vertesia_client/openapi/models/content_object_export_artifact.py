@@ -17,24 +17,25 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from vertesia_client.openapi.models.content_object_export_artifact_file import ContentObjectExportArtifactFile
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class PromptSearchQuery(BaseModel):
+class ContentObjectExportArtifact(BaseModel):
     """
-    PromptSearchQuery
+    ContentObjectExportArtifact
     """ # noqa: E501
-    name: Optional[StrictStr] = None
-    status: Optional[List[StrictStr]] = None
-    limit: Optional[Union[StrictFloat, StrictInt]] = None
-    offset: Optional[Union[StrictFloat, StrictInt]] = None
-    role: Optional[StrictStr] = None
-    tags: Optional[List[StrictStr]] = None
-    match_interactions: Optional[StrictBool] = Field(default=None, alias="matchInteractions")
-    __properties: ClassVar[List[str]] = ["name", "status", "limit", "offset", "role", "tags", "matchInteractions"]
+    export_id: StrictStr
+    path: StrictStr
+    filename: StrictStr
+    content_type: StrictStr
+    bytes: Union[StrictFloat, StrictInt]
+    created_at: Optional[StrictStr] = None
+    files: Optional[List[ContentObjectExportArtifactFile]] = None
+    __properties: ClassVar[List[str]] = ["export_id", "path", "filename", "content_type", "bytes", "created_at", "files"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -54,7 +55,7 @@ class PromptSearchQuery(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of PromptSearchQuery from a JSON string"""
+        """Create an instance of ContentObjectExportArtifact from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -75,11 +76,18 @@ class PromptSearchQuery(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of each item in files (list)
+        _items = []
+        if self.files:
+            for _item_files in self.files:
+                if _item_files:
+                    _items.append(_item_files.to_dict())
+            _dict['files'] = _items
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of PromptSearchQuery from a dict"""
+        """Create an instance of ContentObjectExportArtifact from a dict"""
         if obj is None:
             return None
 
@@ -87,13 +95,13 @@ class PromptSearchQuery(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "name": obj.get("name"),
-            "status": obj.get("status"),
-            "limit": obj.get("limit"),
-            "offset": obj.get("offset"),
-            "role": obj.get("role"),
-            "tags": obj.get("tags"),
-            "matchInteractions": obj.get("matchInteractions")
+            "export_id": obj.get("export_id"),
+            "path": obj.get("path"),
+            "filename": obj.get("filename"),
+            "content_type": obj.get("content_type"),
+            "bytes": obj.get("bytes"),
+            "created_at": obj.get("created_at"),
+            "files": [ContentObjectExportArtifactFile.from_dict(_item) for _item in obj["files"]] if obj.get("files") is not None else None
         })
         return _obj
 

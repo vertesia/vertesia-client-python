@@ -2373,6 +2373,7 @@ class PromptTemplatesApi:
         limit: Optional[Union[StrictFloat, StrictInt]] = None,
         offset: Optional[Union[StrictFloat, StrictInt]] = None,
         role: Optional[StrictStr] = None,
+        tags: Optional[List[StrictStr]] = None,
         match_interactions: Optional[StrictBool] = None,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
@@ -2390,7 +2391,7 @@ class PromptTemplatesApi:
     ) -> List[PromptTemplateRef]:
         """List prompts
 
-        Lists draft prompt templates in the current project with optional filtering by name, role, and interaction references.  **Required permissions:** `interaction:read`
+        Lists draft prompt templates in the current project with optional filtering by name, role, tags, and interaction references.  **Required permissions:** `interaction:read`
 
         :param name:
         :type name: str
@@ -2402,6 +2403,8 @@ class PromptTemplatesApi:
         :type offset: float
         :param role:
         :type role: str
+        :param tags:
+        :type tags: List[str]
         :param match_interactions:
         :type match_interactions: bool
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
@@ -2434,6 +2437,7 @@ class PromptTemplatesApi:
             limit=limit,
             offset=offset,
             role=role,
+            tags=tags,
             match_interactions=match_interactions,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
@@ -2466,6 +2470,7 @@ class PromptTemplatesApi:
         limit: Optional[Union[StrictFloat, StrictInt]] = None,
         offset: Optional[Union[StrictFloat, StrictInt]] = None,
         role: Optional[StrictStr] = None,
+        tags: Optional[List[StrictStr]] = None,
         match_interactions: Optional[StrictBool] = None,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
@@ -2483,7 +2488,7 @@ class PromptTemplatesApi:
     ) -> ApiResponse[List[PromptTemplateRef]]:
         """List prompts
 
-        Lists draft prompt templates in the current project with optional filtering by name, role, and interaction references.  **Required permissions:** `interaction:read`
+        Lists draft prompt templates in the current project with optional filtering by name, role, tags, and interaction references.  **Required permissions:** `interaction:read`
 
         :param name:
         :type name: str
@@ -2495,6 +2500,8 @@ class PromptTemplatesApi:
         :type offset: float
         :param role:
         :type role: str
+        :param tags:
+        :type tags: List[str]
         :param match_interactions:
         :type match_interactions: bool
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
@@ -2527,6 +2534,7 @@ class PromptTemplatesApi:
             limit=limit,
             offset=offset,
             role=role,
+            tags=tags,
             match_interactions=match_interactions,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
@@ -2559,6 +2567,7 @@ class PromptTemplatesApi:
         limit: Optional[Union[StrictFloat, StrictInt]] = None,
         offset: Optional[Union[StrictFloat, StrictInt]] = None,
         role: Optional[StrictStr] = None,
+        tags: Optional[List[StrictStr]] = None,
         match_interactions: Optional[StrictBool] = None,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
@@ -2576,7 +2585,7 @@ class PromptTemplatesApi:
     ) -> RESTResponseType:
         """List prompts
 
-        Lists draft prompt templates in the current project with optional filtering by name, role, and interaction references.  **Required permissions:** `interaction:read`
+        Lists draft prompt templates in the current project with optional filtering by name, role, tags, and interaction references.  **Required permissions:** `interaction:read`
 
         :param name:
         :type name: str
@@ -2588,6 +2597,8 @@ class PromptTemplatesApi:
         :type offset: float
         :param role:
         :type role: str
+        :param tags:
+        :type tags: List[str]
         :param match_interactions:
         :type match_interactions: bool
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
@@ -2620,6 +2631,7 @@ class PromptTemplatesApi:
             limit=limit,
             offset=offset,
             role=role,
+            tags=tags,
             match_interactions=match_interactions,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
@@ -2647,6 +2659,7 @@ class PromptTemplatesApi:
         limit,
         offset,
         role,
+        tags,
         match_interactions,
         x_api_version,
         _request_auth,
@@ -2659,6 +2672,7 @@ class PromptTemplatesApi:
 
         _collection_formats: Dict[str, str] = {
             'status': 'multi',
+            'tags': 'multi',
         }
 
         _path_params: Dict[str, str] = {}
@@ -2691,6 +2705,10 @@ class PromptTemplatesApi:
         if role is not None:
             
             _query_params.append(('role', role))
+            
+        if tags is not None:
+            
+            _query_params.append(('tags', tags))
             
         if match_interactions is not None:
             

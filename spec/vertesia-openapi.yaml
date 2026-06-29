@@ -686,6 +686,16 @@ components:
       type: array
       items:
         $ref: "#/components/schemas/AIModel"
+    EnableEnvironmentModelPayload:
+      type: object
+      properties:
+        model_id:
+          type: string
+          description: Provider model ID to resolve from the environment's available model
+            listing.
+      required:
+        - model_id
+      additionalProperties: false
     EmbeddingsResult:
       type: object
       properties:
@@ -1481,6 +1491,10 @@ components:
           type: number
         role:
           type: string
+        tags:
+          type: array
+          items:
+            type: string
         matchInteractions:
           type: boolean
       additionalProperties: false
@@ -6119,6 +6133,10 @@ components:
           $ref: "#/components/schemas/PromptStatus"
         content_type:
           $ref: "#/components/schemas/TemplateType"
+        tags:
+          type: array
+          items:
+            type: string
         created_at:
           type: string
           format: date-time
@@ -11605,6 +11623,103 @@ components:
       additionalProperties: false
       required:
         - facets
+    StartContentObjectExportResponse:
+      type: object
+      properties:
+        workflow_id:
+          type: string
+        run_id:
+          type: string
+        export_id:
+          type: string
+      required:
+        - workflow_id
+        - run_id
+        - export_id
+      additionalProperties: false
+    StartContentObjectExportRequest:
+      type: object
+      properties:
+        embedding_types:
+          type: array
+          items:
+            $ref: "#/components/schemas/SupportedEmbeddingTypes"
+          description: Embedding types to export when include.embeddings is true. Defaults
+            to all supported embedding types.
+        filter:
+          $ref: "#/components/schemas/ExportContentObjectsFilter"
+          description: Explicit export filters. This intentionally does not accept the
+            search API's full Mongo/search DSL.
+        all_revisions:
+          type: boolean
+          description: Include all revisions. Defaults to false, exporting only head
+            revisions.
+        include:
+          $ref: "#/components/schemas/ExportContentObjectsIncludeOptions"
+          description: Optional object context selectors.
+        compression:
+          type: boolean
+          description: Compress the export with gzip. Defaults to true.
+      additionalProperties: false
+    ListContentObjectExportsResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/ContentObjectExportArtifact"
+        limit:
+          type: number
+      required:
+        - items
+        - limit
+      additionalProperties: false
+    DeleteContentObjectExportResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        export_id:
+          type: string
+        path:
+          type: string
+      required:
+        - success
+        - export_id
+        - path
+      additionalProperties: false
+    ContentObjectExportStatusResponse:
+      type: object
+      properties:
+        workflow_id:
+          type: string
+        run_id:
+          type: string
+        status:
+          type: string
+          enum:
+            - queued
+            - running
+            - completed
+            - failed
+            - canceled
+            - terminated
+            - timed_out
+            - unknown
+        done:
+          type: boolean
+        progress:
+          $ref: "#/components/schemas/ContentObjectExportProgress"
+        result:
+          $ref: "#/components/schemas/ContentObjectExportResult"
+        error:
+          type: string
+      required:
+        - workflow_id
+        - run_id
+        - status
+        - done
+      additionalProperties: false
     ContentObjectApiResponse:
       type: object
       properties:
@@ -16715,6 +16830,179 @@ components:
         - rrf
         - rsf
         - smart
+    SupportedEmbeddingTypes:
+      type: string
+      enum:
+        - text
+        - image
+        - properties
+    ExportContentObjectsFilter:
+      type: object
+      properties:
+        types:
+          type: array
+          items:
+            type: string
+        created_from:
+          type: string
+        created_to:
+          type: string
+        updated_from:
+          type: string
+        updated_to:
+          type: string
+      additionalProperties: false
+      description: Bounded filters supported by the bulk content object export API.
+    ExportContentObjectsIncludeOptions:
+      type: object
+      properties:
+        embeddings:
+          type: boolean
+          description: Include stored embeddings. Disabled by default for generic object
+            exports.
+        content:
+          type: boolean
+          description: Include content source metadata. Enabled by default.
+        status:
+          type: boolean
+          description: Include object lifecycle status. Enabled by default.
+        properties:
+          type: boolean
+          description: Include object properties. Enabled by default.
+        metadata:
+          type: boolean
+          description: Include technical object metadata. Disabled by default because
+            metadata may be large.
+        revision:
+          type: boolean
+          description: Include object revision details. Enabled by default.
+      additionalProperties: false
+      description: Optional object context to include in content object export rows.
+    ContentObjectExportArtifact:
+      type: object
+      properties:
+        export_id:
+          type: string
+        path:
+          type: string
+        filename:
+          type: string
+        content_type:
+          type: string
+        bytes:
+          type: number
+        created_at:
+          type: string
+        files:
+          type: array
+          items:
+            $ref: "#/components/schemas/ContentObjectExportArtifactFile"
+      required:
+        - export_id
+        - path
+        - filename
+        - content_type
+        - bytes
+      additionalProperties: false
+    ContentObjectExportArtifactFile:
+      type: object
+      properties:
+        role:
+          type: string
+          enum:
+            - data
+            - manifest
+        path:
+          type: string
+        filename:
+          type: string
+        content_type:
+          type: string
+        bytes:
+          type: number
+      required:
+        - role
+        - path
+        - filename
+        - content_type
+        - bytes
+      additionalProperties: false
+    ContentObjectExportProgress:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+            - queued
+            - planning
+            - exporting
+            - composing
+            - completed
+            - failed
+        records:
+          type: number
+        bytes:
+          type: number
+        path:
+          type: string
+        filename:
+          type: string
+        completed_shards:
+          type: number
+        total_shards:
+          type: number
+        started_at:
+          type: string
+        completed_at:
+          type: string
+        error:
+          type: string
+      required:
+        - status
+        - records
+        - bytes
+      additionalProperties: false
+    ContentObjectExportResult:
+      type: object
+      properties:
+        status:
+          type: string
+          const: completed
+        path:
+          type: string
+        filename:
+          type: string
+        content_type:
+          type: string
+        manifest_path:
+          type: string
+        manifest_filename:
+          type: string
+        manifest_content_type:
+          type: string
+        manifest_bytes:
+          type: number
+        records:
+          type: number
+        bytes:
+          type: number
+        started_at:
+          type: string
+        completed_at:
+          type: string
+        duration_ms:
+          type: number
+      required:
+        - status
+        - path
+        - filename
+        - content_type
+        - records
+        - bytes
+        - started_at
+        - completed_at
+        - duration_ms
+      additionalProperties: false
     ContentObjectStatus:
       type: string
       enum:
@@ -21393,6 +21681,147 @@ paths:
         description: Optional Vertesia API version header. Use `20260319` for the
           current stable API shape.
         x-vertesia-global-header: true
+  /environments/{envId}/models/enabled:
+    post:
+      operationId: EnableEnvironmentModel
+      tags:
+        - Environments
+      summary: Enable an environment model
+      description: >-
+        Adds one model to an environment without replacing the full enabled
+        model list. The model_id must resolve from the provider model listing
+        for this environment.
+
+
+        **Required permissions:** `environment:admin`
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters:
+        - name: envId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The environment with the model enabled.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExecutionEnvironment"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - environment:admin
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/environments.ts
+        className: EnvironmentResource
+        methodName: enableModel
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EnableEnvironmentModelPayload"
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260319"
+        description: Optional Vertesia API version header. Use `20260319` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /environments/{envId}/models/enabled/{modelId}:
+    delete:
+      operationId: DisableEnvironmentModel
+      tags:
+        - Environments
+      summary: Disable an environment model
+      description: >-
+        Removes one enabled model from an environment without replacing the full
+        enabled model list. Disabling a model that is not enabled succeeds
+        without changing the environment.
+
+
+        **Required permissions:** `environment:admin`
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters:
+        - name: envId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: modelId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The environment with the model disabled.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExecutionEnvironment"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - environment:admin
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/environments.ts
+        className: EnvironmentResource
+        methodName: disableModel
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260319"
+        description: Optional Vertesia API version header. Use `20260319` for the
+          current stable API shape.
+        x-vertesia-global-header: true
   /environments/{envId}/trainable-models:
     get:
       operationId: ListEnvironmentTrainableModels
@@ -23447,7 +23876,7 @@ paths:
       summary: List prompts
       description: >-
         Lists draft prompt templates in the current project with optional
-        filtering by name, role, and interaction references.
+        filtering by name, role, tags, and interaction references.
 
 
         **Required permissions:** `interaction:read`
@@ -23484,6 +23913,13 @@ paths:
           required: false
           schema:
             type: string
+        - name: tags
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
         - name: matchInteractions
           in: query
           required: false
@@ -34984,6 +35420,327 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/ComputeObjectFacetPayload"
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260319"
+        description: Optional Vertesia API version header. Use `20260319` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /objects/export/bulk:
+    post:
+      operationId: StartContentObjectsExport
+      tags:
+        - Objects
+      summary: Start a content object export
+      description: >-
+        Starts a Temporal workflow that asks zeno-bulk to write a JSONL or
+        JSONL.GZ export into the project bucket.
+
+
+        **Required permissions:** `content:superadmin`
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters: []
+      responses:
+        "200":
+          description: Started content object export workflow.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StartContentObjectExportResponse"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - content:superadmin
+      x-vertesia-source:
+        file: ../../apps/zeno-server/src/api/objects.ts
+        className: ObjectsResource
+        methodName: startExport
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StartContentObjectExportRequest"
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260319"
+        description: Optional Vertesia API version header. Use `20260319` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /objects/export/bulk/artifacts:
+    get:
+      operationId: ListContentObjectExports
+      tags:
+        - Objects
+      summary: List content object exports
+      description: >-
+        Lists semi-transient content object export artifacts in the project
+        bucket.
+
+
+        **Required permissions:** `content:superadmin`
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters: []
+      responses:
+        "200":
+          description: Existing content object export artifacts.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListContentObjectExportsResponse"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - content:superadmin
+      x-vertesia-source:
+        file: ../../apps/zeno-server/src/api/objects.ts
+        className: ObjectsResource
+        methodName: listExports
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260319"
+        description: Optional Vertesia API version header. Use `20260319` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /objects/export/bulk/artifacts/{exportId}:
+    delete:
+      operationId: DeleteContentObjectExport
+      tags:
+        - Objects
+      summary: Delete a content object export
+      description: >-
+        Deletes all files under a single content object export artifact folder
+        in the project bucket.
+
+
+        **Required permissions:** `content:superadmin`
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters:
+        - name: exportId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Deleted content object export artifact.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteContentObjectExportResponse"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - content:superadmin
+      x-vertesia-source:
+        file: ../../apps/zeno-server/src/api/objects.ts
+        className: ObjectsResource
+        methodName: deleteExport
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260319"
+        description: Optional Vertesia API version header. Use `20260319` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /objects/export/bulk/artifacts/{exportId}/{role}/download-url:
+    get:
+      operationId: GetContentObjectExportDownloadUrl
+      tags:
+        - Objects
+      summary: Create a content object export download URL
+      description: >-
+        Creates a signed download URL for a content object export data file or
+        manifest sidecar.
+
+
+        **Required permissions:** `content:superadmin`
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters:
+        - name: exportId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: role
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Signed download URL metadata.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetFileUrlResponse"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - content:superadmin
+      x-vertesia-source:
+        file: ../../apps/zeno-server/src/api/objects.ts
+        className: ObjectsResource
+        methodName: getExportDownloadUrl
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260319"
+        description: Optional Vertesia API version header. Use `20260319` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /objects/export/bulk/{workflowId}/{runId}:
+    get:
+      operationId: GetContentObjectsExportStatus
+      tags:
+        - Objects
+      summary: Get content object export status
+      description: "**Required permissions:** `content:superadmin`"
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters:
+        - name: workflowId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: runId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Content object export workflow status.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContentObjectExportStatusResponse"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - content:superadmin
+      x-vertesia-source:
+        file: ../../apps/zeno-server/src/api/objects.ts
+        className: ObjectsResource
+        methodName: getExportStatus
     parameters:
       - name: x-api-version
         in: header

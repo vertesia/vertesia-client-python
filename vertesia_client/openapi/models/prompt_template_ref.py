@@ -19,7 +19,7 @@ import json
 
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr
-from typing import Any, ClassVar, Dict, Optional, Union
+from typing import Any, ClassVar, Dict, List, Optional, Union
 from vertesia_client.openapi.models.prompt_role import PromptRole
 from vertesia_client.openapi.models.prompt_status import PromptStatus
 from vertesia_client.openapi.models.template_type import TemplateType
@@ -38,9 +38,10 @@ class PromptTemplateRef(BaseModel):
     version: Union[StrictFloat, StrictInt]
     status: PromptStatus
     content_type: Optional[TemplateType] = None
+    tags: Optional[List[StrictStr]] = None
     created_at: datetime
     updated_at: datetime
-    __properties: ClassVar[List[str]] = ["id", "name", "description", "role", "version", "status", "content_type", "created_at", "updated_at"]
+    __properties: ClassVar[List[str]] = ["id", "name", "description", "role", "version", "status", "content_type", "tags", "created_at", "updated_at"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -100,6 +101,7 @@ class PromptTemplateRef(BaseModel):
             "version": obj.get("version"),
             "status": obj.get("status"),
             "content_type": obj.get("content_type"),
+            "tags": obj.get("tags"),
             "created_at": obj.get("created_at"),
             "updated_at": obj.get("updated_at")
         })

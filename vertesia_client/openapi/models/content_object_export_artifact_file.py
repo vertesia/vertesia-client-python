@@ -17,24 +17,27 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional, Union
+from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr, field_validator
+from typing import Any, ClassVar, Dict, Union
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class PromptSearchQuery(BaseModel):
+class ContentObjectExportArtifactFile(BaseModel):
     """
-    PromptSearchQuery
+    ContentObjectExportArtifactFile
     """ # noqa: E501
-    name: Optional[StrictStr] = None
-    status: Optional[List[StrictStr]] = None
-    limit: Optional[Union[StrictFloat, StrictInt]] = None
-    offset: Optional[Union[StrictFloat, StrictInt]] = None
-    role: Optional[StrictStr] = None
-    tags: Optional[List[StrictStr]] = None
-    match_interactions: Optional[StrictBool] = Field(default=None, alias="matchInteractions")
-    __properties: ClassVar[List[str]] = ["name", "status", "limit", "offset", "role", "tags", "matchInteractions"]
+    role: StrictStr
+    path: StrictStr
+    filename: StrictStr
+    content_type: StrictStr
+    bytes: Union[StrictFloat, StrictInt]
+    __properties: ClassVar[List[str]] = ["role", "path", "filename", "content_type", "bytes"]
+
+    @field_validator('role')
+    def role_validate_enum(cls, value):
+        """Validates the enum"""
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -54,7 +57,7 @@ class PromptSearchQuery(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of PromptSearchQuery from a JSON string"""
+        """Create an instance of ContentObjectExportArtifactFile from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -79,7 +82,7 @@ class PromptSearchQuery(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of PromptSearchQuery from a dict"""
+        """Create an instance of ContentObjectExportArtifactFile from a dict"""
         if obj is None:
             return None
 
@@ -87,13 +90,11 @@ class PromptSearchQuery(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "name": obj.get("name"),
-            "status": obj.get("status"),
-            "limit": obj.get("limit"),
-            "offset": obj.get("offset"),
             "role": obj.get("role"),
-            "tags": obj.get("tags"),
-            "matchInteractions": obj.get("matchInteractions")
+            "path": obj.get("path"),
+            "filename": obj.get("filename"),
+            "content_type": obj.get("content_type"),
+            "bytes": obj.get("bytes")
         })
         return _obj
 

@@ -17,24 +17,25 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional, Union
+from pydantic import BaseModel, ConfigDict, Field, StrictBool
+from typing import Any, ClassVar, Dict, List, Optional
+from vertesia_client.openapi.models.export_content_objects_filter import ExportContentObjectsFilter
+from vertesia_client.openapi.models.export_content_objects_include_options import ExportContentObjectsIncludeOptions
+from vertesia_client.openapi.models.supported_embedding_types import SupportedEmbeddingTypes
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class PromptSearchQuery(BaseModel):
+class StartContentObjectExportRequest(BaseModel):
     """
-    PromptSearchQuery
+    StartContentObjectExportRequest
     """ # noqa: E501
-    name: Optional[StrictStr] = None
-    status: Optional[List[StrictStr]] = None
-    limit: Optional[Union[StrictFloat, StrictInt]] = None
-    offset: Optional[Union[StrictFloat, StrictInt]] = None
-    role: Optional[StrictStr] = None
-    tags: Optional[List[StrictStr]] = None
-    match_interactions: Optional[StrictBool] = Field(default=None, alias="matchInteractions")
-    __properties: ClassVar[List[str]] = ["name", "status", "limit", "offset", "role", "tags", "matchInteractions"]
+    embedding_types: Optional[List[SupportedEmbeddingTypes]] = Field(default=None, description="Embedding types to export when include.embeddings is true. Defaults to all supported embedding types.")
+    filter: Optional[ExportContentObjectsFilter] = Field(default=None, description="Explicit export filters. This intentionally does not accept the search API's full Mongo/search DSL.")
+    all_revisions: Optional[StrictBool] = Field(default=None, description="Include all revisions. Defaults to false, exporting only head revisions.")
+    include: Optional[ExportContentObjectsIncludeOptions] = Field(default=None, description="Optional object context selectors.")
+    compression: Optional[StrictBool] = Field(default=None, description="Compress the export with gzip. Defaults to true.")
+    __properties: ClassVar[List[str]] = ["embedding_types", "filter", "all_revisions", "include", "compression"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -54,7 +55,7 @@ class PromptSearchQuery(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of PromptSearchQuery from a JSON string"""
+        """Create an instance of StartContentObjectExportRequest from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -75,11 +76,17 @@ class PromptSearchQuery(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of filter
+        if self.filter:
+            _dict['filter'] = self.filter.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of include
+        if self.include:
+            _dict['include'] = self.include.to_dict()
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of PromptSearchQuery from a dict"""
+        """Create an instance of StartContentObjectExportRequest from a dict"""
         if obj is None:
             return None
 
@@ -87,13 +94,11 @@ class PromptSearchQuery(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "name": obj.get("name"),
-            "status": obj.get("status"),
-            "limit": obj.get("limit"),
-            "offset": obj.get("offset"),
-            "role": obj.get("role"),
-            "tags": obj.get("tags"),
-            "matchInteractions": obj.get("matchInteractions")
+            "embedding_types": obj.get("embedding_types"),
+            "filter": ExportContentObjectsFilter.from_dict(obj["filter"]) if obj.get("filter") is not None else None,
+            "all_revisions": obj.get("all_revisions"),
+            "include": ExportContentObjectsIncludeOptions.from_dict(obj["include"]) if obj.get("include") is not None else None,
+            "compression": obj.get("compression")
         })
         return _obj
 

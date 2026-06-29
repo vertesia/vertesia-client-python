@@ -17,24 +17,31 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional, Union
+from pydantic import BaseModel, ConfigDict, StrictBool, StrictStr, field_validator
+from typing import Any, ClassVar, Dict, Optional
+from vertesia_client.openapi.models.content_object_export_progress import ContentObjectExportProgress
+from vertesia_client.openapi.models.content_object_export_result import ContentObjectExportResult
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class PromptSearchQuery(BaseModel):
+class ContentObjectExportStatusResponse(BaseModel):
     """
-    PromptSearchQuery
+    ContentObjectExportStatusResponse
     """ # noqa: E501
-    name: Optional[StrictStr] = None
-    status: Optional[List[StrictStr]] = None
-    limit: Optional[Union[StrictFloat, StrictInt]] = None
-    offset: Optional[Union[StrictFloat, StrictInt]] = None
-    role: Optional[StrictStr] = None
-    tags: Optional[List[StrictStr]] = None
-    match_interactions: Optional[StrictBool] = Field(default=None, alias="matchInteractions")
-    __properties: ClassVar[List[str]] = ["name", "status", "limit", "offset", "role", "tags", "matchInteractions"]
+    workflow_id: StrictStr
+    run_id: StrictStr
+    status: StrictStr
+    done: StrictBool
+    progress: Optional[ContentObjectExportProgress] = None
+    result: Optional[ContentObjectExportResult] = None
+    error: Optional[StrictStr] = None
+    __properties: ClassVar[List[str]] = ["workflow_id", "run_id", "status", "done", "progress", "result", "error"]
+
+    @field_validator('status')
+    def status_validate_enum(cls, value):
+        """Validates the enum"""
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -54,7 +61,7 @@ class PromptSearchQuery(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of PromptSearchQuery from a JSON string"""
+        """Create an instance of ContentObjectExportStatusResponse from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -75,11 +82,17 @@ class PromptSearchQuery(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of progress
+        if self.progress:
+            _dict['progress'] = self.progress.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of result
+        if self.result:
+            _dict['result'] = self.result.to_dict()
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of PromptSearchQuery from a dict"""
+        """Create an instance of ContentObjectExportStatusResponse from a dict"""
         if obj is None:
             return None
 
@@ -87,13 +100,13 @@ class PromptSearchQuery(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "name": obj.get("name"),
+            "workflow_id": obj.get("workflow_id"),
+            "run_id": obj.get("run_id"),
             "status": obj.get("status"),
-            "limit": obj.get("limit"),
-            "offset": obj.get("offset"),
-            "role": obj.get("role"),
-            "tags": obj.get("tags"),
-            "matchInteractions": obj.get("matchInteractions")
+            "done": obj.get("done"),
+            "progress": ContentObjectExportProgress.from_dict(obj["progress"]) if obj.get("progress") is not None else None,
+            "result": ContentObjectExportResult.from_dict(obj["result"]) if obj.get("result") is not None else None,
+            "error": obj.get("error")
         })
         return _obj
 

@@ -17,24 +17,23 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional, Union
+from pydantic import BaseModel, ConfigDict, Field, StrictBool
+from typing import Any, ClassVar, Dict, Optional
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class PromptSearchQuery(BaseModel):
+class ExportContentObjectsIncludeOptions(BaseModel):
     """
-    PromptSearchQuery
+    Optional object context to include in content object export rows.
     """ # noqa: E501
-    name: Optional[StrictStr] = None
-    status: Optional[List[StrictStr]] = None
-    limit: Optional[Union[StrictFloat, StrictInt]] = None
-    offset: Optional[Union[StrictFloat, StrictInt]] = None
-    role: Optional[StrictStr] = None
-    tags: Optional[List[StrictStr]] = None
-    match_interactions: Optional[StrictBool] = Field(default=None, alias="matchInteractions")
-    __properties: ClassVar[List[str]] = ["name", "status", "limit", "offset", "role", "tags", "matchInteractions"]
+    embeddings: Optional[StrictBool] = Field(default=None, description="Include stored embeddings. Disabled by default for generic object exports.")
+    content: Optional[StrictBool] = Field(default=None, description="Include content source metadata. Enabled by default.")
+    status: Optional[StrictBool] = Field(default=None, description="Include object lifecycle status. Enabled by default.")
+    properties: Optional[StrictBool] = Field(default=None, description="Include object properties. Enabled by default.")
+    metadata: Optional[StrictBool] = Field(default=None, description="Include technical object metadata. Disabled by default because metadata may be large.")
+    revision: Optional[StrictBool] = Field(default=None, description="Include object revision details. Enabled by default.")
+    __properties: ClassVar[List[str]] = ["embeddings", "content", "status", "properties", "metadata", "revision"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -54,7 +53,7 @@ class PromptSearchQuery(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of PromptSearchQuery from a JSON string"""
+        """Create an instance of ExportContentObjectsIncludeOptions from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -79,7 +78,7 @@ class PromptSearchQuery(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of PromptSearchQuery from a dict"""
+        """Create an instance of ExportContentObjectsIncludeOptions from a dict"""
         if obj is None:
             return None
 
@@ -87,13 +86,12 @@ class PromptSearchQuery(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "name": obj.get("name"),
+            "embeddings": obj.get("embeddings"),
+            "content": obj.get("content"),
             "status": obj.get("status"),
-            "limit": obj.get("limit"),
-            "offset": obj.get("offset"),
-            "role": obj.get("role"),
-            "tags": obj.get("tags"),
-            "matchInteractions": obj.get("matchInteractions")
+            "properties": obj.get("properties"),
+            "metadata": obj.get("metadata"),
+            "revision": obj.get("revision")
         })
         return _obj
 

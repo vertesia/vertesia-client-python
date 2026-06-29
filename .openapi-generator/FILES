@@ -212,6 +212,11 @@ vertesia_client/openapi/models/content_nature_video.py
 vertesia_client/openapi/models/content_object_api_response.py
 vertesia_client/openapi/models/content_object_api_response_tokens.py
 vertesia_client/openapi/models/content_object_api_revision.py
+vertesia_client/openapi/models/content_object_export_artifact.py
+vertesia_client/openapi/models/content_object_export_artifact_file.py
+vertesia_client/openapi/models/content_object_export_progress.py
+vertesia_client/openapi/models/content_object_export_result.py
+vertesia_client/openapi/models/content_object_export_status_response.py
 vertesia_client/openapi/models/content_object_item_api_response.py
 vertesia_client/openapi/models/content_object_processing_priority.py
 vertesia_client/openapi/models/content_object_status.py
@@ -306,6 +311,7 @@ vertesia_client/openapi/models/data_table_for_ai.py
 vertesia_client/openapi/models/data_table_semantic_type.py
 vertesia_client/openapi/models/data_table_summary.py
 vertesia_client/openapi/models/delete_by_id_result.py
+vertesia_client/openapi/models/delete_content_object_export_response.py
 vertesia_client/openapi/models/delete_content_object_result.py
 vertesia_client/openapi/models/delete_count_result.py
 vertesia_client/openapi/models/delete_file_result.py
@@ -357,6 +363,7 @@ vertesia_client/openapi/models/embeddings_result.py
 vertesia_client/openapi/models/embeddings_status_response.py
 vertesia_client/openapi/models/embeddings_status_response_vector_index.py
 vertesia_client/openapi/models/embeddings_token_usage.py
+vertesia_client/openapi/models/enable_environment_model_payload.py
 vertesia_client/openapi/models/environment_token_request.py
 vertesia_client/openapi/models/error_response.py
 vertesia_client/openapi/models/event_category.py
@@ -395,6 +402,8 @@ vertesia_client/openapi/models/execution_run_ref.py
 vertesia_client/openapi/models/execution_run_status.py
 vertesia_client/openapi/models/execution_run_workflow.py
 vertesia_client/openapi/models/execution_token_usage.py
+vertesia_client/openapi/models/export_content_objects_filter.py
+vertesia_client/openapi/models/export_content_objects_include_options.py
 vertesia_client/openapi/models/export_properties_payload.py
 vertesia_client/openapi/models/export_properties_response.py
 vertesia_client/openapi/models/facet_spec.py
@@ -484,6 +493,7 @@ vertesia_client/openapi/models/known_audit_action.py
 vertesia_client/openapi/models/linkup_configuration.py
 vertesia_client/openapi/models/linkup_configuration_input.py
 vertesia_client/openapi/models/list_agent_runs_response.py
+vertesia_client/openapi/models/list_content_object_exports_response.py
 vertesia_client/openapi/models/list_event_deliveries_payload.py
 vertesia_client/openapi/models/list_event_deliveries_response.py
 vertesia_client/openapi/models/list_secrets_response.py
@@ -714,6 +724,8 @@ vertesia_client/openapi/models/signing_algorithm.py
 vertesia_client/openapi/models/skill_context_triggers.py
 vertesia_client/openapi/models/sort_option.py
 vertesia_client/openapi/models/sort_order.py
+vertesia_client/openapi/models/start_content_object_export_request.py
+vertesia_client/openapi/models/start_content_object_export_response.py
 vertesia_client/openapi/models/start_project_reindex_payload.py
 vertesia_client/openapi/models/stateless_execution_options.py
 vertesia_client/openapi/models/stored_type_ref.py
@@ -722,6 +734,7 @@ vertesia_client/openapi/models/streaming_telemetry_context.py
 vertesia_client/openapi/models/stripe_billing_status_response.py
 vertesia_client/openapi/models/success_response.py
 vertesia_client/openapi/models/supervised_run_response.py
+vertesia_client/openapi/models/supported_embedding_types.py
 vertesia_client/openapi/models/supported_integrations.py
 vertesia_client/openapi/models/supported_integrations_ask_user_webhook.py
 vertesia_client/openapi/models/supported_integrations_aws.py

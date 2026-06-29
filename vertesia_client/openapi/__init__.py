@@ -234,6 +234,11 @@ __all__ = [
     "ContentObjectApiResponse",
     "ContentObjectApiResponseTokens",
     "ContentObjectApiRevision",
+    "ContentObjectExportArtifact",
+    "ContentObjectExportArtifactFile",
+    "ContentObjectExportProgress",
+    "ContentObjectExportResult",
+    "ContentObjectExportStatusResponse",
     "ContentObjectItemApiResponse",
     "ContentObjectProcessingPriority",
     "ContentObjectStatus",
@@ -340,6 +345,7 @@ __all__ = [
     "DataTableSemanticType",
     "DataTableSummary",
     "DeleteByIdResult",
+    "DeleteContentObjectExportResponse",
     "DeleteContentObjectResult",
     "DeleteCountResult",
     "DeleteFileResult",
@@ -379,6 +385,7 @@ __all__ = [
     "EmbeddingsStatusResponse",
     "EmbeddingsStatusResponseVectorIndex",
     "EmbeddingsTokenUsage",
+    "EnableEnvironmentModelPayload",
     "EnvironmentTokenRequest",
     "ErrorResponse",
     "EventCategory",
@@ -417,6 +424,8 @@ __all__ = [
     "ExecutionRunStatus",
     "ExecutionRunWorkflow",
     "ExecutionTokenUsage",
+    "ExportContentObjectsFilter",
+    "ExportContentObjectsIncludeOptions",
     "ExportPropertiesPayload",
     "ExportPropertiesResponse",
     "FacetSpec",
@@ -506,6 +515,7 @@ __all__ = [
     "LinkupConfiguration",
     "LinkupConfigurationInput",
     "ListAgentRunsResponse",
+    "ListContentObjectExportsResponse",
     "ListEventDeliveriesPayload",
     "ListEventDeliveriesResponse",
     "ListSecretsResponse",
@@ -736,6 +746,8 @@ __all__ = [
     "SkillContextTriggers",
     "SortOption",
     "SortOrder",
+    "StartContentObjectExportRequest",
+    "StartContentObjectExportResponse",
     "StartProjectReindexPayload",
     "StatelessExecutionOptions",
     "StoredTypeRef",
@@ -744,6 +756,7 @@ __all__ = [
     "StripeBillingStatusResponse",
     "SuccessResponse",
     "SupervisedRunResponse",
+    "SupportedEmbeddingTypes",
     "SupportedIntegrations",
     "SupportedIntegrationsAskUserWebhook",
     "SupportedIntegrationsAws",
@@ -1091,6 +1104,11 @@ from vertesia_client.openapi.models.content_nature_video import ContentNatureVid
 from vertesia_client.openapi.models.content_object_api_response import ContentObjectApiResponse as ContentObjectApiResponse
 from vertesia_client.openapi.models.content_object_api_response_tokens import ContentObjectApiResponseTokens as ContentObjectApiResponseTokens
 from vertesia_client.openapi.models.content_object_api_revision import ContentObjectApiRevision as ContentObjectApiRevision
+from vertesia_client.openapi.models.content_object_export_artifact import ContentObjectExportArtifact as ContentObjectExportArtifact
+from vertesia_client.openapi.models.content_object_export_artifact_file import ContentObjectExportArtifactFile as ContentObjectExportArtifactFile
+from vertesia_client.openapi.models.content_object_export_progress import ContentObjectExportProgress as ContentObjectExportProgress
+from vertesia_client.openapi.models.content_object_export_result import ContentObjectExportResult as ContentObjectExportResult
+from vertesia_client.openapi.models.content_object_export_status_response import ContentObjectExportStatusResponse as ContentObjectExportStatusResponse
 from vertesia_client.openapi.models.content_object_item_api_response import ContentObjectItemApiResponse as ContentObjectItemApiResponse
 from vertesia_client.openapi.models.content_object_processing_priority import ContentObjectProcessingPriority as ContentObjectProcessingPriority
 from vertesia_client.openapi.models.content_object_status import ContentObjectStatus as ContentObjectStatus
@@ -1197,6 +1215,7 @@ from vertesia_client.openapi.models.data_table_for_ai import DataTableForAI as D
 from vertesia_client.openapi.models.data_table_semantic_type import DataTableSemanticType as DataTableSemanticType
 from vertesia_client.openapi.models.data_table_summary import DataTableSummary as DataTableSummary
 from vertesia_client.openapi.models.delete_by_id_result import DeleteByIdResult as DeleteByIdResult
+from vertesia_client.openapi.models.delete_content_object_export_response import DeleteContentObjectExportResponse as DeleteContentObjectExportResponse
 from vertesia_client.openapi.models.delete_content_object_result import DeleteContentObjectResult as DeleteContentObjectResult
 from vertesia_client.openapi.models.delete_count_result import DeleteCountResult as DeleteCountResult
 from vertesia_client.openapi.models.delete_file_result import DeleteFileResult as DeleteFileResult
@@ -1236,6 +1255,7 @@ from vertesia_client.openapi.models.embeddings_result import EmbeddingsResult as
 from vertesia_client.openapi.models.embeddings_status_response import EmbeddingsStatusResponse as EmbeddingsStatusResponse
 from vertesia_client.openapi.models.embeddings_status_response_vector_index import EmbeddingsStatusResponseVectorIndex as EmbeddingsStatusResponseVectorIndex
 from vertesia_client.openapi.models.embeddings_token_usage import EmbeddingsTokenUsage as EmbeddingsTokenUsage
+from vertesia_client.openapi.models.enable_environment_model_payload import EnableEnvironmentModelPayload as EnableEnvironmentModelPayload
 from vertesia_client.openapi.models.environment_token_request import EnvironmentTokenRequest as EnvironmentTokenRequest
 from vertesia_client.openapi.models.error_response import ErrorResponse as ErrorResponse
 from vertesia_client.openapi.models.event_category import EventCategory as EventCategory
@@ -1274,6 +1294,8 @@ from vertesia_client.openapi.models.execution_run_ref import ExecutionRunRef as 
 from vertesia_client.openapi.models.execution_run_status import ExecutionRunStatus as ExecutionRunStatus
 from vertesia_client.openapi.models.execution_run_workflow import ExecutionRunWorkflow as ExecutionRunWorkflow
 from vertesia_client.openapi.models.execution_token_usage import ExecutionTokenUsage as ExecutionTokenUsage
+from vertesia_client.openapi.models.export_content_objects_filter import ExportContentObjectsFilter as ExportContentObjectsFilter
+from vertesia_client.openapi.models.export_content_objects_include_options import ExportContentObjectsIncludeOptions as ExportContentObjectsIncludeOptions
 from vertesia_client.openapi.models.export_properties_payload import ExportPropertiesPayload as ExportPropertiesPayload
 from vertesia_client.openapi.models.export_properties_response import ExportPropertiesResponse as ExportPropertiesResponse
 from vertesia_client.openapi.models.facet_spec import FacetSpec as FacetSpec
@@ -1363,6 +1385,7 @@ from vertesia_client.openapi.models.known_audit_action import KnownAuditAction a
 from vertesia_client.openapi.models.linkup_configuration import LinkupConfiguration as LinkupConfiguration
 from vertesia_client.openapi.models.linkup_configuration_input import LinkupConfigurationInput as LinkupConfigurationInput
 from vertesia_client.openapi.models.list_agent_runs_response import ListAgentRunsResponse as ListAgentRunsResponse
+from vertesia_client.openapi.models.list_content_object_exports_response import ListContentObjectExportsResponse as ListContentObjectExportsResponse
 from vertesia_client.openapi.models.list_event_deliveries_payload import ListEventDeliveriesPayload as ListEventDeliveriesPayload
 from vertesia_client.openapi.models.list_event_deliveries_response import ListEventDeliveriesResponse as ListEventDeliveriesResponse
 from vertesia_client.openapi.models.list_secrets_response import ListSecretsResponse as ListSecretsResponse
@@ -1593,6 +1616,8 @@ from vertesia_client.openapi.models.signing_algorithm import SigningAlgorithm as
 from vertesia_client.openapi.models.skill_context_triggers import SkillContextTriggers as SkillContextTriggers
 from vertesia_client.openapi.models.sort_option import SortOption as SortOption
 from vertesia_client.openapi.models.sort_order import SortOrder as SortOrder
+from vertesia_client.openapi.models.start_content_object_export_request import StartContentObjectExportRequest as StartContentObjectExportRequest
+from vertesia_client.openapi.models.start_content_object_export_response import StartContentObjectExportResponse as StartContentObjectExportResponse
 from vertesia_client.openapi.models.start_project_reindex_payload import StartProjectReindexPayload as StartProjectReindexPayload
 from vertesia_client.openapi.models.stateless_execution_options import StatelessExecutionOptions as StatelessExecutionOptions
 from vertesia_client.openapi.models.stored_type_ref import StoredTypeRef as StoredTypeRef
@@ -1601,6 +1626,7 @@ from vertesia_client.openapi.models.streaming_telemetry_context import Streaming
 from vertesia_client.openapi.models.stripe_billing_status_response import StripeBillingStatusResponse as StripeBillingStatusResponse
 from vertesia_client.openapi.models.success_response import SuccessResponse as SuccessResponse
 from vertesia_client.openapi.models.supervised_run_response import SupervisedRunResponse as SupervisedRunResponse
+from vertesia_client.openapi.models.supported_embedding_types import SupportedEmbeddingTypes as SupportedEmbeddingTypes
 from vertesia_client.openapi.models.supported_integrations import SupportedIntegrations as SupportedIntegrations
 from vertesia_client.openapi.models.supported_integrations_ask_user_webhook import SupportedIntegrationsAskUserWebhook as SupportedIntegrationsAskUserWebhook
 from vertesia_client.openapi.models.supported_integrations_aws import SupportedIntegrationsAws as SupportedIntegrationsAws
