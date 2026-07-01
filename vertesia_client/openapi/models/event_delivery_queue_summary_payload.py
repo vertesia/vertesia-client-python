@@ -17,23 +17,41 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
+from pydantic import BaseModel, ConfigDict, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
-from vertesia_client.openapi.models.supported_integrations_github import SupportedIntegrationsGithub
+from vertesia_client.openapi.models.event_delivery_queue_sort_field import EventDeliveryQueueSortField
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class GithubConfiguration(BaseModel):
+class EventDeliveryQueueSummaryPayload(BaseModel):
     """
-    GithubConfiguration
+    EventDeliveryQueueSummaryPayload
     """ # noqa: E501
-    integration: SupportedIntegrationsGithub
-    enabled: StrictBool
-    github_app_id: Optional[StrictStr] = Field(default=None, description="Numeric GitHub App id used to mint installation tokens (non-secret).")
-    allowed_repositories: List[StrictStr]
-    has_github_app_private_key: Optional[StrictBool] = Field(default=None, description="True when a GitHub App private key is stored for the project (the key itself is never returned).")
-    __properties: ClassVar[List[str]] = ["integration", "enabled", "github_app_id", "allowed_repositories", "has_github_app_private_key"]
+    subscription_id: Optional[StrictStr] = None
+    target_type: Optional[List[StrictStr]] = None
+    sort_by: Optional[EventDeliveryQueueSortField] = None
+    sort_order: Optional[StrictStr] = None
+    __properties: ClassVar[List[str]] = ["subscription_id", "target_type", "sort_by", "sort_order"]
+
+    @field_validator('target_type')
+    def target_type_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        for i in value:
+            if i not in set(['workflow', 'webhook', 'agent', 'process']):
+                raise ValueError("each list item must be one of ('workflow', 'webhook', 'agent', 'process')")
+        return value
+
+    @field_validator('sort_order')
+    def sort_order_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -53,7 +71,7 @@ class GithubConfiguration(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of GithubConfiguration from a JSON string"""
+        """Create an instance of EventDeliveryQueueSummaryPayload from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -78,7 +96,7 @@ class GithubConfiguration(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of GithubConfiguration from a dict"""
+        """Create an instance of EventDeliveryQueueSummaryPayload from a dict"""
         if obj is None:
             return None
 
@@ -86,11 +104,10 @@ class GithubConfiguration(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "integration": obj.get("integration"),
-            "enabled": obj.get("enabled"),
-            "github_app_id": obj.get("github_app_id"),
-            "allowed_repositories": obj.get("allowed_repositories"),
-            "has_github_app_private_key": obj.get("has_github_app_private_key")
+            "subscription_id": obj.get("subscription_id"),
+            "target_type": obj.get("target_type"),
+            "sort_by": obj.get("sort_by"),
+            "sort_order": obj.get("sort_order")
         })
         return _obj
 

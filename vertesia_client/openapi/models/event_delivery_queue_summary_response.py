@@ -17,23 +17,22 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional
-from vertesia_client.openapi.models.supported_integrations_github import SupportedIntegrationsGithub
+from pydantic import BaseModel, ConfigDict, StrictStr
+from typing import Any, ClassVar, Dict, List
+from vertesia_client.openapi.models.event_delivery_queue_subscription_summary import EventDeliveryQueueSubscriptionSummary
+from vertesia_client.openapi.models.event_outbox_queue_summary import EventOutboxQueueSummary
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class GithubConfiguration(BaseModel):
+class EventDeliveryQueueSummaryResponse(BaseModel):
     """
-    GithubConfiguration
+    EventDeliveryQueueSummaryResponse
     """ # noqa: E501
-    integration: SupportedIntegrationsGithub
-    enabled: StrictBool
-    github_app_id: Optional[StrictStr] = Field(default=None, description="Numeric GitHub App id used to mint installation tokens (non-secret).")
-    allowed_repositories: List[StrictStr]
-    has_github_app_private_key: Optional[StrictBool] = Field(default=None, description="True when a GitHub App private key is stored for the project (the key itself is never returned).")
-    __properties: ClassVar[List[str]] = ["integration", "enabled", "github_app_id", "allowed_repositories", "has_github_app_private_key"]
+    generated_at: StrictStr
+    outbox: EventOutboxQueueSummary
+    deliveries: List[EventDeliveryQueueSubscriptionSummary]
+    __properties: ClassVar[List[str]] = ["generated_at", "outbox", "deliveries"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -53,7 +52,7 @@ class GithubConfiguration(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of GithubConfiguration from a JSON string"""
+        """Create an instance of EventDeliveryQueueSummaryResponse from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -74,11 +73,21 @@ class GithubConfiguration(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of outbox
+        if self.outbox:
+            _dict['outbox'] = self.outbox.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of each item in deliveries (list)
+        _items = []
+        if self.deliveries:
+            for _item_deliveries in self.deliveries:
+                if _item_deliveries:
+                    _items.append(_item_deliveries.to_dict())
+            _dict['deliveries'] = _items
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of GithubConfiguration from a dict"""
+        """Create an instance of EventDeliveryQueueSummaryResponse from a dict"""
         if obj is None:
             return None
 
@@ -86,11 +95,9 @@ class GithubConfiguration(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "integration": obj.get("integration"),
-            "enabled": obj.get("enabled"),
-            "github_app_id": obj.get("github_app_id"),
-            "allowed_repositories": obj.get("allowed_repositories"),
-            "has_github_app_private_key": obj.get("has_github_app_private_key")
+            "generated_at": obj.get("generated_at"),
+            "outbox": EventOutboxQueueSummary.from_dict(obj["outbox"]) if obj.get("outbox") is not None else None,
+            "deliveries": [EventDeliveryQueueSubscriptionSummary.from_dict(_item) for _item in obj["deliveries"]] if obj.get("deliveries") is not None else None
         })
         return _obj
 

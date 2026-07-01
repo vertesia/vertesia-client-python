@@ -17,9 +17,11 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from vertesia_client.openapi.models.event_category import EventCategory
 from vertesia_client.openapi.models.event_delivery_intent_status import EventDeliveryIntentStatus
+from vertesia_client.openapi.models.event_delivery_sort_field import EventDeliverySortField
 from vertesia_client.openapi.models.event_outbox_status import EventOutboxStatus
 from typing import Optional, Set
 from typing_extensions import Self
@@ -35,7 +37,20 @@ class ListEventDeliveriesPayload(BaseModel):
     subscription_id: Optional[StrictStr] = None
     status: Optional[List[EventDeliveryIntentStatus]] = None
     outbox_status: Optional[List[EventOutboxStatus]] = None
-    __properties: ClassVar[List[str]] = ["limit", "event_id", "resource_id", "subscription_id", "status", "outbox_status"]
+    event_category: Optional[List[EventCategory]] = Field(default=None, description="Filter by outbox event category (e.g. external, content).")
+    action: Optional[List[StrictStr]] = Field(default=None, description="Filter by outbox action (e.g. opened, created).")
+    resource_type: Optional[List[StrictStr]] = Field(default=None, description="Filter by outbox resource type (e.g. github_issue, content_object).")
+    sort_by: Optional[EventDeliverySortField] = Field(default=None, description="Sort field (default created_at).")
+    sort_order: Optional[StrictStr] = Field(default=None, description="Sort order (default desc).")
+    __properties: ClassVar[List[str]] = ["limit", "event_id", "resource_id", "subscription_id", "status", "outbox_status", "event_category", "action", "resource_type", "sort_by", "sort_order"]
+
+    @field_validator('sort_order')
+    def sort_order_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -93,7 +108,12 @@ class ListEventDeliveriesPayload(BaseModel):
             "resource_id": obj.get("resource_id"),
             "subscription_id": obj.get("subscription_id"),
             "status": obj.get("status"),
-            "outbox_status": obj.get("outbox_status")
+            "outbox_status": obj.get("outbox_status"),
+            "event_category": obj.get("event_category"),
+            "action": obj.get("action"),
+            "resource_type": obj.get("resource_type"),
+            "sort_by": obj.get("sort_by"),
+            "sort_order": obj.get("sort_order")
         })
         return _obj
 

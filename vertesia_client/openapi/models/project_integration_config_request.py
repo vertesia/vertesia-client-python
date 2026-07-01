@@ -20,7 +20,7 @@ from typing import Any, List, Optional
 from vertesia_client.openapi.models.ask_user_webhook_configuration_input import AskUserWebhookConfigurationInput
 from vertesia_client.openapi.models.aws_configuration import AwsConfiguration
 from vertesia_client.openapi.models.exa_configuration_input import ExaConfigurationInput
-from vertesia_client.openapi.models.github_configuration import GithubConfiguration
+from vertesia_client.openapi.models.github_configuration_input import GithubConfigurationInput
 from vertesia_client.openapi.models.gladia_configuration_input import GladiaConfigurationInput
 from vertesia_client.openapi.models.linkup_configuration_input import LinkupConfigurationInput
 from vertesia_client.openapi.models.magic_pdf_configuration import MagicPdfConfiguration
@@ -30,7 +30,7 @@ from pydantic import StrictStr, Field
 from typing import Union, List, Set, Optional, Dict
 from typing_extensions import Literal, Self
 
-PROJECTINTEGRATIONCONFIGREQUEST_ONE_OF_SCHEMAS = ["AskUserWebhookConfigurationInput", "AwsConfiguration", "ExaConfigurationInput", "GithubConfiguration", "GladiaConfigurationInput", "LinkupConfigurationInput", "MagicPdfConfiguration", "ResendConfigurationInput", "SerperConfigurationInput"]
+PROJECTINTEGRATIONCONFIGREQUEST_ONE_OF_SCHEMAS = ["AskUserWebhookConfigurationInput", "AwsConfiguration", "ExaConfigurationInput", "GithubConfigurationInput", "GladiaConfigurationInput", "LinkupConfigurationInput", "MagicPdfConfiguration", "ResendConfigurationInput", "SerperConfigurationInput"]
 
 class ProjectIntegrationConfigRequest(BaseModel):
     """
@@ -38,8 +38,8 @@ class ProjectIntegrationConfigRequest(BaseModel):
     """
     # data type: GladiaConfigurationInput
     oneof_schema_1_validator: Optional[GladiaConfigurationInput] = None
-    # data type: GithubConfiguration
-    oneof_schema_2_validator: Optional[GithubConfiguration] = None
+    # data type: GithubConfigurationInput
+    oneof_schema_2_validator: Optional[GithubConfigurationInput] = None
     # data type: AwsConfiguration
     oneof_schema_3_validator: Optional[AwsConfiguration] = None
     # data type: MagicPdfConfiguration
@@ -54,8 +54,8 @@ class ProjectIntegrationConfigRequest(BaseModel):
     oneof_schema_8_validator: Optional[ResendConfigurationInput] = None
     # data type: AskUserWebhookConfigurationInput
     oneof_schema_9_validator: Optional[AskUserWebhookConfigurationInput] = None
-    actual_instance: Optional[Union[AskUserWebhookConfigurationInput, AwsConfiguration, ExaConfigurationInput, GithubConfiguration, GladiaConfigurationInput, LinkupConfigurationInput, MagicPdfConfiguration, ResendConfigurationInput, SerperConfigurationInput]] = None
-    one_of_schemas: Set[str] = { "AskUserWebhookConfigurationInput", "AwsConfiguration", "ExaConfigurationInput", "GithubConfiguration", "GladiaConfigurationInput", "LinkupConfigurationInput", "MagicPdfConfiguration", "ResendConfigurationInput", "SerperConfigurationInput" }
+    actual_instance: Optional[Union[AskUserWebhookConfigurationInput, AwsConfiguration, ExaConfigurationInput, GithubConfigurationInput, GladiaConfigurationInput, LinkupConfigurationInput, MagicPdfConfiguration, ResendConfigurationInput, SerperConfigurationInput]] = None
+    one_of_schemas: Set[str] = { "AskUserWebhookConfigurationInput", "AwsConfiguration", "ExaConfigurationInput", "GithubConfigurationInput", "GladiaConfigurationInput", "LinkupConfigurationInput", "MagicPdfConfiguration", "ResendConfigurationInput", "SerperConfigurationInput" }
 
     model_config = ConfigDict(
         validate_assignment=True,
@@ -86,9 +86,9 @@ class ProjectIntegrationConfigRequest(BaseModel):
             error_messages.append(f"Error! Input type `{type(v)}` is not `GladiaConfigurationInput`")
         else:
             match += 1
-        # validate data type: GithubConfiguration
-        if not isinstance(v, GithubConfiguration):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `GithubConfiguration`")
+        # validate data type: GithubConfigurationInput
+        if not isinstance(v, GithubConfigurationInput):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `GithubConfigurationInput`")
         else:
             match += 1
         # validate data type: AwsConfiguration
@@ -128,10 +128,10 @@ class ProjectIntegrationConfigRequest(BaseModel):
             match += 1
         if match > 1:
             # more than 1 match
-            raise ValueError("Multiple matches found when setting `actual_instance` in ProjectIntegrationConfigRequest with oneOf schemas: AskUserWebhookConfigurationInput, AwsConfiguration, ExaConfigurationInput, GithubConfiguration, GladiaConfigurationInput, LinkupConfigurationInput, MagicPdfConfiguration, ResendConfigurationInput, SerperConfigurationInput. Details: " + ", ".join(error_messages))
+            raise ValueError("Multiple matches found when setting `actual_instance` in ProjectIntegrationConfigRequest with oneOf schemas: AskUserWebhookConfigurationInput, AwsConfiguration, ExaConfigurationInput, GithubConfigurationInput, GladiaConfigurationInput, LinkupConfigurationInput, MagicPdfConfiguration, ResendConfigurationInput, SerperConfigurationInput. Details: " + ", ".join(error_messages))
         elif match == 0:
             # no match
-            raise ValueError("No match found when setting `actual_instance` in ProjectIntegrationConfigRequest with oneOf schemas: AskUserWebhookConfigurationInput, AwsConfiguration, ExaConfigurationInput, GithubConfiguration, GladiaConfigurationInput, LinkupConfigurationInput, MagicPdfConfiguration, ResendConfigurationInput, SerperConfigurationInput. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when setting `actual_instance` in ProjectIntegrationConfigRequest with oneOf schemas: AskUserWebhookConfigurationInput, AwsConfiguration, ExaConfigurationInput, GithubConfigurationInput, GladiaConfigurationInput, LinkupConfigurationInput, MagicPdfConfiguration, ResendConfigurationInput, SerperConfigurationInput. Details: " + ", ".join(error_messages))
         else:
             return v
 
@@ -152,9 +152,9 @@ class ProjectIntegrationConfigRequest(BaseModel):
             match += 1
         except (ValidationError, ValueError) as e:
             error_messages.append(str(e))
-        # deserialize data into GithubConfiguration
+        # deserialize data into GithubConfigurationInput
         try:
-            instance.actual_instance = GithubConfiguration.from_json(json_str)
+            instance.actual_instance = GithubConfigurationInput.from_json(json_str)
             match += 1
         except (ValidationError, ValueError) as e:
             error_messages.append(str(e))
@@ -203,10 +203,10 @@ class ProjectIntegrationConfigRequest(BaseModel):
 
         if match > 1:
             # more than 1 match
-            raise ValueError("Multiple matches found when deserializing the JSON string into ProjectIntegrationConfigRequest with oneOf schemas: AskUserWebhookConfigurationInput, AwsConfiguration, ExaConfigurationInput, GithubConfiguration, GladiaConfigurationInput, LinkupConfigurationInput, MagicPdfConfiguration, ResendConfigurationInput, SerperConfigurationInput. Details: " + ", ".join(error_messages))
+            raise ValueError("Multiple matches found when deserializing the JSON string into ProjectIntegrationConfigRequest with oneOf schemas: AskUserWebhookConfigurationInput, AwsConfiguration, ExaConfigurationInput, GithubConfigurationInput, GladiaConfigurationInput, LinkupConfigurationInput, MagicPdfConfiguration, ResendConfigurationInput, SerperConfigurationInput. Details: " + ", ".join(error_messages))
         elif match == 0:
             # no match
-            raise ValueError("No match found when deserializing the JSON string into ProjectIntegrationConfigRequest with oneOf schemas: AskUserWebhookConfigurationInput, AwsConfiguration, ExaConfigurationInput, GithubConfiguration, GladiaConfigurationInput, LinkupConfigurationInput, MagicPdfConfiguration, ResendConfigurationInput, SerperConfigurationInput. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when deserializing the JSON string into ProjectIntegrationConfigRequest with oneOf schemas: AskUserWebhookConfigurationInput, AwsConfiguration, ExaConfigurationInput, GithubConfigurationInput, GladiaConfigurationInput, LinkupConfigurationInput, MagicPdfConfiguration, ResendConfigurationInput, SerperConfigurationInput. Details: " + ", ".join(error_messages))
         else:
             return instance
 
@@ -220,7 +220,7 @@ class ProjectIntegrationConfigRequest(BaseModel):
         else:
             return json.dumps(self.actual_instance)
 
-    def to_dict(self) -> Optional[Union[Dict[str, Any], AskUserWebhookConfigurationInput, AwsConfiguration, ExaConfigurationInput, GithubConfiguration, GladiaConfigurationInput, LinkupConfigurationInput, MagicPdfConfiguration, ResendConfigurationInput, SerperConfigurationInput]]:
+    def to_dict(self) -> Optional[Union[Dict[str, Any], AskUserWebhookConfigurationInput, AwsConfiguration, ExaConfigurationInput, GithubConfigurationInput, GladiaConfigurationInput, LinkupConfigurationInput, MagicPdfConfiguration, ResendConfigurationInput, SerperConfigurationInput]]:
         """Returns the dict representation of the actual instance"""
         if self.actual_instance is None:
             return None

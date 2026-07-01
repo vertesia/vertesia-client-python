@@ -19,6 +19,8 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from vertesia_client.openapi.models.agent_delivery_match_mode import AgentDeliveryMatchMode
+from vertesia_client.openapi.models.agent_run_status import AgentRunStatus
 from vertesia_client.openapi.models.conversation_visibility import ConversationVisibility
 from vertesia_client.openapi.models.interaction_execution_configuration import InteractionExecutionConfiguration
 from typing import Optional, Set
@@ -30,6 +32,7 @@ class AgentEventDeliveryTarget(BaseModel):
     AgentEventDeliveryTarget
     """ # noqa: E501
     type: StrictStr
+    on_match: Optional[AgentDeliveryMatchMode] = Field(default=None, description="Behavior when an event matches. Defaults to `start`.")
     interaction_ref: Optional[StrictStr] = Field(default=None, description="Interaction ID, app ref, or system ref. Defaults to the general-purpose system agent.")
     data: Optional[Dict[str, Any]] = None
     config: Optional[InteractionExecutionConfiguration] = None
@@ -40,11 +43,48 @@ class AgentEventDeliveryTarget(BaseModel):
     tool_names: Optional[List[StrictStr]] = None
     max_iterations: Optional[Union[StrictFloat, StrictInt]] = None
     debug_mode: Optional[StrictBool] = None
-    __properties: ClassVar[List[str]] = ["type", "interaction_ref", "data", "config", "interactive", "visibility", "tags", "categories", "tool_names", "max_iterations", "debug_mode"]
+    signal_name: Optional[StrictStr] = Field(default=None, description="Signal sent to an existing/restarted run. Only `UserInput` is implemented.")
+    message_path: Optional[StrictStr] = Field(default=None, description="Dot-path to the message (initial instruction when starting, else the signal). Required for signal/ensure.")
+    client_message_id_path: Optional[StrictStr] = Field(default=None, description="Dot-path to a stable per-message id, carried on the signal for (future) exactly-once dedupe.")
+    statuses: Optional[List[AgentRunStatus]] = Field(default=None, description="Run statuses eligible to receive the signal when a run exists. Defaults to ['running'].")
+    skip_if_path_exists: Optional[StrictStr] = Field(default=None, description="If this dot-path resolves to a value, the delivery is skipped.")
+    author_path: Optional[StrictStr] = Field(default=None, description="Dot-path to the message author, for the loop guard.")
+    ignore_author_patterns: Optional[List[StrictStr]] = Field(default=None, description="Regex patterns matched against the resolved author; a match skips the delivery (loop guard).")
+    require_command_prefixes: Optional[List[StrictStr]] = Field(default=None, description="The message must start with one of these prefixes to be delivered.")
+    require_mentions: Optional[List[StrictStr]] = Field(default=None, description="...or contain one of these mentions. Combined with prefixes as OR.")
+    missing_thread: Optional[StrictStr] = Field(default=None, description="`signal` mode only — no run yet (open/follow-up race): 'retry' (default) or 'skip'. Ignored for `ensure`.")
+    on_terminal: Optional[StrictStr] = Field(default=None, description="Behaviour when only terminal runs match: `skip` (default) or `restart` then signal.")
+    metadata: Optional[Dict[str, Any]] = Field(default=None, description="Extra fields merged into the signal's metadata; same `{{event.*}}` / `$event.x` templating as `data`.")
+    additional_properties: Dict[str, Any] = {}
+    __properties: ClassVar[List[str]] = ["type", "on_match", "interaction_ref", "data", "config", "interactive", "visibility", "tags", "categories", "tool_names", "max_iterations", "debug_mode", "signal_name", "message_path", "client_message_id_path", "statuses", "skip_if_path_exists", "author_path", "ignore_author_patterns", "require_command_prefixes", "require_mentions", "missing_thread", "on_terminal", "metadata"]
 
     @field_validator('type')
     def type_validate_enum(cls, value):
         """Validates the enum"""
+        return value
+
+    @field_validator('signal_name')
+    def signal_name_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        return value
+
+    @field_validator('missing_thread')
+    def missing_thread_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        return value
+
+    @field_validator('on_terminal')
+    def on_terminal_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
         return value
 
     model_config = ConfigDict(
@@ -77,8 +117,10 @@ class AgentEventDeliveryTarget(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -89,6 +131,11 @@ class AgentEventDeliveryTarget(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of config
         if self.config:
             _dict['config'] = self.config.to_dict()
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
         return _dict
 
     @classmethod
@@ -102,6 +149,7 @@ class AgentEventDeliveryTarget(BaseModel):
 
         _obj = cls.model_validate({
             "type": obj.get("type"),
+            "on_match": obj.get("on_match"),
             "interaction_ref": obj.get("interaction_ref"),
             "data": obj.get("data"),
             "config": InteractionExecutionConfiguration.from_dict(obj["config"]) if obj.get("config") is not None else None,
@@ -111,8 +159,25 @@ class AgentEventDeliveryTarget(BaseModel):
             "categories": obj.get("categories"),
             "tool_names": obj.get("tool_names"),
             "max_iterations": obj.get("max_iterations"),
-            "debug_mode": obj.get("debug_mode")
+            "debug_mode": obj.get("debug_mode"),
+            "signal_name": obj.get("signal_name"),
+            "message_path": obj.get("message_path"),
+            "client_message_id_path": obj.get("client_message_id_path"),
+            "statuses": obj.get("statuses"),
+            "skip_if_path_exists": obj.get("skip_if_path_exists"),
+            "author_path": obj.get("author_path"),
+            "ignore_author_patterns": obj.get("ignore_author_patterns"),
+            "require_command_prefixes": obj.get("require_command_prefixes"),
+            "require_mentions": obj.get("require_mentions"),
+            "missing_thread": obj.get("missing_thread"),
+            "on_terminal": obj.get("on_terminal"),
+            "metadata": obj.get("metadata")
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 

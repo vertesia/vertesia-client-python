@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
+from vertesia_client.openapi.models.event_ingest_resource_rule import EventIngestResourceRule
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -30,11 +31,14 @@ class EventIngestTransform(BaseModel):
     action_path: Optional[StrictStr] = Field(default=None, description="Dot-path to the value used as `event.action`, e.g. `event.type`.")
     resource_type_path: Optional[StrictStr] = Field(default=None, description="Dot-path to the value used as `event.resource_type`.")
     resource_id_path: Optional[StrictStr] = Field(default=None, description="Dot-path to the value used as `event.resource_id`.")
+    event_type_header: Optional[StrictStr] = Field(default=None, description="Request **header** carrying the event family (e.g. GitHub's `x-github-event`), captured into `event.details.event_type`. Lets subscriptions and `resource_rules` discriminate event shapes when one channel receives heterogeneous payloads whose `action` alone is ambiguous (e.g. `created` for both an issue comment and a PR review comment).")
+    resource_rules: Optional[List[EventIngestResourceRule]] = Field(default=None, description="Ordered conditional rules for `resource_type` + `resource_id` (first match wins). Used when a single `resource_id_path` can't serve every payload shape. Falls back to `resource_type_path` / `resource_id_path` / channel defaults when no rule matches.")
     idempotency_key_path: Optional[StrictStr] = Field(default=None, description="Dot-path to a deduplication key (same semantics as `idempotency_key`).")
+    idempotency_key_header: Optional[StrictStr] = Field(default=None, description="Request **header** to use as the deduplication key when the body has no stable per-delivery id — e.g. GitHub App's `x-github-delivery`, unique per delivery for all event types, which is the only reliable dedup key when one App webhook delivers heterogeneous payloads (issues + comments) to a single channel. Lower precedence than `idempotency_key_path`.")
     timestamp_path: Optional[StrictStr] = Field(default=None, description="Dot-path to an ISO 8601 event timestamp.")
     static_details: Optional[Dict[str, Any]] = Field(default=None, description="Static fields merged into `event.details`.")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["action_path", "resource_type_path", "resource_id_path", "idempotency_key_path", "timestamp_path", "static_details"]
+    __properties: ClassVar[List[str]] = ["action_path", "resource_type_path", "resource_id_path", "event_type_header", "resource_rules", "idempotency_key_path", "idempotency_key_header", "timestamp_path", "static_details"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -77,6 +81,13 @@ class EventIngestTransform(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of each item in resource_rules (list)
+        _items = []
+        if self.resource_rules:
+            for _item_resource_rules in self.resource_rules:
+                if _item_resource_rules:
+                    _items.append(_item_resource_rules.to_dict())
+            _dict['resource_rules'] = _items
         # puts key-value pairs in additional_properties in the top level
         if self.additional_properties is not None:
             for _key, _value in self.additional_properties.items():
@@ -97,7 +108,10 @@ class EventIngestTransform(BaseModel):
             "action_path": obj.get("action_path"),
             "resource_type_path": obj.get("resource_type_path"),
             "resource_id_path": obj.get("resource_id_path"),
+            "event_type_header": obj.get("event_type_header"),
+            "resource_rules": [EventIngestResourceRule.from_dict(_item) for _item in obj["resource_rules"]] if obj.get("resource_rules") is not None else None,
             "idempotency_key_path": obj.get("idempotency_key_path"),
+            "idempotency_key_header": obj.get("idempotency_key_header"),
             "timestamp_path": obj.get("timestamp_path"),
             "static_details": obj.get("static_details")
         })

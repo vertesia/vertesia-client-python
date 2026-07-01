@@ -17,23 +17,23 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
-from vertesia_client.openapi.models.supported_integrations_github import SupportedIntegrationsGithub
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class GithubConfiguration(BaseModel):
+class EventIngestResourceRule(BaseModel):
     """
-    GithubConfiguration
+    A conditional rule for deriving `resource_type` + `resource_id` from the body, evaluated in order (first match wins) when a single dot-path can't serve every payload shape a channel receives. A sender whose one webhook delivers heterogeneous events (e.g. a GitHub App: issues, issue comments, PR reviews) needs different thread identities per event family; these rules express that without baking provider knowledge into the server.
     """ # noqa: E501
-    integration: SupportedIntegrationsGithub
-    enabled: StrictBool
-    github_app_id: Optional[StrictStr] = Field(default=None, description="Numeric GitHub App id used to mint installation tokens (non-secret).")
-    allowed_repositories: List[StrictStr]
-    has_github_app_private_key: Optional[StrictBool] = Field(default=None, description="True when a GitHub App private key is stored for the project (the key itself is never returned).")
-    __properties: ClassVar[List[str]] = ["integration", "enabled", "github_app_id", "allowed_repositories", "has_github_app_private_key"]
+    event_type: Optional[List[StrictStr]] = Field(default=None, description="Match when the captured `event_type` (see `event_type_header`) is one of these.")
+    when_path_exists: Optional[StrictStr] = Field(default=None, description="Match only when this dot-path resolves to a defined, non-null value (e.g. `issue.pull_request`).")
+    when_path_absent: Optional[StrictStr] = Field(default=None, description="Match only when this dot-path is undefined/null.")
+    resource_type: Optional[StrictStr] = Field(default=None, description="`resource_type` to set when this rule matches.")
+    resource_id_path: Optional[StrictStr] = Field(default=None, description="`resource_id` from a single dot-path.")
+    resource_id_template: Optional[StrictStr] = Field(default=None, description="...or a composed `resource_id` from a `{{dot.path}}` template against the body, e.g. `{{repository.full_name}}#{{pull_request.number}}`. Takes precedence over `resource_id_path`.")
+    __properties: ClassVar[List[str]] = ["event_type", "when_path_exists", "when_path_absent", "resource_type", "resource_id_path", "resource_id_template"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -53,7 +53,7 @@ class GithubConfiguration(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of GithubConfiguration from a JSON string"""
+        """Create an instance of EventIngestResourceRule from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -78,7 +78,7 @@ class GithubConfiguration(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of GithubConfiguration from a dict"""
+        """Create an instance of EventIngestResourceRule from a dict"""
         if obj is None:
             return None
 
@@ -86,11 +86,12 @@ class GithubConfiguration(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "integration": obj.get("integration"),
-            "enabled": obj.get("enabled"),
-            "github_app_id": obj.get("github_app_id"),
-            "allowed_repositories": obj.get("allowed_repositories"),
-            "has_github_app_private_key": obj.get("has_github_app_private_key")
+            "event_type": obj.get("event_type"),
+            "when_path_exists": obj.get("when_path_exists"),
+            "when_path_absent": obj.get("when_path_absent"),
+            "resource_type": obj.get("resource_type"),
+            "resource_id_path": obj.get("resource_id_path"),
+            "resource_id_template": obj.get("resource_id_template")
         })
         return _obj
 

@@ -17,23 +17,24 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional
-from vertesia_client.openapi.models.supported_integrations_github import SupportedIntegrationsGithub
+from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr
+from typing import Any, ClassVar, Dict, Optional, Union
+from vertesia_client.openapi.models.event_delivery_intent_status import EventDeliveryIntentStatus
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class GithubConfiguration(BaseModel):
+class EventDeliveryQueueFailureSummary(BaseModel):
     """
-    GithubConfiguration
+    EventDeliveryQueueFailureSummary
     """ # noqa: E501
-    integration: SupportedIntegrationsGithub
-    enabled: StrictBool
-    github_app_id: Optional[StrictStr] = Field(default=None, description="Numeric GitHub App id used to mint installation tokens (non-secret).")
-    allowed_repositories: List[StrictStr]
-    has_github_app_private_key: Optional[StrictBool] = Field(default=None, description="True when a GitHub App private key is stored for the project (the key itself is never returned).")
-    __properties: ClassVar[List[str]] = ["integration", "enabled", "github_app_id", "allowed_repositories", "has_github_app_private_key"]
+    intent_id: StrictStr
+    event_id: StrictStr
+    status: EventDeliveryIntentStatus
+    attempt_count: Union[StrictFloat, StrictInt]
+    last_error: Optional[StrictStr] = None
+    updated_at: StrictStr
+    __properties: ClassVar[List[str]] = ["intent_id", "event_id", "status", "attempt_count", "last_error", "updated_at"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -53,7 +54,7 @@ class GithubConfiguration(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of GithubConfiguration from a JSON string"""
+        """Create an instance of EventDeliveryQueueFailureSummary from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -74,11 +75,16 @@ class GithubConfiguration(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # set to None if last_error (nullable) is None
+        # and model_fields_set contains the field
+        if self.last_error is None and "last_error" in self.model_fields_set:
+            _dict['last_error'] = None
+
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of GithubConfiguration from a dict"""
+        """Create an instance of EventDeliveryQueueFailureSummary from a dict"""
         if obj is None:
             return None
 
@@ -86,11 +92,12 @@ class GithubConfiguration(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "integration": obj.get("integration"),
-            "enabled": obj.get("enabled"),
-            "github_app_id": obj.get("github_app_id"),
-            "allowed_repositories": obj.get("allowed_repositories"),
-            "has_github_app_private_key": obj.get("has_github_app_private_key")
+            "intent_id": obj.get("intent_id"),
+            "event_id": obj.get("event_id"),
+            "status": obj.get("status"),
+            "attempt_count": obj.get("attempt_count"),
+            "last_error": obj.get("last_error"),
+            "updated_at": obj.get("updated_at")
         })
         return _obj
 

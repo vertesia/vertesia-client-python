@@ -87,6 +87,7 @@ __all__ = [
     "AdaptedTable",
     "AdvanceProcessPayload",
     "AgentArtifactUrlResponse",
+    "AgentDeliveryMatchMode",
     "AgentEventDeliveryTarget",
     "AgentMessageDetails",
     "AgentMessageDetailsFilesInner",
@@ -391,16 +392,24 @@ __all__ = [
     "EventCategory",
     "EventDeliveryIntentStatus",
     "EventDeliveryIntentSummary",
+    "EventDeliveryQueueFailureSummary",
+    "EventDeliveryQueueSortField",
+    "EventDeliveryQueueSubscriptionSummary",
+    "EventDeliveryQueueSummaryPayload",
+    "EventDeliveryQueueSummaryResponse",
+    "EventDeliverySortField",
     "EventDeliverySummary",
     "EventDeliveryTarget",
     "EventDeliveryTargetInput",
     "EventError",
     "EventIngestChannel",
     "EventIngestChannelMutationResponse",
+    "EventIngestResourceRule",
     "EventIngestSignatureAlgorithm",
     "EventIngestSignatureConfig",
     "EventIngestSignatureEncoding",
     "EventIngestTransform",
+    "EventOutboxQueueSummary",
     "EventOutboxStatus",
     "EventPriority",
     "EventRef",
@@ -449,6 +458,7 @@ __all__ = [
     "GetRenditionResponse",
     "GetUploadUrlPayload",
     "GithubConfiguration",
+    "GithubConfigurationInput",
     "GladiaConfiguration",
     "GladiaConfigurationInput",
     "GroqOptions",
@@ -957,6 +967,7 @@ from vertesia_client.openapi.models.adapt_tables_request import AdaptTablesReque
 from vertesia_client.openapi.models.adapted_table import AdaptedTable as AdaptedTable
 from vertesia_client.openapi.models.advance_process_payload import AdvanceProcessPayload as AdvanceProcessPayload
 from vertesia_client.openapi.models.agent_artifact_url_response import AgentArtifactUrlResponse as AgentArtifactUrlResponse
+from vertesia_client.openapi.models.agent_delivery_match_mode import AgentDeliveryMatchMode as AgentDeliveryMatchMode
 from vertesia_client.openapi.models.agent_event_delivery_target import AgentEventDeliveryTarget as AgentEventDeliveryTarget
 from vertesia_client.openapi.models.agent_message_details import AgentMessageDetails as AgentMessageDetails
 from vertesia_client.openapi.models.agent_message_details_files_inner import AgentMessageDetailsFilesInner as AgentMessageDetailsFilesInner
@@ -1261,16 +1272,24 @@ from vertesia_client.openapi.models.error_response import ErrorResponse as Error
 from vertesia_client.openapi.models.event_category import EventCategory as EventCategory
 from vertesia_client.openapi.models.event_delivery_intent_status import EventDeliveryIntentStatus as EventDeliveryIntentStatus
 from vertesia_client.openapi.models.event_delivery_intent_summary import EventDeliveryIntentSummary as EventDeliveryIntentSummary
+from vertesia_client.openapi.models.event_delivery_queue_failure_summary import EventDeliveryQueueFailureSummary as EventDeliveryQueueFailureSummary
+from vertesia_client.openapi.models.event_delivery_queue_sort_field import EventDeliveryQueueSortField as EventDeliveryQueueSortField
+from vertesia_client.openapi.models.event_delivery_queue_subscription_summary import EventDeliveryQueueSubscriptionSummary as EventDeliveryQueueSubscriptionSummary
+from vertesia_client.openapi.models.event_delivery_queue_summary_payload import EventDeliveryQueueSummaryPayload as EventDeliveryQueueSummaryPayload
+from vertesia_client.openapi.models.event_delivery_queue_summary_response import EventDeliveryQueueSummaryResponse as EventDeliveryQueueSummaryResponse
+from vertesia_client.openapi.models.event_delivery_sort_field import EventDeliverySortField as EventDeliverySortField
 from vertesia_client.openapi.models.event_delivery_summary import EventDeliverySummary as EventDeliverySummary
 from vertesia_client.openapi.models.event_delivery_target import EventDeliveryTarget as EventDeliveryTarget
 from vertesia_client.openapi.models.event_delivery_target_input import EventDeliveryTargetInput as EventDeliveryTargetInput
 from vertesia_client.openapi.models.event_error import EventError as EventError
 from vertesia_client.openapi.models.event_ingest_channel import EventIngestChannel as EventIngestChannel
 from vertesia_client.openapi.models.event_ingest_channel_mutation_response import EventIngestChannelMutationResponse as EventIngestChannelMutationResponse
+from vertesia_client.openapi.models.event_ingest_resource_rule import EventIngestResourceRule as EventIngestResourceRule
 from vertesia_client.openapi.models.event_ingest_signature_algorithm import EventIngestSignatureAlgorithm as EventIngestSignatureAlgorithm
 from vertesia_client.openapi.models.event_ingest_signature_config import EventIngestSignatureConfig as EventIngestSignatureConfig
 from vertesia_client.openapi.models.event_ingest_signature_encoding import EventIngestSignatureEncoding as EventIngestSignatureEncoding
 from vertesia_client.openapi.models.event_ingest_transform import EventIngestTransform as EventIngestTransform
+from vertesia_client.openapi.models.event_outbox_queue_summary import EventOutboxQueueSummary as EventOutboxQueueSummary
 from vertesia_client.openapi.models.event_outbox_status import EventOutboxStatus as EventOutboxStatus
 from vertesia_client.openapi.models.event_priority import EventPriority as EventPriority
 from vertesia_client.openapi.models.event_ref import EventRef as EventRef
@@ -1319,6 +1338,7 @@ from vertesia_client.openapi.models.get_model_prices_to_parameter import GetMode
 from vertesia_client.openapi.models.get_rendition_response import GetRenditionResponse as GetRenditionResponse
 from vertesia_client.openapi.models.get_upload_url_payload import GetUploadUrlPayload as GetUploadUrlPayload
 from vertesia_client.openapi.models.github_configuration import GithubConfiguration as GithubConfiguration
+from vertesia_client.openapi.models.github_configuration_input import GithubConfigurationInput as GithubConfigurationInput
 from vertesia_client.openapi.models.gladia_configuration import GladiaConfiguration as GladiaConfiguration
 from vertesia_client.openapi.models.gladia_configuration_input import GladiaConfigurationInput as GladiaConfigurationInput
 from vertesia_client.openapi.models.groq_options import GroqOptions as GroqOptions
