@@ -208,6 +208,9 @@ __all__ = [
     "CompositeAppCardOverrides",
     "CompositeAppConfig",
     "CompositeAppEntry",
+    "CompositeAppHeaderItem",
+    "CompositeAppHeaderItemKind",
+    "CompositeAppHeaderItemTarget",
     "CompositeAppHeaderOverrides",
     "CompositeAppHomePlugin",
     "CompositeAppLogoOverrides",
@@ -1088,6 +1091,9 @@ from vertesia_client.openapi.models.complex_search_query import ComplexSearchQue
 from vertesia_client.openapi.models.composite_app_card_overrides import CompositeAppCardOverrides as CompositeAppCardOverrides
 from vertesia_client.openapi.models.composite_app_config import CompositeAppConfig as CompositeAppConfig
 from vertesia_client.openapi.models.composite_app_entry import CompositeAppEntry as CompositeAppEntry
+from vertesia_client.openapi.models.composite_app_header_item import CompositeAppHeaderItem as CompositeAppHeaderItem
+from vertesia_client.openapi.models.composite_app_header_item_kind import CompositeAppHeaderItemKind as CompositeAppHeaderItemKind
+from vertesia_client.openapi.models.composite_app_header_item_target import CompositeAppHeaderItemTarget as CompositeAppHeaderItemTarget
 from vertesia_client.openapi.models.composite_app_header_overrides import CompositeAppHeaderOverrides as CompositeAppHeaderOverrides
 from vertesia_client.openapi.models.composite_app_home_plugin import CompositeAppHomePlugin as CompositeAppHomePlugin
 from vertesia_client.openapi.models.composite_app_logo_overrides import CompositeAppLogoOverrides as CompositeAppLogoOverrides

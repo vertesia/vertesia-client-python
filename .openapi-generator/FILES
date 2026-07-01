@@ -186,6 +186,9 @@ vertesia_client/openapi/models/complex_search_query.py
 vertesia_client/openapi/models/composite_app_card_overrides.py
 vertesia_client/openapi/models/composite_app_config.py
 vertesia_client/openapi/models/composite_app_entry.py
+vertesia_client/openapi/models/composite_app_header_item.py
+vertesia_client/openapi/models/composite_app_header_item_kind.py
+vertesia_client/openapi/models/composite_app_header_item_target.py
 vertesia_client/openapi/models/composite_app_header_overrides.py
 vertesia_client/openapi/models/composite_app_home_plugin.py
 vertesia_client/openapi/models/composite_app_logo_overrides.py

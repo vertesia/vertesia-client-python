@@ -515,10 +515,43 @@ components:
           description: Optional sidebar display overrides
         header:
           $ref: "#/components/schemas/CompositeAppHeaderOverrides"
-          description: Optional header button visibility overrides
+          deprecated: true
+          x-deprecated-message: >-
+            Use `headerMenu` instead. Optional header button visibility
+            overrides.
+
+            Still read to seed `headerMenu` defaults for configs saved before
+            the header menu existed.
+          description: >-
+            Deprecated: Use `headerMenu` instead. Optional header button
+            visibility overrides.
+
+            Still read to seed `headerMenu` defaults for configs saved before
+            the header menu existed.
         userMenu:
           $ref: "#/components/schemas/CompositeAppUserMenuOverrides"
-          description: Optional user menu overrides
+          deprecated: true
+          x-deprecated-message: >-
+            Use the `user_menu` item in `headerMenu` instead. Optional user menu
+            overrides.
+
+            Still read to seed `headerMenu` defaults for configs saved before
+            the header menu existed.
+          description: >-
+            Deprecated: Use the `user_menu` item in `headerMenu` instead.
+            Optional user menu overrides.
+
+            Still read to seed `headerMenu` defaults for configs saved before
+            the header menu existed.
+        headerMenu:
+          type: array
+          items:
+            $ref: "#/components/schemas/CompositeAppHeaderItem"
+          description: Optional free-form header menu. When present, the header renders
+            from this ordered list instead of the legacy `header`/`userMenu`
+            flags. Built-in items (App Portal, Docs, Help, User Menu) can be
+            hidden/relabeled/re-icon'd/redirected; custom items are arbitrary
+            buttons.
         theme:
           $ref: "#/components/schemas/CompositeAppThemeOverrides"
           description: Optional theme overrides (e.g. disable dark mode)
@@ -5392,6 +5425,94 @@ components:
           description: Whether to hide the User Menu (defaults to false)
       additionalProperties: false
       description: User menu overrides for the CompositeApp.
+    CompositeAppHeaderItem:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Stable unique identifier. Built-ins use their kind as id (e.g.
+            "app_portal").
+        kind:
+          $ref: "#/components/schemas/CompositeAppHeaderItemKind"
+          description: Item kind. `custom` for user-added buttons; otherwise one of the
+            four built-ins.
+        label:
+          type: string
+          description: Display label, used as the button tooltip / accessible name.
+        icon:
+          type: string
+          description: Lucide icon name or SVG content string. Ignored for `user_menu`.
+        href:
+          type: string
+          description: Destination route ("/...") or external URL. Ignored for `user_menu`.
+        target:
+          $ref: "#/components/schemas/CompositeAppHeaderItemTarget"
+          description: Where to open the link (defaults to "_self"). Ignored for
+            `user_menu`.
+        hidden:
+          type: boolean
+          description: When true, this item is hidden from the header.
+        permissions:
+          $ref: "#/components/schemas/CompositeAppNavItemPermissions"
+          description: Optional access control settings for this header item.
+      required:
+        - id
+        - kind
+        - label
+      additionalProperties: false
+      description: >-
+        A single button in the CompositeApp header bar.
+
+
+        Unlike sidebar nav-items, header items are free-form and not tied to an
+        installed app: each is a labelled, icon-bearing button linking to a
+        route or external URL. The `user_menu` item is special — it renders the
+        account dropdown, so its `icon`, `href`, and `target` are ignored.
+    CompositeAppHeaderItemKind:
+      type: string
+      enum:
+        - app_portal
+        - docs
+        - help
+        - user_menu
+        - custom
+      description: Discriminator for a header item. The four built-ins (`app_portal`,
+        `docs`, `help`, `user_menu`) seed the default header and cannot be
+        deleted (only hidden/customized); `custom` items are fully user-defined
+        buttons.
+    CompositeAppHeaderItemTarget:
+      type: string
+      enum:
+        - _self
+        - _blank
+      description: Where a header link opens.
+    CompositeAppNavItemPermissions:
+      type: object
+      properties:
+        groupsAllowed:
+          type: array
+          items:
+            type: string
+          description: Group IDs whose members can see this item.
+        usersAllowed:
+          type: array
+          items:
+            type: string
+          description: User IDs who can see this item.
+        rolesAllowed:
+          type: array
+          items:
+            type: string
+          description: SystemRoles values (e.g. "developer", "manager") whose holders can
+            see this item.
+      additionalProperties: false
+      description: >-
+        Access control settings for a composite app nav item.
+
+
+        If any of `groupsAllowed`, `usersAllowed`, or `rolesAllowed` are set,
+        access is granted when the user matches ANY list (OR logic). All
+        empty/absent means visible to everyone. Admin users bypass all checks.
     CompositeAppThemeOverrides:
       type: object
       properties:
@@ -5496,33 +5617,6 @@ components:
       description: 'A navigable item in the sidebar menu. An "app" is just a nav-item
         with `appName` + `route: "/"` that has children. Nav-items carry their
         own `appName` for routing, independent of position in the tree.'
-    CompositeAppNavItemPermissions:
-      type: object
-      properties:
-        groupsAllowed:
-          type: array
-          items:
-            type: string
-          description: Group IDs whose members can see this item.
-        usersAllowed:
-          type: array
-          items:
-            type: string
-          description: User IDs who can see this item.
-        rolesAllowed:
-          type: array
-          items:
-            type: string
-          description: SystemRoles values (e.g. "developer", "manager") whose holders can
-            see this item.
-      additionalProperties: false
-      description: >-
-        Access control settings for a composite app nav item.
-
-
-        If any of `groupsAllowed`, `usersAllowed`, or `rolesAllowed` are set,
-        access is granted when the user matches ANY list (OR logic). All
-        empty/absent means visible to everyone. Admin users bypass all checks.
     Partial_Omit_CompositeAppConfig_id_project:
       type: object
       properties:
@@ -5543,10 +5637,43 @@ components:
           description: Optional sidebar display overrides
         header:
           $ref: "#/components/schemas/CompositeAppHeaderOverrides"
-          description: Optional header button visibility overrides
+          deprecated: true
+          x-deprecated-message: >-
+            Use `headerMenu` instead. Optional header button visibility
+            overrides.
+
+            Still read to seed `headerMenu` defaults for configs saved before
+            the header menu existed.
+          description: >-
+            Deprecated: Use `headerMenu` instead. Optional header button
+            visibility overrides.
+
+            Still read to seed `headerMenu` defaults for configs saved before
+            the header menu existed.
         userMenu:
           $ref: "#/components/schemas/CompositeAppUserMenuOverrides"
-          description: Optional user menu overrides
+          deprecated: true
+          x-deprecated-message: >-
+            Use the `user_menu` item in `headerMenu` instead. Optional user menu
+            overrides.
+
+            Still read to seed `headerMenu` defaults for configs saved before
+            the header menu existed.
+          description: >-
+            Deprecated: Use the `user_menu` item in `headerMenu` instead.
+            Optional user menu overrides.
+
+            Still read to seed `headerMenu` defaults for configs saved before
+            the header menu existed.
+        headerMenu:
+          type: array
+          items:
+            $ref: "#/components/schemas/CompositeAppHeaderItem"
+          description: Optional free-form header menu. When present, the header renders
+            from this ordered list instead of the legacy `header`/`userMenu`
+            flags. Built-in items (App Portal, Docs, Help, User Menu) can be
+            hidden/relabeled/re-icon'd/redirected; custom items are arbitrary
+            buttons.
         theme:
           $ref: "#/components/schemas/CompositeAppThemeOverrides"
           description: Optional theme overrides (e.g. disable dark mode)

@@ -21,6 +21,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from typing import Any, ClassVar, Dict, List, Optional
 from vertesia_client.openapi.models.composite_app_card_overrides import CompositeAppCardOverrides
 from vertesia_client.openapi.models.composite_app_entry import CompositeAppEntry
+from vertesia_client.openapi.models.composite_app_header_item import CompositeAppHeaderItem
 from vertesia_client.openapi.models.composite_app_header_overrides import CompositeAppHeaderOverrides
 from vertesia_client.openapi.models.composite_app_home_plugin import CompositeAppHomePlugin
 from vertesia_client.openapi.models.composite_app_logo_overrides import CompositeAppLogoOverrides
@@ -43,13 +44,14 @@ class PartialOmitCompositeAppConfigIdProject(BaseModel):
     message: Optional[CompositeAppMessageOverrides] = Field(default=None, description="Optional message banner overrides")
     switchers: Optional[CompositeAppSwitchersOverrides] = Field(default=None, description="Optional switcher visibility overrides")
     sidebar: Optional[CompositeAppSidebarOverrides] = Field(default=None, description="Optional sidebar display overrides")
-    header: Optional[CompositeAppHeaderOverrides] = Field(default=None, description="Optional header button visibility overrides")
-    user_menu: Optional[CompositeAppUserMenuOverrides] = Field(default=None, description="Optional user menu overrides", alias="userMenu")
+    header: Optional[CompositeAppHeaderOverrides] = Field(default=None, description="Deprecated: Use `headerMenu` instead. Optional header button visibility overrides. Still read to seed `headerMenu` defaults for configs saved before the header menu existed.")
+    user_menu: Optional[CompositeAppUserMenuOverrides] = Field(default=None, description="Deprecated: Use the `user_menu` item in `headerMenu` instead. Optional user menu overrides. Still read to seed `headerMenu` defaults for configs saved before the header menu existed.", alias="userMenu")
+    header_menu: Optional[List[CompositeAppHeaderItem]] = Field(default=None, description="Optional free-form header menu. When present, the header renders from this ordered list instead of the legacy `header`/`userMenu` flags. Built-in items (App Portal, Docs, Help, User Menu) can be hidden/relabeled/re-icon'd/redirected; custom items are arbitrary buttons.", alias="headerMenu")
     theme: Optional[CompositeAppThemeOverrides] = Field(default=None, description="Optional theme overrides (e.g. disable dark mode)")
     home_plugin: Optional[CompositeAppHomePlugin] = Field(default=None, description="Optional home page override. When set, redirects \"/\" to the specified app route instead of the dashboard. Send null to unset.", alias="homePlugin")
     apps: Optional[List[CompositeAppEntry]] = Field(default=None, description="List of apps to include in the CompositeApp (used for installation tracking and fallback sidebar)")
     menu: Optional[List[CompositeAppMenuSection]] = Field(default=None, description="Optional sidebar menu. When present, the sidebar renders from this instead of the apps-based pipeline. Top-level array is sections; each section contains nav-items.")
-    __properties: ClassVar[List[str]] = ["card", "logo", "message", "switchers", "sidebar", "header", "userMenu", "theme", "homePlugin", "apps", "menu"]
+    __properties: ClassVar[List[str]] = ["card", "logo", "message", "switchers", "sidebar", "header", "userMenu", "headerMenu", "theme", "homePlugin", "apps", "menu"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -111,6 +113,13 @@ class PartialOmitCompositeAppConfigIdProject(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of user_menu
         if self.user_menu:
             _dict['userMenu'] = self.user_menu.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of each item in header_menu (list)
+        _items = []
+        if self.header_menu:
+            for _item_header_menu in self.header_menu:
+                if _item_header_menu:
+                    _items.append(_item_header_menu.to_dict())
+            _dict['headerMenu'] = _items
         # override the default output from pydantic by calling `to_dict()` of theme
         if self.theme:
             _dict['theme'] = self.theme.to_dict()
@@ -155,6 +164,7 @@ class PartialOmitCompositeAppConfigIdProject(BaseModel):
             "sidebar": CompositeAppSidebarOverrides.from_dict(obj["sidebar"]) if obj.get("sidebar") is not None else None,
             "header": CompositeAppHeaderOverrides.from_dict(obj["header"]) if obj.get("header") is not None else None,
             "userMenu": CompositeAppUserMenuOverrides.from_dict(obj["userMenu"]) if obj.get("userMenu") is not None else None,
+            "headerMenu": [CompositeAppHeaderItem.from_dict(_item) for _item in obj["headerMenu"]] if obj.get("headerMenu") is not None else None,
             "theme": CompositeAppThemeOverrides.from_dict(obj["theme"]) if obj.get("theme") is not None else None,
             "homePlugin": CompositeAppHomePlugin.from_dict(obj["homePlugin"]) if obj.get("homePlugin") is not None else None,
             "apps": [CompositeAppEntry.from_dict(_item) for _item in obj["apps"]] if obj.get("apps") is not None else None,
