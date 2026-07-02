@@ -642,6 +642,7 @@ from vertesia_client.openapi.models.quota_standing_response_admission import Quo
 from vertesia_client.openapi.models.quota_standing_response_llm import QuotaStandingResponseLlm
 from vertesia_client.openapi.models.quota_standing_window import QuotaStandingWindow
 from vertesia_client.openapi.models.quota_tier import QuotaTier
+from vertesia_client.openapi.models.quota_tier_response import QuotaTierResponse
 from vertesia_client.openapi.models.rate_limit_request_payload import RateLimitRequestPayload
 from vertesia_client.openapi.models.rate_limit_request_response import RateLimitRequestResponse
 from vertesia_client.openapi.models.reasoning_effort import ReasoningEffort

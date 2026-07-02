@@ -673,6 +673,7 @@ vertesia_client/openapi/models/quota_standing_response_admission.py
 vertesia_client/openapi/models/quota_standing_response_llm.py
 vertesia_client/openapi/models/quota_standing_window.py
 vertesia_client/openapi/models/quota_tier.py
+vertesia_client/openapi/models/quota_tier_response.py
 vertesia_client/openapi/models/rate_limit_request_payload.py
 vertesia_client/openapi/models/rate_limit_request_response.py
 vertesia_client/openapi/models/reasoning_effort.py

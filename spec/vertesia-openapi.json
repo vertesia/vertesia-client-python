@@ -2815,7 +2815,7 @@
             "description": "Deployment base tier (env QUOTA_BASE_TIER); `default` = the static limits stand."
           },
           "effective_tier": {
-            "type": "string",
+            "$ref": "#/components/schemas/QuotaEffectiveTier",
             "description": "Tier used to compute the API limits below: explicit account `quota_tier`, else account_type derived tier, else `base_tier` when the account tier could not be resolved."
           },
           "api": {
@@ -2869,6 +2869,19 @@
           "llm"
         ],
         "additionalProperties": false
+      },
+      "QuotaTierResponse": {
+        "type": "object",
+        "properties": {
+          "tier": {
+            "$ref": "#/components/schemas/QuotaEffectiveTier"
+          }
+        },
+        "required": [
+          "tier"
+        ],
+        "additionalProperties": false,
+        "description": "Lightweight per-account quota tier for the calling account — served by `GET /api/v1/quota/tier`. A cheap, cacheable read that lets another service (e.g. zeno-server's API rate limiter) resolve the caller's tier through studio-server instead of reaching into the account store directly. `tier` is the SAME value  {@link  QuotaStandingResponse.effective_tier }  reports: the account's explicit `quota_tier`, else its account_type-derived tier, else the deployment base tier when the account tier cannot be resolved."
       },
       "Account": {
         "type": "object",
@@ -11115,6 +11128,10 @@
           "asc",
           "desc"
         ]
+      },
+      "QuotaEffectiveTier": {
+        "type": "string",
+        "description": "Effective quota tier name after account-level overrides and account-type derivation. Code-defined tier names are currently `QuotaTier`, but this remains a string because deployments can introduce quota tiers through configuration."
       },
       "QuotaStandingResource": {
         "type": "object",
@@ -34406,6 +34423,88 @@
           "file": "../../apps/studio-server/src/api/quota.ts",
           "className": "QuotaResource",
           "methodName": "getStanding"
+        }
+      },
+      "parameters": [
+        {
+          "name": "x-api-version",
+          "in": "header",
+          "required": false,
+          "schema": {
+            "type": "string",
+            "example": "20260319"
+          },
+          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "x-vertesia-global-header": true
+        }
+      ]
+    },
+    "/quota/tier": {
+      "get": {
+        "operationId": "GetQuotaTier",
+        "tags": [
+          "Quota"
+        ],
+        "summary": "Get quota tier",
+        "description": "The calling account's effective quota tier: explicit account `quota_tier`, else its account_type-derived tier, else the deployment base tier when the account tier cannot be resolved. A lightweight lookup other services use to resolve a tenant tier without a direct account-store dependency.\n\n**Required permissions:** `account:member`",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OpenID": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "The calling account's effective quota tier.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuotaTierResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [
+          "account:member"
+        ],
+        "x-vertesia-source": {
+          "file": "../../apps/studio-server/src/api/quota.ts",
+          "className": "QuotaResource",
+          "methodName": "getTier"
         }
       },
       "parameters": [

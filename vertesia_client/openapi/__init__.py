@@ -695,6 +695,7 @@ __all__ = [
     "QuotaStandingResponseLlm",
     "QuotaStandingWindow",
     "QuotaTier",
+    "QuotaTierResponse",
     "RateLimitRequestPayload",
     "RateLimitRequestResponse",
     "ReasoningEffort",
@@ -1578,6 +1579,7 @@ from vertesia_client.openapi.models.quota_standing_response_admission import Quo
 from vertesia_client.openapi.models.quota_standing_response_llm import QuotaStandingResponseLlm as QuotaStandingResponseLlm
 from vertesia_client.openapi.models.quota_standing_window import QuotaStandingWindow as QuotaStandingWindow
 from vertesia_client.openapi.models.quota_tier import QuotaTier as QuotaTier
+from vertesia_client.openapi.models.quota_tier_response import QuotaTierResponse as QuotaTierResponse
 from vertesia_client.openapi.models.rate_limit_request_payload import RateLimitRequestPayload as RateLimitRequestPayload
 from vertesia_client.openapi.models.rate_limit_request_response import RateLimitRequestResponse as RateLimitRequestResponse
 from vertesia_client.openapi.models.reasoning_effort import ReasoningEffort as ReasoningEffort
