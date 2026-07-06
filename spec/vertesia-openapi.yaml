@@ -32679,6 +32679,147 @@ paths:
         description: Optional Vertesia API version header. Use `20260319` for the
           current stable API shape.
         x-vertesia-global-header: true
+  /agents/{agentRunId}/signal/{signalName}:
+    post:
+      operationId: SignalAgentRun
+      tags:
+        - Agent Runs
+      summary: Signal an agent run
+      description: |-
+        Sends a named signal to an agent run.
+
+        **Required permissions:** `workflow:run`
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters:
+        - name: agentRunId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: signalName
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Agent signal result.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SignalAgentResponse"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - workflow:run
+      x-vertesia-source:
+        file: ../../apps/zeno-server/src/api/agents.ts
+        className: AgentsResource
+        methodName: signal
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SignalAgentPayload"
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260319"
+        description: Optional Vertesia API version header. Use `20260319` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /agents/{agentRunId}/query/{queryName}:
+    get:
+      operationId: QueryAgentRun
+      tags:
+        - Agent Runs
+      summary: Query an agent run
+      description: |-
+        Runs a named query against an agent run.
+
+        **Required permissions:** Any of `agent_run:read`, `workflow:run`
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters:
+        - name: agentRunId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: queryName
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Agent query result.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorkflowQueryResult"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - agent_run:read
+        - workflow:run
+      x-vertesia-source:
+        file: ../../apps/zeno-server/src/api/agents.ts
+        className: AgentsResource
+        methodName: query
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260319"
+        description: Optional Vertesia API version header. Use `20260319` for the
+          current stable API shape.
+        x-vertesia-global-header: true
   /agents/{agentRunId}/updates:
     get:
       operationId: ListAgentRunUpdates
