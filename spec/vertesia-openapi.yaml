@@ -2728,6 +2728,11 @@ components:
             type: string
           description: Compartments the user belongs to — restricts access to documents in
             matching compartments
+        annotations:
+          type: array
+          items:
+            type: string
+          description: Free-form user metadata - restricted to internal use
       required:
         - id
         - externalId

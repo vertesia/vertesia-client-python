@@ -42,8 +42,9 @@ class User(BaseModel):
     properties: Optional[Dict[str, Any]] = Field(default=None, description="Custom properties for dynamic permission matching")
     clearance: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="BLP clearance level — determines max document sensitivity the user can access")
     compartments: Optional[List[StrictStr]] = Field(default=None, description="Compartments the user belongs to — restricts access to documents in matching compartments")
+    annotations: Optional[List[StrictStr]] = Field(default=None, description="Free-form user metadata - restricted to internal use")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["id", "externalId", "email", "name", "username", "picture", "language", "phone", "sign_in_provider", "last_selected_account", "source", "updated_by", "properties", "clearance", "compartments"]
+    __properties: ClassVar[List[str]] = ["id", "externalId", "email", "name", "username", "picture", "language", "phone", "sign_in_provider", "last_selected_account", "source", "updated_by", "properties", "clearance", "compartments", "annotations"]
 
     @field_validator('source')
     def source_validate_enum(cls, value):
@@ -125,7 +126,8 @@ class User(BaseModel):
             "updated_by": obj.get("updated_by"),
             "properties": obj.get("properties"),
             "clearance": obj.get("clearance"),
-            "compartments": obj.get("compartments")
+            "compartments": obj.get("compartments"),
+            "annotations": obj.get("annotations")
         })
         # store additional fields in additional_properties
         for _key in obj.keys():
