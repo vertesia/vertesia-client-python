@@ -3584,7 +3584,6 @@
         },
         "required": [
           "id",
-          "externalId",
           "email",
           "name"
         ],

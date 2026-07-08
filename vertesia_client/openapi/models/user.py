@@ -28,7 +28,7 @@ class User(BaseModel):
     User
     """ # noqa: E501
     id: StrictStr
-    external_id: StrictStr = Field(alias="externalId")
+    external_id: Optional[StrictStr] = Field(default=None, alias="externalId")
     email: StrictStr
     name: StrictStr
     username: Optional[StrictStr] = None

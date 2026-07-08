@@ -2628,7 +2628,6 @@ components:
             matching compartments
       required:
         - id
-        - externalId
         - email
         - name
       additionalProperties: false
