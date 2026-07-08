@@ -662,6 +662,7 @@ from vertesia_client.openapi.models.resend_configuration_input import ResendConf
 from vertesia_client.openapi.models.resolved_environment_info import ResolvedEnvironmentInfo
 from vertesia_client.openapi.models.resolved_interaction_execution_info import ResolvedInteractionExecutionInfo
 from vertesia_client.openapi.models.resolved_runtime_config import ResolvedRuntimeConfig
+from vertesia_client.openapi.models.resource_ref import ResourceRef
 from vertesia_client.openapi.models.resource_visibility import ResourceVisibility
 from vertesia_client.openapi.models.result_storage_options import ResultStorageOptions
 from vertesia_client.openapi.models.retry_process_node_payload import RetryProcessNodePayload

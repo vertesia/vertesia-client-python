@@ -693,6 +693,7 @@ vertesia_client/openapi/models/resend_configuration_input.py
 vertesia_client/openapi/models/resolved_environment_info.py
 vertesia_client/openapi/models/resolved_interaction_execution_info.py
 vertesia_client/openapi/models/resolved_runtime_config.py
+vertesia_client/openapi/models/resource_ref.py
 vertesia_client/openapi/models/resource_visibility.py
 vertesia_client/openapi/models/result_storage_options.py
 vertesia_client/openapi/models/retry_process_node_payload.py

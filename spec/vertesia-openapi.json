@@ -3708,7 +3708,6 @@
         },
         "required": [
           "id",
-          "externalId",
           "email",
           "name"
         ],
@@ -13390,6 +13389,10 @@
           "interactionRef": {
             "$ref": "#/components/schemas/InteractionRef"
           },
+          "environmentRef": {
+            "$ref": "#/components/schemas/ResourceRef",
+            "description": "Resolved environment reference (name resolved from `config.environment` id). Populated by the list endpoint; may be absent on other endpoints or when the id cannot be resolved, in which case consumers should fall back to `config.environment`."
+          },
           "topic": {
             "type": "string",
             "description": "Conversation topic (longer description from topic analysis)"
@@ -19695,6 +19698,44 @@
         ],
         "description": "Archive lifecycle state for an agent run.\n\n- `none`:      No archive exists (default)\n- `pending`:   Terminal status recorded; archive workflow triggered\n- `archiving`: Archive workflow is running\n- `complete`:  Archive stored in GCS successfully\n- `failed`:    Archive attempt failed (see `last_archive_error`)"
       },
+      "ResourceRef": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "version": {
+            "type": "number"
+          },
+          "status": {
+            "type": "string"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "endpoint": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "type"
+        ],
+        "additionalProperties": false
+      },
       "AutonomousRunResponse": {
         "type": "object",
         "properties": {
@@ -19869,6 +19910,10 @@
           },
           "interactionRef": {
             "$ref": "#/components/schemas/InteractionRef"
+          },
+          "environmentRef": {
+            "$ref": "#/components/schemas/ResourceRef",
+            "description": "Resolved environment reference (name resolved from `config.environment` id). Populated by the list endpoint; may be absent on other endpoints or when the id cannot be resolved, in which case consumers should fall back to `config.environment`."
           },
           "topic": {
             "type": "string",

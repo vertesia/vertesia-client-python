@@ -2735,7 +2735,6 @@ components:
           description: Free-form user metadata - restricted to internal use
       required:
         - id
-        - externalId
         - email
         - name
       additionalProperties: false
@@ -10490,6 +10489,12 @@ components:
           description: Human-readable interaction name
         interactionRef:
           $ref: "#/components/schemas/InteractionRef"
+        environmentRef:
+          $ref: "#/components/schemas/ResourceRef"
+          description: Resolved environment reference (name resolved from
+            `config.environment` id). Populated by the list endpoint; may be
+            absent on other endpoints or when the id cannot be resolved, in
+            which case consumers should fall back to `config.environment`.
         topic:
           type: string
           description: Conversation topic (longer description from topic analysis)
@@ -15207,6 +15212,32 @@ components:
         - `archiving`: Archive workflow is running
         - `complete`:  Archive stored in GCS successfully
         - `failed`:    Archive attempt failed (see `last_archive_error`)
+    ResourceRef:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+        description:
+          type: string
+        version:
+          type: number
+        status:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        endpoint:
+          type: string
+      required:
+        - id
+        - name
+        - type
+      additionalProperties: false
     AutonomousRunResponse:
       type: object
       properties:
@@ -15347,6 +15378,12 @@ components:
           description: Human-readable interaction name
         interactionRef:
           $ref: "#/components/schemas/InteractionRef"
+        environmentRef:
+          $ref: "#/components/schemas/ResourceRef"
+          description: Resolved environment reference (name resolved from
+            `config.environment` id). Populated by the list endpoint; may be
+            absent on other endpoints or when the id cannot be resolved, in
+            which case consumers should fall back to `config.environment`.
         topic:
           type: string
           description: Conversation topic (longer description from topic analysis)
