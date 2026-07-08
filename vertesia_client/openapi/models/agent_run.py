@@ -29,6 +29,7 @@ from vertesia_client.openapi.models.conversation_activity_state import Conversat
 from vertesia_client.openapi.models.conversation_visibility import ConversationVisibility
 from vertesia_client.openapi.models.interaction_execution_configuration import InteractionExecutionConfiguration
 from vertesia_client.openapi.models.interaction_ref import InteractionRef
+from vertesia_client.openapi.models.resource_ref import ResourceRef
 from vertesia_client.openapi.models.run_source import RunSource
 from typing import Optional, Set
 from typing_extensions import Self
@@ -74,6 +75,7 @@ class AgentRun(BaseModel):
     updated_at: datetime = Field(description="Timestamp when the document was last updated")
     interaction_name: Optional[StrictStr] = Field(default=None, description="Human-readable interaction name")
     interaction_ref: InteractionRef = Field(alias="interactionRef")
+    environment_ref: Optional[ResourceRef] = Field(default=None, description="Resolved environment reference (name resolved from `config.environment` id). Populated by the list endpoint; may be absent on other endpoints or when the id cannot be resolved, in which case consumers should fall back to `config.environment`.", alias="environmentRef")
     topic: Optional[StrictStr] = Field(default=None, description="Conversation topic (longer description from topic analysis)")
     lessons_learned: Optional[List[StrictStr]] = Field(default=None, description="Lessons learned from the conversation (extracted at completion)")
     archived_at: Optional[datetime] = Field(default=None, description="When the last successful archive completed")
@@ -81,7 +83,7 @@ class AgentRun(BaseModel):
     last_archive_error: Optional[StrictStr] = Field(default=None, description="Last archive error message (when archive_state === 'failed')")
     forked_from: Optional[StrictStr] = Field(default=None, description="Source agent run ID when this run was forked (enables message history chaining)")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["interaction", "data", "config", "interactive", "tool_approval_mode", "tool_names", "collection_id", "disabled_mcp_collections", "content_type", "visibility", "tags", "categories", "properties", "source", "schedule_id", "source_type", "type", "id", "run_kind", "run_type", "account", "project", "workflow_id", "first_workflow_run_id", "artifacts_path", "status", "activity_state", "started_by", "started_at", "completed_at", "title", "archive_state", "created_at", "updated_at", "interaction_name", "interactionRef", "topic", "lessons_learned", "archived_at", "archive_version", "last_archive_error", "forked_from"]
+    __properties: ClassVar[List[str]] = ["interaction", "data", "config", "interactive", "tool_approval_mode", "tool_names", "collection_id", "disabled_mcp_collections", "content_type", "visibility", "tags", "categories", "properties", "source", "schedule_id", "source_type", "type", "id", "run_kind", "run_type", "account", "project", "workflow_id", "first_workflow_run_id", "artifacts_path", "status", "activity_state", "started_by", "started_at", "completed_at", "title", "archive_state", "created_at", "updated_at", "interaction_name", "interactionRef", "environmentRef", "topic", "lessons_learned", "archived_at", "archive_version", "last_archive_error", "forked_from"]
 
     @field_validator('run_kind')
     def run_kind_validate_enum(cls, value):
@@ -146,6 +148,9 @@ class AgentRun(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of interaction_ref
         if self.interaction_ref:
             _dict['interactionRef'] = self.interaction_ref.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of environment_ref
+        if self.environment_ref:
+            _dict['environmentRef'] = self.environment_ref.to_dict()
         # puts key-value pairs in additional_properties in the top level
         if self.additional_properties is not None:
             for _key, _value in self.additional_properties.items():
@@ -199,6 +204,7 @@ class AgentRun(BaseModel):
             "updated_at": obj.get("updated_at"),
             "interaction_name": obj.get("interaction_name"),
             "interactionRef": InteractionRef.from_dict(obj["interactionRef"]) if obj.get("interactionRef") is not None else None,
+            "environmentRef": ResourceRef.from_dict(obj["environmentRef"]) if obj.get("environmentRef") is not None else None,
             "topic": obj.get("topic"),
             "lessons_learned": obj.get("lessons_learned"),
             "archived_at": obj.get("archived_at"),
