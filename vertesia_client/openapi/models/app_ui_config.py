@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
 from vertesia_client.openapi.models.app_available_in import AppAvailableIn
 from vertesia_client.openapi.models.app_ui_nav_item import AppUINavItem
@@ -30,10 +30,11 @@ class AppUIConfig(BaseModel):
     AppUIConfig
     """ # noqa: E501
     src: StrictStr = Field(description="The source URL of the app. The src can be a template which contain a variable named `buildId` which will be replaced with the current build id. For example: `/plugins/vertesia-review-center-${buildId}`")
-    isolation: Optional[StrictStr] = Field(default=None, description="The isolation strategy. If not specified it defaults to shadow - shadow - use Shadow DOM to fully isolate the plugin from the host. - css - use CSS processing (like prefixing or other isolation techniques). Ligther but plugins may conflict with the host")
+    isolation: Optional[StrictStr] = Field(default=None, description="The isolation strategy. If not specified it defaults to shadow. - shadow - use Shadow DOM to fully isolate the plugin from the host. - css - inject the plugin's styles (minus the preflight) into the host document;   lighter but styles may conflict with the host.")
+    css_rebuild: Optional[StrictBool] = Field(default=None, description="When true the host modifies the app's css at load time to attempt to fix broken or missing styles. Only takes effect in css isolation mode. Defaults to false.")
     navigation: Optional[List[AppUINavItem]] = Field(default=None, description="Navigation items for the app's sidebar UI. Only applicable for apps with UI capability in shell contexts (ie. CompositeApp shell).")
     available_in: Optional[List[AppAvailableIn]] = Field(default=None, description="Where this app's UI can be displayed. - 'app_portal': Available in the main app portal (standalone) - 'composite_app': Available within a CompositeApp shell Defaults to ['app_portal', 'composite_app'] for new apps.")
-    __properties: ClassVar[List[str]] = ["src", "isolation", "navigation", "available_in"]
+    __properties: ClassVar[List[str]] = ["src", "isolation", "css_rebuild", "navigation", "available_in"]
 
     @field_validator('isolation')
     def isolation_validate_enum(cls, value):
@@ -103,6 +104,7 @@ class AppUIConfig(BaseModel):
         _obj = cls.model_validate({
             "src": obj.get("src"),
             "isolation": obj.get("isolation"),
+            "css_rebuild": obj.get("css_rebuild"),
             "navigation": [AppUINavItem.from_dict(_item) for _item in obj["navigation"]] if obj.get("navigation") is not None else None,
             "available_in": obj.get("available_in")
         })
