@@ -33,6 +33,7 @@ class SupportedProviders(str, Enum):
     HUGGINGFACE_IE = 'huggingface_ie'
     REPLICATE = 'replicate'
     BEDROCK = 'bedrock'
+    BEDROCK_MANTLE = 'bedrock_mantle'
     VERTEXAI = 'vertexai'
     TOGETHERAI = 'togetherai'
     MISTRALAI = 'mistralai'

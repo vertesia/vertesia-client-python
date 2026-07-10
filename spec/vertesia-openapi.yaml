@@ -5727,6 +5727,7 @@ components:
         - huggingface_ie
         - replicate
         - bedrock
+        - bedrock_mantle
         - vertexai
         - togetherai
         - mistralai
@@ -6486,6 +6487,7 @@ components:
           bedrock-palmyra: "#/components/schemas/BedrockPalmyraOptions"
           bedrock-gpt-oss: "#/components/schemas/BedrockGptOssOptions"
           bedrock-twelvelabs-pegasus: "#/components/schemas/TwelvelabsPegasusOptions"
+          bedrock-mantle-responses: "#/components/schemas/BedrockMantleOptions"
           openai-thinking: "#/components/schemas/OpenAiThinkingOptions"
           openai-text: "#/components/schemas/OpenAiTextOptions"
           openai-dalle: "#/components/schemas/OpenAiDalleOptions"
@@ -6509,6 +6511,7 @@ components:
         - $ref: "#/components/schemas/BedrockPalmyraOptions"
         - $ref: "#/components/schemas/BedrockGptOssOptions"
         - $ref: "#/components/schemas/TwelvelabsPegasusOptions"
+        - $ref: "#/components/schemas/BedrockMantleOptions"
         - $ref: "#/components/schemas/OpenAiThinkingOptions"
         - $ref: "#/components/schemas/OpenAiTextOptions"
         - $ref: "#/components/schemas/OpenAiDalleOptions"
@@ -7005,6 +7008,49 @@ components:
           type: number
         max_tokens:
           type: number
+      required:
+        - _option_id
+      additionalProperties: false
+    BedrockMantleOptions:
+      type: object
+      properties:
+        _option_id:
+          type: string
+          const: bedrock-mantle-responses
+        max_tokens:
+          type: number
+        temperature:
+          type: number
+        top_p:
+          type: number
+        effort:
+          type: string
+          enum:
+            - none
+            - low
+            - medium
+            - high
+            - xhigh
+        reasoning_effort:
+          type: string
+          enum:
+            - none
+            - low
+            - medium
+            - high
+            - xhigh
+        verbosity:
+          type: string
+          enum:
+            - low
+            - medium
+            - high
+        image_detail:
+          type: string
+          enum:
+            - low
+            - high
+            - auto
       required:
         - _option_id
       additionalProperties: false

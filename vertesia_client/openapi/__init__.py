@@ -165,6 +165,7 @@ __all__ = [
     "BedrockCohereCommandOptions",
     "BedrockConverseOptions",
     "BedrockGptOssOptions",
+    "BedrockMantleOptions",
     "BedrockMistralOptions",
     "BedrockNovaOptions",
     "BedrockPalmyraOptions",
@@ -1050,6 +1051,7 @@ from vertesia_client.openapi.models.bedrock_claude_options import BedrockClaudeO
 from vertesia_client.openapi.models.bedrock_cohere_command_options import BedrockCohereCommandOptions as BedrockCohereCommandOptions
 from vertesia_client.openapi.models.bedrock_converse_options import BedrockConverseOptions as BedrockConverseOptions
 from vertesia_client.openapi.models.bedrock_gpt_oss_options import BedrockGptOssOptions as BedrockGptOssOptions
+from vertesia_client.openapi.models.bedrock_mantle_options import BedrockMantleOptions as BedrockMantleOptions
 from vertesia_client.openapi.models.bedrock_mistral_options import BedrockMistralOptions as BedrockMistralOptions
 from vertesia_client.openapi.models.bedrock_nova_options import BedrockNovaOptions as BedrockNovaOptions
 from vertesia_client.openapi.models.bedrock_palmyra_options import BedrockPalmyraOptions as BedrockPalmyraOptions

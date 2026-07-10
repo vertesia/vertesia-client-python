@@ -143,6 +143,7 @@ vertesia_client/openapi/models/bedrock_claude_options.py
 vertesia_client/openapi/models/bedrock_cohere_command_options.py
 vertesia_client/openapi/models/bedrock_converse_options.py
 vertesia_client/openapi/models/bedrock_gpt_oss_options.py
+vertesia_client/openapi/models/bedrock_mantle_options.py
 vertesia_client/openapi/models/bedrock_mistral_options.py
 vertesia_client/openapi/models/bedrock_nova_options.py
 vertesia_client/openapi/models/bedrock_palmyra_options.py
