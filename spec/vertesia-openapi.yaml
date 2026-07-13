@@ -6487,7 +6487,9 @@ components:
           bedrock-palmyra: "#/components/schemas/BedrockPalmyraOptions"
           bedrock-gpt-oss: "#/components/schemas/BedrockGptOssOptions"
           bedrock-twelvelabs-pegasus: "#/components/schemas/TwelvelabsPegasusOptions"
-          bedrock-mantle-responses: "#/components/schemas/BedrockMantleOptions"
+          bedrock-mantle-responses: "#/components/schemas/BedrockMantleResponsesOptions"
+          bedrock-mantle-chat-completions: "#/components/schemas/BedrockMantleChatCompletionsOptions"
+          bedrock-mantle-claude: "#/components/schemas/BedrockMantleClaudeOptions"
           openai-thinking: "#/components/schemas/OpenAiThinkingOptions"
           openai-text: "#/components/schemas/OpenAiTextOptions"
           openai-dalle: "#/components/schemas/OpenAiDalleOptions"
@@ -6511,7 +6513,9 @@ components:
         - $ref: "#/components/schemas/BedrockPalmyraOptions"
         - $ref: "#/components/schemas/BedrockGptOssOptions"
         - $ref: "#/components/schemas/TwelvelabsPegasusOptions"
-        - $ref: "#/components/schemas/BedrockMantleOptions"
+        - $ref: "#/components/schemas/BedrockMantleResponsesOptions"
+        - $ref: "#/components/schemas/BedrockMantleChatCompletionsOptions"
+        - $ref: "#/components/schemas/BedrockMantleClaudeOptions"
         - $ref: "#/components/schemas/OpenAiThinkingOptions"
         - $ref: "#/components/schemas/OpenAiTextOptions"
         - $ref: "#/components/schemas/OpenAiDalleOptions"
@@ -7011,7 +7015,7 @@ components:
       required:
         - _option_id
       additionalProperties: false
-    BedrockMantleOptions:
+    BedrockMantleResponsesOptions:
       type: object
       properties:
         _option_id:
@@ -7051,6 +7055,65 @@ components:
             - low
             - high
             - auto
+      required:
+        - _option_id
+      additionalProperties: false
+    BedrockMantleChatCompletionsOptions:
+      type: object
+      properties:
+        _option_id:
+          type: string
+          const: bedrock-mantle-chat-completions
+        max_tokens:
+          type: number
+        temperature:
+          type: number
+        top_p:
+          type: number
+        stop_sequence:
+          type: array
+          items:
+            type: string
+      required:
+        - _option_id
+      additionalProperties: false
+    BedrockMantleClaudeOptions:
+      type: object
+      properties:
+        _option_id:
+          type: string
+          const: bedrock-mantle-claude
+        max_tokens:
+          type: number
+        temperature:
+          type: number
+        top_p:
+          type: number
+        top_k:
+          type: number
+        stop_sequence:
+          type: array
+          items:
+            type: string
+        effort:
+          type: string
+          enum:
+            - low
+            - medium
+            - high
+            - xhigh
+            - max
+        thinking_budget_tokens:
+          type: number
+        include_thoughts:
+          type: boolean
+        cache_enabled:
+          type: boolean
+        cache_ttl:
+          type: string
+          enum:
+            - 5m
+            - 1h
       required:
         - _option_id
       additionalProperties: false
