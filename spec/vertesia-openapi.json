@@ -10049,6 +10049,10 @@
           "model_options": {
             "$ref": "#/components/schemas/ModelOptions"
           },
+          "prompt_cache_key": {
+            "type": "string",
+            "description": "Stable identity for prompt caching. Providers with cache routing keys receive the value directly; providers with cache breakpoints use its presence to cache the stable prefix before the final dynamic block. Providers with fully implicit caching still require an identical prompt prefix."
+          },
           "httpTimeout": {
             "$ref": "#/components/schemas/HttpTimeoutOptions",
             "description": "Per-call HTTP timeouts for upstream LLM-provider calls. These override the driver's default `DriverOptions.httpTimeout` for this execution only."

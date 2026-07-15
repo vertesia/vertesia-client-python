@@ -37,9 +37,10 @@ class StatelessExecutionOptions(BaseModel):
     result_schema: Optional[JSONSchema] = None
     include_original_response: Optional[StrictBool] = Field(default=None, description="If set to true the original response from the target LLM will be included in the response under the original_response field. This is useful for debugging and for some advanced use cases. It is ignored on streaming requests")
     model_options: Optional[ModelOptions] = None
+    prompt_cache_key: Optional[StrictStr] = Field(default=None, description="Stable identity for prompt caching. Providers with cache routing keys receive the value directly; providers with cache breakpoints use its presence to cache the stable prefix before the final dynamic block. Providers with fully implicit caching still require an identical prompt prefix.")
     http_timeout: Optional[HttpTimeoutOptions] = Field(default=None, description="Per-call HTTP timeouts for upstream LLM-provider calls. These override the driver's default `DriverOptions.httpTimeout` for this execution only.", alias="httpTimeout")
     output_modality: Optional[Modalities] = Field(default=None, description="Deprecated: This is deprecated. Use CompletionResult.type information instead.")
-    __properties: ClassVar[List[str]] = ["model", "format", "result_schema", "include_original_response", "model_options", "httpTimeout", "output_modality"]
+    __properties: ClassVar[List[str]] = ["model", "format", "result_schema", "include_original_response", "model_options", "prompt_cache_key", "httpTimeout", "output_modality"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -109,6 +110,7 @@ class StatelessExecutionOptions(BaseModel):
             "result_schema": JSONSchema.from_dict(obj["result_schema"]) if obj.get("result_schema") is not None else None,
             "include_original_response": obj.get("include_original_response"),
             "model_options": ModelOptions.from_dict(obj["model_options"]) if obj.get("model_options") is not None else None,
+            "prompt_cache_key": obj.get("prompt_cache_key"),
             "httpTimeout": HttpTimeoutOptions.from_dict(obj["httpTimeout"]) if obj.get("httpTimeout") is not None else None,
             "output_modality": obj.get("output_modality")
         })
