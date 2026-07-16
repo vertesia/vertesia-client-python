@@ -915,6 +915,7 @@ class InteractionRunsApi:
         environment: Optional[StrictStr] = None,
         model: Optional[StrictStr] = None,
         tags: Optional[List[StrictStr]] = None,
+        exclude_tags: Annotated[Optional[List[StrictStr]], Field(description="Tags to exclude. Runs carrying any of these tags are filtered out of the results, counts, and facet buckets. Combined with `tags` (which requires all of the listed tags) as an additional `$nin` constraint on the same field.")] = None,
         query: Optional[StrictStr] = None,
         default_query_path: Optional[StrictStr] = None,
         parent: Optional[List[StrictStr]] = None,
@@ -962,6 +963,8 @@ class InteractionRunsApi:
         :type model: str
         :param tags:
         :type tags: List[str]
+        :param exclude_tags: Tags to exclude. Runs carrying any of these tags are filtered out of the results, counts, and facet buckets. Combined with `tags` (which requires all of the listed tags) as an additional `$nin` constraint on the same field.
+        :type exclude_tags: List[str]
         :param query:
         :type query: str
         :param default_query_path:
@@ -1021,6 +1024,7 @@ class InteractionRunsApi:
             environment=environment,
             model=model,
             tags=tags,
+            exclude_tags=exclude_tags,
             query=query,
             default_query_path=default_query_path,
             parent=parent,
@@ -1068,6 +1072,7 @@ class InteractionRunsApi:
         environment: Optional[StrictStr] = None,
         model: Optional[StrictStr] = None,
         tags: Optional[List[StrictStr]] = None,
+        exclude_tags: Annotated[Optional[List[StrictStr]], Field(description="Tags to exclude. Runs carrying any of these tags are filtered out of the results, counts, and facet buckets. Combined with `tags` (which requires all of the listed tags) as an additional `$nin` constraint on the same field.")] = None,
         query: Optional[StrictStr] = None,
         default_query_path: Optional[StrictStr] = None,
         parent: Optional[List[StrictStr]] = None,
@@ -1115,6 +1120,8 @@ class InteractionRunsApi:
         :type model: str
         :param tags:
         :type tags: List[str]
+        :param exclude_tags: Tags to exclude. Runs carrying any of these tags are filtered out of the results, counts, and facet buckets. Combined with `tags` (which requires all of the listed tags) as an additional `$nin` constraint on the same field.
+        :type exclude_tags: List[str]
         :param query:
         :type query: str
         :param default_query_path:
@@ -1174,6 +1181,7 @@ class InteractionRunsApi:
             environment=environment,
             model=model,
             tags=tags,
+            exclude_tags=exclude_tags,
             query=query,
             default_query_path=default_query_path,
             parent=parent,
@@ -1221,6 +1229,7 @@ class InteractionRunsApi:
         environment: Optional[StrictStr] = None,
         model: Optional[StrictStr] = None,
         tags: Optional[List[StrictStr]] = None,
+        exclude_tags: Annotated[Optional[List[StrictStr]], Field(description="Tags to exclude. Runs carrying any of these tags are filtered out of the results, counts, and facet buckets. Combined with `tags` (which requires all of the listed tags) as an additional `$nin` constraint on the same field.")] = None,
         query: Optional[StrictStr] = None,
         default_query_path: Optional[StrictStr] = None,
         parent: Optional[List[StrictStr]] = None,
@@ -1268,6 +1277,8 @@ class InteractionRunsApi:
         :type model: str
         :param tags:
         :type tags: List[str]
+        :param exclude_tags: Tags to exclude. Runs carrying any of these tags are filtered out of the results, counts, and facet buckets. Combined with `tags` (which requires all of the listed tags) as an additional `$nin` constraint on the same field.
+        :type exclude_tags: List[str]
         :param query:
         :type query: str
         :param default_query_path:
@@ -1327,6 +1338,7 @@ class InteractionRunsApi:
             environment=environment,
             model=model,
             tags=tags,
+            exclude_tags=exclude_tags,
             query=query,
             default_query_path=default_query_path,
             parent=parent,
@@ -1369,6 +1381,7 @@ class InteractionRunsApi:
         environment,
         model,
         tags,
+        exclude_tags,
         query,
         default_query_path,
         parent,
@@ -1393,6 +1406,7 @@ class InteractionRunsApi:
 
         _collection_formats: Dict[str, str] = {
             'tags': 'multi',
+            'exclude_tags': 'multi',
             'parent': 'multi',
             'workflow_run_ids': 'multi',
             'workflow_ids': 'multi',
@@ -1441,6 +1455,10 @@ class InteractionRunsApi:
         if tags is not None:
             
             _query_params.append(('tags', tags))
+            
+        if exclude_tags is not None:
+            
+            _query_params.append(('exclude_tags', exclude_tags))
             
         if query is not None:
             
