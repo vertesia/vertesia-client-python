@@ -17,14 +17,18 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from vertesia_client.openapi.models.content_nature_document import ContentNatureDocument
 from vertesia_client.openapi.models.document_metadata_content_processor import DocumentMetadataContentProcessor
 from vertesia_client.openapi.models.generation_run_metadata import GenerationRunMetadata
+from vertesia_client.openapi.models.grounded_metadata import GroundedMetadata
+from vertesia_client.openapi.models.locate_metadata import LocateMetadata
 from vertesia_client.openapi.models.location import Location
 from vertesia_client.openapi.models.rendition import Rendition
 from vertesia_client.openapi.models.text_section import TextSection
+from vertesia_client.openapi.models.type_detection_metadata import TypeDetectionMetadata
+from vertesia_client.openapi.models.vision_evidence_metadata import VisionEvidenceMetadata
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -39,12 +43,18 @@ class DocumentMetadata(BaseModel):
     location: Optional[Location] = None
     generation_runs: Optional[List[GenerationRunMetadata]] = None
     etag: Optional[StrictStr] = None
+    rendered_text_etag: Optional[StrictStr] = Field(default=None, description="ETag of text materialized from object properties by intake rendering.")
     renditions: Optional[List[Rendition]] = None
+    embedded: Optional[Dict[str, Any]] = Field(default=None, description="Embedded/technical metadata harvested from the source file by intake (office docProps, PDF docinfo). Free-form, nature-appropriate keys.")
+    type_detection: Optional[TypeDetectionMetadata] = Field(default=None, description="Type-detection provenance recorded by the intake sniff pipeline.")
+    locate: Optional[LocateMetadata] = Field(default=None, description="Locate-pass provenance: which pages the document map found relevant.")
+    vision_evidence: Optional[VisionEvidenceMetadata] = Field(default=None, description="Vision-evidence provenance for the last visual extraction run.")
     page_count: Optional[Union[StrictFloat, StrictInt]] = None
     content_processor: Optional[DocumentMetadataContentProcessor] = None
+    grounded: Optional[GroundedMetadata] = Field(default=None, description="Grounded-extraction trust signal + key data. Written by the grounded pipeline (verdict, confidence, citation counts, review status, source etag, ...) and queryable for list/filter. Open-ended so more grounded key-data can be stored without a type change.")
     sections: Optional[List[TextSection]] = None
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["type", "size", "languages", "location", "generation_runs", "etag", "renditions", "page_count", "content_processor", "sections"]
+    __properties: ClassVar[List[str]] = ["type", "size", "languages", "location", "generation_runs", "etag", "rendered_text_etag", "renditions", "embedded", "type_detection", "locate", "vision_evidence", "page_count", "content_processor", "grounded", "sections"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -104,9 +114,21 @@ class DocumentMetadata(BaseModel):
                 if _item_renditions:
                     _items.append(_item_renditions.to_dict())
             _dict['renditions'] = _items
+        # override the default output from pydantic by calling `to_dict()` of type_detection
+        if self.type_detection:
+            _dict['type_detection'] = self.type_detection.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of locate
+        if self.locate:
+            _dict['locate'] = self.locate.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of vision_evidence
+        if self.vision_evidence:
+            _dict['vision_evidence'] = self.vision_evidence.to_dict()
         # override the default output from pydantic by calling `to_dict()` of content_processor
         if self.content_processor:
             _dict['content_processor'] = self.content_processor.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of grounded
+        if self.grounded:
+            _dict['grounded'] = self.grounded.to_dict()
         # override the default output from pydantic by calling `to_dict()` of each item in sections (list)
         _items = []
         if self.sections:
@@ -137,9 +159,15 @@ class DocumentMetadata(BaseModel):
             "location": Location.from_dict(obj["location"]) if obj.get("location") is not None else None,
             "generation_runs": [GenerationRunMetadata.from_dict(_item) for _item in obj["generation_runs"]] if obj.get("generation_runs") is not None else None,
             "etag": obj.get("etag"),
+            "rendered_text_etag": obj.get("rendered_text_etag"),
             "renditions": [Rendition.from_dict(_item) for _item in obj["renditions"]] if obj.get("renditions") is not None else None,
+            "embedded": obj.get("embedded"),
+            "type_detection": TypeDetectionMetadata.from_dict(obj["type_detection"]) if obj.get("type_detection") is not None else None,
+            "locate": LocateMetadata.from_dict(obj["locate"]) if obj.get("locate") is not None else None,
+            "vision_evidence": VisionEvidenceMetadata.from_dict(obj["vision_evidence"]) if obj.get("vision_evidence") is not None else None,
             "page_count": obj.get("page_count"),
             "content_processor": DocumentMetadataContentProcessor.from_dict(obj["content_processor"]) if obj.get("content_processor") is not None else None,
+            "grounded": GroundedMetadata.from_dict(obj["grounded"]) if obj.get("grounded") is not None else None,
             "sections": [TextSection.from_dict(_item) for _item in obj["sections"]] if obj.get("sections") is not None else None
         })
         # store additional fields in additional_properties

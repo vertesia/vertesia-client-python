@@ -16,11 +16,8 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
 from pydantic import Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
-from typing import Dict, List, Optional, Union
+from typing import List, Optional, Union
 from typing_extensions import Annotated
-from vertesia_client.openapi.models.adapt_tables_request import AdaptTablesRequest
-from vertesia_client.openapi.models.adapted_table import AdaptedTable
-from vertesia_client.openapi.models.annotated_pdf_response import AnnotatedPdfResponse
 from vertesia_client.openapi.models.collection import Collection
 from vertesia_client.openapi.models.complex_search_payload import ComplexSearchPayload
 from vertesia_client.openapi.models.compute_object_facet_payload import ComputeObjectFacetPayload
@@ -36,9 +33,7 @@ from vertesia_client.openapi.models.create_content_object_payload import CreateC
 from vertesia_client.openapi.models.delete_content_object_export_response import DeleteContentObjectExportResponse
 from vertesia_client.openapi.models.delete_content_object_result import DeleteContentObjectResult
 from vertesia_client.openapi.models.doc_analyze_run_status_response import DocAnalyzeRunStatusResponse
-from vertesia_client.openapi.models.doc_analyzer_result_response import DocAnalyzerResultResponse
-from vertesia_client.openapi.models.doc_image import DocImage
-from vertesia_client.openapi.models.doc_table_response import DocTableResponse
+from vertesia_client.openapi.models.document_prep_options import DocumentPrepOptions
 from vertesia_client.openapi.models.embedding import Embedding
 from vertesia_client.openapi.models.export_properties_payload import ExportPropertiesPayload
 from vertesia_client.openapi.models.export_properties_response import ExportPropertiesResponse
@@ -47,15 +42,16 @@ from vertesia_client.openapi.models.get_file_url_payload import GetFileUrlPayloa
 from vertesia_client.openapi.models.get_file_url_response import GetFileUrlResponse
 from vertesia_client.openapi.models.get_rendition_response import GetRenditionResponse
 from vertesia_client.openapi.models.get_upload_url_payload import GetUploadUrlPayload
+from vertesia_client.openapi.models.grounded_assistant_response import GroundedAssistantResponse
+from vertesia_client.openapi.models.grounded_extraction_request import GroundedExtractionRequest
+from vertesia_client.openapi.models.grounded_extraction_result_response import GroundedExtractionResultResponse
 from vertesia_client.openapi.models.list_content_object_exports_response import ListContentObjectExportsResponse
 from vertesia_client.openapi.models.list_workflow_runs_response import ListWorkflowRunsResponse
 from vertesia_client.openapi.models.object_search_response import ObjectSearchResponse
 from vertesia_client.openapi.models.partial_create_content_object_payload import PartialCreateContentObjectPayload
-from vertesia_client.openapi.models.pdf_to_richtext_options import PdfToRichtextOptions
 from vertesia_client.openapi.models.set_object_embeddings_response import SetObjectEmbeddingsResponse
 from vertesia_client.openapi.models.start_content_object_export_request import StartContentObjectExportRequest
 from vertesia_client.openapi.models.start_content_object_export_response import StartContentObjectExportResponse
-from vertesia_client.openapi.models.workflow_run_status import WorkflowRunStatus
 
 from vertesia_client.openapi.api_client import ApiClient, RequestSerialized
 from vertesia_client.openapi.api_response import ApiResponse
@@ -76,321 +72,10 @@ class ObjectsApi:
 
 
     @validate_call
-    def adapt_object_tables(
-        self,
-        object_id: StrictStr,
-        adapt_tables_request: AdaptTablesRequest,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> WorkflowRunStatus:
-        """Adapt extracted document tables
-
-        Starts a table-adaptation workflow to normalize extracted tables into a target schema.  **Required permissions:** `content:read`
-
-        :param object_id: (required)
-        :type object_id: str
-        :param adapt_tables_request: (required)
-        :type adapt_tables_request: AdaptTablesRequest
-        :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
-        :type x_api_version: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._adapt_object_tables_serialize(
-            object_id=object_id,
-            adapt_tables_request=adapt_tables_request,
-            x_api_version=x_api_version,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "WorkflowRunStatus",
-            '500': "ErrorResponse",
-            '4XX': "ErrorResponse",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        ).data
-
-
-    @validate_call
-    def adapt_object_tables_with_http_info(
-        self,
-        object_id: StrictStr,
-        adapt_tables_request: AdaptTablesRequest,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[WorkflowRunStatus]:
-        """Adapt extracted document tables
-
-        Starts a table-adaptation workflow to normalize extracted tables into a target schema.  **Required permissions:** `content:read`
-
-        :param object_id: (required)
-        :type object_id: str
-        :param adapt_tables_request: (required)
-        :type adapt_tables_request: AdaptTablesRequest
-        :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
-        :type x_api_version: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._adapt_object_tables_serialize(
-            object_id=object_id,
-            adapt_tables_request=adapt_tables_request,
-            x_api_version=x_api_version,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "WorkflowRunStatus",
-            '500': "ErrorResponse",
-            '4XX': "ErrorResponse",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        )
-
-
-    @validate_call
-    def adapt_object_tables_without_preload_content(
-        self,
-        object_id: StrictStr,
-        adapt_tables_request: AdaptTablesRequest,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> RESTResponseType:
-        """Adapt extracted document tables
-
-        Starts a table-adaptation workflow to normalize extracted tables into a target schema.  **Required permissions:** `content:read`
-
-        :param object_id: (required)
-        :type object_id: str
-        :param adapt_tables_request: (required)
-        :type adapt_tables_request: AdaptTablesRequest
-        :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
-        :type x_api_version: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._adapt_object_tables_serialize(
-            object_id=object_id,
-            adapt_tables_request=adapt_tables_request,
-            x_api_version=x_api_version,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "WorkflowRunStatus",
-            '500': "ErrorResponse",
-            '4XX': "ErrorResponse",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        return response_data.response
-
-
-    def _adapt_object_tables_serialize(
-        self,
-        object_id,
-        adapt_tables_request,
-        x_api_version,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
-    ) -> RequestSerialized:
-
-        _host = None
-
-        _collection_formats: Dict[str, str] = {
-        }
-
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
-        ] = {}
-        _body_params: Optional[bytes] = None
-
-        # process the path parameters
-        if object_id is not None:
-            _path_params['objectId'] = object_id
-        # process the query parameters
-        # process the header parameters
-        if x_api_version is not None:
-            _header_params['x-api-version'] = x_api_version
-        # process the form parameters
-        # process the body parameter
-        if adapt_tables_request is not None:
-            _body_params = adapt_tables_request
-
-
-        # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
-                [
-                    'application/json'
-                ]
-            )
-
-        # set the HTTP header `Content-Type`
-        if _content_type:
-            _header_params['Content-Type'] = _content_type
-        else:
-            _default_content_type = (
-                self.api_client.select_header_content_type(
-                    [
-                        'application/json'
-                    ]
-                )
-            )
-            if _default_content_type is not None:
-                _header_params['Content-Type'] = _default_content_type
-
-        # authentication setting
-        _auth_settings: List[str] = [
-            'bearerAuth', 
-            'OpenID'
-        ]
-
-        return self.api_client.param_serialize(
-            method='POST',
-            resource_path='/objects/{objectId}/analyze/adapt_tables',
-            path_params=_path_params,
-            query_params=_query_params,
-            header_params=_header_params,
-            body=_body_params,
-            post_params=_form_params,
-            files=_files,
-            auth_settings=_auth_settings,
-            collection_formats=_collection_formats,
-            _host=_host,
-            _request_auth=_request_auth
-        )
-
-
-
-
-    @validate_call
     def analyze_object_document(
         self,
         object_id: StrictStr,
-        pdf_to_richtext_options: PdfToRichtextOptions,
+        document_prep_options: DocumentPrepOptions,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -405,14 +90,14 @@ class ObjectsApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> DocAnalyzeRunStatusResponse:
-        """Start document analysis
+        """Start document prep
 
-        Starts document analysis for a content object and returns the workflow run metadata.  **Required permissions:** `content:write`
+        Starts markdown document prep for a content object and returns the workflow run metadata.  **Required permissions:** `content:write`
 
         :param object_id: (required)
         :type object_id: str
-        :param pdf_to_richtext_options: (required)
-        :type pdf_to_richtext_options: PdfToRichtextOptions
+        :param document_prep_options: (required)
+        :type document_prep_options: DocumentPrepOptions
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -439,7 +124,7 @@ class ObjectsApi:
 
         _param = self._analyze_object_document_serialize(
             object_id=object_id,
-            pdf_to_richtext_options=pdf_to_richtext_options,
+            document_prep_options=document_prep_options,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -467,7 +152,7 @@ class ObjectsApi:
     def analyze_object_document_with_http_info(
         self,
         object_id: StrictStr,
-        pdf_to_richtext_options: PdfToRichtextOptions,
+        document_prep_options: DocumentPrepOptions,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -482,14 +167,14 @@ class ObjectsApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[DocAnalyzeRunStatusResponse]:
-        """Start document analysis
+        """Start document prep
 
-        Starts document analysis for a content object and returns the workflow run metadata.  **Required permissions:** `content:write`
+        Starts markdown document prep for a content object and returns the workflow run metadata.  **Required permissions:** `content:write`
 
         :param object_id: (required)
         :type object_id: str
-        :param pdf_to_richtext_options: (required)
-        :type pdf_to_richtext_options: PdfToRichtextOptions
+        :param document_prep_options: (required)
+        :type document_prep_options: DocumentPrepOptions
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -516,7 +201,7 @@ class ObjectsApi:
 
         _param = self._analyze_object_document_serialize(
             object_id=object_id,
-            pdf_to_richtext_options=pdf_to_richtext_options,
+            document_prep_options=document_prep_options,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -544,7 +229,7 @@ class ObjectsApi:
     def analyze_object_document_without_preload_content(
         self,
         object_id: StrictStr,
-        pdf_to_richtext_options: PdfToRichtextOptions,
+        document_prep_options: DocumentPrepOptions,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -559,14 +244,14 @@ class ObjectsApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Start document analysis
+        """Start document prep
 
-        Starts document analysis for a content object and returns the workflow run metadata.  **Required permissions:** `content:write`
+        Starts markdown document prep for a content object and returns the workflow run metadata.  **Required permissions:** `content:write`
 
         :param object_id: (required)
         :type object_id: str
-        :param pdf_to_richtext_options: (required)
-        :type pdf_to_richtext_options: PdfToRichtextOptions
+        :param document_prep_options: (required)
+        :type document_prep_options: DocumentPrepOptions
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -593,7 +278,7 @@ class ObjectsApi:
 
         _param = self._analyze_object_document_serialize(
             object_id=object_id,
-            pdf_to_richtext_options=pdf_to_richtext_options,
+            document_prep_options=document_prep_options,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -616,7 +301,7 @@ class ObjectsApi:
     def _analyze_object_document_serialize(
         self,
         object_id,
-        pdf_to_richtext_options,
+        document_prep_options,
         x_api_version,
         _request_auth,
         _content_type,
@@ -647,8 +332,8 @@ class ObjectsApi:
             _header_params['x-api-version'] = x_api_version
         # process the form parameters
         # process the body parameter
-        if pdf_to_richtext_options is not None:
-            _body_params = pdf_to_richtext_options
+        if document_prep_options is not None:
+            _body_params = document_prep_options
 
 
         # set the HTTP header `Accept`
@@ -3104,587 +2789,6 @@ class ObjectsApi:
 
 
     @validate_call
-    def get_adapted_object_tables(
-        self,
-        object_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> Dict[str, AdaptedTable]:
-        """Get adapted document tables
-
-        Returns table-adaptation workflow results in raw JSON, flattened JSON, or CSV format.  **Required permissions:** `content:read`
-
-        :param object_id: (required)
-        :type object_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
-        :type x_api_version: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._get_adapted_object_tables_serialize(
-            object_id=object_id,
-            x_api_version=x_api_version,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "Dict[str, AdaptedTable]",
-            '500': "ErrorResponse",
-            '4XX': "ErrorResponse",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        ).data
-
-
-    @validate_call
-    def get_adapted_object_tables_with_http_info(
-        self,
-        object_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[Dict[str, AdaptedTable]]:
-        """Get adapted document tables
-
-        Returns table-adaptation workflow results in raw JSON, flattened JSON, or CSV format.  **Required permissions:** `content:read`
-
-        :param object_id: (required)
-        :type object_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
-        :type x_api_version: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._get_adapted_object_tables_serialize(
-            object_id=object_id,
-            x_api_version=x_api_version,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "Dict[str, AdaptedTable]",
-            '500': "ErrorResponse",
-            '4XX': "ErrorResponse",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        )
-
-
-    @validate_call
-    def get_adapted_object_tables_without_preload_content(
-        self,
-        object_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> RESTResponseType:
-        """Get adapted document tables
-
-        Returns table-adaptation workflow results in raw JSON, flattened JSON, or CSV format.  **Required permissions:** `content:read`
-
-        :param object_id: (required)
-        :type object_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
-        :type x_api_version: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._get_adapted_object_tables_serialize(
-            object_id=object_id,
-            x_api_version=x_api_version,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "Dict[str, AdaptedTable]",
-            '500': "ErrorResponse",
-            '4XX': "ErrorResponse",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        return response_data.response
-
-
-    def _get_adapted_object_tables_serialize(
-        self,
-        object_id,
-        x_api_version,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
-    ) -> RequestSerialized:
-
-        _host = None
-
-        _collection_formats: Dict[str, str] = {
-        }
-
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
-        ] = {}
-        _body_params: Optional[bytes] = None
-
-        # process the path parameters
-        if object_id is not None:
-            _path_params['objectId'] = object_id
-        # process the query parameters
-        # process the header parameters
-        if x_api_version is not None:
-            _header_params['x-api-version'] = x_api_version
-        # process the form parameters
-        # process the body parameter
-
-
-        # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
-                [
-                    'application/json'
-                ]
-            )
-
-
-        # authentication setting
-        _auth_settings: List[str] = [
-            'bearerAuth', 
-            'OpenID'
-        ]
-
-        return self.api_client.param_serialize(
-            method='GET',
-            resource_path='/objects/{objectId}/analyze/adapt_tables',
-            path_params=_path_params,
-            query_params=_query_params,
-            header_params=_header_params,
-            body=_body_params,
-            post_params=_form_params,
-            files=_files,
-            auth_settings=_auth_settings,
-            collection_formats=_collection_formats,
-            _host=_host,
-            _request_auth=_request_auth
-        )
-
-
-
-
-    @validate_call
-    def get_adapted_object_tables_by_run(
-        self,
-        object_id: StrictStr,
-        run_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> Dict[str, AdaptedTable]:
-        """Get adapted document tables for a workflow run
-
-        Returns table-adaptation workflow results for a specific workflow run in raw JSON, flattened JSON, or CSV format.  **Required permissions:** `content:read`
-
-        :param object_id: (required)
-        :type object_id: str
-        :param run_id: (required)
-        :type run_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
-        :type x_api_version: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._get_adapted_object_tables_by_run_serialize(
-            object_id=object_id,
-            run_id=run_id,
-            x_api_version=x_api_version,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "Dict[str, AdaptedTable]",
-            '500': "ErrorResponse",
-            '4XX': "ErrorResponse",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        ).data
-
-
-    @validate_call
-    def get_adapted_object_tables_by_run_with_http_info(
-        self,
-        object_id: StrictStr,
-        run_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[Dict[str, AdaptedTable]]:
-        """Get adapted document tables for a workflow run
-
-        Returns table-adaptation workflow results for a specific workflow run in raw JSON, flattened JSON, or CSV format.  **Required permissions:** `content:read`
-
-        :param object_id: (required)
-        :type object_id: str
-        :param run_id: (required)
-        :type run_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
-        :type x_api_version: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._get_adapted_object_tables_by_run_serialize(
-            object_id=object_id,
-            run_id=run_id,
-            x_api_version=x_api_version,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "Dict[str, AdaptedTable]",
-            '500': "ErrorResponse",
-            '4XX': "ErrorResponse",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        )
-
-
-    @validate_call
-    def get_adapted_object_tables_by_run_without_preload_content(
-        self,
-        object_id: StrictStr,
-        run_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> RESTResponseType:
-        """Get adapted document tables for a workflow run
-
-        Returns table-adaptation workflow results for a specific workflow run in raw JSON, flattened JSON, or CSV format.  **Required permissions:** `content:read`
-
-        :param object_id: (required)
-        :type object_id: str
-        :param run_id: (required)
-        :type run_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
-        :type x_api_version: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._get_adapted_object_tables_by_run_serialize(
-            object_id=object_id,
-            run_id=run_id,
-            x_api_version=x_api_version,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "Dict[str, AdaptedTable]",
-            '500': "ErrorResponse",
-            '4XX': "ErrorResponse",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        return response_data.response
-
-
-    def _get_adapted_object_tables_by_run_serialize(
-        self,
-        object_id,
-        run_id,
-        x_api_version,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
-    ) -> RequestSerialized:
-
-        _host = None
-
-        _collection_formats: Dict[str, str] = {
-        }
-
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
-        ] = {}
-        _body_params: Optional[bytes] = None
-
-        # process the path parameters
-        if object_id is not None:
-            _path_params['objectId'] = object_id
-        if run_id is not None:
-            _path_params['runId'] = run_id
-        # process the query parameters
-        # process the header parameters
-        if x_api_version is not None:
-            _header_params['x-api-version'] = x_api_version
-        # process the form parameters
-        # process the body parameter
-
-
-        # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
-                [
-                    'application/json'
-                ]
-            )
-
-
-        # authentication setting
-        _auth_settings: List[str] = [
-            'bearerAuth', 
-            'OpenID'
-        ]
-
-        return self.api_client.param_serialize(
-            method='GET',
-            resource_path='/objects/{objectId}/analyze/adapt_tables/{runId}',
-            path_params=_path_params,
-            query_params=_query_params,
-            header_params=_header_params,
-            body=_body_params,
-            post_params=_form_params,
-            files=_files,
-            auth_settings=_auth_settings,
-            collection_formats=_collection_formats,
-            _host=_host,
-            _request_auth=_request_auth
-        )
-
-
-
-
-    @validate_call
     def get_content_object_export_download_url(
         self,
         export_id: StrictStr,
@@ -4847,289 +3951,6 @@ class ObjectsApi:
 
 
     @validate_call
-    def get_object_document_analysis(
-        self,
-        object_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> DocAnalyzerResultResponse:
-        """Get document analysis results
-
-        Returns the completed document analysis output, including extracted document text, tables, images, and annotated file URL when available.  **Required permissions:** `content:read`
-
-        :param object_id: (required)
-        :type object_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
-        :type x_api_version: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._get_object_document_analysis_serialize(
-            object_id=object_id,
-            x_api_version=x_api_version,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "DocAnalyzerResultResponse",
-            '500': "ErrorResponse",
-            '4XX': "ErrorResponse",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        ).data
-
-
-    @validate_call
-    def get_object_document_analysis_with_http_info(
-        self,
-        object_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[DocAnalyzerResultResponse]:
-        """Get document analysis results
-
-        Returns the completed document analysis output, including extracted document text, tables, images, and annotated file URL when available.  **Required permissions:** `content:read`
-
-        :param object_id: (required)
-        :type object_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
-        :type x_api_version: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._get_object_document_analysis_serialize(
-            object_id=object_id,
-            x_api_version=x_api_version,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "DocAnalyzerResultResponse",
-            '500': "ErrorResponse",
-            '4XX': "ErrorResponse",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        )
-
-
-    @validate_call
-    def get_object_document_analysis_without_preload_content(
-        self,
-        object_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> RESTResponseType:
-        """Get document analysis results
-
-        Returns the completed document analysis output, including extracted document text, tables, images, and annotated file URL when available.  **Required permissions:** `content:read`
-
-        :param object_id: (required)
-        :type object_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
-        :type x_api_version: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._get_object_document_analysis_serialize(
-            object_id=object_id,
-            x_api_version=x_api_version,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "DocAnalyzerResultResponse",
-            '500': "ErrorResponse",
-            '4XX': "ErrorResponse",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        return response_data.response
-
-
-    def _get_object_document_analysis_serialize(
-        self,
-        object_id,
-        x_api_version,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
-    ) -> RequestSerialized:
-
-        _host = None
-
-        _collection_formats: Dict[str, str] = {
-        }
-
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
-        ] = {}
-        _body_params: Optional[bytes] = None
-
-        # process the path parameters
-        if object_id is not None:
-            _path_params['objectId'] = object_id
-        # process the query parameters
-        # process the header parameters
-        if x_api_version is not None:
-            _header_params['x-api-version'] = x_api_version
-        # process the form parameters
-        # process the body parameter
-
-
-        # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
-                [
-                    'application/json'
-                ]
-            )
-
-
-        # authentication setting
-        _auth_settings: List[str] = [
-            'bearerAuth', 
-            'OpenID'
-        ]
-
-        return self.api_client.param_serialize(
-            method='GET',
-            resource_path='/objects/{objectId}/analyze/results',
-            path_params=_path_params,
-            query_params=_query_params,
-            header_params=_header_params,
-            body=_body_params,
-            post_params=_form_params,
-            files=_files,
-            auth_settings=_auth_settings,
-            collection_formats=_collection_formats,
-            _host=_host,
-            _request_auth=_request_auth
-        )
-
-
-
-
-    @validate_call
     def get_object_document_analysis_status(
         self,
         object_id: StrictStr,
@@ -5147,9 +3968,9 @@ class ObjectsApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> DocAnalyzeRunStatusResponse:
-        """Get document analysis status
+        """Get document prep status
 
-        Retrieves the status and progress for the current document analysis workflow.  **Required permissions:** `content:read`
+        Retrieves status and progress for markdown prep or grounded extraction on this object.  **Required permissions:** `content:read`
 
         :param object_id: (required)
         :type object_id: str
@@ -5220,9 +4041,9 @@ class ObjectsApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[DocAnalyzeRunStatusResponse]:
-        """Get document analysis status
+        """Get document prep status
 
-        Retrieves the status and progress for the current document analysis workflow.  **Required permissions:** `content:read`
+        Retrieves status and progress for markdown prep or grounded extraction on this object.  **Required permissions:** `content:read`
 
         :param object_id: (required)
         :type object_id: str
@@ -5293,9 +4114,9 @@ class ObjectsApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Get document analysis status
+        """Get document prep status
 
-        Retrieves the status and progress for the current document analysis workflow.  **Required permissions:** `content:read`
+        Retrieves status and progress for markdown prep or grounded extraction on this object.  **Required permissions:** `content:read`
 
         :param object_id: (required)
         :type object_id: str
@@ -5413,7 +4234,7 @@ class ObjectsApi:
 
 
     @validate_call
-    def get_object_document_annotated_pdf(
+    def get_object_document_grounded_extraction_result(
         self,
         object_id: StrictStr,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
@@ -5429,10 +4250,10 @@ class ObjectsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> AnnotatedPdfResponse:
-        """Get annotated document PDF
+    ) -> GroundedExtractionResultResponse:
+        """Get grounded extraction result
 
-        Returns a download URL for the annotated PDF produced by document analysis when available.  **Required permissions:** `content:read`
+        Returns the extracted grounded data, trust verdict, verification breakdown, and artifact URL.  **Required permissions:** `content:read`
 
         :param object_id: (required)
         :type object_id: str
@@ -5460,7 +4281,7 @@ class ObjectsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_object_document_annotated_pdf_serialize(
+        _param = self._get_object_document_grounded_extraction_result_serialize(
             object_id=object_id,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
@@ -5470,7 +4291,7 @@ class ObjectsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "AnnotatedPdfResponse",
+            '200': "GroundedExtractionResultResponse",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -5486,7 +4307,7 @@ class ObjectsApi:
 
 
     @validate_call
-    def get_object_document_annotated_pdf_with_http_info(
+    def get_object_document_grounded_extraction_result_with_http_info(
         self,
         object_id: StrictStr,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
@@ -5502,10 +4323,10 @@ class ObjectsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[AnnotatedPdfResponse]:
-        """Get annotated document PDF
+    ) -> ApiResponse[GroundedExtractionResultResponse]:
+        """Get grounded extraction result
 
-        Returns a download URL for the annotated PDF produced by document analysis when available.  **Required permissions:** `content:read`
+        Returns the extracted grounded data, trust verdict, verification breakdown, and artifact URL.  **Required permissions:** `content:read`
 
         :param object_id: (required)
         :type object_id: str
@@ -5533,7 +4354,7 @@ class ObjectsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_object_document_annotated_pdf_serialize(
+        _param = self._get_object_document_grounded_extraction_result_serialize(
             object_id=object_id,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
@@ -5543,7 +4364,7 @@ class ObjectsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "AnnotatedPdfResponse",
+            '200': "GroundedExtractionResultResponse",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -5559,7 +4380,7 @@ class ObjectsApi:
 
 
     @validate_call
-    def get_object_document_annotated_pdf_without_preload_content(
+    def get_object_document_grounded_extraction_result_without_preload_content(
         self,
         object_id: StrictStr,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
@@ -5576,9 +4397,9 @@ class ObjectsApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Get annotated document PDF
+        """Get grounded extraction result
 
-        Returns a download URL for the annotated PDF produced by document analysis when available.  **Required permissions:** `content:read`
+        Returns the extracted grounded data, trust verdict, verification breakdown, and artifact URL.  **Required permissions:** `content:read`
 
         :param object_id: (required)
         :type object_id: str
@@ -5606,7 +4427,7 @@ class ObjectsApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_object_document_annotated_pdf_serialize(
+        _param = self._get_object_document_grounded_extraction_result_serialize(
             object_id=object_id,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
@@ -5616,7 +4437,7 @@ class ObjectsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "AnnotatedPdfResponse",
+            '200': "GroundedExtractionResultResponse",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -5627,7 +4448,7 @@ class ObjectsApi:
         return response_data.response
 
 
-    def _get_object_document_annotated_pdf_serialize(
+    def _get_object_document_grounded_extraction_result_serialize(
         self,
         object_id,
         x_api_version,
@@ -5679,290 +4500,7 @@ class ObjectsApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/objects/{objectId}/analyze/annotated',
-            path_params=_path_params,
-            query_params=_query_params,
-            header_params=_header_params,
-            body=_body_params,
-            post_params=_form_params,
-            files=_files,
-            auth_settings=_auth_settings,
-            collection_formats=_collection_formats,
-            _host=_host,
-            _request_auth=_request_auth
-        )
-
-
-
-
-    @validate_call
-    def get_object_document_xml(
-        self,
-        object_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> str:
-        """Get analyzed document XML
-
-        Returns the stored rich-text XML representation for the analyzed document.  **Required permissions:** `content:read`
-
-        :param object_id: (required)
-        :type object_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
-        :type x_api_version: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._get_object_document_xml_serialize(
-            object_id=object_id,
-            x_api_version=x_api_version,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "str",
-            '500': "ErrorResponse",
-            '4XX': "ErrorResponse",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        ).data
-
-
-    @validate_call
-    def get_object_document_xml_with_http_info(
-        self,
-        object_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[str]:
-        """Get analyzed document XML
-
-        Returns the stored rich-text XML representation for the analyzed document.  **Required permissions:** `content:read`
-
-        :param object_id: (required)
-        :type object_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
-        :type x_api_version: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._get_object_document_xml_serialize(
-            object_id=object_id,
-            x_api_version=x_api_version,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "str",
-            '500': "ErrorResponse",
-            '4XX': "ErrorResponse",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        )
-
-
-    @validate_call
-    def get_object_document_xml_without_preload_content(
-        self,
-        object_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> RESTResponseType:
-        """Get analyzed document XML
-
-        Returns the stored rich-text XML representation for the analyzed document.  **Required permissions:** `content:read`
-
-        :param object_id: (required)
-        :type object_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
-        :type x_api_version: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._get_object_document_xml_serialize(
-            object_id=object_id,
-            x_api_version=x_api_version,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "str",
-            '500': "ErrorResponse",
-            '4XX': "ErrorResponse",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        return response_data.response
-
-
-    def _get_object_document_xml_serialize(
-        self,
-        object_id,
-        x_api_version,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
-    ) -> RequestSerialized:
-
-        _host = None
-
-        _collection_formats: Dict[str, str] = {
-        }
-
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
-        ] = {}
-        _body_params: Optional[bytes] = None
-
-        # process the path parameters
-        if object_id is not None:
-            _path_params['objectId'] = object_id
-        # process the query parameters
-        # process the header parameters
-        if x_api_version is not None:
-            _header_params['x-api-version'] = x_api_version
-        # process the form parameters
-        # process the body parameter
-
-
-        # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
-                [
-                    'application/json'
-                ]
-            )
-
-
-        # authentication setting
-        _auth_settings: List[str] = [
-            'bearerAuth', 
-            'OpenID'
-        ]
-
-        return self.api_client.param_serialize(
-            method='GET',
-            resource_path='/objects/{objectId}/analyze/xml',
+            resource_path='/objects/{objectId}/analyze/grounded/result',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -7163,572 +5701,6 @@ class ObjectsApi:
         return self.api_client.param_serialize(
             method='GET',
             resource_path='/objects/{objectId}/collections',
-            path_params=_path_params,
-            query_params=_query_params,
-            header_params=_header_params,
-            body=_body_params,
-            post_params=_form_params,
-            files=_files,
-            auth_settings=_auth_settings,
-            collection_formats=_collection_formats,
-            _host=_host,
-            _request_auth=_request_auth
-        )
-
-
-
-
-    @validate_call
-    def list_object_document_images(
-        self,
-        object_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> List[DocImage]:
-        """List extracted document images
-
-        Returns images extracted from the analyzed document with page and description metadata.  **Required permissions:** `content:read`
-
-        :param object_id: (required)
-        :type object_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
-        :type x_api_version: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._list_object_document_images_serialize(
-            object_id=object_id,
-            x_api_version=x_api_version,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[DocImage]",
-            '500': "ErrorResponse",
-            '4XX': "ErrorResponse",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        ).data
-
-
-    @validate_call
-    def list_object_document_images_with_http_info(
-        self,
-        object_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[List[DocImage]]:
-        """List extracted document images
-
-        Returns images extracted from the analyzed document with page and description metadata.  **Required permissions:** `content:read`
-
-        :param object_id: (required)
-        :type object_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
-        :type x_api_version: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._list_object_document_images_serialize(
-            object_id=object_id,
-            x_api_version=x_api_version,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[DocImage]",
-            '500': "ErrorResponse",
-            '4XX': "ErrorResponse",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        )
-
-
-    @validate_call
-    def list_object_document_images_without_preload_content(
-        self,
-        object_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> RESTResponseType:
-        """List extracted document images
-
-        Returns images extracted from the analyzed document with page and description metadata.  **Required permissions:** `content:read`
-
-        :param object_id: (required)
-        :type object_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
-        :type x_api_version: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._list_object_document_images_serialize(
-            object_id=object_id,
-            x_api_version=x_api_version,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[DocImage]",
-            '500': "ErrorResponse",
-            '4XX': "ErrorResponse",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        return response_data.response
-
-
-    def _list_object_document_images_serialize(
-        self,
-        object_id,
-        x_api_version,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
-    ) -> RequestSerialized:
-
-        _host = None
-
-        _collection_formats: Dict[str, str] = {
-        }
-
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
-        ] = {}
-        _body_params: Optional[bytes] = None
-
-        # process the path parameters
-        if object_id is not None:
-            _path_params['objectId'] = object_id
-        # process the query parameters
-        # process the header parameters
-        if x_api_version is not None:
-            _header_params['x-api-version'] = x_api_version
-        # process the form parameters
-        # process the body parameter
-
-
-        # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
-                [
-                    'application/json'
-                ]
-            )
-
-
-        # authentication setting
-        _auth_settings: List[str] = [
-            'bearerAuth', 
-            'OpenID'
-        ]
-
-        return self.api_client.param_serialize(
-            method='GET',
-            resource_path='/objects/{objectId}/analyze/images',
-            path_params=_path_params,
-            query_params=_query_params,
-            header_params=_header_params,
-            body=_body_params,
-            post_params=_form_params,
-            files=_files,
-            auth_settings=_auth_settings,
-            collection_formats=_collection_formats,
-            _host=_host,
-            _request_auth=_request_auth
-        )
-
-
-
-
-    @validate_call
-    def list_object_document_tables(
-        self,
-        object_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> List[DocTableResponse]:
-        """List extracted document tables
-
-        Returns tables extracted from the analyzed document in JSON or CSV form.  **Required permissions:** `content:read`
-
-        :param object_id: (required)
-        :type object_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
-        :type x_api_version: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._list_object_document_tables_serialize(
-            object_id=object_id,
-            x_api_version=x_api_version,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[DocTableResponse]",
-            '500': "ErrorResponse",
-            '4XX': "ErrorResponse",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        ).data
-
-
-    @validate_call
-    def list_object_document_tables_with_http_info(
-        self,
-        object_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[List[DocTableResponse]]:
-        """List extracted document tables
-
-        Returns tables extracted from the analyzed document in JSON or CSV form.  **Required permissions:** `content:read`
-
-        :param object_id: (required)
-        :type object_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
-        :type x_api_version: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._list_object_document_tables_serialize(
-            object_id=object_id,
-            x_api_version=x_api_version,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[DocTableResponse]",
-            '500': "ErrorResponse",
-            '4XX': "ErrorResponse",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        )
-
-
-    @validate_call
-    def list_object_document_tables_without_preload_content(
-        self,
-        object_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> RESTResponseType:
-        """List extracted document tables
-
-        Returns tables extracted from the analyzed document in JSON or CSV form.  **Required permissions:** `content:read`
-
-        :param object_id: (required)
-        :type object_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
-        :type x_api_version: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._list_object_document_tables_serialize(
-            object_id=object_id,
-            x_api_version=x_api_version,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[DocTableResponse]",
-            '500': "ErrorResponse",
-            '4XX': "ErrorResponse",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        return response_data.response
-
-
-    def _list_object_document_tables_serialize(
-        self,
-        object_id,
-        x_api_version,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
-    ) -> RequestSerialized:
-
-        _host = None
-
-        _collection_formats: Dict[str, str] = {
-        }
-
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
-        ] = {}
-        _body_params: Optional[bytes] = None
-
-        # process the path parameters
-        if object_id is not None:
-            _path_params['objectId'] = object_id
-        # process the query parameters
-        # process the header parameters
-        if x_api_version is not None:
-            _header_params['x-api-version'] = x_api_version
-        # process the form parameters
-        # process the body parameter
-
-
-        # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
-                [
-                    'application/json'
-                ]
-            )
-
-
-        # authentication setting
-        _auth_settings: List[str] = [
-            'bearerAuth', 
-            'OpenID'
-        ]
-
-        return self.api_client.param_serialize(
-            method='GET',
-            resource_path='/objects/{objectId}/analyze/tables',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -9213,6 +7185,628 @@ class ObjectsApi:
         return self.api_client.param_serialize(
             method='POST',
             resource_path='/objects/export/bulk',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def start_object_document_grounded_extraction(
+        self,
+        object_id: StrictStr,
+        grounded_extraction_request: GroundedExtractionRequest,
+        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> DocAnalyzeRunStatusResponse:
+        """Start grounded extraction
+
+        Starts citation-grounded structured extraction for a content object. Poll /analyze/status for progress.  **Required permissions:** `content:write`
+
+        :param object_id: (required)
+        :type object_id: str
+        :param grounded_extraction_request: (required)
+        :type grounded_extraction_request: GroundedExtractionRequest
+        :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
+        :type x_api_version: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._start_object_document_grounded_extraction_serialize(
+            object_id=object_id,
+            grounded_extraction_request=grounded_extraction_request,
+            x_api_version=x_api_version,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "DocAnalyzeRunStatusResponse",
+            '500': "ErrorResponse",
+            '4XX': "ErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def start_object_document_grounded_extraction_with_http_info(
+        self,
+        object_id: StrictStr,
+        grounded_extraction_request: GroundedExtractionRequest,
+        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[DocAnalyzeRunStatusResponse]:
+        """Start grounded extraction
+
+        Starts citation-grounded structured extraction for a content object. Poll /analyze/status for progress.  **Required permissions:** `content:write`
+
+        :param object_id: (required)
+        :type object_id: str
+        :param grounded_extraction_request: (required)
+        :type grounded_extraction_request: GroundedExtractionRequest
+        :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
+        :type x_api_version: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._start_object_document_grounded_extraction_serialize(
+            object_id=object_id,
+            grounded_extraction_request=grounded_extraction_request,
+            x_api_version=x_api_version,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "DocAnalyzeRunStatusResponse",
+            '500': "ErrorResponse",
+            '4XX': "ErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def start_object_document_grounded_extraction_without_preload_content(
+        self,
+        object_id: StrictStr,
+        grounded_extraction_request: GroundedExtractionRequest,
+        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Start grounded extraction
+
+        Starts citation-grounded structured extraction for a content object. Poll /analyze/status for progress.  **Required permissions:** `content:write`
+
+        :param object_id: (required)
+        :type object_id: str
+        :param grounded_extraction_request: (required)
+        :type grounded_extraction_request: GroundedExtractionRequest
+        :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
+        :type x_api_version: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._start_object_document_grounded_extraction_serialize(
+            object_id=object_id,
+            grounded_extraction_request=grounded_extraction_request,
+            x_api_version=x_api_version,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "DocAnalyzeRunStatusResponse",
+            '500': "ErrorResponse",
+            '4XX': "ErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _start_object_document_grounded_extraction_serialize(
+        self,
+        object_id,
+        grounded_extraction_request,
+        x_api_version,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if object_id is not None:
+            _path_params['objectId'] = object_id
+        # process the query parameters
+        # process the header parameters
+        if x_api_version is not None:
+            _header_params['x-api-version'] = x_api_version
+        # process the form parameters
+        # process the body parameter
+        if grounded_extraction_request is not None:
+            _body_params = grounded_extraction_request
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+        # set the HTTP header `Content-Type`
+        if _content_type:
+            _header_params['Content-Type'] = _content_type
+        else:
+            _default_content_type = (
+                self.api_client.select_header_content_type(
+                    [
+                        'application/json'
+                    ]
+                )
+            )
+            if _default_content_type is not None:
+                _header_params['Content-Type'] = _default_content_type
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'bearerAuth', 
+            'OpenID'
+        ]
+
+        return self.api_client.param_serialize(
+            method='POST',
+            resource_path='/objects/{objectId}/analyze/grounded',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def start_object_grounded_extraction_assistant(
+        self,
+        object_id: StrictStr,
+        grounded_extraction_request: GroundedExtractionRequest,
+        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> GroundedAssistantResponse:
+        """Start the interactive grounded extraction assistant
+
+        Records an agent run, stages the document into the agent space, and launches an interactive assistant conversation that corrects the grounded extraction under operator direction. Returns the agent_run_id used to stream/render the conversation.  **Required permissions:** `content:write`
+
+        :param object_id: (required)
+        :type object_id: str
+        :param grounded_extraction_request: (required)
+        :type grounded_extraction_request: GroundedExtractionRequest
+        :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
+        :type x_api_version: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._start_object_grounded_extraction_assistant_serialize(
+            object_id=object_id,
+            grounded_extraction_request=grounded_extraction_request,
+            x_api_version=x_api_version,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "GroundedAssistantResponse",
+            '500': "ErrorResponse",
+            '4XX': "ErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def start_object_grounded_extraction_assistant_with_http_info(
+        self,
+        object_id: StrictStr,
+        grounded_extraction_request: GroundedExtractionRequest,
+        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[GroundedAssistantResponse]:
+        """Start the interactive grounded extraction assistant
+
+        Records an agent run, stages the document into the agent space, and launches an interactive assistant conversation that corrects the grounded extraction under operator direction. Returns the agent_run_id used to stream/render the conversation.  **Required permissions:** `content:write`
+
+        :param object_id: (required)
+        :type object_id: str
+        :param grounded_extraction_request: (required)
+        :type grounded_extraction_request: GroundedExtractionRequest
+        :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
+        :type x_api_version: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._start_object_grounded_extraction_assistant_serialize(
+            object_id=object_id,
+            grounded_extraction_request=grounded_extraction_request,
+            x_api_version=x_api_version,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "GroundedAssistantResponse",
+            '500': "ErrorResponse",
+            '4XX': "ErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def start_object_grounded_extraction_assistant_without_preload_content(
+        self,
+        object_id: StrictStr,
+        grounded_extraction_request: GroundedExtractionRequest,
+        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Start the interactive grounded extraction assistant
+
+        Records an agent run, stages the document into the agent space, and launches an interactive assistant conversation that corrects the grounded extraction under operator direction. Returns the agent_run_id used to stream/render the conversation.  **Required permissions:** `content:write`
+
+        :param object_id: (required)
+        :type object_id: str
+        :param grounded_extraction_request: (required)
+        :type grounded_extraction_request: GroundedExtractionRequest
+        :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
+        :type x_api_version: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._start_object_grounded_extraction_assistant_serialize(
+            object_id=object_id,
+            grounded_extraction_request=grounded_extraction_request,
+            x_api_version=x_api_version,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "GroundedAssistantResponse",
+            '500': "ErrorResponse",
+            '4XX': "ErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _start_object_grounded_extraction_assistant_serialize(
+        self,
+        object_id,
+        grounded_extraction_request,
+        x_api_version,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if object_id is not None:
+            _path_params['objectId'] = object_id
+        # process the query parameters
+        # process the header parameters
+        if x_api_version is not None:
+            _header_params['x-api-version'] = x_api_version
+        # process the form parameters
+        # process the body parameter
+        if grounded_extraction_request is not None:
+            _body_params = grounded_extraction_request
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+        # set the HTTP header `Content-Type`
+        if _content_type:
+            _header_params['Content-Type'] = _content_type
+        else:
+            _default_content_type = (
+                self.api_client.select_header_content_type(
+                    [
+                        'application/json'
+                    ]
+                )
+            )
+            if _default_content_type is not None:
+                _header_params['Content-Type'] = _default_content_type
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'bearerAuth', 
+            'OpenID'
+        ]
+
+        return self.api_client.param_serialize(
+            method='POST',
+            resource_path='/objects/{objectId}/analyze/grounded/assistant',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,

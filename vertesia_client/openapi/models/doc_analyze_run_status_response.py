@@ -21,6 +21,7 @@ from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, Optional
 from vertesia_client.openapi.models.doc_analyzer_progress import DocAnalyzerProgress
 from vertesia_client.openapi.models.doc_processor_output_format import DocProcessorOutputFormat
+from vertesia_client.openapi.models.document_processing_phase import DocumentProcessingPhase
 from vertesia_client.openapi.models.workflow_execution_status import WorkflowExecutionStatus
 from typing import Optional, Set
 from typing_extensions import Self
@@ -33,9 +34,10 @@ class DocAnalyzeRunStatusResponse(BaseModel):
     workflow_id: Optional[StrictStr]
     workflow_run_id: Optional[StrictStr]
     status: WorkflowExecutionStatus
+    phase: Optional[DocumentProcessingPhase] = None
     progress: Optional[DocAnalyzerProgress] = None
-    output_format: Optional[DocProcessorOutputFormat] = Field(default=None, description="The output format being used for processing (markdown or xml)")
-    __properties: ClassVar[List[str]] = ["workflow_id", "workflow_run_id", "status", "progress", "output_format"]
+    output_format: Optional[DocProcessorOutputFormat] = Field(default=None, description="The output format being used for processing.")
+    __properties: ClassVar[List[str]] = ["workflow_id", "workflow_run_id", "status", "phase", "progress", "output_format"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -104,6 +106,7 @@ class DocAnalyzeRunStatusResponse(BaseModel):
             "workflow_id": obj.get("workflow_id"),
             "workflow_run_id": obj.get("workflow_run_id"),
             "status": obj.get("status"),
+            "phase": obj.get("phase"),
             "progress": DocAnalyzerProgress.from_dict(obj["progress"]) if obj.get("progress") is not None else None,
             "output_format": obj.get("output_format")
         })

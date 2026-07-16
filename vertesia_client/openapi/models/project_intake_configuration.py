@@ -19,6 +19,9 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, Optional, Union
+from vertesia_client.openapi.models.content_type_intake_policy import ContentTypeIntakePolicy
+from vertesia_client.openapi.models.partial_record_intake_vision_detail_partial_intake_vision_profile_settings import PartialRecordIntakeVisionDetailPartialIntakeVisionProfileSettings
+from vertesia_client.openapi.models.project_intake_sniff_configuration import ProjectIntakeSniffConfiguration
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -27,12 +30,16 @@ class ProjectIntakeConfiguration(BaseModel):
     """
     ProjectIntakeConfiguration
     """ # noqa: E501
+    enabled: Optional[StrictBool] = Field(default=None, description="Master switch for the standard intake pipeline. When false, StandardIntake exits as a no-op WITHOUT touching object status (objects stay in `created`, identifiable as unprocessed). Defaults to true.")
+    sniff: Optional[ProjectIntakeSniffConfiguration] = Field(default=None, description="Fast pre-conversion type identification for untyped documents. Absent means enabled with platform default thresholds.")
+    default_policy: Optional[ContentTypeIntakePolicy] = Field(default=None, description="Project-level intake policy defaults. Same shape as the per-content-type policy; a type's `intake` block wins field-by-field over these defaults, which in turn win over the legacy flat fields below. `identification` is type-specific and ignored here.")
+    vision_profiles: Optional[PartialRecordIntakeVisionDetailPartialIntakeVisionProfileSettings] = Field(default=None, description="Project overrides for the platform vision detail profiles used by intake visual extraction (`low`/`standard`/`high`). Partial: omitted profiles or fields inherit the platform defaults. Types reference detail NAMES only; the profile settings live here.")
     generate_toc: Optional[StrictBool] = Field(default=None, description="Generate table-of-content sections during standard document intake. Defaults to false.")
     generate_toc_max_size: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Skip table-of-content generation when the document text exceeds this many characters. Avoids sending very large documents through the TOC interactions. Unset means no limit.")
     generate_content_type: Optional[StrictBool] = Field(default=None, description="Select or assign a content type during standard intake. Defaults to true.")
     generate_properties: Optional[StrictBool] = Field(default=None, description="Extract document properties after content type assignment. Defaults to true.")
     default_content_type: Optional[StrictStr] = Field(default=None, description="Default content type assigned during intake when type selection finds no matching type. A type id resolvable in this project (a stored `oid:` type, an `app:` type, or a `sys:` type). Defaults to the platform `sys:GenericDocument` when unset.")
-    __properties: ClassVar[List[str]] = ["generate_toc", "generate_toc_max_size", "generate_content_type", "generate_properties", "default_content_type"]
+    __properties: ClassVar[List[str]] = ["enabled", "sniff", "default_policy", "vision_profiles", "generate_toc", "generate_toc_max_size", "generate_content_type", "generate_properties", "default_content_type"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -73,6 +80,15 @@ class ProjectIntakeConfiguration(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of sniff
+        if self.sniff:
+            _dict['sniff'] = self.sniff.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of default_policy
+        if self.default_policy:
+            _dict['default_policy'] = self.default_policy.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of vision_profiles
+        if self.vision_profiles:
+            _dict['vision_profiles'] = self.vision_profiles.to_dict()
         return _dict
 
     @classmethod
@@ -85,6 +101,10 @@ class ProjectIntakeConfiguration(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "enabled": obj.get("enabled"),
+            "sniff": ProjectIntakeSniffConfiguration.from_dict(obj["sniff"]) if obj.get("sniff") is not None else None,
+            "default_policy": ContentTypeIntakePolicy.from_dict(obj["default_policy"]) if obj.get("default_policy") is not None else None,
+            "vision_profiles": PartialRecordIntakeVisionDetailPartialIntakeVisionProfileSettings.from_dict(obj["vision_profiles"]) if obj.get("vision_profiles") is not None else None,
             "generate_toc": obj.get("generate_toc"),
             "generate_toc_max_size": obj.get("generate_toc_max_size"),
             "generate_content_type": obj.get("generate_content_type"),

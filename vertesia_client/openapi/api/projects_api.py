@@ -26,7 +26,7 @@ from vertesia_client.openapi.models.in_code_process_definition import InCodeProc
 from vertesia_client.openapi.models.partial_omit_composite_app_config_id_project import PartialOmitCompositeAppConfigIdProject
 from vertesia_client.openapi.models.partial_project import PartialProject
 from vertesia_client.openapi.models.partial_project_configuration import PartialProjectConfiguration
-from vertesia_client.openapi.models.pick_content_object_type_item_id_name_description_tags_object_schema_table_layout_is_chunkable_strict_mode import PickContentObjectTypeItemIdNameDescriptionTagsObjectSchemaTableLayoutIsChunkableStrictMode
+from vertesia_client.openapi.models.pick_content_object_type_item_id_name_description_tags_object_schema_table_layout_is_chunkable_strict_mode_status_intake import PickContentObjectTypeItemIdNameDescriptionTagsObjectSchemaTableLayoutIsChunkableStrictModeStatusIntake
 from vertesia_client.openapi.models.project import Project
 from vertesia_client.openapi.models.project_configuration import ProjectConfiguration
 from vertesia_client.openapi.models.project_integration_config_request import ProjectIntegrationConfigRequest
@@ -1532,7 +1532,7 @@ class ProjectsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> PickContentObjectTypeItemIdNameDescriptionTagsObjectSchemaTableLayoutIsChunkableStrictMode:
+    ) -> PickContentObjectTypeItemIdNameDescriptionTagsObjectSchemaTableLayoutIsChunkableStrictModeStatusIntake:
         """Retrieve a project app content type
 
         Retrieves a content type contributed by an installed app.
@@ -1576,7 +1576,7 @@ class ProjectsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "PickContentObjectTypeItemIdNameDescriptionTagsObjectSchemaTableLayoutIsChunkableStrictMode",
+            '200': "PickContentObjectTypeItemIdNameDescriptionTagsObjectSchemaTableLayoutIsChunkableStrictModeStatusIntake",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -1609,7 +1609,7 @@ class ProjectsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[PickContentObjectTypeItemIdNameDescriptionTagsObjectSchemaTableLayoutIsChunkableStrictMode]:
+    ) -> ApiResponse[PickContentObjectTypeItemIdNameDescriptionTagsObjectSchemaTableLayoutIsChunkableStrictModeStatusIntake]:
         """Retrieve a project app content type
 
         Retrieves a content type contributed by an installed app.
@@ -1653,7 +1653,7 @@ class ProjectsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "PickContentObjectTypeItemIdNameDescriptionTagsObjectSchemaTableLayoutIsChunkableStrictMode",
+            '200': "PickContentObjectTypeItemIdNameDescriptionTagsObjectSchemaTableLayoutIsChunkableStrictModeStatusIntake",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -1730,7 +1730,7 @@ class ProjectsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "PickContentObjectTypeItemIdNameDescriptionTagsObjectSchemaTableLayoutIsChunkableStrictMode",
+            '200': "PickContentObjectTypeItemIdNameDescriptionTagsObjectSchemaTableLayoutIsChunkableStrictModeStatusIntake",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -3309,7 +3309,7 @@ class ProjectsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> List[PickContentObjectTypeItemIdNameDescriptionTagsObjectSchemaTableLayoutIsChunkableStrictMode]:
+    ) -> List[PickContentObjectTypeItemIdNameDescriptionTagsObjectSchemaTableLayoutIsChunkableStrictModeStatusIntake]:
         """List project app content types
 
         Lists content types contributed by installed apps in the project.
@@ -3353,7 +3353,7 @@ class ProjectsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[PickContentObjectTypeItemIdNameDescriptionTagsObjectSchemaTableLayoutIsChunkableStrictMode]",
+            '200': "List[PickContentObjectTypeItemIdNameDescriptionTagsObjectSchemaTableLayoutIsChunkableStrictModeStatusIntake]",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -3386,7 +3386,7 @@ class ProjectsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[List[PickContentObjectTypeItemIdNameDescriptionTagsObjectSchemaTableLayoutIsChunkableStrictMode]]:
+    ) -> ApiResponse[List[PickContentObjectTypeItemIdNameDescriptionTagsObjectSchemaTableLayoutIsChunkableStrictModeStatusIntake]]:
         """List project app content types
 
         Lists content types contributed by installed apps in the project.
@@ -3430,7 +3430,7 @@ class ProjectsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[PickContentObjectTypeItemIdNameDescriptionTagsObjectSchemaTableLayoutIsChunkableStrictMode]",
+            '200': "List[PickContentObjectTypeItemIdNameDescriptionTagsObjectSchemaTableLayoutIsChunkableStrictModeStatusIntake]",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -3507,7 +3507,7 @@ class ProjectsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[PickContentObjectTypeItemIdNameDescriptionTagsObjectSchemaTableLayoutIsChunkableStrictMode]",
+            '200': "List[PickContentObjectTypeItemIdNameDescriptionTagsObjectSchemaTableLayoutIsChunkableStrictModeStatusIntake]",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }

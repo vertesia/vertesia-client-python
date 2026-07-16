@@ -20,6 +20,8 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from vertesia_client.openapi.models.column_layout import ColumnLayout
+from vertesia_client.openapi.models.content_object_type_status import ContentObjectTypeStatus
+from vertesia_client.openapi.models.content_type_intake_policy import ContentTypeIntakePolicy
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -36,12 +38,14 @@ class ContentObjectType(BaseModel):
     created_by: StrictStr = Field(description="Identifier of the user who created the object")
     created_at: StrictStr = Field(description="ISO timestamp of when the object was created")
     updated_at: StrictStr = Field(description="ISO timestamp of when the object was last updated")
+    status: Optional[ContentObjectTypeStatus] = None
     is_chunkable: Optional[StrictBool] = None
+    intake: Optional[ContentTypeIntakePolicy] = None
     table_layout: Optional[List[ColumnLayout]] = Field(default=None, description="This is only included in ContentObjectTypeItem if explicitly requested It is always included in ContentObjectType")
     object_schema: Optional[Dict[str, Any]] = Field(default=None, description="this is only included in ContentObjectTypeItem if explicitly requested It is always included in ContentObjectType")
     strict_mode: Optional[StrictBool] = Field(default=None, description="Determines if the content will be validated against the object schema a generation time and save/update time.")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["id", "name", "description", "tags", "updated_by", "created_by", "created_at", "updated_at", "is_chunkable", "table_layout", "object_schema", "strict_mode"]
+    __properties: ClassVar[List[str]] = ["id", "name", "description", "tags", "updated_by", "created_by", "created_at", "updated_at", "status", "is_chunkable", "intake", "table_layout", "object_schema", "strict_mode"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -84,6 +88,9 @@ class ContentObjectType(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of intake
+        if self.intake:
+            _dict['intake'] = self.intake.to_dict()
         # override the default output from pydantic by calling `to_dict()` of each item in table_layout (list)
         _items = []
         if self.table_layout:
@@ -116,7 +123,9 @@ class ContentObjectType(BaseModel):
             "created_by": obj.get("created_by"),
             "created_at": obj.get("created_at"),
             "updated_at": obj.get("updated_at"),
+            "status": obj.get("status"),
             "is_chunkable": obj.get("is_chunkable"),
+            "intake": ContentTypeIntakePolicy.from_dict(obj["intake"]) if obj.get("intake") is not None else None,
             "table_layout": [ColumnLayout.from_dict(_item) for _item in obj["table_layout"]] if obj.get("table_layout") is not None else None,
             "object_schema": obj.get("object_schema"),
             "strict_mode": obj.get("strict_mode")

@@ -18,7 +18,7 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
-from typing import Any, ClassVar, Dict
+from typing import Any, ClassVar, Dict, Optional
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -30,11 +30,20 @@ class InCodeTypeRef(BaseModel):
     ref_type: StrictStr
     id: StrictStr = Field(description="Namespaced identifier for in-code types (e.g. \"sys:Invoice\", \"app:myapp:Contract\")")
     name: StrictStr
-    __properties: ClassVar[List[str]] = ["ref_type", "id", "name"]
+    default_view: Optional[StrictStr] = Field(default=None, description="Display hint from the type's intake policy (`intake.default_view`). Enriched by the API on single-object reads so clients can pick the initial view without fetching the type. Absent on list responses and older servers.")
+    __properties: ClassVar[List[str]] = ["ref_type", "id", "name", "default_view"]
 
     @field_validator('ref_type')
     def ref_type_validate_enum(cls, value):
         """Validates the enum"""
+        return value
+
+    @field_validator('default_view')
+    def default_view_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
         return value
 
     model_config = ConfigDict(
@@ -90,7 +99,8 @@ class InCodeTypeRef(BaseModel):
         _obj = cls.model_validate({
             "ref_type": obj.get("ref_type"),
             "id": obj.get("id"),
-            "name": obj.get("name")
+            "name": obj.get("name"),
+            "default_view": obj.get("default_view")
         })
         return _obj
 

@@ -26,7 +26,6 @@ class DocProcessorOutputFormat(str, Enum):
     """
     allowed enum values
     """
-    XML = 'xml'
     MARKDOWN = 'markdown'
 
     @classmethod

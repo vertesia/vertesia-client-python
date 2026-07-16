@@ -42,6 +42,7 @@ class KnownAuditAction(str, Enum):
     INFERENCE = 'inference'
     EMBEDDING = 'embedding'
     IMAGE_GENERATION = 'image_generation'
+    DOCUMENT_PROCESSED = 'document_processed'
 
     @classmethod
     def _missing_(cls, value: object) -> Self:

@@ -17,12 +17,15 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from vertesia_client.openapi.models.content_nature import ContentNature
 from vertesia_client.openapi.models.generation_run_metadata import GenerationRunMetadata
+from vertesia_client.openapi.models.locate_metadata import LocateMetadata
 from vertesia_client.openapi.models.location import Location
 from vertesia_client.openapi.models.rendition import Rendition
+from vertesia_client.openapi.models.type_detection_metadata import TypeDetectionMetadata
+from vertesia_client.openapi.models.vision_evidence_metadata import VisionEvidenceMetadata
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -37,9 +40,14 @@ class ContentMetadata(BaseModel):
     location: Optional[Location] = None
     generation_runs: Optional[List[GenerationRunMetadata]] = None
     etag: Optional[StrictStr] = None
+    rendered_text_etag: Optional[StrictStr] = Field(default=None, description="ETag of text materialized from object properties by intake rendering.")
     renditions: Optional[List[Rendition]] = None
+    embedded: Optional[Dict[str, Any]] = Field(default=None, description="Embedded/technical metadata harvested from the source file by intake (office docProps, PDF docinfo). Free-form, nature-appropriate keys.")
+    type_detection: Optional[TypeDetectionMetadata] = Field(default=None, description="Type-detection provenance recorded by the intake sniff pipeline.")
+    locate: Optional[LocateMetadata] = Field(default=None, description="Locate-pass provenance: which pages the document map found relevant.")
+    vision_evidence: Optional[VisionEvidenceMetadata] = Field(default=None, description="Vision-evidence provenance for the last visual extraction run.")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["type", "size", "languages", "location", "generation_runs", "etag", "renditions"]
+    __properties: ClassVar[List[str]] = ["type", "size", "languages", "location", "generation_runs", "etag", "rendered_text_etag", "renditions", "embedded", "type_detection", "locate", "vision_evidence"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -99,6 +107,15 @@ class ContentMetadata(BaseModel):
                 if _item_renditions:
                     _items.append(_item_renditions.to_dict())
             _dict['renditions'] = _items
+        # override the default output from pydantic by calling `to_dict()` of type_detection
+        if self.type_detection:
+            _dict['type_detection'] = self.type_detection.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of locate
+        if self.locate:
+            _dict['locate'] = self.locate.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of vision_evidence
+        if self.vision_evidence:
+            _dict['vision_evidence'] = self.vision_evidence.to_dict()
         # puts key-value pairs in additional_properties in the top level
         if self.additional_properties is not None:
             for _key, _value in self.additional_properties.items():
@@ -122,7 +139,12 @@ class ContentMetadata(BaseModel):
             "location": Location.from_dict(obj["location"]) if obj.get("location") is not None else None,
             "generation_runs": [GenerationRunMetadata.from_dict(_item) for _item in obj["generation_runs"]] if obj.get("generation_runs") is not None else None,
             "etag": obj.get("etag"),
-            "renditions": [Rendition.from_dict(_item) for _item in obj["renditions"]] if obj.get("renditions") is not None else None
+            "rendered_text_etag": obj.get("rendered_text_etag"),
+            "renditions": [Rendition.from_dict(_item) for _item in obj["renditions"]] if obj.get("renditions") is not None else None,
+            "embedded": obj.get("embedded"),
+            "type_detection": TypeDetectionMetadata.from_dict(obj["type_detection"]) if obj.get("type_detection") is not None else None,
+            "locate": LocateMetadata.from_dict(obj["locate"]) if obj.get("locate") is not None else None,
+            "vision_evidence": VisionEvidenceMetadata.from_dict(obj["vision_evidence"]) if obj.get("vision_evidence") is not None else None
         })
         # store additional fields in additional_properties
         for _key in obj.keys():

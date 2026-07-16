@@ -21,6 +21,7 @@ from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt
 from typing import Any, ClassVar, Dict, Optional, Union
 from vertesia_client.openapi.models.doc_analyzer_progress_status import DocAnalyzerProgressStatus
 from vertesia_client.openapi.models.doc_processor_output_format import DocProcessorOutputFormat
+from vertesia_client.openapi.models.document_processing_phase import DocumentProcessingPhase
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -29,14 +30,15 @@ class DocAnalyzerProgress(BaseModel):
     """
     DocAnalyzerProgress
     """ # noqa: E501
+    phase: Optional[DocumentProcessingPhase] = None
     pages: DocAnalyzerProgressStatus
     images: DocAnalyzerProgressStatus
     tables: DocAnalyzerProgressStatus
     visuals: DocAnalyzerProgressStatus
     started_at: Optional[Union[StrictFloat, StrictInt]] = None
     percent: Union[StrictFloat, StrictInt]
-    output_format: Optional[DocProcessorOutputFormat] = Field(default=None, description="The output format being used for processing (markdown or xml)")
-    __properties: ClassVar[List[str]] = ["pages", "images", "tables", "visuals", "started_at", "percent", "output_format"]
+    output_format: Optional[DocProcessorOutputFormat] = Field(default=None, description="The output format being used for processing.")
+    __properties: ClassVar[List[str]] = ["phase", "pages", "images", "tables", "visuals", "started_at", "percent", "output_format"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -101,6 +103,7 @@ class DocAnalyzerProgress(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "phase": obj.get("phase"),
             "pages": DocAnalyzerProgressStatus.from_dict(obj["pages"]) if obj.get("pages") is not None else None,
             "images": DocAnalyzerProgressStatus.from_dict(obj["images"]) if obj.get("images") is not None else None,
             "tables": DocAnalyzerProgressStatus.from_dict(obj["tables"]) if obj.get("tables") is not None else None,

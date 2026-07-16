@@ -411,7 +411,7 @@ components:
         $ref: "#/components/schemas/InCodeTypeDefinition"
     InCodeTypeDefinition:
       $ref: "#/components/schemas/Pick_ContentObjectTypeItem_id_name_description_tags\
-        _object_schema_table_layout_is_chunkable_strict_mode"
+        _object_schema_table_layout_is_chunkable_strict_mode_status_intake"
     RenderingTemplateDefinitionRefArray:
       type: array
       items:
@@ -1895,6 +1895,14 @@ components:
           type: array
           items:
             type: string
+        exclude_tags:
+          type: array
+          items:
+            type: string
+          description: Tags to exclude. Runs carrying any of these tags are filtered out
+            of the results, counts, and facet buckets. Combined with `tags`
+            (which requires all of the listed tags) as an additional `$nin`
+            constraint on the same field.
         query:
           type: string
         default_query_path:
@@ -2544,6 +2552,55 @@ components:
         - limit
         - offset
       additionalProperties: false
+    AuditAggregationResponse:
+      type: object
+      properties:
+        rows:
+          type: array
+          items:
+            $ref: "#/components/schemas/AuditAggregationRow"
+        from:
+          type: string
+        to:
+          type: string
+      required:
+        - rows
+        - from
+        - to
+      additionalProperties: false
+    AuditAggregationQuery:
+      type: object
+      properties:
+        projectId:
+          type: string
+          description: Optional account-admin project filter. Ignored for project-scoped
+            principals.
+        from:
+          type: string
+          description: Start time; defaults to 30 days before to. The server caps the
+            range at 366 days.
+        to:
+          type: string
+          description: End time; defaults to the current time.
+        filter:
+          $ref: "#/components/schemas/AuditAggregationFilter"
+        groupBy:
+          type: array
+          items:
+            $ref: "#/components/schemas/AuditAggregationGroup"
+        metrics:
+          type: array
+          items:
+            $ref: "#/components/schemas/AuditAggregationMetric"
+        limit:
+          type: number
+          description: Maximum groups returned (default 50, max 200).
+      required:
+        - metrics
+      additionalProperties: false
+      description: Safe audit aggregation query. The server always applies the
+        authenticated account scope and, for project-scoped principals, replaces
+        projectId with the authenticated project.
     NamedInteractionExecutionPayload:
       type: object
       properties:
@@ -4394,6 +4451,29 @@ components:
     ProjectIntakeConfiguration:
       type: object
       properties:
+        enabled:
+          type: boolean
+          description: Master switch for the standard intake pipeline. When false,
+            StandardIntake exits as a no-op WITHOUT touching object status
+            (objects stay in `created`, identifiable as unprocessed). Defaults
+            to true.
+        sniff:
+          $ref: "#/components/schemas/ProjectIntakeSniffConfiguration"
+          description: Fast pre-conversion type identification for untyped documents.
+            Absent means enabled with platform default thresholds.
+        default_policy:
+          $ref: "#/components/schemas/ContentTypeIntakePolicy"
+          description: Project-level intake policy defaults. Same shape as the
+            per-content-type policy; a type's `intake` block wins field-by-field
+            over these defaults, which in turn win over the legacy flat fields
+            below. `identification` is type-specific and ignored here.
+        vision_profiles:
+          $ref: "#/components/schemas/Partial_Record_IntakeVisionDetail_Partial_IntakeVis\
+            ionProfileSettings"
+          description: "Project overrides for the platform vision detail profiles used by
+            intake visual extraction (`low`/`standard`/`high`). Partial: omitted
+            profiles or fields inherit the platform defaults. Types reference
+            detail NAMES only; the profile settings live here."
         generate_toc:
           type: boolean
           description: Generate table-of-content sections during standard document intake.
@@ -4417,6 +4497,1282 @@ components:
             finds no matching type. A type id resolvable in this project (a
             stored `oid:` type, an `app:` type, or a `sys:` type). Defaults to
             the platform `sys:GenericDocument` when unset.
+      additionalProperties: false
+    ProjectIntakeSniffConfiguration:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          description: Enable the pre-conversion sniff for untyped documents. Defaults to
+            true. Can be overridden per run with the `sniffEnabled` workflow
+            var.
+        high_confidence:
+          type: number
+          description: Confidence at or above which the sniffed type is committed and its
+            full policy applied (including conversion-skip). 0..1, defaults to
+            0.85.
+        medium_confidence:
+          type: number
+          description: "Confidence at or above which the sniffed type is treated as
+            provisional: the document still converts and the post-conversion
+            selector confirms on neutral evidence. 0..1, defaults to 0.6. Below
+            this the sniff result is advisory provenance only."
+        min_pages:
+          type: number
+          description: Minimum page count for the sniff LLM call. Below this, conversion
+            is cheap and full converted text is better selection evidence, so
+            intake uses the standard convert-then-select path. Documents with
+            unknown page counts are sniffed. Defaults to 5; 0 means always
+            sniff.
+      additionalProperties: false
+      description: Fast pre-conversion type identification (the "sniff") for untyped
+        documents. The sniff classifies a document from cheap local evidence
+        (first/last page text, a low-res first-page image, office docProps)
+        BEFORE any conversion, so a high-confidence match can apply the type's
+        intake policy — including skipping conversion — without paying for it
+        first.
+    ContentTypeIntakePolicy:
+      type: object
+      properties:
+        mode:
+          type: string
+          enum:
+            - programmatic
+            - agentic
+          description: Intake orchestration mode for this type.
+        identification:
+          type: object
+          properties:
+            guidance:
+              type: string
+            distinguish_from:
+              type: string
+            examples:
+              type: array
+              items:
+                type: string
+          additionalProperties: false
+          description: Guidance used when selecting or creating this content type.
+        locate:
+          type: object
+          properties:
+            instructions:
+              type: string
+              description: What to look for ("commercial terms, payment schedule, signature
+                pages").
+            detail:
+              type: number
+              enum:
+                - 8
+                - 16
+              description: "Pages per contact sheet: 8 = bigger tiles (headings readable).
+                Default 16."
+            min_pages:
+              type: number
+              description: Only run when the page count is at least this. Default 8.
+          required:
+            - instructions
+          additionalProperties: false
+          description: 'Document-map ("locate") pass: page thumbnails tiled into labeled
+            contact sheets, one vision call returns which pages matter for THIS
+            type. The result can scope conversion and extraction, and doubles as
+            the vision planner for visual extraction.'
+        text_conversion:
+          type: object
+          properties:
+            enabled:
+              type: boolean
+            method:
+              type: string
+              enum:
+                - auto
+                - basic
+                - llm
+                - custom
+            custom:
+              type: object
+              properties:
+                interaction:
+                  type: string
+                agent:
+                  type: string
+              additionalProperties: false
+            instructions:
+              type: string
+            output_format:
+              type: string
+              enum:
+                - markdown
+                - text
+            scope:
+              $ref: "#/components/schemas/IntakePageScope"
+              description: "Which pages to convert: everything or the locate result. Default
+                all."
+            page_ranges:
+              $ref: "#/components/schemas/IntakePageRanges"
+              description: Static page ranges to convert (wins over `scope` when set).
+          additionalProperties: false
+          description: Controls source-to-text conversion before extraction and embedding.
+        extraction:
+          type: object
+          properties:
+            enabled:
+              type: boolean
+            source:
+              type: string
+              enum:
+                - auto
+                - text
+                - vision
+                - mixed
+            instructions:
+              type: string
+            interaction:
+              type: string
+            scope:
+              $ref: "#/components/schemas/IntakePageScope"
+              description: "Which pages extraction sees: everything or the locate result."
+            page_ranges:
+              $ref: "#/components/schemas/IntakePageRanges"
+              description: Static page ranges extraction sees (wins over `scope` when set).
+            max_pages:
+              type: number
+              description: Cap on pages sent to extraction. Default 20.
+            vision:
+              type: object
+              properties:
+                default_detail:
+                  $ref: "#/components/schemas/IntakeVisionDetail"
+                allowed_details:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/IntakeVisionDetail"
+                max_image_tokens:
+                  type: number
+                  description: "PRIMARY budget: estimated image tokens per extraction call.
+                    Default 16000."
+                max_payload_mb:
+                  type: number
+                  description: Transport guard in megabytes. Default 16.
+                max_pages_per_call:
+                  type: number
+                  description: Cap on page images per extraction call. Default 8.
+              additionalProperties: false
+              description: Vision evidence budget for visual extraction. Detail names
+                reference platform profiles; the type never defines
+                dpi/quality/resolution.
+            verification:
+              type: object
+              properties:
+                enabled:
+                  type: boolean
+                model:
+                  type: string
+                environment:
+                  type: string
+                materiality:
+                  type: string
+                threshold:
+                  type: number
+                max_retries:
+                  type: number
+                on_fail:
+                  type: string
+                  enum:
+                    - flag
+                    - block
+              additionalProperties: false
+            grounding:
+              $ref: "#/components/schemas/ContentTypeExtractionGroundingPolicy"
+              description: Controls PDF block-level citation grounding with annotated proof
+                output.
+          additionalProperties: false
+          description: Controls schema-property extraction after type assignment.
+        rendering_template:
+          type: string
+          description: Handlebars template used to materialize extracted properties into
+            object text.
+        embeddings:
+          $ref: "#/components/schemas/Partial_Record_SupportedEmbeddingTypes_boolean"
+          description: Per-type embedding switches. Unspecified values inherit the project
+            policy.
+        generate_toc:
+          type: boolean
+          description: Whether intake should generate a table of contents for matching
+            documents.
+        default_view:
+          type: string
+          enum:
+            - auto
+            - text
+            - pdf
+            - image
+            - properties
+          description: Preferred first view for objects of this type.
+      additionalProperties: false
+      description: Per-content-type policy for the standard intake workflows.
+    IntakePageScope:
+      type: string
+      enum:
+        - all
+        - located
+      description: "Named page scope for intake conversion/extraction: everything or
+        the locate-pass result. Static page ranges live in the sibling
+        `page_ranges` field (which wins when set) — kept as a SEPARATE field
+        because scalar-or-collection unions generate unstable API clients."
+    IntakePageRanges:
+      type: array
+      items:
+        type: array
+        items:
+          type: number
+        minItems: 2
+        maxItems: 2
+      description: "Static page ranges: inclusive [start, end] pairs; negative indexes
+        count from the end of the document ([[1, 2], [-1, -1]] = first two pages
+        plus the last page)."
+    IntakeVisionDetail:
+      type: string
+      enum:
+        - low
+        - standard
+        - high
+      description: Vision detail level names referenced by intake policies. The
+        rendering profiles behind the names (dpi, max size, quality, color mode)
+        are PLATFORM-defined and project-overridable — a type only ever
+        references a detail name.
+    ContentTypeExtractionGroundingPolicy:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          description: Enable PDF block-level citation grounding for property extraction.
+        interaction:
+          type: string
+          description: Grounded extraction interaction. Defaults to the system grounded
+            extractor.
+        max_pages:
+          type: number
+          description: Maximum pages to process.
+        force_ocr:
+          type: boolean
+          description: Run OCR on every page even when a text layer exists.
+        use_vision:
+          type: boolean
+          description: Attach instrumented page images to the grounded extraction prompt.
+        raster_mode:
+          type: string
+          enum:
+            - vision
+            - ocr
+          description: "How to read pages with no digital text layer (scans / image-only
+            pages). 'vision' (default): read them off the page image and skip
+            OCR. 'ocr': legacy path — OCR those pages and block-ground on the
+            (lossy) OCR text."
+        grid_cell_pt:
+          type: number
+          description: A1 locate-grid cell size in PDF points for vision pages. Smaller =
+            finer grid (more cells, tighter boxes) but can trip weaker models
+            into over-reading; tune per the model in `config`. Default 15.
+        omit_block_boxes:
+          type: boolean
+          description: Drop block bounding boxes from the extraction prompt. Only sound
+            with use_vision (layout comes from the image).
+        window_pages:
+          type: number
+          description: Maximum pages per grounded extraction call before windowing.
+        update_properties:
+          type: boolean
+          description: Update object properties with grounded extraction data. Default true.
+        config:
+          $ref: "#/components/schemas/InteractionExecutionConfiguration"
+          description: Model execution configuration for the main grounded extraction
+            interaction.
+        hard_config:
+          $ref: "#/components/schemas/InteractionExecutionConfiguration"
+          description: Model execution configuration used for hard-to-read content.
+        hardness_threshold:
+          type: number
+          description: Hardness score at or above which hard_config is used. Default 0.5.
+        min_citation_density:
+          type: number
+          description: Minimum citations-per-leaf-value ratio; completions below it retry
+            with escalation. Default 0.3.
+        refresh_ocr:
+          type: boolean
+          description: Re-run OCR instead of restoring durable OCR artifacts (stale
+            pipeline output).
+        review:
+          $ref: "#/components/schemas/ContentTypeExtractionGroundingReviewPolicy"
+          description: Optional post-extraction review pass.
+      additionalProperties: false
+    InteractionExecutionConfiguration:
+      type: object
+      properties:
+        id:
+          type: string
+        environment:
+          type: string
+        model:
+          type: string
+        do_validate:
+          type: boolean
+        run_data:
+          $ref: "#/components/schemas/RunDataStorageLevel"
+        configMode:
+          $ref: "#/components/schemas/ConfigModes"
+        model_options:
+          $ref: "#/components/schemas/ModelOptions"
+        prompt_cache_key:
+          type: string
+          description: Stable provider-side routing key for automatic prompt caching.
+        prompt_cache_schema_suffix:
+          type: boolean
+          description: Put the result schema after the cached prefix; Vertesia still
+            validates the returned JSON against it.
+        http_timeout:
+          $ref: "#/components/schemas/HttpTimeoutOptions"
+          description: Per-run HTTP timeouts for upstream LLM-provider calls.
+      additionalProperties: false
+    RunDataStorageLevel:
+      type: string
+      enum:
+        - STANDARD
+        - RESTRICTED
+        - DEBUG
+    ConfigModes:
+      type: string
+      enum:
+        - RUN_AND_INTERACTION_CONFIG
+        - RUN_CONFIG_ONLY
+        - INTERACTION_CONFIG_ONLY
+    ModelOptions:
+      type: object
+      discriminator:
+        propertyName: _option_id
+        mapping:
+          text-fallback: "#/components/schemas/TextFallbackOptions"
+          vertexai-imagen: "#/components/schemas/ImagenOptions"
+          vertexai-claude: "#/components/schemas/VertexAIClaudeOptions"
+          vertexai-gemini: "#/components/schemas/VertexAIGeminiOptions"
+          vertexai-grok: "#/components/schemas/VertexAIGrokOptions"
+          bedrock-nova-canvas: "#/components/schemas/NovaCanvasOptions"
+          bedrock-converse: "#/components/schemas/BedrockConverseOptions"
+          bedrock-nova: "#/components/schemas/BedrockNovaOptions"
+          bedrock-mistral: "#/components/schemas/BedrockMistralOptions"
+          bedrock-ai21: "#/components/schemas/BedrockAI21Options"
+          bedrock-cohere-command: "#/components/schemas/BedrockCohereCommandOptions"
+          bedrock-claude: "#/components/schemas/BedrockClaudeOptions"
+          bedrock-palmyra: "#/components/schemas/BedrockPalmyraOptions"
+          bedrock-gpt-oss: "#/components/schemas/BedrockGptOssOptions"
+          bedrock-twelvelabs-pegasus: "#/components/schemas/TwelvelabsPegasusOptions"
+          bedrock-mantle-responses: "#/components/schemas/BedrockMantleResponsesOptions"
+          bedrock-mantle-chat-completions: "#/components/schemas/BedrockMantleChatCompletionsOptions"
+          bedrock-mantle-claude: "#/components/schemas/BedrockMantleClaudeOptions"
+          openai-thinking: "#/components/schemas/OpenAiThinkingOptions"
+          openai-text: "#/components/schemas/OpenAiTextOptions"
+          openai-dalle: "#/components/schemas/OpenAiDalleOptions"
+          openai-gpt-image: "#/components/schemas/OpenAiGptImageOptions"
+          groq-deepseek-thinking: "#/components/schemas/GroqOptions"
+      required:
+        - _option_id
+      oneOf:
+        - $ref: "#/components/schemas/TextFallbackOptions"
+        - $ref: "#/components/schemas/ImagenOptions"
+        - $ref: "#/components/schemas/VertexAIClaudeOptions"
+        - $ref: "#/components/schemas/VertexAIGeminiOptions"
+        - $ref: "#/components/schemas/VertexAIGrokOptions"
+        - $ref: "#/components/schemas/NovaCanvasOptions"
+        - $ref: "#/components/schemas/BedrockConverseOptions"
+        - $ref: "#/components/schemas/BedrockNovaOptions"
+        - $ref: "#/components/schemas/BedrockMistralOptions"
+        - $ref: "#/components/schemas/BedrockAI21Options"
+        - $ref: "#/components/schemas/BedrockCohereCommandOptions"
+        - $ref: "#/components/schemas/BedrockClaudeOptions"
+        - $ref: "#/components/schemas/BedrockPalmyraOptions"
+        - $ref: "#/components/schemas/BedrockGptOssOptions"
+        - $ref: "#/components/schemas/TwelvelabsPegasusOptions"
+        - $ref: "#/components/schemas/BedrockMantleResponsesOptions"
+        - $ref: "#/components/schemas/BedrockMantleChatCompletionsOptions"
+        - $ref: "#/components/schemas/BedrockMantleClaudeOptions"
+        - $ref: "#/components/schemas/OpenAiThinkingOptions"
+        - $ref: "#/components/schemas/OpenAiTextOptions"
+        - $ref: "#/components/schemas/OpenAiDalleOptions"
+        - $ref: "#/components/schemas/OpenAiGptImageOptions"
+        - $ref: "#/components/schemas/GroqOptions"
+    TextFallbackOptions:
+      type: object
+      properties:
+        _option_id:
+          type: string
+          const: text-fallback
+        max_tokens:
+          type: number
+        temperature:
+          type: number
+        top_p:
+          type: number
+        top_k:
+          type: number
+        presence_penalty:
+          type: number
+        frequency_penalty:
+          type: number
+        stop_sequence:
+          type: array
+          items:
+            type: string
+      required:
+        - _option_id
+      additionalProperties: false
+    ImagenOptions:
+      type: object
+      properties:
+        _option_id:
+          type: string
+          const: vertexai-imagen
+        number_of_images:
+          type: number
+        seed:
+          type: number
+        person_generation:
+          type: string
+          enum:
+            - dont_allow
+            - allow_adults
+            - allow_all
+        safety_setting:
+          type: string
+          enum:
+            - block_none
+            - block_only_high
+            - block_medium_and_above
+            - block_low_and_above
+        image_file_type:
+          type: string
+          enum:
+            - image/jpeg
+            - image/png
+        jpeg_compression_quality:
+          type: number
+        aspect_ratio:
+          type: string
+          enum:
+            - 1:1
+            - 4:3
+            - 3:4
+            - 16:9
+            - 9:16
+        add_watermark:
+          type: boolean
+        enhance_prompt:
+          type: boolean
+        edit_mode:
+          $ref: "#/components/schemas/ImagenTaskType"
+        guidance_scale:
+          type: number
+        edit_steps:
+          type: number
+        mask_mode:
+          $ref: "#/components/schemas/ImagenMaskMode"
+        mask_dilation:
+          type: number
+        mask_class:
+          type: array
+          items:
+            type: number
+        controlType:
+          type: string
+          enum:
+            - CONTROL_TYPE_FACE_MESH
+            - CONTROL_TYPE_CANNY
+            - CONTROL_TYPE_SCRIBBLE
+        controlImageComputation:
+          type: boolean
+        subjectType:
+          type: string
+          enum:
+            - SUBJECT_TYPE_PERSON
+            - SUBJECT_TYPE_ANIMAL
+            - SUBJECT_TYPE_PRODUCT
+            - SUBJECT_TYPE_DEFAULT
+      required:
+        - _option_id
+      additionalProperties: false
+    ImagenTaskType:
+      type: string
+      enum:
+        - TEXT_IMAGE
+        - EDIT_MODE_INPAINT_REMOVAL
+        - EDIT_MODE_INPAINT_INSERTION
+        - EDIT_MODE_BGSWAP
+        - EDIT_MODE_OUTPAINT
+        - CUSTOMIZATION_SUBJECT
+        - CUSTOMIZATION_STYLE
+        - CUSTOMIZATION_CONTROLLED
+        - CUSTOMIZATION_INSTRUCT
+    ImagenMaskMode:
+      type: string
+      enum:
+        - MASK_MODE_USER_PROVIDED
+        - MASK_MODE_BACKGROUND
+        - MASK_MODE_FOREGROUND
+        - MASK_MODE_SEMANTIC
+    VertexAIClaudeOptions:
+      type: object
+      properties:
+        _option_id:
+          type: string
+          const: vertexai-claude
+        max_tokens:
+          type: number
+        temperature:
+          type: number
+        top_p:
+          type: number
+        top_k:
+          type: number
+        stop_sequence:
+          type: array
+          items:
+            type: string
+        effort:
+          type: string
+          enum:
+            - low
+            - medium
+            - high
+            - xhigh
+            - max
+        thinking_budget_tokens:
+          type: number
+        include_thoughts:
+          type: boolean
+        cache_enabled:
+          type: boolean
+        cache_ttl:
+          type: string
+          enum:
+            - 5m
+            - 1h
+      required:
+        - _option_id
+      additionalProperties: false
+    VertexAIGeminiOptions:
+      type: object
+      properties:
+        _option_id:
+          type: string
+          const: vertexai-gemini
+        max_tokens:
+          type: number
+        temperature:
+          type: number
+        top_p:
+          type: number
+        top_k:
+          type: number
+        stop_sequence:
+          type: array
+          items:
+            type: string
+        presence_penalty:
+          type: number
+        frequency_penalty:
+          type: number
+        seed:
+          type: number
+        effort:
+          type: string
+          enum:
+            - low
+            - medium
+            - high
+        include_thoughts:
+          type: boolean
+        thinking_budget_tokens:
+          type: number
+        thinking_level:
+          $ref: "#/components/schemas/ThinkingLevel"
+        flex:
+          type: boolean
+        image_aspect_ratio:
+          type: string
+          enum:
+            - 1:1
+            - 2:3
+            - 3:2
+            - 3:4
+            - 4:3
+            - 9:16
+            - 16:9
+            - 21:9
+        image_size:
+          type: string
+          enum:
+            - 1K
+            - 2K
+            - 4K
+        person_generation:
+          type: string
+          enum:
+            - ALLOW_ALL
+            - ALLOW_ADULT
+            - ALLOW_NONE
+        prominent_people:
+          type: string
+          enum:
+            - PROMINENT_PEOPLE_UNSPECIFIED
+            - ALLOW_PROMINENT_PEOPLE
+            - BLOCK_PROMINENT_PEOPLE
+        output_mime_type:
+          type: string
+          enum:
+            - image/png
+            - image/jpeg
+        output_compression_quality:
+          type: number
+      required:
+        - _option_id
+      additionalProperties: false
+    ThinkingLevel:
+      type: string
+      enum:
+        - HIGH
+        - MEDIUM
+        - LOW
+        - MINIMAL
+        - THINKING_LEVEL_UNSPECIFIED
+    VertexAIGrokOptions:
+      type: object
+      properties:
+        _option_id:
+          type: string
+          const: vertexai-grok
+        max_tokens:
+          type: number
+        temperature:
+          type: number
+        top_p:
+          type: number
+        stop_sequence:
+          type: array
+          items:
+            type: string
+      required:
+        - _option_id
+      additionalProperties: false
+    NovaCanvasOptions:
+      type: object
+      properties:
+        _option_id:
+          type: string
+          const: bedrock-nova-canvas
+        taskType:
+          type: string
+          enum:
+            - TEXT_IMAGE
+            - TEXT_IMAGE_WITH_IMAGE_CONDITIONING
+            - COLOR_GUIDED_GENERATION
+            - IMAGE_VARIATION
+            - INPAINTING
+            - OUTPAINTING
+            - BACKGROUND_REMOVAL
+        width:
+          type: number
+        height:
+          type: number
+        quality:
+          type: string
+          enum:
+            - standard
+            - premium
+        cfgScale:
+          type: number
+        seed:
+          type: number
+        numberOfImages:
+          type: number
+        controlMode:
+          type: string
+          enum:
+            - CANNY_EDGE
+            - SEGMENTATION
+        controlStrength:
+          type: number
+        colors:
+          type: array
+          items:
+            type: string
+        similarityStrength:
+          type: number
+        outPaintingMode:
+          type: string
+          enum:
+            - DEFAULT
+            - PRECISE
+      required:
+        - _option_id
+        - taskType
+      additionalProperties: false
+    BedrockConverseOptions:
+      type: object
+      properties:
+        _option_id:
+          type: string
+          const: bedrock-converse
+        max_tokens:
+          type: number
+        temperature:
+          type: number
+        top_p:
+          type: number
+        stop_sequence:
+          type: array
+          items:
+            type: string
+      required:
+        - _option_id
+      additionalProperties: false
+    BedrockNovaOptions:
+      type: object
+      properties:
+        _option_id:
+          type: string
+          const: bedrock-nova
+        max_tokens:
+          type: number
+        temperature:
+          type: number
+        top_p:
+          type: number
+        stop_sequence:
+          type: array
+          items:
+            type: string
+      required:
+        - _option_id
+      additionalProperties: false
+    BedrockMistralOptions:
+      type: object
+      properties:
+        _option_id:
+          type: string
+          const: bedrock-mistral
+        max_tokens:
+          type: number
+        temperature:
+          type: number
+        top_p:
+          type: number
+        stop_sequence:
+          type: array
+          items:
+            type: string
+      required:
+        - _option_id
+      additionalProperties: false
+    BedrockAI21Options:
+      type: object
+      properties:
+        _option_id:
+          type: string
+          const: bedrock-ai21
+        max_tokens:
+          type: number
+        temperature:
+          type: number
+        top_p:
+          type: number
+        stop_sequence:
+          type: array
+          items:
+            type: string
+      required:
+        - _option_id
+      additionalProperties: false
+    BedrockCohereCommandOptions:
+      type: object
+      properties:
+        _option_id:
+          type: string
+          const: bedrock-cohere-command
+        max_tokens:
+          type: number
+        temperature:
+          type: number
+        top_p:
+          type: number
+        stop_sequence:
+          type: array
+          items:
+            type: string
+      required:
+        - _option_id
+      additionalProperties: false
+    BedrockClaudeOptions:
+      type: object
+      properties:
+        _option_id:
+          type: string
+          const: bedrock-claude
+        max_tokens:
+          type: number
+        temperature:
+          type: number
+        top_p:
+          type: number
+        stop_sequence:
+          type: array
+          items:
+            type: string
+        top_k:
+          type: number
+        thinking_budget_tokens:
+          type: number
+        include_thoughts:
+          type: boolean
+        effort:
+          type: string
+          enum:
+            - low
+            - medium
+            - high
+            - xhigh
+            - max
+        cache_enabled:
+          type: boolean
+        cache_ttl:
+          type: string
+          enum:
+            - 5m
+            - 1h
+      additionalProperties: false
+      required:
+        - _option_id
+    BedrockPalmyraOptions:
+      type: object
+      properties:
+        _option_id:
+          type: string
+          const: bedrock-palmyra
+        max_tokens:
+          type: number
+        temperature:
+          type: number
+        top_p:
+          type: number
+        stop_sequence:
+          type: array
+          items:
+            type: string
+        min_tokens:
+          type: number
+        seed:
+          type: number
+        frequency_penalty:
+          type: number
+        presence_penalty:
+          type: number
+      additionalProperties: false
+      required:
+        - _option_id
+    BedrockGptOssOptions:
+      type: object
+      properties:
+        _option_id:
+          type: string
+          const: bedrock-gpt-oss
+        max_tokens:
+          type: number
+        temperature:
+          type: number
+        top_p:
+          type: number
+        stop_sequence:
+          type: array
+          items:
+            type: string
+        reasoning_effort:
+          type: string
+          enum:
+            - low
+            - medium
+            - high
+        frequency_penalty:
+          type: number
+        presence_penalty:
+          type: number
+      additionalProperties: false
+      required:
+        - _option_id
+    TwelvelabsPegasusOptions:
+      type: object
+      properties:
+        _option_id:
+          type: string
+          const: bedrock-twelvelabs-pegasus
+        temperature:
+          type: number
+        max_tokens:
+          type: number
+      required:
+        - _option_id
+      additionalProperties: false
+    BedrockMantleResponsesOptions:
+      type: object
+      properties:
+        _option_id:
+          type: string
+          const: bedrock-mantle-responses
+        max_tokens:
+          type: number
+        temperature:
+          type: number
+        top_p:
+          type: number
+        effort:
+          type: string
+          enum:
+            - none
+            - low
+            - medium
+            - high
+            - xhigh
+        reasoning_effort:
+          type: string
+          enum:
+            - none
+            - low
+            - medium
+            - high
+            - xhigh
+        verbosity:
+          type: string
+          enum:
+            - low
+            - medium
+            - high
+        image_detail:
+          type: string
+          enum:
+            - low
+            - high
+            - auto
+      required:
+        - _option_id
+      additionalProperties: false
+    BedrockMantleChatCompletionsOptions:
+      type: object
+      properties:
+        _option_id:
+          type: string
+          const: bedrock-mantle-chat-completions
+        max_tokens:
+          type: number
+        temperature:
+          type: number
+        top_p:
+          type: number
+        stop_sequence:
+          type: array
+          items:
+            type: string
+      required:
+        - _option_id
+      additionalProperties: false
+    BedrockMantleClaudeOptions:
+      type: object
+      properties:
+        _option_id:
+          type: string
+          const: bedrock-mantle-claude
+        max_tokens:
+          type: number
+        temperature:
+          type: number
+        top_p:
+          type: number
+        top_k:
+          type: number
+        stop_sequence:
+          type: array
+          items:
+            type: string
+        effort:
+          type: string
+          enum:
+            - low
+            - medium
+            - high
+            - xhigh
+            - max
+        thinking_budget_tokens:
+          type: number
+        include_thoughts:
+          type: boolean
+        cache_enabled:
+          type: boolean
+        cache_ttl:
+          type: string
+          enum:
+            - 5m
+            - 1h
+      required:
+        - _option_id
+      additionalProperties: false
+    OpenAiThinkingOptions:
+      type: object
+      properties:
+        _option_id:
+          type: string
+          const: openai-thinking
+        max_tokens:
+          type: number
+        stop_sequence:
+          type: array
+          items:
+            type: string
+        effort:
+          $ref: "#/components/schemas/ReasoningEffort"
+        reasoning_effort:
+          $ref: "#/components/schemas/ReasoningEffort"
+        image_detail:
+          type: string
+          enum:
+            - low
+            - high
+            - auto
+      required:
+        - _option_id
+      additionalProperties: false
+    ReasoningEffort:
+      type: string
+      enum:
+        - low
+        - medium
+        - high
+    OpenAiTextOptions:
+      type: object
+      properties:
+        _option_id:
+          type: string
+          const: openai-text
+        max_tokens:
+          type: number
+        temperature:
+          type: number
+        top_p:
+          type: number
+        presence_penalty:
+          type: number
+        frequency_penalty:
+          type: number
+        stop_sequence:
+          type: array
+          items:
+            type: string
+        image_detail:
+          type: string
+          enum:
+            - low
+            - high
+            - auto
+      required:
+        - _option_id
+      additionalProperties: false
+    OpenAiDalleOptions:
+      type: object
+      properties:
+        _option_id:
+          type: string
+          const: openai-dalle
+        size:
+          type: string
+          enum:
+            - 256x256
+            - 512x512
+            - 1024x1024
+            - 1792x1024
+            - 1024x1792
+        image_quality:
+          type: string
+          enum:
+            - standard
+            - hd
+        style:
+          type: string
+          enum:
+            - vivid
+            - natural
+        response_format:
+          type: string
+          enum:
+            - url
+            - b64_json
+        n:
+          type: number
+      required:
+        - _option_id
+      additionalProperties: false
+    OpenAiGptImageOptions:
+      type: object
+      properties:
+        _option_id:
+          type: string
+          const: openai-gpt-image
+        size:
+          type: string
+          enum:
+            - 1024x1024
+            - 1024x1536
+            - 1536x1024
+            - auto
+        image_quality:
+          type: string
+          enum:
+            - low
+            - medium
+            - high
+            - auto
+        background:
+          type: string
+          enum:
+            - transparent
+            - opaque
+            - auto
+        output_format:
+          type: string
+          enum:
+            - png
+            - webp
+            - jpeg
+      required:
+        - _option_id
+      additionalProperties: false
+    GroqOptions:
+      type: object
+      properties:
+        _option_id:
+          type: string
+          const: groq-deepseek-thinking
+        max_tokens:
+          type: number
+        temperature:
+          type: number
+        top_p:
+          type: number
+        presence_penalty:
+          type: number
+        frequency_penalty:
+          type: number
+        stop_sequence:
+          type: array
+          items:
+            type: string
+        reasoning_format:
+          type: string
+          enum:
+            - parsed
+            - raw
+            - hidden
+      required:
+        - _option_id
+        - reasoning_format
+      additionalProperties: false
+    HttpTimeoutOptions:
+      type: object
+      properties:
+        headersTimeout:
+          type: number
+          description: Time (ms) to wait for the first response byte after the request is
+            sent.
+        bodyTimeout:
+          type: number
+          description: Time (ms) between body chunks once streaming has started.
+        connectTimeout:
+          type: number
+          description: TCP/TLS connect timeout (ms).
+        keepAliveTimeout:
+          type: number
+          description: Idle socket reuse timeout (ms).
+      additionalProperties: false
+      description: >-
+        HTTP timeouts applied to a driver's upstream LLM-provider calls.
+
+
+        All values are in milliseconds. Drivers should map these onto whatever
+        HTTP client their SDK uses; the defaults applied in
+        `@llumiverse/core/createDriverHttpAgent` are:   -
+        headersTimeout:   60_000   - bodyTimeout:      60_000   -
+        connectTimeout:   10_000   - keepAliveTimeout: 30_000
+
+
+        The defaults are deliberately tighter than Node's undici default (5
+        minutes for headers/body) so a hung upstream surfaces quickly. Bump
+        `bodyTimeout` for streaming flows that have legitimate silent gaps (e.g.
+        tool-using agents).
+    ContentTypeExtractionGroundingReviewPolicy:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          description: Set false to disable an inherited grounding review pass for this
+            type.
+        config:
+          $ref: "#/components/schemas/InteractionExecutionConfiguration"
+          description: Model execution configuration for the review interaction.
+        threshold:
+          type: number
+          description: Hardness score at or above which review runs. Defaults to
+            hardness_threshold.
+        coverage_threshold:
+          type: number
+          description: Review also runs when any page's citation coverage falls below this
+            floor (evidence of missed content). Default 0.2.
+        force:
+          type: boolean
+          description: Run review regardless of hardness.
+      additionalProperties: false
+    Partial_Record_SupportedEmbeddingTypes_boolean:
+      type: object
+      properties:
+        text:
+          type: boolean
+        image:
+          type: boolean
+        properties:
+          type: boolean
+      additionalProperties: false
+    Partial_Record_IntakeVisionDetail_Partial_IntakeVisionProfileSettings:
+      type: object
+      properties:
+        low:
+          $ref: "#/components/schemas/Partial_IntakeVisionProfileSettings"
+        standard:
+          $ref: "#/components/schemas/Partial_IntakeVisionProfileSettings"
+        high:
+          $ref: "#/components/schemas/Partial_IntakeVisionProfileSettings"
+      additionalProperties: false
+    Partial_IntakeVisionProfileSettings:
+      type: object
+      properties:
+        dpi:
+          type: number
+          description: Render resolution in dots per inch.
+        max_hw:
+          type: number
+          description: Maximum height/width of the rendered page image in pixels.
+        quality:
+          type: number
+          description: JPEG quality (0-100).
+        color_mode:
+          type: string
+          enum:
+            - grayscale
+            - auto
+          description: grayscale renders gray always; auto keeps color when the plan asks
+            for it.
       additionalProperties: false
     BrowserUseProjectConfiguration:
       type: object
@@ -4871,7 +6227,7 @@ components:
         - linkup
         - resend
         - ask_user_webhook
-    Pick_ContentObjectTypeItem_id_name_description_tags_object_schema_table_layout_is_chunkable_strict_mode:
+    Pick_ContentObjectTypeItem_id_name_description_tags_object_schema_table_layout_is_chunkable_strict_mode_status_intake:
       type: object
       properties:
         id:
@@ -4905,6 +6261,10 @@ components:
           type: boolean
           description: Determines if the content will be validated against the object
             schema a generation time and save/update time.
+        status:
+          $ref: "#/components/schemas/ContentObjectTypeStatus"
+        intake:
+          $ref: "#/components/schemas/ContentTypeIntakePolicy"
       required:
         - id
         - name
@@ -4932,6 +6292,11 @@ components:
         - field
         - name
       additionalProperties: false
+    ContentObjectTypeStatus:
+      type: string
+      enum:
+        - active
+        - draft
     RenderingTemplateDefinitionRef:
       type: object
       additionalProperties: false
@@ -5843,31 +7208,6 @@ components:
       required:
         - model
       additionalProperties: false
-    TextFallbackOptions:
-      type: object
-      properties:
-        _option_id:
-          type: string
-          const: text-fallback
-        max_tokens:
-          type: number
-        temperature:
-          type: number
-        top_p:
-          type: number
-        top_k:
-          type: number
-        presence_penalty:
-          type: number
-        frequency_penalty:
-          type: number
-        stop_sequence:
-          type: array
-          items:
-            type: string
-      required:
-        - _option_id
-      additionalProperties: false
     LoadBalancingEnvConfig:
       type: object
       properties:
@@ -6467,821 +7807,6 @@ components:
         - created_at
         - updated_at
       additionalProperties: false
-    ModelOptions:
-      type: object
-      discriminator:
-        propertyName: _option_id
-        mapping:
-          text-fallback: "#/components/schemas/TextFallbackOptions"
-          vertexai-imagen: "#/components/schemas/ImagenOptions"
-          vertexai-claude: "#/components/schemas/VertexAIClaudeOptions"
-          vertexai-gemini: "#/components/schemas/VertexAIGeminiOptions"
-          vertexai-grok: "#/components/schemas/VertexAIGrokOptions"
-          bedrock-nova-canvas: "#/components/schemas/NovaCanvasOptions"
-          bedrock-converse: "#/components/schemas/BedrockConverseOptions"
-          bedrock-nova: "#/components/schemas/BedrockNovaOptions"
-          bedrock-mistral: "#/components/schemas/BedrockMistralOptions"
-          bedrock-ai21: "#/components/schemas/BedrockAI21Options"
-          bedrock-cohere-command: "#/components/schemas/BedrockCohereCommandOptions"
-          bedrock-claude: "#/components/schemas/BedrockClaudeOptions"
-          bedrock-palmyra: "#/components/schemas/BedrockPalmyraOptions"
-          bedrock-gpt-oss: "#/components/schemas/BedrockGptOssOptions"
-          bedrock-twelvelabs-pegasus: "#/components/schemas/TwelvelabsPegasusOptions"
-          bedrock-mantle-responses: "#/components/schemas/BedrockMantleResponsesOptions"
-          bedrock-mantle-chat-completions: "#/components/schemas/BedrockMantleChatCompletionsOptions"
-          bedrock-mantle-claude: "#/components/schemas/BedrockMantleClaudeOptions"
-          openai-thinking: "#/components/schemas/OpenAiThinkingOptions"
-          openai-text: "#/components/schemas/OpenAiTextOptions"
-          openai-dalle: "#/components/schemas/OpenAiDalleOptions"
-          openai-gpt-image: "#/components/schemas/OpenAiGptImageOptions"
-          groq-deepseek-thinking: "#/components/schemas/GroqOptions"
-      required:
-        - _option_id
-      oneOf:
-        - $ref: "#/components/schemas/TextFallbackOptions"
-        - $ref: "#/components/schemas/ImagenOptions"
-        - $ref: "#/components/schemas/VertexAIClaudeOptions"
-        - $ref: "#/components/schemas/VertexAIGeminiOptions"
-        - $ref: "#/components/schemas/VertexAIGrokOptions"
-        - $ref: "#/components/schemas/NovaCanvasOptions"
-        - $ref: "#/components/schemas/BedrockConverseOptions"
-        - $ref: "#/components/schemas/BedrockNovaOptions"
-        - $ref: "#/components/schemas/BedrockMistralOptions"
-        - $ref: "#/components/schemas/BedrockAI21Options"
-        - $ref: "#/components/schemas/BedrockCohereCommandOptions"
-        - $ref: "#/components/schemas/BedrockClaudeOptions"
-        - $ref: "#/components/schemas/BedrockPalmyraOptions"
-        - $ref: "#/components/schemas/BedrockGptOssOptions"
-        - $ref: "#/components/schemas/TwelvelabsPegasusOptions"
-        - $ref: "#/components/schemas/BedrockMantleResponsesOptions"
-        - $ref: "#/components/schemas/BedrockMantleChatCompletionsOptions"
-        - $ref: "#/components/schemas/BedrockMantleClaudeOptions"
-        - $ref: "#/components/schemas/OpenAiThinkingOptions"
-        - $ref: "#/components/schemas/OpenAiTextOptions"
-        - $ref: "#/components/schemas/OpenAiDalleOptions"
-        - $ref: "#/components/schemas/OpenAiGptImageOptions"
-        - $ref: "#/components/schemas/GroqOptions"
-    ImagenOptions:
-      type: object
-      properties:
-        _option_id:
-          type: string
-          const: vertexai-imagen
-        number_of_images:
-          type: number
-        seed:
-          type: number
-        person_generation:
-          type: string
-          enum:
-            - dont_allow
-            - allow_adults
-            - allow_all
-        safety_setting:
-          type: string
-          enum:
-            - block_none
-            - block_only_high
-            - block_medium_and_above
-            - block_low_and_above
-        image_file_type:
-          type: string
-          enum:
-            - image/jpeg
-            - image/png
-        jpeg_compression_quality:
-          type: number
-        aspect_ratio:
-          type: string
-          enum:
-            - 1:1
-            - 4:3
-            - 3:4
-            - 16:9
-            - 9:16
-        add_watermark:
-          type: boolean
-        enhance_prompt:
-          type: boolean
-        edit_mode:
-          $ref: "#/components/schemas/ImagenTaskType"
-        guidance_scale:
-          type: number
-        edit_steps:
-          type: number
-        mask_mode:
-          $ref: "#/components/schemas/ImagenMaskMode"
-        mask_dilation:
-          type: number
-        mask_class:
-          type: array
-          items:
-            type: number
-        controlType:
-          type: string
-          enum:
-            - CONTROL_TYPE_FACE_MESH
-            - CONTROL_TYPE_CANNY
-            - CONTROL_TYPE_SCRIBBLE
-        controlImageComputation:
-          type: boolean
-        subjectType:
-          type: string
-          enum:
-            - SUBJECT_TYPE_PERSON
-            - SUBJECT_TYPE_ANIMAL
-            - SUBJECT_TYPE_PRODUCT
-            - SUBJECT_TYPE_DEFAULT
-      required:
-        - _option_id
-      additionalProperties: false
-    ImagenTaskType:
-      type: string
-      enum:
-        - TEXT_IMAGE
-        - EDIT_MODE_INPAINT_REMOVAL
-        - EDIT_MODE_INPAINT_INSERTION
-        - EDIT_MODE_BGSWAP
-        - EDIT_MODE_OUTPAINT
-        - CUSTOMIZATION_SUBJECT
-        - CUSTOMIZATION_STYLE
-        - CUSTOMIZATION_CONTROLLED
-        - CUSTOMIZATION_INSTRUCT
-    ImagenMaskMode:
-      type: string
-      enum:
-        - MASK_MODE_USER_PROVIDED
-        - MASK_MODE_BACKGROUND
-        - MASK_MODE_FOREGROUND
-        - MASK_MODE_SEMANTIC
-    VertexAIClaudeOptions:
-      type: object
-      properties:
-        _option_id:
-          type: string
-          const: vertexai-claude
-        max_tokens:
-          type: number
-        temperature:
-          type: number
-        top_p:
-          type: number
-        top_k:
-          type: number
-        stop_sequence:
-          type: array
-          items:
-            type: string
-        effort:
-          type: string
-          enum:
-            - low
-            - medium
-            - high
-            - xhigh
-            - max
-        thinking_budget_tokens:
-          type: number
-        include_thoughts:
-          type: boolean
-        cache_enabled:
-          type: boolean
-        cache_ttl:
-          type: string
-          enum:
-            - 5m
-            - 1h
-      required:
-        - _option_id
-      additionalProperties: false
-    VertexAIGeminiOptions:
-      type: object
-      properties:
-        _option_id:
-          type: string
-          const: vertexai-gemini
-        max_tokens:
-          type: number
-        temperature:
-          type: number
-        top_p:
-          type: number
-        top_k:
-          type: number
-        stop_sequence:
-          type: array
-          items:
-            type: string
-        presence_penalty:
-          type: number
-        frequency_penalty:
-          type: number
-        seed:
-          type: number
-        effort:
-          type: string
-          enum:
-            - low
-            - medium
-            - high
-        include_thoughts:
-          type: boolean
-        thinking_budget_tokens:
-          type: number
-        thinking_level:
-          $ref: "#/components/schemas/ThinkingLevel"
-        flex:
-          type: boolean
-        image_aspect_ratio:
-          type: string
-          enum:
-            - 1:1
-            - 2:3
-            - 3:2
-            - 3:4
-            - 4:3
-            - 9:16
-            - 16:9
-            - 21:9
-        image_size:
-          type: string
-          enum:
-            - 1K
-            - 2K
-            - 4K
-        person_generation:
-          type: string
-          enum:
-            - ALLOW_ALL
-            - ALLOW_ADULT
-            - ALLOW_NONE
-        prominent_people:
-          type: string
-          enum:
-            - PROMINENT_PEOPLE_UNSPECIFIED
-            - ALLOW_PROMINENT_PEOPLE
-            - BLOCK_PROMINENT_PEOPLE
-        output_mime_type:
-          type: string
-          enum:
-            - image/png
-            - image/jpeg
-        output_compression_quality:
-          type: number
-      required:
-        - _option_id
-      additionalProperties: false
-    ThinkingLevel:
-      type: string
-      enum:
-        - HIGH
-        - MEDIUM
-        - LOW
-        - MINIMAL
-        - THINKING_LEVEL_UNSPECIFIED
-    VertexAIGrokOptions:
-      type: object
-      properties:
-        _option_id:
-          type: string
-          const: vertexai-grok
-        max_tokens:
-          type: number
-        temperature:
-          type: number
-        top_p:
-          type: number
-        stop_sequence:
-          type: array
-          items:
-            type: string
-      required:
-        - _option_id
-      additionalProperties: false
-    NovaCanvasOptions:
-      type: object
-      properties:
-        _option_id:
-          type: string
-          const: bedrock-nova-canvas
-        taskType:
-          type: string
-          enum:
-            - TEXT_IMAGE
-            - TEXT_IMAGE_WITH_IMAGE_CONDITIONING
-            - COLOR_GUIDED_GENERATION
-            - IMAGE_VARIATION
-            - INPAINTING
-            - OUTPAINTING
-            - BACKGROUND_REMOVAL
-        width:
-          type: number
-        height:
-          type: number
-        quality:
-          type: string
-          enum:
-            - standard
-            - premium
-        cfgScale:
-          type: number
-        seed:
-          type: number
-        numberOfImages:
-          type: number
-        controlMode:
-          type: string
-          enum:
-            - CANNY_EDGE
-            - SEGMENTATION
-        controlStrength:
-          type: number
-        colors:
-          type: array
-          items:
-            type: string
-        similarityStrength:
-          type: number
-        outPaintingMode:
-          type: string
-          enum:
-            - DEFAULT
-            - PRECISE
-      required:
-        - _option_id
-        - taskType
-      additionalProperties: false
-    BedrockConverseOptions:
-      type: object
-      properties:
-        _option_id:
-          type: string
-          const: bedrock-converse
-        max_tokens:
-          type: number
-        temperature:
-          type: number
-        top_p:
-          type: number
-        stop_sequence:
-          type: array
-          items:
-            type: string
-      required:
-        - _option_id
-      additionalProperties: false
-    BedrockNovaOptions:
-      type: object
-      properties:
-        _option_id:
-          type: string
-          const: bedrock-nova
-        max_tokens:
-          type: number
-        temperature:
-          type: number
-        top_p:
-          type: number
-        stop_sequence:
-          type: array
-          items:
-            type: string
-      required:
-        - _option_id
-      additionalProperties: false
-    BedrockMistralOptions:
-      type: object
-      properties:
-        _option_id:
-          type: string
-          const: bedrock-mistral
-        max_tokens:
-          type: number
-        temperature:
-          type: number
-        top_p:
-          type: number
-        stop_sequence:
-          type: array
-          items:
-            type: string
-      required:
-        - _option_id
-      additionalProperties: false
-    BedrockAI21Options:
-      type: object
-      properties:
-        _option_id:
-          type: string
-          const: bedrock-ai21
-        max_tokens:
-          type: number
-        temperature:
-          type: number
-        top_p:
-          type: number
-        stop_sequence:
-          type: array
-          items:
-            type: string
-      required:
-        - _option_id
-      additionalProperties: false
-    BedrockCohereCommandOptions:
-      type: object
-      properties:
-        _option_id:
-          type: string
-          const: bedrock-cohere-command
-        max_tokens:
-          type: number
-        temperature:
-          type: number
-        top_p:
-          type: number
-        stop_sequence:
-          type: array
-          items:
-            type: string
-      required:
-        - _option_id
-      additionalProperties: false
-    BedrockClaudeOptions:
-      type: object
-      properties:
-        _option_id:
-          type: string
-          const: bedrock-claude
-        max_tokens:
-          type: number
-        temperature:
-          type: number
-        top_p:
-          type: number
-        stop_sequence:
-          type: array
-          items:
-            type: string
-        top_k:
-          type: number
-        thinking_budget_tokens:
-          type: number
-        include_thoughts:
-          type: boolean
-        effort:
-          type: string
-          enum:
-            - low
-            - medium
-            - high
-            - xhigh
-            - max
-        cache_enabled:
-          type: boolean
-        cache_ttl:
-          type: string
-          enum:
-            - 5m
-            - 1h
-      additionalProperties: false
-      required:
-        - _option_id
-    BedrockPalmyraOptions:
-      type: object
-      properties:
-        _option_id:
-          type: string
-          const: bedrock-palmyra
-        max_tokens:
-          type: number
-        temperature:
-          type: number
-        top_p:
-          type: number
-        stop_sequence:
-          type: array
-          items:
-            type: string
-        min_tokens:
-          type: number
-        seed:
-          type: number
-        frequency_penalty:
-          type: number
-        presence_penalty:
-          type: number
-      additionalProperties: false
-      required:
-        - _option_id
-    BedrockGptOssOptions:
-      type: object
-      properties:
-        _option_id:
-          type: string
-          const: bedrock-gpt-oss
-        max_tokens:
-          type: number
-        temperature:
-          type: number
-        top_p:
-          type: number
-        stop_sequence:
-          type: array
-          items:
-            type: string
-        reasoning_effort:
-          type: string
-          enum:
-            - low
-            - medium
-            - high
-        frequency_penalty:
-          type: number
-        presence_penalty:
-          type: number
-      additionalProperties: false
-      required:
-        - _option_id
-    TwelvelabsPegasusOptions:
-      type: object
-      properties:
-        _option_id:
-          type: string
-          const: bedrock-twelvelabs-pegasus
-        temperature:
-          type: number
-        max_tokens:
-          type: number
-      required:
-        - _option_id
-      additionalProperties: false
-    BedrockMantleResponsesOptions:
-      type: object
-      properties:
-        _option_id:
-          type: string
-          const: bedrock-mantle-responses
-        max_tokens:
-          type: number
-        temperature:
-          type: number
-        top_p:
-          type: number
-        effort:
-          type: string
-          enum:
-            - none
-            - low
-            - medium
-            - high
-            - xhigh
-        reasoning_effort:
-          type: string
-          enum:
-            - none
-            - low
-            - medium
-            - high
-            - xhigh
-        verbosity:
-          type: string
-          enum:
-            - low
-            - medium
-            - high
-        image_detail:
-          type: string
-          enum:
-            - low
-            - high
-            - auto
-      required:
-        - _option_id
-      additionalProperties: false
-    BedrockMantleChatCompletionsOptions:
-      type: object
-      properties:
-        _option_id:
-          type: string
-          const: bedrock-mantle-chat-completions
-        max_tokens:
-          type: number
-        temperature:
-          type: number
-        top_p:
-          type: number
-        stop_sequence:
-          type: array
-          items:
-            type: string
-      required:
-        - _option_id
-      additionalProperties: false
-    BedrockMantleClaudeOptions:
-      type: object
-      properties:
-        _option_id:
-          type: string
-          const: bedrock-mantle-claude
-        max_tokens:
-          type: number
-        temperature:
-          type: number
-        top_p:
-          type: number
-        top_k:
-          type: number
-        stop_sequence:
-          type: array
-          items:
-            type: string
-        effort:
-          type: string
-          enum:
-            - low
-            - medium
-            - high
-            - xhigh
-            - max
-        thinking_budget_tokens:
-          type: number
-        include_thoughts:
-          type: boolean
-        cache_enabled:
-          type: boolean
-        cache_ttl:
-          type: string
-          enum:
-            - 5m
-            - 1h
-      required:
-        - _option_id
-      additionalProperties: false
-    OpenAiThinkingOptions:
-      type: object
-      properties:
-        _option_id:
-          type: string
-          const: openai-thinking
-        max_tokens:
-          type: number
-        stop_sequence:
-          type: array
-          items:
-            type: string
-        effort:
-          $ref: "#/components/schemas/ReasoningEffort"
-        reasoning_effort:
-          $ref: "#/components/schemas/ReasoningEffort"
-        image_detail:
-          type: string
-          enum:
-            - low
-            - high
-            - auto
-      required:
-        - _option_id
-      additionalProperties: false
-    ReasoningEffort:
-      type: string
-      enum:
-        - low
-        - medium
-        - high
-    OpenAiTextOptions:
-      type: object
-      properties:
-        _option_id:
-          type: string
-          const: openai-text
-        max_tokens:
-          type: number
-        temperature:
-          type: number
-        top_p:
-          type: number
-        presence_penalty:
-          type: number
-        frequency_penalty:
-          type: number
-        stop_sequence:
-          type: array
-          items:
-            type: string
-        image_detail:
-          type: string
-          enum:
-            - low
-            - high
-            - auto
-      required:
-        - _option_id
-      additionalProperties: false
-    OpenAiDalleOptions:
-      type: object
-      properties:
-        _option_id:
-          type: string
-          const: openai-dalle
-        size:
-          type: string
-          enum:
-            - 256x256
-            - 512x512
-            - 1024x1024
-            - 1792x1024
-            - 1024x1792
-        image_quality:
-          type: string
-          enum:
-            - standard
-            - hd
-        style:
-          type: string
-          enum:
-            - vivid
-            - natural
-        response_format:
-          type: string
-          enum:
-            - url
-            - b64_json
-        n:
-          type: number
-      required:
-        - _option_id
-      additionalProperties: false
-    OpenAiGptImageOptions:
-      type: object
-      properties:
-        _option_id:
-          type: string
-          const: openai-gpt-image
-        size:
-          type: string
-          enum:
-            - 1024x1024
-            - 1024x1536
-            - 1536x1024
-            - auto
-        image_quality:
-          type: string
-          enum:
-            - low
-            - medium
-            - high
-            - auto
-        background:
-          type: string
-          enum:
-            - transparent
-            - opaque
-            - auto
-        output_format:
-          type: string
-          enum:
-            - png
-            - webp
-            - jpeg
-      required:
-        - _option_id
-      additionalProperties: false
-    GroqOptions:
-      type: object
-      properties:
-        _option_id:
-          type: string
-          const: groq-deepseek-thinking
-        max_tokens:
-          type: number
-        temperature:
-          type: number
-        top_p:
-          type: number
-        presence_penalty:
-          type: number
-        frequency_penalty:
-          type: number
-        stop_sequence:
-          type: array
-          items:
-            type: string
-        reasoning_format:
-          type: string
-          enum:
-            - parsed
-            - raw
-            - hidden
-      required:
-        - _option_id
-        - reasoning_format
-      additionalProperties: false
-    RunDataStorageLevel:
-      type: string
-      enum:
-        - STANDARD
-        - RESTRICTED
-        - DEBUG
     JSONObject:
       type: object
       additionalProperties:
@@ -7427,65 +7952,6 @@ components:
         - type
         - value
       additionalProperties: false
-    InteractionExecutionConfiguration:
-      type: object
-      properties:
-        id:
-          type: string
-        environment:
-          type: string
-        model:
-          type: string
-        do_validate:
-          type: boolean
-        run_data:
-          $ref: "#/components/schemas/RunDataStorageLevel"
-        configMode:
-          $ref: "#/components/schemas/ConfigModes"
-        model_options:
-          $ref: "#/components/schemas/ModelOptions"
-        http_timeout:
-          $ref: "#/components/schemas/HttpTimeoutOptions"
-          description: Per-run HTTP timeouts for upstream LLM-provider calls.
-      additionalProperties: false
-    ConfigModes:
-      type: string
-      enum:
-        - RUN_AND_INTERACTION_CONFIG
-        - RUN_CONFIG_ONLY
-        - INTERACTION_CONFIG_ONLY
-    HttpTimeoutOptions:
-      type: object
-      properties:
-        headersTimeout:
-          type: number
-          description: Time (ms) to wait for the first response byte after the request is
-            sent.
-        bodyTimeout:
-          type: number
-          description: Time (ms) between body chunks once streaming has started.
-        connectTimeout:
-          type: number
-          description: TCP/TLS connect timeout (ms).
-        keepAliveTimeout:
-          type: number
-          description: Idle socket reuse timeout (ms).
-      additionalProperties: false
-      description: >-
-        HTTP timeouts applied to a driver's upstream LLM-provider calls.
-
-
-        All values are in milliseconds. Drivers should map these onto whatever
-        HTTP client their SDK uses; the defaults applied in
-        `@llumiverse/core/createDriverHttpAgent` are:   -
-        headersTimeout:   60_000   - bodyTimeout:      60_000   -
-        connectTimeout:   10_000   - keepAliveTimeout: 30_000
-
-
-        The defaults are deliberately tighter than Node's undici default (5
-        minutes for headers/body) so a hung upstream surfaces quickly. Bump
-        `bodyTimeout` for streaming flows that have legitimate silent gaps (e.g.
-        tool-using agents).
     GeneratedInteractionDefinition:
       type: object
       properties:
@@ -7593,6 +8059,12 @@ components:
             choose a formatter compatible with the target model
         result_schema:
           $ref: "#/components/schemas/JSONSchema"
+        prompt_cache_schema_suffix:
+          type: boolean
+          description: Provider-specific opt-in to put the result schema after the cached
+            prompt prefix instead of including it in native structured-output
+            configuration. The returned JSON is still validated against
+            result_schema by Llumiverse.
         include_original_response:
           type: boolean
           description: If set to true the original response from the target LLM will be
@@ -8941,6 +9413,7 @@ components:
         - inference
         - embedding
         - image_generation
+        - document_processed
     AuditMeter:
       type: object
       properties:
@@ -8964,6 +9437,178 @@ components:
         category: "tokens", type: "output", quantity: 567 }   { category:
         "compute", type: "duration_ms", quantity: 2100 }   { category:
         "processing", type: "pages", quantity: 12 }
+    AuditAggregationRow:
+      type: object
+      properties:
+        dimensions:
+          $ref: "#/components/schemas/Partial_Record_AuditAggregationDimension_string_nul\
+            l"
+        metrics:
+          $ref: "#/components/schemas/NumberValueMap"
+      required:
+        - dimensions
+        - metrics
+      additionalProperties: false
+    Partial_Record_AuditAggregationDimension_string_null:
+      type: object
+      properties:
+        time:
+          type:
+            - string
+            - "null"
+        action:
+          type:
+            - string
+            - "null"
+        resource_type:
+          type:
+            - string
+            - "null"
+        event_category:
+          type:
+            - string
+            - "null"
+        provider:
+          type:
+            - string
+            - "null"
+        project_id:
+          type:
+            - string
+            - "null"
+        details.pipeline:
+          type:
+            - string
+            - "null"
+        details.verdict:
+          type:
+            - string
+            - "null"
+        details.workflow_type:
+          type:
+            - string
+            - "null"
+        details.rule_id:
+          type:
+            - string
+            - "null"
+        model:
+          type:
+            - string
+            - "null"
+      additionalProperties: false
+    AuditAggregationFilter:
+      type: object
+      properties:
+        actions:
+          type: array
+          items:
+            $ref: "#/components/schemas/AuditAction"
+        resourceTypes:
+          type: array
+          items:
+            type: string
+        eventCategories:
+          type: array
+          items:
+            $ref: "#/components/schemas/EventCategory"
+        providers:
+          type: array
+          items:
+            type: string
+        success:
+          type: boolean
+        details:
+          type: array
+          items:
+            $ref: "#/components/schemas/AuditAggregationDetailFilter"
+      additionalProperties: false
+    AuditAggregationDetailFilter:
+      type: object
+      properties:
+        field:
+          $ref: "#/components/schemas/AuditAggregationDetailField"
+        values:
+          type: array
+          items:
+            type: string
+      required:
+        - field
+        - values
+      additionalProperties: false
+    AuditAggregationDetailField:
+      type: string
+      enum:
+        - pipeline
+        - verdict
+        - workflow_type
+        - rule_id
+    AuditAggregationGroup:
+      type: object
+      properties:
+        dimension:
+          $ref: "#/components/schemas/AuditAggregationDimension"
+        resolution:
+          $ref: "#/components/schemas/AuditAggregationResolution"
+          description: Required for the time dimension; defaults to day.
+      required:
+        - dimension
+      additionalProperties: false
+    AuditAggregationDimension:
+      type: string
+      enum:
+        - time
+        - action
+        - resource_type
+        - event_category
+        - provider
+        - project_id
+        - details.pipeline
+        - details.verdict
+        - details.workflow_type
+        - details.rule_id
+        - model
+    AuditAggregationResolution:
+      type: string
+      enum:
+        - hour
+        - day
+        - week
+        - month
+    AuditAggregationMetric:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Stable key used in response rows. Must contain only letters,
+            numbers, underscores, or hyphens.
+        operation:
+          $ref: "#/components/schemas/AuditAggregationOperation"
+        field:
+          $ref: "#/components/schemas/AuditAggregationDistinctField"
+          description: Required for count_distinct.
+        meterCategory:
+          type: string
+          description: Required for meter operations.
+        meterType:
+          type: string
+          description: Required for meter operations.
+      required:
+        - id
+        - operation
+      additionalProperties: false
+    AuditAggregationOperation:
+      type: string
+      enum:
+        - count
+        - count_distinct
+        - sum_meter
+        - average_meter
+    AuditAggregationDistinctField:
+      type: string
+      enum:
+        - resource_id
+        - request_id
     AsyncConversationExecutionPayload:
       type: object
       properties:
@@ -12573,18 +13218,20 @@ components:
             - "null"
         status:
           $ref: "#/components/schemas/WorkflowExecutionStatus"
+        phase:
+          $ref: "#/components/schemas/DocumentProcessingPhase"
         progress:
           $ref: "#/components/schemas/DocAnalyzerProgress"
         output_format:
           $ref: "#/components/schemas/DocProcessorOutputFormat"
-          description: The output format being used for processing (markdown or xml)
+          description: The output format being used for processing.
       additionalProperties: false
       required:
         - status
         - workflow_id
         - workflow_run_id
       description: Represents a document analysis run status
-    PdfToRichtextOptions:
+    DocumentPrepOptions:
       type: object
       properties:
         features:
@@ -12593,106 +13240,186 @@ components:
             type: string
         debug:
           type: boolean
+        output_format:
+          $ref: "#/components/schemas/DocProcessorOutputFormat"
       additionalProperties: {}
-    DocAnalyzerResultResponse:
+    GroundedExtractionRequest:
       type: object
       properties:
-        document:
+        schema:
+          type: object
+          additionalProperties: true
+          description: JSON schema describing the data to extract. Takes precedence over
+            type_ref.
+        type_ref:
           type: string
-        tables:
-          type: array
-          items:
-            $ref: "#/components/schemas/DocTableResponse"
-        images:
-          type: array
-          items:
-            $ref: "#/components/schemas/DocImage"
-        annotated:
-          type:
-            - string
-            - "null"
+          description: Content type id or catalog ref whose object_schema drives the
+            extraction.
+        interaction_name:
+          type: string
+          description: Interaction to use. Defaults to sys:ExtractInformationGrounded.
+        max_pages:
+          type: number
+          description: Maximum number of pages to process.
+        force_ocr:
+          type: boolean
+          description: Run OCR on every page even when a text layer exists.
+        refresh_ocr:
+          type: boolean
+          description: Re-run OCR on pages that need it instead of restoring the stored
+            OCR result.
+        use_vision:
+          type: boolean
+          description: Attach clean page images for layout/semantic context; direct-vision
+            pages also receive checkerboards.
+        grid_cell_pt:
+          type: number
+          description: "A1 locate-grid cell size in PDF points for vision pages (drives
+            both the drawn grid and cell→box resolution). Smaller = finer grid /
+            more cells. Default: 14."
+        raster_mode:
+          type: string
+          enum:
+            - vision
+            - ocr
+          description: "How to read pages that have no digital text layer (scans /
+            image-only pages). 'vision' (default): read them off the page image
+            with the extraction model, skipping OCR entirely. 'ocr': legacy path
+            — OCR those pages and block-ground on the (lossy) OCR text. Set to
+            'ocr' to revert to the pre-vision behavior."
+        window_pages:
+          type: number
+          description: Maximum pages per extraction call; larger documents are split into
+            sequential windows.
+        agentic_extraction:
+          type: boolean
+          description: Extract with an autonomous agent (views the whole document at once)
+            instead of the deterministic windowed pipeline. Sidesteps
+            window-boundary splits on long documents. The workflow stages the
+            artifacts into an agent space, runs a conversation agent that writes
+            the extraction, then folds it back.
+        extract_agent:
+          type: string
+          description: Agent interaction for agentic_extraction. Defaults to
+            sys:GeneralAgent.
+        update_properties:
+          type: boolean
+          description: "Update the object's properties with the extracted data. Default:
+            true."
+        config:
+          $ref: "#/components/schemas/InteractionExecutionConfiguration"
+          description: LLM execution configuration (model, environment, ...) for the main
+            pass.
+        hard_config:
+          $ref: "#/components/schemas/InteractionExecutionConfiguration"
+          description: Execution configuration used instead of `config` on hard content
+            (scans, handwriting).
+        hardness_threshold:
+          type: number
+          description: "Hardness score (0..1) at or above which `hard_config` is used.
+            Default: 0.5."
+        review_config:
+          $ref: "#/components/schemas/InteractionExecutionConfiguration"
+          description: Execution configuration for the post-extraction review pass. No
+            review runs when absent.
+        review_threshold:
+          type: number
+          description: Hardness score (0..1) at or above which the review runs. Defaults
+            to hardness_threshold.
+        coverage_review_threshold:
+          type: number
+          description: "Review triggers when any page's citation coverage falls below this
+            floor. Default: 0.2."
+        force_review:
+          type: boolean
+          description: Run the model review even when every citation was digitally
+            verified. Requires review_config.
+        operator_instructions:
+          type: string
+          description: Free-text operator guidance folded into the extraction prompt to
+            steer a (re-)extraction, e.g. "part numbers are in the third column;
+            some line items wrap onto the next row".
+        user_prompt:
+          type: string
+          description: "Interactive assistant only: the operator's opening message for the
+            assistant conversation."
       additionalProperties: false
-    WorkflowRunStatus:
+      description: "Request body to start a grounded extraction on a content object.
+        All fields are optional: with none set, the object's own content-type
+        schema drives the extraction with default models and settings."
+    GroundedAssistantResponse:
       type: object
       properties:
+        agent_run_id:
+          type: string
+          description: The AgentRun id to stream/render the conversation.
         workflow_id:
-          type:
-            - string
-            - "null"
-        workflow_run_id:
-          type:
-            - string
-            - "null"
-        status:
-          $ref: "#/components/schemas/WorkflowExecutionStatus"
+          type: string
+          description: The conversation workflow id backing the run.
+        object_id:
+          type: string
+          description: The object the assistant is scoped to.
       required:
+        - agent_run_id
         - workflow_id
-        - workflow_run_id
-        - status
+        - object_id
       additionalProperties: false
-      description: Basic response for anything run with an async workflow
-    AdaptTablesRequest:
-      type: object
-      additionalProperties: false
-      properties:
-        target_schema:
-          type: string
-          description: JSON Schema to to convert the table into
-        item_name:
-          type: string
-          description: Natural language description of the type item the table are
-            composed of
-        instructions:
-          type: string
-          description: Natural language description of the type of table or item to convert
-        format:
-          type: string
-          enum:
-            - csv
-            - json
-          description: Format to return the data in (csv, json)
-        process_as:
-          type: string
-          enum:
-            - page
-            - table
-          description: Process the table as a whole or by page
-        process_as_csv:
-          type: boolean
-          description: Process the table as a CSV file
-        synchronous:
-          type: boolean
-        notify_endpoints:
-          type: array
-          items:
-            type: string
-        environment:
-          type: string
-          description: What environment to use to run the request If none specified the
-            project embedded environment will be used
-      required:
-        - item_name
-        - target_schema
-    AdaptedTableResponse:
-      $ref: "#/components/schemas/AdaptedTableMap"
-    DocTableResponseArray:
-      type: array
-      items:
-        $ref: "#/components/schemas/DocTableResponse"
-    DocImageArray:
-      type: array
-      items:
-        $ref: "#/components/schemas/DocImage"
-    AnnotatedPdfResponse:
+      description: Response from starting the interactive grounded extraction
+        assistant. The agent run + conversation workflow are launched
+        server-side (recordRun -> stage the document into the agent space ->
+        launch the interactive conversation); the client renders the
+        conversation with `agent_run_id`.
+    GroundedExtractionResultResponse:
       type: object
       properties:
-        url:
+        object_id:
+          type: string
+        data:
+          type: object
+          additionalProperties: true
+          description: The extracted data, shaped by the requested schema.
+        verdict:
+          $ref: "#/components/schemas/GroundedExtractionVerdict"
+          description: Document-level trust verdict.
+        verdict_reason:
+          type: string
+          description: One-sentence rationale for the verdict.
+        confidence:
+          type: number
+          description: Mean citation confidence in [0,1].
+        verification:
+          $ref: "#/components/schemas/GroundedVerificationBreakdown"
+          description: Per-value verification breakdown.
+        review:
+          type: object
+          properties:
+            assessment:
+              type: string
+              enum:
+                - complete
+                - issues_found
+            summary:
+              type: string
+            corrections_applied:
+              type: number
+          required:
+            - assessment
+          additionalProperties: false
+          description: Review outcome, when a review pass ran.
+        result_url:
           type:
             - string
             - "null"
+          description: Signed download URL for the full grounded-extraction.json (data +
+            citations + boxes).
       required:
-        - url
+        - object_id
+        - data
+        - verification
       additionalProperties: false
+      description: "Completed grounded extraction result: the extracted data with its
+        trust verdict and verification breakdown, plus a download URL for the
+        full citations artifact."
     ContentObjectTypeItemArray:
       type: array
       items:
@@ -12731,6 +13458,10 @@ components:
           type: boolean
           description: Determines if the content will be validated against the object
             schema a generation time and save/update time.
+        status:
+          $ref: "#/components/schemas/ContentObjectTypeStatus"
+        intake:
+          $ref: "#/components/schemas/ContentTypeIntakePolicy"
         updated_by:
           type: string
         created_by:
@@ -12777,8 +13508,12 @@ components:
         updated_at:
           type: string
           description: ISO timestamp of when the object was last updated
+        status:
+          $ref: "#/components/schemas/ContentObjectTypeStatus"
         is_chunkable:
           type: boolean
+        intake:
+          $ref: "#/components/schemas/ContentTypeIntakePolicy"
         table_layout:
           type: array
           items:
@@ -12805,8 +13540,12 @@ components:
       type: object
       additionalProperties: false
       properties:
+        status:
+          $ref: "#/components/schemas/ContentObjectTypeStatus"
         is_chunkable:
           type: boolean
+        intake:
+          $ref: "#/components/schemas/ContentTypeIntakePolicy"
         table_layout:
           type: array
           items:
@@ -15235,6 +15974,18 @@ components:
           description: MongoDB ObjectId string for stored types
         name:
           type: string
+        default_view:
+          type: string
+          enum:
+            - auto
+            - text
+            - pdf
+            - image
+            - properties
+          description: Display hint from the type's intake policy (`intake.default_view`).
+            Enriched by the API on single-object reads so clients can pick the
+            initial view without fetching the type. Absent on list responses and
+            older servers.
       required:
         - ref_type
         - id
@@ -15252,6 +16003,18 @@ components:
             "app:myapp:Contract")
         name:
           type: string
+        default_view:
+          type: string
+          enum:
+            - auto
+            - text
+            - pdf
+            - image
+            - properties
+          description: Display hint from the type's intake policy (`intake.default_view`).
+            Enriched by the API on single-object reads so clients can pick the
+            initial view without fetching the type. Absent on list responses and
+            older servers.
       required:
         - ref_type
         - id
@@ -17214,16 +17977,6 @@ components:
       additionalProperties: false
     EmbeddingSearchConfig:
       $ref: "#/components/schemas/Partial_Record_SupportedEmbeddingTypes_boolean"
-    Partial_Record_SupportedEmbeddingTypes_boolean:
-      type: object
-      properties:
-        text:
-          type: boolean
-        image:
-          type: boolean
-        properties:
-          type: boolean
-      additionalProperties: false
     Record_SearchTypes_number:
       type: object
       additionalProperties:
@@ -17530,10 +18283,29 @@ components:
             $ref: "#/components/schemas/GenerationRunMetadata"
         etag:
           type: string
+        rendered_text_etag:
+          type: string
+          description: ETag of text materialized from object properties by intake rendering.
         renditions:
           type: array
           items:
             $ref: "#/components/schemas/RenditionWithDimensions"
+        embedded:
+          type: object
+          additionalProperties: true
+          description: Embedded/technical metadata harvested from the source file by
+            intake (office docProps, PDF docinfo). Free-form, nature-appropriate
+            keys.
+        type_detection:
+          $ref: "#/components/schemas/TypeDetectionMetadata"
+          description: Type-detection provenance recorded by the intake sniff pipeline.
+        locate:
+          $ref: "#/components/schemas/LocateMetadata"
+          description: "Locate-pass provenance: which pages the document map found
+            relevant."
+        vision_evidence:
+          $ref: "#/components/schemas/VisionEvidenceMetadata"
+          description: Vision-evidence provenance for the last visual extraction run.
         duration:
           type: number
         transcript:
@@ -17570,6 +18342,11 @@ components:
           type: string
         target:
           type: string
+        extraction_fingerprint:
+          type: string
+          description: Fingerprint of the inputs used by property extraction (content
+            etag, type + its object schema, source, instructions, interaction).
+            Lets a later run skip re-extraction when nothing changed.
       required:
         - id
         - date
@@ -17600,6 +18377,150 @@ components:
         - width
         - height
       additionalProperties: false
+    TypeDetectionMetadata:
+      type: object
+      properties:
+        method:
+          type: string
+          enum:
+            - sniff
+            - post_conversion
+            - post_conversion_small_doc
+        type:
+          type: string
+          description: Sniffed type id, or 'other'.
+        type_name:
+          type: string
+        confidence:
+          type: number
+          description: Sniff confidence, 0..1.
+        band:
+          type: string
+          enum:
+            - high
+            - medium
+            - low
+        rationale:
+          type: string
+        alternates:
+          type: array
+          items:
+            type: string
+        evidence:
+          type: string
+          enum:
+            - text
+            - image
+            - both
+          description: Which evidence kinds the sniff saw.
+        page_count:
+          type: number
+        skipped_reason:
+          type: string
+          description: Why the sniff LLM call was skipped (e.g. 'below_min_pages').
+        min_pages:
+          type: number
+        detected_at:
+          type: string
+      required:
+        - method
+        - detected_at
+      additionalProperties: false
+      description: "Durable provenance persisted at `metadata.type_detection` whenever
+        the intake sniff pipeline runs. `method` records which mechanism decides
+        the type: the sniff itself (high confidence), the post-conversion
+        selector (medium/low/other), or the post-conversion selector because the
+        document was below the small-doc page threshold."
+    LocateMetadata:
+      type: object
+      properties:
+        pages:
+          type: array
+          items:
+            type: number
+          description: Relevant pages proposed by the locate pass, in plan-ranked order
+            (1-based).
+        visual_detail:
+          type: string
+          enum:
+            - low
+            - standard
+            - high
+          description: Detail profile the plan requested for visual extraction.
+        needs_color:
+          type: boolean
+          description: Whether the plan asked for color rendering.
+        reason:
+          type: string
+          description: The model's one-line explanation of the selection.
+        page_count:
+          type: number
+        detail:
+          type: number
+          description: Pages per contact sheet used for the pass (8 or 16).
+        sheet_count:
+          type: number
+        located_at:
+          type: string
+      required:
+        - pages
+        - located_at
+      additionalProperties: false
+      description: Provenance persisted at `metadata.locate` when the intake locate
+        (document-map) pass runs. The page list doubles as navigation metadata
+        for the UI.
+    VisionEvidenceMetadata:
+      type: object
+      properties:
+        source_requested:
+          type: string
+          enum:
+            - auto
+            - text
+            - vision
+            - mixed
+          description: Extraction source that requested the evidence.
+        pages_sent:
+          type: array
+          items:
+            type: number
+          description: Pages rendered and sent as evidence, in ranked order (1-based).
+        detail:
+          type: string
+          enum:
+            - low
+            - standard
+            - high
+          description: Resolved detail profile name.
+        dropped_pages:
+          type: array
+          items:
+            type: number
+          description: Candidate pages dropped by budget clamping (recorded, not batched).
+        plan_reason:
+          type: string
+          description: The locate plan's reason, when the plan drove the page selection.
+        clamps_applied:
+          type: array
+          items:
+            type: string
+          description: Which clamps fired (page_count, allowed_details, token budget, page
+            caps, payload).
+        est_tokens:
+          type: number
+          description: Estimated image tokens for the pages sent.
+        page_count:
+          type: number
+        prepared_at:
+          type: string
+      required:
+        - pages_sent
+        - detail
+        - prepared_at
+      additionalProperties: false
+      description: "Provenance persisted at `metadata.vision_evidence` whenever intake
+        prepares scoped page images for visual extraction (design: vision
+        evidence spec — dropped pages are recorded, never silently batched)."
     AudioMetadata:
       type: object
       properties:
@@ -17619,10 +18540,29 @@ components:
             $ref: "#/components/schemas/GenerationRunMetadata"
         etag:
           type: string
+        rendered_text_etag:
+          type: string
+          description: ETag of text materialized from object properties by intake rendering.
         renditions:
           type: array
           items:
             $ref: "#/components/schemas/Rendition"
+        embedded:
+          type: object
+          additionalProperties: true
+          description: Embedded/technical metadata harvested from the source file by
+            intake (office docProps, PDF docinfo). Free-form, nature-appropriate
+            keys.
+        type_detection:
+          $ref: "#/components/schemas/TypeDetectionMetadata"
+          description: Type-detection provenance recorded by the intake sniff pipeline.
+        locate:
+          $ref: "#/components/schemas/LocateMetadata"
+          description: "Locate-pass provenance: which pages the document map found
+            relevant."
+        vision_evidence:
+          $ref: "#/components/schemas/VisionEvidenceMetadata"
+          description: Vision-evidence provenance for the last visual extraction run.
         duration:
           type: number
         transcript:
@@ -17663,10 +18603,29 @@ components:
             $ref: "#/components/schemas/GenerationRunMetadata"
         etag:
           type: string
+        rendered_text_etag:
+          type: string
+          description: ETag of text materialized from object properties by intake rendering.
         renditions:
           type: array
           items:
             $ref: "#/components/schemas/RenditionWithDimensions"
+        embedded:
+          type: object
+          additionalProperties: true
+          description: Embedded/technical metadata harvested from the source file by
+            intake (office docProps, PDF docinfo). Free-form, nature-appropriate
+            keys.
+        type_detection:
+          $ref: "#/components/schemas/TypeDetectionMetadata"
+          description: Type-detection provenance recorded by the intake sniff pipeline.
+        locate:
+          $ref: "#/components/schemas/LocateMetadata"
+          description: "Locate-pass provenance: which pages the document map found
+            relevant."
+        vision_evidence:
+          $ref: "#/components/schemas/VisionEvidenceMetadata"
+          description: Vision-evidence provenance for the last visual extraction run.
         dimensions:
           $ref: "#/components/schemas/Dimensions"
       required:
@@ -17694,10 +18653,29 @@ components:
             $ref: "#/components/schemas/GenerationRunMetadata"
         etag:
           type: string
+        rendered_text_etag:
+          type: string
+          description: ETag of text materialized from object properties by intake rendering.
         renditions:
           type: array
           items:
             $ref: "#/components/schemas/Rendition"
+        embedded:
+          type: object
+          additionalProperties: true
+          description: Embedded/technical metadata harvested from the source file by
+            intake (office docProps, PDF docinfo). Free-form, nature-appropriate
+            keys.
+        type_detection:
+          $ref: "#/components/schemas/TypeDetectionMetadata"
+          description: Type-detection provenance recorded by the intake sniff pipeline.
+        locate:
+          $ref: "#/components/schemas/LocateMetadata"
+          description: "Locate-pass provenance: which pages the document map found
+            relevant."
+        vision_evidence:
+          $ref: "#/components/schemas/VisionEvidenceMetadata"
+          description: Vision-evidence provenance for the last visual extraction run.
         page_count:
           type: number
         content_processor:
@@ -17721,7 +18699,17 @@ components:
               type: number
             needs_ocr_count:
               type: number
+            conversion_fingerprint:
+              type: string
+              description: Fingerprint of source+policy used for custom conversion, to skip
+                re-converting unchanged docs.
           additionalProperties: false
+        grounded:
+          $ref: "#/components/schemas/GroundedMetadata"
+          description: Grounded-extraction trust signal + key data. Written by the
+            grounded pipeline (verdict, confidence, citation counts, review
+            status, source etag, ...) and queryable for list/filter. Open-ended
+            so more grounded key-data can be stored without a type change.
         sections:
           type: array
           items:
@@ -17732,6 +18720,37 @@ components:
     ContentNature_Document:
       type: string
       const: document
+    GroundedMetadata:
+      type: object
+      properties:
+        verdict:
+          type: string
+        confidence:
+          type: number
+        citation_count:
+          type: number
+        verified_citations:
+          type: number
+        reviewed_at:
+          type: string
+        generated_at:
+          type: string
+        source_content_etag:
+          type:
+            - string
+            - "null"
+          description: Source PDF content etag used by the grounded extraction.
+        source_text_etag:
+          type:
+            - string
+            - "null"
+          deprecated: true
+          x-deprecated-message: Grounded source identity is tracked by source_content_etag.
+          description: "Deprecated: Grounded source identity is tracked by
+            source_content_etag."
+      additionalProperties: {}
+      description: Grounded-extraction summary stored on document metadata. Additional
+        keys allowed.
     TextSection:
       type: object
       properties:
@@ -17765,10 +18784,29 @@ components:
             $ref: "#/components/schemas/GenerationRunMetadata"
         etag:
           type: string
+        rendered_text_etag:
+          type: string
+          description: ETag of text materialized from object properties by intake rendering.
         renditions:
           type: array
           items:
             $ref: "#/components/schemas/Rendition"
+        embedded:
+          type: object
+          additionalProperties: true
+          description: Embedded/technical metadata harvested from the source file by
+            intake (office docProps, PDF docinfo). Free-form, nature-appropriate
+            keys.
+        type_detection:
+          $ref: "#/components/schemas/TypeDetectionMetadata"
+          description: Type-detection provenance recorded by the intake sniff pipeline.
+        locate:
+          $ref: "#/components/schemas/LocateMetadata"
+          description: "Locate-pass provenance: which pages the document map found
+            relevant."
+        vision_evidence:
+          $ref: "#/components/schemas/VisionEvidenceMetadata"
+          description: Vision-evidence provenance for the last visual extraction run.
       additionalProperties: false
     ContentNature:
       type: string
@@ -17886,9 +18924,16 @@ components:
       enum:
         - active
         - archived
+    DocumentProcessingPhase:
+      type: string
+      enum:
+        - markdown
+        - grounded_extraction
     DocAnalyzerProgress:
       type: object
       properties:
+        phase:
+          $ref: "#/components/schemas/DocumentProcessingPhase"
         pages:
           $ref: "#/components/schemas/DocAnalyzerProgressStatus"
         images:
@@ -17903,7 +18948,7 @@ components:
           type: number
         output_format:
           $ref: "#/components/schemas/DocProcessorOutputFormat"
-          description: The output format being used for processing (markdown or xml)
+          description: The output format being used for processing.
       required:
         - pages
         - images
@@ -17930,97 +18975,46 @@ components:
       additionalProperties: false
     DocProcessorOutputFormat:
       type: string
-      enum:
-        - xml
-        - markdown
+      const: markdown
       description: Output format for document processing workflows
-    DocTableResponse:
-      type: object
-      oneOf:
-        - $ref: "#/components/schemas/DocTableCsv"
-        - $ref: "#/components/schemas/DocTableJson"
-      discriminator:
-        propertyName: format
-        mapping:
-          application/csv: "#/components/schemas/DocTableCsv"
-          application/json: "#/components/schemas/DocTableJson"
-      required:
-        - format
-    DocTableCsv:
+    GroundedExtractionVerdict:
+      type: string
+      enum:
+        - good_to_go
+        - needs_review
+      description: Document-level trust verdict for a grounded extraction.
+        `good_to_go` means the extracted content (after any review corrections)
+        can be used without a human check; `needs_review` means a human should
+        verify it. This reflects content correctness, not how many citation
+        boxes rendered.
+    GroundedVerificationBreakdown:
       type: object
       properties:
-        page_number:
+        total:
           type: number
-        table_number:
+          description: Total number of cited values.
+        digitally_verified:
           type: number
-        title:
-          type: string
-        format:
-          type: string
-          const: application/csv
-        data:
-          type: string
+          description: Values matched verbatim against the document's text (digital layer
+            or OCR).
+        ai_verified:
+          type: number
+          description: Values the reviewer model confirmed against the page image.
+        unverified:
+          type: number
+          description: Values read from the image but neither text-matched nor
+            reviewer-confirmed.
       required:
-        - data
-        - format
+        - total
+        - digitally_verified
+        - ai_verified
+        - unverified
       additionalProperties: false
-      description: Represents a table in a document that has been analyzed in CSV format
-    DocTableJson:
-      type: object
-      properties:
-        page_number:
-          type: number
-        table_number:
-          type: number
-        title:
-          type: string
-        format:
-          type: string
-          const: application/json
-        data:
-          type: array
-          items:
-            $ref: "#/components/schemas/JSONObject"
-      required:
-        - data
-        - format
-      additionalProperties: false
-      description: Represents a table in a document that has been analyzed in JSON format
-    DocImage:
-      type: object
-      properties:
-        id:
-          type: string
-        page_number:
-          type: number
-        description:
-          type: string
-        is_meaningful:
-          type: boolean
-        width:
-          type: number
-        height:
-          type: number
-      additionalProperties: false
-      description: Represents a image in a document that has been analyzed
-    AdaptedTableMap:
-      type: object
-      additionalProperties:
-        $ref: "#/components/schemas/AdaptedTable"
-    AdaptedTable:
-      type: object
-      properties:
-        comment:
-          type: string
-        data:
-          type: array
-          items:
-            type: object
-            additionalProperties: true
-      required:
-        - data
-      additionalProperties: false
-      description: The adapted table result format
+      description: "How each extracted value was verified. Two kinds, both
+        trustworthy: digitally verified (matched the document's text — digital
+        layer or OCR) and AI verified (the reviewer confirmed it against the
+        page image — the primary signal for scanned or handwritten content,
+        which has no text layer to match)."
     ContentObjectTypeItem:
       type: object
       properties:
@@ -18050,8 +19044,12 @@ components:
         updated_at:
           type: string
           description: ISO timestamp of when the object was last updated
+        status:
+          $ref: "#/components/schemas/ContentObjectTypeStatus"
         is_chunkable:
           type: boolean
+        intake:
+          $ref: "#/components/schemas/ContentTypeIntakePolicy"
         table_layout:
           type: array
           items:
@@ -25423,6 +26421,21 @@ paths:
             type: array
             items:
               type: string
+        - name: exclude_tags
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+            description: Tags to exclude. Runs carrying any of these tags are filtered out
+              of the results, counts, and facet buckets. Combined with `tags`
+              (which requires all of the listed tags) as an additional `$nin`
+              constraint on the same field.
+          description: Tags to exclude. Runs carrying any of these tags are filtered out
+            of the results, counts, and facet buckets. Combined with `tags`
+            (which requires all of the listed tags) as an additional `$nin`
+            constraint on the same field.
         - name: query
           in: query
           required: false
@@ -27300,6 +28313,74 @@ paths:
         file: ../../apps/studio-server/src/api/audit-trail.ts
         className: AuditTrailResource
         methodName: listEvents
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260319"
+        description: Optional Vertesia API version header. Use `20260319` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /audit-trail/aggregate:
+    post:
+      operationId: AggregateAuditTrailEvents
+      tags:
+        - Audit Trail
+      summary: Aggregate audit trail events
+      description: >-
+        Runs a bounded aggregation over audit events. Account and project scope
+        are enforced from the authenticated request context.
+
+
+        **Required permissions:** Any of `project:admin`, `account:admin`,
+        `audit:read`
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters: []
+      responses:
+        "200":
+          description: Audit trail aggregation results.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuditAggregationResponse"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - project:admin
+        - account:admin
+        - audit:read
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/audit-trail.ts
+        className: AuditTrailResource
+        methodName: aggregateEvents
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AuditAggregationQuery"
     parameters:
       - name: x-api-version
         in: header
@@ -37609,10 +38690,10 @@ paths:
       operationId: AnalyzeObjectDocument
       tags:
         - Objects
-      summary: Start document analysis
+      summary: Start document prep
       description: >-
-        Starts document analysis for a content object and returns the workflow
-        run metadata.
+        Starts markdown document prep for a content object and returns the
+        workflow run metadata.
 
 
         **Required permissions:** `content:write`
@@ -37627,7 +38708,7 @@ paths:
             type: string
       responses:
         "200":
-          description: Document analysis workflow status.
+          description: Document prep workflow status.
           content:
             application/json:
               schema:
@@ -37663,7 +38744,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/PdfToRichtextOptions"
+              $ref: "#/components/schemas/DocumentPrepOptions"
     parameters:
       - name: x-api-version
         in: header
@@ -37679,10 +38760,10 @@ paths:
       operationId: GetObjectDocumentAnalysisStatus
       tags:
         - Objects
-      summary: Get document analysis status
+      summary: Get document prep status
       description: >-
-        Retrieves the status and progress for the current document analysis
-        workflow.
+        Retrieves status and progress for markdown prep or grounded extraction
+        on this object.
 
 
         **Required permissions:** `content:read`
@@ -37697,7 +38778,7 @@ paths:
             type: string
       responses:
         "200":
-          description: Document analysis workflow status.
+          description: Document prep workflow status.
           content:
             application/json:
               schema:
@@ -37738,82 +38819,18 @@ paths:
         description: Optional Vertesia API version header. Use `20260319` for the
           current stable API shape.
         x-vertesia-global-header: true
-  /objects/{objectId}/analyze/results:
-    get:
-      operationId: GetObjectDocumentAnalysis
-      tags:
-        - Objects
-      summary: Get document analysis results
-      description: >-
-        Returns the completed document analysis output, including extracted
-        document text, tables, images, and annotated file URL when available.
-
-
-        **Required permissions:** `content:read`
-      security:
-        - bearerAuth: []
-        - OpenID: []
-      parameters:
-        - name: objectId
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Completed document analysis results.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/DocAnalyzerResultResponse"
-        "500":
-          description: Internal server error.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-              example:
-                error: Internal Server Error
-                status: 500
-                message: Internal server error.
-        4XX:
-          description: Client error.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-              example:
-                error: Bad Request
-                status: 400
-                message: Request validation failed.
-      x-vertesia-permissions:
-        - content:read
-      x-vertesia-source:
-        file: ../../apps/zeno-server/src/api/doc-analyzer.ts
-        className: DocAnalyzerResource
-        methodName: getAnalysis
-    parameters:
-      - name: x-api-version
-        in: header
-        required: false
-        schema:
-          type: string
-          example: "20260319"
-        description: Optional Vertesia API version header. Use `20260319` for the
-          current stable API shape.
-        x-vertesia-global-header: true
-  /objects/{objectId}/analyze/adapt_tables:
+  /objects/{objectId}/analyze/grounded:
     post:
-      operationId: AdaptObjectTables
+      operationId: StartObjectDocumentGroundedExtraction
       tags:
         - Objects
-      summary: Adapt extracted document tables
+      summary: Start grounded extraction
       description: >-
-        Starts a table-adaptation workflow to normalize extracted tables into a
-        target schema.
+        Starts citation-grounded structured extraction for a content object.
+        Poll /analyze/status for progress.
 
 
-        **Required permissions:** `content:read`
+        **Required permissions:** `content:write`
       security:
         - bearerAuth: []
         - OpenID: []
@@ -37825,11 +38842,11 @@ paths:
             type: string
       responses:
         "200":
-          description: Table adaptation workflow status.
+          description: Grounded extraction workflow status.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/WorkflowRunStatus"
+                $ref: "#/components/schemas/DocAnalyzeRunStatusResponse"
         "500":
           description: Internal server error.
           content:
@@ -37851,70 +38868,17 @@ paths:
                 status: 400
                 message: Request validation failed.
       x-vertesia-permissions:
-        - content:read
+        - content:write
       x-vertesia-source:
         file: ../../apps/zeno-server/src/api/doc-analyzer.ts
         className: DocAnalyzerResource
-        methodName: startAdaptTables
+        methodName: startGroundedExtraction
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/AdaptTablesRequest"
-    get:
-      operationId: GetAdaptedObjectTables
-      tags:
-        - Objects
-      summary: Get adapted document tables
-      description: >-
-        Returns table-adaptation workflow results in raw JSON, flattened JSON,
-        or CSV format.
-
-
-        **Required permissions:** `content:read`
-      security:
-        - bearerAuth: []
-        - OpenID: []
-      parameters:
-        - name: objectId
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Adapted table results.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/AdaptedTableResponse"
-        "500":
-          description: Internal server error.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-              example:
-                error: Internal Server Error
-                status: 500
-                message: Internal server error.
-        4XX:
-          description: Client error.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-              example:
-                error: Bad Request
-                status: 400
-                message: Request validation failed.
-      x-vertesia-permissions:
-        - content:read
-      x-vertesia-source:
-        file: ../../apps/zeno-server/src/api/doc-analyzer.ts
-        className: DocAnalyzerResource
-        methodName: getAdaptTables
+              $ref: "#/components/schemas/GroundedExtractionRequest"
     parameters:
       - name: x-api-version
         in: header
@@ -37925,18 +38889,20 @@ paths:
         description: Optional Vertesia API version header. Use `20260319` for the
           current stable API shape.
         x-vertesia-global-header: true
-  /objects/{objectId}/analyze/adapt_tables/{runId}:
-    get:
-      operationId: GetAdaptedObjectTablesByRun
+  /objects/{objectId}/analyze/grounded/assistant:
+    post:
+      operationId: StartObjectGroundedExtractionAssistant
       tags:
         - Objects
-      summary: Get adapted document tables for a workflow run
+      summary: Start the interactive grounded extraction assistant
       description: >-
-        Returns table-adaptation workflow results for a specific workflow run in
-        raw JSON, flattened JSON, or CSV format.
+        Records an agent run, stages the document into the agent space, and
+        launches an interactive assistant conversation that corrects the
+        grounded extraction under operator direction. Returns the agent_run_id
+        used to stream/render the conversation.
 
 
-        **Required permissions:** `content:read`
+        **Required permissions:** `content:write`
       security:
         - bearerAuth: []
         - OpenID: []
@@ -37946,18 +38912,13 @@ paths:
           required: true
           schema:
             type: string
-        - name: runId
-          in: path
-          required: true
-          schema:
-            type: string
       responses:
         "200":
-          description: Adapted table results.
+          description: The launched assistant conversation.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/AdaptedTableResponse"
+                $ref: "#/components/schemas/GroundedAssistantResponse"
         "500":
           description: Internal server error.
           content:
@@ -37979,11 +38940,17 @@ paths:
                 status: 400
                 message: Request validation failed.
       x-vertesia-permissions:
-        - content:read
+        - content:write
       x-vertesia-source:
         file: ../../apps/zeno-server/src/api/doc-analyzer.ts
         className: DocAnalyzerResource
-        methodName: getAdaptTablesByRun
+        methodName: startGroundedAssistant
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GroundedExtractionRequest"
     parameters:
       - name: x-api-version
         in: header
@@ -37994,15 +38961,15 @@ paths:
         description: Optional Vertesia API version header. Use `20260319` for the
           current stable API shape.
         x-vertesia-global-header: true
-  /objects/{objectId}/analyze/xml:
+  /objects/{objectId}/analyze/grounded/result:
     get:
-      operationId: GetObjectDocumentXml
+      operationId: GetObjectDocumentGroundedExtractionResult
       tags:
         - Objects
-      summary: Get analyzed document XML
+      summary: Get grounded extraction result
       description: >-
-        Returns the stored rich-text XML representation for the analyzed
-        document.
+        Returns the extracted grounded data, trust verdict, verification
+        breakdown, and artifact URL.
 
 
         **Required permissions:** `content:read`
@@ -38017,11 +38984,11 @@ paths:
             type: string
       responses:
         "200":
-          description: Rich-text XML document.
+          description: Grounded extraction result.
           content:
             application/json:
               schema:
-                type: string
+                $ref: "#/components/schemas/GroundedExtractionResultResponse"
         "500":
           description: Internal server error.
           content:
@@ -38047,197 +39014,7 @@ paths:
       x-vertesia-source:
         file: ../../apps/zeno-server/src/api/doc-analyzer.ts
         className: DocAnalyzerResource
-        methodName: getXml
-    parameters:
-      - name: x-api-version
-        in: header
-        required: false
-        schema:
-          type: string
-          example: "20260319"
-        description: Optional Vertesia API version header. Use `20260319` for the
-          current stable API shape.
-        x-vertesia-global-header: true
-  /objects/{objectId}/analyze/tables:
-    get:
-      operationId: ListObjectDocumentTables
-      tags:
-        - Objects
-      summary: List extracted document tables
-      description: |-
-        Returns tables extracted from the analyzed document in JSON or CSV form.
-
-        **Required permissions:** `content:read`
-      security:
-        - bearerAuth: []
-        - OpenID: []
-      parameters:
-        - name: objectId
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Extracted document tables.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/DocTableResponseArray"
-        "500":
-          description: Internal server error.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-              example:
-                error: Internal Server Error
-                status: 500
-                message: Internal server error.
-        4XX:
-          description: Client error.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-              example:
-                error: Bad Request
-                status: 400
-                message: Request validation failed.
-      x-vertesia-permissions:
-        - content:read
-      x-vertesia-source:
-        file: ../../apps/zeno-server/src/api/doc-analyzer.ts
-        className: DocAnalyzerResource
-        methodName: getTables
-    parameters:
-      - name: x-api-version
-        in: header
-        required: false
-        schema:
-          type: string
-          example: "20260319"
-        description: Optional Vertesia API version header. Use `20260319` for the
-          current stable API shape.
-        x-vertesia-global-header: true
-  /objects/{objectId}/analyze/images:
-    get:
-      operationId: ListObjectDocumentImages
-      tags:
-        - Objects
-      summary: List extracted document images
-      description: >-
-        Returns images extracted from the analyzed document with page and
-        description metadata.
-
-
-        **Required permissions:** `content:read`
-      security:
-        - bearerAuth: []
-        - OpenID: []
-      parameters:
-        - name: objectId
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Extracted document images.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/DocImageArray"
-        "500":
-          description: Internal server error.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-              example:
-                error: Internal Server Error
-                status: 500
-                message: Internal server error.
-        4XX:
-          description: Client error.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-              example:
-                error: Bad Request
-                status: 400
-                message: Request validation failed.
-      x-vertesia-permissions:
-        - content:read
-      x-vertesia-source:
-        file: ../../apps/zeno-server/src/api/doc-analyzer.ts
-        className: DocAnalyzerResource
-        methodName: getImages
-    parameters:
-      - name: x-api-version
-        in: header
-        required: false
-        schema:
-          type: string
-          example: "20260319"
-        description: Optional Vertesia API version header. Use `20260319` for the
-          current stable API shape.
-        x-vertesia-global-header: true
-  /objects/{objectId}/analyze/annotated:
-    get:
-      operationId: GetObjectDocumentAnnotatedPdf
-      tags:
-        - Objects
-      summary: Get annotated document PDF
-      description: >-
-        Returns a download URL for the annotated PDF produced by document
-        analysis when available.
-
-
-        **Required permissions:** `content:read`
-      security:
-        - bearerAuth: []
-        - OpenID: []
-      parameters:
-        - name: objectId
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Annotated PDF URL.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/AnnotatedPdfResponse"
-        "500":
-          description: Internal server error.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-              example:
-                error: Internal Server Error
-                status: 500
-                message: Internal server error.
-        4XX:
-          description: Client error.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-              example:
-                error: Bad Request
-                status: 400
-                message: Request validation failed.
-      x-vertesia-permissions:
-        - content:read
-      x-vertesia-source:
-        file: ../../apps/zeno-server/src/api/doc-analyzer.ts
-        className: DocAnalyzerResource
-        methodName: getAnnotated
+        methodName: getGroundedExtractionResult
     parameters:
       - name: x-api-version
         in: header

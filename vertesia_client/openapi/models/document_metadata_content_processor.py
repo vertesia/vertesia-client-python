@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing import Optional, Set
 from typing_extensions import Self
@@ -34,8 +34,9 @@ class DocumentMetadataContentProcessor(BaseModel):
     image_count: Optional[Union[StrictFloat, StrictInt]] = None
     zone_count: Optional[Union[StrictFloat, StrictInt]] = None
     needs_ocr_count: Optional[Union[StrictFloat, StrictInt]] = None
+    conversion_fingerprint: Optional[StrictStr] = Field(default=None, description="Fingerprint of source+policy used for custom conversion, to skip re-converting unchanged docs.")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["type", "features_requested", "zones_requested", "table_count", "image_count", "zone_count", "needs_ocr_count"]
+    __properties: ClassVar[List[str]] = ["type", "features_requested", "zones_requested", "table_count", "image_count", "zone_count", "needs_ocr_count", "conversion_fingerprint"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -101,7 +102,8 @@ class DocumentMetadataContentProcessor(BaseModel):
             "table_count": obj.get("table_count"),
             "image_count": obj.get("image_count"),
             "zone_count": obj.get("zone_count"),
-            "needs_ocr_count": obj.get("needs_ocr_count")
+            "needs_ocr_count": obj.get("needs_ocr_count"),
+            "conversion_fingerprint": obj.get("conversion_fingerprint")
         })
         # store additional fields in additional_properties
         for _key in obj.keys():

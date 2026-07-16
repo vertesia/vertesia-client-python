@@ -83,8 +83,6 @@ __all__ = [
     "AceConditions",
     "ActivityFetchSpec",
     "ActivityTask",
-    "AdaptTablesRequest",
-    "AdaptedTable",
     "AdvanceProcessPayload",
     "AgentArtifactUrlResponse",
     "AgentDeliveryMatchMode",
@@ -117,7 +115,6 @@ __all__ = [
     "AlterTableOperationOneOf3",
     "AlterTablePayload",
     "AnalyticsAxis",
-    "AnnotatedPdfResponse",
     "AnswerProcessTaskPayload",
     "ApiKey",
     "ApiKeyReadResponse",
@@ -149,6 +146,18 @@ __all__ = [
     "AsyncInteractionExecutionPayload",
     "AudioMetadata",
     "AuditAction",
+    "AuditAggregationDetailField",
+    "AuditAggregationDetailFilter",
+    "AuditAggregationDimension",
+    "AuditAggregationDistinctField",
+    "AuditAggregationFilter",
+    "AuditAggregationGroup",
+    "AuditAggregationMetric",
+    "AuditAggregationOperation",
+    "AuditAggregationQuery",
+    "AuditAggregationResolution",
+    "AuditAggregationResponse",
+    "AuditAggregationRow",
     "AuditMeter",
     "AuditTrailEvent",
     "AuditTrailResponse",
@@ -254,8 +263,19 @@ __all__ = [
     "ContentObjectTypeCatalogEntry",
     "ContentObjectTypeItem",
     "ContentObjectTypeRef",
+    "ContentObjectTypeStatus",
     "ContentObjectUserPermissions",
     "ContentSource",
+    "ContentTypeExtractionGroundingPolicy",
+    "ContentTypeExtractionGroundingReviewPolicy",
+    "ContentTypeIntakePolicy",
+    "ContentTypeIntakePolicyExtraction",
+    "ContentTypeIntakePolicyExtractionVerification",
+    "ContentTypeIntakePolicyExtractionVision",
+    "ContentTypeIntakePolicyIdentification",
+    "ContentTypeIntakePolicyLocate",
+    "ContentTypeIntakePolicyTextConversion",
+    "ContentTypeIntakePolicyTextConversionCustom",
     "ConversationActivityState",
     "ConversationFile",
     "ConversationState",
@@ -361,14 +381,11 @@ __all__ = [
     "DocAnalyzeRunStatusResponse",
     "DocAnalyzerProgress",
     "DocAnalyzerProgressStatus",
-    "DocAnalyzerResultResponse",
-    "DocImage",
     "DocProcessorOutputFormat",
-    "DocTableCsv",
-    "DocTableJson",
-    "DocTableResponse",
     "DocumentMetadata",
     "DocumentMetadataContentProcessor",
+    "DocumentPrepOptions",
+    "DocumentProcessingPhase",
     "DriftAnalysisProgress",
     "DriftAnalysisResult",
     "DriftAnalysisStatusResponse",
@@ -468,6 +485,13 @@ __all__ = [
     "GladiaConfiguration",
     "GladiaConfigurationInput",
     "GroqOptions",
+    "GroundedAssistantResponse",
+    "GroundedExtractionRequest",
+    "GroundedExtractionResultResponse",
+    "GroundedExtractionResultResponseReview",
+    "GroundedExtractionVerdict",
+    "GroundedMetadata",
+    "GroundedVerificationBreakdown",
     "HttpTimeoutOptions",
     "HumanTaskDefinition",
     "ICreateProjectPayload",
@@ -492,6 +516,8 @@ __all__ = [
     "IndexingStatusResponseIndex",
     "IndexingStatusResponseReindexProgress",
     "InheritedPropertyMetadata",
+    "IntakePageScope",
+    "IntakeVisionDetail",
     "Interaction",
     "InteractionCreatePayload",
     "InteractionEndpoint",
@@ -540,6 +566,7 @@ __all__ = [
     "LlmCallType",
     "LoadBalancingEnvConfig",
     "LoadBalancingEnvEntryConfig",
+    "LocateMetadata",
     "Location",
     "MCPOAuthConfig",
     "MCPToolAnnotations",
@@ -607,20 +634,22 @@ __all__ = [
     "PartialCreateContentObjectPayload",
     "PartialCreateOAuthProviderPayload",
     "PartialExecutionRunRef",
+    "PartialIntakeVisionProfileSettings",
     "PartialOmitCompositeAppConfigIdProject",
     "PartialOmitDataColumnName",
     "PartialProject",
     "PartialProjectConfiguration",
+    "PartialRecordAuditAggregationDimensionStringNull",
+    "PartialRecordIntakeVisionDetailPartialIntakeVisionProfileSettings",
     "PartialRecordSupportedEmbeddingTypesBoolean",
     "PartialRecordSupportedEmbeddingTypesEmbedding",
     "PartialWebsiteCredentialMetadata",
     "PdfRenderingMetadata",
-    "PdfToRichtextOptions",
     "PendingActivity",
     "PendingMcpConnection",
     "PendingToolApprovalResults",
     "Permission",
-    "PickContentObjectTypeItemIdNameDescriptionTagsObjectSchemaTableLayoutIsChunkableStrictMode",
+    "PickContentObjectTypeItemIdNameDescriptionTagsObjectSchemaTableLayoutIsChunkableStrictModeStatusIntake",
     "Plan",
     "PlanTask",
     "PostAgentRunUpdatePayload",
@@ -652,6 +681,7 @@ __all__ = [
     "ProjectConfigurationEmbeddings",
     "ProjectConfigurationIndexing",
     "ProjectIntakeConfiguration",
+    "ProjectIntakeSniffConfiguration",
     "ProjectIntegrationConfigRequest",
     "ProjectIntegrationConfigResponse",
     "ProjectIntegrationListEntry",
@@ -823,6 +853,7 @@ __all__ = [
     "TransitionDefinition",
     "TransitionTrigger",
     "TwelvelabsPegasusOptions",
+    "TypeDetectionMetadata",
     "UpdateAccountPayload",
     "UpdateAppInstallationToolAllowlistPayload",
     "UpdateDashboardPayload",
@@ -853,6 +884,7 @@ __all__ = [
     "VertexAIGrokOptions",
     "VideoMetadata",
     "VirtualEnvEntry",
+    "VisionEvidenceMetadata",
     "WebhookEventDeliveryTarget",
     "WebhookEventDeliveryTargetInput",
     "WebhookPayloadMode",
@@ -892,7 +924,6 @@ __all__ = [
     "WorkflowRunEventActivity",
     "WorkflowRunEventChildWorkflow",
     "WorkflowRunEventTimer",
-    "WorkflowRunStatus",
     "WorkflowRunUpdatesResponse",
     "WorkflowRunWithDetails",
     "WorkflowRunWithDetailsStatus",
@@ -971,8 +1002,6 @@ from vertesia_client.openapi.models.account_type import AccountType as AccountTy
 from vertesia_client.openapi.models.ace_conditions import AceConditions as AceConditions
 from vertesia_client.openapi.models.activity_fetch_spec import ActivityFetchSpec as ActivityFetchSpec
 from vertesia_client.openapi.models.activity_task import ActivityTask as ActivityTask
-from vertesia_client.openapi.models.adapt_tables_request import AdaptTablesRequest as AdaptTablesRequest
-from vertesia_client.openapi.models.adapted_table import AdaptedTable as AdaptedTable
 from vertesia_client.openapi.models.advance_process_payload import AdvanceProcessPayload as AdvanceProcessPayload
 from vertesia_client.openapi.models.agent_artifact_url_response import AgentArtifactUrlResponse as AgentArtifactUrlResponse
 from vertesia_client.openapi.models.agent_delivery_match_mode import AgentDeliveryMatchMode as AgentDeliveryMatchMode
@@ -1005,7 +1034,6 @@ from vertesia_client.openapi.models.alter_table_operation_one_of2 import AlterTa
 from vertesia_client.openapi.models.alter_table_operation_one_of3 import AlterTableOperationOneOf3 as AlterTableOperationOneOf3
 from vertesia_client.openapi.models.alter_table_payload import AlterTablePayload as AlterTablePayload
 from vertesia_client.openapi.models.analytics_axis import AnalyticsAxis as AnalyticsAxis
-from vertesia_client.openapi.models.annotated_pdf_response import AnnotatedPdfResponse as AnnotatedPdfResponse
 from vertesia_client.openapi.models.answer_process_task_payload import AnswerProcessTaskPayload as AnswerProcessTaskPayload
 from vertesia_client.openapi.models.api_key import ApiKey as ApiKey
 from vertesia_client.openapi.models.api_key_read_response import ApiKeyReadResponse as ApiKeyReadResponse
@@ -1037,6 +1065,18 @@ from vertesia_client.openapi.models.async_execution_result import AsyncExecution
 from vertesia_client.openapi.models.async_interaction_execution_payload import AsyncInteractionExecutionPayload as AsyncInteractionExecutionPayload
 from vertesia_client.openapi.models.audio_metadata import AudioMetadata as AudioMetadata
 from vertesia_client.openapi.models.audit_action import AuditAction as AuditAction
+from vertesia_client.openapi.models.audit_aggregation_detail_field import AuditAggregationDetailField as AuditAggregationDetailField
+from vertesia_client.openapi.models.audit_aggregation_detail_filter import AuditAggregationDetailFilter as AuditAggregationDetailFilter
+from vertesia_client.openapi.models.audit_aggregation_dimension import AuditAggregationDimension as AuditAggregationDimension
+from vertesia_client.openapi.models.audit_aggregation_distinct_field import AuditAggregationDistinctField as AuditAggregationDistinctField
+from vertesia_client.openapi.models.audit_aggregation_filter import AuditAggregationFilter as AuditAggregationFilter
+from vertesia_client.openapi.models.audit_aggregation_group import AuditAggregationGroup as AuditAggregationGroup
+from vertesia_client.openapi.models.audit_aggregation_metric import AuditAggregationMetric as AuditAggregationMetric
+from vertesia_client.openapi.models.audit_aggregation_operation import AuditAggregationOperation as AuditAggregationOperation
+from vertesia_client.openapi.models.audit_aggregation_query import AuditAggregationQuery as AuditAggregationQuery
+from vertesia_client.openapi.models.audit_aggregation_resolution import AuditAggregationResolution as AuditAggregationResolution
+from vertesia_client.openapi.models.audit_aggregation_response import AuditAggregationResponse as AuditAggregationResponse
+from vertesia_client.openapi.models.audit_aggregation_row import AuditAggregationRow as AuditAggregationRow
 from vertesia_client.openapi.models.audit_meter import AuditMeter as AuditMeter
 from vertesia_client.openapi.models.audit_trail_event import AuditTrailEvent as AuditTrailEvent
 from vertesia_client.openapi.models.audit_trail_response import AuditTrailResponse as AuditTrailResponse
@@ -1142,8 +1182,19 @@ from vertesia_client.openapi.models.content_object_type import ContentObjectType
 from vertesia_client.openapi.models.content_object_type_catalog_entry import ContentObjectTypeCatalogEntry as ContentObjectTypeCatalogEntry
 from vertesia_client.openapi.models.content_object_type_item import ContentObjectTypeItem as ContentObjectTypeItem
 from vertesia_client.openapi.models.content_object_type_ref import ContentObjectTypeRef as ContentObjectTypeRef
+from vertesia_client.openapi.models.content_object_type_status import ContentObjectTypeStatus as ContentObjectTypeStatus
 from vertesia_client.openapi.models.content_object_user_permissions import ContentObjectUserPermissions as ContentObjectUserPermissions
 from vertesia_client.openapi.models.content_source import ContentSource as ContentSource
+from vertesia_client.openapi.models.content_type_extraction_grounding_policy import ContentTypeExtractionGroundingPolicy as ContentTypeExtractionGroundingPolicy
+from vertesia_client.openapi.models.content_type_extraction_grounding_review_policy import ContentTypeExtractionGroundingReviewPolicy as ContentTypeExtractionGroundingReviewPolicy
+from vertesia_client.openapi.models.content_type_intake_policy import ContentTypeIntakePolicy as ContentTypeIntakePolicy
+from vertesia_client.openapi.models.content_type_intake_policy_extraction import ContentTypeIntakePolicyExtraction as ContentTypeIntakePolicyExtraction
+from vertesia_client.openapi.models.content_type_intake_policy_extraction_verification import ContentTypeIntakePolicyExtractionVerification as ContentTypeIntakePolicyExtractionVerification
+from vertesia_client.openapi.models.content_type_intake_policy_extraction_vision import ContentTypeIntakePolicyExtractionVision as ContentTypeIntakePolicyExtractionVision
+from vertesia_client.openapi.models.content_type_intake_policy_identification import ContentTypeIntakePolicyIdentification as ContentTypeIntakePolicyIdentification
+from vertesia_client.openapi.models.content_type_intake_policy_locate import ContentTypeIntakePolicyLocate as ContentTypeIntakePolicyLocate
+from vertesia_client.openapi.models.content_type_intake_policy_text_conversion import ContentTypeIntakePolicyTextConversion as ContentTypeIntakePolicyTextConversion
+from vertesia_client.openapi.models.content_type_intake_policy_text_conversion_custom import ContentTypeIntakePolicyTextConversionCustom as ContentTypeIntakePolicyTextConversionCustom
 from vertesia_client.openapi.models.conversation_activity_state import ConversationActivityState as ConversationActivityState
 from vertesia_client.openapi.models.conversation_file import ConversationFile as ConversationFile
 from vertesia_client.openapi.models.conversation_state import ConversationState as ConversationState
@@ -1249,14 +1300,11 @@ from vertesia_client.openapi.models.dimensions import Dimensions as Dimensions
 from vertesia_client.openapi.models.doc_analyze_run_status_response import DocAnalyzeRunStatusResponse as DocAnalyzeRunStatusResponse
 from vertesia_client.openapi.models.doc_analyzer_progress import DocAnalyzerProgress as DocAnalyzerProgress
 from vertesia_client.openapi.models.doc_analyzer_progress_status import DocAnalyzerProgressStatus as DocAnalyzerProgressStatus
-from vertesia_client.openapi.models.doc_analyzer_result_response import DocAnalyzerResultResponse as DocAnalyzerResultResponse
-from vertesia_client.openapi.models.doc_image import DocImage as DocImage
 from vertesia_client.openapi.models.doc_processor_output_format import DocProcessorOutputFormat as DocProcessorOutputFormat
-from vertesia_client.openapi.models.doc_table_csv import DocTableCsv as DocTableCsv
-from vertesia_client.openapi.models.doc_table_json import DocTableJson as DocTableJson
-from vertesia_client.openapi.models.doc_table_response import DocTableResponse as DocTableResponse
 from vertesia_client.openapi.models.document_metadata import DocumentMetadata as DocumentMetadata
 from vertesia_client.openapi.models.document_metadata_content_processor import DocumentMetadataContentProcessor as DocumentMetadataContentProcessor
+from vertesia_client.openapi.models.document_prep_options import DocumentPrepOptions as DocumentPrepOptions
+from vertesia_client.openapi.models.document_processing_phase import DocumentProcessingPhase as DocumentProcessingPhase
 from vertesia_client.openapi.models.drift_analysis_progress import DriftAnalysisProgress as DriftAnalysisProgress
 from vertesia_client.openapi.models.drift_analysis_result import DriftAnalysisResult as DriftAnalysisResult
 from vertesia_client.openapi.models.drift_analysis_status_response import DriftAnalysisStatusResponse as DriftAnalysisStatusResponse
@@ -1356,6 +1404,13 @@ from vertesia_client.openapi.models.github_configuration_input import GithubConf
 from vertesia_client.openapi.models.gladia_configuration import GladiaConfiguration as GladiaConfiguration
 from vertesia_client.openapi.models.gladia_configuration_input import GladiaConfigurationInput as GladiaConfigurationInput
 from vertesia_client.openapi.models.groq_options import GroqOptions as GroqOptions
+from vertesia_client.openapi.models.grounded_assistant_response import GroundedAssistantResponse as GroundedAssistantResponse
+from vertesia_client.openapi.models.grounded_extraction_request import GroundedExtractionRequest as GroundedExtractionRequest
+from vertesia_client.openapi.models.grounded_extraction_result_response import GroundedExtractionResultResponse as GroundedExtractionResultResponse
+from vertesia_client.openapi.models.grounded_extraction_result_response_review import GroundedExtractionResultResponseReview as GroundedExtractionResultResponseReview
+from vertesia_client.openapi.models.grounded_extraction_verdict import GroundedExtractionVerdict as GroundedExtractionVerdict
+from vertesia_client.openapi.models.grounded_metadata import GroundedMetadata as GroundedMetadata
+from vertesia_client.openapi.models.grounded_verification_breakdown import GroundedVerificationBreakdown as GroundedVerificationBreakdown
 from vertesia_client.openapi.models.http_timeout_options import HttpTimeoutOptions as HttpTimeoutOptions
 from vertesia_client.openapi.models.human_task_definition import HumanTaskDefinition as HumanTaskDefinition
 from vertesia_client.openapi.models.i_create_project_payload import ICreateProjectPayload as ICreateProjectPayload
@@ -1380,6 +1435,8 @@ from vertesia_client.openapi.models.indexing_status_response import IndexingStat
 from vertesia_client.openapi.models.indexing_status_response_index import IndexingStatusResponseIndex as IndexingStatusResponseIndex
 from vertesia_client.openapi.models.indexing_status_response_reindex_progress import IndexingStatusResponseReindexProgress as IndexingStatusResponseReindexProgress
 from vertesia_client.openapi.models.inherited_property_metadata import InheritedPropertyMetadata as InheritedPropertyMetadata
+from vertesia_client.openapi.models.intake_page_scope import IntakePageScope as IntakePageScope
+from vertesia_client.openapi.models.intake_vision_detail import IntakeVisionDetail as IntakeVisionDetail
 from vertesia_client.openapi.models.interaction import Interaction as Interaction
 from vertesia_client.openapi.models.interaction_create_payload import InteractionCreatePayload as InteractionCreatePayload
 from vertesia_client.openapi.models.interaction_endpoint import InteractionEndpoint as InteractionEndpoint
@@ -1428,6 +1485,7 @@ from vertesia_client.openapi.models.list_workflow_runs_response import ListWorkf
 from vertesia_client.openapi.models.llm_call_type import LlmCallType as LlmCallType
 from vertesia_client.openapi.models.load_balancing_env_config import LoadBalancingEnvConfig as LoadBalancingEnvConfig
 from vertesia_client.openapi.models.load_balancing_env_entry_config import LoadBalancingEnvEntryConfig as LoadBalancingEnvEntryConfig
+from vertesia_client.openapi.models.locate_metadata import LocateMetadata as LocateMetadata
 from vertesia_client.openapi.models.location import Location as Location
 from vertesia_client.openapi.models.mcpo_auth_config import MCPOAuthConfig as MCPOAuthConfig
 from vertesia_client.openapi.models.mcp_tool_annotations import MCPToolAnnotations as MCPToolAnnotations
@@ -1495,20 +1553,22 @@ from vertesia_client.openapi.models.partial_agent_message import PartialAgentMes
 from vertesia_client.openapi.models.partial_create_content_object_payload import PartialCreateContentObjectPayload as PartialCreateContentObjectPayload
 from vertesia_client.openapi.models.partial_create_o_auth_provider_payload import PartialCreateOAuthProviderPayload as PartialCreateOAuthProviderPayload
 from vertesia_client.openapi.models.partial_execution_run_ref import PartialExecutionRunRef as PartialExecutionRunRef
+from vertesia_client.openapi.models.partial_intake_vision_profile_settings import PartialIntakeVisionProfileSettings as PartialIntakeVisionProfileSettings
 from vertesia_client.openapi.models.partial_omit_composite_app_config_id_project import PartialOmitCompositeAppConfigIdProject as PartialOmitCompositeAppConfigIdProject
 from vertesia_client.openapi.models.partial_omit_data_column_name import PartialOmitDataColumnName as PartialOmitDataColumnName
 from vertesia_client.openapi.models.partial_project import PartialProject as PartialProject
 from vertesia_client.openapi.models.partial_project_configuration import PartialProjectConfiguration as PartialProjectConfiguration
+from vertesia_client.openapi.models.partial_record_audit_aggregation_dimension_string_null import PartialRecordAuditAggregationDimensionStringNull as PartialRecordAuditAggregationDimensionStringNull
+from vertesia_client.openapi.models.partial_record_intake_vision_detail_partial_intake_vision_profile_settings import PartialRecordIntakeVisionDetailPartialIntakeVisionProfileSettings as PartialRecordIntakeVisionDetailPartialIntakeVisionProfileSettings
 from vertesia_client.openapi.models.partial_record_supported_embedding_types_boolean import PartialRecordSupportedEmbeddingTypesBoolean as PartialRecordSupportedEmbeddingTypesBoolean
 from vertesia_client.openapi.models.partial_record_supported_embedding_types_embedding import PartialRecordSupportedEmbeddingTypesEmbedding as PartialRecordSupportedEmbeddingTypesEmbedding
 from vertesia_client.openapi.models.partial_website_credential_metadata import PartialWebsiteCredentialMetadata as PartialWebsiteCredentialMetadata
 from vertesia_client.openapi.models.pdf_rendering_metadata import PdfRenderingMetadata as PdfRenderingMetadata
-from vertesia_client.openapi.models.pdf_to_richtext_options import PdfToRichtextOptions as PdfToRichtextOptions
 from vertesia_client.openapi.models.pending_activity import PendingActivity as PendingActivity
 from vertesia_client.openapi.models.pending_mcp_connection import PendingMcpConnection as PendingMcpConnection
 from vertesia_client.openapi.models.pending_tool_approval_results import PendingToolApprovalResults as PendingToolApprovalResults
 from vertesia_client.openapi.models.permission import Permission as Permission
-from vertesia_client.openapi.models.pick_content_object_type_item_id_name_description_tags_object_schema_table_layout_is_chunkable_strict_mode import PickContentObjectTypeItemIdNameDescriptionTagsObjectSchemaTableLayoutIsChunkableStrictMode as PickContentObjectTypeItemIdNameDescriptionTagsObjectSchemaTableLayoutIsChunkableStrictMode
+from vertesia_client.openapi.models.pick_content_object_type_item_id_name_description_tags_object_schema_table_layout_is_chunkable_strict_mode_status_intake import PickContentObjectTypeItemIdNameDescriptionTagsObjectSchemaTableLayoutIsChunkableStrictModeStatusIntake as PickContentObjectTypeItemIdNameDescriptionTagsObjectSchemaTableLayoutIsChunkableStrictModeStatusIntake
 from vertesia_client.openapi.models.plan import Plan as Plan
 from vertesia_client.openapi.models.plan_task import PlanTask as PlanTask
 from vertesia_client.openapi.models.post_agent_run_update_payload import PostAgentRunUpdatePayload as PostAgentRunUpdatePayload
@@ -1540,6 +1600,7 @@ from vertesia_client.openapi.models.project_configuration_embedding_enable_paylo
 from vertesia_client.openapi.models.project_configuration_embeddings import ProjectConfigurationEmbeddings as ProjectConfigurationEmbeddings
 from vertesia_client.openapi.models.project_configuration_indexing import ProjectConfigurationIndexing as ProjectConfigurationIndexing
 from vertesia_client.openapi.models.project_intake_configuration import ProjectIntakeConfiguration as ProjectIntakeConfiguration
+from vertesia_client.openapi.models.project_intake_sniff_configuration import ProjectIntakeSniffConfiguration as ProjectIntakeSniffConfiguration
 from vertesia_client.openapi.models.project_integration_config_request import ProjectIntegrationConfigRequest as ProjectIntegrationConfigRequest
 from vertesia_client.openapi.models.project_integration_config_response import ProjectIntegrationConfigResponse as ProjectIntegrationConfigResponse
 from vertesia_client.openapi.models.project_integration_list_entry import ProjectIntegrationListEntry as ProjectIntegrationListEntry
@@ -1711,6 +1772,7 @@ from vertesia_client.openapi.models.transient_token_user_invite_token_data_array
 from vertesia_client.openapi.models.transition_definition import TransitionDefinition as TransitionDefinition
 from vertesia_client.openapi.models.transition_trigger import TransitionTrigger as TransitionTrigger
 from vertesia_client.openapi.models.twelvelabs_pegasus_options import TwelvelabsPegasusOptions as TwelvelabsPegasusOptions
+from vertesia_client.openapi.models.type_detection_metadata import TypeDetectionMetadata as TypeDetectionMetadata
 from vertesia_client.openapi.models.update_account_payload import UpdateAccountPayload as UpdateAccountPayload
 from vertesia_client.openapi.models.update_app_installation_tool_allowlist_payload import UpdateAppInstallationToolAllowlistPayload as UpdateAppInstallationToolAllowlistPayload
 from vertesia_client.openapi.models.update_dashboard_payload import UpdateDashboardPayload as UpdateDashboardPayload
@@ -1741,6 +1803,7 @@ from vertesia_client.openapi.models.vertex_ai_gemini_options import VertexAIGemi
 from vertesia_client.openapi.models.vertex_ai_grok_options import VertexAIGrokOptions as VertexAIGrokOptions
 from vertesia_client.openapi.models.video_metadata import VideoMetadata as VideoMetadata
 from vertesia_client.openapi.models.virtual_env_entry import VirtualEnvEntry as VirtualEnvEntry
+from vertesia_client.openapi.models.vision_evidence_metadata import VisionEvidenceMetadata as VisionEvidenceMetadata
 from vertesia_client.openapi.models.webhook_event_delivery_target import WebhookEventDeliveryTarget as WebhookEventDeliveryTarget
 from vertesia_client.openapi.models.webhook_event_delivery_target_input import WebhookEventDeliveryTargetInput as WebhookEventDeliveryTargetInput
 from vertesia_client.openapi.models.webhook_payload_mode import WebhookPayloadMode as WebhookPayloadMode
@@ -1780,7 +1843,6 @@ from vertesia_client.openapi.models.workflow_run_event import WorkflowRunEvent a
 from vertesia_client.openapi.models.workflow_run_event_activity import WorkflowRunEventActivity as WorkflowRunEventActivity
 from vertesia_client.openapi.models.workflow_run_event_child_workflow import WorkflowRunEventChildWorkflow as WorkflowRunEventChildWorkflow
 from vertesia_client.openapi.models.workflow_run_event_timer import WorkflowRunEventTimer as WorkflowRunEventTimer
-from vertesia_client.openapi.models.workflow_run_status import WorkflowRunStatus as WorkflowRunStatus
 from vertesia_client.openapi.models.workflow_run_updates_response import WorkflowRunUpdatesResponse as WorkflowRunUpdatesResponse
 from vertesia_client.openapi.models.workflow_run_with_details import WorkflowRunWithDetails as WorkflowRunWithDetails
 from vertesia_client.openapi.models.workflow_run_with_details_status import WorkflowRunWithDetailsStatus as WorkflowRunWithDetailsStatus

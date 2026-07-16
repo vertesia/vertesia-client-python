@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictBool, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from vertesia_client.openapi.models.execution_run_status import ExecutionRunStatus
 from typing import Optional, Set
@@ -36,6 +36,7 @@ class RunSearchQuery(BaseModel):
     environment: Optional[StrictStr] = None
     model: Optional[StrictStr] = None
     tags: Optional[List[StrictStr]] = None
+    exclude_tags: Optional[List[StrictStr]] = Field(default=None, description="Tags to exclude. Runs carrying any of these tags are filtered out of the results, counts, and facet buckets. Combined with `tags` (which requires all of the listed tags) as an additional `$nin` constraint on the same field.")
     query: Optional[StrictStr] = None
     default_query_path: Optional[StrictStr] = None
     parent: Optional[List[StrictStr]] = None
@@ -49,7 +50,7 @@ class RunSearchQuery(BaseModel):
     workflow_ids: Optional[List[StrictStr]] = None
     run_ids: Optional[List[StrictStr]] = None
     is_agent: Optional[StrictBool] = None
-    __properties: ClassVar[List[str]] = ["name", "status", "limit", "offset", "interaction", "environment", "model", "tags", "query", "default_query_path", "parent", "is_root", "object", "start", "end", "finish_reason", "created_by", "workflow_run_ids", "workflow_ids", "run_ids", "is_agent"]
+    __properties: ClassVar[List[str]] = ["name", "status", "limit", "offset", "interaction", "environment", "model", "tags", "exclude_tags", "query", "default_query_path", "parent", "is_root", "object", "start", "end", "finish_reason", "created_by", "workflow_run_ids", "workflow_ids", "run_ids", "is_agent"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -110,6 +111,7 @@ class RunSearchQuery(BaseModel):
             "environment": obj.get("environment"),
             "model": obj.get("model"),
             "tags": obj.get("tags"),
+            "exclude_tags": obj.get("exclude_tags"),
             "query": obj.get("query"),
             "default_query_path": obj.get("default_query_path"),
             "parent": obj.get("parent"),

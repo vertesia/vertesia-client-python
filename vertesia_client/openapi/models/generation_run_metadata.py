@@ -31,7 +31,8 @@ class GenerationRunMetadata(BaseModel):
     var_date: StrictStr = Field(alias="date")
     model: StrictStr
     target: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["id", "date", "model", "target"]
+    extraction_fingerprint: Optional[StrictStr] = Field(default=None, description="Fingerprint of the inputs used by property extraction (content etag, type + its object schema, source, instructions, interaction). Lets a later run skip re-extraction when nothing changed.")
+    __properties: ClassVar[List[str]] = ["id", "date", "model", "target", "extraction_fingerprint"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -87,7 +88,8 @@ class GenerationRunMetadata(BaseModel):
             "id": obj.get("id"),
             "date": obj.get("date"),
             "model": obj.get("model"),
-            "target": obj.get("target")
+            "target": obj.get("target"),
+            "extraction_fingerprint": obj.get("extraction_fingerprint")
         })
         return _obj
 
