@@ -26,9 +26,13 @@ class ReasoningEffort(str, Enum):
     """
     allowed enum values
     """
+    NONE = 'none'
+    MINIMAL = 'minimal'
     LOW = 'low'
     MEDIUM = 'medium'
     HIGH = 'high'
+    XHIGH = 'xhigh'
+    MAX = 'max'
 
     @classmethod
     def _missing_(cls, value: object) -> Self:

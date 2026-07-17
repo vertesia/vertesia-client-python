@@ -8555,6 +8555,7 @@
           "effort": {
             "type": "string",
             "enum": [
+              "minimal",
               "low",
               "medium",
               "high"
@@ -9046,9 +9047,13 @@
       "ReasoningEffort": {
         "type": "string",
         "enum": [
+          "none",
+          "minimal",
           "low",
           "medium",
-          "high"
+          "high",
+          "xhigh",
+          "max"
         ]
       },
       "OpenAiTextOptions": {
