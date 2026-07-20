@@ -30,12 +30,13 @@ class ResourceRef(BaseModel):
     id: StrictStr
     name: StrictStr
     type: StrictStr
+    email: Optional[StrictStr] = None
     description: Optional[StrictStr] = None
     version: Optional[Union[StrictFloat, StrictInt]] = None
     status: Optional[StrictStr] = None
     tags: Optional[List[StrictStr]] = None
     endpoint: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["id", "name", "type", "description", "version", "status", "tags", "endpoint"]
+    __properties: ClassVar[List[str]] = ["id", "name", "type", "email", "description", "version", "status", "tags", "endpoint"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -91,6 +92,7 @@ class ResourceRef(BaseModel):
             "id": obj.get("id"),
             "name": obj.get("name"),
             "type": obj.get("type"),
+            "email": obj.get("email"),
             "description": obj.get("description"),
             "version": obj.get("version"),
             "status": obj.get("status"),
