@@ -359,6 +359,7 @@ from vertesia_client.openapi.models.embeddings_token_usage import EmbeddingsToke
 from vertesia_client.openapi.models.enable_environment_model_payload import EnableEnvironmentModelPayload
 from vertesia_client.openapi.models.environment_token_request import EnvironmentTokenRequest
 from vertesia_client.openapi.models.error_response import ErrorResponse
+from vertesia_client.openapi.models.error_string_message_string import ErrorStringMessageString
 from vertesia_client.openapi.models.event_category import EventCategory
 from vertesia_client.openapi.models.event_delivery_intent_status import EventDeliveryIntentStatus
 from vertesia_client.openapi.models.event_delivery_intent_summary import EventDeliveryIntentSummary

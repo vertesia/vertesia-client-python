@@ -27787,6 +27787,22 @@
         ],
         "additionalProperties": false
       },
+      "error_string_message_string": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "error",
+          "message"
+        ],
+        "additionalProperties": false
+      },
       "IssueTokenRequest": {
         "type": "object",
         "discriminator": {
@@ -63144,6 +63160,16 @@
                   "error": "Internal Server Error",
                   "status": 500,
                   "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Token signing is temporarily unavailable. Retryable; honor the Retry-After header.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error_string_message_string"
                 }
               }
             }

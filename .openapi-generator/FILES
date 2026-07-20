@@ -390,6 +390,7 @@ vertesia_client/openapi/models/embeddings_token_usage.py
 vertesia_client/openapi/models/enable_environment_model_payload.py
 vertesia_client/openapi/models/environment_token_request.py
 vertesia_client/openapi/models/error_response.py
+vertesia_client/openapi/models/error_string_message_string.py
 vertesia_client/openapi/models/event_category.py
 vertesia_client/openapi/models/event_delivery_intent_status.py
 vertesia_client/openapi/models/event_delivery_intent_summary.py
