@@ -22473,6 +22473,9 @@
           "startToCloseTimeout": {
             "$ref": "#/components/schemas/DurationValue"
           },
+          "heartbeatTimeout": {
+            "$ref": "#/components/schemas/DurationValue"
+          },
           "scheduleToStartTimeout": {
             "$ref": "#/components/schemas/DurationValue"
           },
