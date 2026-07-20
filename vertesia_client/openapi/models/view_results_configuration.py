@@ -17,26 +17,24 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional, Union
+from pydantic import BaseModel, ConfigDict, StrictBool, StrictStr
+from typing import Any, ClassVar, Dict, List, Optional
+from vertesia_client.openapi.models.view_display_configuration import ViewDisplayConfiguration
+from vertesia_client.openapi.models.view_sort_option import ViewSortOption
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class ResourceRef(BaseModel):
+class ViewResultsConfiguration(BaseModel):
     """
-    ResourceRef
+    ViewResultsConfiguration
     """ # noqa: E501
-    id: StrictStr
-    name: StrictStr
-    type: StrictStr
-    email: Optional[StrictStr] = None
-    description: Optional[StrictStr] = None
-    version: Optional[Union[StrictFloat, StrictInt]] = None
-    status: Optional[StrictStr] = None
-    tags: Optional[List[StrictStr]] = None
-    endpoint: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["id", "name", "type", "email", "description", "version", "status", "tags", "endpoint"]
+    default_display: StrictStr
+    allow_display_switch: Optional[StrictBool] = None
+    displays: List[ViewDisplayConfiguration]
+    default_sort: Optional[StrictStr] = None
+    sort_options: Optional[List[ViewSortOption]] = None
+    __properties: ClassVar[List[str]] = ["default_display", "allow_display_switch", "displays", "default_sort", "sort_options"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -56,7 +54,7 @@ class ResourceRef(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of ResourceRef from a JSON string"""
+        """Create an instance of ViewResultsConfiguration from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -77,11 +75,25 @@ class ResourceRef(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of each item in displays (list)
+        _items = []
+        if self.displays:
+            for _item_displays in self.displays:
+                if _item_displays:
+                    _items.append(_item_displays.to_dict())
+            _dict['displays'] = _items
+        # override the default output from pydantic by calling `to_dict()` of each item in sort_options (list)
+        _items = []
+        if self.sort_options:
+            for _item_sort_options in self.sort_options:
+                if _item_sort_options:
+                    _items.append(_item_sort_options.to_dict())
+            _dict['sort_options'] = _items
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of ResourceRef from a dict"""
+        """Create an instance of ViewResultsConfiguration from a dict"""
         if obj is None:
             return None
 
@@ -89,15 +101,11 @@ class ResourceRef(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "id": obj.get("id"),
-            "name": obj.get("name"),
-            "type": obj.get("type"),
-            "email": obj.get("email"),
-            "description": obj.get("description"),
-            "version": obj.get("version"),
-            "status": obj.get("status"),
-            "tags": obj.get("tags"),
-            "endpoint": obj.get("endpoint")
+            "default_display": obj.get("default_display"),
+            "allow_display_switch": obj.get("allow_display_switch"),
+            "displays": [ViewDisplayConfiguration.from_dict(_item) for _item in obj["displays"]] if obj.get("displays") is not None else None,
+            "default_sort": obj.get("default_sort"),
+            "sort_options": [ViewSortOption.from_dict(_item) for _item in obj["sort_options"]] if obj.get("sort_options") is not None else None
         })
         return _obj
 

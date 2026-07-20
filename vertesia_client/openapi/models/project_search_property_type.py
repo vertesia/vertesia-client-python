@@ -18,21 +18,20 @@ from enum import Enum
 from typing_extensions import Self
 
 
-class AppCapabilities(str, Enum):
+class ProjectSearchPropertyType(str, Enum):
     """
-    AppCapabilities
+    Elasticsearch field types that may be explicitly assigned to content-object properties. Paths are relative to the object's `properties` field.
     """
 
     """
     allowed enum values
     """
-    UI = 'ui'
-    TOOLS = 'tools'
-    INTERACTIONS = 'interactions'
-    TYPES = 'types'
-    PROCESSES = 'processes'
-    VIEWS = 'views'
-    TEMPLATES = 'templates'
+    KEYWORD = 'keyword'
+    TEXT = 'text'
+    BOOLEAN = 'boolean'
+    LONG = 'long'
+    DOUBLE = 'double'
+    DATE = 'date'
 
     @classmethod
     def _missing_(cls, value: object) -> Self:
@@ -46,7 +45,7 @@ class AppCapabilities(str, Enum):
 
     @classmethod
     def from_json(cls, json_str: str) -> Self:
-        """Create an instance of AppCapabilities from a JSON string"""
+        """Create an instance of ProjectSearchPropertyType from a JSON string"""
         return cls(json.loads(json_str))
 
 

@@ -18,35 +18,19 @@ from enum import Enum
 from typing_extensions import Self
 
 
-class AppCapabilities(str, Enum):
+class ViewExperienceSchemaVersion(int, Enum):
     """
-    AppCapabilities
+    ViewExperienceSchemaVersion
     """
 
     """
     allowed enum values
     """
-    UI = 'ui'
-    TOOLS = 'tools'
-    INTERACTIONS = 'interactions'
-    TYPES = 'types'
-    PROCESSES = 'processes'
-    VIEWS = 'views'
-    TEMPLATES = 'templates'
-
-    @classmethod
-    def _missing_(cls, value: object) -> Self:
-        if not isinstance(value, str):
-            raise ValueError(f"{value!r} is not a valid {cls.__name__}")
-        unknown = str.__new__(cls, value)
-        unknown._name_ = "UNKNOWN_DEFAULT_OPEN_API"
-        unknown._value_ = value
-        cls._value2member_map_[value] = unknown
-        return unknown
+    NUMBER_1 = 1
 
     @classmethod
     def from_json(cls, json_str: str) -> Self:
-        """Create an instance of AppCapabilities from a JSON string"""
+        """Create an instance of ViewExperienceSchemaVersion from a JSON string"""
         return cls(json.loads(json_str))
 
 

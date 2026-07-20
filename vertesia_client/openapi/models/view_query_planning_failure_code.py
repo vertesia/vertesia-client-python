@@ -18,21 +18,20 @@ from enum import Enum
 from typing_extensions import Self
 
 
-class AppCapabilities(str, Enum):
+class ViewQueryPlanningFailureCode(str, Enum):
     """
-    AppCapabilities
+    ViewQueryPlanningFailureCode
     """
 
     """
     allowed enum values
     """
-    UI = 'ui'
-    TOOLS = 'tools'
-    INTERACTIONS = 'interactions'
-    TYPES = 'types'
-    PROCESSES = 'processes'
-    VIEWS = 'views'
-    TEMPLATES = 'templates'
+    INTERACTION_FAILED = 'interaction_failed'
+    INVALID_OUTPUT = 'invalid_output'
+    INVALID_QUERY = 'invalid_query'
+    LOW_CONFIDENCE = 'low_confidence'
+    TIMEOUT = 'timeout'
+    UNKNOWN = 'unknown'
 
     @classmethod
     def _missing_(cls, value: object) -> Self:
@@ -46,7 +45,7 @@ class AppCapabilities(str, Enum):
 
     @classmethod
     def from_json(cls, json_str: str) -> Self:
-        """Create an instance of AppCapabilities from a JSON string"""
+        """Create an instance of ViewQueryPlanningFailureCode from a JSON string"""
         return cls(json.loads(json_str))
 
 

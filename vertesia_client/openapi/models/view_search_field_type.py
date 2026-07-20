@@ -18,21 +18,19 @@ from enum import Enum
 from typing_extensions import Self
 
 
-class AppCapabilities(str, Enum):
+class ViewSearchFieldType(str, Enum):
     """
-    AppCapabilities
+    ViewSearchFieldType
     """
 
     """
     allowed enum values
     """
-    UI = 'ui'
-    TOOLS = 'tools'
-    INTERACTIONS = 'interactions'
-    TYPES = 'types'
-    PROCESSES = 'processes'
-    VIEWS = 'views'
-    TEMPLATES = 'templates'
+    TEXT = 'text'
+    KEYWORD = 'keyword'
+    NUMBER = 'number'
+    DATE = 'date'
+    BOOLEAN = 'boolean'
 
     @classmethod
     def _missing_(cls, value: object) -> Self:
@@ -46,7 +44,7 @@ class AppCapabilities(str, Enum):
 
     @classmethod
     def from_json(cls, json_str: str) -> Self:
-        """Create an instance of AppCapabilities from a JSON string"""
+        """Create an instance of ViewSearchFieldType from a JSON string"""
         return cls(json.loads(json_str))
 
 

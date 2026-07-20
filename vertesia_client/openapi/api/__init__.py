@@ -37,6 +37,7 @@ from vertesia_client.openapi.api.token_service_api import TokenServiceApi
 from vertesia_client.openapi.api.tools_api import ToolsApi
 from vertesia_client.openapi.api.user_groups_api import UserGroupsApi
 from vertesia_client.openapi.api.users_api import UsersApi
+from vertesia_client.openapi.api.views_api import ViewsApi
 from vertesia_client.openapi.api.workflow_definitions_api import WorkflowDefinitionsApi
 from vertesia_client.openapi.api.workflow_rules_api import WorkflowRulesApi
 from vertesia_client.openapi.api.workflow_runs_api import WorkflowRunsApi

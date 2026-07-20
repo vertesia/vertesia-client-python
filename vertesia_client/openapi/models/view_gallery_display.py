@@ -17,26 +17,41 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from vertesia_client.openapi.models.view_result_field import ViewResultField
+from vertesia_client.openapi.models.view_result_media import ViewResultMedia
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class ResourceRef(BaseModel):
+class ViewGalleryDisplay(BaseModel):
     """
-    ResourceRef
+    ViewGalleryDisplay
     """ # noqa: E501
     id: StrictStr
-    name: StrictStr
+    label: StrictStr
+    renderer: Optional[StrictStr] = None
+    page_size: Optional[Union[StrictFloat, StrictInt]] = None
     type: StrictStr
-    email: Optional[StrictStr] = None
-    description: Optional[StrictStr] = None
-    version: Optional[Union[StrictFloat, StrictInt]] = None
-    status: Optional[StrictStr] = None
-    tags: Optional[List[StrictStr]] = None
-    endpoint: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["id", "name", "type", "email", "description", "version", "status", "tags", "endpoint"]
+    media: ViewResultMedia
+    title: ViewResultField
+    caption: Optional[List[ViewResultField]] = None
+    columns: Optional[Union[StrictFloat, StrictInt]] = None
+    __properties: ClassVar[List[str]] = ["id", "label", "renderer", "page_size", "type", "media", "title", "caption", "columns"]
+
+    @field_validator('type')
+    def type_validate_enum(cls, value):
+        """Validates the enum"""
+        return value
+
+    @field_validator('columns')
+    def columns_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -56,7 +71,7 @@ class ResourceRef(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of ResourceRef from a JSON string"""
+        """Create an instance of ViewGalleryDisplay from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -77,11 +92,24 @@ class ResourceRef(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of media
+        if self.media:
+            _dict['media'] = self.media.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of title
+        if self.title:
+            _dict['title'] = self.title.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of each item in caption (list)
+        _items = []
+        if self.caption:
+            for _item_caption in self.caption:
+                if _item_caption:
+                    _items.append(_item_caption.to_dict())
+            _dict['caption'] = _items
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of ResourceRef from a dict"""
+        """Create an instance of ViewGalleryDisplay from a dict"""
         if obj is None:
             return None
 
@@ -90,14 +118,14 @@ class ResourceRef(BaseModel):
 
         _obj = cls.model_validate({
             "id": obj.get("id"),
-            "name": obj.get("name"),
+            "label": obj.get("label"),
+            "renderer": obj.get("renderer"),
+            "page_size": obj.get("page_size"),
             "type": obj.get("type"),
-            "email": obj.get("email"),
-            "description": obj.get("description"),
-            "version": obj.get("version"),
-            "status": obj.get("status"),
-            "tags": obj.get("tags"),
-            "endpoint": obj.get("endpoint")
+            "media": ViewResultMedia.from_dict(obj["media"]) if obj.get("media") is not None else None,
+            "title": ViewResultField.from_dict(obj["title"]) if obj.get("title") is not None else None,
+            "caption": [ViewResultField.from_dict(_item) for _item in obj["caption"]] if obj.get("caption") is not None else None,
+            "columns": obj.get("columns")
         })
         return _obj
 

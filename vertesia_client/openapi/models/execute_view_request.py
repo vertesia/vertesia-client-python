@@ -23,20 +23,18 @@ from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class ResourceRef(BaseModel):
+class ExecuteViewRequest(BaseModel):
     """
-    ResourceRef
+    ExecuteViewRequest
     """ # noqa: E501
-    id: StrictStr
-    name: StrictStr
-    type: StrictStr
-    email: Optional[StrictStr] = None
-    description: Optional[StrictStr] = None
-    version: Optional[Union[StrictFloat, StrictInt]] = None
-    status: Optional[StrictStr] = None
-    tags: Optional[List[StrictStr]] = None
-    endpoint: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["id", "name", "type", "email", "description", "version", "status", "tags", "endpoint"]
+    query: Optional[StrictStr] = None
+    key_terms: Optional[Dict[str, List[StrictStr]]] = None
+    navigation: Optional[Dict[str, List[StrictStr]]] = None
+    display: Optional[StrictStr] = None
+    sort: Optional[StrictStr] = None
+    offset: Optional[Union[StrictFloat, StrictInt]] = None
+    limit: Optional[Union[StrictFloat, StrictInt]] = None
+    __properties: ClassVar[List[str]] = ["query", "key_terms", "navigation", "display", "sort", "offset", "limit"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -56,7 +54,7 @@ class ResourceRef(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of ResourceRef from a JSON string"""
+        """Create an instance of ExecuteViewRequest from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -81,7 +79,7 @@ class ResourceRef(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of ResourceRef from a dict"""
+        """Create an instance of ExecuteViewRequest from a dict"""
         if obj is None:
             return None
 
@@ -89,15 +87,13 @@ class ResourceRef(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "id": obj.get("id"),
-            "name": obj.get("name"),
-            "type": obj.get("type"),
-            "email": obj.get("email"),
-            "description": obj.get("description"),
-            "version": obj.get("version"),
-            "status": obj.get("status"),
-            "tags": obj.get("tags"),
-            "endpoint": obj.get("endpoint")
+            "query": obj.get("query"),
+            "key_terms": obj.get("key_terms"),
+            "navigation": obj.get("navigation"),
+            "display": obj.get("display"),
+            "sort": obj.get("sort"),
+            "offset": obj.get("offset"),
+            "limit": obj.get("limit")
         })
         return _obj
 

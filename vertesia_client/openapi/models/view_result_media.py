@@ -17,26 +17,42 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional, Union
+from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
+from typing import Any, ClassVar, Dict, Optional
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class ResourceRef(BaseModel):
+class ViewResultMedia(BaseModel):
     """
-    ResourceRef
+    ViewResultMedia
     """ # noqa: E501
-    id: StrictStr
-    name: StrictStr
-    type: StrictStr
-    email: Optional[StrictStr] = None
-    description: Optional[StrictStr] = None
-    version: Optional[Union[StrictFloat, StrictInt]] = None
-    status: Optional[StrictStr] = None
-    tags: Optional[List[StrictStr]] = None
-    endpoint: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["id", "name", "type", "email", "description", "version", "status", "tags", "endpoint"]
+    source: StrictStr
+    var_field: Optional[StrictStr] = Field(default=None, alias="field")
+    fit: Optional[StrictStr] = None
+    fallback: Optional[StrictStr] = None
+    __properties: ClassVar[List[str]] = ["source", "field", "fit", "fallback"]
+
+    @field_validator('source')
+    def source_validate_enum(cls, value):
+        """Validates the enum"""
+        return value
+
+    @field_validator('fit')
+    def fit_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        return value
+
+    @field_validator('fallback')
+    def fallback_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -56,7 +72,7 @@ class ResourceRef(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of ResourceRef from a JSON string"""
+        """Create an instance of ViewResultMedia from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -81,7 +97,7 @@ class ResourceRef(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of ResourceRef from a dict"""
+        """Create an instance of ViewResultMedia from a dict"""
         if obj is None:
             return None
 
@@ -89,15 +105,10 @@ class ResourceRef(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "id": obj.get("id"),
-            "name": obj.get("name"),
-            "type": obj.get("type"),
-            "email": obj.get("email"),
-            "description": obj.get("description"),
-            "version": obj.get("version"),
-            "status": obj.get("status"),
-            "tags": obj.get("tags"),
-            "endpoint": obj.get("endpoint")
+            "source": obj.get("source"),
+            "field": obj.get("field"),
+            "fit": obj.get("fit"),
+            "fallback": obj.get("fallback")
         })
         return _obj
 

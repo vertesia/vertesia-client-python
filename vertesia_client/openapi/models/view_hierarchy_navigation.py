@@ -17,26 +17,39 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from vertesia_client.openapi.models.view_hierarchy_level import ViewHierarchyLevel
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class ResourceRef(BaseModel):
+class ViewHierarchyNavigation(BaseModel):
     """
-    ResourceRef
+    A drill-down hierarchy assembled from independently mapped properties.  Hierarchies represent one selected path, so multi_select may only be false. Selection ids are opaque runtime values and must not be constructed by clients.
     """ # noqa: E501
     id: StrictStr
-    name: StrictStr
-    type: StrictStr
-    email: Optional[StrictStr] = None
-    description: Optional[StrictStr] = None
-    version: Optional[Union[StrictFloat, StrictInt]] = None
-    status: Optional[StrictStr] = None
-    tags: Optional[List[StrictStr]] = None
-    endpoint: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["id", "name", "type", "email", "description", "version", "status", "tags", "endpoint"]
+    label: StrictStr
+    presentation: Optional[StrictStr] = None
+    multi_select: Optional[StrictBool] = None
+    order: Optional[Union[StrictFloat, StrictInt]] = None
+    renderer: Optional[StrictStr] = None
+    source: StrictStr
+    levels: List[ViewHierarchyLevel]
+    __properties: ClassVar[List[str]] = ["id", "label", "presentation", "multi_select", "order", "renderer", "source", "levels"]
+
+    @field_validator('presentation')
+    def presentation_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        return value
+
+    @field_validator('source')
+    def source_validate_enum(cls, value):
+        """Validates the enum"""
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -56,7 +69,7 @@ class ResourceRef(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of ResourceRef from a JSON string"""
+        """Create an instance of ViewHierarchyNavigation from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -77,11 +90,18 @@ class ResourceRef(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of each item in levels (list)
+        _items = []
+        if self.levels:
+            for _item_levels in self.levels:
+                if _item_levels:
+                    _items.append(_item_levels.to_dict())
+            _dict['levels'] = _items
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of ResourceRef from a dict"""
+        """Create an instance of ViewHierarchyNavigation from a dict"""
         if obj is None:
             return None
 
@@ -90,14 +110,13 @@ class ResourceRef(BaseModel):
 
         _obj = cls.model_validate({
             "id": obj.get("id"),
-            "name": obj.get("name"),
-            "type": obj.get("type"),
-            "email": obj.get("email"),
-            "description": obj.get("description"),
-            "version": obj.get("version"),
-            "status": obj.get("status"),
-            "tags": obj.get("tags"),
-            "endpoint": obj.get("endpoint")
+            "label": obj.get("label"),
+            "presentation": obj.get("presentation"),
+            "multi_select": obj.get("multi_select"),
+            "order": obj.get("order"),
+            "renderer": obj.get("renderer"),
+            "source": obj.get("source"),
+            "levels": [ViewHierarchyLevel.from_dict(_item) for _item in obj["levels"]] if obj.get("levels") is not None else None
         })
         return _obj
 

@@ -54,6 +54,7 @@ __all__ = [
     "ToolsApi",
     "UserGroupsApi",
     "UsersApi",
+    "ViewsApi",
     "WorkflowDefinitionsApi",
     "WorkflowRulesApi",
     "WorkflowRunsApi",
@@ -107,6 +108,7 @@ __all__ = [
     "AgentToolApprovalClass",
     "AgentToolApprovalMode",
     "AgentToolDefinition",
+    "AgenticViewSearchConfiguration",
     "AggregatedTool",
     "AlterTableOperation",
     "AlterTableOperationOneOf",
@@ -315,6 +317,7 @@ __all__ = [
     "CreateTablesPayload",
     "CreateTaskPayload",
     "CreateUserGroupPayload",
+    "CreateViewExperienceRequest",
     "CreateWorkflowRulePayload",
     "DSLActivityOptions",
     "DSLActivitySpec",
@@ -443,6 +446,7 @@ __all__ = [
     "EventSubscriptionMutationResponse",
     "ExaConfiguration",
     "ExaConfigurationInput",
+    "ExecuteViewRequest",
     "ExecuteWorkflowPayload",
     "ExecutionEnvironment",
     "ExecutionEnvironmentConfigUpdatePayload",
@@ -513,6 +517,7 @@ __all__ = [
     "InCodeProcessDefinition",
     "InCodePrompt",
     "InCodeTypeRef",
+    "InCodeViewDefinition",
     "IndexingStatusResponse",
     "IndexingStatusResponseIndex",
     "IndexingStatusResponseReindexProgress",
@@ -655,6 +660,7 @@ __all__ = [
     "PlanTask",
     "PostAgentRunUpdatePayload",
     "PostAgentRunUpdateResponse",
+    "PreviewViewExperienceRequest",
     "PrincipalIdentity",
     "ProcessContextDefinition",
     "ProcessContextResponse",
@@ -680,7 +686,7 @@ __all__ = [
     "ProjectConfigurationEmbedding",
     "ProjectConfigurationEmbeddingEnablePayload",
     "ProjectConfigurationEmbeddings",
-    "ProjectConfigurationIndexing",
+    "ProjectIndexingConfiguration",
     "ProjectIntakeConfiguration",
     "ProjectIntakeSniffConfiguration",
     "ProjectIntegrationConfigRequest",
@@ -690,6 +696,8 @@ __all__ = [
     "ProjectModelDefaults",
     "ProjectPluginsUpdatePayload",
     "ProjectRef",
+    "ProjectSearchPropertyMapping",
+    "ProjectSearchPropertyType",
     "ProjectSearchTier",
     "ProjectTokenRequest",
     "ProjectToolInfo",
@@ -868,6 +876,7 @@ __all__ = [
     "UpdateTaskPayload",
     "UpdateUserGroupPayload",
     "UpdateUserPayload",
+    "UpdateViewExperienceRequest",
     "UsedSkill",
     "User",
     "UserChannel",
@@ -884,6 +893,49 @@ __all__ = [
     "VertexAIGeminiOptions",
     "VertexAIGrokOptions",
     "VideoMetadata",
+    "ViewBoardCardConfiguration",
+    "ViewBoardColumn",
+    "ViewBoardDisplay",
+    "ViewCardsDisplay",
+    "ViewCollectionNavigation",
+    "ViewDisplayConfiguration",
+    "ViewExecutionDefinition",
+    "ViewExecutionQueryPlan",
+    "ViewExecutionResult",
+    "ViewExecutionSearchConfiguration",
+    "ViewExecutionSearchResult",
+    "ViewExecutionWarning",
+    "ViewExperience",
+    "ViewExperienceConfiguration",
+    "ViewExperienceLayout",
+    "ViewExperienceSchemaVersion",
+    "ViewExperienceScope",
+    "ViewGalleryDisplay",
+    "ViewHierarchyLevel",
+    "ViewHierarchyNavigation",
+    "ViewHit",
+    "ViewHitAnnotation",
+    "ViewKeyTermDefinition",
+    "ViewListDisplay",
+    "ViewLocationNavigation",
+    "ViewNavigationItem",
+    "ViewNavigationNode",
+    "ViewNavigationResult",
+    "ViewQueryPlanningFailureCode",
+    "ViewRangeDefinition",
+    "ViewRangeNavigation",
+    "ViewResultField",
+    "ViewResultFieldFormat",
+    "ViewResultMedia",
+    "ViewResultsConfiguration",
+    "ViewSearchConfiguration",
+    "ViewSearchFieldDefinition",
+    "ViewSearchFieldType",
+    "ViewSortClause",
+    "ViewSortOption",
+    "ViewTableColumn",
+    "ViewTableDisplay",
+    "ViewTermsNavigation",
     "VirtualEnvEntry",
     "VisionEvidenceMetadata",
     "WebhookEventDeliveryTarget",
@@ -970,6 +1022,7 @@ from vertesia_client.openapi.api.token_service_api import TokenServiceApi as Tok
 from vertesia_client.openapi.api.tools_api import ToolsApi as ToolsApi
 from vertesia_client.openapi.api.user_groups_api import UserGroupsApi as UserGroupsApi
 from vertesia_client.openapi.api.users_api import UsersApi as UsersApi
+from vertesia_client.openapi.api.views_api import ViewsApi as ViewsApi
 from vertesia_client.openapi.api.workflow_definitions_api import WorkflowDefinitionsApi as WorkflowDefinitionsApi
 from vertesia_client.openapi.api.workflow_rules_api import WorkflowRulesApi as WorkflowRulesApi
 from vertesia_client.openapi.api.workflow_runs_api import WorkflowRunsApi as WorkflowRunsApi
@@ -1027,6 +1080,7 @@ from vertesia_client.openapi.models.agent_token_request import AgentTokenRequest
 from vertesia_client.openapi.models.agent_tool_approval_class import AgentToolApprovalClass as AgentToolApprovalClass
 from vertesia_client.openapi.models.agent_tool_approval_mode import AgentToolApprovalMode as AgentToolApprovalMode
 from vertesia_client.openapi.models.agent_tool_definition import AgentToolDefinition as AgentToolDefinition
+from vertesia_client.openapi.models.agentic_view_search_configuration import AgenticViewSearchConfiguration as AgenticViewSearchConfiguration
 from vertesia_client.openapi.models.aggregated_tool import AggregatedTool as AggregatedTool
 from vertesia_client.openapi.models.alter_table_operation import AlterTableOperation as AlterTableOperation
 from vertesia_client.openapi.models.alter_table_operation_one_of import AlterTableOperationOneOf as AlterTableOperationOneOf
@@ -1235,6 +1289,7 @@ from vertesia_client.openapi.models.create_table_payload import CreateTablePaylo
 from vertesia_client.openapi.models.create_tables_payload import CreateTablesPayload as CreateTablesPayload
 from vertesia_client.openapi.models.create_task_payload import CreateTaskPayload as CreateTaskPayload
 from vertesia_client.openapi.models.create_user_group_payload import CreateUserGroupPayload as CreateUserGroupPayload
+from vertesia_client.openapi.models.create_view_experience_request import CreateViewExperienceRequest as CreateViewExperienceRequest
 from vertesia_client.openapi.models.create_workflow_rule_payload import CreateWorkflowRulePayload as CreateWorkflowRulePayload
 from vertesia_client.openapi.models.dsl_activity_options import DSLActivityOptions as DSLActivityOptions
 from vertesia_client.openapi.models.dsl_activity_spec import DSLActivitySpec as DSLActivitySpec
@@ -1363,6 +1418,7 @@ from vertesia_client.openapi.models.event_subscription_filter import EventSubscr
 from vertesia_client.openapi.models.event_subscription_mutation_response import EventSubscriptionMutationResponse as EventSubscriptionMutationResponse
 from vertesia_client.openapi.models.exa_configuration import ExaConfiguration as ExaConfiguration
 from vertesia_client.openapi.models.exa_configuration_input import ExaConfigurationInput as ExaConfigurationInput
+from vertesia_client.openapi.models.execute_view_request import ExecuteViewRequest as ExecuteViewRequest
 from vertesia_client.openapi.models.execute_workflow_payload import ExecuteWorkflowPayload as ExecuteWorkflowPayload
 from vertesia_client.openapi.models.execution_environment import ExecutionEnvironment as ExecutionEnvironment
 from vertesia_client.openapi.models.execution_environment_config_update_payload import ExecutionEnvironmentConfigUpdatePayload as ExecutionEnvironmentConfigUpdatePayload
@@ -1433,6 +1489,7 @@ from vertesia_client.openapi.models.improve_prompt_payload_prompt_inner import I
 from vertesia_client.openapi.models.in_code_process_definition import InCodeProcessDefinition as InCodeProcessDefinition
 from vertesia_client.openapi.models.in_code_prompt import InCodePrompt as InCodePrompt
 from vertesia_client.openapi.models.in_code_type_ref import InCodeTypeRef as InCodeTypeRef
+from vertesia_client.openapi.models.in_code_view_definition import InCodeViewDefinition as InCodeViewDefinition
 from vertesia_client.openapi.models.indexing_status_response import IndexingStatusResponse as IndexingStatusResponse
 from vertesia_client.openapi.models.indexing_status_response_index import IndexingStatusResponseIndex as IndexingStatusResponseIndex
 from vertesia_client.openapi.models.indexing_status_response_reindex_progress import IndexingStatusResponseReindexProgress as IndexingStatusResponseReindexProgress
@@ -1575,6 +1632,7 @@ from vertesia_client.openapi.models.plan import Plan as Plan
 from vertesia_client.openapi.models.plan_task import PlanTask as PlanTask
 from vertesia_client.openapi.models.post_agent_run_update_payload import PostAgentRunUpdatePayload as PostAgentRunUpdatePayload
 from vertesia_client.openapi.models.post_agent_run_update_response import PostAgentRunUpdateResponse as PostAgentRunUpdateResponse
+from vertesia_client.openapi.models.preview_view_experience_request import PreviewViewExperienceRequest as PreviewViewExperienceRequest
 from vertesia_client.openapi.models.principal_identity import PrincipalIdentity as PrincipalIdentity
 from vertesia_client.openapi.models.process_context_definition import ProcessContextDefinition as ProcessContextDefinition
 from vertesia_client.openapi.models.process_context_response import ProcessContextResponse as ProcessContextResponse
@@ -1600,7 +1658,7 @@ from vertesia_client.openapi.models.project_configuration import ProjectConfigur
 from vertesia_client.openapi.models.project_configuration_embedding import ProjectConfigurationEmbedding as ProjectConfigurationEmbedding
 from vertesia_client.openapi.models.project_configuration_embedding_enable_payload import ProjectConfigurationEmbeddingEnablePayload as ProjectConfigurationEmbeddingEnablePayload
 from vertesia_client.openapi.models.project_configuration_embeddings import ProjectConfigurationEmbeddings as ProjectConfigurationEmbeddings
-from vertesia_client.openapi.models.project_configuration_indexing import ProjectConfigurationIndexing as ProjectConfigurationIndexing
+from vertesia_client.openapi.models.project_indexing_configuration import ProjectIndexingConfiguration as ProjectIndexingConfiguration
 from vertesia_client.openapi.models.project_intake_configuration import ProjectIntakeConfiguration as ProjectIntakeConfiguration
 from vertesia_client.openapi.models.project_intake_sniff_configuration import ProjectIntakeSniffConfiguration as ProjectIntakeSniffConfiguration
 from vertesia_client.openapi.models.project_integration_config_request import ProjectIntegrationConfigRequest as ProjectIntegrationConfigRequest
@@ -1610,6 +1668,8 @@ from vertesia_client.openapi.models.project_integration_list_response import Pro
 from vertesia_client.openapi.models.project_model_defaults import ProjectModelDefaults as ProjectModelDefaults
 from vertesia_client.openapi.models.project_plugins_update_payload import ProjectPluginsUpdatePayload as ProjectPluginsUpdatePayload
 from vertesia_client.openapi.models.project_ref import ProjectRef as ProjectRef
+from vertesia_client.openapi.models.project_search_property_mapping import ProjectSearchPropertyMapping as ProjectSearchPropertyMapping
+from vertesia_client.openapi.models.project_search_property_type import ProjectSearchPropertyType as ProjectSearchPropertyType
 from vertesia_client.openapi.models.project_search_tier import ProjectSearchTier as ProjectSearchTier
 from vertesia_client.openapi.models.project_token_request import ProjectTokenRequest as ProjectTokenRequest
 from vertesia_client.openapi.models.project_tool_info import ProjectToolInfo as ProjectToolInfo
@@ -1788,6 +1848,7 @@ from vertesia_client.openapi.models.update_secret_request import UpdateSecretReq
 from vertesia_client.openapi.models.update_task_payload import UpdateTaskPayload as UpdateTaskPayload
 from vertesia_client.openapi.models.update_user_group_payload import UpdateUserGroupPayload as UpdateUserGroupPayload
 from vertesia_client.openapi.models.update_user_payload import UpdateUserPayload as UpdateUserPayload
+from vertesia_client.openapi.models.update_view_experience_request import UpdateViewExperienceRequest as UpdateViewExperienceRequest
 from vertesia_client.openapi.models.used_skill import UsedSkill as UsedSkill
 from vertesia_client.openapi.models.user import User as User
 from vertesia_client.openapi.models.user_channel import UserChannel as UserChannel
@@ -1804,6 +1865,49 @@ from vertesia_client.openapi.models.vertex_ai_claude_options import VertexAIClau
 from vertesia_client.openapi.models.vertex_ai_gemini_options import VertexAIGeminiOptions as VertexAIGeminiOptions
 from vertesia_client.openapi.models.vertex_ai_grok_options import VertexAIGrokOptions as VertexAIGrokOptions
 from vertesia_client.openapi.models.video_metadata import VideoMetadata as VideoMetadata
+from vertesia_client.openapi.models.view_board_card_configuration import ViewBoardCardConfiguration as ViewBoardCardConfiguration
+from vertesia_client.openapi.models.view_board_column import ViewBoardColumn as ViewBoardColumn
+from vertesia_client.openapi.models.view_board_display import ViewBoardDisplay as ViewBoardDisplay
+from vertesia_client.openapi.models.view_cards_display import ViewCardsDisplay as ViewCardsDisplay
+from vertesia_client.openapi.models.view_collection_navigation import ViewCollectionNavigation as ViewCollectionNavigation
+from vertesia_client.openapi.models.view_display_configuration import ViewDisplayConfiguration as ViewDisplayConfiguration
+from vertesia_client.openapi.models.view_execution_definition import ViewExecutionDefinition as ViewExecutionDefinition
+from vertesia_client.openapi.models.view_execution_query_plan import ViewExecutionQueryPlan as ViewExecutionQueryPlan
+from vertesia_client.openapi.models.view_execution_result import ViewExecutionResult as ViewExecutionResult
+from vertesia_client.openapi.models.view_execution_search_configuration import ViewExecutionSearchConfiguration as ViewExecutionSearchConfiguration
+from vertesia_client.openapi.models.view_execution_search_result import ViewExecutionSearchResult as ViewExecutionSearchResult
+from vertesia_client.openapi.models.view_execution_warning import ViewExecutionWarning as ViewExecutionWarning
+from vertesia_client.openapi.models.view_experience import ViewExperience as ViewExperience
+from vertesia_client.openapi.models.view_experience_configuration import ViewExperienceConfiguration as ViewExperienceConfiguration
+from vertesia_client.openapi.models.view_experience_layout import ViewExperienceLayout as ViewExperienceLayout
+from vertesia_client.openapi.models.view_experience_schema_version import ViewExperienceSchemaVersion as ViewExperienceSchemaVersion
+from vertesia_client.openapi.models.view_experience_scope import ViewExperienceScope as ViewExperienceScope
+from vertesia_client.openapi.models.view_gallery_display import ViewGalleryDisplay as ViewGalleryDisplay
+from vertesia_client.openapi.models.view_hierarchy_level import ViewHierarchyLevel as ViewHierarchyLevel
+from vertesia_client.openapi.models.view_hierarchy_navigation import ViewHierarchyNavigation as ViewHierarchyNavigation
+from vertesia_client.openapi.models.view_hit import ViewHit as ViewHit
+from vertesia_client.openapi.models.view_hit_annotation import ViewHitAnnotation as ViewHitAnnotation
+from vertesia_client.openapi.models.view_key_term_definition import ViewKeyTermDefinition as ViewKeyTermDefinition
+from vertesia_client.openapi.models.view_list_display import ViewListDisplay as ViewListDisplay
+from vertesia_client.openapi.models.view_location_navigation import ViewLocationNavigation as ViewLocationNavigation
+from vertesia_client.openapi.models.view_navigation_item import ViewNavigationItem as ViewNavigationItem
+from vertesia_client.openapi.models.view_navigation_node import ViewNavigationNode as ViewNavigationNode
+from vertesia_client.openapi.models.view_navigation_result import ViewNavigationResult as ViewNavigationResult
+from vertesia_client.openapi.models.view_query_planning_failure_code import ViewQueryPlanningFailureCode as ViewQueryPlanningFailureCode
+from vertesia_client.openapi.models.view_range_definition import ViewRangeDefinition as ViewRangeDefinition
+from vertesia_client.openapi.models.view_range_navigation import ViewRangeNavigation as ViewRangeNavigation
+from vertesia_client.openapi.models.view_result_field import ViewResultField as ViewResultField
+from vertesia_client.openapi.models.view_result_field_format import ViewResultFieldFormat as ViewResultFieldFormat
+from vertesia_client.openapi.models.view_result_media import ViewResultMedia as ViewResultMedia
+from vertesia_client.openapi.models.view_results_configuration import ViewResultsConfiguration as ViewResultsConfiguration
+from vertesia_client.openapi.models.view_search_configuration import ViewSearchConfiguration as ViewSearchConfiguration
+from vertesia_client.openapi.models.view_search_field_definition import ViewSearchFieldDefinition as ViewSearchFieldDefinition
+from vertesia_client.openapi.models.view_search_field_type import ViewSearchFieldType as ViewSearchFieldType
+from vertesia_client.openapi.models.view_sort_clause import ViewSortClause as ViewSortClause
+from vertesia_client.openapi.models.view_sort_option import ViewSortOption as ViewSortOption
+from vertesia_client.openapi.models.view_table_column import ViewTableColumn as ViewTableColumn
+from vertesia_client.openapi.models.view_table_display import ViewTableDisplay as ViewTableDisplay
+from vertesia_client.openapi.models.view_terms_navigation import ViewTermsNavigation as ViewTermsNavigation
 from vertesia_client.openapi.models.virtual_env_entry import VirtualEnvEntry as VirtualEnvEntry
 from vertesia_client.openapi.models.vision_evidence_metadata import VisionEvidenceMetadata as VisionEvidenceMetadata
 from vertesia_client.openapi.models.webhook_event_delivery_target import WebhookEventDeliveryTarget as WebhookEventDeliveryTarget

@@ -17,26 +17,24 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, StrictBool, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class ResourceRef(BaseModel):
+class ViewNavigationNode(BaseModel):
     """
-    ResourceRef
+    ViewNavigationNode
     """ # noqa: E501
     id: StrictStr
-    name: StrictStr
-    type: StrictStr
-    email: Optional[StrictStr] = None
-    description: Optional[StrictStr] = None
-    version: Optional[Union[StrictFloat, StrictInt]] = None
-    status: Optional[StrictStr] = None
-    tags: Optional[List[StrictStr]] = None
-    endpoint: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["id", "name", "type", "email", "description", "version", "status", "tags", "endpoint"]
+    label: StrictStr
+    count: Union[StrictFloat, StrictInt]
+    selected: Optional[StrictBool] = None
+    expandable: Optional[StrictBool] = None
+    children: Optional[List[ViewNavigationNode]] = None
+    path: Optional[StrictStr] = None
+    __properties: ClassVar[List[str]] = ["id", "label", "count", "selected", "expandable", "children", "path"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -56,7 +54,7 @@ class ResourceRef(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of ResourceRef from a JSON string"""
+        """Create an instance of ViewNavigationNode from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -77,11 +75,18 @@ class ResourceRef(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of each item in children (list)
+        _items = []
+        if self.children:
+            for _item_children in self.children:
+                if _item_children:
+                    _items.append(_item_children.to_dict())
+            _dict['children'] = _items
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of ResourceRef from a dict"""
+        """Create an instance of ViewNavigationNode from a dict"""
         if obj is None:
             return None
 
@@ -90,15 +95,15 @@ class ResourceRef(BaseModel):
 
         _obj = cls.model_validate({
             "id": obj.get("id"),
-            "name": obj.get("name"),
-            "type": obj.get("type"),
-            "email": obj.get("email"),
-            "description": obj.get("description"),
-            "version": obj.get("version"),
-            "status": obj.get("status"),
-            "tags": obj.get("tags"),
-            "endpoint": obj.get("endpoint")
+            "label": obj.get("label"),
+            "count": obj.get("count"),
+            "selected": obj.get("selected"),
+            "expandable": obj.get("expandable"),
+            "children": [ViewNavigationNode.from_dict(_item) for _item in obj["children"]] if obj.get("children") is not None else None,
+            "path": obj.get("path")
         })
         return _obj
 
+# TODO: Rewrite to not use raise_errors
+ViewNavigationNode.model_rebuild(raise_errors=False)
 

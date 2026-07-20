@@ -17,26 +17,22 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional, Union
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
+from typing import Any, ClassVar, Dict, Optional, Union
+from vertesia_client.openapi.models.project_search_property_type import ProjectSearchPropertyType
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class ResourceRef(BaseModel):
+class ProjectSearchPropertyMapping(BaseModel):
     """
-    ResourceRef
+    Explicit search mapping for one content-object property.  Changing a mapping requires a full reindex. Existing Elasticsearch fields cannot change type in place.
     """ # noqa: E501
-    id: StrictStr
-    name: StrictStr
-    type: StrictStr
-    email: Optional[StrictStr] = None
-    description: Optional[StrictStr] = None
-    version: Optional[Union[StrictFloat, StrictInt]] = None
-    status: Optional[StrictStr] = None
-    tags: Optional[List[StrictStr]] = None
-    endpoint: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["id", "name", "type", "email", "description", "version", "status", "tags", "endpoint"]
+    type: ProjectSearchPropertyType
+    format: Optional[StrictStr] = Field(default=None, description="Elasticsearch date format. Valid only when type is `date`.")
+    ignore_above: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Maximum indexed string length. Valid only when type is `keyword`.")
+    ignore_malformed: Optional[StrictBool] = Field(default=None, description="Skip malformed values instead of rejecting the whole document. Valid only for long, double, and date mappings.")
+    __properties: ClassVar[List[str]] = ["type", "format", "ignore_above", "ignore_malformed"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -56,7 +52,7 @@ class ResourceRef(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of ResourceRef from a JSON string"""
+        """Create an instance of ProjectSearchPropertyMapping from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -81,7 +77,7 @@ class ResourceRef(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of ResourceRef from a dict"""
+        """Create an instance of ProjectSearchPropertyMapping from a dict"""
         if obj is None:
             return None
 
@@ -89,15 +85,10 @@ class ResourceRef(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "id": obj.get("id"),
-            "name": obj.get("name"),
             "type": obj.get("type"),
-            "email": obj.get("email"),
-            "description": obj.get("description"),
-            "version": obj.get("version"),
-            "status": obj.get("status"),
-            "tags": obj.get("tags"),
-            "endpoint": obj.get("endpoint")
+            "format": obj.get("format"),
+            "ignore_above": obj.get("ignore_above"),
+            "ignore_malformed": obj.get("ignore_malformed")
         })
         return _obj
 

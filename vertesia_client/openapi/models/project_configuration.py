@@ -21,7 +21,7 @@ from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from vertesia_client.openapi.models.browser_use_project_configuration import BrowserUseProjectConfiguration
 from vertesia_client.openapi.models.project_configuration_embeddings import ProjectConfigurationEmbeddings
-from vertesia_client.openapi.models.project_configuration_indexing import ProjectConfigurationIndexing
+from vertesia_client.openapi.models.project_indexing_configuration import ProjectIndexingConfiguration
 from vertesia_client.openapi.models.project_intake_configuration import ProjectIntakeConfiguration
 from vertesia_client.openapi.models.project_model_defaults import ProjectModelDefaults
 from vertesia_client.openapi.models.resource_visibility import ResourceVisibility
@@ -41,7 +41,7 @@ class ProjectConfiguration(BaseModel):
     datacenter: Optional[StrictStr] = None
     storage_bucket: Optional[StrictStr] = None
     agent_streaming_enabled: Optional[StrictBool] = Field(default=None, description="Enable real-time streaming of agent LLM responses to clients. When enabled, LLM responses are streamed chunk-by-chunk via Redis pub/sub. Defaults to true if not specified.")
-    indexing: Optional[ProjectConfigurationIndexing] = None
+    indexing: Optional[ProjectIndexingConfiguration] = Field(default=None, description="Indexing configuration for this project. Controls whether indexing and querying are enabled at the project level.")
     intake: Optional[ProjectIntakeConfiguration] = Field(default=None, description="Standard content intake behavior.")
     main_language: Optional[StrictStr] = Field(default=None, description="Primary language for full-text search analysis. ISO 639-1 code (e.g., 'en', 'fr', 'ja', 'de'). Determines which Elasticsearch analyzer is used for the text field. Defaults to 'en' (English/standard analyzer).  Changing this value requires a full reindex to take effect.")
     browser_use: Optional[BrowserUseProjectConfiguration] = Field(default=None, description="Project defaults and caps for browser_use agent workstreams.")
@@ -130,7 +130,7 @@ class ProjectConfiguration(BaseModel):
             "datacenter": obj.get("datacenter"),
             "storage_bucket": obj.get("storage_bucket"),
             "agent_streaming_enabled": obj.get("agent_streaming_enabled"),
-            "indexing": ProjectConfigurationIndexing.from_dict(obj["indexing"]) if obj.get("indexing") is not None else None,
+            "indexing": ProjectIndexingConfiguration.from_dict(obj["indexing"]) if obj.get("indexing") is not None else None,
             "intake": ProjectIntakeConfiguration.from_dict(obj["intake"]) if obj.get("intake") is not None else None,
             "main_language": obj.get("main_language"),
             "browser_use": BrowserUseProjectConfiguration.from_dict(obj["browser_use"]) if obj.get("browser_use") is not None else None,

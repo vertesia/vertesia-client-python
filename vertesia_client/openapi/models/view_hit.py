@@ -18,25 +18,22 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing import Any, ClassVar, Dict, Optional, Union
+from vertesia_client.openapi.models.content_object_item_api_response import ContentObjectItemApiResponse
+from vertesia_client.openapi.models.view_hit_annotation import ViewHitAnnotation
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class ResourceRef(BaseModel):
+class ViewHit(BaseModel):
     """
-    ResourceRef
+    ViewHit
     """ # noqa: E501
     id: StrictStr
-    name: StrictStr
-    type: StrictStr
-    email: Optional[StrictStr] = None
-    description: Optional[StrictStr] = None
-    version: Optional[Union[StrictFloat, StrictInt]] = None
-    status: Optional[StrictStr] = None
-    tags: Optional[List[StrictStr]] = None
-    endpoint: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["id", "name", "type", "email", "description", "version", "status", "tags", "endpoint"]
+    score: Optional[Union[StrictFloat, StrictInt]] = None
+    document: ContentObjectItemApiResponse
+    annotation: Optional[ViewHitAnnotation] = None
+    __properties: ClassVar[List[str]] = ["id", "score", "document", "annotation"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -56,7 +53,7 @@ class ResourceRef(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of ResourceRef from a JSON string"""
+        """Create an instance of ViewHit from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -77,11 +74,17 @@ class ResourceRef(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of document
+        if self.document:
+            _dict['document'] = self.document.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of annotation
+        if self.annotation:
+            _dict['annotation'] = self.annotation.to_dict()
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of ResourceRef from a dict"""
+        """Create an instance of ViewHit from a dict"""
         if obj is None:
             return None
 
@@ -90,14 +93,9 @@ class ResourceRef(BaseModel):
 
         _obj = cls.model_validate({
             "id": obj.get("id"),
-            "name": obj.get("name"),
-            "type": obj.get("type"),
-            "email": obj.get("email"),
-            "description": obj.get("description"),
-            "version": obj.get("version"),
-            "status": obj.get("status"),
-            "tags": obj.get("tags"),
-            "endpoint": obj.get("endpoint")
+            "score": obj.get("score"),
+            "document": ContentObjectItemApiResponse.from_dict(obj["document"]) if obj.get("document") is not None else None,
+            "annotation": ViewHitAnnotation.from_dict(obj["annotation"]) if obj.get("annotation") is not None else None
         })
         return _obj
 

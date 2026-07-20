@@ -17,26 +17,32 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional, Union
+from pydantic import BaseModel, ConfigDict, StrictStr, field_validator
+from typing import Any, ClassVar, Dict, List, Optional
+from vertesia_client.openapi.models.view_key_term_definition import ViewKeyTermDefinition
+from vertesia_client.openapi.models.view_search_field_definition import ViewSearchFieldDefinition
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class ResourceRef(BaseModel):
+class ViewExecutionSearchConfiguration(BaseModel):
     """
-    ResourceRef
+    Client-visible search controls. Agentic planner instructions, interaction, and model configuration are intentionally omitted.
     """ # noqa: E501
-    id: StrictStr
-    name: StrictStr
-    type: StrictStr
-    email: Optional[StrictStr] = None
-    description: Optional[StrictStr] = None
-    version: Optional[Union[StrictFloat, StrictInt]] = None
-    status: Optional[StrictStr] = None
-    tags: Optional[List[StrictStr]] = None
-    endpoint: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["id", "name", "type", "email", "description", "version", "status", "tags", "endpoint"]
+    renderer: Optional[StrictStr] = None
+    mode: Optional[StrictStr] = None
+    placeholder: Optional[StrictStr] = None
+    fields: Optional[List[ViewSearchFieldDefinition]] = None
+    key_terms: Optional[List[ViewKeyTermDefinition]] = None
+    __properties: ClassVar[List[str]] = ["renderer", "mode", "placeholder", "fields", "key_terms"]
+
+    @field_validator('mode')
+    def mode_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -56,7 +62,7 @@ class ResourceRef(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of ResourceRef from a JSON string"""
+        """Create an instance of ViewExecutionSearchConfiguration from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -77,11 +83,25 @@ class ResourceRef(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of each item in fields (list)
+        _items = []
+        if self.fields:
+            for _item_fields in self.fields:
+                if _item_fields:
+                    _items.append(_item_fields.to_dict())
+            _dict['fields'] = _items
+        # override the default output from pydantic by calling `to_dict()` of each item in key_terms (list)
+        _items = []
+        if self.key_terms:
+            for _item_key_terms in self.key_terms:
+                if _item_key_terms:
+                    _items.append(_item_key_terms.to_dict())
+            _dict['key_terms'] = _items
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of ResourceRef from a dict"""
+        """Create an instance of ViewExecutionSearchConfiguration from a dict"""
         if obj is None:
             return None
 
@@ -89,15 +109,11 @@ class ResourceRef(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "id": obj.get("id"),
-            "name": obj.get("name"),
-            "type": obj.get("type"),
-            "email": obj.get("email"),
-            "description": obj.get("description"),
-            "version": obj.get("version"),
-            "status": obj.get("status"),
-            "tags": obj.get("tags"),
-            "endpoint": obj.get("endpoint")
+            "renderer": obj.get("renderer"),
+            "mode": obj.get("mode"),
+            "placeholder": obj.get("placeholder"),
+            "fields": [ViewSearchFieldDefinition.from_dict(_item) for _item in obj["fields"]] if obj.get("fields") is not None else None,
+            "key_terms": [ViewKeyTermDefinition.from_dict(_item) for _item in obj["key_terms"]] if obj.get("key_terms") is not None else None
         })
         return _obj
 

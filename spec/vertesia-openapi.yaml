@@ -173,25 +173,7 @@ components:
             enabled, LLM responses are streamed chunk-by-chunk via Redis
             pub/sub. Defaults to true if not specified.
         indexing:
-          type: object
-          properties:
-            enabled:
-              type: boolean
-              description: Enable indexing for content objects in this project. When enabled,
-                content changes trigger indexing workflows. Defaults to true -
-                indexing is always on when ES infrastructure is available.
-            search_tier:
-              $ref: "#/components/schemas/ProjectSearchTier"
-              description: Search tier for this project. standard uses the regional hosted
-                Elasticsearch deployment. performance uses the regional
-                serverless Elasticsearch project. Defaults to standard when
-                omitted.
-            backend:
-              $ref: "#/components/schemas/ElasticsearchBackend"
-              description: Elasticsearch backend override for this project. Prefer search_tier
-                for project configuration unless an explicit backend override is
-                needed.
-          additionalProperties: false
+          $ref: "#/components/schemas/ProjectIndexingConfiguration"
           description: Indexing configuration for this project. Controls whether indexing
             and querying are enabled at the project level.
         intake:
@@ -250,25 +232,7 @@ components:
             enabled, LLM responses are streamed chunk-by-chunk via Redis
             pub/sub. Defaults to true if not specified.
         indexing:
-          type: object
-          properties:
-            enabled:
-              type: boolean
-              description: Enable indexing for content objects in this project. When enabled,
-                content changes trigger indexing workflows. Defaults to true -
-                indexing is always on when ES infrastructure is available.
-            search_tier:
-              $ref: "#/components/schemas/ProjectSearchTier"
-              description: Search tier for this project. standard uses the regional hosted
-                Elasticsearch deployment. performance uses the regional
-                serverless Elasticsearch project. Defaults to standard when
-                omitted.
-            backend:
-              $ref: "#/components/schemas/ElasticsearchBackend"
-              description: Elasticsearch backend override for this project. Prefer search_tier
-                for project configuration unless an explicit backend override is
-                needed.
-          additionalProperties: false
+          $ref: "#/components/schemas/ProjectIndexingConfiguration"
           description: Indexing configuration for this project. Controls whether indexing
             and querying are enabled at the project level.
         intake:
@@ -488,6 +452,36 @@ components:
         - name
         - definition
       additionalProperties: false
+    InCodeViewDefinitionArray:
+      type: array
+      items:
+        $ref: "#/components/schemas/InCodeViewDefinition"
+    InCodeViewDefinition:
+      type: object
+      properties:
+        id:
+          type: string
+          description: App-local id. Studio normalizes it to app:<app-name>:<id>.
+        name:
+          type: string
+          description: App-local name used for lookup and diagnostics.
+        title:
+          type: string
+        description:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        definition:
+          $ref: "#/components/schemas/ViewExperienceConfiguration"
+      required:
+        - id
+        - name
+        - definition
+      additionalProperties: false
+      description: A View definition contributed by application code through the app
+        package endpoint.
     CompositeAppConfig:
       type: object
       properties:
@@ -4342,6 +4336,118 @@ components:
         - names
       additionalProperties: false
       description: Request payload for `POST /tools/validate`.
+    ViewExperienceArray:
+      type: array
+      items:
+        $ref: "#/components/schemas/ViewExperience"
+    ViewExperience:
+      type: object
+      properties:
+        name:
+          type: string
+        enabled:
+          type: boolean
+        layout:
+          $ref: "#/components/schemas/ViewExperienceLayout"
+        scope:
+          $ref: "#/components/schemas/ViewExperienceScope"
+        navigation:
+          type: array
+          items:
+            $ref: "#/components/schemas/ViewNavigationItem"
+        search:
+          $ref: "#/components/schemas/ViewSearchConfiguration"
+        results:
+          $ref: "#/components/schemas/ViewResultsConfiguration"
+        description:
+          type: string
+        id:
+          type: string
+        version:
+          $ref: "#/components/schemas/ViewExperienceSchemaVersion"
+        revision:
+          type: number
+        created_by:
+          type: string
+        updated_by:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+      required:
+        - created_at
+        - created_by
+        - description
+        - id
+        - name
+        - revision
+        - updated_at
+        - updated_by
+        - version
+      additionalProperties: false
+    CreateViewExperienceRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        enabled:
+          type: boolean
+        layout:
+          $ref: "#/components/schemas/ViewExperienceLayout"
+        scope:
+          $ref: "#/components/schemas/ViewExperienceScope"
+        navigation:
+          type: array
+          items:
+            $ref: "#/components/schemas/ViewNavigationItem"
+        search:
+          $ref: "#/components/schemas/ViewSearchConfiguration"
+        results:
+          $ref: "#/components/schemas/ViewResultsConfiguration"
+        description:
+          type: string
+        id:
+          type: string
+        version:
+          $ref: "#/components/schemas/ViewExperienceSchemaVersion"
+      required:
+        - description
+        - id
+        - name
+      additionalProperties: false
+    UpdateViewExperienceRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        enabled:
+          type: boolean
+        layout:
+          $ref: "#/components/schemas/ViewExperienceLayout"
+        scope:
+          $ref: "#/components/schemas/ViewExperienceScope"
+        navigation:
+          type: array
+          items:
+            $ref: "#/components/schemas/ViewNavigationItem"
+        search:
+          $ref: "#/components/schemas/ViewSearchConfiguration"
+        results:
+          $ref: "#/components/schemas/ViewResultsConfiguration"
+        description:
+          type: string
+        version:
+          $ref: "#/components/schemas/ViewExperienceSchemaVersion"
+        revision:
+          type: number
+      required:
+        - description
+        - name
+        - revision
+        - version
+      additionalProperties: false
+      description: PUT uses full replacement so omitted optional configuration is removed.
     ProjectRef:
       type: object
       properties:
@@ -4438,6 +4544,35 @@ components:
       required:
         - enabled
       additionalProperties: false
+    ProjectIndexingConfiguration:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          description: Enable indexing for content objects in this project. When enabled,
+            content changes trigger indexing workflows. Defaults to true -
+            indexing is always on when ES infrastructure is available.
+        search_tier:
+          $ref: "#/components/schemas/ProjectSearchTier"
+          description: Search tier for this project. standard uses the regional hosted
+            Elasticsearch deployment. performance uses the regional serverless
+            Elasticsearch project. Defaults to standard when omitted.
+        backend:
+          $ref: "#/components/schemas/ElasticsearchBackend"
+          description: Elasticsearch backend override for this project. Prefer search_tier
+            for project configuration unless an explicit backend override is
+            needed.
+        property_mappings:
+          $ref: "#/components/schemas/ProjectSearchPropertyMappingMap"
+          description: >-
+            Explicit mappings for selected content-object property paths.
+
+
+            Keys are dot-separated paths relative to `properties`, for example
+            `order_total` or `customer.account_number`. Unlisted fields are
+            mapped dynamically from their JSON values. Changing this value
+            requires a full reindex.
+      additionalProperties: false
     ProjectSearchTier:
       type: string
       enum:
@@ -4448,6 +4583,46 @@ components:
       enum:
         - serverless
         - hosted
+    ProjectSearchPropertyMappingMap:
+      type: object
+      additionalProperties:
+        $ref: "#/components/schemas/ProjectSearchPropertyMapping"
+    ProjectSearchPropertyMapping:
+      type: object
+      properties:
+        type:
+          $ref: "#/components/schemas/ProjectSearchPropertyType"
+        format:
+          type: string
+          description: Elasticsearch date format. Valid only when type is `date`.
+        ignore_above:
+          type: number
+          description: Maximum indexed string length. Valid only when type is `keyword`.
+        ignore_malformed:
+          type: boolean
+          description: Skip malformed values instead of rejecting the whole document.
+            Valid only for long, double, and date mappings.
+      required:
+        - type
+      additionalProperties: false
+      description: >-
+        Explicit search mapping for one content-object property.
+
+
+        Changing a mapping requires a full reindex. Existing Elasticsearch
+        fields cannot change type in place.
+    ProjectSearchPropertyType:
+      type: string
+      enum:
+        - keyword
+        - text
+        - boolean
+        - long
+        - double
+        - date
+      description: Elasticsearch field types that may be explicitly assigned to
+        content-object properties. Paths are relative to the object's
+        `properties` field.
     ProjectIntakeConfiguration:
       type: object
       properties:
@@ -6695,6 +6870,747 @@ components:
       required:
         - id
         - node
+      additionalProperties: false
+    ViewExperienceConfiguration:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        enabled:
+          type: boolean
+        layout:
+          $ref: "#/components/schemas/ViewExperienceLayout"
+        scope:
+          $ref: "#/components/schemas/ViewExperienceScope"
+        navigation:
+          type: array
+          items:
+            $ref: "#/components/schemas/ViewNavigationItem"
+        search:
+          $ref: "#/components/schemas/ViewSearchConfiguration"
+        results:
+          $ref: "#/components/schemas/ViewResultsConfiguration"
+      required:
+        - name
+      additionalProperties: false
+    ViewExperienceLayout:
+      type: object
+      properties:
+        mode:
+          type: string
+          enum:
+            - browse
+            - worklist
+        navigation_position:
+          type: string
+          enum:
+            - sidebar
+            - top
+      additionalProperties: false
+    ViewExperienceScope:
+      type: object
+      properties:
+        type_ids:
+          type: array
+          items:
+            type: string
+        locations:
+          type: array
+          items:
+            type: string
+        collection_ids:
+          type: array
+          items:
+            type: string
+        include_collection_descendants:
+          type: boolean
+        fixed_filter:
+          $ref: "#/components/schemas/ViewElasticsearchQuery"
+        head_only:
+          type: boolean
+      additionalProperties: false
+    ViewElasticsearchQuery:
+      type: object
+      additionalProperties: {}
+      description: An author-provided Elasticsearch query subtree validated by the
+        View runtime.
+    ViewNavigationItem:
+      type: object
+      oneOf:
+        - $ref: "#/components/schemas/ViewLocationNavigation"
+        - $ref: "#/components/schemas/ViewCollectionNavigation"
+        - $ref: "#/components/schemas/ViewTermsNavigation"
+        - $ref: "#/components/schemas/ViewHierarchyNavigation"
+        - $ref: "#/components/schemas/ViewRangeNavigation"
+      discriminator:
+        propertyName: source
+        mapping:
+          location: "#/components/schemas/ViewLocationNavigation"
+          collection: "#/components/schemas/ViewCollectionNavigation"
+          terms: "#/components/schemas/ViewTermsNavigation"
+          hierarchy: "#/components/schemas/ViewHierarchyNavigation"
+          range: "#/components/schemas/ViewRangeNavigation"
+      required:
+        - source
+    ViewLocationNavigation:
+      type: object
+      properties:
+        id:
+          type: string
+        label:
+          type: string
+        presentation:
+          type: string
+          enum:
+            - tree
+            - list
+            - select
+            - chips
+        multi_select:
+          type: boolean
+        order:
+          type: number
+        renderer:
+          type: string
+        source:
+          type: string
+          const: location
+        roots:
+          type: array
+          items:
+            type: string
+        depth:
+          type: number
+      required:
+        - id
+        - label
+        - source
+      additionalProperties: false
+    ViewCollectionNavigation:
+      type: object
+      properties:
+        id:
+          type: string
+        label:
+          type: string
+        presentation:
+          type: string
+          enum:
+            - tree
+            - list
+            - select
+            - chips
+        multi_select:
+          type: boolean
+        order:
+          type: number
+        renderer:
+          type: string
+        source:
+          type: string
+          const: collection
+        roots:
+          type: array
+          items:
+            type: string
+        include_descendants:
+          type: boolean
+      required:
+        - id
+        - label
+        - source
+      additionalProperties: false
+    ViewTermsNavigation:
+      type: object
+      properties:
+        id:
+          type: string
+        label:
+          type: string
+        presentation:
+          type: string
+          enum:
+            - tree
+            - list
+            - select
+            - chips
+        multi_select:
+          type: boolean
+        order:
+          type: number
+        renderer:
+          type: string
+        source:
+          type: string
+          const: terms
+        field:
+          type: string
+        size:
+          type: number
+        sort:
+          type: string
+          enum:
+            - count
+            - label
+      required:
+        - field
+        - id
+        - label
+        - source
+      additionalProperties: false
+    ViewHierarchyNavigation:
+      type: object
+      properties:
+        id:
+          type: string
+        label:
+          type: string
+        presentation:
+          type: string
+          enum:
+            - tree
+            - list
+            - select
+            - chips
+        multi_select:
+          type: boolean
+        order:
+          type: number
+        renderer:
+          type: string
+        source:
+          type: string
+          const: hierarchy
+        levels:
+          type: array
+          items:
+            $ref: "#/components/schemas/ViewHierarchyLevel"
+      required:
+        - id
+        - label
+        - levels
+        - source
+      additionalProperties: false
+      description: >-
+        A drill-down hierarchy assembled from independently mapped properties.
+
+
+        Hierarchies represent one selected path, so multi_select may only be
+        false. Selection ids are opaque runtime values and must not be
+        constructed by clients.
+    ViewHierarchyLevel:
+      type: object
+      properties:
+        id:
+          type: string
+        label:
+          type: string
+        field:
+          type: string
+        size:
+          type: number
+        sort:
+          type: string
+          enum:
+            - count
+            - label
+      required:
+        - id
+        - label
+        - field
+      additionalProperties: false
+    ViewRangeNavigation:
+      type: object
+      properties:
+        id:
+          type: string
+        label:
+          type: string
+        presentation:
+          type: string
+          enum:
+            - tree
+            - list
+            - select
+            - chips
+        multi_select:
+          type: boolean
+        order:
+          type: number
+        renderer:
+          type: string
+        source:
+          type: string
+          const: range
+        field:
+          type: string
+        ranges:
+          type: array
+          items:
+            $ref: "#/components/schemas/ViewRangeDefinition"
+      required:
+        - field
+        - id
+        - label
+        - ranges
+        - source
+      additionalProperties: false
+    ViewRangeDefinition:
+      type: object
+      properties:
+        id:
+          type: string
+        label:
+          type: string
+        from:
+          type: number
+        to:
+          type: number
+      required:
+        - id
+        - label
+      additionalProperties: false
+    ViewSearchConfiguration:
+      type: object
+      properties:
+        renderer:
+          type: string
+        mode:
+          type: string
+          enum:
+            - deterministic
+            - agentic
+        placeholder:
+          type: string
+        fields:
+          type: array
+          items:
+            $ref: "#/components/schemas/ViewSearchFieldDefinition"
+        key_terms:
+          type: array
+          items:
+            $ref: "#/components/schemas/ViewKeyTermDefinition"
+        agentic:
+          $ref: "#/components/schemas/AgenticViewSearchConfiguration"
+      additionalProperties: false
+    ViewSearchFieldDefinition:
+      type: object
+      properties:
+        field:
+          type: string
+        description:
+          type: string
+          description: Meaning of the field for query planners, for example "Full OCR text".
+        type:
+          $ref: "#/components/schemas/ViewSearchFieldType"
+          description: Mapping hint used only when the active index mapping does not
+            expose a type.
+        mode:
+          type: string
+          enum:
+            - auto
+            - full_text
+            - exact
+          description: "`full_text` enables scoring text queries, `exact` limits the field
+            to structured operators, and `auto` derives behavior from the mapped
+            type."
+        boost:
+          type: number
+          description: Relative boost when this field participates in multi-field text
+            search.
+      required:
+        - field
+      additionalProperties: false
+      description: A mapped Elasticsearch field that a View may use for query planning
+        and deterministic full-text fallback.
+    ViewSearchFieldType:
+      type: string
+      enum:
+        - text
+        - keyword
+        - number
+        - date
+        - boolean
+    ViewKeyTermDefinition:
+      type: object
+      properties:
+        id:
+          type: string
+        label:
+          type: string
+        field:
+          type: string
+        type:
+          $ref: "#/components/schemas/ViewSearchFieldType"
+        multiple:
+          type: boolean
+        operator:
+          type: string
+          enum:
+            - match
+            - term
+            - range
+      required:
+        - id
+        - label
+        - type
+      additionalProperties: false
+    AgenticViewSearchConfiguration:
+      type: object
+      properties:
+        interaction:
+          type: string
+        config:
+          $ref: "#/components/schemas/InteractionExecutionConfiguration"
+        instructions:
+          type: string
+          description: View-specific guidance for Elasticsearch query planning.
+        mode:
+          type: string
+          const: query
+        timeout_ms:
+          type: number
+        minimum_confidence:
+          type: number
+      additionalProperties: false
+    ViewResultsConfiguration:
+      type: object
+      properties:
+        default_display:
+          type: string
+        allow_display_switch:
+          type: boolean
+        displays:
+          type: array
+          items:
+            $ref: "#/components/schemas/ViewDisplayConfiguration"
+        default_sort:
+          type: string
+        sort_options:
+          type: array
+          items:
+            $ref: "#/components/schemas/ViewSortOption"
+      required:
+        - default_display
+        - displays
+      additionalProperties: false
+    ViewDisplayConfiguration:
+      type: object
+      oneOf:
+        - $ref: "#/components/schemas/ViewListDisplay"
+        - $ref: "#/components/schemas/ViewTableDisplay"
+        - $ref: "#/components/schemas/ViewCardsDisplay"
+        - $ref: "#/components/schemas/ViewGalleryDisplay"
+        - $ref: "#/components/schemas/ViewBoardDisplay"
+      discriminator:
+        propertyName: type
+        mapping:
+          list: "#/components/schemas/ViewListDisplay"
+          table: "#/components/schemas/ViewTableDisplay"
+          cards: "#/components/schemas/ViewCardsDisplay"
+          gallery: "#/components/schemas/ViewGalleryDisplay"
+          board: "#/components/schemas/ViewBoardDisplay"
+      required:
+        - type
+    ViewListDisplay:
+      type: object
+      properties:
+        id:
+          type: string
+        label:
+          type: string
+        renderer:
+          type: string
+        page_size:
+          type: number
+        type:
+          type: string
+          const: list
+        title:
+          $ref: "#/components/schemas/ViewResultField"
+        subtitle:
+          type: array
+          items:
+            $ref: "#/components/schemas/ViewResultField"
+        description:
+          $ref: "#/components/schemas/ViewResultField"
+        media:
+          $ref: "#/components/schemas/ViewResultMedia"
+        badges:
+          type: array
+          items:
+            $ref: "#/components/schemas/ViewResultField"
+      required:
+        - id
+        - label
+        - title
+        - type
+      additionalProperties: false
+    ViewResultField:
+      type: object
+      properties:
+        field:
+          type: string
+        label:
+          type: string
+        format:
+          $ref: "#/components/schemas/ViewResultFieldFormat"
+        fallback:
+          type: string
+      required:
+        - field
+      additionalProperties: false
+    ViewResultFieldFormat:
+      type: string
+      enum:
+        - text
+        - date
+        - number
+        - badge
+        - user
+        - content_type
+        - location
+    ViewResultMedia:
+      type: object
+      properties:
+        source:
+          type: string
+          enum:
+            - content_thumbnail
+            - property
+            - type_icon
+        field:
+          type: string
+        fit:
+          type: string
+          enum:
+            - cover
+            - contain
+        fallback:
+          type: string
+          enum:
+            - type_icon
+            - placeholder
+            - none
+      required:
+        - source
+      additionalProperties: false
+    ViewTableDisplay:
+      type: object
+      properties:
+        id:
+          type: string
+        label:
+          type: string
+        renderer:
+          type: string
+        page_size:
+          type: number
+        type:
+          type: string
+          const: table
+        columns:
+          type: array
+          items:
+            $ref: "#/components/schemas/ViewTableColumn"
+      required:
+        - columns
+        - id
+        - label
+        - type
+      additionalProperties: false
+    ViewTableColumn:
+      type: object
+      properties:
+        field:
+          type: string
+        label:
+          type: string
+        format:
+          $ref: "#/components/schemas/ViewResultFieldFormat"
+        fallback:
+          type: string
+        width:
+          type: number
+        sortable:
+          type: boolean
+        sort_option:
+          type: string
+      additionalProperties: false
+      required:
+        - field
+    ViewCardsDisplay:
+      type: object
+      properties:
+        id:
+          type: string
+        label:
+          type: string
+        renderer:
+          type: string
+        page_size:
+          type: number
+        type:
+          type: string
+          const: cards
+        title:
+          $ref: "#/components/schemas/ViewResultField"
+        description:
+          $ref: "#/components/schemas/ViewResultField"
+        media:
+          $ref: "#/components/schemas/ViewResultMedia"
+        fields:
+          type: array
+          items:
+            $ref: "#/components/schemas/ViewResultField"
+        badges:
+          type: array
+          items:
+            $ref: "#/components/schemas/ViewResultField"
+        columns:
+          type: number
+          enum:
+            - 2
+            - 3
+            - 4
+            - 5
+            - 6
+      required:
+        - id
+        - label
+        - title
+        - type
+      additionalProperties: false
+    ViewGalleryDisplay:
+      type: object
+      properties:
+        id:
+          type: string
+        label:
+          type: string
+        renderer:
+          type: string
+        page_size:
+          type: number
+        type:
+          type: string
+          const: gallery
+        media:
+          $ref: "#/components/schemas/ViewResultMedia"
+        title:
+          $ref: "#/components/schemas/ViewResultField"
+        caption:
+          type: array
+          items:
+            $ref: "#/components/schemas/ViewResultField"
+        columns:
+          type: number
+          enum:
+            - 2
+            - 3
+            - 4
+            - 5
+            - 6
+      required:
+        - id
+        - label
+        - media
+        - title
+        - type
+      additionalProperties: false
+    ViewBoardDisplay:
+      type: object
+      properties:
+        id:
+          type: string
+        label:
+          type: string
+        renderer:
+          type: string
+        page_size:
+          type: number
+        type:
+          type: string
+          const: board
+        group_by:
+          type: string
+        columns:
+          type: array
+          items:
+            $ref: "#/components/schemas/ViewBoardColumn"
+        card:
+          $ref: "#/components/schemas/ViewBoardCardConfiguration"
+      required:
+        - card
+        - group_by
+        - id
+        - label
+        - type
+      additionalProperties: false
+    ViewBoardColumn:
+      type: object
+      properties:
+        value:
+          type: string
+        label:
+          type: string
+        order:
+          type: number
+      required:
+        - value
+        - label
+      additionalProperties: false
+    ViewBoardCardConfiguration:
+      type: object
+      properties:
+        title:
+          $ref: "#/components/schemas/ViewResultField"
+        description:
+          $ref: "#/components/schemas/ViewResultField"
+        media:
+          $ref: "#/components/schemas/ViewResultMedia"
+        fields:
+          type: array
+          items:
+            $ref: "#/components/schemas/ViewResultField"
+        badges:
+          type: array
+          items:
+            $ref: "#/components/schemas/ViewResultField"
+      required:
+        - title
+      additionalProperties: false
+    ViewSortOption:
+      type: object
+      properties:
+        id:
+          type: string
+        label:
+          type: string
+        sort:
+          type: array
+          items:
+            $ref: "#/components/schemas/ViewSortClause"
+      required:
+        - id
+        - label
+        - sort
+      additionalProperties: false
+    ViewSortClause:
+      type: object
+      properties:
+        field:
+          type: string
+        order:
+          type: string
+          enum:
+            - asc
+            - desc
+      required:
+        - field
+        - order
       additionalProperties: false
     CompositeAppCardOverrides:
       type: object
@@ -10330,6 +11246,7 @@ components:
         - interactions
         - types
         - processes
+        - views
         - templates
     AppAccessControl:
       type: string
@@ -11056,6 +11973,9 @@ components:
         - valid
       additionalProperties: false
       description: Per-name resolution result for `POST /tools/validate`.
+    ViewExperienceSchemaVersion:
+      type: number
+      const: 1
     ErrorResponse:
       type: object
       description: Standard JSON error response returned by the server error handler.
@@ -15837,6 +16757,88 @@ components:
         - workflow_id
         - workflow_run_id
       description: Polled status response for markdown rendering workflow.
+    ViewExecutionResult:
+      type: object
+      properties:
+        view:
+          type: string
+        revision:
+          type: number
+        definition:
+          $ref: "#/components/schemas/ViewExecutionDefinition"
+          description: The runtime-safe rendering definition resolved by Zeno for this
+            execution.
+        display:
+          type: string
+        sort:
+          type: string
+        search:
+          $ref: "#/components/schemas/ViewExecutionSearchResult"
+        hits:
+          type: array
+          items:
+            $ref: "#/components/schemas/ViewHit"
+        total:
+          type: number
+        navigation:
+          $ref: "#/components/schemas/ViewNavigationResultMap"
+        took:
+          type: number
+      required:
+        - view
+        - revision
+        - definition
+        - search
+        - hits
+        - total
+        - navigation
+        - took
+      additionalProperties: false
+    ExecuteViewRequest:
+      type: object
+      properties:
+        query:
+          type: string
+        key_terms:
+          $ref: "#/components/schemas/StringArrayMap"
+        navigation:
+          $ref: "#/components/schemas/StringArrayMap"
+        display:
+          type: string
+        sort:
+          type: string
+        offset:
+          type: number
+        limit:
+          type: number
+      additionalProperties: false
+    PreviewViewExperienceRequest:
+      type: object
+      properties:
+        query:
+          type: string
+        key_terms:
+          $ref: "#/components/schemas/StringArrayMap"
+        navigation:
+          $ref: "#/components/schemas/StringArrayMap"
+        display:
+          type: string
+        sort:
+          type: string
+        offset:
+          type: number
+        limit:
+          type: number
+        configuration:
+          $ref: "#/components/schemas/ViewExperienceConfiguration"
+          description: The unsaved View configuration to validate and execute.
+      required:
+        - configuration
+      additionalProperties: false
+      description: Execute an unsaved (draft) View configuration without persisting
+        it. Combines the inline configuration with the same execution inputs
+        as  {@link  ExecuteViewRequest }  so authors can validate and preview
+        results before calling create/update.
     BulkOperationResult:
       type: object
       properties:
@@ -16113,6 +17115,8 @@ components:
         name:
           type: string
         type:
+          type: string
+        email:
           type: string
         description:
           type: string
@@ -21419,6 +22423,209 @@ components:
             today if omitted)
       additionalProperties: false
       description: Metadata for PDF rendering (displayed in header/footer)
+    ViewExecutionDefinition:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        enabled:
+          type: boolean
+        layout:
+          $ref: "#/components/schemas/ViewExperienceLayout"
+        navigation:
+          type: array
+          items:
+            $ref: "#/components/schemas/ViewNavigationItem"
+        search:
+          $ref: "#/components/schemas/ViewExecutionSearchConfiguration"
+        results:
+          $ref: "#/components/schemas/ViewResultsConfiguration"
+      required:
+        - name
+      additionalProperties: false
+      description: The reusable, client-visible part of the View definition used for
+        an execution. Server-owned scope is intentionally omitted.
+    ViewExecutionSearchConfiguration:
+      type: object
+      properties:
+        renderer:
+          type: string
+        mode:
+          type: string
+          enum:
+            - deterministic
+            - agentic
+        placeholder:
+          type: string
+        fields:
+          type: array
+          items:
+            $ref: "#/components/schemas/ViewSearchFieldDefinition"
+        key_terms:
+          type: array
+          items:
+            $ref: "#/components/schemas/ViewKeyTermDefinition"
+      additionalProperties: false
+      description: Client-visible search controls. Agentic planner instructions,
+        interaction, and model configuration are intentionally omitted.
+    ViewExecutionSearchResult:
+      type: object
+      properties:
+        input:
+          type: string
+        interpretation:
+          type: string
+        key_terms:
+          $ref: "#/components/schemas/StringArrayMap"
+        plan:
+          $ref: "#/components/schemas/ViewExecutionQueryPlan"
+        requested_mode:
+          type: string
+          enum:
+            - browse
+            - deterministic
+            - agentic
+        applied_mode:
+          type: string
+          enum:
+            - browse
+            - deterministic
+            - query
+        fallback_reason:
+          type: string
+        warnings:
+          type: array
+          items:
+            $ref: "#/components/schemas/ViewExecutionWarning"
+      required:
+        - requested_mode
+        - applied_mode
+        - warnings
+      additionalProperties: false
+    ViewExecutionQueryPlan:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+            - applied
+            - fallback
+        query:
+          $ref: "#/components/schemas/ViewElasticsearchQuery"
+        confidence:
+          type: number
+        error_code:
+          $ref: "#/components/schemas/ViewQueryPlanningFailureCode"
+        error_message:
+          type: string
+      required:
+        - status
+      additionalProperties: false
+      description: Safe query-planning diagnostics. The query contains only the
+        model-authored subtree; server-owned scope and content-security filters
+        are never exposed.
+    ViewQueryPlanningFailureCode:
+      type: string
+      enum:
+        - interaction_failed
+        - invalid_output
+        - invalid_query
+        - low_confidence
+        - timeout
+        - unknown
+    ViewExecutionWarning:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        path:
+          type: string
+      required:
+        - code
+        - message
+      additionalProperties: false
+    ViewHit:
+      type: object
+      properties:
+        id:
+          type: string
+        score:
+          type: number
+        document:
+          $ref: "#/components/schemas/ContentObjectItemApiResponse"
+        annotation:
+          $ref: "#/components/schemas/ViewHitAnnotation"
+      required:
+        - id
+        - document
+      additionalProperties: false
+    ViewHitAnnotation:
+      type: object
+      properties:
+        why_match:
+          type: string
+        answer:
+          type: string
+        excerpt:
+          type: string
+      additionalProperties: false
+    ViewNavigationResultMap:
+      type: object
+      additionalProperties:
+        $ref: "#/components/schemas/ViewNavigationResult"
+    ViewNavigationResult:
+      type: object
+      properties:
+        id:
+          type: string
+        selected:
+          type: array
+          items:
+            type: string
+        nodes:
+          type: array
+          items:
+            $ref: "#/components/schemas/ViewNavigationNode"
+        breadcrumbs:
+          type: array
+          items:
+            $ref: "#/components/schemas/ViewNavigationNode"
+          description: Selected hierarchy path from its root through the current value.
+        truncated:
+          type: boolean
+      required:
+        - id
+        - selected
+        - nodes
+      additionalProperties: false
+    ViewNavigationNode:
+      type: object
+      properties:
+        id:
+          type: string
+        label:
+          type: string
+        count:
+          type: number
+        selected:
+          type: boolean
+        expandable:
+          type: boolean
+        children:
+          type: array
+          items:
+            $ref: "#/components/schemas/ViewNavigationNode"
+        path:
+          type: string
+      required:
+        - id
+        - label
+        - count
+      additionalProperties: false
     IssueTokenResponse:
       type: object
       properties:
@@ -22767,6 +23974,133 @@ paths:
         file: ../../apps/studio-server/src/api/projects/index.ts
         className: ProjectResource
         methodName: getInstalledProcessById
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260319"
+        description: Optional Vertesia API version header. Use `20260319` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /projects/{projectId}/app-views:
+    get:
+      operationId: ListProjectAppViews
+      tags:
+        - Projects
+      summary: List project app Views
+      description: Lists View Experience definitions contributed by installed apps in
+        the project.
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters:
+        - name: projectId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: tag
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Installed app View definitions.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InCodeViewDefinitionArray"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions: []
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/projects/index.ts
+        className: ProjectResource
+        methodName: listInstalledViews
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260319"
+        description: Optional Vertesia API version header. Use `20260319` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /projects/{projectId}/app-views/{viewId}:
+    get:
+      operationId: GetProjectAppView
+      tags:
+        - Projects
+      summary: Retrieve a project app View
+      description: Retrieves a View Experience definition contributed by an installed app.
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters:
+        - name: projectId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: viewId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The requested app View definition.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InCodeViewDefinition"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions: []
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/projects/index.ts
+        className: ProjectResource
+        methodName: getInstalledViewById
     parameters:
       - name: x-api-version
         in: header
@@ -33168,6 +34502,301 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/ValidateToolNamesPayload"
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260319"
+        description: Optional Vertesia API version header. Use `20260319` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /views:
+    get:
+      operationId: ListViews
+      tags:
+        - Views
+      summary: List View Experiences
+      description: >-
+        Lists View Experiences in the current project, most recently updated
+        first.
+
+
+        **Required permissions:** `interaction:read`
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: number
+        - name: offset
+          in: query
+          required: false
+          schema:
+            type: number
+      responses:
+        "200":
+          description: View Experiences in the current project.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ViewExperienceArray"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - interaction:read
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/views.ts
+        className: ViewExperiencesResource
+        methodName: list
+    post:
+      operationId: CreateView
+      tags:
+        - Views
+      summary: Create a View Experience
+      description: >-
+        Creates a View Experience with a project-unique immutable public slug
+        ID.
+
+
+        **Required permissions:** `interaction:write`
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters: []
+      responses:
+        "201":
+          description: The created View Experience.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ViewExperience"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - interaction:write
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/views.ts
+        className: ViewExperiencesResource
+        methodName: create
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateViewExperienceRequest"
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260319"
+        description: Optional Vertesia API version header. Use `20260319` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /views/{viewId}:
+    get:
+      operationId: GetView
+      tags:
+        - Views
+      summary: Retrieve a View Experience
+      description: |-
+        Retrieves a project-scoped View Experience by its stable public slug ID.
+
+        **Required permissions:** `interaction:read`
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters:
+        - name: viewId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The requested View Experience.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ViewExperience"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - interaction:read
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/views.ts
+        className: ViewExperienceResource
+        methodName: retrieve
+    put:
+      operationId: UpdateView
+      tags:
+        - Views
+      summary: Update a View Experience
+      description: >-
+        Replaces the mutable View configuration. The last observed revision is
+        required and stale updates fail with 409.
+
+
+        **Required permissions:** `interaction:write`
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters:
+        - name: viewId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The updated View Experience.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ViewExperience"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - interaction:write
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/views.ts
+        className: ViewExperienceResource
+        methodName: update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateViewExperienceRequest"
+    delete:
+      operationId: DeleteView
+      tags:
+        - Views
+      summary: Delete a View Experience
+      description: |-
+        Deletes a project-scoped View Experience by its stable public slug ID.
+
+        **Required permissions:** `interaction:write`
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters:
+        - name: viewId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: View deletion result.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteByIdResult"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - interaction:write
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/views.ts
+        className: ViewExperienceResource
+        methodName: delete
     parameters:
       - name: x-api-version
         in: header
@@ -45894,6 +47523,145 @@ paths:
         file: ../../apps/zeno-server/src/api/rendering.ts
         className: RenderingResource
         methodName: getRenderingJobStatus
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260319"
+        description: Optional Vertesia API version header. Use `20260319` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /view-executions/{viewId}/execute:
+    post:
+      operationId: ExecuteView
+      tags:
+        - Views
+      summary: Execute a View Experience
+      description: >-
+        Executes a stored or app-contributed View by ID. Configuration, scope,
+        and security filters are resolved server-side. Agentic query planning
+        additionally requires interaction execute permission.
+
+
+        **Required permissions:** `content:read`
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters:
+        - name: viewId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Normalized View results and navigation counts.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ViewExecutionResult"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - content:read
+      x-vertesia-source:
+        file: ../../apps/zeno-server/src/api/views.ts
+        className: ViewExecutionResource
+        methodName: execute
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExecuteViewRequest"
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260319"
+        description: Optional Vertesia API version header. Use `20260319` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /view-executions/preview:
+    post:
+      operationId: PreviewView
+      tags:
+        - Views
+      summary: Preview an unsaved View Experience
+      description: >-
+        Validates an inline (unsaved) View configuration and executes it against
+        content without persisting it, returning normalized results, navigation
+        counts, and any agentic query plan. Agentic query planning additionally
+        requires interaction execute permission.
+
+
+        **Required permissions:** `content:read`
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters: []
+      responses:
+        "200":
+          description: Normalized View results and navigation counts for the previewed
+            configuration.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ViewExecutionResult"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - content:read
+      x-vertesia-source:
+        file: ../../apps/zeno-server/src/api/views.ts
+        className: ViewExecutionResource
+        methodName: preview
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PreviewViewExperienceRequest"
     parameters:
       - name: x-api-version
         in: header
