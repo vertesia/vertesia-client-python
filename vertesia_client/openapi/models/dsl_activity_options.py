@@ -30,10 +30,11 @@ class DSLActivityOptions(BaseModel):
     The payload for a DSL activity options.
     """ # noqa: E501
     start_to_close_timeout: Optional[DurationValue] = Field(default=None, alias="startToCloseTimeout")
+    heartbeat_timeout: Optional[DurationValue] = Field(default=None, alias="heartbeatTimeout")
     schedule_to_start_timeout: Optional[DurationValue] = Field(default=None, alias="scheduleToStartTimeout")
     schedule_to_close_timeout: Optional[DurationValue] = Field(default=None, alias="scheduleToCloseTimeout")
     retry: Optional[DSLRetryPolicy] = None
-    __properties: ClassVar[List[str]] = ["startToCloseTimeout", "scheduleToStartTimeout", "scheduleToCloseTimeout", "retry"]
+    __properties: ClassVar[List[str]] = ["startToCloseTimeout", "heartbeatTimeout", "scheduleToStartTimeout", "scheduleToCloseTimeout", "retry"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -77,6 +78,9 @@ class DSLActivityOptions(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of start_to_close_timeout
         if self.start_to_close_timeout:
             _dict['startToCloseTimeout'] = self.start_to_close_timeout.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of heartbeat_timeout
+        if self.heartbeat_timeout:
+            _dict['heartbeatTimeout'] = self.heartbeat_timeout.to_dict()
         # override the default output from pydantic by calling `to_dict()` of schedule_to_start_timeout
         if self.schedule_to_start_timeout:
             _dict['scheduleToStartTimeout'] = self.schedule_to_start_timeout.to_dict()
@@ -99,6 +103,7 @@ class DSLActivityOptions(BaseModel):
 
         _obj = cls.model_validate({
             "startToCloseTimeout": DurationValue.from_dict(obj["startToCloseTimeout"]) if obj.get("startToCloseTimeout") is not None else None,
+            "heartbeatTimeout": DurationValue.from_dict(obj["heartbeatTimeout"]) if obj.get("heartbeatTimeout") is not None else None,
             "scheduleToStartTimeout": DurationValue.from_dict(obj["scheduleToStartTimeout"]) if obj.get("scheduleToStartTimeout") is not None else None,
             "scheduleToCloseTimeout": DurationValue.from_dict(obj["scheduleToCloseTimeout"]) if obj.get("scheduleToCloseTimeout") is not None else None,
             "retry": DSLRetryPolicy.from_dict(obj["retry"]) if obj.get("retry") is not None else None
