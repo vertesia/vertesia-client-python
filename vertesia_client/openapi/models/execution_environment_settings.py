@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
 from typing_extensions import Self
@@ -28,8 +28,9 @@ class ExecutionEnvironmentSettings(BaseModel):
     ExecutionEnvironmentSettings
     """ # noqa: E501
     bucket_access_principal: Optional[StrictStr] = None
+    default_headers: Optional[Dict[str, StrictStr]] = Field(default=None, description="Custom HTTP headers sent by OpenAI-compatible environments.")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["bucket_access_principal"]
+    __properties: ClassVar[List[str]] = ["bucket_access_principal", "default_headers"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -89,7 +90,8 @@ class ExecutionEnvironmentSettings(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "bucket_access_principal": obj.get("bucket_access_principal")
+            "bucket_access_principal": obj.get("bucket_access_principal"),
+            "default_headers": obj.get("default_headers")
         })
         # store additional fields in additional_properties
         for _key in obj.keys():
