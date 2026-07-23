@@ -91,6 +91,9 @@ __all__ = [
     "AgentMessageDetails",
     "AgentMessageDetailsFilesInner",
     "AgentMessageType",
+    "AgentResourceAction",
+    "AgentResourceReference",
+    "AgentResourceType",
     "AgentRun",
     "AgentRunArchiveState",
     "AgentRunResponse",
@@ -852,6 +855,7 @@ __all__ = [
     "ToolDefinition",
     "ToolReference",
     "ToolResult",
+    "ToolResultMeta",
     "ToolSource",
     "ToolUse",
     "ToolValidationResult",
@@ -1063,6 +1067,9 @@ from vertesia_client.openapi.models.agent_event_delivery_target import AgentEven
 from vertesia_client.openapi.models.agent_message_details import AgentMessageDetails as AgentMessageDetails
 from vertesia_client.openapi.models.agent_message_details_files_inner import AgentMessageDetailsFilesInner as AgentMessageDetailsFilesInner
 from vertesia_client.openapi.models.agent_message_type import AgentMessageType as AgentMessageType
+from vertesia_client.openapi.models.agent_resource_action import AgentResourceAction as AgentResourceAction
+from vertesia_client.openapi.models.agent_resource_reference import AgentResourceReference as AgentResourceReference
+from vertesia_client.openapi.models.agent_resource_type import AgentResourceType as AgentResourceType
 from vertesia_client.openapi.models.agent_run import AgentRun as AgentRun
 from vertesia_client.openapi.models.agent_run_archive_state import AgentRunArchiveState as AgentRunArchiveState
 from vertesia_client.openapi.models.agent_run_response import AgentRunResponse as AgentRunResponse
@@ -1824,6 +1831,7 @@ from vertesia_client.openapi.models.tool_collection_object import ToolCollection
 from vertesia_client.openapi.models.tool_definition import ToolDefinition as ToolDefinition
 from vertesia_client.openapi.models.tool_reference import ToolReference as ToolReference
 from vertesia_client.openapi.models.tool_result import ToolResult as ToolResult
+from vertesia_client.openapi.models.tool_result_meta import ToolResultMeta as ToolResultMeta
 from vertesia_client.openapi.models.tool_source import ToolSource as ToolSource
 from vertesia_client.openapi.models.tool_use import ToolUse as ToolUse
 from vertesia_client.openapi.models.tool_validation_result import ToolValidationResult as ToolValidationResult

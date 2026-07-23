@@ -17,25 +17,20 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
+from pydantic import BaseModel, ConfigDict, Field
 from typing import Any, ClassVar, Dict, List, Optional
-from vertesia_client.openapi.models.tool_result_meta import ToolResultMeta
+from vertesia_client.openapi.models.agent_resource_reference import AgentResourceReference
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class ToolResult(BaseModel):
+class ToolResultMeta(BaseModel):
     """
-    ToolResult
+    Metadata a tool executor may attach to its result. Kept as an open record for forward compatibility while typing the fields the runtime interprets.
     """ # noqa: E501
-    content: StrictStr
-    is_error: StrictBool
-    files: Optional[List[StrictStr]] = None
-    display_message: Optional[StrictStr] = Field(default=None, description="Optional message to display in the UI instead of the content. Use this when the content is large or technical (e.g., document text) and you want to show a friendly message to the user.")
-    meta: Optional[ToolResultMeta] = Field(default=None, description="Can contain metadata returned by the tool executor.")
-    tool_use_id: StrictStr
-    thought_signature: Optional[StrictStr] = Field(default=None, description="Gemini thinking models require thought_signature to be passed back with tool results. Copy this from the ToolUse.thought_signature that requested this tool call.")
-    __properties: ClassVar[List[str]] = ["content", "is_error", "files", "display_message", "meta", "tool_use_id", "thought_signature"]
+    resources: Optional[List[AgentResourceReference]] = Field(default=None, description="Resources this tool created/updated/deleted, surfaced as deep links in the UI.")
+    additional_properties: Dict[str, Any] = {}
+    __properties: ClassVar[List[str]] = ["resources"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -55,7 +50,7 @@ class ToolResult(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of ToolResult from a JSON string"""
+        """Create an instance of ToolResultMeta from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -67,8 +62,10 @@ class ToolResult(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -76,14 +73,23 @@ class ToolResult(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of meta
-        if self.meta:
-            _dict['meta'] = self.meta.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of each item in resources (list)
+        _items = []
+        if self.resources:
+            for _item_resources in self.resources:
+                if _item_resources:
+                    _items.append(_item_resources.to_dict())
+            _dict['resources'] = _items
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of ToolResult from a dict"""
+        """Create an instance of ToolResultMeta from a dict"""
         if obj is None:
             return None
 
@@ -91,14 +97,13 @@ class ToolResult(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "content": obj.get("content"),
-            "is_error": obj.get("is_error"),
-            "files": obj.get("files"),
-            "display_message": obj.get("display_message"),
-            "meta": ToolResultMeta.from_dict(obj["meta"]) if obj.get("meta") is not None else None,
-            "tool_use_id": obj.get("tool_use_id"),
-            "thought_signature": obj.get("thought_signature")
+            "resources": [AgentResourceReference.from_dict(_item) for _item in obj["resources"]] if obj.get("resources") is not None else None
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 

@@ -17,25 +17,24 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional
-from vertesia_client.openapi.models.tool_result_meta import ToolResultMeta
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from typing import Any, ClassVar, Dict, Optional
+from vertesia_client.openapi.models.agent_resource_action import AgentResourceAction
+from vertesia_client.openapi.models.agent_resource_type import AgentResourceType
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class ToolResult(BaseModel):
+class AgentResourceReference(BaseModel):
     """
-    ToolResult
+    A navigable reference to a resource an agent tool mutated. Tools return these as tool-result metadata (see  {@link  ToolResultMeta.resources } ); the conversation runtime promotes them onto the tool's completed lifecycle message so the UI can render deterministic deep links and an end-of-turn \"resources changed\" summary — independent of any link the model writes in prose.
     """ # noqa: E501
-    content: StrictStr
-    is_error: StrictBool
-    files: Optional[List[StrictStr]] = None
-    display_message: Optional[StrictStr] = Field(default=None, description="Optional message to display in the UI instead of the content. Use this when the content is large or technical (e.g., document text) and you want to show a friendly message to the user.")
-    meta: Optional[ToolResultMeta] = Field(default=None, description="Can contain metadata returned by the tool executor.")
-    tool_use_id: StrictStr
-    thought_signature: Optional[StrictStr] = Field(default=None, description="Gemini thinking models require thought_signature to be passed back with tool results. Copy this from the ToolUse.thought_signature that requested this tool call.")
-    __properties: ClassVar[List[str]] = ["content", "is_error", "files", "display_message", "meta", "tool_use_id", "thought_signature"]
+    type: AgentResourceType
+    id: StrictStr = Field(description="The resource id used to build its detail route.")
+    label: StrictStr = Field(description="Human-readable label captured at mutation time (e.g. the document name).")
+    action: AgentResourceAction
+    revision_id: Optional[StrictStr] = Field(default=None, description="Set when the mutation produced a new revision, enabling a \"view changes\" affordance.")
+    __properties: ClassVar[List[str]] = ["type", "id", "label", "action", "revision_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -55,7 +54,7 @@ class ToolResult(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of ToolResult from a JSON string"""
+        """Create an instance of AgentResourceReference from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -76,14 +75,11 @@ class ToolResult(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of meta
-        if self.meta:
-            _dict['meta'] = self.meta.to_dict()
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of ToolResult from a dict"""
+        """Create an instance of AgentResourceReference from a dict"""
         if obj is None:
             return None
 
@@ -91,13 +87,11 @@ class ToolResult(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "content": obj.get("content"),
-            "is_error": obj.get("is_error"),
-            "files": obj.get("files"),
-            "display_message": obj.get("display_message"),
-            "meta": ToolResultMeta.from_dict(obj["meta"]) if obj.get("meta") is not None else None,
-            "tool_use_id": obj.get("tool_use_id"),
-            "thought_signature": obj.get("thought_signature")
+            "type": obj.get("type"),
+            "id": obj.get("id"),
+            "label": obj.get("label"),
+            "action": obj.get("action"),
+            "revision_id": obj.get("revision_id")
         })
         return _obj
 

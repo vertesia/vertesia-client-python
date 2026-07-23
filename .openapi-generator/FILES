@@ -67,6 +67,9 @@ vertesia_client/openapi/models/agent_event_delivery_target.py
 vertesia_client/openapi/models/agent_message_details.py
 vertesia_client/openapi/models/agent_message_details_files_inner.py
 vertesia_client/openapi/models/agent_message_type.py
+vertesia_client/openapi/models/agent_resource_action.py
+vertesia_client/openapi/models/agent_resource_reference.py
+vertesia_client/openapi/models/agent_resource_type.py
 vertesia_client/openapi/models/agent_run.py
 vertesia_client/openapi/models/agent_run_archive_state.py
 vertesia_client/openapi/models/agent_run_response.py
@@ -830,6 +833,7 @@ vertesia_client/openapi/models/tool_collection_object.py
 vertesia_client/openapi/models/tool_definition.py
 vertesia_client/openapi/models/tool_reference.py
 vertesia_client/openapi/models/tool_result.py
+vertesia_client/openapi/models/tool_result_meta.py
 vertesia_client/openapi/models/tool_source.py
 vertesia_client/openapi/models/tool_use.py
 vertesia_client/openapi/models/tool_validation_result.py

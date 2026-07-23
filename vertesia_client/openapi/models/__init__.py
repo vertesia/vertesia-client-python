@@ -37,6 +37,9 @@ from vertesia_client.openapi.models.agent_event_delivery_target import AgentEven
 from vertesia_client.openapi.models.agent_message_details import AgentMessageDetails
 from vertesia_client.openapi.models.agent_message_details_files_inner import AgentMessageDetailsFilesInner
 from vertesia_client.openapi.models.agent_message_type import AgentMessageType
+from vertesia_client.openapi.models.agent_resource_action import AgentResourceAction
+from vertesia_client.openapi.models.agent_resource_reference import AgentResourceReference
+from vertesia_client.openapi.models.agent_resource_type import AgentResourceType
 from vertesia_client.openapi.models.agent_run import AgentRun
 from vertesia_client.openapi.models.agent_run_archive_state import AgentRunArchiveState
 from vertesia_client.openapi.models.agent_run_response import AgentRunResponse
@@ -798,6 +801,7 @@ from vertesia_client.openapi.models.tool_collection_object import ToolCollection
 from vertesia_client.openapi.models.tool_definition import ToolDefinition
 from vertesia_client.openapi.models.tool_reference import ToolReference
 from vertesia_client.openapi.models.tool_result import ToolResult
+from vertesia_client.openapi.models.tool_result_meta import ToolResultMeta
 from vertesia_client.openapi.models.tool_source import ToolSource
 from vertesia_client.openapi.models.tool_use import ToolUse
 from vertesia_client.openapi.models.tool_validation_result import ToolValidationResult

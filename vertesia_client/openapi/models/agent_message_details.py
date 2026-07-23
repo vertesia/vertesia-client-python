@@ -20,6 +20,7 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from vertesia_client.openapi.models.agent_message_details_files_inner import AgentMessageDetailsFilesInner
+from vertesia_client.openapi.models.agent_resource_reference import AgentResourceReference
 from vertesia_client.openapi.models.execution_token_usage import ExecutionTokenUsage
 from vertesia_client.openapi.models.plan_task import PlanTask
 from typing import Optional, Set
@@ -54,6 +55,7 @@ class AgentMessageDetails(BaseModel):
     output_files: Optional[List[StrictStr]] = Field(default=None, alias="outputFiles")
     files: Optional[List[AgentMessageDetailsFilesInner]] = None
     plan: Optional[List[PlanTask]] = None
+    resources: Optional[List[AgentResourceReference]] = Field(default=None, description="Deep-linkable references to resources a tool created/updated/deleted (see AgentResourceReference).")
     streaming_id: Optional[StrictStr] = None
     streaming_id_scope: Optional[StrictStr] = None
     chunk_index: Optional[Union[StrictFloat, StrictInt]] = None
@@ -62,7 +64,7 @@ class AgentMessageDetails(BaseModel):
     message_id: Optional[StrictStr] = Field(default=None, alias="_messageId")
     delivery_status: Optional[StrictStr] = Field(default=None, alias="_deliveryStatus")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["ack", "event_class", "tool", "tools", "tool_event", "streamed", "display_role", "activity_id", "activity_group_id", "batch_id", "tool_run_id", "tool_use_id", "tool_status", "tool_iteration", "message_to_human", "duration_ms", "observation", "token_usage", "checkpoint_at", "checkpoint_threshold", "workflow_run_id", "outputFiles", "files", "plan", "streaming_id", "streaming_id_scope", "chunk_index", "is_final", "_optimistic", "_messageId", "_deliveryStatus"]
+    __properties: ClassVar[List[str]] = ["ack", "event_class", "tool", "tools", "tool_event", "streamed", "display_role", "activity_id", "activity_group_id", "batch_id", "tool_run_id", "tool_use_id", "tool_status", "tool_iteration", "message_to_human", "duration_ms", "observation", "token_usage", "checkpoint_at", "checkpoint_threshold", "workflow_run_id", "outputFiles", "files", "plan", "resources", "streaming_id", "streaming_id_scope", "chunk_index", "is_final", "_optimistic", "_messageId", "_deliveryStatus"]
 
     @field_validator('tool_event')
     def tool_event_validate_enum(cls, value):
@@ -154,6 +156,13 @@ class AgentMessageDetails(BaseModel):
                 if _item_plan:
                     _items.append(_item_plan.to_dict())
             _dict['plan'] = _items
+        # override the default output from pydantic by calling `to_dict()` of each item in resources (list)
+        _items = []
+        if self.resources:
+            for _item_resources in self.resources:
+                if _item_resources:
+                    _items.append(_item_resources.to_dict())
+            _dict['resources'] = _items
         # puts key-value pairs in additional_properties in the top level
         if self.additional_properties is not None:
             for _key, _value in self.additional_properties.items():
@@ -200,6 +209,7 @@ class AgentMessageDetails(BaseModel):
             "outputFiles": obj.get("outputFiles"),
             "files": [AgentMessageDetailsFilesInner.from_dict(_item) for _item in obj["files"]] if obj.get("files") is not None else None,
             "plan": [PlanTask.from_dict(_item) for _item in obj["plan"]] if obj.get("plan") is not None else None,
+            "resources": [AgentResourceReference.from_dict(_item) for _item in obj["resources"]] if obj.get("resources") is not None else None,
             "streaming_id": obj.get("streaming_id"),
             "streaming_id_scope": obj.get("streaming_id_scope"),
             "chunk_index": obj.get("chunk_index"),

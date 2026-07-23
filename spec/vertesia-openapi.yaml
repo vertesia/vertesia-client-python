@@ -9715,8 +9715,7 @@ components:
             this when the content is large or technical (e.g., document text)
             and you want to show a friendly message to the user.
         meta:
-          type: object
-          additionalProperties: true
+          $ref: "#/components/schemas/ToolResultMeta"
           description: Can contain metadata returned by the tool executor.
         tool_use_id:
           type: string
@@ -9730,6 +9729,73 @@ components:
         - is_error
         - tool_use_id
       additionalProperties: false
+    ToolResultMeta:
+      type: object
+      properties:
+        resources:
+          type: array
+          items:
+            $ref: "#/components/schemas/AgentResourceReference"
+          description: Resources this tool created/updated/deleted, surfaced as deep links
+            in the UI.
+      description: Metadata a tool executor may attach to its result. Kept as an open
+        record for forward compatibility while typing the fields the runtime
+        interprets.
+    AgentResourceReference:
+      type: object
+      properties:
+        type:
+          $ref: "#/components/schemas/AgentResourceType"
+        id:
+          type: string
+          description: The resource id used to build its detail route.
+        label:
+          type: string
+          description: Human-readable label captured at mutation time (e.g. the document
+            name).
+        action:
+          $ref: "#/components/schemas/AgentResourceAction"
+        revision_id:
+          type: string
+          description: Set when the mutation produced a new revision, enabling a "view
+            changes" affordance.
+      required:
+        - type
+        - id
+        - label
+        - action
+      additionalProperties: false
+      description: A navigable reference to a resource an agent tool mutated. Tools
+        return these as tool-result metadata
+        (see  {@link  ToolResultMeta.resources } ); the conversation runtime
+        promotes them onto the tool's completed lifecycle message so the UI can
+        render deterministic deep links and an end-of-turn "resources changed"
+        summary — independent of any link the model writes in prose.
+    AgentResourceType:
+      type: string
+      enum:
+        - document
+        - collection
+        - content_type
+        - interaction
+        - prompt
+        - agent
+        - workflow
+        - process
+        - process_run
+        - interaction_run
+        - view
+      description: The kinds of Vertesia resource an agent tool can report having
+        created, updated, or deleted. Restricted to resources that have a real
+        detail route to navigate to — do not emit a reference for a mutation
+        with no meaningful navigation target. Add new kinds only once their
+        route exists.
+    AgentResourceAction:
+      type: string
+      enum:
+        - created
+        - updated
+        - deleted
     WorkflowAncestor:
       type: object
       properties:
@@ -17906,6 +17972,12 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/PlanTask"
+        resources:
+          type: array
+          items:
+            $ref: "#/components/schemas/AgentResourceReference"
+          description: Deep-linkable references to resources a tool
+            created/updated/deleted (see AgentResourceReference).
         streaming_id:
           type: string
         streaming_id_scope:
