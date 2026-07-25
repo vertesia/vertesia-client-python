@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: Vertesia API
-  version: 1.5.0-dev.20260714.072725Z
+  version: 1.5.0-dev.20260725.083715Z
   description: The Vertesia API provides project-scoped access to interaction
     execution and content workflows. Use it to run interactions, inspect
     execution history, stream run progress, replay previous executions, and
@@ -2149,6 +2149,15 @@ components:
           type: string
         name:
           type: string
+        namespace:
+          type: string
+          description: Public DNS-label-compatible identifier used by organization app
+            domains.
+        app_access_message:
+          type: string
+          description: Plain-text instructions shown when a signed-in user has no
+            application access.
+          maxLength: 1000
         email_domains:
           type: array
           items:
@@ -2201,6 +2210,9 @@ components:
       properties:
         name:
           type: string
+        app_access_message:
+          type: string
+          maxLength: 1000
         email_domains:
           type: array
           items:
@@ -3044,6 +3056,555 @@ components:
       type: array
       items:
         $ref: "#/components/schemas/UserRef"
+    AppRepoTree:
+      type: object
+      properties:
+        ref:
+          type: string
+          description: The ref the listing was read at (empty/undefined = default branch /
+            HEAD).
+        prefix:
+          type: string
+          description: The directory prefix that was listed (empty = repo root).
+        entries:
+          type: array
+          items:
+            $ref: "#/components/schemas/AppRepoTreeEntry"
+      required:
+        - entries
+      additionalProperties: false
+      description: A non-recursive listing of an app git repo directory at a given ref.
+    AppRepoDocumentCommit:
+      type: object
+      properties:
+        ref:
+          type: string
+          description: Updated branch name.
+        previous_commit:
+          type: string
+          description: Branch HEAD before the commit.
+        commit:
+          type: string
+          description: Newly created commit SHA.
+        paths:
+          type: array
+          items:
+            type: string
+          description: Repository paths changed by the commit.
+      required:
+        - ref
+        - previous_commit
+        - commit
+        - paths
+      additionalProperties: false
+      description: Result of committing one or more uploaded documents to an app repository.
+    AppRepoCommits:
+      type: object
+      properties:
+        ref:
+          type: string
+          description: Ref from which history traversal started (empty/undefined = default
+            branch / HEAD).
+        path:
+          type: string
+          description: File path relative to the repository root, when history was
+            filtered to a file.
+        commits:
+          type: array
+          items:
+            $ref: "#/components/schemas/AppRepoCommit"
+          description: Commits ordered newest first.
+        next_cursor:
+          type: string
+          description: Pass this cursor to retrieve the next page. Absent when history is
+            exhausted.
+      required:
+        - commits
+      additionalProperties: false
+      description: Commit history in an app git repository, optionally filtered to a file.
+    AppRepoRefs:
+      type: object
+      properties:
+        default_branch:
+          type: string
+          description: The repository's default branch (HEAD target), when resolvable.
+        branches:
+          type: array
+          items:
+            $ref: "#/components/schemas/AppRepoRef"
+        tags:
+          type: array
+          items:
+            $ref: "#/components/schemas/AppRepoRef"
+      required:
+        - branches
+        - tags
+      additionalProperties: false
+      description: The branches and tags of an app git repo (see  {@link  AppRepoRef } ).
+    AppDevelopmentTaskList:
+      type: object
+      properties:
+        default_branch:
+          type: string
+          description: Repository default branch, when resolvable.
+        tasks:
+          type: array
+          items:
+            $ref: "#/components/schemas/AppDevelopmentTask"
+      required:
+        - tasks
+      additionalProperties: false
+      description: Git-backed development tasks and the branch used for new tasks by
+        default.
+    AppDevelopmentTaskDetails:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Task slug derived from the branch name.
+        branch:
+          type: string
+          description: Complete Git branch name.
+        source_commit:
+          type: string
+          description: Commit currently at the branch head.
+        commit_date:
+          type: string
+          description: Branch-head commit date, when available.
+        agent_run:
+          $ref: "#/components/schemas/AgentRunSearchHit"
+          description: Latest Studio Assistant run started for this task branch.
+      additionalProperties: false
+      required:
+        - branch
+        - id
+        - source_commit
+      description: Development task details, including the latest parent assistant run
+        when one exists.
+    AppRepoBranch:
+      type: object
+      properties:
+        name:
+          type: string
+        commit:
+          type: string
+        source_ref:
+          type: string
+      required:
+        - name
+        - commit
+        - source_ref
+      additionalProperties: false
+      description: A newly created app repository branch.
+    AppPackage:
+      type: object
+      properties:
+        ui:
+          $ref: "#/components/schemas/AppUIConfig"
+          description: The UI configuration of the app
+        tools:
+          type: array
+          items:
+            $ref: "#/components/schemas/AgentToolDefinition"
+          description: A list of tools exposed by the app.
+        skills:
+          type: array
+          items:
+            $ref: "#/components/schemas/AgentToolDefinition"
+          description: A list of skills (`learn_*` tools) exposed by the app. Kept
+            separate from `tools` so clients can render them distinctly —
+            consumers that don't care (e.g. the worker building a combined tool
+            registry) should concatenate the two lists.
+        interactions:
+          type: array
+          items:
+            $ref: "#/components/schemas/CatalogInteractionRef"
+          description: A list of interactions exposed by the app
+        types:
+          type: array
+          items:
+            $ref: "#/components/schemas/InCodeTypeDefinition"
+          description: A list of types.
+        processes:
+          type: array
+          items:
+            $ref: "#/components/schemas/InCodeProcessDefinition"
+          description: A list of process definitions exposed by the app.
+        views:
+          type: array
+          items:
+            $ref: "#/components/schemas/InCodeViewDefinition"
+          description: View Experiences exposed by the app as in-code definitions.
+        templates:
+          type: array
+          items:
+            $ref: "#/components/schemas/RenderingTemplateDefinitionRef"
+          description: Templates provided by the app.
+        dashboards:
+          type: array
+          items:
+            $ref: "#/components/schemas/AppDashboardDefinition"
+          description: Dashboards provided by the app.
+        widgets:
+          $ref: "#/components/schemas/AppWidgetInfoMap"
+          description: Widgets provided by the app.
+        activities:
+          type: array
+          items:
+            $ref: "#/components/schemas/RemoteActivityDefinition"
+          description: "Remote activities exposed by the app for use in DSL workflows.
+            Activities are discovered via `?scope=activities` and referenced in
+            workflow steps using colon-separated names:
+            `app:<app_name>:<collection>:<activity_name>`."
+        settings_schema:
+          $ref: "#/components/schemas/JSONSchema"
+          description: A JSON chema for the app installation settings.
+      additionalProperties: false
+    AppVersionRecordArray:
+      type: array
+      items:
+        $ref: "#/components/schemas/AppVersionRecord"
+    AppVersionRecord:
+      type: object
+      properties:
+        id:
+          type: string
+        account:
+          type: string
+        project:
+          type: string
+        app:
+          type: string
+        app_id:
+          type: string
+        app_name:
+          type: string
+        version_id:
+          type: string
+        kind:
+          $ref: "#/components/schemas/AppVersionKind"
+        state:
+          $ref: "#/components/schemas/AppVersionState"
+        promoted:
+          type: boolean
+        target:
+          $ref: "#/components/schemas/AppVersionTarget"
+        agent_run_id:
+          type: string
+        development_task_id:
+          type: string
+          description: Development task that produced this version, when built by the app
+            assistant.
+        build_workflow_id:
+          type: string
+          description: Temporal workflow that produced this version.
+        build_workflow_run_id:
+          type: string
+          description: Temporal run that produced this version.
+        sandbox_id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        storage:
+          $ref: "#/components/schemas/AppVersionStorage"
+        source_commit:
+          type: string
+          description: Exact Git commit used to build this immutable version.
+        urls:
+          $ref: "#/components/schemas/AppVersionUrls"
+        manifest:
+          type: object
+          additionalProperties: true
+        files:
+          type: array
+          items:
+            type: string
+        file_count:
+          type: number
+        source_file_count:
+          type: number
+        screenshot_artifact:
+          type: string
+        checks:
+          type: array
+          items:
+            type: string
+        created_by:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        built_at:
+          type: string
+        checked_at:
+          type: string
+        expires_at:
+          type: string
+      required:
+        - id
+        - account
+        - project
+        - app_id
+        - app_name
+        - version_id
+        - kind
+        - state
+        - created_at
+        - updated_at
+      additionalProperties: false
+    UpsertAppVersionRequest:
+      type: object
+      properties:
+        record_id:
+          type: string
+          description: Existing version record to update in place, used by reproducible
+            rebuilds.
+        app:
+          type: string
+        app_id:
+          type: string
+        app_name:
+          type: string
+        version_id:
+          type: string
+        kind:
+          $ref: "#/components/schemas/AppVersionKind"
+        state:
+          $ref: "#/components/schemas/AppVersionState"
+        target:
+          $ref: "#/components/schemas/AppVersionTarget"
+        agent_run_id:
+          type: string
+        development_task_id:
+          type: string
+          description: Development task that produced this version, when built by the app
+            assistant.
+        build_workflow_id:
+          type: string
+        build_workflow_run_id:
+          type: string
+        sandbox_id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        storage:
+          $ref: "#/components/schemas/AppVersionStorage"
+        source_commit:
+          type: string
+          description: Exact Git commit used to build this immutable version.
+        urls:
+          $ref: "#/components/schemas/AppVersionUrls"
+        manifest:
+          type: object
+          additionalProperties: true
+        files:
+          type: array
+          items:
+            type: string
+        file_count:
+          type: number
+        source_file_count:
+          type: number
+        screenshot_artifact:
+          type: string
+        checks:
+          type: array
+          items:
+            type: string
+        built_at:
+          type: string
+        checked_at:
+          type: string
+        expires_at:
+          type: string
+      required:
+        - app_id
+        - version_id
+        - kind
+      additionalProperties: false
+    DeleteAppVersionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        app_id:
+          type: string
+        version_id:
+          type: string
+        storage_prefix:
+          type: string
+        deleted:
+          type: boolean
+        warnings:
+          type: array
+          items:
+            type: string
+      required:
+        - id
+        - app_id
+        - version_id
+        - deleted
+        - warnings
+      additionalProperties: false
+    version_AppVersionRecord_app_AppManifest:
+      type: object
+      properties:
+        version:
+          $ref: "#/components/schemas/AppVersionRecord"
+        app: {}
+      required:
+        - version
+      additionalProperties: false
+    StartAppBuildResponse:
+      type: object
+      properties:
+        workflow_id:
+          type: string
+        run_id:
+          type: string
+        app_id:
+          type: string
+        version_id:
+          type: string
+        rebuild_version_record_id:
+          type: string
+        source_ref:
+          type: string
+        source_ref_type:
+          $ref: "#/components/schemas/Extract_AppVersionGitRefType_branch_tag_commit"
+      required:
+        - workflow_id
+        - run_id
+        - app_id
+      additionalProperties: false
+    StartAppScaffoldResponse:
+      type: object
+      properties:
+        workflow_id:
+          type: string
+        run_id:
+          type: string
+        app_id:
+          type: string
+        app_record_id:
+          type: string
+        git_url:
+          type: string
+        create_version:
+          type: boolean
+      required:
+        - workflow_id
+        - run_id
+        - app_id
+        - create_version
+      additionalProperties: false
+    StartAppScaffoldRequest:
+      type: object
+      properties:
+        app_id:
+          type: string
+          description: App id / package name to create. It is normalized to the same slug
+            rules used by
+        title:
+          type: string
+        description:
+          type: string
+        modules:
+          type: array
+          items:
+            $ref: "#/components/schemas/AppScaffoldModule"
+        create_version:
+          type: boolean
+          description: Start an initial app version build after the source has been
+            pushed. Defaults to true.
+      required:
+        - app_id
+      additionalProperties: false
+    AppScaffoldProgress:
+      type: object
+      properties:
+        status:
+          $ref: "#/components/schemas/AppScaffoldProgressStatus"
+        step:
+          type: string
+        app_id:
+          type: string
+        app_record_id:
+          type: string
+        installation_id:
+          type: string
+        git_url:
+          type: string
+        files:
+          type: number
+        initial_version_build:
+          $ref: "#/components/schemas/StartAppBuildResponse"
+        error:
+          type: string
+        error_details:
+          type: array
+          items:
+            type: string
+        updated_at:
+          type: string
+      required:
+        - status
+        - step
+        - updated_at
+      additionalProperties: false
+    StartAppBuildRequest:
+      type: object
+      properties:
+        source_ref:
+          type: string
+          description: Source branch, tag, or commit to build. When omitted, the app
+            source configuration chooses its default branch.
+        source_ref_type:
+          $ref: "#/components/schemas/Extract_AppVersionGitRefType_branch_tag_commit"
+        trigger:
+          $ref: "#/components/schemas/AppBuildTrigger"
+        target:
+          $ref: "#/components/schemas/AppVersionTarget"
+        title:
+          type: string
+        description:
+          type: string
+      additionalProperties: false
+    AppBuildProgress:
+      type: object
+      properties:
+        status:
+          $ref: "#/components/schemas/AppBuildProgressStatus"
+        step:
+          type: string
+        app_id:
+          type: string
+        version_id:
+          type: string
+        source_ref:
+          type: string
+        source_ref_type:
+          $ref: "#/components/schemas/Extract_AppVersionGitRefType_branch_tag_commit"
+        source_commit:
+          type: string
+        file_count:
+          type: number
+        app_url:
+          type: string
+        error:
+          type: string
+        updated_at:
+          type: string
+      required:
+        - status
+        - step
+        - updated_at
+      additionalProperties: false
     AppManifest:
       type: object
       properties:
@@ -3075,6 +3636,24 @@ components:
           type: string
           description: A color name to be used as the color of the app card (e.g. blue,
             red, green, etc.) If not specified a random color will be picked.
+        preview_screenshot:
+          type: object
+          properties:
+            agent_run_id:
+              type: string
+              description: Agent run id whose artifact storage holds the screenshot.
+            artifact:
+              type: string
+              description: Artifact path within that storage, e.g.
+                "preview-checks/app-preview-<ts>.png".
+          required:
+            - agent_run_id
+            - artifact
+          additionalProperties: false
+          description: Optional preview screenshot for the app-management UI, captured by
+            the builder during a build/QA run. Resolved client-side from the
+            owning agent run's artifact storage, so it carries both the run id
+            and the artifact path.
         status:
           type: string
           enum:
@@ -3141,6 +3720,10 @@ components:
 
             - processes
 
+            - templates
+
+            - dashboards
+
             - settings
 
             - all (the default if no scope is provided)  You can also use
@@ -3160,6 +3743,9 @@ components:
         version:
           type: string
           description: Optional app version string (e.g. "1.0.0") — informational.
+        source:
+          $ref: "#/components/schemas/AppManifestSource"
+          description: Source metadata for generated or synced app manifests.
         tags:
           type: array
           items:
@@ -3177,9 +3763,6 @@ components:
         account:
           type: string
           description: The owning account. Undefined for apps imported from a master region.
-        source:
-          $ref: "#/components/schemas/AppManifestSource"
-          description: Source metadata for generated or synced app manifests.
         created_at:
           type: string
         updated_at:
@@ -3226,6 +3809,24 @@ components:
           type: string
           description: A color name to be used as the color of the app card (e.g. blue,
             red, green, etc.) If not specified a random color will be picked.
+        preview_screenshot:
+          type: object
+          properties:
+            agent_run_id:
+              type: string
+              description: Agent run id whose artifact storage holds the screenshot.
+            artifact:
+              type: string
+              description: Artifact path within that storage, e.g.
+                "preview-checks/app-preview-<ts>.png".
+          required:
+            - agent_run_id
+            - artifact
+          additionalProperties: false
+          description: Optional preview screenshot for the app-management UI, captured by
+            the builder during a build/QA run. Resolved client-side from the
+            owning agent run's artifact storage, so it carries both the run id
+            and the artifact path.
         status:
           type: string
           enum:
@@ -3292,6 +3893,10 @@ components:
 
             - processes
 
+            - templates
+
+            - dashboards
+
             - settings
 
             - all (the default if no scope is provided)  You can also use
@@ -3311,6 +3916,13 @@ components:
         version:
           type: string
           description: Optional app version string (e.g. "1.0.0") — informational.
+        source:
+          $ref: "#/components/schemas/AppSourceConfig"
+          description: Source repository configuration for apps generated and maintained
+            through AppGen. Branches are mutable development lanes; immutable
+            app versions record their exact source commit in
+            AppVersionRecord.source_commit and
+            AppVersionRecord.storage.source_git.
         tags:
           type: array
           items:
@@ -3493,6 +4105,60 @@ components:
       type: array
       items:
         $ref: "#/components/schemas/AppToolCollection"
+    AppInspectionResult:
+      type: object
+      properties:
+        app_id:
+          type: string
+        name:
+          type: string
+        version:
+          type: string
+        endpoint:
+          type: string
+          description: The resolved package endpoint for the current environment, if any.
+        endpoint_reachable:
+          type: boolean
+          description: True when the package endpoint responded to the capability probe.
+        installed:
+          type: boolean
+          description: True when the app is installed in the current project.
+        access_control:
+          type: string
+        capabilities:
+          type: array
+          items:
+            $ref: "#/components/schemas/AppPackageScope"
+          description: The capabilities declared on the manifest.
+        package:
+          type: array
+          items:
+            $ref: "#/components/schemas/AppInspectionCapabilityReport"
+          description: What the promoted package exposes, per capability.
+        issues:
+          type: array
+          items:
+            $ref: "#/components/schemas/AppInspectionIssue"
+          description: Diagnostics — errors and warnings about the registration state.
+        probe_error:
+          type: string
+          description: Populated when the package probe itself failed (endpoint
+            error/unreachable).
+      required:
+        - app_id
+        - name
+        - endpoint_reachable
+        - installed
+        - capabilities
+        - package
+        - issues
+      additionalProperties: false
+      description: "Result of inspecting an app's registration: the resolved manifest
+        state, what the promoted package actually exposes per capability, and
+        diagnostics. This is the ground truth used by the
+        `app_inspect_registration` agent tool and the Build › App inspection UI
+        to verify what is registered vs declared, instead of inferring it from
+        failed object/import calls."
     AppInstallationWithManifestArray:
       type: array
       items:
@@ -9433,6 +10099,12 @@ components:
           description: Storage options for inference result. When provided, Studio will
             store the result to the specified path after inference completes
             (before completing the Temporal activity).
+        completion_mode:
+          $ref: "#/components/schemas/AsyncCompletionMode"
+          description: Controls the value used to complete the Temporal activity. Defaults
+            to `conversation_state` for agent resume/continuation calls. Use
+            `text` for one-shot helper calls, such as checkpoint summaries, that
+            need the model's text result instead of merged conversation state.
       required:
         - run_id
       additionalProperties: false
@@ -9483,6 +10155,15 @@ components:
           type: string
           description: Compact, redacted latest user intent for reviewer-style system
             interactions.
+        tool_input_refs:
+          $ref: "#/components/schemas/ExternalizedToolInputRefs"
+          description: >-
+            Transport sidecar for large generated tool input fields.
+
+
+            These refs are intentionally kept out of tool_use.tool_input so they
+            are not shown to the model. Tool execution hydrates them from
+            artifact storage immediately before activity validation.
         output:
           type: array
           items:
@@ -9657,6 +10338,16 @@ components:
             When set, artifacts are stored under
             agents/{agent_run_id}/workstreams/{launch_id}/ to consolidate all
             artifacts under the parent agent run."
+        app_version:
+          type: string
+          description: The exact app version this run is pinned to, derived from the
+            `@version` on the started interaction ref / the
+            `x-vertesia-app-version` header at start. Persisted on the state so
+            it survives resume, and applied to the activity client
+            (`withAppVersion`) so every app-owned ref the run resolves —
+            interactions, types, processes, tools — targets this version instead
+            of the current/promoted one. Undefined → current/promoted.
+            Resolution-time only; never a stored capability-ref version.
       required:
         - run
         - environment
@@ -9721,6 +10412,11 @@ components:
       properties:
         content:
           type: string
+        content_ref:
+          $ref: "#/components/schemas/TextArtifactReference"
+          description: Reference to text content stored outside Temporal/API payloads.
+            Servers that execute the next model turn should resolve this before
+            constructing the provider prompt.
         is_error:
           type: boolean
         files:
@@ -9747,6 +10443,30 @@ components:
         - is_error
         - tool_use_id
       additionalProperties: false
+    TextArtifactReference:
+      type: object
+      properties:
+        storage_id:
+          type: string
+        artifact_path:
+          type: string
+        display_ref:
+          type: string
+        sha256:
+          type: string
+        size_bytes:
+          type: number
+        content_type:
+          type: string
+      required:
+        - storage_id
+        - artifact_path
+        - display_ref
+        - sha256
+        - size_bytes
+        - content_type
+      additionalProperties: false
+      description: Reference to text content externalized to agent artifact storage.
     ToolResultMeta:
       type: object
       properties:
@@ -9814,6 +10534,34 @@ components:
         - created
         - updated
         - deleted
+    ExternalizedToolInputRefs:
+      type: object
+      additionalProperties:
+        type: array
+        items:
+          $ref: "#/components/schemas/ExternalizedToolInputRef"
+    ExternalizedToolInputRef:
+      type: object
+      properties:
+        tool_name:
+          type: string
+        input_path:
+          type: array
+          items:
+            type: string
+            const: content
+          minItems: 1
+          maxItems: 1
+        ref:
+          $ref: "#/components/schemas/TextArtifactReference"
+      required:
+        - tool_name
+        - input_path
+        - ref
+      additionalProperties: false
+      description: Sidecar metadata for generated tool input fields that were stored
+        outside model-visible tool_input. Keyed by tool_use.id on
+        ConversationState.
     WorkflowAncestor:
       type: object
       properties:
@@ -10111,6 +10859,11 @@ components:
         - path
       additionalProperties: false
       description: Options for storing inference results to cloud storage
+    AsyncCompletionMode:
+      type: string
+      enum:
+        - conversation_state
+        - text
     PromptTemplateInteractionUsage:
       type: object
       properties:
@@ -11109,6 +11862,346 @@ components:
         - name
         - email
       additionalProperties: false
+    AppRepoTreeEntry:
+      type: object
+      properties:
+        name:
+          type: string
+          description: File or directory name (last path segment).
+        path:
+          type: string
+          description: Path relative to the repo root.
+        type:
+          type: string
+          enum:
+            - blob
+            - tree
+          description: Whether the entry is a file (`blob`) or a directory (`tree`).
+      required:
+        - name
+        - path
+        - type
+      additionalProperties: false
+      description: One entry in an app git-repo directory listing
+        (see  {@link  AppRepoTree } ).
+    AppRepoCommit:
+      type: object
+      properties:
+        commit:
+          type: string
+          description: Full commit SHA.
+        message:
+          type: string
+          description: Complete commit message.
+        author:
+          type: string
+          description: Commit author name, when available.
+        date:
+          type: string
+          description: Commit author date as an ISO-8601 string, when available.
+      required:
+        - commit
+        - message
+      additionalProperties: false
+      description: One commit that inserted or changed a file in an app git repository.
+    AppRepoRef:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Short ref name (e.g. `main`, `v1.0.0`).
+        commit:
+          type: string
+          description: Commit hash the ref points at (annotated tags are peeled to their
+            commit).
+        commit_subject:
+          type: string
+          description: First line of the commit message, when available.
+        commit_date:
+          type: string
+          description: Commit date as an ISO-8601 string, when available.
+        commit_author:
+          type: string
+          description: Commit author name, when available.
+      required:
+        - name
+        - commit
+      additionalProperties: false
+      description: A branch or tag in an app git repo, resolved to its latest commit.
+    AppDevelopmentTask:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Task slug derived from the branch name.
+        branch:
+          type: string
+          description: Complete Git branch name.
+        source_commit:
+          type: string
+          description: Commit currently at the branch head.
+        commit_date:
+          type: string
+          description: Branch-head commit date, when available.
+      required:
+        - id
+        - branch
+        - source_commit
+      additionalProperties: false
+      description: A mutable app development task represented by an `agent/*` Git branch.
+    AgentRunSearchHit:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Agent run ID
+        score:
+          type: number
+          description: Relevance score
+        interaction:
+          type: string
+          description: Interaction ID
+        run_type:
+          $ref: "#/components/schemas/RunType"
+          description: Public-facing runtime mode
+        run_kind:
+          $ref: "#/components/schemas/RunKind"
+          description: Internal run discriminator
+        interaction_name:
+          type: string
+          description: Human-readable interaction name
+        status:
+          $ref: "#/components/schemas/AgentRunStatus"
+          description: Current status
+        activity_state:
+          $ref: "#/components/schemas/ConversationActivityState"
+          description: Whether the agent is currently working or idle
+        started_at:
+          type: string
+          description: When the run started
+        completed_at:
+          type: string
+          description: When the run completed
+        started_by:
+          type: string
+          description: Who started the run
+        title:
+          type: string
+          description: Conversation title
+        topic:
+          type: string
+          description: Conversation topic
+        lessons_learned:
+          type: array
+          items:
+            type: string
+          description: Lessons learned from the conversation
+        tags:
+          type: array
+          items:
+            type: string
+          description: Tags
+        categories:
+          type: array
+          items:
+            type: string
+          description: Categories
+        interactive:
+          type: boolean
+          description: Whether the agent accepts user input
+        collection_id:
+          type: string
+          description: Collection ID
+        content_type:
+          $ref: "#/components/schemas/ContentObjectTypeRef"
+          description: Content type
+        tool_names:
+          type: array
+          items:
+            type: string
+          description: Tools configured for this run
+        schedule_id:
+          type: string
+          description: Schedule ID (if schedule-triggered)
+        event_subscription_id:
+          type: string
+          description: Event subscription ID (if event-triggered)
+        event_ref:
+          $ref: "#/components/schemas/EventRef"
+          description: Event reference (if event-triggered)
+        source_type:
+          $ref: "#/components/schemas/AgentRunType"
+          description: How the run was created
+        type:
+          $ref: "#/components/schemas/AgentRunType"
+          deprecated: true
+          x-deprecated-message: Use source_type for creation source and run_type for runtime mode.
+          description: "Deprecated: Use source_type for creation source and run_type for
+            runtime mode."
+        created_at:
+          type: string
+          description: Created timestamp
+        updated_at:
+          type: string
+          description: Updated timestamp
+      required:
+        - id
+        - score
+        - status
+        - started_at
+        - started_by
+        - interactive
+        - created_at
+        - updated_at
+      additionalProperties: false
+      description: A single search hit from Elasticsearch.
+    RunType:
+      type: string
+      enum:
+        - autonomous
+        - supervised
+        - programmatic
+      description: Public-facing runtime mode.
+    RunKind:
+      type: string
+      enum:
+        - agent
+        - process
+      description: Internal discriminator key for documents stored in the agent_runs
+        collection.
+    AgentRunStatus:
+      type: string
+      enum:
+        - created
+        - running
+        - completed
+        - failed
+        - cancelled
+      description: Status of an agent run through its lifecycle.
+    ConversationActivityState:
+      type: string
+      enum:
+        - working
+        - idle
+    ContentObjectTypeRef:
+      type: object
+      discriminator:
+        propertyName: ref_type
+        mapping:
+          stored: "#/components/schemas/StoredTypeRef"
+          incode: "#/components/schemas/InCodeTypeRef"
+      required:
+        - ref_type
+      oneOf:
+        - $ref: "#/components/schemas/StoredTypeRef"
+        - $ref: "#/components/schemas/InCodeTypeRef"
+    StoredTypeRef:
+      type: object
+      properties:
+        ref_type:
+          type: string
+          const: stored
+        id:
+          type: string
+          description: MongoDB ObjectId string for stored types
+        name:
+          type: string
+        default_view:
+          type: string
+          enum:
+            - auto
+            - text
+            - pdf
+            - image
+            - properties
+          description: Display hint from the type's intake policy (`intake.default_view`).
+            Enriched by the API on single-object reads so clients can pick the
+            initial view without fetching the type. Absent on list responses and
+            older servers.
+      required:
+        - ref_type
+        - id
+        - name
+      additionalProperties: false
+    InCodeTypeRef:
+      type: object
+      properties:
+        ref_type:
+          type: string
+          const: incode
+        id:
+          type: string
+          description: Namespaced identifier for in-code types (e.g. "sys:Invoice",
+            "app:myapp:Contract")
+        name:
+          type: string
+        default_view:
+          type: string
+          enum:
+            - auto
+            - text
+            - pdf
+            - image
+            - properties
+          description: Display hint from the type's intake policy (`intake.default_view`).
+            Enriched by the API on single-object reads so clients can pick the
+            initial view without fetching the type. Absent on list responses and
+            older servers.
+      required:
+        - ref_type
+        - id
+        - name
+      additionalProperties: false
+    EventRef:
+      type: object
+      properties:
+        event_id:
+          type: string
+        root_event_id:
+          type: string
+        caused_by_event_id:
+          type: string
+        hop_count:
+          type: number
+        event_category:
+          $ref: "#/components/schemas/EventCategory"
+        action:
+          type: string
+        resource_type:
+          type: string
+        resource_id:
+          type: string
+        account_id:
+          type:
+            - string
+            - "null"
+        project_id:
+          type:
+            - string
+            - "null"
+        tenant_id:
+          type:
+            - string
+            - "null"
+      required:
+        - event_id
+        - root_event_id
+        - hop_count
+        - event_category
+        - action
+        - resource_type
+        - resource_id
+        - account_id
+        - project_id
+        - tenant_id
+      additionalProperties: false
+    AgentRunType:
+      type: string
+      enum:
+        - api
+        - schedule
+        - event_subscription
+      description: How the agent run was created.
     AppUIConfig:
       type: object
       properties:
@@ -11207,6 +12300,575 @@ components:
       enum:
         - app_portal
         - composite_app
+    AgentToolDefinition:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        input_schema:
+          type: object
+          additionalProperties: true
+        url:
+          type: string
+          description: 'The tool execution URL. It can be an absolute URL or a path in
+            which case the URL is obtained using the base URL of the tool server
+            API. Ex: http://tool-server.com/api/ Example of relative URLs:
+            "tools/my-tool-collection" or "/api/tools/my-tool-collection"'
+        category:
+          type: string
+          description: The tool category if any - for UI purposes.
+        default:
+          type: boolean
+          description: |-
+            Whether this tool is available by default.
+            - true/undefined: Tool is always available to agents
+            - false: Tool is only available when enabled by a skill via `tools`
+        tools:
+          type: array
+          items:
+            type: string
+          description: "For skill tools (`learn_*`): the tool names this skill enables
+            when called. Matches the `tools:` key used in SKILL.md frontmatter
+            and built-in skill definitions — one name across the whole stack."
+        annotations:
+          $ref: "#/components/schemas/MCPToolAnnotations"
+          description: MCP tool annotations providing hints about tool behavior and safety.
+        approval_class:
+          $ref: "#/components/schemas/AgentToolApprovalClass"
+          description: Approval classification used by interactive agent approval modes.
+            Use `requires_confirmation` for actions that must prompt even in
+            full-control mode.
+      additionalProperties: false
+      required:
+        - input_schema
+        - name
+      description: Tool definition with optional activation control for agent exposure.
+    MCPToolAnnotations:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Human-readable display name for the tool
+        readOnlyHint:
+          type: boolean
+          description: If true, the tool does not modify any state
+        destructiveHint:
+          type: boolean
+          description: If true, the tool may perform irreversible destructive operations
+        idempotentHint:
+          type: boolean
+          description: If true, calling the tool multiple times with the same args has no
+            additional effect
+        openWorldHint:
+          type: boolean
+          description: If true, the tool interacts with external entities outside the
+            local environment
+      additionalProperties: false
+      description: Metadata hints from MCP tool annotations (per MCP spec).
+    AgentToolApprovalClass:
+      type: string
+      enum:
+        - read_only
+        - side_effecting
+        - control
+        - requires_confirmation
+      description: >-
+        Approval behavior class for a tool exposed to agents.
+
+
+        - `read_only`: reads or inspects state without changing Vertesia,
+        external systems, or user-visible artifacts.
+
+        - `side_effecting`: can create, update, delete, send, execute, schedule,
+        or otherwise change state.
+
+        - `control`: affects agent control flow or tool availability, not user
+        data or external systems.
+
+        - `requires_confirmation`: high-impact action that must ask the user
+        even in interactive full-control mode.
+    AppDashboardDefinition:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Local app dashboard ID.
+        name:
+          type: string
+          description: Machine-friendly dashboard name. Defaults to `id`.
+        title:
+          type: string
+          description: Display title. Defaults to `name` or `id`.
+        description:
+          type: string
+          description: User-facing description.
+        tags:
+          type: array
+          items:
+            type: string
+          description: Tags for discovery and filtering.
+        dataSource:
+          $ref: "#/components/schemas/DashboardDataSource"
+          description: Data source used to populate Vega `data.values`.
+        query:
+          type: string
+          description: SQL query shortcut for app dashboards backed by data stores.
+        queryLimit:
+          type: number
+          description: Maximum SQL rows to return.
+        queryParameters:
+          $ref: "#/components/schemas/StringValueMap"
+          description: Default values for SQL {{param}} placeholders.
+        spec:
+          type: object
+          additionalProperties: true
+          description: Complete Vega-Lite specification for the dashboard.
+        queries:
+          type: array
+          items:
+            $ref: "#/components/schemas/DashboardQuery"
+          description: Legacy named SQL queries.
+        panels:
+          type: array
+          items:
+            $ref: "#/components/schemas/DashboardPanel"
+          description: Legacy panel definitions.
+        layout:
+          $ref: "#/components/schemas/DashboardLayout"
+          description: Legacy dashboard layout.
+      required:
+        - id
+      additionalProperties: false
+      description: >-
+        Dashboard definition contributed by an app package.
+
+
+        App dashboard IDs are local to the app. The platform exposes them as
+        `app:<app_name>:<id>` when listing or retrieving dashboards.
+    DashboardDataSource:
+      description: Data source for a Vega dashboard.
+      type: object
+      oneOf:
+        - $ref: "#/components/schemas/DashboardSqlDataSource"
+        - $ref: "#/components/schemas/DashboardStoreElasticsearchDataSource"
+      discriminator:
+        propertyName: kind
+        mapping:
+          data_sql: "#/components/schemas/DashboardSqlDataSource"
+          store_es_dsl: "#/components/schemas/DashboardStoreElasticsearchDataSource"
+      required:
+        - kind
+    DashboardSqlDataSource:
+      type: object
+      properties:
+        kind:
+          type: string
+          const: data_sql
+        query:
+          type: string
+          description: SQL query that returns all rows for the dashboard.
+        queryLimit:
+          type: number
+          description: Maximum rows to return from the query.
+        queryParameters:
+          $ref: "#/components/schemas/StringValueMap"
+          description: Default values for SQL {{param}} placeholders.
+      required:
+        - kind
+        - query
+      additionalProperties: false
+      description: Dashboard data source backed by a Data Platform SQL query.
+    DashboardStoreElasticsearchDataSource:
+      type: object
+      properties:
+        kind:
+          type: string
+          const: store_es_dsl
+        dsl:
+          $ref: "#/components/schemas/DashboardElasticsearchDsl"
+          description: Elasticsearch DSL query executed through the secured Store query API.
+        result:
+          $ref: "#/components/schemas/DashboardElasticsearchResultMapping"
+          description: Result mapping. Defaults to `hits`.
+      required:
+        - kind
+        - dsl
+      additionalProperties: false
+      description: Dashboard data source backed by Vertesia Store Elasticsearch DSL.
+    DashboardElasticsearchDsl:
+      type: object
+      properties:
+        query:
+          type: object
+          additionalProperties: true
+        aggs:
+          type: object
+          additionalProperties: true
+        size:
+          type: number
+        from:
+          type: number
+        sort:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+      additionalProperties: false
+      description: Elasticsearch DSL supported by dashboard data sources. Queries
+        execute through Vertesia Store, so project/security filtering remains
+        server-side.
+    DashboardElasticsearchResultMapping:
+      description: How an Elasticsearch DSL result should be converted into Vega rows.
+      type: object
+      oneOf:
+        - type: object
+          properties:
+            type:
+              type: string
+              const: hits
+          required:
+            - type
+          additionalProperties: false
+        - type: object
+          properties:
+            type:
+              type: string
+              const: aggregation_buckets
+            path:
+              type: string
+              description: Dot path under `aggregations` that contains a `buckets` array.
+            keyField:
+              type: string
+              description: Output field name for bucket key. Defaults to `key`.
+            countField:
+              type: string
+              description: Output field name for doc count. Defaults to `doc_count`.
+          required:
+            - type
+            - path
+          additionalProperties: false
+      discriminator:
+        propertyName: type
+      required:
+        - type
+    DashboardQuery:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Query name (used as data source reference in Vega specs)
+        sql:
+          type: string
+          description: SQL query (SELECT only). Can include {{param_name}} placeholders
+            for dynamic values.
+        description:
+          type: string
+          description: Human-readable description
+        limit:
+          type: number
+          description: Maximum rows to return
+        parameters:
+          $ref: "#/components/schemas/StringValueMap"
+          description: Default values for SQL parameters. Keys are parameter names
+            (without braces).
+      required:
+        - name
+        - sql
+      additionalProperties: false
+      description: Named SQL query that maps to a Vega data source. Supports
+        parameterized SQL with {{param_name}} placeholders.
+    DashboardPanel:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Panel ID (auto-generated if not provided)
+        title:
+          type: string
+          description: Panel title
+        spec:
+          type: object
+          additionalProperties: true
+          description: Vega or Vega-Lite specification
+        vegaLite:
+          type: boolean
+          description: "Whether spec is Vega-Lite (default: true)"
+        dataSources:
+          type: array
+          items:
+            type: string
+          description: Query names that populate this panel's data sources
+        position:
+          $ref: "#/components/schemas/DashboardPanelPosition"
+          description: Position in the dashboard grid
+      required:
+        - title
+        - spec
+        - dataSources
+        - position
+      additionalProperties: false
+      description: Dashboard panel with Vega/Vega-Lite visualization.
+    DashboardPanelPosition:
+      type: object
+      properties:
+        row:
+          type: number
+          description: Row index (0-based)
+        col:
+          type: number
+          description: Column index (0-based)
+        width:
+          type: number
+          description: "Width in grid cells (default: 1)"
+        height:
+          type: number
+          description: "Height in grid cells (default: 1)"
+      required:
+        - row
+        - col
+      additionalProperties: false
+      description: Panel position within the dashboard grid.
+    DashboardLayout:
+      type: object
+      properties:
+        columns:
+          type: number
+          description: "Number of columns in the grid (default: 2)"
+        cellWidth:
+          type: number
+          description: "Width of each cell in pixels (default: 600)"
+        cellHeight:
+          type: number
+          description: "Height of each cell in pixels (default: 400)"
+        padding:
+          type: number
+          description: "Padding between cells in pixels (default: 20)"
+      required:
+        - columns
+        - cellWidth
+        - cellHeight
+        - padding
+      additionalProperties: false
+      description: Dashboard layout configuration.
+    AppWidgetInfoMap:
+      type: object
+      additionalProperties:
+        $ref: "#/components/schemas/AppWidgetInfo"
+    AppWidgetInfo:
+      type: object
+      properties:
+        collection:
+          type: string
+        skill:
+          type: string
+        url:
+          type: string
+      required:
+        - collection
+        - skill
+        - url
+      additionalProperties: false
+    RemoteActivityDefinition:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Activity name (snake_case, unique within the collection)
+        collection:
+          type: string
+          description: Collection name this activity belongs to
+        title:
+          type: string
+          description: Display title
+        description:
+          type: string
+          description: Description of what the activity does
+        input_schema:
+          type: object
+          additionalProperties: true
+          description: JSON Schema for the activity input parameters
+        output_schema:
+          type: object
+          additionalProperties: true
+          description: JSON Schema for the activity output
+        url:
+          type: string
+          description: The activity execution URL. Can be absolute or relative to the tool
+            server base URL. If not provided, the collection-specific activities
+            endpoint is used.
+        options:
+          $ref: "#/components/schemas/DSLActivityOptions"
+          description: Suggested timeout and retry configuration
+      required:
+        - name
+      additionalProperties: false
+      description: "Definition of a remote activity exposed by a tool server for use
+        in DSL workflows. Remote activities are identified in workflow steps
+        using colon-separated names:
+        `app:<app_name>:<collection>:<activity_name>` (e.g.
+        `app:my-nlp-app:examples:word_count`)."
+    DSLActivityOptions:
+      type: object
+      properties:
+        startToCloseTimeout:
+          $ref: "#/components/schemas/DurationValue"
+        heartbeatTimeout:
+          $ref: "#/components/schemas/DurationValue"
+        scheduleToStartTimeout:
+          $ref: "#/components/schemas/DurationValue"
+        scheduleToCloseTimeout:
+          $ref: "#/components/schemas/DurationValue"
+        retry:
+          $ref: "#/components/schemas/DSLRetryPolicy"
+      additionalProperties: false
+      description: The payload for a DSL activity options.
+    DurationValue:
+      type:
+        - string
+        - number
+    DSLRetryPolicy:
+      type: object
+      properties:
+        backoffCoefficient:
+          type: number
+        initialInterval:
+          $ref: "#/components/schemas/DurationValue"
+        maximumAttempts:
+          type: number
+        maximumInterval:
+          $ref: "#/components/schemas/DurationValue"
+        nonRetryableErrorTypes:
+          type: array
+          items:
+            type: string
+      additionalProperties: false
+      description: The payload for a DSL retry policy.
+    AppVersionKind:
+      type: string
+      enum:
+        - design
+        - version
+    AppVersionState:
+      type: string
+      enum:
+        - ready
+        - failed
+        - expired
+    AppVersionTarget:
+      type: string
+      enum:
+        - static
+        - service
+    AppVersionStorage:
+      type: object
+      properties:
+        tenant_id:
+          type: string
+        app_prefix:
+          type: string
+        artifacts_prefix:
+          type: string
+        source_archive:
+          type: string
+        source_git:
+          $ref: "#/components/schemas/AppVersionGitSource"
+        build_prefix:
+          type: string
+        manifest_path:
+          type: string
+        service_archive:
+          type: string
+        live_metadata_path:
+          type: string
+      additionalProperties: false
+    AppVersionGitSource:
+      type: object
+      properties:
+        url:
+          type: string
+        remote:
+          type: string
+        ref:
+          type: string
+          description: The source ref that should be used to reproduce this version.
+            Immutable app versions use the exact commit SHA rather than a
+            mutable branch or tag.
+        ref_type:
+          $ref: "#/components/schemas/AppVersionGitRefType"
+        branch:
+          type: string
+        tag:
+          type: string
+        commit:
+          type: string
+        dirty:
+          type: boolean
+        pushed:
+          type: boolean
+        push_warning:
+          type: string
+      additionalProperties: false
+    AppVersionGitRefType:
+      type: string
+      enum:
+        - branch
+        - tag
+        - commit
+        - detached
+    AppVersionUrls:
+      type: object
+      properties:
+        live_url:
+          type: string
+        app_url:
+          type: string
+        plugin_url:
+          type: string
+        package_url:
+          type: string
+        internal_preview_url:
+          type: string
+      additionalProperties: false
+    Extract_AppVersionGitRefType_branch_tag_commit:
+      type: string
+      enum:
+        - branch
+        - tag
+        - commit
+    AppScaffoldModule:
+      type: string
+      enum:
+        - service
+        - assistant
+        - content-app
+        - examples
+    AppScaffoldProgressStatus:
+      type: string
+      enum:
+        - queued
+        - reserving
+        - scaffolding
+        - pushing
+        - building
+        - completed
+        - failed
+    AppBuildTrigger:
+      type: string
+      enum:
+        - ui
+        - git_push
+        - agent
+        - api
+    AppBuildProgressStatus:
+      type: string
+      enum:
+        - queued
+        - resolving
+        - building
+        - completed
+        - failed
     ToolCollectionObject:
       type: object
       discriminator:
@@ -11387,6 +13049,31 @@ components:
         - processes
         - views
         - templates
+        - dashboards
+    AppManifestSource:
+      type: object
+      properties:
+        kind:
+          type: string
+          const: git
+        git:
+          type: object
+          properties:
+            url:
+              type: string
+            default_branch:
+              type: string
+            production_branch:
+              type: string
+            development_branch:
+              type: string
+          required:
+            - url
+          additionalProperties: false
+      required:
+        - kind
+        - git
+      additionalProperties: false
     AppAccessControl:
       type: string
       enum:
@@ -11411,27 +13098,28 @@ components:
 
         Declared on the manifest as the app's default. May be overridden
         per-installation.
-    AppManifestSource:
+    AppSourceConfig:
       type: object
       properties:
         kind:
           type: string
           const: git
         git:
-          type: object
-          properties:
-            url:
-              type: string
-            default_branch:
-              type: string
-            development_branch:
-              type: string
-          required:
-            - url
-          additionalProperties: false
+          $ref: "#/components/schemas/AppGitSourceConfig"
       required:
         - kind
-        - git
+      additionalProperties: false
+    AppGitSourceConfig:
+      type: object
+      properties:
+        url:
+          type: string
+        default_branch:
+          type: string
+        production_branch:
+          type: string
+        development_branch:
+          type: string
       additionalProperties: false
     AppInstallationOAuthBinding:
       type: object
@@ -11519,95 +13207,72 @@ components:
         - tools
       additionalProperties: false
       description: A description of the tools provided by an app
-    AgentToolDefinition:
+    AppPackageScope:
+      type: string
+      enum:
+        - ui
+        - tools
+        - interactions
+        - types
+        - processes
+        - views
+        - templates
+        - dashboards
+        - settings
+        - widgets
+        - activities
+        - all
+    AppInspectionCapabilityReport:
       type: object
       properties:
-        name:
-          type: string
-        description:
-          type: string
-        input_schema:
-          type: object
-          additionalProperties: true
-        url:
-          type: string
-          description: 'The tool execution URL. It can be an absolute URL or a path in
-            which case the URL is obtained using the base URL of the tool server
-            API. Ex: http://tool-server.com/api/ Example of relative URLs:
-            "tools/my-tool-collection" or "/api/tools/my-tool-collection"'
-        category:
-          type: string
-          description: The tool category if any - for UI purposes.
-        default:
+        capability:
+          $ref: "#/components/schemas/AppPackageScope"
+        declared:
           type: boolean
-          description: |-
-            Whether this tool is available by default.
-            - true/undefined: Tool is always available to agents
-            - false: Tool is only available when enabled by a skill via `tools`
-        tools:
+          description: True when the manifest's `capabilities` array declares this
+            capability.
+        exposed_ids:
           type: array
           items:
             type: string
-          description: "For skill tools (`learn_*`): the tool names this skill enables
-            when called. Matches the `tools:` key used in SKILL.md frontmatter
-            and built-in skill definitions — one name across the whole stack."
-        annotations:
-          $ref: "#/components/schemas/MCPToolAnnotations"
-          description: MCP tool annotations providing hints about tool behavior and safety.
-        approval_class:
-          $ref: "#/components/schemas/AgentToolApprovalClass"
-          description: Approval classification used by interactive agent approval modes.
-            Use `requires_confirmation` for actions that must prompt even in
-            full-control mode.
-      additionalProperties: false
+          description: The local ids the promoted package actually serves for this
+            capability.
+        exposed_count:
+          type: number
+          description: Convenience count of `exposed_ids`.
       required:
-        - input_schema
-        - name
-      description: Tool definition with optional activation control for agent exposure.
-    MCPToolAnnotations:
+        - capability
+        - declared
+        - exposed_ids
+        - exposed_count
+      additionalProperties: false
+      description: Per-capability report of what an app's promoted package actually
+        exposes, compared against what its manifest declares.
+    AppInspectionIssue:
       type: object
       properties:
-        title:
+        severity:
           type: string
-          description: Human-readable display name for the tool
-        readOnlyHint:
-          type: boolean
-          description: If true, the tool does not modify any state
-        destructiveHint:
-          type: boolean
-          description: If true, the tool may perform irreversible destructive operations
-        idempotentHint:
-          type: boolean
-          description: If true, calling the tool multiple times with the same args has no
-            additional effect
-        openWorldHint:
-          type: boolean
-          description: If true, the tool interacts with external entities outside the
-            local environment
+          enum:
+            - error
+            - warning
+        capability:
+          $ref: "#/components/schemas/AppPackageScope"
+          description: The capability this issue relates to, when applicable (e.g. 'types').
+        code:
+          type: string
+          description: Stable machine code, e.g. 'capability_declared_but_empty',
+            'endpoint_unreachable', 'not_installed'.
+        message:
+          type: string
+          description: Human-readable explanation, safe to surface to the model and the UI.
+      required:
+        - severity
+        - code
+        - message
       additionalProperties: false
-      description: Metadata hints from MCP tool annotations (per MCP spec).
-    AgentToolApprovalClass:
-      type: string
-      enum:
-        - read_only
-        - side_effecting
-        - control
-        - requires_confirmation
-      description: >-
-        Approval behavior class for a tool exposed to agents.
-
-
-        - `read_only`: reads or inspects state without changing Vertesia,
-        external systems, or user-visible artifacts.
-
-        - `side_effecting`: can create, update, delete, send, execute, schedule,
-        or otherwise change state.
-
-        - `control`: affects agent control flow or tool availability, not user
-        data or external systems.
-
-        - `requires_confirmation`: high-impact action that must ask the user
-        even in interactive full-control mode.
+      description: A single diagnostic produced while inspecting an app's registration
+        state.
     AppInstallationListEntry:
       type: object
       properties:
@@ -16534,17 +18199,50 @@ components:
         last_rendered_at:
           type: string
           description: Last render timestamp
+        source:
+          type: string
+          enum:
+            - stored
+            - app
+          description: Source of the dashboard definition. Defaults to stored dashboards.
+        app_name:
+          type: string
+          description: App name when `source` is `app`.
+        readonly:
+          type: boolean
+          description: App dashboards are read-only until cloned into a stored dashboard.
+        dataSource:
+          $ref: "#/components/schemas/DashboardDataSource"
+          description: Data source used to populate Vega `data.values`. When omitted,
+            top-level `query` is treated as a SQL data source for backwards
+            compatibility.
         query:
           type: string
-          description: SQL query that returns all data for the dashboard. Use JOINs, CTEs,
+          description: >-
+            SQL query that returns all data for the dashboard. Use JOINs, CTEs,
             or UNION ALL to combine data from multiple tables. Can include
             {{param_name}} placeholders for dynamic values.
+
+
+            Deprecated: Use `dataSource: { kind: 'data_sql', query }` instead.
+          deprecated: true
+          x-deprecated-message: "Use `dataSource: { kind: 'data_sql', query }` instead."
         queryLimit:
           type: number
-          description: "Maximum rows to return from the query (default: 10000)."
+          description: |-
+            Maximum rows to return from the query (default: 10000).
+
+            Deprecated: Use `dataSource.queryLimit` instead.
+          deprecated: true
+          x-deprecated-message: Use `dataSource.queryLimit` instead.
         queryParameters:
           $ref: "#/components/schemas/StringValueMap"
-          description: Default values for SQL parameters.
+          description: |-
+            Default values for SQL parameters.
+
+            Deprecated: Use `dataSource.queryParameters` instead.
+          deprecated: true
+          x-deprecated-message: Use `dataSource.queryParameters` instead.
         spec:
           type: object
           additionalProperties: true
@@ -16607,12 +18305,14 @@ components:
 
         **New architecture (v2):**
 
-        - Single `query` field with SQL (use JOINs/CTEs for complex data needs)
+        - `dataSource` field with either SQL or Store Elasticsearch DSL
 
         - Single `spec` field with complete Vega-Lite spec (vconcat/hconcat for
         multiple panels)
 
         - Cross-panel interactivity via Vega selections
+
+        - Legacy top-level `query` fields are treated as a SQL data source
 
 
         **Legacy architecture (v1, deprecated):**
@@ -16633,9 +18333,13 @@ components:
         summary:
           type: string
           description: Dashboard summary
+        dataSource:
+          $ref: "#/components/schemas/DashboardDataSource"
+          description: Data source used to populate Vega `data.values`.
         query:
           type: string
-          description: SQL query that returns all data for the dashboard
+          description: SQL query that returns all data for the dashboard. Deprecated
+            shortcut for a SQL data source.
         queryLimit:
           type: number
           description: "Maximum rows to return from the query (default: 10000)"
@@ -16649,11 +18353,10 @@ components:
             panels)
       required:
         - name
-        - query
         - spec
       additionalProperties: false
-      description: Payload for creating a new dashboard. Requires query (SQL) and spec
-        (Vega-Lite).
+      description: Payload for creating a new dashboard. Requires a data source and
+        spec (Vega-Lite).
     UpdateDashboardPayload:
       type: object
       properties:
@@ -16663,9 +18366,13 @@ components:
         summary:
           type: string
           description: Dashboard summary
+        dataSource:
+          $ref: "#/components/schemas/DashboardDataSource"
+          description: Data source used to populate Vega `data.values`.
         query:
           type: string
-          description: SQL query that returns all data for the dashboard
+          description: SQL query that returns all data for the dashboard. Deprecated
+            shortcut for a SQL data source.
         queryLimit:
           type: number
           description: "Maximum rows to return from the query (default: 10000)"
@@ -16734,6 +18441,22 @@ components:
         message:
           type: string
           description: Commit message describing the change
+        dataSource:
+          $ref: "#/components/schemas/DashboardDataSource"
+          description: Snapshot of v2 data source at this version
+        query:
+          type: string
+          description: Snapshot of v2 SQL query at this version
+        queryLimit:
+          type: number
+          description: Snapshot of v2 query limit at this version
+        queryParameters:
+          $ref: "#/components/schemas/StringValueMap"
+          description: Snapshot of v2 query parameters at this version
+        spec:
+          type: object
+          additionalProperties: true
+          description: Snapshot of v2 Vega-Lite spec at this version
         queries:
           type: array
           items:
@@ -17175,139 +18898,6 @@ components:
         - failed
         - operation
         - status
-      additionalProperties: false
-    ContentObjectTypeRef:
-      type: object
-      discriminator:
-        propertyName: ref_type
-        mapping:
-          stored: "#/components/schemas/StoredTypeRef"
-          incode: "#/components/schemas/InCodeTypeRef"
-      required:
-        - ref_type
-      oneOf:
-        - $ref: "#/components/schemas/StoredTypeRef"
-        - $ref: "#/components/schemas/InCodeTypeRef"
-    StoredTypeRef:
-      type: object
-      properties:
-        ref_type:
-          type: string
-          const: stored
-        id:
-          type: string
-          description: MongoDB ObjectId string for stored types
-        name:
-          type: string
-        default_view:
-          type: string
-          enum:
-            - auto
-            - text
-            - pdf
-            - image
-            - properties
-          description: Display hint from the type's intake policy (`intake.default_view`).
-            Enriched by the API on single-object reads so clients can pick the
-            initial view without fetching the type. Absent on list responses and
-            older servers.
-      required:
-        - ref_type
-        - id
-        - name
-      additionalProperties: false
-    InCodeTypeRef:
-      type: object
-      properties:
-        ref_type:
-          type: string
-          const: incode
-        id:
-          type: string
-          description: Namespaced identifier for in-code types (e.g. "sys:Invoice",
-            "app:myapp:Contract")
-        name:
-          type: string
-        default_view:
-          type: string
-          enum:
-            - auto
-            - text
-            - pdf
-            - image
-            - properties
-          description: Display hint from the type's intake policy (`intake.default_view`).
-            Enriched by the API on single-object reads so clients can pick the
-            initial view without fetching the type. Absent on list responses and
-            older servers.
-      required:
-        - ref_type
-        - id
-        - name
-      additionalProperties: false
-    AgentRunType:
-      type: string
-      enum:
-        - api
-        - schedule
-        - event_subscription
-      description: How the agent run was created.
-    AgentRunStatus:
-      type: string
-      enum:
-        - created
-        - running
-        - completed
-        - failed
-        - cancelled
-      description: Status of an agent run through its lifecycle.
-    ConversationActivityState:
-      type: string
-      enum:
-        - working
-        - idle
-    EventRef:
-      type: object
-      properties:
-        event_id:
-          type: string
-        root_event_id:
-          type: string
-        caused_by_event_id:
-          type: string
-        hop_count:
-          type: number
-        event_category:
-          $ref: "#/components/schemas/EventCategory"
-        action:
-          type: string
-        resource_type:
-          type: string
-        resource_id:
-          type: string
-        account_id:
-          type:
-            - string
-            - "null"
-        project_id:
-          type:
-            - string
-            - "null"
-        tenant_id:
-          type:
-            - string
-            - "null"
-      required:
-        - event_id
-        - root_event_id
-        - hop_count
-        - event_category
-        - action
-        - resource_type
-        - resource_id
-        - account_id
-        - project_id
-        - tenant_id
       additionalProperties: false
     AgentRunArchiveState:
       type: string
@@ -17894,126 +19484,6 @@ components:
         - started_by
         - status
         - updated_at
-    RunType:
-      type: string
-      enum:
-        - autonomous
-        - supervised
-        - programmatic
-      description: Public-facing runtime mode.
-    RunKind:
-      type: string
-      enum:
-        - agent
-        - process
-      description: Internal discriminator key for documents stored in the agent_runs
-        collection.
-    AgentRunSearchHit:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Agent run ID
-        score:
-          type: number
-          description: Relevance score
-        interaction:
-          type: string
-          description: Interaction ID
-        run_type:
-          $ref: "#/components/schemas/RunType"
-          description: Public-facing runtime mode
-        run_kind:
-          $ref: "#/components/schemas/RunKind"
-          description: Internal run discriminator
-        interaction_name:
-          type: string
-          description: Human-readable interaction name
-        status:
-          $ref: "#/components/schemas/AgentRunStatus"
-          description: Current status
-        activity_state:
-          $ref: "#/components/schemas/ConversationActivityState"
-          description: Whether the agent is currently working or idle
-        started_at:
-          type: string
-          description: When the run started
-        completed_at:
-          type: string
-          description: When the run completed
-        started_by:
-          type: string
-          description: Who started the run
-        title:
-          type: string
-          description: Conversation title
-        topic:
-          type: string
-          description: Conversation topic
-        lessons_learned:
-          type: array
-          items:
-            type: string
-          description: Lessons learned from the conversation
-        tags:
-          type: array
-          items:
-            type: string
-          description: Tags
-        categories:
-          type: array
-          items:
-            type: string
-          description: Categories
-        interactive:
-          type: boolean
-          description: Whether the agent accepts user input
-        collection_id:
-          type: string
-          description: Collection ID
-        content_type:
-          $ref: "#/components/schemas/ContentObjectTypeRef"
-          description: Content type
-        tool_names:
-          type: array
-          items:
-            type: string
-          description: Tools configured for this run
-        schedule_id:
-          type: string
-          description: Schedule ID (if schedule-triggered)
-        event_subscription_id:
-          type: string
-          description: Event subscription ID (if event-triggered)
-        event_ref:
-          $ref: "#/components/schemas/EventRef"
-          description: Event reference (if event-triggered)
-        source_type:
-          $ref: "#/components/schemas/AgentRunType"
-          description: How the run was created
-        type:
-          $ref: "#/components/schemas/AgentRunType"
-          deprecated: true
-          x-deprecated-message: Use source_type for creation source and run_type for runtime mode.
-          description: "Deprecated: Use source_type for creation source and run_type for
-            runtime mode."
-        created_at:
-          type: string
-          description: Created timestamp
-        updated_at:
-          type: string
-          description: Updated timestamp
-      required:
-        - id
-        - score
-        - status
-        - started_at
-        - started_by
-        - interactive
-        - created_at
-        - updated_at
-      additionalProperties: false
-      description: A single search hit from Elasticsearch.
     CompactMessage:
       type: object
       properties:
@@ -20525,42 +21995,6 @@ components:
         - type
         - query
       additionalProperties: false
-    DSLActivityOptions:
-      type: object
-      properties:
-        startToCloseTimeout:
-          $ref: "#/components/schemas/DurationValue"
-        heartbeatTimeout:
-          $ref: "#/components/schemas/DurationValue"
-        scheduleToStartTimeout:
-          $ref: "#/components/schemas/DurationValue"
-        scheduleToCloseTimeout:
-          $ref: "#/components/schemas/DurationValue"
-        retry:
-          $ref: "#/components/schemas/DSLRetryPolicy"
-      additionalProperties: false
-      description: The payload for a DSL activity options.
-    DurationValue:
-      type:
-        - string
-        - number
-    DSLRetryPolicy:
-      type: object
-      properties:
-        backoffCoefficient:
-          type: number
-        initialInterval:
-          $ref: "#/components/schemas/DurationValue"
-        maximumAttempts:
-          type: number
-        maximumInterval:
-          $ref: "#/components/schemas/DurationValue"
-        nonRetryableErrorTypes:
-          type: array
-          items:
-            type: string
-      additionalProperties: false
-      description: The payload for a DSL retry policy.
     DSLChildWorkflowStep:
       type: object
       properties:
@@ -20854,6 +22288,15 @@ components:
         - mimetype
       additionalProperties: false
       description: File reference with URL and mimetype
+    EventOutboxStatus:
+      type: string
+      enum:
+        - pending
+        - routing
+        - routed
+        - partially_routed
+        - failed
+        - dropped
     EventDeliverySummary:
       type: object
       properties:
@@ -20917,15 +22360,6 @@ components:
         - high
         - normal
         - low
-    EventOutboxStatus:
-      type: string
-      enum:
-        - pending
-        - routing
-        - routed
-        - partially_routed
-        - failed
-        - dropped
     EventDeliveryIntentSummary:
       type: object
       properties:
@@ -22518,6 +23952,18 @@ components:
         last_rendered_at:
           type: string
           description: Last render timestamp
+        source:
+          type: string
+          enum:
+            - stored
+            - app
+          description: Source of the dashboard definition. Defaults to stored dashboards.
+        app_name:
+          type: string
+          description: App name when `source` is `app`.
+        readonly:
+          type: boolean
+          description: App dashboards are read-only until cloned into a stored dashboard.
       required:
         - created_at
         - created_by
@@ -22538,105 +23984,6 @@ components:
         - active
         - archived
       description: Dashboard lifecycle status.
-    DashboardQuery:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Query name (used as data source reference in Vega specs)
-        sql:
-          type: string
-          description: SQL query (SELECT only). Can include {{param_name}} placeholders
-            for dynamic values.
-        description:
-          type: string
-          description: Human-readable description
-        limit:
-          type: number
-          description: Maximum rows to return
-        parameters:
-          $ref: "#/components/schemas/StringValueMap"
-          description: Default values for SQL parameters. Keys are parameter names
-            (without braces).
-      required:
-        - name
-        - sql
-      additionalProperties: false
-      description: Named SQL query that maps to a Vega data source. Supports
-        parameterized SQL with {{param_name}} placeholders.
-    DashboardPanel:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Panel ID (auto-generated if not provided)
-        title:
-          type: string
-          description: Panel title
-        spec:
-          type: object
-          additionalProperties: true
-          description: Vega or Vega-Lite specification
-        vegaLite:
-          type: boolean
-          description: "Whether spec is Vega-Lite (default: true)"
-        dataSources:
-          type: array
-          items:
-            type: string
-          description: Query names that populate this panel's data sources
-        position:
-          $ref: "#/components/schemas/DashboardPanelPosition"
-          description: Position in the dashboard grid
-      required:
-        - title
-        - spec
-        - dataSources
-        - position
-      additionalProperties: false
-      description: Dashboard panel with Vega/Vega-Lite visualization.
-    DashboardPanelPosition:
-      type: object
-      properties:
-        row:
-          type: number
-          description: Row index (0-based)
-        col:
-          type: number
-          description: Column index (0-based)
-        width:
-          type: number
-          description: "Width in grid cells (default: 1)"
-        height:
-          type: number
-          description: "Height in grid cells (default: 1)"
-      required:
-        - row
-        - col
-      additionalProperties: false
-      description: Panel position within the dashboard grid.
-    DashboardLayout:
-      type: object
-      properties:
-        columns:
-          type: number
-          description: "Number of columns in the grid (default: 2)"
-        cellWidth:
-          type: number
-          description: "Width of each cell in pixels (default: 600)"
-        cellHeight:
-          type: number
-          description: "Height of each cell in pixels (default: 400)"
-        padding:
-          type: number
-          description: "Padding between cells in pixels (default: 20)"
-      required:
-        - columns
-        - cellWidth
-        - cellHeight
-        - padding
-      additionalProperties: false
-      description: Dashboard layout configuration.
     MarkdownRenditionFormat:
       type: string
       enum:
@@ -31422,6 +32769,1213 @@ paths:
         description: Optional Vertesia API version header. Use `20260319` for the
           current stable API shape.
         x-vertesia-global-header: true
+  /apps/{id}/repo/tree:
+    get:
+      operationId: GetAppRepoTree
+      tags:
+        - Apps
+      summary: List files in the app git repository
+      description: >-
+        Lists files and directories under a prefix in the app's git repository
+        at a ref (default branch when ref is omitted). Read-only — reads live
+        from the git server without a clone. Used by the Build > Design view to
+        surface generated docs/.
+
+
+        **Required permissions:** `account:member`
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Directory listing.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppRepoTree"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - account:member
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/apps.ts
+        className: AppsResource
+        methodName: getAppRepoTree
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260319"
+        description: Optional Vertesia API version header. Use `20260319` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /apps/{id}/repo/file:
+    get:
+      operationId: GetAppRepoFile
+      tags:
+        - Apps
+      summary: Read a file from the app git repository
+      description: >-
+        Returns the original bytes of a single file in the app's git repository
+        at a ref (default branch when ref is omitted). Read-only — reads live
+        from the git server without a clone.
+
+
+        **Required permissions:** `account:member`
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Raw file content.
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - account:member
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/apps.ts
+        className: AppsResource
+        methodName: getAppRepoFile
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260319"
+        description: Optional Vertesia API version header. Use `20260319` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /apps/{id}/repo/documents:
+    post:
+      operationId: CommitAppRepoDocuments
+      tags:
+        - Apps
+      summary: Commit documents to the app git repository
+      description: >-
+        Forwards a multipart document upload to the app git service. The files
+        are restricted to approved repository paths, currently docs/, and are
+        committed together on the selected branch.
+
+
+        **Required permissions:** `app:manage`
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Created Git commit.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppRepoDocumentCommit"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - app:manage
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/apps.ts
+        className: AppsResource
+        methodName: commitAppRepoDocuments
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260319"
+        description: Optional Vertesia API version header. Use `20260319` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /apps/{id}/repo/commits:
+    get:
+      operationId: GetAppRepoCommits
+      tags:
+        - Apps
+      summary: List commits in the app git repository
+      description: >-
+        Returns repository commits newest first, optionally filtered to commits
+        that changed a file. History starts at the default branch unless a ref
+        is supplied and supports cursor pagination.
+
+
+        **Required permissions:** `account:member`
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Repository commit history.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppRepoCommits"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - account:member
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/apps.ts
+        className: AppsResource
+        methodName: getAppRepoCommits
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260319"
+        description: Optional Vertesia API version header. Use `20260319` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /apps/{id}/repo/refs:
+    get:
+      operationId: GetAppRepoRefs
+      tags:
+        - Apps
+      summary: List branches and tags in the app git repository
+      description: >-
+        Lists the branches and tags of the app's git repository, each resolved
+        to its latest commit. Read-only — reads live from the git server without
+        a clone. Used by the Source view to let a user pick a ref to build from.
+
+
+        **Required permissions:** `account:member`
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Branches and tags.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppRepoRefs"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - account:member
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/apps.ts
+        className: AppsResource
+        methodName: getAppRepoRefs
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260319"
+        description: Optional Vertesia API version header. Use `20260319` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /apps/{id}/development-tasks:
+    get:
+      operationId: ListAppDevelopmentTasks
+      tags:
+        - Apps
+      summary: List app development tasks
+      description: >-
+        Lists mutable development tasks represented by agent/* Git branches.
+        Agent runs are intentionally not queried for this summary.
+
+
+        **Required permissions:** `account:member`
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Development task summaries.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppDevelopmentTaskList"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - account:member
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/apps.ts
+        className: AppsResource
+        methodName: listAppDevelopmentTasks
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260319"
+        description: Optional Vertesia API version header. Use `20260319` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /apps/{id}/development-tasks/{taskId}:
+    get:
+      operationId: GetAppDevelopmentTask
+      tags:
+        - Apps
+      summary: Get an app development task
+      description: >-
+        Returns the agent/* Git branch and the latest matching parent Studio
+        Assistant run, when started.
+
+
+        **Required permissions:** `account:member`
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: taskId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Development task details.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppDevelopmentTaskDetails"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - account:member
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/apps.ts
+        className: AppsResource
+        methodName: getAppDevelopmentTask
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260319"
+        description: Optional Vertesia API version header. Use `20260319` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /apps/{id}/repo/branches:
+    post:
+      operationId: CreateAppRepoBranch
+      tags:
+        - Apps
+      summary: Create a branch in the app git repository
+      description: >-
+        Creates a branch from an existing branch, tag, or commit without cloning
+        the repository.
+
+
+        **Required permissions:** `app:manage`
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Created branch.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppRepoBranch"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - app:manage
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/apps.ts
+        className: AppsResource
+        methodName: createAppRepoBranch
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260319"
+        description: Optional Vertesia API version header. Use `20260319` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /apps/{id}/package:
+    get:
+      operationId: GetAppPackage
+      tags:
+        - Apps
+      summary: Get an app package by scope
+      description: >-
+        Returns the promoted package an app exposes, filtered by scope(s).
+        App-owned (in-code) artifacts are package-resolved — there is no per-id
+        route — so this is how a client reads the full definition (type schema,
+        interaction prompt, process definition, dashboard spec) to visualize it.
+
+
+        **Required permissions:** `account:member`
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The app package for the requested scope(s).
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppPackage"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - account:member
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/apps.ts
+        className: AppsResource
+        methodName: getAppPackageByScope
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260319"
+        description: Optional Vertesia API version header. Use `20260319` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /apps/versions:
+    get:
+      operationId: ListAppVersions
+      tags:
+        - Apps
+      summary: List app versions
+      description: |-
+        Lists app versions and design artifacts for the current project.
+
+        **Required permissions:** `account:member`
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters: []
+      responses:
+        "200":
+          description: App versions.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppVersionRecordArray"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - account:member
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/apps.ts
+        className: AppsResource
+        methodName: listAppVersions
+    post:
+      operationId: UpsertAppVersion
+      tags:
+        - Apps
+      summary: Record an app version
+      description: |-
+        Creates or updates metadata for an app version or design artifact.
+
+        **Required permissions:** `app:manage`
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters: []
+      responses:
+        "200":
+          description: The app version record.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppVersionRecord"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - app:manage
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/apps.ts
+        className: AppsResource
+        methodName: upsertAppVersion
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpsertAppVersionRequest"
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260319"
+        description: Optional Vertesia API version header. Use `20260319` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /apps/versions/{id}:
+    get:
+      operationId: GetAppVersion
+      tags:
+        - Apps
+      summary: Get an app version
+      description: "**Required permissions:** `account:member`"
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The app version.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppVersionRecord"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - account:member
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/apps.ts
+        className: AppsResource
+        methodName: getAppVersion
+    delete:
+      operationId: DeleteAppVersion
+      tags:
+        - Apps
+      summary: Delete an app version
+      description: |-
+        Deletes an unpromoted app version and its stored build artifacts.
+
+        **Required permissions:** `app:manage`
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The app version deletion result.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteAppVersionResponse"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - app:manage
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/apps.ts
+        className: AppsResource
+        methodName: deleteAppVersion
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260319"
+        description: Optional Vertesia API version header. Use `20260319` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /apps/versions/{id}/promote:
+    post:
+      operationId: PromoteAppVersion
+      tags:
+        - Apps
+      summary: Promote an app version
+      description: "**Required permissions:** `app:manage`"
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The promoted app version.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/version_AppVersionRecord_app_AppManifest"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - app:manage
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/apps.ts
+        className: AppsResource
+        methodName: promoteAppVersion
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260319"
+        description: Optional Vertesia API version header. Use `20260319` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /apps/versions/{id}/rebuild:
+    post:
+      operationId: RebuildAppVersion
+      tags:
+        - Apps
+      summary: Rebuild an app version
+      description: >-
+        Rebuilds a failed or expired, unpromoted app version in place from its
+        recorded exact source commit and target.
+
+
+        **Required permissions:** `app:manage`
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The started app rebuild workflow.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StartAppBuildResponse"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - app:manage
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/apps.ts
+        className: AppsResource
+        methodName: rebuildAppVersion
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260319"
+        description: Optional Vertesia API version header. Use `20260319` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /apps/scaffolds:
+    post:
+      operationId: StartAppScaffold
+      tags:
+        - Apps
+      summary: Start an app scaffold
+      description: >-
+        Starts a Temporal workflow that creates a source-backed Vertesia app,
+        scaffolds selected template modules, pushes the source to Vertesia git,
+        and optionally starts an initial version build.
+
+
+        **Required permissions:** `app:manage`
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters: []
+      responses:
+        "200":
+          description: The started app scaffold workflow.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StartAppScaffoldResponse"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - app:manage
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/apps.ts
+        className: AppsResource
+        methodName: startAppScaffold
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StartAppScaffoldRequest"
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260319"
+        description: Optional Vertesia API version header. Use `20260319` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /apps/scaffolds/{workflowId}/{runId}/progress:
+    get:
+      operationId: GetAppScaffoldProgress
+      tags:
+        - Apps
+      summary: Get app scaffold progress
+      description: |-
+        Queries the running app scaffold Temporal workflow for current progress.
+
+        **Required permissions:** `app:manage`
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters:
+        - name: workflowId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: runId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The current app scaffold progress.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppScaffoldProgress"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - app:manage
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/apps.ts
+        className: AppsResource
+        methodName: getAppScaffoldProgress
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260319"
+        description: Optional Vertesia API version header. Use `20260319` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /apps/{id}/builds:
+    post:
+      operationId: StartAppBuild
+      tags:
+        - Apps
+      summary: Start an app build
+      description: >-
+        Starts a Temporal workflow that checks out the app git source, builds
+        it, stores artifacts, and records an app version pinned to the exact
+        source commit.
+
+
+        **Required permissions:** `app:manage`
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The started app build workflow.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StartAppBuildResponse"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - app:manage
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/apps.ts
+        className: AppsResource
+        methodName: startAppBuild
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StartAppBuildRequest"
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260319"
+        description: Optional Vertesia API version header. Use `20260319` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /apps/{id}/builds/{workflowId}/{runId}/progress:
+    get:
+      operationId: GetAppBuildProgress
+      tags:
+        - Apps
+      summary: Get app build progress
+      description: |-
+        Queries the running app build Temporal workflow for current progress.
+
+        **Required permissions:** `app:manage`
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: workflowId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: runId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The current app build progress.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppBuildProgress"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - app:manage
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/apps.ts
+        className: AppsResource
+        methodName: getAppBuildProgress
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260319"
+        description: Optional Vertesia API version header. Use `20260319` for the
+          current stable API shape.
+        x-vertesia-global-header: true
   /apps:
     post:
       operationId: CreateApp
@@ -31431,7 +33985,7 @@ paths:
       description: |-
         Creates a new app manifest.
 
-        **Required permissions:** `account:admin`
+        **Required permissions:** `app:manage`
       security:
         - bearerAuth: []
         - OpenID: []
@@ -31464,7 +34018,7 @@ paths:
                 status: 400
                 message: Request validation failed.
       x-vertesia-permissions:
-        - account:admin
+        - app:manage
       x-vertesia-source:
         file: ../../apps/studio-server/src/api/apps.ts
         className: AppsResource
@@ -31536,7 +34090,7 @@ paths:
       description: |-
         Updates an existing app manifest.
 
-        **Required permissions:** `account:admin`
+        **Required permissions:** `app:manage`
       security:
         - bearerAuth: []
         - OpenID: []
@@ -31574,7 +34128,7 @@ paths:
                 status: 400
                 message: Request validation failed.
       x-vertesia-permissions:
-        - account:admin
+        - app:manage
       x-vertesia-source:
         file: ../../apps/studio-server/src/api/apps.ts
         className: AppsResource
@@ -31593,7 +34147,7 @@ paths:
       description: |-
         Deletes an app manifest.
 
-        **Required permissions:** `account:admin`
+        **Required permissions:** `app:manage`
       security:
         - bearerAuth: []
         - OpenID: []
@@ -31631,7 +34185,7 @@ paths:
                 status: 400
                 message: Request validation failed.
       x-vertesia-permissions:
-        - account:admin
+        - app:manage
       x-vertesia-source:
         file: ../../apps/studio-server/src/api/apps.ts
         className: AppsResource
@@ -31657,7 +34211,7 @@ paths:
         OAuth providers.
 
 
-        **Required permissions:** `project:admin`
+        **Required permissions:** `app:manage`
       security:
         - bearerAuth: []
         - OpenID: []
@@ -31690,7 +34244,7 @@ paths:
                 status: 400
                 message: Request validation failed.
       x-vertesia-permissions:
-        - project:admin
+        - app:manage
       x-vertesia-source:
         file: ../../apps/studio-server/src/api/apps.ts
         className: AppsResource
@@ -31903,7 +34457,10 @@ paths:
       tags:
         - Apps
       summary: List tools for an app installation
-      description: Lists tools exposed by an installed app.
+      description: |-
+        Lists tools exposed by an installed app.
+
+        **Required permissions:** `account:member`
       security:
         - bearerAuth: []
         - OpenID: []
@@ -31940,11 +34497,148 @@ paths:
                 error: Bad Request
                 status: 400
                 message: Request validation failed.
-      x-vertesia-permissions: []
+      x-vertesia-permissions:
+        - account:member
       x-vertesia-source:
         file: ../../apps/studio-server/src/api/apps.ts
         className: AppsResource
         methodName: listAppInstallationTools
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260319"
+        description: Optional Vertesia API version header. Use `20260319` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /apps/installations/{installId}/package:
+    get:
+      operationId: GetAppInstallationPackage
+      tags:
+        - Apps
+      summary: Get an app installation package
+      description: >-
+        Returns package capabilities exposed by an installed app, including UI,
+        tools, types, processes, dashboards, templates, widgets, settings, and
+        activities.
+
+
+        **Required permissions:** `account:member`
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters:
+        - name: installId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: scope
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: App installation package.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppPackage"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - account:member
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/apps.ts
+        className: AppsResource
+        methodName: getAppInstallationPackage
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260319"
+        description: Optional Vertesia API version header. Use `20260319` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /apps/{id}/inspect:
+    get:
+      operationId: InspectApp
+      tags:
+        - Apps
+      summary: Inspect an app registration
+      description: >-
+        Resolves an app, probes its promoted package, and reports per-capability
+        exposed local ids, endpoint reachability, install state, and
+        registration diagnostics — the ground truth for verifying what a
+        promoted app actually registers vs what its manifest declares.
+
+
+        **Required permissions:** `app:manage`
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: App registration inspection.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppInspectionResult"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - app:manage
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/apps.ts
+        className: AppsResource
+        methodName: inspectApp
     parameters:
       - name: x-api-version
         in: header
@@ -43734,6 +46428,147 @@ paths:
         file: ../../apps/zeno-server/src/api/files.ts
         className: FilesResource
         methodName: deleteFile
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260319"
+        description: Optional Vertesia API version header. Use `20260319` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /events/stream:
+    get:
+      operationId: StreamEventDeliveries
+      tags:
+        - Events
+      summary: Stream event deliveries
+      description: >-
+        Opens a Server-Sent Events stream of recent, new, and changed event
+        delivery rows filtered by category, action, resource type, resource id,
+        and status.
+
+
+        **Required permissions:** `workflow:read`
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: number
+        - name: event_id
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: resource_id
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: resource_type
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: event_category
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - content
+                - workflow
+                - security
+                - billing
+                - system
+                - external
+          style: form
+          explode: true
+        - name: action
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: outbox_status
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - pending
+                - routing
+                - routed
+                - partially_routed
+                - failed
+                - dropped
+          style: form
+          explode: true
+        - name: since_event_id
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: since_created_at
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: include_event
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: poll_interval_ms
+          in: query
+          required: false
+          schema:
+            type: number
+      responses:
+        "200":
+          description: Server-sent event delivery envelopes.
+          content:
+            text/event-stream:
+              schema:
+                type: string
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - workflow:read
+      x-vertesia-source:
+        file: ../../apps/zeno-server/src/api/events.ts
+        className: EventsResource
+        methodName: streamDeliveries
     parameters:
       - name: x-api-version
         in: header
