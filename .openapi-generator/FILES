@@ -61,6 +61,7 @@ vertesia_client/openapi/models/ace_update_payload.py
 vertesia_client/openapi/models/activity_fetch_spec.py
 vertesia_client/openapi/models/activity_task.py
 vertesia_client/openapi/models/advance_process_payload.py
+vertesia_client/openapi/models/agent_artifact_content_response.py
 vertesia_client/openapi/models/agent_artifact_url_response.py
 vertesia_client/openapi/models/agent_delivery_match_mode.py
 vertesia_client/openapi/models/agent_event_delivery_target.py
@@ -249,6 +250,7 @@ vertesia_client/openapi/models/content_object_type_ref.py
 vertesia_client/openapi/models/content_object_type_status.py
 vertesia_client/openapi/models/content_object_user_permissions.py
 vertesia_client/openapi/models/content_source.py
+vertesia_client/openapi/models/content_type_editing_policy.py
 vertesia_client/openapi/models/content_type_extraction_grounding_policy.py
 vertesia_client/openapi/models/content_type_extraction_grounding_review_policy.py
 vertesia_client/openapi/models/content_type_intake_policy.py
@@ -503,6 +505,7 @@ vertesia_client/openapi/models/indexing_status_response.py
 vertesia_client/openapi/models/indexing_status_response_index.py
 vertesia_client/openapi/models/indexing_status_response_reindex_progress.py
 vertesia_client/openapi/models/inherited_property_metadata.py
+vertesia_client/openapi/models/initial_tool_call.py
 vertesia_client/openapi/models/intake_page_scope.py
 vertesia_client/openapi/models/intake_vision_detail.py
 vertesia_client/openapi/models/interaction.py
@@ -636,7 +639,7 @@ vertesia_client/openapi/models/pending_activity.py
 vertesia_client/openapi/models/pending_mcp_connection.py
 vertesia_client/openapi/models/pending_tool_approval_results.py
 vertesia_client/openapi/models/permission.py
-vertesia_client/openapi/models/pick_content_object_type_item_id_name_description_tags_object_schema_table_layout_is_chunkable_strict_mode_status_intake.py
+vertesia_client/openapi/models/pick_content_object_type_item_id_name_description_tags_object_schema_table_layout_is_chunkable_strict_mode_status_intake_editing.py
 vertesia_client/openapi/models/plan.py
 vertesia_client/openapi/models/plan_task.py
 vertesia_client/openapi/models/post_agent_run_update_payload.py
@@ -846,6 +849,8 @@ vertesia_client/openapi/models/transition_trigger.py
 vertesia_client/openapi/models/twelvelabs_pegasus_options.py
 vertesia_client/openapi/models/type_detection_metadata.py
 vertesia_client/openapi/models/update_account_payload.py
+vertesia_client/openapi/models/update_agent_artifact_content_payload.py
+vertesia_client/openapi/models/update_agent_artifact_content_response.py
 vertesia_client/openapi/models/update_app_installation_tool_allowlist_payload.py
 vertesia_client/openapi/models/update_dashboard_payload.py
 vertesia_client/openapi/models/update_event_ingest_channel_payload.py

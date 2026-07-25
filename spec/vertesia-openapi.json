@@ -512,7 +512,7 @@
         }
       },
       "InCodeTypeDefinition": {
-        "$ref": "#/components/schemas/Pick_ContentObjectTypeItem_id_name_description_tags_object_schema_table_layout_is_chunkable_strict_mode_status_intake"
+        "$ref": "#/components/schemas/Pick_ContentObjectTypeItem_id_name_description_tags_object_schema_table_layout_is_chunkable_strict_mode_status_intake_editing"
       },
       "RenderingTemplateDefinitionRefArray": {
         "type": "array",
@@ -8439,7 +8439,7 @@
           "ask_user_webhook"
         ]
       },
-      "Pick_ContentObjectTypeItem_id_name_description_tags_object_schema_table_layout_is_chunkable_strict_mode_status_intake": {
+      "Pick_ContentObjectTypeItem_id_name_description_tags_object_schema_table_layout_is_chunkable_strict_mode_status_intake_editing": {
         "type": "object",
         "properties": {
           "id": {
@@ -8485,6 +8485,9 @@
           },
           "intake": {
             "$ref": "#/components/schemas/ContentTypeIntakePolicy"
+          },
+          "editing": {
+            "$ref": "#/components/schemas/ContentTypeEditingPolicy"
           }
         },
         "required": [
@@ -8527,6 +8530,17 @@
           "active",
           "draft"
         ]
+      },
+      "ContentTypeEditingPolicy": {
+        "type": "object",
+        "properties": {
+          "interaction": {
+            "type": "string",
+            "description": "Agent interaction used for new document-editing sessions. Defaults to sys:GeneralAgent."
+          }
+        },
+        "additionalProperties": false,
+        "description": "Per-content-type policy for collaborative document editing."
       },
       "RenderingTemplateDefinitionRef": {
         "type": "object",
@@ -12574,6 +12588,13 @@
             },
             "description": "Names of skills whose full instructions are already present in the live conversation history (i.e. were delivered by a prior `learn_<skill>` call). Used to make skill re-activation idempotent: a repeat call returns a short \"already active\" acknowledgement instead of re-dumping the instructions.\n\nUnlike `unlocked_tools`/`skill_tool_map` (which must survive a checkpoint so tools stay unlocked), this list is reset when a checkpoint compacts the conversation, because the summary no longer carries the skill instructions and the next call must re-deliver them."
           },
+          "initialization_call_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Stable ids of initialization tool calls completed before the first model turn."
+          },
           "disabled_mcp_collections": {
             "type": "array",
             "items": {
@@ -13901,6 +13922,27 @@
             },
             "description": "The tools to use, list of tool or function names. You can use + and - to add or remove from default, if no sign, then list replaces default"
           },
+          "initial_skills": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Builtin system skills to activate at conversation start. Their related tools are exposed from the first turn and their instructions are injected into the initial context, replacing the learn_<skill> round-trip."
+          },
+          "initial_tool_calls": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InitialToolCall"
+            },
+            "description": "Tool calls executed before the first model turn. Results are injected into the initial context. These run sequentially with the caller's authority before the first model turn. Only a bounded set of read/hydration tools is accepted."
+          },
+          "excluded_tools": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Hard denylist of tool names for this conversation. Excluded tools are never exposed to the model and are refused at execution time, even when a skill or tool refresh would otherwise unlock them. Takes precedence over tool_names, initial_skills, and skill-based tool activation."
+          },
           "max_iterations": {
             "type": "number",
             "description": "The maximum number of iterations in case of a conversation. If <=0 the default of 20 will be used."
@@ -14000,6 +14042,38 @@
           "private",
           "project"
         ]
+      },
+      "InitialToolCall": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Stable identifier used to make initialization replay-safe."
+          },
+          "tool": {
+            "type": "string",
+            "description": "Read-only builtin activity tool name. Skills are configured separately through initial_skills."
+          },
+          "input": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Tool input parameters."
+          },
+          "on_error": {
+            "type": "string",
+            "enum": [
+              "fail",
+              "continue"
+            ],
+            "description": "Whether a failed initialization call aborts the conversation start."
+          }
+        },
+        "required": [
+          "id",
+          "tool"
+        ],
+        "additionalProperties": false,
+        "description": "A tool invocation executed before the first model turn of a conversation. Results are injected into the initial context so the agent starts with them in hand."
       },
       "AgentSearchScope_Collection": {
         "type": "string",
@@ -15578,6 +15652,27 @@
             },
             "description": "Tools configured for this run (+/- syntax supported)"
           },
+          "initial_skills": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Builtin system skills activated before the first model turn."
+          },
+          "initial_tool_calls": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InitialToolCall"
+            },
+            "description": "Ordered, bounded hydration/read calls executed before the first model turn."
+          },
+          "excluded_tools": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Hard denylist of tool names: never exposed to the model, refused at execution time."
+          },
           "collection_id": {
             "type": "string",
             "description": "Scoped collection (if any)"
@@ -15803,6 +15898,27 @@
               "type": "string"
             },
             "description": "Tools configured for this run (+/- syntax supported)"
+          },
+          "initial_skills": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Builtin system skills activated before the first model turn."
+          },
+          "initial_tool_calls": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InitialToolCall"
+            },
+            "description": "Ordered, bounded hydration/read calls executed before the first model turn."
+          },
+          "excluded_tools": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Hard denylist of tool names: never exposed to the model, refused at execution time."
           },
           "collection_id": {
             "type": "string",
@@ -16031,6 +16147,61 @@
       "PostAgentRunUpdatePayload": {
         "$ref": "#/components/schemas/Partial_AgentMessage",
         "description": "Payload for posting an update into an agent's workflow stream."
+      },
+      "AgentArtifactContentResponse": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "generation": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "path",
+          "content",
+          "generation"
+        ],
+        "additionalProperties": false,
+        "description": "Text content and concurrency token for an agent artifact."
+      },
+      "UpdateAgentArtifactContentResponse": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "generation": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "path",
+          "generation"
+        ],
+        "additionalProperties": false,
+        "description": "Result of a conditional agent artifact update."
+      },
+      "UpdateAgentArtifactContentPayload": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string"
+          },
+          "generation": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "content",
+          "generation"
+        ],
+        "additionalProperties": false,
+        "description": "Conditional text update for an agent artifact."
       },
       "AgentArtifactUrlResponse": {
         "type": "object",
@@ -18613,6 +18784,9 @@
           "intake": {
             "$ref": "#/components/schemas/ContentTypeIntakePolicy"
           },
+          "editing": {
+            "$ref": "#/components/schemas/ContentTypeEditingPolicy"
+          },
           "updated_by": {
             "type": "string"
           },
@@ -18686,6 +18860,9 @@
           "intake": {
             "$ref": "#/components/schemas/ContentTypeIntakePolicy"
           },
+          "editing": {
+            "$ref": "#/components/schemas/ContentTypeEditingPolicy"
+          },
           "table_layout": {
             "type": "array",
             "items": {
@@ -18724,6 +18901,9 @@
           },
           "intake": {
             "$ref": "#/components/schemas/ContentTypeIntakePolicy"
+          },
+          "editing": {
+            "$ref": "#/components/schemas/ContentTypeEditingPolicy"
           },
           "table_layout": {
             "type": "array",
@@ -22312,6 +22492,27 @@
               "type": "string"
             },
             "description": "Tools configured for this run (+/- syntax supported)"
+          },
+          "initial_skills": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Builtin system skills activated before the first model turn."
+          },
+          "initial_tool_calls": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InitialToolCall"
+            },
+            "description": "Ordered, bounded hydration/read calls executed before the first model turn."
+          },
+          "excluded_tools": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Hard denylist of tool names: never exposed to the model, refused at execution time."
           },
           "collection_id": {
             "type": "string",
@@ -26206,6 +26407,9 @@
           },
           "intake": {
             "$ref": "#/components/schemas/ContentTypeIntakePolicy"
+          },
+          "editing": {
+            "$ref": "#/components/schemas/ContentTypeEditingPolicy"
           },
           "table_layout": {
             "type": "array",
@@ -48704,6 +48908,203 @@
           "file": "../../apps/zeno-server/src/api/agents.ts",
           "className": "AgentsResource",
           "methodName": "listArtifacts"
+        }
+      },
+      "parameters": [
+        {
+          "name": "x-api-version",
+          "in": "header",
+          "required": false,
+          "schema": {
+            "type": "string",
+            "example": "20260319"
+          },
+          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "x-vertesia-global-header": true
+        }
+      ]
+    },
+    "/agents/{agentRunId}/artifact-content/{path}": {
+      "get": {
+        "operationId": "GetAgentRunArtifactContent",
+        "tags": [
+          "Agent Runs"
+        ],
+        "summary": "Read editable agent artifact content",
+        "description": "Reads a text artifact and returns its blob generation token for conditional updates.\n\n**Required permissions:** Any of `agent_run:read`, `workflow:run`",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OpenID": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "agentRunId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "path",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Artifact text and concurrency metadata.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentArtifactContentResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "The artifact exceeds the text editing size limit."
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [
+          "agent_run:read",
+          "workflow:run"
+        ],
+        "x-vertesia-source": {
+          "file": "../../apps/zeno-server/src/api/agents.ts",
+          "className": "AgentsResource",
+          "methodName": "getArtifactContent"
+        }
+      },
+      "put": {
+        "operationId": "UpdateAgentRunArtifactContent",
+        "tags": [
+          "Agent Runs"
+        ],
+        "summary": "Update editable agent artifact content",
+        "description": "Updates a text artifact only when its blob generation token still matches.\n\n**Required permissions:** `workflow:run`",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OpenID": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "agentRunId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "path",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated artifact concurrency metadata.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateAgentArtifactContentResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [
+          "workflow:run"
+        ],
+        "x-vertesia-source": {
+          "file": "../../apps/zeno-server/src/api/agents.ts",
+          "className": "AgentsResource",
+          "methodName": "updateArtifactContent"
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAgentArtifactContentPayload"
+              }
+            }
+          }
         }
       },
       "parameters": [

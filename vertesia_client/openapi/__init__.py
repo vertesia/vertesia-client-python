@@ -85,6 +85,7 @@ __all__ = [
     "ActivityFetchSpec",
     "ActivityTask",
     "AdvanceProcessPayload",
+    "AgentArtifactContentResponse",
     "AgentArtifactUrlResponse",
     "AgentDeliveryMatchMode",
     "AgentEventDeliveryTarget",
@@ -271,6 +272,7 @@ __all__ = [
     "ContentObjectTypeStatus",
     "ContentObjectUserPermissions",
     "ContentSource",
+    "ContentTypeEditingPolicy",
     "ContentTypeExtractionGroundingPolicy",
     "ContentTypeExtractionGroundingReviewPolicy",
     "ContentTypeIntakePolicy",
@@ -525,6 +527,7 @@ __all__ = [
     "IndexingStatusResponseIndex",
     "IndexingStatusResponseReindexProgress",
     "InheritedPropertyMetadata",
+    "InitialToolCall",
     "IntakePageScope",
     "IntakeVisionDetail",
     "Interaction",
@@ -658,7 +661,7 @@ __all__ = [
     "PendingMcpConnection",
     "PendingToolApprovalResults",
     "Permission",
-    "PickContentObjectTypeItemIdNameDescriptionTagsObjectSchemaTableLayoutIsChunkableStrictModeStatusIntake",
+    "PickContentObjectTypeItemIdNameDescriptionTagsObjectSchemaTableLayoutIsChunkableStrictModeStatusIntakeEditing",
     "Plan",
     "PlanTask",
     "PostAgentRunUpdatePayload",
@@ -868,6 +871,8 @@ __all__ = [
     "TwelvelabsPegasusOptions",
     "TypeDetectionMetadata",
     "UpdateAccountPayload",
+    "UpdateAgentArtifactContentPayload",
+    "UpdateAgentArtifactContentResponse",
     "UpdateAppInstallationToolAllowlistPayload",
     "UpdateDashboardPayload",
     "UpdateEventIngestChannelPayload",
@@ -1061,6 +1066,7 @@ from vertesia_client.openapi.models.ace_conditions import AceConditions as AceCo
 from vertesia_client.openapi.models.activity_fetch_spec import ActivityFetchSpec as ActivityFetchSpec
 from vertesia_client.openapi.models.activity_task import ActivityTask as ActivityTask
 from vertesia_client.openapi.models.advance_process_payload import AdvanceProcessPayload as AdvanceProcessPayload
+from vertesia_client.openapi.models.agent_artifact_content_response import AgentArtifactContentResponse as AgentArtifactContentResponse
 from vertesia_client.openapi.models.agent_artifact_url_response import AgentArtifactUrlResponse as AgentArtifactUrlResponse
 from vertesia_client.openapi.models.agent_delivery_match_mode import AgentDeliveryMatchMode as AgentDeliveryMatchMode
 from vertesia_client.openapi.models.agent_event_delivery_target import AgentEventDeliveryTarget as AgentEventDeliveryTarget
@@ -1247,6 +1253,7 @@ from vertesia_client.openapi.models.content_object_type_ref import ContentObject
 from vertesia_client.openapi.models.content_object_type_status import ContentObjectTypeStatus as ContentObjectTypeStatus
 from vertesia_client.openapi.models.content_object_user_permissions import ContentObjectUserPermissions as ContentObjectUserPermissions
 from vertesia_client.openapi.models.content_source import ContentSource as ContentSource
+from vertesia_client.openapi.models.content_type_editing_policy import ContentTypeEditingPolicy as ContentTypeEditingPolicy
 from vertesia_client.openapi.models.content_type_extraction_grounding_policy import ContentTypeExtractionGroundingPolicy as ContentTypeExtractionGroundingPolicy
 from vertesia_client.openapi.models.content_type_extraction_grounding_review_policy import ContentTypeExtractionGroundingReviewPolicy as ContentTypeExtractionGroundingReviewPolicy
 from vertesia_client.openapi.models.content_type_intake_policy import ContentTypeIntakePolicy as ContentTypeIntakePolicy
@@ -1501,6 +1508,7 @@ from vertesia_client.openapi.models.indexing_status_response import IndexingStat
 from vertesia_client.openapi.models.indexing_status_response_index import IndexingStatusResponseIndex as IndexingStatusResponseIndex
 from vertesia_client.openapi.models.indexing_status_response_reindex_progress import IndexingStatusResponseReindexProgress as IndexingStatusResponseReindexProgress
 from vertesia_client.openapi.models.inherited_property_metadata import InheritedPropertyMetadata as InheritedPropertyMetadata
+from vertesia_client.openapi.models.initial_tool_call import InitialToolCall as InitialToolCall
 from vertesia_client.openapi.models.intake_page_scope import IntakePageScope as IntakePageScope
 from vertesia_client.openapi.models.intake_vision_detail import IntakeVisionDetail as IntakeVisionDetail
 from vertesia_client.openapi.models.interaction import Interaction as Interaction
@@ -1634,7 +1642,7 @@ from vertesia_client.openapi.models.pending_activity import PendingActivity as P
 from vertesia_client.openapi.models.pending_mcp_connection import PendingMcpConnection as PendingMcpConnection
 from vertesia_client.openapi.models.pending_tool_approval_results import PendingToolApprovalResults as PendingToolApprovalResults
 from vertesia_client.openapi.models.permission import Permission as Permission
-from vertesia_client.openapi.models.pick_content_object_type_item_id_name_description_tags_object_schema_table_layout_is_chunkable_strict_mode_status_intake import PickContentObjectTypeItemIdNameDescriptionTagsObjectSchemaTableLayoutIsChunkableStrictModeStatusIntake as PickContentObjectTypeItemIdNameDescriptionTagsObjectSchemaTableLayoutIsChunkableStrictModeStatusIntake
+from vertesia_client.openapi.models.pick_content_object_type_item_id_name_description_tags_object_schema_table_layout_is_chunkable_strict_mode_status_intake_editing import PickContentObjectTypeItemIdNameDescriptionTagsObjectSchemaTableLayoutIsChunkableStrictModeStatusIntakeEditing as PickContentObjectTypeItemIdNameDescriptionTagsObjectSchemaTableLayoutIsChunkableStrictModeStatusIntakeEditing
 from vertesia_client.openapi.models.plan import Plan as Plan
 from vertesia_client.openapi.models.plan_task import PlanTask as PlanTask
 from vertesia_client.openapi.models.post_agent_run_update_payload import PostAgentRunUpdatePayload as PostAgentRunUpdatePayload
@@ -1844,6 +1852,8 @@ from vertesia_client.openapi.models.transition_trigger import TransitionTrigger 
 from vertesia_client.openapi.models.twelvelabs_pegasus_options import TwelvelabsPegasusOptions as TwelvelabsPegasusOptions
 from vertesia_client.openapi.models.type_detection_metadata import TypeDetectionMetadata as TypeDetectionMetadata
 from vertesia_client.openapi.models.update_account_payload import UpdateAccountPayload as UpdateAccountPayload
+from vertesia_client.openapi.models.update_agent_artifact_content_payload import UpdateAgentArtifactContentPayload as UpdateAgentArtifactContentPayload
+from vertesia_client.openapi.models.update_agent_artifact_content_response import UpdateAgentArtifactContentResponse as UpdateAgentArtifactContentResponse
 from vertesia_client.openapi.models.update_app_installation_tool_allowlist_payload import UpdateAppInstallationToolAllowlistPayload as UpdateAppInstallationToolAllowlistPayload
 from vertesia_client.openapi.models.update_dashboard_payload import UpdateDashboardPayload as UpdateDashboardPayload
 from vertesia_client.openapi.models.update_event_ingest_channel_payload import UpdateEventIngestChannelPayload as UpdateEventIngestChannelPayload

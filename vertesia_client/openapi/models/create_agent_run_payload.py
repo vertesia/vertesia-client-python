@@ -24,6 +24,7 @@ from vertesia_client.openapi.models.agent_search_scope import AgentSearchScope
 from vertesia_client.openapi.models.agent_tool_approval_mode import AgentToolApprovalMode
 from vertesia_client.openapi.models.content_object_type_ref import ContentObjectTypeRef
 from vertesia_client.openapi.models.conversation_visibility import ConversationVisibility
+from vertesia_client.openapi.models.initial_tool_call import InitialToolCall
 from vertesia_client.openapi.models.interaction_execution_configuration import InteractionExecutionConfiguration
 from vertesia_client.openapi.models.run_source import RunSource
 from vertesia_client.openapi.models.user_channel import UserChannel
@@ -41,6 +42,9 @@ class CreateAgentRunPayload(BaseModel):
     interactive: Optional[StrictBool] = Field(default=None, description="Whether the agent accepts user input")
     tool_approval_mode: Optional[AgentToolApprovalMode] = Field(default=None, description="How side-effecting tool actions are approved for interactive runs.")
     tool_names: Optional[List[StrictStr]] = Field(default=None, description="Tools configured for this run (+/- syntax supported)")
+    initial_skills: Optional[List[StrictStr]] = Field(default=None, description="Builtin system skills activated before the first model turn.")
+    initial_tool_calls: Optional[List[InitialToolCall]] = Field(default=None, description="Ordered, bounded hydration/read calls executed before the first model turn.")
+    excluded_tools: Optional[List[StrictStr]] = Field(default=None, description="Hard denylist of tool names: never exposed to the model, refused at execution time.")
     collection_id: Optional[StrictStr] = Field(default=None, description="Scoped collection (if any)")
     disabled_mcp_collections: Optional[List[StrictStr]] = Field(default=None, description="Denylist of MCP tool-collection ids deactivated for this run. `undefined`/empty means all installed/connected MCP collections are active (back-compat, and new servers stay active by default). Listed collections are excluded even if connected.")
     content_type: Optional[ContentObjectTypeRef] = Field(default=None, description="Content type linked to this run — defines the schema for `properties`")
@@ -60,7 +64,7 @@ class CreateAgentRunPayload(BaseModel):
     debug_mode: Optional[StrictBool] = Field(default=None, description="Enable debug mode for verbose logging")
     started_by: Optional[StrictStr] = Field(default=None, description="Principal ref of the user who initiated the run (for server-to-server forwarding)")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["interaction", "data", "config", "interactive", "tool_approval_mode", "tool_names", "collection_id", "disabled_mcp_collections", "content_type", "visibility", "tags", "categories", "properties", "source", "schedule_id", "source_type", "type", "search_scope", "user_channels", "checkpoint_tokens", "max_iterations", "notify_endpoints", "debug_mode", "started_by"]
+    __properties: ClassVar[List[str]] = ["interaction", "data", "config", "interactive", "tool_approval_mode", "tool_names", "initial_skills", "initial_tool_calls", "excluded_tools", "collection_id", "disabled_mcp_collections", "content_type", "visibility", "tags", "categories", "properties", "source", "schedule_id", "source_type", "type", "search_scope", "user_channels", "checkpoint_tokens", "max_iterations", "notify_endpoints", "debug_mode", "started_by"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -106,6 +110,13 @@ class CreateAgentRunPayload(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of config
         if self.config:
             _dict['config'] = self.config.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of each item in initial_tool_calls (list)
+        _items = []
+        if self.initial_tool_calls:
+            for _item_initial_tool_calls in self.initial_tool_calls:
+                if _item_initial_tool_calls:
+                    _items.append(_item_initial_tool_calls.to_dict())
+            _dict['initial_tool_calls'] = _items
         # override the default output from pydantic by calling `to_dict()` of content_type
         if self.content_type:
             _dict['content_type'] = self.content_type.to_dict()
@@ -142,6 +153,9 @@ class CreateAgentRunPayload(BaseModel):
             "interactive": obj.get("interactive"),
             "tool_approval_mode": obj.get("tool_approval_mode"),
             "tool_names": obj.get("tool_names"),
+            "initial_skills": obj.get("initial_skills"),
+            "initial_tool_calls": [InitialToolCall.from_dict(_item) for _item in obj["initial_tool_calls"]] if obj.get("initial_tool_calls") is not None else None,
+            "excluded_tools": obj.get("excluded_tools"),
             "collection_id": obj.get("collection_id"),
             "disabled_mcp_collections": obj.get("disabled_mcp_collections"),
             "content_type": ContentObjectTypeRef.from_dict(obj["content_type"]) if obj.get("content_type") is not None else None,

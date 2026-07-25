@@ -21,6 +21,7 @@ from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from vertesia_client.openapi.models.column_layout import ColumnLayout
 from vertesia_client.openapi.models.content_object_type_status import ContentObjectTypeStatus
+from vertesia_client.openapi.models.content_type_editing_policy import ContentTypeEditingPolicy
 from vertesia_client.openapi.models.content_type_intake_policy import ContentTypeIntakePolicy
 from typing import Optional, Set
 from typing_extensions import Self
@@ -40,12 +41,13 @@ class ContentObjectTypeCatalogEntry(BaseModel):
     strict_mode: Optional[StrictBool] = Field(default=None, description="Determines if the content will be validated against the object schema a generation time and save/update time.")
     status: Optional[ContentObjectTypeStatus] = None
     intake: Optional[ContentTypeIntakePolicy] = None
+    editing: Optional[ContentTypeEditingPolicy] = None
     updated_by: Optional[StrictStr] = None
     created_by: Optional[StrictStr] = None
     created_at: Optional[StrictStr] = None
     updated_at: Optional[StrictStr] = None
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["id", "name", "description", "tags", "object_schema", "table_layout", "is_chunkable", "strict_mode", "status", "intake", "updated_by", "created_by", "created_at", "updated_at"]
+    __properties: ClassVar[List[str]] = ["id", "name", "description", "tags", "object_schema", "table_layout", "is_chunkable", "strict_mode", "status", "intake", "editing", "updated_by", "created_by", "created_at", "updated_at"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -98,6 +100,9 @@ class ContentObjectTypeCatalogEntry(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of intake
         if self.intake:
             _dict['intake'] = self.intake.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of editing
+        if self.editing:
+            _dict['editing'] = self.editing.to_dict()
         # puts key-value pairs in additional_properties in the top level
         if self.additional_properties is not None:
             for _key, _value in self.additional_properties.items():
@@ -125,6 +130,7 @@ class ContentObjectTypeCatalogEntry(BaseModel):
             "strict_mode": obj.get("strict_mode"),
             "status": obj.get("status"),
             "intake": ContentTypeIntakePolicy.from_dict(obj["intake"]) if obj.get("intake") is not None else None,
+            "editing": ContentTypeEditingPolicy.from_dict(obj["editing"]) if obj.get("editing") is not None else None,
             "updated_by": obj.get("updated_by"),
             "created_by": obj.get("created_by"),
             "created_at": obj.get("created_at"),

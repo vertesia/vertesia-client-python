@@ -27,26 +27,23 @@ from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class ContentObjectTypeItem(BaseModel):
+class PickContentObjectTypeItemIdNameDescriptionTagsObjectSchemaTableLayoutIsChunkableStrictModeStatusIntakeEditing(BaseModel):
     """
-    ContentObjectTypeItem
+    PickContentObjectTypeItemIdNameDescriptionTagsObjectSchemaTableLayoutIsChunkableStrictModeStatusIntakeEditing
     """ # noqa: E501
     id: StrictStr = Field(description="Unique identifier for the object")
     name: StrictStr = Field(description="Human-readable name or title")
     description: Optional[StrictStr] = Field(default=None, description="Optional detailed description of the object")
     tags: Optional[List[StrictStr]] = Field(default=None, description="Optional array of categorization tags")
-    updated_by: StrictStr = Field(description="Identifier of the user who last modified the object")
-    created_by: StrictStr = Field(description="Identifier of the user who created the object")
-    created_at: StrictStr = Field(description="ISO timestamp of when the object was created")
-    updated_at: StrictStr = Field(description="ISO timestamp of when the object was last updated")
-    status: Optional[ContentObjectTypeStatus] = None
+    object_schema: Optional[Dict[str, Any]] = Field(default=None, description="this is only included in ContentObjectTypeItem if explicitly requested It is always included in ContentObjectType")
+    table_layout: Optional[List[ColumnLayout]] = Field(default=None, description="This is only included in ContentObjectTypeItem if explicitly requested It is always included in ContentObjectType")
     is_chunkable: Optional[StrictBool] = None
+    strict_mode: Optional[StrictBool] = Field(default=None, description="Determines if the content will be validated against the object schema a generation time and save/update time.")
+    status: Optional[ContentObjectTypeStatus] = None
     intake: Optional[ContentTypeIntakePolicy] = None
     editing: Optional[ContentTypeEditingPolicy] = None
-    table_layout: Optional[List[ColumnLayout]] = Field(default=None, description="This is only included in ContentObjectTypeItem if explicitly requested It is always included in ContentObjectType")
-    object_schema: Optional[Dict[str, Any]] = Field(default=None, description="this is only included in ContentObjectTypeItem if explicitly requested It is always included in ContentObjectType")
-    strict_mode: Optional[StrictBool] = Field(default=None, description="Determines if the content will be validated against the object schema a generation time and save/update time.")
-    __properties: ClassVar[List[str]] = ["id", "name", "description", "tags", "updated_by", "created_by", "created_at", "updated_at", "status", "is_chunkable", "intake", "editing", "table_layout", "object_schema", "strict_mode"]
+    additional_properties: Dict[str, Any] = {}
+    __properties: ClassVar[List[str]] = ["id", "name", "description", "tags", "object_schema", "table_layout", "is_chunkable", "strict_mode", "status", "intake", "editing"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -66,7 +63,7 @@ class ContentObjectTypeItem(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of ContentObjectTypeItem from a JSON string"""
+        """Create an instance of PickContentObjectTypeItemIdNameDescriptionTagsObjectSchemaTableLayoutIsChunkableStrictModeStatusIntakeEditing from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -78,8 +75,10 @@ class ContentObjectTypeItem(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -87,12 +86,6 @@ class ContentObjectTypeItem(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of intake
-        if self.intake:
-            _dict['intake'] = self.intake.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of editing
-        if self.editing:
-            _dict['editing'] = self.editing.to_dict()
         # override the default output from pydantic by calling `to_dict()` of each item in table_layout (list)
         _items = []
         if self.table_layout:
@@ -100,11 +93,22 @@ class ContentObjectTypeItem(BaseModel):
                 if _item_table_layout:
                     _items.append(_item_table_layout.to_dict())
             _dict['table_layout'] = _items
+        # override the default output from pydantic by calling `to_dict()` of intake
+        if self.intake:
+            _dict['intake'] = self.intake.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of editing
+        if self.editing:
+            _dict['editing'] = self.editing.to_dict()
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of ContentObjectTypeItem from a dict"""
+        """Create an instance of PickContentObjectTypeItemIdNameDescriptionTagsObjectSchemaTableLayoutIsChunkableStrictModeStatusIntakeEditing from a dict"""
         if obj is None:
             return None
 
@@ -116,18 +120,19 @@ class ContentObjectTypeItem(BaseModel):
             "name": obj.get("name"),
             "description": obj.get("description"),
             "tags": obj.get("tags"),
-            "updated_by": obj.get("updated_by"),
-            "created_by": obj.get("created_by"),
-            "created_at": obj.get("created_at"),
-            "updated_at": obj.get("updated_at"),
-            "status": obj.get("status"),
-            "is_chunkable": obj.get("is_chunkable"),
-            "intake": ContentTypeIntakePolicy.from_dict(obj["intake"]) if obj.get("intake") is not None else None,
-            "editing": ContentTypeEditingPolicy.from_dict(obj["editing"]) if obj.get("editing") is not None else None,
-            "table_layout": [ColumnLayout.from_dict(_item) for _item in obj["table_layout"]] if obj.get("table_layout") is not None else None,
             "object_schema": obj.get("object_schema"),
-            "strict_mode": obj.get("strict_mode")
+            "table_layout": [ColumnLayout.from_dict(_item) for _item in obj["table_layout"]] if obj.get("table_layout") is not None else None,
+            "is_chunkable": obj.get("is_chunkable"),
+            "strict_mode": obj.get("strict_mode"),
+            "status": obj.get("status"),
+            "intake": ContentTypeIntakePolicy.from_dict(obj["intake"]) if obj.get("intake") is not None else None,
+            "editing": ContentTypeEditingPolicy.from_dict(obj["editing"]) if obj.get("editing") is not None else None
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 

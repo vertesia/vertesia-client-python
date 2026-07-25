@@ -21,6 +21,7 @@ from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from vertesia_client.openapi.models.column_layout import ColumnLayout
 from vertesia_client.openapi.models.content_object_type_status import ContentObjectTypeStatus
+from vertesia_client.openapi.models.content_type_editing_policy import ContentTypeEditingPolicy
 from vertesia_client.openapi.models.content_type_intake_policy import ContentTypeIntakePolicy
 from typing import Optional, Set
 from typing_extensions import Self
@@ -33,6 +34,7 @@ class CreateContentObjectTypePayload(BaseModel):
     status: Optional[ContentObjectTypeStatus] = None
     is_chunkable: Optional[StrictBool] = None
     intake: Optional[ContentTypeIntakePolicy] = None
+    editing: Optional[ContentTypeEditingPolicy] = None
     table_layout: Optional[List[ColumnLayout]] = Field(default=None, description="This is only included in ContentObjectTypeItem if explicitly requested It is always included in ContentObjectType")
     object_schema: Optional[Dict[str, Any]] = Field(default=None, description="this is only included in ContentObjectTypeItem if explicitly requested It is always included in ContentObjectType")
     strict_mode: Optional[StrictBool] = Field(default=None, description="Determines if the content will be validated against the object schema a generation time and save/update time.")
@@ -40,7 +42,7 @@ class CreateContentObjectTypePayload(BaseModel):
     description: Optional[StrictStr] = Field(default=None, description="Optional detailed description of the object")
     tags: Optional[List[StrictStr]] = Field(default=None, description="Optional array of categorization tags")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["status", "is_chunkable", "intake", "table_layout", "object_schema", "strict_mode", "name", "description", "tags"]
+    __properties: ClassVar[List[str]] = ["status", "is_chunkable", "intake", "editing", "table_layout", "object_schema", "strict_mode", "name", "description", "tags"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -86,6 +88,9 @@ class CreateContentObjectTypePayload(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of intake
         if self.intake:
             _dict['intake'] = self.intake.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of editing
+        if self.editing:
+            _dict['editing'] = self.editing.to_dict()
         # override the default output from pydantic by calling `to_dict()` of each item in table_layout (list)
         _items = []
         if self.table_layout:
@@ -113,6 +118,7 @@ class CreateContentObjectTypePayload(BaseModel):
             "status": obj.get("status"),
             "is_chunkable": obj.get("is_chunkable"),
             "intake": ContentTypeIntakePolicy.from_dict(obj["intake"]) if obj.get("intake") is not None else None,
+            "editing": ContentTypeEditingPolicy.from_dict(obj["editing"]) if obj.get("editing") is not None else None,
             "table_layout": [ColumnLayout.from_dict(_item) for _item in obj["table_layout"]] if obj.get("table_layout") is not None else None,
             "object_schema": obj.get("object_schema"),
             "strict_mode": obj.get("strict_mode"),
