@@ -42,12 +42,13 @@ class Account(BaseModel):
     account_type: AccountType
     billing: AccountBilling
     quota_tier: Optional[QuotaTier] = Field(default=None, description="Quota/rate-limit tier. Unset → the deployment default tier (env `QUOTA_BASE_TIER`).")
+    feature_flags: Optional[Dict[str, Any]] = Field(default=None, description="Ops-managed per-account feature flags. Untyped by design so operators can add / remove temporary rollout gates without a schema change. Keys are enumerated in the admin UI from a hardcoded registry (studio-server) — flags not in that registry are ignored. Not modifiable through the public account API; admin API only.")
     created_by: StrictStr
     updated_by: StrictStr
     created_at: StrictStr
     updated_at: StrictStr
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["id", "name", "namespace", "app_access_message", "email_domains", "onboarding", "datacenter", "account_type", "billing", "quota_tier", "created_by", "updated_by", "created_at", "updated_at"]
+    __properties: ClassVar[List[str]] = ["id", "name", "namespace", "app_access_message", "email_domains", "onboarding", "datacenter", "account_type", "billing", "quota_tier", "feature_flags", "created_by", "updated_by", "created_at", "updated_at"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -123,6 +124,7 @@ class Account(BaseModel):
             "account_type": obj.get("account_type"),
             "billing": AccountBilling.from_dict(obj["billing"]) if obj.get("billing") is not None else None,
             "quota_tier": obj.get("quota_tier"),
+            "feature_flags": obj.get("feature_flags"),
             "created_by": obj.get("created_by"),
             "updated_by": obj.get("updated_by"),
             "created_at": obj.get("created_at"),
