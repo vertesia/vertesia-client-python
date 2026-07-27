@@ -22,6 +22,7 @@ from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.content_type_intake_policy_text_conversion_custom import ContentTypeIntakePolicyTextConversionCustom
 from vertesia_client.openapi.models.intake_page_scope import IntakePageScope
+from vertesia_client.openapi.models.interaction_execution_configuration import InteractionExecutionConfiguration
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -37,7 +38,9 @@ class ContentTypeIntakePolicyTextConversion(BaseModel):
     output_format: Optional[StrictStr] = None
     scope: Optional[IntakePageScope] = Field(default=None, description="Which pages to convert: everything or the locate result. Default all.")
     page_ranges: Optional[List[Annotated[List[Union[StrictFloat, StrictInt]], Field(min_length=2, max_length=2)]]] = Field(default=None, description="Static page ranges to convert (wins over `scope` when set).")
-    __properties: ClassVar[List[str]] = ["enabled", "method", "custom", "instructions", "output_format", "scope", "page_ranges"]
+    render_dpi: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="DPI at which each page is rendered to the image the LLM converts. Default 150 — the accuracy/cost sweet spot: higher resolutions balloon input tokens (some providers tile the page) for no quality gain, below ~150 dense tables start to misread. Raise only for very fine print.")
+    config: Optional[InteractionExecutionConfiguration] = Field(default=None, description="Model execution config for the page-conversion interaction (method 'llm'/'auto' -> sys:ConvertPageToMarkdown, method 'custom' -> the custom interaction). Lets the visual conversion run on a cheaper/faster model (e.g. a flash model) than extraction. When unset, conversion uses the run's model config or the project default model.")
+    __properties: ClassVar[List[str]] = ["enabled", "method", "custom", "instructions", "output_format", "scope", "page_ranges", "render_dpi", "config"]
 
     @field_validator('method')
     def method_validate_enum(cls, value):
@@ -97,6 +100,9 @@ class ContentTypeIntakePolicyTextConversion(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of custom
         if self.custom:
             _dict['custom'] = self.custom.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of config
+        if self.config:
+            _dict['config'] = self.config.to_dict()
         return _dict
 
     @classmethod
@@ -115,7 +121,9 @@ class ContentTypeIntakePolicyTextConversion(BaseModel):
             "instructions": obj.get("instructions"),
             "output_format": obj.get("output_format"),
             "scope": obj.get("scope"),
-            "page_ranges": obj.get("page_ranges")
+            "page_ranges": obj.get("page_ranges"),
+            "render_dpi": obj.get("render_dpi"),
+            "config": InteractionExecutionConfiguration.from_dict(obj["config"]) if obj.get("config") is not None else None
         })
         return _obj
 

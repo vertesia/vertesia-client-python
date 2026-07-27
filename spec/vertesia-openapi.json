@@ -7107,6 +7107,14 @@
               "page_ranges": {
                 "$ref": "#/components/schemas/IntakePageRanges",
                 "description": "Static page ranges to convert (wins over `scope` when set)."
+              },
+              "render_dpi": {
+                "type": "number",
+                "description": "DPI at which each page is rendered to the image the LLM converts. Default 150 — the accuracy/cost sweet spot: higher resolutions balloon input tokens (some providers tile the page) for no quality gain, below ~150 dense tables start to misread. Raise only for very fine print."
+              },
+              "config": {
+                "$ref": "#/components/schemas/InteractionExecutionConfiguration",
+                "description": "Model execution config for the page-conversion interaction (method 'llm'/'auto' -> sys:ConvertPageToMarkdown, method 'custom' -> the custom interaction). Lets the visual conversion run on a cheaper/faster model (e.g. a flash model) than extraction. When unset, conversion uses the run's model config or the project default model."
               }
             },
             "additionalProperties": false,
@@ -7132,6 +7140,10 @@
               },
               "interaction": {
                 "type": "string"
+              },
+              "config": {
+                "$ref": "#/components/schemas/InteractionExecutionConfiguration",
+                "description": "Model execution config for the standard property-extraction interaction (sys:ExtractInformation). Lets extraction run on a different model/environment than the visual page conversion. When unset, extraction uses the run's model config or the project default model. (Grounded extraction is configured separately via grounding.config.)"
               },
               "scope": {
                 "$ref": "#/components/schemas/IntakePageScope",
@@ -7258,89 +7270,6 @@
           "maxItems": 2
         },
         "description": "Static page ranges: inclusive [start, end] pairs; negative indexes count from the end of the document ([[1, 2], [-1, -1]] = first two pages plus the last page)."
-      },
-      "IntakeVisionDetail": {
-        "type": "string",
-        "enum": [
-          "low",
-          "standard",
-          "high"
-        ],
-        "description": "Vision detail level names referenced by intake policies. The rendering profiles behind the names (dpi, max size, quality, color mode) are PLATFORM-defined and project-overridable — a type only ever references a detail name."
-      },
-      "ContentTypeExtractionGroundingPolicy": {
-        "type": "object",
-        "properties": {
-          "enabled": {
-            "type": "boolean",
-            "description": "Enable PDF block-level citation grounding for property extraction."
-          },
-          "interaction": {
-            "type": "string",
-            "description": "Grounded extraction interaction. Defaults to the system grounded extractor."
-          },
-          "max_pages": {
-            "type": "number",
-            "description": "Maximum pages to process."
-          },
-          "force_ocr": {
-            "type": "boolean",
-            "description": "Run OCR on every page even when a text layer exists."
-          },
-          "use_vision": {
-            "type": "boolean",
-            "description": "Attach instrumented page images to the grounded extraction prompt."
-          },
-          "raster_mode": {
-            "type": "string",
-            "enum": [
-              "vision",
-              "ocr"
-            ],
-            "description": "How to read pages with no digital text layer (scans / image-only pages). 'vision' (default): read them off the page image and skip OCR. 'ocr': legacy path — OCR those pages and block-ground on the (lossy) OCR text."
-          },
-          "grid_cell_pt": {
-            "type": "number",
-            "description": "A1 locate-grid cell size in PDF points for vision pages. Smaller = finer grid (more cells, tighter boxes) but can trip weaker models into over-reading; tune per the model in `config`. Default 15."
-          },
-          "omit_block_boxes": {
-            "type": "boolean",
-            "description": "Drop block bounding boxes from the extraction prompt. Only sound with use_vision (layout comes from the image)."
-          },
-          "window_pages": {
-            "type": "number",
-            "description": "Maximum pages per grounded extraction call before windowing."
-          },
-          "update_properties": {
-            "type": "boolean",
-            "description": "Update object properties with grounded extraction data. Default true."
-          },
-          "config": {
-            "$ref": "#/components/schemas/InteractionExecutionConfiguration",
-            "description": "Model execution configuration for the main grounded extraction interaction."
-          },
-          "hard_config": {
-            "$ref": "#/components/schemas/InteractionExecutionConfiguration",
-            "description": "Model execution configuration used for hard-to-read content."
-          },
-          "hardness_threshold": {
-            "type": "number",
-            "description": "Hardness score at or above which hard_config is used. Default 0.5."
-          },
-          "min_citation_density": {
-            "type": "number",
-            "description": "Minimum citations-per-leaf-value ratio; completions below it retry with escalation. Default 0.3."
-          },
-          "refresh_ocr": {
-            "type": "boolean",
-            "description": "Re-run OCR instead of restoring durable OCR artifacts (stale pipeline output)."
-          },
-          "review": {
-            "$ref": "#/components/schemas/ContentTypeExtractionGroundingReviewPolicy",
-            "description": "Optional post-extraction review pass."
-          }
-        },
-        "additionalProperties": false
       },
       "InteractionExecutionConfiguration": {
         "type": "object",
@@ -8632,6 +8561,89 @@
         },
         "additionalProperties": false,
         "description": "HTTP timeouts applied to a driver's upstream LLM-provider calls.\n\nAll values are in milliseconds. Drivers should map these onto whatever HTTP client their SDK uses; the defaults applied in `@llumiverse/core/createDriverHttpAgent` are:   - headersTimeout:   60_000   - bodyTimeout:      60_000   - connectTimeout:   10_000   - keepAliveTimeout: 30_000\n\nThe defaults are deliberately tighter than Node's undici default (5 minutes for headers/body) so a hung upstream surfaces quickly. Bump `bodyTimeout` for streaming flows that have legitimate silent gaps (e.g. tool-using agents)."
+      },
+      "IntakeVisionDetail": {
+        "type": "string",
+        "enum": [
+          "low",
+          "standard",
+          "high"
+        ],
+        "description": "Vision detail level names referenced by intake policies. The rendering profiles behind the names (dpi, max size, quality, color mode) are PLATFORM-defined and project-overridable — a type only ever references a detail name."
+      },
+      "ContentTypeExtractionGroundingPolicy": {
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "type": "boolean",
+            "description": "Enable PDF block-level citation grounding for property extraction."
+          },
+          "interaction": {
+            "type": "string",
+            "description": "Grounded extraction interaction. Defaults to the system grounded extractor."
+          },
+          "max_pages": {
+            "type": "number",
+            "description": "Maximum pages to process."
+          },
+          "force_ocr": {
+            "type": "boolean",
+            "description": "Run OCR on every page even when a text layer exists."
+          },
+          "use_vision": {
+            "type": "boolean",
+            "description": "Attach instrumented page images to the grounded extraction prompt."
+          },
+          "raster_mode": {
+            "type": "string",
+            "enum": [
+              "vision",
+              "ocr"
+            ],
+            "description": "How to read pages with no digital text layer (scans / image-only pages). 'vision' (default): read them off the page image and skip OCR. 'ocr': legacy path — OCR those pages and block-ground on the (lossy) OCR text."
+          },
+          "grid_cell_pt": {
+            "type": "number",
+            "description": "A1 locate-grid cell size in PDF points for vision pages. Smaller = finer grid (more cells, tighter boxes) but can trip weaker models into over-reading; tune per the model in `config`. Default 15."
+          },
+          "omit_block_boxes": {
+            "type": "boolean",
+            "description": "Drop block bounding boxes from the extraction prompt. Only sound with use_vision (layout comes from the image)."
+          },
+          "window_pages": {
+            "type": "number",
+            "description": "Maximum pages per grounded extraction call before windowing."
+          },
+          "update_properties": {
+            "type": "boolean",
+            "description": "Update object properties with grounded extraction data. Default true."
+          },
+          "config": {
+            "$ref": "#/components/schemas/InteractionExecutionConfiguration",
+            "description": "Model execution configuration for the main grounded extraction interaction."
+          },
+          "hard_config": {
+            "$ref": "#/components/schemas/InteractionExecutionConfiguration",
+            "description": "Model execution configuration used for hard-to-read content."
+          },
+          "hardness_threshold": {
+            "type": "number",
+            "description": "Hardness score at or above which hard_config is used. Default 0.5."
+          },
+          "min_citation_density": {
+            "type": "number",
+            "description": "Minimum citations-per-leaf-value ratio; completions below it retry with escalation. Default 0.3."
+          },
+          "refresh_ocr": {
+            "type": "boolean",
+            "description": "Re-run OCR instead of restoring durable OCR artifacts (stale pipeline output)."
+          },
+          "review": {
+            "$ref": "#/components/schemas/ContentTypeExtractionGroundingReviewPolicy",
+            "description": "Optional post-extraction review pass."
+          }
+        },
+        "additionalProperties": false
       },
       "ContentTypeExtractionGroundingReviewPolicy": {
         "type": "object",

@@ -24,6 +24,7 @@ from vertesia_client.openapi.models.content_type_extraction_grounding_policy imp
 from vertesia_client.openapi.models.content_type_intake_policy_extraction_verification import ContentTypeIntakePolicyExtractionVerification
 from vertesia_client.openapi.models.content_type_intake_policy_extraction_vision import ContentTypeIntakePolicyExtractionVision
 from vertesia_client.openapi.models.intake_page_scope import IntakePageScope
+from vertesia_client.openapi.models.interaction_execution_configuration import InteractionExecutionConfiguration
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -36,13 +37,14 @@ class ContentTypeIntakePolicyExtraction(BaseModel):
     source: Optional[StrictStr] = None
     instructions: Optional[StrictStr] = None
     interaction: Optional[StrictStr] = None
+    config: Optional[InteractionExecutionConfiguration] = Field(default=None, description="Model execution config for the standard property-extraction interaction (sys:ExtractInformation). Lets extraction run on a different model/environment than the visual page conversion. When unset, extraction uses the run's model config or the project default model. (Grounded extraction is configured separately via grounding.config.)")
     scope: Optional[IntakePageScope] = Field(default=None, description="Which pages extraction sees: everything or the locate result.")
     page_ranges: Optional[List[Annotated[List[Union[StrictFloat, StrictInt]], Field(min_length=2, max_length=2)]]] = Field(default=None, description="Static page ranges extraction sees (wins over `scope` when set).")
     max_pages: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Cap on pages sent to extraction. Default 20.")
     vision: Optional[ContentTypeIntakePolicyExtractionVision] = None
     verification: Optional[ContentTypeIntakePolicyExtractionVerification] = None
     grounding: Optional[ContentTypeExtractionGroundingPolicy] = Field(default=None, description="Controls PDF block-level citation grounding with annotated proof output.")
-    __properties: ClassVar[List[str]] = ["enabled", "source", "instructions", "interaction", "scope", "page_ranges", "max_pages", "vision", "verification", "grounding"]
+    __properties: ClassVar[List[str]] = ["enabled", "source", "instructions", "interaction", "config", "scope", "page_ranges", "max_pages", "vision", "verification", "grounding"]
 
     @field_validator('source')
     def source_validate_enum(cls, value):
@@ -91,6 +93,9 @@ class ContentTypeIntakePolicyExtraction(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of config
+        if self.config:
+            _dict['config'] = self.config.to_dict()
         # override the default output from pydantic by calling `to_dict()` of vision
         if self.vision:
             _dict['vision'] = self.vision.to_dict()
@@ -116,6 +121,7 @@ class ContentTypeIntakePolicyExtraction(BaseModel):
             "source": obj.get("source"),
             "instructions": obj.get("instructions"),
             "interaction": obj.get("interaction"),
+            "config": InteractionExecutionConfiguration.from_dict(obj["config"]) if obj.get("config") is not None else None,
             "scope": obj.get("scope"),
             "page_ranges": obj.get("page_ranges"),
             "max_pages": obj.get("max_pages"),
