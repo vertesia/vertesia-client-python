@@ -3015,6 +3015,13 @@ components:
           items:
             type: string
           description: Compartments — merged with user compartments using array union
+        allowed_projects:
+          type: array
+          items:
+            type: string
+          description: Projects this group is allowed to be used in. When empty or absent
+            the group is org-wide (usable in any project). When set, the group
+            may only be used to grant permissions in the listed projects.
       required:
         - id
         - account
@@ -3034,6 +3041,12 @@ components:
           type: array
           items:
             type: string
+        allowed_projects:
+          type: array
+          items:
+            type: string
+          description: Restrict the new group to the given projects (empty/absent =
+            org-wide).
       required:
         - name
       additionalProperties: false
@@ -3054,6 +3067,10 @@ components:
         clearance:
           type: number
         compartments:
+          type: array
+          items:
+            type: string
+        allowed_projects:
           type: array
           items:
             type: string
@@ -32097,8 +32114,11 @@ paths:
       tags:
         - User Groups
       summary: List user groups
-      description: |-
-        Lists user groups in the current account.
+      description: >-
+        Lists user groups in the current account. Pass `project` to return only
+        groups usable in that project (org-wide groups plus groups restricted to
+        it).
+
 
         **Required permissions:** `account:read`
       security:
@@ -32143,8 +32163,10 @@ paths:
       tags:
         - User Groups
       summary: Create a user group
-      description: |-
-        Creates a new user group in the current account.
+      description: >-
+        Creates a new user group in the current account. Pass `allowed_projects`
+        to restrict the group to specific projects (empty/absent = org-wide).
+
 
         **Required permissions:** `account:admin`
       security:

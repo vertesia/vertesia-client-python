@@ -40,8 +40,9 @@ class UserGroup(BaseModel):
     properties: Optional[Dict[str, Any]] = Field(default=None, description="Custom properties for dynamic permission matching")
     clearance: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="BLP clearance level — merged with user clearance using max()")
     compartments: Optional[List[StrictStr]] = Field(default=None, description="Compartments — merged with user compartments using array union")
+    allowed_projects: Optional[List[StrictStr]] = Field(default=None, description="Projects this group is allowed to be used in. When empty or absent the group is org-wide (usable in any project). When set, the group may only be used to grant permissions in the listed projects.")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["id", "account", "name", "description", "tags", "created_at", "updated_at", "created_by", "updated_by", "properties", "clearance", "compartments"]
+    __properties: ClassVar[List[str]] = ["id", "account", "name", "description", "tags", "created_at", "updated_at", "created_by", "updated_by", "properties", "clearance", "compartments", "allowed_projects"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -112,7 +113,8 @@ class UserGroup(BaseModel):
             "updated_by": obj.get("updated_by"),
             "properties": obj.get("properties"),
             "clearance": obj.get("clearance"),
-            "compartments": obj.get("compartments")
+            "compartments": obj.get("compartments"),
+            "allowed_projects": obj.get("allowed_projects")
         })
         # store additional fields in additional_properties
         for _key in obj.keys():

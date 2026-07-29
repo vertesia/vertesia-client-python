@@ -33,7 +33,8 @@ class UpdateUserGroupPayload(BaseModel):
     properties: Optional[Dict[str, Any]] = None
     clearance: Optional[Union[StrictFloat, StrictInt]] = None
     compartments: Optional[List[StrictStr]] = None
-    __properties: ClassVar[List[str]] = ["name", "description", "tags", "properties", "clearance", "compartments"]
+    allowed_projects: Optional[List[StrictStr]] = None
+    __properties: ClassVar[List[str]] = ["name", "description", "tags", "properties", "clearance", "compartments", "allowed_projects"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -91,7 +92,8 @@ class UpdateUserGroupPayload(BaseModel):
             "tags": obj.get("tags"),
             "properties": obj.get("properties"),
             "clearance": obj.get("clearance"),
-            "compartments": obj.get("compartments")
+            "compartments": obj.get("compartments"),
+            "allowed_projects": obj.get("allowed_projects")
         })
         return _obj
 

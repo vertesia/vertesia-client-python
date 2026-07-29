@@ -359,7 +359,7 @@ class UserGroupsApi:
     ) -> UserGroup:
         """Create a user group
 
-        Creates a new user group in the current account.  **Required permissions:** `account:admin`
+        Creates a new user group in the current account. Pass `allowed_projects` to restrict the group to specific projects (empty/absent = org-wide).  **Required permissions:** `account:admin`
 
         :param create_user_group_payload: (required)
         :type create_user_group_payload: CreateUserGroupPayload
@@ -432,7 +432,7 @@ class UserGroupsApi:
     ) -> ApiResponse[UserGroup]:
         """Create a user group
 
-        Creates a new user group in the current account.  **Required permissions:** `account:admin`
+        Creates a new user group in the current account. Pass `allowed_projects` to restrict the group to specific projects (empty/absent = org-wide).  **Required permissions:** `account:admin`
 
         :param create_user_group_payload: (required)
         :type create_user_group_payload: CreateUserGroupPayload
@@ -505,7 +505,7 @@ class UserGroupsApi:
     ) -> RESTResponseType:
         """Create a user group
 
-        Creates a new user group in the current account.  **Required permissions:** `account:admin`
+        Creates a new user group in the current account. Pass `allowed_projects` to restrict the group to specific projects (empty/absent = org-wide).  **Required permissions:** `account:admin`
 
         :param create_user_group_payload: (required)
         :type create_user_group_payload: CreateUserGroupPayload
@@ -1220,7 +1220,7 @@ class UserGroupsApi:
     ) -> List[UserGroup]:
         """List user groups
 
-        Lists user groups in the current account.  **Required permissions:** `account:read`
+        Lists user groups in the current account. Pass `project` to return only groups usable in that project (org-wide groups plus groups restricted to it).  **Required permissions:** `account:read`
 
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
@@ -1289,7 +1289,7 @@ class UserGroupsApi:
     ) -> ApiResponse[List[UserGroup]]:
         """List user groups
 
-        Lists user groups in the current account.  **Required permissions:** `account:read`
+        Lists user groups in the current account. Pass `project` to return only groups usable in that project (org-wide groups plus groups restricted to it).  **Required permissions:** `account:read`
 
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
@@ -1358,7 +1358,7 @@ class UserGroupsApi:
     ) -> RESTResponseType:
         """List user groups
 
-        Lists user groups in the current account.  **Required permissions:** `account:read`
+        Lists user groups in the current account. Pass `project` to return only groups usable in that project (org-wide groups plus groups restricted to it).  **Required permissions:** `account:read`
 
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
