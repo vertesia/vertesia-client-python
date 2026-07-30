@@ -706,9 +706,13 @@ vertesia_client/openapi/models/process_history_response_node_history_ref.py
 vertesia_client/openapi/models/process_node_returns_definition.py
 vertesia_client/openapi/models/process_node_run_type.py
 vertesia_client/openapi/models/process_node_type.py
+vertesia_client/openapi/models/process_resources_definition.py
 vertesia_client/openapi/models/process_run_config.py
 vertesia_client/openapi/models/process_run_config_process_workstream_monitor.py
 vertesia_client/openapi/models/process_run_type.py
+vertesia_client/openapi/models/process_script_inline_source.py
+vertesia_client/openapi/models/process_script_language.py
+vertesia_client/openapi/models/process_script_resource.py
 vertesia_client/openapi/models/process_state.py
 vertesia_client/openapi/models/programmatic_run_response.py
 vertesia_client/openapi/models/project.py

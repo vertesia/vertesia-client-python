@@ -38,6 +38,8 @@ class NodeDefinition(BaseModel):
     """ # noqa: E501
     type: ProcessNodeType
     tool: Optional[StrictStr] = None
+    script: Optional[StrictStr] = Field(default=None, description="Named entry in process resources.scripts for script nodes.")
+    timeout: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Script execution timeout in seconds. Defaults to 300 and is capped at 600.")
     interaction: Optional[StrictStr] = None
     process: Optional[StrictStr] = None
     process_definition: Optional[ProcessDefinitionBody] = None
@@ -68,7 +70,7 @@ class NodeDefinition(BaseModel):
     join: Optional[BranchJoinPolicy] = None
     branches: Optional[List[NodeDefinitionBranchesInner]] = None
     metadata: Optional[Dict[str, Any]] = None
-    __properties: ClassVar[List[str]] = ["type", "tool", "interaction", "process", "process_definition", "process_version", "run_type", "returns", "result_schema", "prompt", "input", "config", "title", "description", "human_description", "writes", "skippable", "max_retries", "transitions", "tools", "model", "task", "foreach", "as", "item_id", "node", "max_concurrency", "collect", "failure_policy", "join", "branches", "metadata"]
+    __properties: ClassVar[List[str]] = ["type", "tool", "script", "timeout", "interaction", "process", "process_definition", "process_version", "run_type", "returns", "result_schema", "prompt", "input", "config", "title", "description", "human_description", "writes", "skippable", "max_retries", "transitions", "tools", "model", "task", "foreach", "as", "item_id", "node", "max_concurrency", "collect", "failure_policy", "join", "branches", "metadata"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -155,6 +157,8 @@ class NodeDefinition(BaseModel):
         _obj = cls.model_validate({
             "type": obj.get("type"),
             "tool": obj.get("tool"),
+            "script": obj.get("script"),
+            "timeout": obj.get("timeout"),
             "interaction": obj.get("interaction"),
             "process": obj.get("process"),
             "process_definition": ProcessDefinitionBody.from_dict(obj["process_definition"]) if obj.get("process_definition") is not None else None,

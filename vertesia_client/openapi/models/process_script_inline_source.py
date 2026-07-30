@@ -17,35 +17,22 @@ import pprint
 import re  # noqa: F401
 import json
 
-from datetime import datetime
-from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr, field_validator
-from typing import Any, ClassVar, Dict, List, Optional, Union
+from pydantic import BaseModel, ConfigDict, StrictStr, field_validator
+from typing import Any, ClassVar, Dict
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class NodeHistoryEntry(BaseModel):
+class ProcessScriptInlineSource(BaseModel):
     """
-    NodeHistoryEntry
+    Script files stored directly in the process definition.  The source is a discriminated object so artifact- and Git-backed sources can be added without changing the surrounding script resource contract.
     """ # noqa: E501
-    id: Optional[StrictStr] = None
-    node: StrictStr
-    attempt: Optional[Union[StrictFloat, StrictInt]] = None
-    entered_at: datetime
-    exited_at: Optional[datetime] = None
-    status: StrictStr
-    context_diff: Optional[Dict[str, Any]] = None
-    data_ref: Optional[StrictStr] = None
-    sequence: Optional[Union[StrictFloat, StrictInt]] = None
-    child_run_id: Optional[StrictStr] = None
-    child_workflow_id: Optional[StrictStr] = None
-    child_workflow_run_id: Optional[StrictStr] = None
-    artifacts: Optional[List[StrictStr]] = None
-    log_ref: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["id", "node", "attempt", "entered_at", "exited_at", "status", "context_diff", "data_ref", "sequence", "child_run_id", "child_workflow_id", "child_workflow_run_id", "artifacts", "log_ref"]
+    type: StrictStr
+    files: Dict[str, StrictStr]
+    __properties: ClassVar[List[str]] = ["type", "files"]
 
-    @field_validator('status')
-    def status_validate_enum(cls, value):
+    @field_validator('type')
+    def type_validate_enum(cls, value):
         """Validates the enum"""
         return value
 
@@ -67,7 +54,7 @@ class NodeHistoryEntry(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of NodeHistoryEntry from a JSON string"""
+        """Create an instance of ProcessScriptInlineSource from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -92,7 +79,7 @@ class NodeHistoryEntry(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of NodeHistoryEntry from a dict"""
+        """Create an instance of ProcessScriptInlineSource from a dict"""
         if obj is None:
             return None
 
@@ -100,20 +87,8 @@ class NodeHistoryEntry(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "id": obj.get("id"),
-            "node": obj.get("node"),
-            "attempt": obj.get("attempt"),
-            "entered_at": obj.get("entered_at"),
-            "exited_at": obj.get("exited_at"),
-            "status": obj.get("status"),
-            "context_diff": obj.get("context_diff"),
-            "data_ref": obj.get("data_ref"),
-            "sequence": obj.get("sequence"),
-            "child_run_id": obj.get("child_run_id"),
-            "child_workflow_id": obj.get("child_workflow_id"),
-            "child_workflow_run_id": obj.get("child_workflow_run_id"),
-            "artifacts": obj.get("artifacts"),
-            "log_ref": obj.get("log_ref")
+            "type": obj.get("type"),
+            "files": obj.get("files")
         })
         return _obj
 

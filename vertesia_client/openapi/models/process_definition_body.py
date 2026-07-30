@@ -21,6 +21,7 @@ from pydantic import BaseModel, ConfigDict, StrictStr
 from typing import Any, ClassVar, Dict, Optional
 from vertesia_client.openapi.models.process_context_definition import ProcessContextDefinition
 from vertesia_client.openapi.models.process_definition_format_version import ProcessDefinitionFormatVersion
+from vertesia_client.openapi.models.process_resources_definition import ProcessResourcesDefinition
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -34,10 +35,11 @@ class ProcessDefinitionBody(BaseModel):
     description: Optional[StrictStr] = None
     initial: StrictStr
     model: Optional[StrictStr] = None
+    resources: Optional[ProcessResourcesDefinition] = None
     context: ProcessContextDefinition
     nodes: Dict[str, NodeDefinition]
     metadata: Optional[Dict[str, Any]] = None
-    __properties: ClassVar[List[str]] = ["format_version", "process", "description", "initial", "model", "context", "nodes", "metadata"]
+    __properties: ClassVar[List[str]] = ["format_version", "process", "description", "initial", "model", "resources", "context", "nodes", "metadata"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -78,6 +80,9 @@ class ProcessDefinitionBody(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of resources
+        if self.resources:
+            _dict['resources'] = self.resources.to_dict()
         # override the default output from pydantic by calling `to_dict()` of context
         if self.context:
             _dict['context'] = self.context.to_dict()
@@ -105,6 +110,7 @@ class ProcessDefinitionBody(BaseModel):
             "description": obj.get("description"),
             "initial": obj.get("initial"),
             "model": obj.get("model"),
+            "resources": ProcessResourcesDefinition.from_dict(obj["resources"]) if obj.get("resources") is not None else None,
             "context": ProcessContextDefinition.from_dict(obj["context"]) if obj.get("context") is not None else None,
             "nodes": dict(
                 (_k, NodeDefinition.from_dict(_v))

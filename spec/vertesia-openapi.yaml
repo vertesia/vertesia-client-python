@@ -7258,6 +7258,8 @@ components:
           type: string
         model:
           type: string
+        resources:
+          $ref: "#/components/schemas/ProcessResourcesDefinition"
         context:
           $ref: "#/components/schemas/ProcessContextDefinition"
         nodes:
@@ -7274,6 +7276,60 @@ components:
     ProcessDefinitionFormatVersion:
       type: number
       const: 1
+    ProcessResourcesDefinition:
+      type: object
+      properties:
+        scripts:
+          $ref: "#/components/schemas/ProcessScriptResourceMap"
+      additionalProperties: false
+    ProcessScriptResourceMap:
+      type: object
+      additionalProperties:
+        $ref: "#/components/schemas/ProcessScriptResource"
+    ProcessScriptResource:
+      type: object
+      properties:
+        language:
+          $ref: "#/components/schemas/ProcessScriptLanguage"
+        entrypoint:
+          type: string
+        source:
+          $ref: "#/components/schemas/ProcessScriptSource"
+        packages:
+          type: array
+          items:
+            type: string
+      required:
+        - language
+        - entrypoint
+        - source
+      additionalProperties: false
+    ProcessScriptLanguage:
+      type: string
+      enum:
+        - python
+        - javascript
+        - typescript
+    ProcessScriptSource:
+      $ref: "#/components/schemas/ProcessScriptInlineSource"
+    ProcessScriptInlineSource:
+      type: object
+      properties:
+        type:
+          type: string
+          const: inline
+        files:
+          $ref: "#/components/schemas/StringValueMap"
+      required:
+        - type
+        - files
+      additionalProperties: false
+      description: >-
+        Script files stored directly in the process definition.
+
+
+        The source is a discriminated object so artifact- and Git-backed sources
+        can be added without changing the surrounding script resource contract.
     ProcessContextDefinition:
       type: object
       properties:
@@ -7323,6 +7379,13 @@ components:
           $ref: "#/components/schemas/ProcessNodeType"
         tool:
           type: string
+        script:
+          type: string
+          description: Named entry in process resources.scripts for script nodes.
+        timeout:
+          type: number
+          description: Script execution timeout in seconds. Defaults to 300 and is capped
+            at 600.
         interaction:
           type: string
         process:
@@ -7418,6 +7481,7 @@ components:
         - tool
         - interaction
         - agent
+        - script
         - process
         - human_task
         - foreach
@@ -19372,6 +19436,12 @@ components:
         child_workflow_id:
           type: string
         child_workflow_run_id:
+          type: string
+        artifacts:
+          type: array
+          items:
+            type: string
+        log_ref:
           type: string
       required:
         - node

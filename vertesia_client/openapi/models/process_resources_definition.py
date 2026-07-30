@@ -17,37 +17,19 @@ import pprint
 import re  # noqa: F401
 import json
 
-from datetime import datetime
-from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr, field_validator
-from typing import Any, ClassVar, Dict, List, Optional, Union
+from pydantic import BaseModel, ConfigDict
+from typing import Any, ClassVar, Dict, Optional
+from vertesia_client.openapi.models.process_script_resource import ProcessScriptResource
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class NodeHistoryEntry(BaseModel):
+class ProcessResourcesDefinition(BaseModel):
     """
-    NodeHistoryEntry
+    ProcessResourcesDefinition
     """ # noqa: E501
-    id: Optional[StrictStr] = None
-    node: StrictStr
-    attempt: Optional[Union[StrictFloat, StrictInt]] = None
-    entered_at: datetime
-    exited_at: Optional[datetime] = None
-    status: StrictStr
-    context_diff: Optional[Dict[str, Any]] = None
-    data_ref: Optional[StrictStr] = None
-    sequence: Optional[Union[StrictFloat, StrictInt]] = None
-    child_run_id: Optional[StrictStr] = None
-    child_workflow_id: Optional[StrictStr] = None
-    child_workflow_run_id: Optional[StrictStr] = None
-    artifacts: Optional[List[StrictStr]] = None
-    log_ref: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["id", "node", "attempt", "entered_at", "exited_at", "status", "context_diff", "data_ref", "sequence", "child_run_id", "child_workflow_id", "child_workflow_run_id", "artifacts", "log_ref"]
-
-    @field_validator('status')
-    def status_validate_enum(cls, value):
-        """Validates the enum"""
-        return value
+    scripts: Optional[Dict[str, ProcessScriptResource]] = None
+    __properties: ClassVar[List[str]] = ["scripts"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -67,7 +49,7 @@ class NodeHistoryEntry(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of NodeHistoryEntry from a JSON string"""
+        """Create an instance of ProcessResourcesDefinition from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -88,11 +70,18 @@ class NodeHistoryEntry(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of each value in scripts (dict)
+        _field_dict = {}
+        if self.scripts:
+            for _key_scripts in self.scripts:
+                if self.scripts[_key_scripts]:
+                    _field_dict[_key_scripts] = self.scripts[_key_scripts].to_dict()
+            _dict['scripts'] = _field_dict
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of NodeHistoryEntry from a dict"""
+        """Create an instance of ProcessResourcesDefinition from a dict"""
         if obj is None:
             return None
 
@@ -100,20 +89,12 @@ class NodeHistoryEntry(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "id": obj.get("id"),
-            "node": obj.get("node"),
-            "attempt": obj.get("attempt"),
-            "entered_at": obj.get("entered_at"),
-            "exited_at": obj.get("exited_at"),
-            "status": obj.get("status"),
-            "context_diff": obj.get("context_diff"),
-            "data_ref": obj.get("data_ref"),
-            "sequence": obj.get("sequence"),
-            "child_run_id": obj.get("child_run_id"),
-            "child_workflow_id": obj.get("child_workflow_id"),
-            "child_workflow_run_id": obj.get("child_workflow_run_id"),
-            "artifacts": obj.get("artifacts"),
-            "log_ref": obj.get("log_ref")
+            "scripts": dict(
+                (_k, ProcessScriptResource.from_dict(_v))
+                for _k, _v in obj["scripts"].items()
+            )
+            if obj.get("scripts") is not None
+            else None
         })
         return _obj
 

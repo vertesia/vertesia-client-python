@@ -728,9 +728,13 @@ __all__ = [
     "ProcessNodeReturnsDefinition",
     "ProcessNodeRunType",
     "ProcessNodeType",
+    "ProcessResourcesDefinition",
     "ProcessRunConfig",
     "ProcessRunConfigProcessWorkstreamMonitor",
     "ProcessRunType",
+    "ProcessScriptInlineSource",
+    "ProcessScriptLanguage",
+    "ProcessScriptResource",
     "ProcessState",
     "ProgrammaticRunResponse",
     "Project",
@@ -1763,9 +1767,13 @@ from vertesia_client.openapi.models.process_history_response_node_history_ref im
 from vertesia_client.openapi.models.process_node_returns_definition import ProcessNodeReturnsDefinition as ProcessNodeReturnsDefinition
 from vertesia_client.openapi.models.process_node_run_type import ProcessNodeRunType as ProcessNodeRunType
 from vertesia_client.openapi.models.process_node_type import ProcessNodeType as ProcessNodeType
+from vertesia_client.openapi.models.process_resources_definition import ProcessResourcesDefinition as ProcessResourcesDefinition
 from vertesia_client.openapi.models.process_run_config import ProcessRunConfig as ProcessRunConfig
 from vertesia_client.openapi.models.process_run_config_process_workstream_monitor import ProcessRunConfigProcessWorkstreamMonitor as ProcessRunConfigProcessWorkstreamMonitor
 from vertesia_client.openapi.models.process_run_type import ProcessRunType as ProcessRunType
+from vertesia_client.openapi.models.process_script_inline_source import ProcessScriptInlineSource as ProcessScriptInlineSource
+from vertesia_client.openapi.models.process_script_language import ProcessScriptLanguage as ProcessScriptLanguage
+from vertesia_client.openapi.models.process_script_resource import ProcessScriptResource as ProcessScriptResource
 from vertesia_client.openapi.models.process_state import ProcessState as ProcessState
 from vertesia_client.openapi.models.programmatic_run_response import ProgrammaticRunResponse as ProgrammaticRunResponse
 from vertesia_client.openapi.models.project import Project as Project
