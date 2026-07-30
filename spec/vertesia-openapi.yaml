@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: Vertesia API
-  version: 1.4.0
+  version: 1.4.1
   description: The Vertesia API provides project-scoped access to interaction
     execution and content workflows. Use it to run interactions, inspect
     execution history, stream run progress, replay previous executions, and
