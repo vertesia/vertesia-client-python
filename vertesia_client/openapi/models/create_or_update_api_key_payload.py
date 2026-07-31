@@ -18,8 +18,8 @@ import re  # noqa: F401
 import json
 
 from datetime import datetime
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
-from typing import Any, ClassVar, Dict, Optional
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
+from typing import Any, ClassVar, Dict, List, Optional, Union
 from vertesia_client.openapi.models.api_key_types import ApiKeyTypes
 from vertesia_client.openapi.models.project_ref import ProjectRef
 from vertesia_client.openapi.models.system_roles import SystemRoles
@@ -45,7 +45,11 @@ class CreateOrUpdateApiKeyPayload(BaseModel):
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
     expires_at: Optional[datetime] = None
-    __properties: ClassVar[List[str]] = ["id", "name", "type", "role", "maskedValue", "can_retrieve_value", "account", "project", "enabled", "created_by", "updated_by", "created_at", "updated_at", "expires_at"]
+    properties: Optional[Dict[str, Any]] = Field(default=None, description="Custom properties for dynamic permission matching (PrincipalSet / $principal. conditions)")
+    clearance: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="BLP clearance level — determines max document sensitivity the key can access")
+    compartments: Optional[List[StrictStr]] = Field(default=None, description="Compartments the key belongs to — restricts access to documents in matching compartments")
+    additional_properties: Dict[str, Any] = {}
+    __properties: ClassVar[List[str]] = ["id", "name", "type", "role", "maskedValue", "can_retrieve_value", "account", "project", "enabled", "created_by", "updated_by", "created_at", "updated_at", "expires_at", "properties", "clearance", "compartments"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -77,8 +81,10 @@ class CreateOrUpdateApiKeyPayload(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -89,6 +95,11 @@ class CreateOrUpdateApiKeyPayload(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of project
         if self.project:
             _dict['project'] = self.project.to_dict()
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
         return _dict
 
     @classmethod
@@ -114,8 +125,16 @@ class CreateOrUpdateApiKeyPayload(BaseModel):
             "updated_by": obj.get("updated_by"),
             "created_at": obj.get("created_at"),
             "updated_at": obj.get("updated_at"),
-            "expires_at": obj.get("expires_at")
+            "expires_at": obj.get("expires_at"),
+            "properties": obj.get("properties"),
+            "clearance": obj.get("clearance"),
+            "compartments": obj.get("compartments")
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 

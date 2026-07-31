@@ -17,8 +17,8 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr
-from typing import Any, ClassVar, Dict, Optional
+from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr
+from typing import Any, ClassVar, Dict, Optional, Union
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -28,8 +28,9 @@ class BulkObjectCreateResultObjectsInner(BaseModel):
     BulkObjectCreateResultObjectsInner
     """ # noqa: E501
     id: StrictStr
+    index: Optional[Union[StrictFloat, StrictInt]] = None
     external_id: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["id", "external_id"]
+    __properties: ClassVar[List[str]] = ["id", "index", "external_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -83,6 +84,7 @@ class BulkObjectCreateResultObjectsInner(BaseModel):
 
         _obj = cls.model_validate({
             "id": obj.get("id"),
+            "index": obj.get("index"),
             "external_id": obj.get("external_id")
         })
         return _obj

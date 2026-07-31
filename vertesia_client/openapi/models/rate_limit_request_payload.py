@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, Optional
 from vertesia_client.openapi.models.prompt_modalities import PromptModalities
 from typing import Optional, Set
@@ -31,9 +31,10 @@ class RateLimitRequestPayload(BaseModel):
     interaction: StrictStr
     environment_id: Optional[StrictStr] = None
     model_id: Optional[StrictStr] = None
-    workflow_run_id: Optional[StrictStr] = None
+    workflow_run_id: Optional[StrictStr] = Field(default=None, description="Deprecated: Use rate_limit_id for admission/completion correlation.")
+    rate_limit_id: Optional[StrictStr] = Field(default=None, description="Stable per-execution admission identifier. Preferred over the legacy workflow_run_id.")
     modalities: Optional[PromptModalities] = None
-    __properties: ClassVar[List[str]] = ["interaction", "environment_id", "model_id", "workflow_run_id", "modalities"]
+    __properties: ClassVar[List[str]] = ["interaction", "environment_id", "model_id", "workflow_run_id", "rate_limit_id", "modalities"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -93,6 +94,7 @@ class RateLimitRequestPayload(BaseModel):
             "environment_id": obj.get("environment_id"),
             "model_id": obj.get("model_id"),
             "workflow_run_id": obj.get("workflow_run_id"),
+            "rate_limit_id": obj.get("rate_limit_id"),
             "modalities": PromptModalities.from_dict(obj["modalities"]) if obj.get("modalities") is not None else None
         })
         return _obj

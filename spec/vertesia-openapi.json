@@ -3227,6 +3227,22 @@
             "type": "string",
             "format": "date-time"
           },
+          "properties": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Custom properties for dynamic permission matching (PrincipalSet / $principal. conditions)"
+          },
+          "clearance": {
+            "type": "number",
+            "description": "BLP clearance level — determines max document sensitivity the key can access"
+          },
+          "compartments": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Compartments the key belongs to — restricts access to documents in matching compartments"
+          },
           "value": {
             "type": "string"
           }
@@ -3295,6 +3311,22 @@
           "expires_at": {
             "type": "string",
             "format": "date-time"
+          },
+          "properties": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Custom properties for dynamic permission matching (PrincipalSet / $principal. conditions)"
+          },
+          "clearance": {
+            "type": "number",
+            "description": "BLP clearance level — determines max document sensitivity the key can access"
+          },
+          "compartments": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Compartments the key belongs to — restricts access to documents in matching compartments"
           }
         }
       },
@@ -3361,6 +3393,22 @@
           "expires_at": {
             "type": "string",
             "format": "date-time"
+          },
+          "properties": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Custom properties for dynamic permission matching (PrincipalSet / $principal. conditions)"
+          },
+          "clearance": {
+            "type": "number",
+            "description": "BLP clearance level — determines max document sensitivity the key can access"
+          },
+          "compartments": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Compartments the key belongs to — restricts access to documents in matching compartments"
           }
         },
         "required": [
@@ -3443,6 +3491,22 @@
           "expires_at": {
             "type": "string",
             "format": "date-time"
+          },
+          "properties": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Custom properties for dynamic permission matching (PrincipalSet / $principal. conditions)"
+          },
+          "clearance": {
+            "type": "number",
+            "description": "BLP clearance level — determines max document sensitivity the key can access"
+          },
+          "compartments": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Compartments the key belongs to — restricts access to documents in matching compartments"
           },
           "value": {
             "type": "string"
@@ -3689,7 +3753,14 @@
             "type": "string"
           },
           "workflow_run_id": {
-            "type": "string"
+            "type": "string",
+            "deprecated": true,
+            "x-deprecated-message": "Use rate_limit_id for admission/completion correlation.",
+            "description": "Deprecated: Use rate_limit_id for admission/completion correlation."
+          },
+          "rate_limit_id": {
+            "type": "string",
+            "description": "Stable per-execution admission identifier. Preferred over the legacy workflow_run_id."
           },
           "modalities": {
             "$ref": "#/components/schemas/PromptModalities"
@@ -13207,6 +13278,10 @@
           "data": {},
           "retryable": {
             "type": "boolean"
+          },
+          "retry_after_ms": {
+            "type": "number",
+            "description": "Provider-supplied retry delay preserved across synchronous and async workflow execution."
           }
         },
         "required": [
@@ -13267,6 +13342,10 @@
       "ExecutionRunWorkflow": {
         "type": "object",
         "properties": {
+          "rate_limit_id": {
+            "type": "string",
+            "description": "Stable identifier pairing an interaction rate-limit admission with its completion feedback."
+          },
           "run_id": {
             "type": "string",
             "description": "The Temporal Workflow Run ID related to this Interaction Run.\n\nA Run ID is a globally unique, platform-level identifier for a Workflow Execution.\n\nDeprecated: For agent runs, use the Agent Runs API (`/api/v1/agents`) instead.\nThe AgentRun object provides a stable ID that survives workflow restarts.\nThis field is only relevant for legacy non-agent interaction executions.",
@@ -24467,6 +24546,9 @@
               "properties": {
                 "id": {
                   "type": "string"
+                },
+                "index": {
+                  "type": "number"
                 },
                 "external_id": {
                   "type": "string"

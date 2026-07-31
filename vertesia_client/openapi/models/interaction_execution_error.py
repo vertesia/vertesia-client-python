@@ -17,8 +17,8 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictBool, StrictStr
-from typing import Any, ClassVar, Dict, Optional
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
+from typing import Any, ClassVar, Dict, Optional, Union
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -31,7 +31,8 @@ class InteractionExecutionError(BaseModel):
     message: StrictStr
     data: Optional[Any] = None
     retryable: Optional[StrictBool] = None
-    __properties: ClassVar[List[str]] = ["code", "message", "data", "retryable"]
+    retry_after_ms: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Provider-supplied retry delay preserved across synchronous and async workflow execution.")
+    __properties: ClassVar[List[str]] = ["code", "message", "data", "retryable", "retry_after_ms"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -92,7 +93,8 @@ class InteractionExecutionError(BaseModel):
             "code": obj.get("code"),
             "message": obj.get("message"),
             "data": obj.get("data"),
-            "retryable": obj.get("retryable")
+            "retryable": obj.get("retryable"),
+            "retry_after_ms": obj.get("retry_after_ms")
         })
         return _obj
 

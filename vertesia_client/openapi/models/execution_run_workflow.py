@@ -27,10 +27,11 @@ class ExecutionRunWorkflow(BaseModel):
     """
     ExecutionRunWorkflow
     """ # noqa: E501
+    rate_limit_id: Optional[StrictStr] = Field(default=None, description="Stable identifier pairing an interaction rate-limit admission with its completion feedback.")
     run_id: StrictStr = Field(description="The Temporal Workflow Run ID related to this Interaction Run.  A Run ID is a globally unique, platform-level identifier for a Workflow Execution.  Deprecated: For agent runs, use the Agent Runs API (`/api/v1/agents`) instead. The AgentRun object provides a stable ID that survives workflow restarts. This field is only relevant for legacy non-agent interaction executions.")
     workflow_id: StrictStr = Field(description="The Temporal Workflow ID related to this Interaction Run.  Deprecated: For agent runs, use the Agent Runs API (`/api/v1/agents`) instead. The AgentRun object provides a stable ID that survives workflow restarts. This field is only relevant for legacy non-agent interaction executions.")
     activity_type: Optional[StrictStr] = Field(default=None, description="The Temporal Activity Type used for executing this Interaction. Undefined if the interaction was not executed as part of a workflow (such as Agent Runner).")
-    __properties: ClassVar[List[str]] = ["run_id", "workflow_id", "activity_type"]
+    __properties: ClassVar[List[str]] = ["rate_limit_id", "run_id", "workflow_id", "activity_type"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -83,6 +84,7 @@ class ExecutionRunWorkflow(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "rate_limit_id": obj.get("rate_limit_id"),
             "run_id": obj.get("run_id"),
             "workflow_id": obj.get("workflow_id"),
             "activity_type": obj.get("activity_type")

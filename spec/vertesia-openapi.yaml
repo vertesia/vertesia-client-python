@@ -2377,6 +2377,21 @@ components:
         expires_at:
           type: string
           format: date-time
+        properties:
+          type: object
+          additionalProperties: true
+          description: Custom properties for dynamic permission matching (PrincipalSet /
+            $principal. conditions)
+        clearance:
+          type: number
+          description: BLP clearance level — determines max document sensitivity the key
+            can access
+        compartments:
+          type: array
+          items:
+            type: string
+          description: Compartments the key belongs to — restricts access to documents in
+            matching compartments
         value:
           type: string
       required:
@@ -2428,6 +2443,21 @@ components:
         expires_at:
           type: string
           format: date-time
+        properties:
+          type: object
+          additionalProperties: true
+          description: Custom properties for dynamic permission matching (PrincipalSet /
+            $principal. conditions)
+        clearance:
+          type: number
+          description: BLP clearance level — determines max document sensitivity the key
+            can access
+        compartments:
+          type: array
+          items:
+            type: string
+          description: Compartments the key belongs to — restricts access to documents in
+            matching compartments
     DeleteOperationResult:
       type: object
       properties:
@@ -2473,6 +2503,21 @@ components:
         expires_at:
           type: string
           format: date-time
+        properties:
+          type: object
+          additionalProperties: true
+          description: Custom properties for dynamic permission matching (PrincipalSet /
+            $principal. conditions)
+        clearance:
+          type: number
+          description: BLP clearance level — determines max document sensitivity the key
+            can access
+        compartments:
+          type: array
+          items:
+            type: string
+          description: Compartments the key belongs to — restricts access to documents in
+            matching compartments
       required:
         - id
         - name
@@ -2532,6 +2577,21 @@ components:
         expires_at:
           type: string
           format: date-time
+        properties:
+          type: object
+          additionalProperties: true
+          description: Custom properties for dynamic permission matching (PrincipalSet /
+            $principal. conditions)
+        clearance:
+          type: number
+          description: BLP clearance level — determines max document sensitivity the key
+            can access
+        compartments:
+          type: array
+          items:
+            type: string
+          description: Compartments the key belongs to — restricts access to documents in
+            matching compartments
         value:
           type: string
       additionalProperties: false
@@ -2719,6 +2779,13 @@ components:
           type: string
         workflow_run_id:
           type: string
+          deprecated: true
+          x-deprecated-message: Use rate_limit_id for admission/completion correlation.
+          description: "Deprecated: Use rate_limit_id for admission/completion correlation."
+        rate_limit_id:
+          type: string
+          description: Stable per-execution admission identifier. Preferred over the
+            legacy workflow_run_id.
         modalities:
           $ref: "#/components/schemas/PromptModalities"
       required:
@@ -10019,6 +10086,10 @@ components:
         data: {}
         retryable:
           type: boolean
+        retry_after_ms:
+          type: number
+          description: Provider-supplied retry delay preserved across synchronous and
+            async workflow execution.
       required:
         - code
         - message
@@ -10064,6 +10135,10 @@ components:
     ExecutionRunWorkflow:
       type: object
       properties:
+        rate_limit_id:
+          type: string
+          description: Stable identifier pairing an interaction rate-limit admission with
+            its completion feedback.
         run_id:
           type: string
           description: >-
@@ -18930,6 +19005,8 @@ components:
             properties:
               id:
                 type: string
+              index:
+                type: number
               external_id:
                 type: string
             required:
