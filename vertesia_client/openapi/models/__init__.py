@@ -151,7 +151,6 @@ from vertesia_client.openapi.models.audit_trail_event import AuditTrailEvent
 from vertesia_client.openapi.models.audit_trail_response import AuditTrailResponse
 from vertesia_client.openapi.models.auth_token_response import AuthTokenResponse
 from vertesia_client.openapi.models.autonomous_run_response import AutonomousRunResponse
-from vertesia_client.openapi.models.available_skill import AvailableSkill
 from vertesia_client.openapi.models.aws_configuration import AwsConfiguration
 from vertesia_client.openapi.models.batch_query_payload import BatchQueryPayload
 from vertesia_client.openapi.models.batch_query_payload_queries_inner import BatchQueryPayloadQueriesInner
@@ -853,7 +852,6 @@ from vertesia_client.openapi.models.text_section import TextSection
 from vertesia_client.openapi.models.thinking_level import ThinkingLevel
 from vertesia_client.openapi.models.time_resolution import TimeResolution
 from vertesia_client.openapi.models.timer_task import TimerTask
-from vertesia_client.openapi.models.tool_activation_metadata import ToolActivationMetadata
 from vertesia_client.openapi.models.tool_approval_grant import ToolApprovalGrant
 from vertesia_client.openapi.models.tool_collection_auth_type import ToolCollectionAuthType
 from vertesia_client.openapi.models.tool_collection_object import ToolCollectionObject

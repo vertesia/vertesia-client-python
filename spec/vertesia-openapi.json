@@ -13591,23 +13591,12 @@
             },
             "description": "Active tools that should not be evicted by bounded active-tool pruning."
           },
-          "tool_activation_metadata": {
-            "$ref": "#/components/schemas/ToolActivationMetadataMap",
-            "description": "Activation and usage metadata for tools seen during the conversation. Used to keep the active tool set bounded without losing recovery context."
-          },
           "used_skills": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/UsedSkill"
             },
             "description": "Skills that have been used in this conversation (for auto-syncing scripts and package installation)"
-          },
-          "available_skills": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AvailableSkill"
-            },
-            "description": "All available skills from registered tool collections (for upfront hydration in sandbox)"
           },
           "streaming_enabled": {
             "type": "boolean",
@@ -13659,16 +13648,12 @@
             "type": "string",
             "description": "Stable streaming ID from the latest LLM call. Unlike Temporal activity IDs, this is scoped to the concrete workflow run that produced the stream, so it remains safe across continue-as-new."
           },
-          "skill_tool_map": {
-            "$ref": "#/components/schemas/StringArrayMap",
-            "description": "Mapping of skill names to their related tools. When a skill is called, its related tools are added to unlocked_tools."
-          },
           "skill_instructions_delivered": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "Names of skills whose full instructions are already present in the live conversation history (i.e. were delivered by a prior `learn_<skill>` call). Used to make skill re-activation idempotent: a repeat call returns a short \"already active\" acknowledgement instead of re-dumping the instructions.\n\nUnlike `unlocked_tools`/`skill_tool_map` (which must survive a checkpoint so tools stay unlocked), this list is reset when a checkpoint compacts the conversation, because the summary no longer carries the skill instructions and the next call must re-deliver them."
+            "description": "Names of skills whose full instructions are already present in the live conversation history (i.e. were delivered by a prior `learn_<skill>` call). Used to make skill re-activation idempotent: a repeat call returns a short \"already active\" acknowledgement instead of re-dumping the instructions.\n\nUnlike `unlocked_tools` (which must survive a checkpoint so tools stay unlocked), this list is reset when a checkpoint compacts the conversation, because the summary no longer carries the skill instructions and the next call must re-deliver them."
           },
           "initialization_call_ids": {
             "type": "array",
@@ -13720,7 +13705,7 @@
           "ancestors"
         ],
         "additionalProperties": false,
-        "description": "Conversation state passed between workflow activities. Contains all context needed to continue a multi-turn agent conversation."
+        "description": "Conversation state passed between workflow activities: the activity-safe, per-turn dynamic subset of a multi-turn agent conversation. Rides every conversation activity payload, so it deliberately excludes anything large or fetchable — the conversation history and tool definitions live in artifact storage (referenced via `tool_reference` / the conversation storage id), and catalog/activation data lives in the workflow-memory  {@link  ConversationCatalogState }  (persisted as catalog.json)."
       },
       "AgentToolApprovalMode": {
         "type": "string",
@@ -14085,43 +14070,6 @@
         "additionalProperties": false,
         "description": "Lightweight tool reference for activity payloads. References tools stored in GCP instead of embedding full tool definitions."
       },
-      "ToolActivationMetadataMap": {
-        "type": "object",
-        "additionalProperties": {
-          "$ref": "#/components/schemas/ToolActivationMetadata"
-        }
-      },
-      "ToolActivationMetadata": {
-        "type": "object",
-        "properties": {
-          "activated_at_iteration": {
-            "type": "number",
-            "description": "Turn when the tool became active in this conversation."
-          },
-          "last_used_iteration": {
-            "type": "number",
-            "description": "Most recent turn where the tool was actually executed."
-          },
-          "use_count": {
-            "type": "number",
-            "description": "Number of successful executions in this conversation."
-          },
-          "source": {
-            "type": "string",
-            "description": "Activation source, e.g. \"base\", \"discover_tools\", \"skill:presentation_authoring\"."
-          },
-          "pinned": {
-            "type": "boolean",
-            "description": "Whether this tool is pinned and should be preserved during eviction."
-          }
-        },
-        "required": [
-          "activated_at_iteration",
-          "use_count",
-          "source"
-        ],
-        "additionalProperties": false
-      },
       "UsedSkill": {
         "type": "object",
         "properties": {
@@ -14158,24 +14106,6 @@
         ],
         "additionalProperties": false,
         "description": "Skill metadata tracked when a skill is used"
-      },
-      "AvailableSkill": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "Skill name (e.g., \"analyze_data\") - without the \"learn_\" prefix"
-          },
-          "src": {
-            "type": "string",
-            "description": "Source URL of the skill collection (e.g., \"https://tools.vertesia.io/api/skills/data-analysis\"). Undefined for interaction-based skills."
-          }
-        },
-        "required": [
-          "name"
-        ],
-        "additionalProperties": false,
-        "description": "Skill metadata collected at workflow start for upfront sandbox hydration"
       },
       "UserChannel": {
         "type": "object",
@@ -14249,15 +14179,6 @@
         ],
         "additionalProperties": false,
         "description": "Interactive (UI chat) channel configuration. Used for real-time chat interface communication."
-      },
-      "StringArrayMap": {
-        "type": "object",
-        "additionalProperties": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
       },
       "PendingMcpConnection": {
         "type": "object",
@@ -22840,6 +22761,15 @@
           "security"
         ],
         "additionalProperties": false
+      },
+      "StringArrayMap": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
       },
       "CollectionPropagationResponse": {
         "type": "object",

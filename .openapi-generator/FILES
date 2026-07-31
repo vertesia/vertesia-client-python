@@ -183,7 +183,6 @@ vertesia_client/openapi/models/audit_trail_event.py
 vertesia_client/openapi/models/audit_trail_response.py
 vertesia_client/openapi/models/auth_token_response.py
 vertesia_client/openapi/models/autonomous_run_response.py
-vertesia_client/openapi/models/available_skill.py
 vertesia_client/openapi/models/aws_configuration.py
 vertesia_client/openapi/models/batch_query_payload.py
 vertesia_client/openapi/models/batch_query_payload_queries_inner.py
@@ -885,7 +884,6 @@ vertesia_client/openapi/models/text_section.py
 vertesia_client/openapi/models/thinking_level.py
 vertesia_client/openapi/models/time_resolution.py
 vertesia_client/openapi/models/timer_task.py
-vertesia_client/openapi/models/tool_activation_metadata.py
 vertesia_client/openapi/models/tool_approval_grant.py
 vertesia_client/openapi/models/tool_collection_auth_type.py
 vertesia_client/openapi/models/tool_collection_object.py

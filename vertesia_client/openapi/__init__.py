@@ -205,7 +205,6 @@ __all__ = [
     "AuditTrailResponse",
     "AuthTokenResponse",
     "AutonomousRunResponse",
-    "AvailableSkill",
     "AwsConfiguration",
     "BatchQueryPayload",
     "BatchQueryPayloadQueriesInner",
@@ -907,7 +906,6 @@ __all__ = [
     "ThinkingLevel",
     "TimeResolution",
     "TimerTask",
-    "ToolActivationMetadata",
     "ToolApprovalGrant",
     "ToolCollectionAuthType",
     "ToolCollectionObject",
@@ -1244,7 +1242,6 @@ from vertesia_client.openapi.models.audit_trail_event import AuditTrailEvent as 
 from vertesia_client.openapi.models.audit_trail_response import AuditTrailResponse as AuditTrailResponse
 from vertesia_client.openapi.models.auth_token_response import AuthTokenResponse as AuthTokenResponse
 from vertesia_client.openapi.models.autonomous_run_response import AutonomousRunResponse as AutonomousRunResponse
-from vertesia_client.openapi.models.available_skill import AvailableSkill as AvailableSkill
 from vertesia_client.openapi.models.aws_configuration import AwsConfiguration as AwsConfiguration
 from vertesia_client.openapi.models.batch_query_payload import BatchQueryPayload as BatchQueryPayload
 from vertesia_client.openapi.models.batch_query_payload_queries_inner import BatchQueryPayloadQueriesInner as BatchQueryPayloadQueriesInner
@@ -1946,7 +1943,6 @@ from vertesia_client.openapi.models.text_section import TextSection as TextSecti
 from vertesia_client.openapi.models.thinking_level import ThinkingLevel as ThinkingLevel
 from vertesia_client.openapi.models.time_resolution import TimeResolution as TimeResolution
 from vertesia_client.openapi.models.timer_task import TimerTask as TimerTask
-from vertesia_client.openapi.models.tool_activation_metadata import ToolActivationMetadata as ToolActivationMetadata
 from vertesia_client.openapi.models.tool_approval_grant import ToolApprovalGrant as ToolApprovalGrant
 from vertesia_client.openapi.models.tool_collection_auth_type import ToolCollectionAuthType as ToolCollectionAuthType
 from vertesia_client.openapi.models.tool_collection_object import ToolCollectionObject as ToolCollectionObject

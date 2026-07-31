@@ -20,7 +20,6 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from vertesia_client.openapi.models.agent_tool_approval_mode import AgentToolApprovalMode
-from vertesia_client.openapi.models.available_skill import AvailableSkill
 from vertesia_client.openapi.models.completion_result import CompletionResult
 from vertesia_client.openapi.models.conversation_state_end_conversation import ConversationStateEndConversation
 from vertesia_client.openapi.models.conversation_strip_options import ConversationStripOptions
@@ -32,7 +31,6 @@ from vertesia_client.openapi.models.pending_tool_approval_results import Pending
 from vertesia_client.openapi.models.plan import Plan
 from vertesia_client.openapi.models.resolved_interaction_execution_info import ResolvedInteractionExecutionInfo
 from vertesia_client.openapi.models.stateless_execution_options import StatelessExecutionOptions
-from vertesia_client.openapi.models.tool_activation_metadata import ToolActivationMetadata
 from vertesia_client.openapi.models.tool_approval_grant import ToolApprovalGrant
 from vertesia_client.openapi.models.tool_reference import ToolReference
 from vertesia_client.openapi.models.tool_use import ToolUse
@@ -45,7 +43,7 @@ from pydantic_core import to_jsonable_python
 
 class ConversationState(BaseModel):
     """
-    Conversation state passed between workflow activities. Contains all context needed to continue a multi-turn agent conversation.
+    Conversation state passed between workflow activities: the activity-safe, per-turn dynamic subset of a multi-turn agent conversation. Rides every conversation activity payload, so it deliberately excludes anything large or fetchable — the conversation history and tool definitions live in artifact storage (referenced via `tool_reference` / the conversation storage id), and catalog/activation data lives in the workflow-memory  {@link  ConversationCatalogState }  (persisted as catalog.json).
     """ # noqa: E501
     run: ExecutionRunDocRef = Field(description="A reference to the run that started the conversation")
     environment: StrictStr = Field(description="The execution environment with provider info for LLM calls.")
@@ -68,9 +66,7 @@ class ConversationState(BaseModel):
     tool_reference: Optional[ToolReference] = Field(default=None, description="Reference to tools stored in GCP instead of embedding full tool definitions")
     active_tool_names: Optional[List[StrictStr]] = Field(default=None, description="Names of currently active tools (base + unlocked). Tool definitions loaded from tool_reference.")
     pinned_tool_names: Optional[List[StrictStr]] = Field(default=None, description="Active tools that should not be evicted by bounded active-tool pruning.")
-    tool_activation_metadata: Optional[Dict[str, ToolActivationMetadata]] = Field(default=None, description="Activation and usage metadata for tools seen during the conversation. Used to keep the active tool set bounded without losing recovery context.")
     used_skills: Optional[List[UsedSkill]] = Field(default=None, description="Skills that have been used in this conversation (for auto-syncing scripts and package installation)")
-    available_skills: Optional[List[AvailableSkill]] = Field(default=None, description="All available skills from registered tool collections (for upfront hydration in sandbox)")
     streaming_enabled: Optional[StrictBool] = Field(default=None, description="Whether to stream LLM responses to Redis (cached from project config)")
     user_channels: Optional[List[UserChannel]] = Field(default=None, description="Active communication channels with their current state. Channels can be updated as conversation progresses (e.g., email threading info).")
     resolved_interaction: Optional[ResolvedInteractionExecutionInfo] = Field(default=None, description="The resolved interaction execution info. Contains interaction ID, name, version, and environment details.", alias="resolvedInteraction")
@@ -78,8 +74,7 @@ class ConversationState(BaseModel):
     unlocked_tools: Optional[List[StrictStr]] = Field(default=None, description="Tools that have been unlocked by skills during the conversation. These tools were initially hidden (default: false) but became available when a skill with tools was called.")
     latest_activity_id: Optional[StrictStr] = Field(default=None, description="Activity ID from the latest LLM call (for deduplication with streamed content). Set by streamToRedis when completing async activities.")
     latest_streaming_id: Optional[StrictStr] = Field(default=None, description="Stable streaming ID from the latest LLM call. Unlike Temporal activity IDs, this is scoped to the concrete workflow run that produced the stream, so it remains safe across continue-as-new.")
-    skill_tool_map: Optional[Dict[str, List[StrictStr]]] = Field(default=None, description="Mapping of skill names to their related tools. When a skill is called, its related tools are added to unlocked_tools.")
-    skill_instructions_delivered: Optional[List[StrictStr]] = Field(default=None, description="Names of skills whose full instructions are already present in the live conversation history (i.e. were delivered by a prior `learn_<skill>` call). Used to make skill re-activation idempotent: a repeat call returns a short \"already active\" acknowledgement instead of re-dumping the instructions.  Unlike `unlocked_tools`/`skill_tool_map` (which must survive a checkpoint so tools stay unlocked), this list is reset when a checkpoint compacts the conversation, because the summary no longer carries the skill instructions and the next call must re-deliver them.")
+    skill_instructions_delivered: Optional[List[StrictStr]] = Field(default=None, description="Names of skills whose full instructions are already present in the live conversation history (i.e. were delivered by a prior `learn_<skill>` call). Used to make skill re-activation idempotent: a repeat call returns a short \"already active\" acknowledgement instead of re-dumping the instructions.  Unlike `unlocked_tools` (which must survive a checkpoint so tools stay unlocked), this list is reset when a checkpoint compacts the conversation, because the summary no longer carries the skill instructions and the next call must re-deliver them.")
     initialization_call_ids: Optional[List[StrictStr]] = Field(default=None, description="Stable ids of initialization tool calls completed before the first model turn.")
     disabled_mcp_collections: Optional[List[StrictStr]] = Field(default=None, description="Denylist of MCP tool-collection ids deactivated for this conversation. `undefined`/empty means all installed/connected MCP collections are active. Updated mid-conversation via the MCP config signal; consumed when tools are re-discovered.")
     pending_mcp_connections: Optional[List[PendingMcpConnection]] = Field(default=None, description="MCP servers that are active (not disabled) and accessible to the user but not yet OAuth-connected. Surfaced to the agent (via discover_tools) so it can offer to connect.")
@@ -89,7 +84,7 @@ class ConversationState(BaseModel):
     launch_id: Optional[StrictStr] = Field(default=None, description="For workstreams: the launch ID assigned by the parent workflow. When set, artifacts are stored under agents/{agent_run_id}/workstreams/{launch_id}/ to consolidate all artifacts under the parent agent run.")
     app_version: Optional[StrictStr] = Field(default=None, description="The exact app version this run is pinned to, derived from the `@version` on the started interaction ref / the `x-vertesia-app-version` header at start. Persisted on the state so it survives resume, and applied to the activity client (`withAppVersion`) so every app-owned ref the run resolves — interactions, types, processes, tools — targets this version instead of the current/promoted one. Undefined → current/promoted. Resolution-time only; never a stored capability-ref version.")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["run", "environment", "options", "tool_use", "tool_approval_mode", "tool_approval_grants", "pending_tool_approval_results", "latest_user_message", "tool_input_refs", "output", "token_usage", "parent", "ancestors", "task_id", "plan", "debug", "strip_options", "conversation_artifacts_base_url", "tool_reference", "active_tool_names", "pinned_tool_names", "tool_activation_metadata", "used_skills", "available_skills", "streaming_enabled", "user_channels", "resolvedInteraction", "end_conversation", "unlocked_tools", "latest_activity_id", "latest_streaming_id", "skill_tool_map", "skill_instructions_delivered", "initialization_call_ids", "disabled_mcp_collections", "pending_mcp_connections", "active_activity_group_id", "finish_reason", "agent_run_id", "launch_id", "app_version"]
+    __properties: ClassVar[List[str]] = ["run", "environment", "options", "tool_use", "tool_approval_mode", "tool_approval_grants", "pending_tool_approval_results", "latest_user_message", "tool_input_refs", "output", "token_usage", "parent", "ancestors", "task_id", "plan", "debug", "strip_options", "conversation_artifacts_base_url", "tool_reference", "active_tool_names", "pinned_tool_names", "used_skills", "streaming_enabled", "user_channels", "resolvedInteraction", "end_conversation", "unlocked_tools", "latest_activity_id", "latest_streaming_id", "skill_instructions_delivered", "initialization_call_ids", "disabled_mcp_collections", "pending_mcp_connections", "active_activity_group_id", "finish_reason", "agent_run_id", "launch_id", "app_version"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -193,13 +188,6 @@ class ConversationState(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of tool_reference
         if self.tool_reference:
             _dict['tool_reference'] = self.tool_reference.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of each value in tool_activation_metadata (dict)
-        _field_dict = {}
-        if self.tool_activation_metadata:
-            for _key_tool_activation_metadata in self.tool_activation_metadata:
-                if self.tool_activation_metadata[_key_tool_activation_metadata]:
-                    _field_dict[_key_tool_activation_metadata] = self.tool_activation_metadata[_key_tool_activation_metadata].to_dict()
-            _dict['tool_activation_metadata'] = _field_dict
         # override the default output from pydantic by calling `to_dict()` of each item in used_skills (list)
         _items = []
         if self.used_skills:
@@ -207,13 +195,6 @@ class ConversationState(BaseModel):
                 if _item_used_skills:
                     _items.append(_item_used_skills.to_dict())
             _dict['used_skills'] = _items
-        # override the default output from pydantic by calling `to_dict()` of each item in available_skills (list)
-        _items = []
-        if self.available_skills:
-            for _item_available_skills in self.available_skills:
-                if _item_available_skills:
-                    _items.append(_item_available_skills.to_dict())
-            _dict['available_skills'] = _items
         # override the default output from pydantic by calling `to_dict()` of each item in user_channels (list)
         _items = []
         if self.user_channels:
@@ -282,14 +263,7 @@ class ConversationState(BaseModel):
             "tool_reference": ToolReference.from_dict(obj["tool_reference"]) if obj.get("tool_reference") is not None else None,
             "active_tool_names": obj.get("active_tool_names"),
             "pinned_tool_names": obj.get("pinned_tool_names"),
-            "tool_activation_metadata": dict(
-                (_k, ToolActivationMetadata.from_dict(_v))
-                for _k, _v in obj["tool_activation_metadata"].items()
-            )
-            if obj.get("tool_activation_metadata") is not None
-            else None,
             "used_skills": [UsedSkill.from_dict(_item) for _item in obj["used_skills"]] if obj.get("used_skills") is not None else None,
-            "available_skills": [AvailableSkill.from_dict(_item) for _item in obj["available_skills"]] if obj.get("available_skills") is not None else None,
             "streaming_enabled": obj.get("streaming_enabled"),
             "user_channels": [UserChannel.from_dict(_item) for _item in obj["user_channels"]] if obj.get("user_channels") is not None else None,
             "resolvedInteraction": ResolvedInteractionExecutionInfo.from_dict(obj["resolvedInteraction"]) if obj.get("resolvedInteraction") is not None else None,
@@ -297,7 +271,6 @@ class ConversationState(BaseModel):
             "unlocked_tools": obj.get("unlocked_tools"),
             "latest_activity_id": obj.get("latest_activity_id"),
             "latest_streaming_id": obj.get("latest_streaming_id"),
-            "skill_tool_map": obj.get("skill_tool_map"),
             "skill_instructions_delivered": obj.get("skill_instructions_delivered"),
             "initialization_call_ids": obj.get("initialization_call_ids"),
             "disabled_mcp_collections": obj.get("disabled_mcp_collections"),
