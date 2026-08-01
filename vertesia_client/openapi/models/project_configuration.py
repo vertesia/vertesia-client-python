@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
+from vertesia_client.openapi.models.agent_project_configuration import AgentProjectConfiguration
 from vertesia_client.openapi.models.browser_use_project_configuration import BrowserUseProjectConfiguration
 from vertesia_client.openapi.models.project_configuration_embeddings import ProjectConfigurationEmbeddings
 from vertesia_client.openapi.models.project_indexing_configuration import ProjectIndexingConfiguration
@@ -41,13 +42,14 @@ class ProjectConfiguration(BaseModel):
     datacenter: Optional[StrictStr] = None
     storage_bucket: Optional[StrictStr] = None
     agent_streaming_enabled: Optional[StrictBool] = Field(default=None, description="Enable real-time streaming of agent LLM responses to clients. When enabled, LLM responses are streamed chunk-by-chunk via Redis pub/sub. Defaults to true if not specified.")
+    agent: Optional[AgentProjectConfiguration] = Field(default=None, description="Agent runtime configuration for this project.")
     indexing: Optional[ProjectIndexingConfiguration] = Field(default=None, description="Indexing configuration for this project. Controls whether indexing and querying are enabled at the project level.")
     intake: Optional[ProjectIntakeConfiguration] = Field(default=None, description="Standard content intake behavior.")
     main_language: Optional[StrictStr] = Field(default=None, description="Primary language for full-text search analysis. ISO 639-1 code (e.g., 'en', 'fr', 'ja', 'de'). Determines which Elasticsearch analyzer is used for the text field. Defaults to 'en' (English/standard analyzer).  Changing this value requires a full reindex to take effect.")
     browser_use: Optional[BrowserUseProjectConfiguration] = Field(default=None, description="Project defaults and caps for browser_use agent workstreams.")
     pdf_template_object_id: Optional[StrictStr] = Field(default=None, description="Object ID of a content object containing a custom LaTeX template (.latex file) to use as the branded PDF template. When set, \"Export as Branded PDF\" uses this template instead of the built-in Vertesia default template.")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["human_context", "defaults", "default_visibility", "sync_content_properties", "embeddings", "datacenter", "storage_bucket", "agent_streaming_enabled", "indexing", "intake", "main_language", "browser_use", "pdf_template_object_id"]
+    __properties: ClassVar[List[str]] = ["human_context", "defaults", "default_visibility", "sync_content_properties", "embeddings", "datacenter", "storage_bucket", "agent_streaming_enabled", "agent", "indexing", "intake", "main_language", "browser_use", "pdf_template_object_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -96,6 +98,9 @@ class ProjectConfiguration(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of embeddings
         if self.embeddings:
             _dict['embeddings'] = self.embeddings.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of agent
+        if self.agent:
+            _dict['agent'] = self.agent.to_dict()
         # override the default output from pydantic by calling `to_dict()` of indexing
         if self.indexing:
             _dict['indexing'] = self.indexing.to_dict()
@@ -130,6 +135,7 @@ class ProjectConfiguration(BaseModel):
             "datacenter": obj.get("datacenter"),
             "storage_bucket": obj.get("storage_bucket"),
             "agent_streaming_enabled": obj.get("agent_streaming_enabled"),
+            "agent": AgentProjectConfiguration.from_dict(obj["agent"]) if obj.get("agent") is not None else None,
             "indexing": ProjectIndexingConfiguration.from_dict(obj["indexing"]) if obj.get("indexing") is not None else None,
             "intake": ProjectIntakeConfiguration.from_dict(obj["intake"]) if obj.get("intake") is not None else None,
             "main_language": obj.get("main_language"),

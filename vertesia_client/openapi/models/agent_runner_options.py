@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from vertesia_client.openapi.models.agent_checkpoint_configuration import AgentCheckpointConfiguration
 from vertesia_client.openapi.models.agent_search_scope import AgentSearchScope
 from vertesia_client.openapi.models.skill_context_triggers import SkillContextTriggers
 from typing import Optional, Set
@@ -38,7 +39,8 @@ class AgentRunnerOptions(BaseModel):
     search_scope: Optional[AgentSearchScope] = Field(default=None, description="On which scope should the search be applied by the search_tool. Only supports 'collection' scope or undefined for now.")
     collection_id: Optional[StrictStr] = Field(default=None, description="The ID of the collection to restrict agent operations to. When specified, the agent's search and retrieval operations are limited to documents within this collection'.")
     request_template: Optional[StrictStr] = Field(default=None, description="Optional user-facing template for rendering run input as the first conversation entry. Supports {{field_name}}, {{nested.field}}, {{items.0.name}}, and {{json}} placeholders resolved from the run data.")
-    __properties: ClassVar[List[str]] = ["is_agent", "is_tool", "is_skill", "context_triggers", "skill_priority", "tool_names", "search_scope", "collection_id", "request_template"]
+    checkpoint: Optional[AgentCheckpointConfiguration] = Field(default=None, description="Per-agent context checkpoint configuration. Field-wise it overrides the project's `configuration.agent.checkpoint`; a per-run `checkpoint_tokens` override still wins over both.")
+    __properties: ClassVar[List[str]] = ["is_agent", "is_tool", "is_skill", "context_triggers", "skill_priority", "tool_names", "search_scope", "collection_id", "request_template", "checkpoint"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -82,6 +84,9 @@ class AgentRunnerOptions(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of context_triggers
         if self.context_triggers:
             _dict['context_triggers'] = self.context_triggers.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of checkpoint
+        if self.checkpoint:
+            _dict['checkpoint'] = self.checkpoint.to_dict()
         return _dict
 
     @classmethod
@@ -102,7 +107,8 @@ class AgentRunnerOptions(BaseModel):
             "tool_names": obj.get("tool_names"),
             "search_scope": obj.get("search_scope"),
             "collection_id": obj.get("collection_id"),
-            "request_template": obj.get("request_template")
+            "request_template": obj.get("request_template"),
+            "checkpoint": AgentCheckpointConfiguration.from_dict(obj["checkpoint"]) if obj.get("checkpoint") is not None else None
         })
         return _obj
 

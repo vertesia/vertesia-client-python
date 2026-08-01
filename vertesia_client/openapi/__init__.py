@@ -87,11 +87,13 @@ __all__ = [
     "AdvanceProcessPayload",
     "AgentArtifactContentResponse",
     "AgentArtifactUrlResponse",
+    "AgentCheckpointConfiguration",
     "AgentDeliveryMatchMode",
     "AgentEventDeliveryTarget",
     "AgentMessageDetails",
     "AgentMessageDetailsFilesInner",
     "AgentMessageType",
+    "AgentProjectConfiguration",
     "AgentResourceAction",
     "AgentResourceReference",
     "AgentResourceType",
@@ -1124,11 +1126,13 @@ from vertesia_client.openapi.models.activity_task import ActivityTask as Activit
 from vertesia_client.openapi.models.advance_process_payload import AdvanceProcessPayload as AdvanceProcessPayload
 from vertesia_client.openapi.models.agent_artifact_content_response import AgentArtifactContentResponse as AgentArtifactContentResponse
 from vertesia_client.openapi.models.agent_artifact_url_response import AgentArtifactUrlResponse as AgentArtifactUrlResponse
+from vertesia_client.openapi.models.agent_checkpoint_configuration import AgentCheckpointConfiguration as AgentCheckpointConfiguration
 from vertesia_client.openapi.models.agent_delivery_match_mode import AgentDeliveryMatchMode as AgentDeliveryMatchMode
 from vertesia_client.openapi.models.agent_event_delivery_target import AgentEventDeliveryTarget as AgentEventDeliveryTarget
 from vertesia_client.openapi.models.agent_message_details import AgentMessageDetails as AgentMessageDetails
 from vertesia_client.openapi.models.agent_message_details_files_inner import AgentMessageDetailsFilesInner as AgentMessageDetailsFilesInner
 from vertesia_client.openapi.models.agent_message_type import AgentMessageType as AgentMessageType
+from vertesia_client.openapi.models.agent_project_configuration import AgentProjectConfiguration as AgentProjectConfiguration
 from vertesia_client.openapi.models.agent_resource_action import AgentResourceAction as AgentResourceAction
 from vertesia_client.openapi.models.agent_resource_reference import AgentResourceReference as AgentResourceReference
 from vertesia_client.openapi.models.agent_resource_type import AgentResourceType as AgentResourceType

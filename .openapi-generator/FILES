@@ -63,11 +63,13 @@ vertesia_client/openapi/models/activity_task.py
 vertesia_client/openapi/models/advance_process_payload.py
 vertesia_client/openapi/models/agent_artifact_content_response.py
 vertesia_client/openapi/models/agent_artifact_url_response.py
+vertesia_client/openapi/models/agent_checkpoint_configuration.py
 vertesia_client/openapi/models/agent_delivery_match_mode.py
 vertesia_client/openapi/models/agent_event_delivery_target.py
 vertesia_client/openapi/models/agent_message_details.py
 vertesia_client/openapi/models/agent_message_details_files_inner.py
 vertesia_client/openapi/models/agent_message_type.py
+vertesia_client/openapi/models/agent_project_configuration.py
 vertesia_client/openapi/models/agent_resource_action.py
 vertesia_client/openapi/models/agent_resource_reference.py
 vertesia_client/openapi/models/agent_resource_type.py

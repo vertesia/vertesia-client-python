@@ -237,6 +237,10 @@
             "type": "boolean",
             "description": "Enable real-time streaming of agent LLM responses to clients. When enabled, LLM responses are streamed chunk-by-chunk via Redis pub/sub. Defaults to true if not specified."
           },
+          "agent": {
+            "$ref": "#/components/schemas/AgentProjectConfiguration",
+            "description": "Agent runtime configuration for this project."
+          },
           "indexing": {
             "$ref": "#/components/schemas/ProjectIndexingConfiguration",
             "description": "Indexing configuration for this project. Controls whether indexing and querying are enabled at the project level."
@@ -302,6 +306,10 @@
           "agent_streaming_enabled": {
             "type": "boolean",
             "description": "Enable real-time streaming of agent LLM responses to clients. When enabled, LLM responses are streamed chunk-by-chunk via Redis pub/sub. Defaults to true if not specified."
+          },
+          "agent": {
+            "$ref": "#/components/schemas/AgentProjectConfiguration",
+            "description": "Agent runtime configuration for this project."
           },
           "indexing": {
             "$ref": "#/components/schemas/ProjectIndexingConfiguration",
@@ -6959,6 +6967,31 @@
         ],
         "additionalProperties": false
       },
+      "AgentProjectConfiguration": {
+        "type": "object",
+        "properties": {
+          "checkpoint": {
+            "$ref": "#/components/schemas/AgentCheckpointConfiguration",
+            "description": "Conversation checkpoint (context compaction) tuning."
+          }
+        },
+        "additionalProperties": false,
+        "description": "Agent runtime configuration, scoped under project configuration so agent settings have one home (`configuration.agent`)."
+      },
+      "AgentCheckpointConfiguration": {
+        "type": "object",
+        "properties": {
+          "context_threshold": {
+            "type": "number",
+            "description": "Fraction of the model's context window to use before the conversation is summarized and compacted (0-1, e.g. 0.95). Model-independent: applies to whatever model each run uses. Setting it replaces the default hard cap — a project asking for 0.95 of a 1M-window model checkpoints at 950k. Clamped at runtime to 0.95 so the prompt still fits."
+          },
+          "max_tokens": {
+            "type": "number",
+            "description": "Absolute hard cap in tokens, regardless of the window fraction. Alone it acts as the threshold; combined with context_threshold the lower of the two wins. Clamped at runtime to 95% of the model's window. Unset means the default cap (500k), or no cap beyond the 95% clamp when context_threshold is set."
+          }
+        },
+        "additionalProperties": false
+      },
       "ProjectIndexingConfiguration": {
         "type": "object",
         "properties": {
@@ -12229,6 +12262,10 @@
           "request_template": {
             "type": "string",
             "description": "Optional user-facing template for rendering run input as the first conversation entry. Supports {{field_name}}, {{nested.field}}, {{items.0.name}}, and {{json}} placeholders resolved from the run data."
+          },
+          "checkpoint": {
+            "$ref": "#/components/schemas/AgentCheckpointConfiguration",
+            "description": "Per-agent context checkpoint configuration. Field-wise it overrides the project's `configuration.agent.checkpoint`; a per-run `checkpoint_tokens` override still wins over both."
           }
         },
         "additionalProperties": false,
@@ -13601,6 +13638,14 @@
           "streaming_enabled": {
             "type": "boolean",
             "description": "Whether to stream LLM responses to Redis (cached from project config)"
+          },
+          "checkpoint_threshold": {
+            "type": "number",
+            "description": "Project-configured checkpoint threshold as a fraction of the model's context window (cached from project.configuration.agent_checkpoint_threshold at conversation start)."
+          },
+          "checkpoint_tokens": {
+            "type": "number",
+            "description": "Project-configured checkpoint hard cap in tokens (cached from project.configuration.agent_checkpoint_tokens at conversation start). The workflow resolves the effective threshold from these, the per-run checkpoint_tokens override, and the model-based default."
           },
           "user_channels": {
             "type": "array",
@@ -15066,7 +15111,11 @@
           },
           "checkpoint_tokens": {
             "type": "number",
-            "description": "The token threshold in thousands (K) for creating checkpoints. If total tokens exceed this value, a checkpoint will be created. If not specified, the default is computed from the selected model context window (75%)."
+            "description": "The token threshold in thousands (K) for creating checkpoints. If total tokens exceed this value, a checkpoint will be created. When set it wins over every other checkpoint setting, including the structured `checkpoint` override below. If not specified, the default is computed from the selected model context window (80%, capped at 500k)."
+          },
+          "checkpoint": {
+            "$ref": "#/components/schemas/AgentCheckpointConfiguration",
+            "description": "Structured per-run checkpoint override. Field-wise it takes precedence over the interaction's `agent_runner_options.checkpoint` and the project's `configuration.agent.checkpoint`. The legacy absolute `checkpoint_tokens` above still wins over everything when set."
           },
           "strip_options": {
             "$ref": "#/components/schemas/ConversationStripOptions",
@@ -18281,7 +18330,11 @@
           },
           "checkpoint_tokens": {
             "type": "number",
-            "description": "Token budget for checkpointing"
+            "description": "Token budget for checkpointing, in thousands (K). Wins over every other checkpoint setting."
+          },
+          "checkpoint": {
+            "$ref": "#/components/schemas/AgentCheckpointConfiguration",
+            "description": "Structured checkpoint override for this run. Field-wise it takes precedence over the interaction's `agent_runner_options.checkpoint` and the project's `configuration.agent.checkpoint`; the legacy `checkpoint_tokens` above still wins over everything when set."
           },
           "max_iterations": {
             "type": "number",
