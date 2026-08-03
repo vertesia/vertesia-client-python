@@ -28,7 +28,8 @@ class RunMigrationPayload(BaseModel):
     RunMigrationPayload
     """ # noqa: E501
     force: Optional[StrictBool] = None
-    __properties: ClassVar[List[str]] = ["force"]
+    params: Optional[Dict[str, Any]] = None
+    __properties: ClassVar[List[str]] = ["force", "params"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -81,7 +82,8 @@ class RunMigrationPayload(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "force": obj.get("force")
+            "force": obj.get("force"),
+            "params": obj.get("params")
         })
         return _obj
 

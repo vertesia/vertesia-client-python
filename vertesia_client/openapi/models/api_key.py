@@ -46,8 +46,8 @@ class ApiKey(BaseModel):
     updated_at: datetime
     expires_at: Optional[datetime] = None
     properties: Optional[Dict[str, Any]] = Field(default=None, description="Custom properties for dynamic permission matching (PrincipalSet / $principal. conditions)")
-    clearance: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="BLP clearance level — determines max document sensitivity the key can access")
-    compartments: Optional[List[StrictStr]] = Field(default=None, description="Compartments the key belongs to — restricts access to documents in matching compartments")
+    clearance: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="BLP clearance level — the maximum document sensitivity the key can access")
+    compartments: Optional[List[StrictStr]] = Field(default=None, description="Compartments the key belongs to — restricts access to matching documents")
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["id", "name", "type", "role", "maskedValue", "can_retrieve_value", "account", "project", "enabled", "created_by", "updated_by", "created_at", "updated_at", "expires_at", "properties", "clearance", "compartments"]
 

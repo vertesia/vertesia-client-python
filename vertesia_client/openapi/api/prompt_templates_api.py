@@ -926,8 +926,8 @@ class PromptTemplatesApi:
     def fork_prompt(
         self,
         pt_id: StrictStr,
-        prompt_template_fork_payload: PromptTemplateForkPayload,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
+        prompt_template_fork_payload: Optional[PromptTemplateForkPayload] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -947,10 +947,10 @@ class PromptTemplatesApi:
 
         :param pt_id: (required)
         :type pt_id: str
-        :param prompt_template_fork_payload: (required)
-        :type prompt_template_fork_payload: PromptTemplateForkPayload
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
+        :param prompt_template_fork_payload:
+        :type prompt_template_fork_payload: PromptTemplateForkPayload
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -975,8 +975,8 @@ class PromptTemplatesApi:
 
         _param = self._fork_prompt_serialize(
             pt_id=pt_id,
-            prompt_template_fork_payload=prompt_template_fork_payload,
             x_api_version=x_api_version,
+            prompt_template_fork_payload=prompt_template_fork_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1003,8 +1003,8 @@ class PromptTemplatesApi:
     def fork_prompt_with_http_info(
         self,
         pt_id: StrictStr,
-        prompt_template_fork_payload: PromptTemplateForkPayload,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
+        prompt_template_fork_payload: Optional[PromptTemplateForkPayload] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1024,10 +1024,10 @@ class PromptTemplatesApi:
 
         :param pt_id: (required)
         :type pt_id: str
-        :param prompt_template_fork_payload: (required)
-        :type prompt_template_fork_payload: PromptTemplateForkPayload
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
+        :param prompt_template_fork_payload:
+        :type prompt_template_fork_payload: PromptTemplateForkPayload
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1052,8 +1052,8 @@ class PromptTemplatesApi:
 
         _param = self._fork_prompt_serialize(
             pt_id=pt_id,
-            prompt_template_fork_payload=prompt_template_fork_payload,
             x_api_version=x_api_version,
+            prompt_template_fork_payload=prompt_template_fork_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1080,8 +1080,8 @@ class PromptTemplatesApi:
     def fork_prompt_without_preload_content(
         self,
         pt_id: StrictStr,
-        prompt_template_fork_payload: PromptTemplateForkPayload,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
+        prompt_template_fork_payload: Optional[PromptTemplateForkPayload] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1101,10 +1101,10 @@ class PromptTemplatesApi:
 
         :param pt_id: (required)
         :type pt_id: str
-        :param prompt_template_fork_payload: (required)
-        :type prompt_template_fork_payload: PromptTemplateForkPayload
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
+        :param prompt_template_fork_payload:
+        :type prompt_template_fork_payload: PromptTemplateForkPayload
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1129,8 +1129,8 @@ class PromptTemplatesApi:
 
         _param = self._fork_prompt_serialize(
             pt_id=pt_id,
-            prompt_template_fork_payload=prompt_template_fork_payload,
             x_api_version=x_api_version,
+            prompt_template_fork_payload=prompt_template_fork_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1152,8 +1152,8 @@ class PromptTemplatesApi:
     def _fork_prompt_serialize(
         self,
         pt_id,
-        prompt_template_fork_payload,
         x_api_version,
+        prompt_template_fork_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -2368,13 +2368,13 @@ class PromptTemplatesApi:
     @validate_call
     def list_prompts(
         self,
-        name: Optional[StrictStr] = None,
-        status: Optional[List[StrictStr]] = None,
-        limit: Optional[Union[StrictFloat, StrictInt]] = None,
-        offset: Optional[Union[StrictFloat, StrictInt]] = None,
-        role: Optional[StrictStr] = None,
-        tags: Optional[List[StrictStr]] = None,
-        match_interactions: Optional[StrictBool] = None,
+        name: Annotated[Optional[StrictStr], Field(description="Case-insensitive substring match on the prompt name.")] = None,
+        status: Annotated[Optional[List[StrictStr]], Field(description="Accepted and ignored. `GET /prompts` and `POST /prompts/facets` list drafts only, and always have.")] = None,
+        limit: Annotated[Optional[Union[StrictFloat, StrictInt]], Field(description="Maximum number of prompts to return. Defaults to 100.")] = None,
+        offset: Annotated[Optional[Union[StrictFloat, StrictInt]], Field(description="Number of prompts to skip.")] = None,
+        role: Annotated[Optional[StrictStr], Field(description="Exact match on the prompt role.")] = None,
+        tags: Annotated[Optional[List[StrictStr]], Field(description="Match prompts carrying any of these tags.")] = None,
+        match_interactions: Annotated[Optional[StrictBool], Field(description="Accepted and ignored. It used to attach the interactions referencing each prompt, in a shape no response component ever declared; nothing consumed it.")] = None,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -2393,19 +2393,19 @@ class PromptTemplatesApi:
 
         Lists draft prompt templates in the current project with optional filtering by name, role, tags, and interaction references.  **Required permissions:** `interaction:read`
 
-        :param name:
+        :param name: Case-insensitive substring match on the prompt name.
         :type name: str
-        :param status:
+        :param status: Accepted and ignored. `GET /prompts` and `POST /prompts/facets` list drafts only, and always have.
         :type status: List[str]
-        :param limit:
+        :param limit: Maximum number of prompts to return. Defaults to 100.
         :type limit: float
-        :param offset:
+        :param offset: Number of prompts to skip.
         :type offset: float
-        :param role:
+        :param role: Exact match on the prompt role.
         :type role: str
-        :param tags:
+        :param tags: Match prompts carrying any of these tags.
         :type tags: List[str]
-        :param match_interactions:
+        :param match_interactions: Accepted and ignored. It used to attach the interactions referencing each prompt, in a shape no response component ever declared; nothing consumed it.
         :type match_interactions: bool
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
@@ -2465,13 +2465,13 @@ class PromptTemplatesApi:
     @validate_call
     def list_prompts_with_http_info(
         self,
-        name: Optional[StrictStr] = None,
-        status: Optional[List[StrictStr]] = None,
-        limit: Optional[Union[StrictFloat, StrictInt]] = None,
-        offset: Optional[Union[StrictFloat, StrictInt]] = None,
-        role: Optional[StrictStr] = None,
-        tags: Optional[List[StrictStr]] = None,
-        match_interactions: Optional[StrictBool] = None,
+        name: Annotated[Optional[StrictStr], Field(description="Case-insensitive substring match on the prompt name.")] = None,
+        status: Annotated[Optional[List[StrictStr]], Field(description="Accepted and ignored. `GET /prompts` and `POST /prompts/facets` list drafts only, and always have.")] = None,
+        limit: Annotated[Optional[Union[StrictFloat, StrictInt]], Field(description="Maximum number of prompts to return. Defaults to 100.")] = None,
+        offset: Annotated[Optional[Union[StrictFloat, StrictInt]], Field(description="Number of prompts to skip.")] = None,
+        role: Annotated[Optional[StrictStr], Field(description="Exact match on the prompt role.")] = None,
+        tags: Annotated[Optional[List[StrictStr]], Field(description="Match prompts carrying any of these tags.")] = None,
+        match_interactions: Annotated[Optional[StrictBool], Field(description="Accepted and ignored. It used to attach the interactions referencing each prompt, in a shape no response component ever declared; nothing consumed it.")] = None,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -2490,19 +2490,19 @@ class PromptTemplatesApi:
 
         Lists draft prompt templates in the current project with optional filtering by name, role, tags, and interaction references.  **Required permissions:** `interaction:read`
 
-        :param name:
+        :param name: Case-insensitive substring match on the prompt name.
         :type name: str
-        :param status:
+        :param status: Accepted and ignored. `GET /prompts` and `POST /prompts/facets` list drafts only, and always have.
         :type status: List[str]
-        :param limit:
+        :param limit: Maximum number of prompts to return. Defaults to 100.
         :type limit: float
-        :param offset:
+        :param offset: Number of prompts to skip.
         :type offset: float
-        :param role:
+        :param role: Exact match on the prompt role.
         :type role: str
-        :param tags:
+        :param tags: Match prompts carrying any of these tags.
         :type tags: List[str]
-        :param match_interactions:
+        :param match_interactions: Accepted and ignored. It used to attach the interactions referencing each prompt, in a shape no response component ever declared; nothing consumed it.
         :type match_interactions: bool
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
@@ -2562,13 +2562,13 @@ class PromptTemplatesApi:
     @validate_call
     def list_prompts_without_preload_content(
         self,
-        name: Optional[StrictStr] = None,
-        status: Optional[List[StrictStr]] = None,
-        limit: Optional[Union[StrictFloat, StrictInt]] = None,
-        offset: Optional[Union[StrictFloat, StrictInt]] = None,
-        role: Optional[StrictStr] = None,
-        tags: Optional[List[StrictStr]] = None,
-        match_interactions: Optional[StrictBool] = None,
+        name: Annotated[Optional[StrictStr], Field(description="Case-insensitive substring match on the prompt name.")] = None,
+        status: Annotated[Optional[List[StrictStr]], Field(description="Accepted and ignored. `GET /prompts` and `POST /prompts/facets` list drafts only, and always have.")] = None,
+        limit: Annotated[Optional[Union[StrictFloat, StrictInt]], Field(description="Maximum number of prompts to return. Defaults to 100.")] = None,
+        offset: Annotated[Optional[Union[StrictFloat, StrictInt]], Field(description="Number of prompts to skip.")] = None,
+        role: Annotated[Optional[StrictStr], Field(description="Exact match on the prompt role.")] = None,
+        tags: Annotated[Optional[List[StrictStr]], Field(description="Match prompts carrying any of these tags.")] = None,
+        match_interactions: Annotated[Optional[StrictBool], Field(description="Accepted and ignored. It used to attach the interactions referencing each prompt, in a shape no response component ever declared; nothing consumed it.")] = None,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -2587,19 +2587,19 @@ class PromptTemplatesApi:
 
         Lists draft prompt templates in the current project with optional filtering by name, role, tags, and interaction references.  **Required permissions:** `interaction:read`
 
-        :param name:
+        :param name: Case-insensitive substring match on the prompt name.
         :type name: str
-        :param status:
+        :param status: Accepted and ignored. `GET /prompts` and `POST /prompts/facets` list drafts only, and always have.
         :type status: List[str]
-        :param limit:
+        :param limit: Maximum number of prompts to return. Defaults to 100.
         :type limit: float
-        :param offset:
+        :param offset: Number of prompts to skip.
         :type offset: float
-        :param role:
+        :param role: Exact match on the prompt role.
         :type role: str
-        :param tags:
+        :param tags: Match prompts carrying any of these tags.
         :type tags: List[str]
-        :param match_interactions:
+        :param match_interactions: Accepted and ignored. It used to attach the interactions referencing each prompt, in a shape no response component ever declared; nothing consumed it.
         :type match_interactions: bool
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
@@ -2758,7 +2758,7 @@ class PromptTemplatesApi:
     def render_prompt(
         self,
         pt_id: StrictStr,
-        request_body: Dict[str, Any],
+        body: Dict[str, Any],
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -2779,8 +2779,8 @@ class PromptTemplatesApi:
 
         :param pt_id: (required)
         :type pt_id: str
-        :param request_body: (required)
-        :type request_body: Dict[str, object]
+        :param body: (required)
+        :type body: object
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -2807,7 +2807,7 @@ class PromptTemplatesApi:
 
         _param = self._render_prompt_serialize(
             pt_id=pt_id,
-            request_body=request_body,
+            body=body,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -2835,7 +2835,7 @@ class PromptTemplatesApi:
     def render_prompt_with_http_info(
         self,
         pt_id: StrictStr,
-        request_body: Dict[str, Any],
+        body: Dict[str, Any],
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -2856,8 +2856,8 @@ class PromptTemplatesApi:
 
         :param pt_id: (required)
         :type pt_id: str
-        :param request_body: (required)
-        :type request_body: Dict[str, object]
+        :param body: (required)
+        :type body: object
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -2884,7 +2884,7 @@ class PromptTemplatesApi:
 
         _param = self._render_prompt_serialize(
             pt_id=pt_id,
-            request_body=request_body,
+            body=body,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -2912,7 +2912,7 @@ class PromptTemplatesApi:
     def render_prompt_without_preload_content(
         self,
         pt_id: StrictStr,
-        request_body: Dict[str, Any],
+        body: Dict[str, Any],
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -2933,8 +2933,8 @@ class PromptTemplatesApi:
 
         :param pt_id: (required)
         :type pt_id: str
-        :param request_body: (required)
-        :type request_body: Dict[str, object]
+        :param body: (required)
+        :type body: object
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -2961,7 +2961,7 @@ class PromptTemplatesApi:
 
         _param = self._render_prompt_serialize(
             pt_id=pt_id,
-            request_body=request_body,
+            body=body,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -2984,7 +2984,7 @@ class PromptTemplatesApi:
     def _render_prompt_serialize(
         self,
         pt_id,
-        request_body,
+        body,
         x_api_version,
         _request_auth,
         _content_type,
@@ -3015,8 +3015,8 @@ class PromptTemplatesApi:
             _header_params['x-api-version'] = x_api_version
         # process the form parameters
         # process the body parameter
-        if request_body is not None:
-            _body_params = request_body
+        if body is not None:
+            _body_params = body
 
 
         # set the HTTP header `Accept`

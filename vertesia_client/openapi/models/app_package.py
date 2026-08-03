@@ -25,9 +25,9 @@ from vertesia_client.openapi.models.app_ui_config import AppUIConfig
 from vertesia_client.openapi.models.app_widget_info import AppWidgetInfo
 from vertesia_client.openapi.models.catalog_interaction_ref import CatalogInteractionRef
 from vertesia_client.openapi.models.in_code_process_definition import InCodeProcessDefinition
+from vertesia_client.openapi.models.in_code_type_definition import InCodeTypeDefinition
 from vertesia_client.openapi.models.in_code_view_definition import InCodeViewDefinition
 from vertesia_client.openapi.models.json_schema import JSONSchema
-from vertesia_client.openapi.models.pick_content_object_type_item_id_name_description_tags_object_schema_table_layout_is_chunkable_strict_mode_status_intake_editing import PickContentObjectTypeItemIdNameDescriptionTagsObjectSchemaTableLayoutIsChunkableStrictModeStatusIntakeEditing
 from vertesia_client.openapi.models.remote_activity_definition import RemoteActivityDefinition
 from vertesia_client.openapi.models.rendering_template_definition_ref import RenderingTemplateDefinitionRef
 from typing import Optional, Set
@@ -42,7 +42,7 @@ class AppPackage(BaseModel):
     tools: Optional[List[AgentToolDefinition]] = Field(default=None, description="A list of tools exposed by the app.")
     skills: Optional[List[AgentToolDefinition]] = Field(default=None, description="A list of skills (`learn_*` tools) exposed by the app. Kept separate from `tools` so clients can render them distinctly — consumers that don't care (e.g. the worker building a combined tool registry) should concatenate the two lists.")
     interactions: Optional[List[CatalogInteractionRef]] = Field(default=None, description="A list of interactions exposed by the app")
-    types: Optional[List[PickContentObjectTypeItemIdNameDescriptionTagsObjectSchemaTableLayoutIsChunkableStrictModeStatusIntakeEditing]] = Field(default=None, description="A list of types.")
+    types: Optional[List[InCodeTypeDefinition]] = Field(default=None, description="A list of types.")
     processes: Optional[List[InCodeProcessDefinition]] = Field(default=None, description="A list of process definitions exposed by the app.")
     views: Optional[List[InCodeViewDefinition]] = Field(default=None, description="View Experiences exposed by the app as in-code definitions.")
     templates: Optional[List[RenderingTemplateDefinitionRef]] = Field(default=None, description="Templates provided by the app.")
@@ -183,7 +183,7 @@ class AppPackage(BaseModel):
             "tools": [AgentToolDefinition.from_dict(_item) for _item in obj["tools"]] if obj.get("tools") is not None else None,
             "skills": [AgentToolDefinition.from_dict(_item) for _item in obj["skills"]] if obj.get("skills") is not None else None,
             "interactions": [CatalogInteractionRef.from_dict(_item) for _item in obj["interactions"]] if obj.get("interactions") is not None else None,
-            "types": [PickContentObjectTypeItemIdNameDescriptionTagsObjectSchemaTableLayoutIsChunkableStrictModeStatusIntakeEditing.from_dict(_item) for _item in obj["types"]] if obj.get("types") is not None else None,
+            "types": [InCodeTypeDefinition.from_dict(_item) for _item in obj["types"]] if obj.get("types") is not None else None,
             "processes": [InCodeProcessDefinition.from_dict(_item) for _item in obj["processes"]] if obj.get("processes") is not None else None,
             "views": [InCodeViewDefinition.from_dict(_item) for _item in obj["views"]] if obj.get("views") is not None else None,
             "templates": [RenderingTemplateDefinitionRef.from_dict(_item) for _item in obj["templates"]] if obj.get("templates") is not None else None,

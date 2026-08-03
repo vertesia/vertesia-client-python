@@ -27,15 +27,15 @@ class RenderingTemplateDefinitionRef(BaseModel):
     """
     RenderingTemplateDefinitionRef
     """ # noqa: E501
-    path: StrictStr = Field(description="Absolute API path to fetch the full template definition")
+    assets: List[StrictStr] = Field(description="Absolute paths to asset files")
+    description: StrictStr = Field(description="Short description")
     id: StrictStr = Field(description="Unique template id: \"collection:name\"")
     name: StrictStr = Field(description="Unique template name (kebab-case)")
-    title: Optional[StrictStr] = Field(default=None, description="Display title")
-    description: StrictStr = Field(description="Short description")
+    path: StrictStr = Field(description="Absolute API path to fetch the full template definition")
     type: StrictStr = Field(description="Template type")
+    title: Optional[StrictStr] = Field(default=None, description="Display title")
     tags: Optional[List[StrictStr]] = Field(default=None, description="Tags for categorization")
-    assets: List[StrictStr] = Field(description="Absolute paths to asset files")
-    __properties: ClassVar[List[str]] = ["path", "id", "name", "title", "description", "type", "tags", "assets"]
+    __properties: ClassVar[List[str]] = ["assets", "description", "id", "name", "path", "type", "title", "tags"]
 
     @field_validator('type')
     def type_validate_enum(cls, value):
@@ -93,14 +93,14 @@ class RenderingTemplateDefinitionRef(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "path": obj.get("path"),
+            "assets": obj.get("assets"),
+            "description": obj.get("description"),
             "id": obj.get("id"),
             "name": obj.get("name"),
-            "title": obj.get("title"),
-            "description": obj.get("description"),
+            "path": obj.get("path"),
             "type": obj.get("type"),
-            "tags": obj.get("tags"),
-            "assets": obj.get("assets")
+            "title": obj.get("title"),
+            "tags": obj.get("tags")
         })
         return _obj
 

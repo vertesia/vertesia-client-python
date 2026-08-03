@@ -16,12 +16,13 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
 from pydantic import Field, StrictStr
-from typing import Any, Optional
+from typing import Optional
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.drift_analysis_status_response import DriftAnalysisStatusResponse
 from vertesia_client.openapi.models.embeddings_status_response import EmbeddingsStatusResponse
 from vertesia_client.openapi.models.generic_command_response import GenericCommandResponse
 from vertesia_client.openapi.models.indexing_status_response import IndexingStatusResponse
+from vertesia_client.openapi.models.migration_list_response import MigrationListResponse
 from vertesia_client.openapi.models.project_configuration_embedding_enable_payload import ProjectConfigurationEmbeddingEnablePayload
 from vertesia_client.openapi.models.reindex_agent_runs_payload import ReindexAgentRunsPayload
 from vertesia_client.openapi.models.reindex_agent_runs_response import ReindexAgentRunsResponse
@@ -2554,7 +2555,7 @@ class CommandsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> object:
+    ) -> MigrationListResponse:
         """List content migrations
 
         Lists the available synchronous content migrations that can be executed by an authenticated admin API key.
@@ -2592,7 +2593,7 @@ class CommandsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "object",
+            '200': "MigrationListResponse",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -2623,7 +2624,7 @@ class CommandsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[object]:
+    ) -> ApiResponse[MigrationListResponse]:
         """List content migrations
 
         Lists the available synchronous content migrations that can be executed by an authenticated admin API key.
@@ -2661,7 +2662,7 @@ class CommandsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "object",
+            '200': "MigrationListResponse",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -2730,7 +2731,7 @@ class CommandsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "object",
+            '200': "MigrationListResponse",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -3092,8 +3093,8 @@ class CommandsApi:
     @validate_call
     def reindex_agent_runs(
         self,
-        reindex_agent_runs_payload: ReindexAgentRunsPayload,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
+        reindex_agent_runs_payload: Optional[ReindexAgentRunsPayload] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3111,10 +3112,10 @@ class CommandsApi:
 
         Rebuilds the current project agent-run Elasticsearch index directly from MongoDB. By default this recreates the stable agent-runs index before indexing.  **Required permissions:** `content:admin`
 
-        :param reindex_agent_runs_payload: (required)
-        :type reindex_agent_runs_payload: ReindexAgentRunsPayload
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
+        :param reindex_agent_runs_payload:
+        :type reindex_agent_runs_payload: ReindexAgentRunsPayload
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3138,8 +3139,8 @@ class CommandsApi:
         """ # noqa: E501
 
         _param = self._reindex_agent_runs_serialize(
-            reindex_agent_runs_payload=reindex_agent_runs_payload,
             x_api_version=x_api_version,
+            reindex_agent_runs_payload=reindex_agent_runs_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3165,8 +3166,8 @@ class CommandsApi:
     @validate_call
     def reindex_agent_runs_with_http_info(
         self,
-        reindex_agent_runs_payload: ReindexAgentRunsPayload,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
+        reindex_agent_runs_payload: Optional[ReindexAgentRunsPayload] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3184,10 +3185,10 @@ class CommandsApi:
 
         Rebuilds the current project agent-run Elasticsearch index directly from MongoDB. By default this recreates the stable agent-runs index before indexing.  **Required permissions:** `content:admin`
 
-        :param reindex_agent_runs_payload: (required)
-        :type reindex_agent_runs_payload: ReindexAgentRunsPayload
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
+        :param reindex_agent_runs_payload:
+        :type reindex_agent_runs_payload: ReindexAgentRunsPayload
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3211,8 +3212,8 @@ class CommandsApi:
         """ # noqa: E501
 
         _param = self._reindex_agent_runs_serialize(
-            reindex_agent_runs_payload=reindex_agent_runs_payload,
             x_api_version=x_api_version,
+            reindex_agent_runs_payload=reindex_agent_runs_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3238,8 +3239,8 @@ class CommandsApi:
     @validate_call
     def reindex_agent_runs_without_preload_content(
         self,
-        reindex_agent_runs_payload: ReindexAgentRunsPayload,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
+        reindex_agent_runs_payload: Optional[ReindexAgentRunsPayload] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3257,10 +3258,10 @@ class CommandsApi:
 
         Rebuilds the current project agent-run Elasticsearch index directly from MongoDB. By default this recreates the stable agent-runs index before indexing.  **Required permissions:** `content:admin`
 
-        :param reindex_agent_runs_payload: (required)
-        :type reindex_agent_runs_payload: ReindexAgentRunsPayload
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
+        :param reindex_agent_runs_payload:
+        :type reindex_agent_runs_payload: ReindexAgentRunsPayload
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3284,8 +3285,8 @@ class CommandsApi:
         """ # noqa: E501
 
         _param = self._reindex_agent_runs_serialize(
-            reindex_agent_runs_payload=reindex_agent_runs_payload,
             x_api_version=x_api_version,
+            reindex_agent_runs_payload=reindex_agent_runs_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3306,8 +3307,8 @@ class CommandsApi:
 
     def _reindex_agent_runs_serialize(
         self,
-        reindex_agent_runs_payload,
         x_api_version,
+        reindex_agent_runs_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -3406,7 +3407,7 @@ class CommandsApi:
     ) -> RunMigrationResponse:
         """Run a content migration
 
-        Executes a named synchronous migration. This endpoint requires an authenticated admin API key.
+        Executes a named synchronous migration. This endpoint requires an authenticated admin API key. `params` is passed through to the migration and its shape is the migration's own.
 
         :param name: (required)
         :type name: str
@@ -3483,7 +3484,7 @@ class CommandsApi:
     ) -> ApiResponse[RunMigrationResponse]:
         """Run a content migration
 
-        Executes a named synchronous migration. This endpoint requires an authenticated admin API key.
+        Executes a named synchronous migration. This endpoint requires an authenticated admin API key. `params` is passed through to the migration and its shape is the migration's own.
 
         :param name: (required)
         :type name: str
@@ -3560,7 +3561,7 @@ class CommandsApi:
     ) -> RESTResponseType:
         """Run a content migration
 
-        Executes a named synchronous migration. This endpoint requires an authenticated admin API key.
+        Executes a named synchronous migration. This endpoint requires an authenticated admin API key. `params` is passed through to the migration and its shape is the migration's own.
 
         :param name: (required)
         :type name: str
@@ -3967,8 +3968,8 @@ class CommandsApi:
     @validate_call
     def start_project_reindex(
         self,
-        start_project_reindex_payload: StartProjectReindexPayload,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
+        start_project_reindex_payload: Optional[StartProjectReindexPayload] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3986,10 +3987,10 @@ class CommandsApi:
 
         Starts a full project reindex workflow that rebuilds the Elasticsearch index from content objects.  **Required permissions:** `content:admin`
 
-        :param start_project_reindex_payload: (required)
-        :type start_project_reindex_payload: StartProjectReindexPayload
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
+        :param start_project_reindex_payload:
+        :type start_project_reindex_payload: StartProjectReindexPayload
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4013,8 +4014,8 @@ class CommandsApi:
         """ # noqa: E501
 
         _param = self._start_project_reindex_serialize(
-            start_project_reindex_payload=start_project_reindex_payload,
             x_api_version=x_api_version,
+            start_project_reindex_payload=start_project_reindex_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4040,8 +4041,8 @@ class CommandsApi:
     @validate_call
     def start_project_reindex_with_http_info(
         self,
-        start_project_reindex_payload: StartProjectReindexPayload,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
+        start_project_reindex_payload: Optional[StartProjectReindexPayload] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4059,10 +4060,10 @@ class CommandsApi:
 
         Starts a full project reindex workflow that rebuilds the Elasticsearch index from content objects.  **Required permissions:** `content:admin`
 
-        :param start_project_reindex_payload: (required)
-        :type start_project_reindex_payload: StartProjectReindexPayload
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
+        :param start_project_reindex_payload:
+        :type start_project_reindex_payload: StartProjectReindexPayload
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4086,8 +4087,8 @@ class CommandsApi:
         """ # noqa: E501
 
         _param = self._start_project_reindex_serialize(
-            start_project_reindex_payload=start_project_reindex_payload,
             x_api_version=x_api_version,
+            start_project_reindex_payload=start_project_reindex_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4113,8 +4114,8 @@ class CommandsApi:
     @validate_call
     def start_project_reindex_without_preload_content(
         self,
-        start_project_reindex_payload: StartProjectReindexPayload,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
+        start_project_reindex_payload: Optional[StartProjectReindexPayload] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4132,10 +4133,10 @@ class CommandsApi:
 
         Starts a full project reindex workflow that rebuilds the Elasticsearch index from content objects.  **Required permissions:** `content:admin`
 
-        :param start_project_reindex_payload: (required)
-        :type start_project_reindex_payload: StartProjectReindexPayload
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
+        :param start_project_reindex_payload:
+        :type start_project_reindex_payload: StartProjectReindexPayload
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4159,8 +4160,8 @@ class CommandsApi:
         """ # noqa: E501
 
         _param = self._start_project_reindex_serialize(
-            start_project_reindex_payload=start_project_reindex_payload,
             x_api_version=x_api_version,
+            start_project_reindex_payload=start_project_reindex_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4181,8 +4182,8 @@ class CommandsApi:
 
     def _start_project_reindex_serialize(
         self,
-        start_project_reindex_payload,
         x_api_version,
+        start_project_reindex_payload,
         _request_auth,
         _content_type,
         _headers,

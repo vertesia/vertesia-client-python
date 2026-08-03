@@ -17,6 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
+from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing import Optional, Set
@@ -43,8 +44,10 @@ class User(BaseModel):
     clearance: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="BLP clearance level — determines max document sensitivity the user can access")
     compartments: Optional[List[StrictStr]] = Field(default=None, description="Compartments the user belongs to — restricts access to documents in matching compartments")
     annotations: Optional[List[StrictStr]] = Field(default=None, description="Free-form user metadata - restricted to internal use")
+    created_at: datetime = Field(description="ISO 8601 creation timestamp.")
+    updated_at: datetime = Field(description="ISO 8601 timestamp of the last update.")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["id", "externalId", "email", "name", "username", "picture", "language", "phone", "sign_in_provider", "last_selected_account", "source", "updated_by", "properties", "clearance", "compartments", "annotations"]
+    __properties: ClassVar[List[str]] = ["id", "externalId", "email", "name", "username", "picture", "language", "phone", "sign_in_provider", "last_selected_account", "source", "updated_by", "properties", "clearance", "compartments", "annotations", "created_at", "updated_at"]
 
     @field_validator('source')
     def source_validate_enum(cls, value):
@@ -127,7 +130,9 @@ class User(BaseModel):
             "properties": obj.get("properties"),
             "clearance": obj.get("clearance"),
             "compartments": obj.get("compartments"),
-            "annotations": obj.get("annotations")
+            "annotations": obj.get("annotations"),
+            "created_at": obj.get("created_at"),
+            "updated_at": obj.get("updated_at")
         })
         # store additional fields in additional_properties
         for _key in obj.keys():

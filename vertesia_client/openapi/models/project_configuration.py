@@ -47,7 +47,7 @@ class ProjectConfiguration(BaseModel):
     intake: Optional[ProjectIntakeConfiguration] = Field(default=None, description="Standard content intake behavior.")
     main_language: Optional[StrictStr] = Field(default=None, description="Primary language for full-text search analysis. ISO 639-1 code (e.g., 'en', 'fr', 'ja', 'de'). Determines which Elasticsearch analyzer is used for the text field. Defaults to 'en' (English/standard analyzer).  Changing this value requires a full reindex to take effect.")
     browser_use: Optional[BrowserUseProjectConfiguration] = Field(default=None, description="Project defaults and caps for browser_use agent workstreams.")
-    pdf_template_object_id: Optional[StrictStr] = Field(default=None, description="Object ID of a content object containing a custom LaTeX template (.latex file) to use as the branded PDF template. When set, \"Export as Branded PDF\" uses this template instead of the built-in Vertesia default template.")
+    pdf_template_object_id: Optional[StrictStr] = Field(default=None, description="Object ID of a content object containing a custom LaTeX template (.latex file) to use as the branded PDF template. When set, \"Export as Branded PDF\" uses this template instead of the built-in Vertesia default template. `null` clears it.")
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["human_context", "defaults", "default_visibility", "sync_content_properties", "embeddings", "datacenter", "storage_bucket", "agent_streaming_enabled", "agent", "indexing", "intake", "main_language", "browser_use", "pdf_template_object_id"]
 
@@ -114,6 +114,11 @@ class ProjectConfiguration(BaseModel):
         if self.additional_properties is not None:
             for _key, _value in self.additional_properties.items():
                 _dict[_key] = _value
+
+        # set to None if pdf_template_object_id (nullable) is None
+        # and model_fields_set contains the field
+        if self.pdf_template_object_id is None and "pdf_template_object_id" in self.model_fields_set:
+            _dict['pdf_template_object_id'] = None
 
         return _dict
 

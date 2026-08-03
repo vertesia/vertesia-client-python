@@ -17,8 +17,8 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
-from typing import Any, ClassVar, Dict, List, Optional, Union
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr, field_validator
+from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.content_type_intake_policy_text_conversion_custom import ContentTypeIntakePolicyTextConversionCustom
 from vertesia_client.openapi.models.intake_page_scope import IntakePageScope
@@ -37,8 +37,8 @@ class ContentTypeIntakePolicyTextConversion(BaseModel):
     instructions: Optional[StrictStr] = None
     output_format: Optional[StrictStr] = None
     scope: Optional[IntakePageScope] = Field(default=None, description="Which pages to convert: everything or the locate result. Default all.")
-    page_ranges: Optional[List[Annotated[List[Union[StrictFloat, StrictInt]], Field(min_length=2, max_length=2)]]] = Field(default=None, description="Static page ranges to convert (wins over `scope` when set).")
-    render_dpi: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="DPI at which each page is rendered to the image the LLM converts. Default 150 — the accuracy/cost sweet spot: higher resolutions balloon input tokens (some providers tile the page) for no quality gain, below ~150 dense tables start to misread. Raise only for very fine print.")
+    page_ranges: Optional[List[Annotated[List[Annotated[int, Field(le=2147483647, strict=True, ge=-2147483648)]], Field(min_length=2, max_length=2)]]] = Field(default=None, description="Static page ranges to convert (wins over `scope` when set).")
+    render_dpi: Optional[Annotated[int, Field(le=2147483647, strict=True, ge=72)]] = Field(default=None, description="DPI at which each page is rendered to the image the LLM converts. Default 150 — the accuracy/cost sweet spot: higher resolutions balloon input tokens (some providers tile the page) for no quality gain, below ~150 dense tables start to misread. Raise only for very fine print.")
     config: Optional[InteractionExecutionConfiguration] = Field(default=None, description="Model execution config for the page-conversion interaction (method 'llm'/'auto' -> sys:ConvertPageToMarkdown, method 'custom' -> the custom interaction). Lets the visual conversion run on a cheaper/faster model (e.g. a flash model) than extraction. When unset, conversion uses the run's model config or the project default model.")
     __properties: ClassVar[List[str]] = ["enabled", "method", "custom", "instructions", "output_format", "scope", "page_ranges", "render_dpi", "config"]
 

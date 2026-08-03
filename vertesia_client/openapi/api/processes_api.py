@@ -15,7 +15,7 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import Field, StrictBool, StrictFloat, StrictInt, StrictStr
+from pydantic import Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import List, Optional, Union
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.create_process_definition_payload import CreateProcessDefinitionPayload
@@ -1191,6 +1191,7 @@ class ProcessesApi:
     @validate_call
     def list_process_definitions(
         self,
+        status: Optional[StrictStr] = None,
         process: Optional[StrictStr] = None,
         limit: Optional[Union[StrictFloat, StrictInt]] = None,
         offset: Optional[Union[StrictFloat, StrictInt]] = None,
@@ -1213,6 +1214,8 @@ class ProcessesApi:
 
         Lists process definitions in the current project with optional status, process id, pagination, and revision filters. By default only the latest head revision for each process is returned; set `all_versions=true` to include every revision document.  **Required permissions:** Any of `workflow:read`, `workflow:run`
 
+        :param status:
+        :type status: str
         :param process:
         :type process: str
         :param limit:
@@ -1246,6 +1249,7 @@ class ProcessesApi:
         """ # noqa: E501
 
         _param = self._list_process_definitions_serialize(
+            status=status,
             process=process,
             limit=limit,
             offset=offset,
@@ -1276,6 +1280,7 @@ class ProcessesApi:
     @validate_call
     def list_process_definitions_with_http_info(
         self,
+        status: Optional[StrictStr] = None,
         process: Optional[StrictStr] = None,
         limit: Optional[Union[StrictFloat, StrictInt]] = None,
         offset: Optional[Union[StrictFloat, StrictInt]] = None,
@@ -1298,6 +1303,8 @@ class ProcessesApi:
 
         Lists process definitions in the current project with optional status, process id, pagination, and revision filters. By default only the latest head revision for each process is returned; set `all_versions=true` to include every revision document.  **Required permissions:** Any of `workflow:read`, `workflow:run`
 
+        :param status:
+        :type status: str
         :param process:
         :type process: str
         :param limit:
@@ -1331,6 +1338,7 @@ class ProcessesApi:
         """ # noqa: E501
 
         _param = self._list_process_definitions_serialize(
+            status=status,
             process=process,
             limit=limit,
             offset=offset,
@@ -1361,6 +1369,7 @@ class ProcessesApi:
     @validate_call
     def list_process_definitions_without_preload_content(
         self,
+        status: Optional[StrictStr] = None,
         process: Optional[StrictStr] = None,
         limit: Optional[Union[StrictFloat, StrictInt]] = None,
         offset: Optional[Union[StrictFloat, StrictInt]] = None,
@@ -1383,6 +1392,8 @@ class ProcessesApi:
 
         Lists process definitions in the current project with optional status, process id, pagination, and revision filters. By default only the latest head revision for each process is returned; set `all_versions=true` to include every revision document.  **Required permissions:** Any of `workflow:read`, `workflow:run`
 
+        :param status:
+        :type status: str
         :param process:
         :type process: str
         :param limit:
@@ -1416,6 +1427,7 @@ class ProcessesApi:
         """ # noqa: E501
 
         _param = self._list_process_definitions_serialize(
+            status=status,
             process=process,
             limit=limit,
             offset=offset,
@@ -1441,6 +1453,7 @@ class ProcessesApi:
 
     def _list_process_definitions_serialize(
         self,
+        status,
         process,
         limit,
         offset,
@@ -1468,6 +1481,10 @@ class ProcessesApi:
 
         # process the path parameters
         # process the query parameters
+        if status is not None:
+            
+            _query_params.append(('status', status))
+            
         if process is not None:
             
             _query_params.append(('process', process))

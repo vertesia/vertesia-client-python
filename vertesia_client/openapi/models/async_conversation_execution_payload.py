@@ -23,13 +23,13 @@ from vertesia_client.openapi.models.agent_checkpoint_configuration import AgentC
 from vertesia_client.openapi.models.agent_search_scope_collection import AgentSearchScopeCollection
 from vertesia_client.openapi.models.agent_tool_approval_mode import AgentToolApprovalMode
 from vertesia_client.openapi.models.async_completion_options import AsyncCompletionOptions
+from vertesia_client.openapi.models.async_conversation_execution_payload_result_schema import AsyncConversationExecutionPayloadResultSchema
 from vertesia_client.openapi.models.conversation_strip_options import ConversationStripOptions
 from vertesia_client.openapi.models.conversation_visibility import ConversationVisibility
 from vertesia_client.openapi.models.execution_run_workflow import ExecutionRunWorkflow
 from vertesia_client.openapi.models.in_code_prompt import InCodePrompt
 from vertesia_client.openapi.models.initial_tool_call import InitialToolCall
 from vertesia_client.openapi.models.interaction_execution_configuration import InteractionExecutionConfiguration
-from vertesia_client.openapi.models.interaction_update_payload_result_schema import InteractionUpdatePayloadResultSchema
 from vertesia_client.openapi.models.user_channel import UserChannel
 from typing import Optional, Set
 from typing_extensions import Self
@@ -42,7 +42,7 @@ class AsyncConversationExecutionPayload(BaseModel):
     interaction: StrictStr = Field(description="The interaction name and suffixed by an optional tag or version separated from the name using a @ character If no version/tag part is specified then the latest version is used. Example: ReviewContract, ReviewContract@draft, ReviewContract@1, ReviewContract@some-tag")
     data: Optional[Any] = None
     config: Optional[InteractionExecutionConfiguration] = None
-    result_schema: Optional[InteractionUpdatePayloadResultSchema] = None
+    result_schema: Optional[AsyncConversationExecutionPayloadResultSchema] = None
     do_validate: Optional[StrictBool] = None
     tags: Optional[List[StrictStr]] = None
     conversation: Optional[Any] = None
@@ -202,7 +202,7 @@ class AsyncConversationExecutionPayload(BaseModel):
             "interaction": obj.get("interaction"),
             "data": obj.get("data"),
             "config": InteractionExecutionConfiguration.from_dict(obj["config"]) if obj.get("config") is not None else None,
-            "result_schema": InteractionUpdatePayloadResultSchema.from_dict(obj["result_schema"]) if obj.get("result_schema") is not None else None,
+            "result_schema": AsyncConversationExecutionPayloadResultSchema.from_dict(obj["result_schema"]) if obj.get("result_schema") is not None else None,
             "do_validate": obj.get("do_validate"),
             "tags": obj.get("tags"),
             "conversation": obj.get("conversation"),

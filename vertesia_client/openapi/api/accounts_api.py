@@ -26,7 +26,7 @@ from vertesia_client.openapi.models.invite_user_request_payload import InviteUse
 from vertesia_client.openapi.models.invite_user_response_payload import InviteUserResponsePayload
 from vertesia_client.openapi.models.onboarding_progress import OnboardingProgress
 from vertesia_client.openapi.models.stripe_billing_status_response import StripeBillingStatusResponse
-from vertesia_client.openapi.models.transient_token_user_invite_token_data_array import TransientTokenUserInviteTokenDataArray
+from vertesia_client.openapi.models.transient_token_user_invite_token_data import TransientTokenUserInviteTokenData
 from vertesia_client.openapi.models.update_account_payload import UpdateAccountPayload
 from vertesia_client.openapi.models.user import User
 
@@ -1730,7 +1730,7 @@ class AccountsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> TransientTokenUserInviteTokenDataArray:
+    ) -> List[TransientTokenUserInviteTokenData]:
         """List account invites
 
         Lists pending invites across the current account.  **Required permissions:** `account:admin`
@@ -1768,7 +1768,7 @@ class AccountsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "TransientTokenUserInviteTokenDataArray",
+            '200': "List[TransientTokenUserInviteTokenData]",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -1799,7 +1799,7 @@ class AccountsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[TransientTokenUserInviteTokenDataArray]:
+    ) -> ApiResponse[List[TransientTokenUserInviteTokenData]]:
         """List account invites
 
         Lists pending invites across the current account.  **Required permissions:** `account:admin`
@@ -1837,7 +1837,7 @@ class AccountsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "TransientTokenUserInviteTokenDataArray",
+            '200': "List[TransientTokenUserInviteTokenData]",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -1906,7 +1906,7 @@ class AccountsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "TransientTokenUserInviteTokenDataArray",
+            '200': "List[TransientTokenUserInviteTokenData]",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -2534,7 +2534,7 @@ class AccountsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> TransientTokenUserInviteTokenDataArray:
+    ) -> List[TransientTokenUserInviteTokenData]:
         """List project invites
 
         Lists pending invites for the current project.  **Required permissions:** `project:admin`
@@ -2572,7 +2572,7 @@ class AccountsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "TransientTokenUserInviteTokenDataArray",
+            '200': "List[TransientTokenUserInviteTokenData]",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -2603,7 +2603,7 @@ class AccountsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[TransientTokenUserInviteTokenDataArray]:
+    ) -> ApiResponse[List[TransientTokenUserInviteTokenData]]:
         """List project invites
 
         Lists pending invites for the current project.  **Required permissions:** `project:admin`
@@ -2641,7 +2641,7 @@ class AccountsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "TransientTokenUserInviteTokenDataArray",
+            '200': "List[TransientTokenUserInviteTokenData]",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -2710,7 +2710,7 @@ class AccountsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "TransientTokenUserInviteTokenDataArray",
+            '200': "List[TransientTokenUserInviteTokenData]",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -2802,7 +2802,7 @@ class AccountsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> TransientTokenUserInviteTokenDataArray:
+    ) -> List[TransientTokenUserInviteTokenData]:
         """List pending invites for the current user
 
         Lists pending account or project invites that apply to the current user.  **Required permissions:** `account:member`
@@ -2840,7 +2840,7 @@ class AccountsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "TransientTokenUserInviteTokenDataArray",
+            '200': "List[TransientTokenUserInviteTokenData]",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -2871,7 +2871,7 @@ class AccountsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[TransientTokenUserInviteTokenDataArray]:
+    ) -> ApiResponse[List[TransientTokenUserInviteTokenData]]:
         """List pending invites for the current user
 
         Lists pending account or project invites that apply to the current user.  **Required permissions:** `account:member`
@@ -2909,7 +2909,7 @@ class AccountsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "TransientTokenUserInviteTokenDataArray",
+            '200': "List[TransientTokenUserInviteTokenData]",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -2978,7 +2978,7 @@ class AccountsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "TransientTokenUserInviteTokenDataArray",
+            '200': "List[TransientTokenUserInviteTokenData]",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }

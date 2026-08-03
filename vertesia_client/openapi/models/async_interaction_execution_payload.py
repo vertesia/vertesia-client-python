@@ -20,10 +20,10 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
 from vertesia_client.openapi.models.async_completion_options import AsyncCompletionOptions
+from vertesia_client.openapi.models.async_conversation_execution_payload_result_schema import AsyncConversationExecutionPayloadResultSchema
 from vertesia_client.openapi.models.execution_run_workflow import ExecutionRunWorkflow
 from vertesia_client.openapi.models.in_code_prompt import InCodePrompt
 from vertesia_client.openapi.models.interaction_execution_configuration import InteractionExecutionConfiguration
-from vertesia_client.openapi.models.interaction_update_payload_result_schema import InteractionUpdatePayloadResultSchema
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -35,7 +35,7 @@ class AsyncInteractionExecutionPayload(BaseModel):
     interaction: StrictStr = Field(description="The interaction name and suffixed by an optional tag or version separated from the name using a @ character If no version/tag part is specified then the latest version is used. Example: ReviewContract, ReviewContract@draft, ReviewContract@1, ReviewContract@some-tag")
     data: Optional[Any] = None
     config: Optional[InteractionExecutionConfiguration] = None
-    result_schema: Optional[InteractionUpdatePayloadResultSchema] = None
+    result_schema: Optional[AsyncConversationExecutionPayloadResultSchema] = None
     do_validate: Optional[StrictBool] = None
     tags: Optional[List[StrictStr]] = None
     conversation: Optional[Any] = None
@@ -149,7 +149,7 @@ class AsyncInteractionExecutionPayload(BaseModel):
             "interaction": obj.get("interaction"),
             "data": obj.get("data"),
             "config": InteractionExecutionConfiguration.from_dict(obj["config"]) if obj.get("config") is not None else None,
-            "result_schema": InteractionUpdatePayloadResultSchema.from_dict(obj["result_schema"]) if obj.get("result_schema") is not None else None,
+            "result_schema": AsyncConversationExecutionPayloadResultSchema.from_dict(obj["result_schema"]) if obj.get("result_schema") is not None else None,
             "do_validate": obj.get("do_validate"),
             "tags": obj.get("tags"),
             "conversation": obj.get("conversation"),

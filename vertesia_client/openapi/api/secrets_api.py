@@ -19,8 +19,8 @@ from pydantic import Field, StrictBool, StrictStr, field_validator
 from typing import Optional
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.create_secret_request import CreateSecretRequest
+from vertesia_client.openapi.models.delete_secret_response import DeleteSecretResponse
 from vertesia_client.openapi.models.list_secrets_response import ListSecretsResponse
-from vertesia_client.openapi.models.ok_boolean import OkBoolean
 from vertesia_client.openapi.models.secret_record import SecretRecord
 from vertesia_client.openapi.models.update_secret_request import UpdateSecretRequest
 from vertesia_client.openapi.models.website_credential_fill_request import WebsiteCredentialFillRequest
@@ -376,7 +376,7 @@ class SecretsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> OkBoolean:
+    ) -> DeleteSecretResponse:
         """Delete secret
 
         Deletes a project-scoped secret and its encrypted value bundle.  **Required permissions:** `project:admin`
@@ -423,7 +423,7 @@ class SecretsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "OkBoolean",
+            '200': "DeleteSecretResponse",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -457,7 +457,7 @@ class SecretsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[OkBoolean]:
+    ) -> ApiResponse[DeleteSecretResponse]:
         """Delete secret
 
         Deletes a project-scoped secret and its encrypted value bundle.  **Required permissions:** `project:admin`
@@ -504,7 +504,7 @@ class SecretsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "OkBoolean",
+            '200': "DeleteSecretResponse",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -585,7 +585,7 @@ class SecretsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "OkBoolean",
+            '200': "DeleteSecretResponse",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }

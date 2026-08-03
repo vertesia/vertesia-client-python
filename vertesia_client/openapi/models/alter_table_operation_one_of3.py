@@ -19,7 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, StrictStr, field_validator
 from typing import Any, ClassVar, Dict
-from vertesia_client.openapi.models.partial_omit_data_column_name import PartialOmitDataColumnName
+from vertesia_client.openapi.models.data_column_update import DataColumnUpdate
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -30,7 +30,7 @@ class AlterTableOperationOneOf3(BaseModel):
     """ # noqa: E501
     op: StrictStr
     column: StrictStr
-    updates: PartialOmitDataColumnName
+    updates: DataColumnUpdate
     __properties: ClassVar[List[str]] = ["op", "column", "updates"]
 
     @field_validator('op')
@@ -94,7 +94,7 @@ class AlterTableOperationOneOf3(BaseModel):
         _obj = cls.model_validate({
             "op": obj.get("op"),
             "column": obj.get("column"),
-            "updates": PartialOmitDataColumnName.from_dict(obj["updates"]) if obj.get("updates") is not None else None
+            "updates": DataColumnUpdate.from_dict(obj["updates"]) if obj.get("updates") is not None else None
         })
         return _obj
 

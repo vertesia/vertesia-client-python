@@ -23,13 +23,13 @@ from typing import Any, ClassVar, Dict, List, Optional, Union
 from vertesia_client.openapi.models.account_ref import AccountRef
 from vertesia_client.openapi.models.completion_result import CompletionResult
 from vertesia_client.openapi.models.execution_environment_ref import ExecutionEnvironmentRef
+from vertesia_client.openapi.models.execution_run_evaluation import ExecutionRunEvaluation
+from vertesia_client.openapi.models.execution_run_interaction import ExecutionRunInteraction
 from vertesia_client.openapi.models.execution_run_status import ExecutionRunStatus
 from vertesia_client.openapi.models.execution_run_workflow import ExecutionRunWorkflow
 from vertesia_client.openapi.models.execution_token_usage import ExecutionTokenUsage
 from vertesia_client.openapi.models.interaction_execution_configuration import InteractionExecutionConfiguration
 from vertesia_client.openapi.models.interaction_execution_error import InteractionExecutionError
-from vertesia_client.openapi.models.interaction_execution_result_evaluation import InteractionExecutionResultEvaluation
-from vertesia_client.openapi.models.interaction_ref import InteractionRef
 from vertesia_client.openapi.models.json_schema import JSONSchema
 from vertesia_client.openapi.models.modalities import Modalities
 from vertesia_client.openapi.models.project_ref import ProjectRef
@@ -43,12 +43,12 @@ class ExecutionRun(BaseModel):
     ExecutionRun
     """ # noqa: E501
     id: StrictStr
-    parent: Optional[InteractionExecutionResultParent] = None
-    evaluation: Optional[InteractionExecutionResultEvaluation] = None
+    parent: Optional[ExecutionRunParent] = None
+    evaluation: Optional[ExecutionRunEvaluation] = None
     result: List[CompletionResult]
     parameters: Optional[Any]
     tags: Optional[List[StrictStr]] = None
-    interaction: Optional[InteractionRef] = Field(default=None, description="Interaction reference. Stored interactions may be populated as full Interaction documents; in-code interactions are represented as refs whose `id` is the namespaced interaction id.")
+    interaction: Optional[ExecutionRunInteraction] = None
     environment: ExecutionEnvironmentRef = Field(description="Environment reference - populated with full object in API responses")
     model_id: Optional[StrictStr] = Field(default=None, alias="modelId")
     result_schema: Optional[JSONSchema] = None
@@ -185,12 +185,12 @@ class ExecutionRun(BaseModel):
 
         _obj = cls.model_validate({
             "id": obj.get("id"),
-            "parent": InteractionExecutionResultParent.from_dict(obj["parent"]) if obj.get("parent") is not None else None,
-            "evaluation": InteractionExecutionResultEvaluation.from_dict(obj["evaluation"]) if obj.get("evaluation") is not None else None,
+            "parent": ExecutionRunParent.from_dict(obj["parent"]) if obj.get("parent") is not None else None,
+            "evaluation": ExecutionRunEvaluation.from_dict(obj["evaluation"]) if obj.get("evaluation") is not None else None,
             "result": [CompletionResult.from_dict(_item) for _item in obj["result"]] if obj.get("result") is not None else None,
             "parameters": obj.get("parameters"),
             "tags": obj.get("tags"),
-            "interaction": InteractionRef.from_dict(obj["interaction"]) if obj.get("interaction") is not None else None,
+            "interaction": ExecutionRunInteraction.from_dict(obj["interaction"]) if obj.get("interaction") is not None else None,
             "environment": ExecutionEnvironmentRef.from_dict(obj["environment"]) if obj.get("environment") is not None else None,
             "modelId": obj.get("modelId"),
             "result_schema": JSONSchema.from_dict(obj["result_schema"]) if obj.get("result_schema") is not None else None,
@@ -220,7 +220,7 @@ class ExecutionRun(BaseModel):
 
         return _obj
 
-from vertesia_client.openapi.models.interaction_execution_result_parent import InteractionExecutionResultParent
+from vertesia_client.openapi.models.execution_run_parent import ExecutionRunParent
 # TODO: Rewrite to not use raise_errors
 ExecutionRun.model_rebuild(raise_errors=False)
 

@@ -22,8 +22,9 @@ from vertesia_client.openapi.models.api_key import ApiKey
 from vertesia_client.openapi.models.api_key_read_response import ApiKeyReadResponse
 from vertesia_client.openapi.models.api_key_with_value import ApiKeyWithValue
 from vertesia_client.openapi.models.auth_token_response import AuthTokenResponse
-from vertesia_client.openapi.models.create_or_update_api_key_payload import CreateOrUpdateApiKeyPayload
+from vertesia_client.openapi.models.create_api_key_payload import CreateApiKeyPayload
 from vertesia_client.openapi.models.delete_operation_result import DeleteOperationResult
+from vertesia_client.openapi.models.update_api_key_payload import UpdateApiKeyPayload
 
 from vertesia_client.openapi.api_client import ApiClient, RequestSerialized
 from vertesia_client.openapi.api_response import ApiResponse
@@ -46,7 +47,7 @@ class APIKeysApi:
     @validate_call
     def create_api_key(
         self,
-        create_or_update_api_key_payload: CreateOrUpdateApiKeyPayload,
+        create_api_key_payload: CreateApiKeyPayload,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -65,8 +66,8 @@ class APIKeysApi:
 
         Creates a new API key and returns the raw key value once at creation time.  **Required permissions:** `api_key:create`
 
-        :param create_or_update_api_key_payload: (required)
-        :type create_or_update_api_key_payload: CreateOrUpdateApiKeyPayload
+        :param create_api_key_payload: (required)
+        :type create_api_key_payload: CreateApiKeyPayload
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -92,7 +93,7 @@ class APIKeysApi:
         """ # noqa: E501
 
         _param = self._create_api_key_serialize(
-            create_or_update_api_key_payload=create_or_update_api_key_payload,
+            create_api_key_payload=create_api_key_payload,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -119,7 +120,7 @@ class APIKeysApi:
     @validate_call
     def create_api_key_with_http_info(
         self,
-        create_or_update_api_key_payload: CreateOrUpdateApiKeyPayload,
+        create_api_key_payload: CreateApiKeyPayload,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -138,8 +139,8 @@ class APIKeysApi:
 
         Creates a new API key and returns the raw key value once at creation time.  **Required permissions:** `api_key:create`
 
-        :param create_or_update_api_key_payload: (required)
-        :type create_or_update_api_key_payload: CreateOrUpdateApiKeyPayload
+        :param create_api_key_payload: (required)
+        :type create_api_key_payload: CreateApiKeyPayload
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -165,7 +166,7 @@ class APIKeysApi:
         """ # noqa: E501
 
         _param = self._create_api_key_serialize(
-            create_or_update_api_key_payload=create_or_update_api_key_payload,
+            create_api_key_payload=create_api_key_payload,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -192,7 +193,7 @@ class APIKeysApi:
     @validate_call
     def create_api_key_without_preload_content(
         self,
-        create_or_update_api_key_payload: CreateOrUpdateApiKeyPayload,
+        create_api_key_payload: CreateApiKeyPayload,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -211,8 +212,8 @@ class APIKeysApi:
 
         Creates a new API key and returns the raw key value once at creation time.  **Required permissions:** `api_key:create`
 
-        :param create_or_update_api_key_payload: (required)
-        :type create_or_update_api_key_payload: CreateOrUpdateApiKeyPayload
+        :param create_api_key_payload: (required)
+        :type create_api_key_payload: CreateApiKeyPayload
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -238,7 +239,7 @@ class APIKeysApi:
         """ # noqa: E501
 
         _param = self._create_api_key_serialize(
-            create_or_update_api_key_payload=create_or_update_api_key_payload,
+            create_api_key_payload=create_api_key_payload,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -260,7 +261,7 @@ class APIKeysApi:
 
     def _create_api_key_serialize(
         self,
-        create_or_update_api_key_payload,
+        create_api_key_payload,
         x_api_version,
         _request_auth,
         _content_type,
@@ -289,8 +290,8 @@ class APIKeysApi:
             _header_params['x-api-version'] = x_api_version
         # process the form parameters
         # process the body parameter
-        if create_or_update_api_key_payload is not None:
-            _body_params = create_or_update_api_key_payload
+        if create_api_key_payload is not None:
+            _body_params = create_api_key_payload
 
 
         # set the HTTP header `Accept`
@@ -1494,7 +1495,7 @@ class APIKeysApi:
     def update_api_key(
         self,
         key_id: StrictStr,
-        create_or_update_api_key_payload: CreateOrUpdateApiKeyPayload,
+        update_api_key_payload: UpdateApiKeyPayload,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -1511,12 +1512,12 @@ class APIKeysApi:
     ) -> ApiKey:
         """Update an API key
 
-        Updates API key metadata such as name, role, project, and enabled state.  **Required permissions:** `api_key:update`
+        Updates API key metadata: name, role, and enabled state.  **Required permissions:** `api_key:update`
 
         :param key_id: (required)
         :type key_id: str
-        :param create_or_update_api_key_payload: (required)
-        :type create_or_update_api_key_payload: CreateOrUpdateApiKeyPayload
+        :param update_api_key_payload: (required)
+        :type update_api_key_payload: UpdateApiKeyPayload
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -1543,7 +1544,7 @@ class APIKeysApi:
 
         _param = self._update_api_key_serialize(
             key_id=key_id,
-            create_or_update_api_key_payload=create_or_update_api_key_payload,
+            update_api_key_payload=update_api_key_payload,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1571,7 +1572,7 @@ class APIKeysApi:
     def update_api_key_with_http_info(
         self,
         key_id: StrictStr,
-        create_or_update_api_key_payload: CreateOrUpdateApiKeyPayload,
+        update_api_key_payload: UpdateApiKeyPayload,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -1588,12 +1589,12 @@ class APIKeysApi:
     ) -> ApiResponse[ApiKey]:
         """Update an API key
 
-        Updates API key metadata such as name, role, project, and enabled state.  **Required permissions:** `api_key:update`
+        Updates API key metadata: name, role, and enabled state.  **Required permissions:** `api_key:update`
 
         :param key_id: (required)
         :type key_id: str
-        :param create_or_update_api_key_payload: (required)
-        :type create_or_update_api_key_payload: CreateOrUpdateApiKeyPayload
+        :param update_api_key_payload: (required)
+        :type update_api_key_payload: UpdateApiKeyPayload
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -1620,7 +1621,7 @@ class APIKeysApi:
 
         _param = self._update_api_key_serialize(
             key_id=key_id,
-            create_or_update_api_key_payload=create_or_update_api_key_payload,
+            update_api_key_payload=update_api_key_payload,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1648,7 +1649,7 @@ class APIKeysApi:
     def update_api_key_without_preload_content(
         self,
         key_id: StrictStr,
-        create_or_update_api_key_payload: CreateOrUpdateApiKeyPayload,
+        update_api_key_payload: UpdateApiKeyPayload,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -1665,12 +1666,12 @@ class APIKeysApi:
     ) -> RESTResponseType:
         """Update an API key
 
-        Updates API key metadata such as name, role, project, and enabled state.  **Required permissions:** `api_key:update`
+        Updates API key metadata: name, role, and enabled state.  **Required permissions:** `api_key:update`
 
         :param key_id: (required)
         :type key_id: str
-        :param create_or_update_api_key_payload: (required)
-        :type create_or_update_api_key_payload: CreateOrUpdateApiKeyPayload
+        :param update_api_key_payload: (required)
+        :type update_api_key_payload: UpdateApiKeyPayload
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -1697,7 +1698,7 @@ class APIKeysApi:
 
         _param = self._update_api_key_serialize(
             key_id=key_id,
-            create_or_update_api_key_payload=create_or_update_api_key_payload,
+            update_api_key_payload=update_api_key_payload,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1720,7 +1721,7 @@ class APIKeysApi:
     def _update_api_key_serialize(
         self,
         key_id,
-        create_or_update_api_key_payload,
+        update_api_key_payload,
         x_api_version,
         _request_auth,
         _content_type,
@@ -1751,8 +1752,8 @@ class APIKeysApi:
             _header_params['x-api-version'] = x_api_version
         # process the form parameters
         # process the body parameter
-        if create_or_update_api_key_payload is not None:
-            _body_params = create_or_update_api_key_payload
+        if update_api_key_payload is not None:
+            _body_params = update_api_key_payload
 
 
         # set the HTTP header `Accept`

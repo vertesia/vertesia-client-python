@@ -48,10 +48,10 @@ from vertesia_client.openapi.models.grounded_extraction_result_response import G
 from vertesia_client.openapi.models.list_content_object_exports_response import ListContentObjectExportsResponse
 from vertesia_client.openapi.models.list_workflow_runs_response import ListWorkflowRunsResponse
 from vertesia_client.openapi.models.object_search_response import ObjectSearchResponse
-from vertesia_client.openapi.models.partial_create_content_object_payload import PartialCreateContentObjectPayload
 from vertesia_client.openapi.models.set_object_embeddings_response import SetObjectEmbeddingsResponse
 from vertesia_client.openapi.models.start_content_object_export_request import StartContentObjectExportRequest
 from vertesia_client.openapi.models.start_content_object_export_response import StartContentObjectExportResponse
+from vertesia_client.openapi.models.update_content_object_payload import UpdateContentObjectPayload
 
 from vertesia_client.openapi.api_client import ApiClient, RequestSerialized
 from vertesia_client.openapi.api_response import ApiResponse
@@ -7204,8 +7204,8 @@ class ObjectsApi:
     def start_object_document_grounded_extraction(
         self,
         object_id: StrictStr,
-        grounded_extraction_request: GroundedExtractionRequest,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
+        grounded_extraction_request: Optional[GroundedExtractionRequest] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -7225,10 +7225,10 @@ class ObjectsApi:
 
         :param object_id: (required)
         :type object_id: str
-        :param grounded_extraction_request: (required)
-        :type grounded_extraction_request: GroundedExtractionRequest
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
+        :param grounded_extraction_request:
+        :type grounded_extraction_request: GroundedExtractionRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -7253,8 +7253,8 @@ class ObjectsApi:
 
         _param = self._start_object_document_grounded_extraction_serialize(
             object_id=object_id,
-            grounded_extraction_request=grounded_extraction_request,
             x_api_version=x_api_version,
+            grounded_extraction_request=grounded_extraction_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -7281,8 +7281,8 @@ class ObjectsApi:
     def start_object_document_grounded_extraction_with_http_info(
         self,
         object_id: StrictStr,
-        grounded_extraction_request: GroundedExtractionRequest,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
+        grounded_extraction_request: Optional[GroundedExtractionRequest] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -7302,10 +7302,10 @@ class ObjectsApi:
 
         :param object_id: (required)
         :type object_id: str
-        :param grounded_extraction_request: (required)
-        :type grounded_extraction_request: GroundedExtractionRequest
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
+        :param grounded_extraction_request:
+        :type grounded_extraction_request: GroundedExtractionRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -7330,8 +7330,8 @@ class ObjectsApi:
 
         _param = self._start_object_document_grounded_extraction_serialize(
             object_id=object_id,
-            grounded_extraction_request=grounded_extraction_request,
             x_api_version=x_api_version,
+            grounded_extraction_request=grounded_extraction_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -7358,8 +7358,8 @@ class ObjectsApi:
     def start_object_document_grounded_extraction_without_preload_content(
         self,
         object_id: StrictStr,
-        grounded_extraction_request: GroundedExtractionRequest,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
+        grounded_extraction_request: Optional[GroundedExtractionRequest] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -7379,10 +7379,10 @@ class ObjectsApi:
 
         :param object_id: (required)
         :type object_id: str
-        :param grounded_extraction_request: (required)
-        :type grounded_extraction_request: GroundedExtractionRequest
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
+        :param grounded_extraction_request:
+        :type grounded_extraction_request: GroundedExtractionRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -7407,8 +7407,8 @@ class ObjectsApi:
 
         _param = self._start_object_document_grounded_extraction_serialize(
             object_id=object_id,
-            grounded_extraction_request=grounded_extraction_request,
             x_api_version=x_api_version,
+            grounded_extraction_request=grounded_extraction_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -7430,8 +7430,8 @@ class ObjectsApi:
     def _start_object_document_grounded_extraction_serialize(
         self,
         object_id,
-        grounded_extraction_request,
         x_api_version,
+        grounded_extraction_request,
         _request_auth,
         _content_type,
         _headers,
@@ -7515,8 +7515,8 @@ class ObjectsApi:
     def start_object_grounded_extraction_assistant(
         self,
         object_id: StrictStr,
-        grounded_extraction_request: GroundedExtractionRequest,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
+        grounded_extraction_request: Optional[GroundedExtractionRequest] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -7536,10 +7536,10 @@ class ObjectsApi:
 
         :param object_id: (required)
         :type object_id: str
-        :param grounded_extraction_request: (required)
-        :type grounded_extraction_request: GroundedExtractionRequest
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
+        :param grounded_extraction_request:
+        :type grounded_extraction_request: GroundedExtractionRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -7564,8 +7564,8 @@ class ObjectsApi:
 
         _param = self._start_object_grounded_extraction_assistant_serialize(
             object_id=object_id,
-            grounded_extraction_request=grounded_extraction_request,
             x_api_version=x_api_version,
+            grounded_extraction_request=grounded_extraction_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -7592,8 +7592,8 @@ class ObjectsApi:
     def start_object_grounded_extraction_assistant_with_http_info(
         self,
         object_id: StrictStr,
-        grounded_extraction_request: GroundedExtractionRequest,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
+        grounded_extraction_request: Optional[GroundedExtractionRequest] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -7613,10 +7613,10 @@ class ObjectsApi:
 
         :param object_id: (required)
         :type object_id: str
-        :param grounded_extraction_request: (required)
-        :type grounded_extraction_request: GroundedExtractionRequest
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
+        :param grounded_extraction_request:
+        :type grounded_extraction_request: GroundedExtractionRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -7641,8 +7641,8 @@ class ObjectsApi:
 
         _param = self._start_object_grounded_extraction_assistant_serialize(
             object_id=object_id,
-            grounded_extraction_request=grounded_extraction_request,
             x_api_version=x_api_version,
+            grounded_extraction_request=grounded_extraction_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -7669,8 +7669,8 @@ class ObjectsApi:
     def start_object_grounded_extraction_assistant_without_preload_content(
         self,
         object_id: StrictStr,
-        grounded_extraction_request: GroundedExtractionRequest,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
+        grounded_extraction_request: Optional[GroundedExtractionRequest] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -7690,10 +7690,10 @@ class ObjectsApi:
 
         :param object_id: (required)
         :type object_id: str
-        :param grounded_extraction_request: (required)
-        :type grounded_extraction_request: GroundedExtractionRequest
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
+        :param grounded_extraction_request:
+        :type grounded_extraction_request: GroundedExtractionRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -7718,8 +7718,8 @@ class ObjectsApi:
 
         _param = self._start_object_grounded_extraction_assistant_serialize(
             object_id=object_id,
-            grounded_extraction_request=grounded_extraction_request,
             x_api_version=x_api_version,
+            grounded_extraction_request=grounded_extraction_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -7741,8 +7741,8 @@ class ObjectsApi:
     def _start_object_grounded_extraction_assistant_serialize(
         self,
         object_id,
-        grounded_extraction_request,
         x_api_version,
+        grounded_extraction_request,
         _request_auth,
         _content_type,
         _headers,
@@ -7826,7 +7826,7 @@ class ObjectsApi:
     def update_object(
         self,
         object_id: StrictStr,
-        partial_create_content_object_payload: PartialCreateContentObjectPayload,
+        update_content_object_payload: UpdateContentObjectPayload,
         create_revision: Optional[StrictBool] = None,
         revision_label: Optional[StrictStr] = None,
         processing_priority: Optional[StrictStr] = None,
@@ -7834,7 +7834,7 @@ class ObjectsApi:
         x_create_revision: Optional[StrictBool] = None,
         x_revision_label: Optional[StrictStr] = None,
         x_processing_priority: Optional[ContentObjectProcessingPriority] = None,
-        x_suppress_workflows: Optional[StrictBool] = None,
+        x_suppress_workflows: Annotated[Optional[StrictBool], Field(description="Deprecated: Events are now always emitted. This suppresses the Temporal-backed delivery targets (workflow, agent, and process) — webhook deliveries still fire.")] = None,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -7855,8 +7855,8 @@ class ObjectsApi:
 
         :param object_id: (required)
         :type object_id: str
-        :param partial_create_content_object_payload: (required)
-        :type partial_create_content_object_payload: PartialCreateContentObjectPayload
+        :param update_content_object_payload: (required)
+        :type update_content_object_payload: UpdateContentObjectPayload
         :param create_revision:
         :type create_revision: bool
         :param revision_label:
@@ -7871,7 +7871,7 @@ class ObjectsApi:
         :type x_revision_label: str
         :param x_processing_priority:
         :type x_processing_priority: ContentObjectProcessingPriority
-        :param x_suppress_workflows:
+        :param x_suppress_workflows: Deprecated: Events are now always emitted. This suppresses the Temporal-backed delivery targets (workflow, agent, and process) — webhook deliveries still fire.
         :type x_suppress_workflows: bool
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
@@ -7899,7 +7899,7 @@ class ObjectsApi:
 
         _param = self._update_object_serialize(
             object_id=object_id,
-            partial_create_content_object_payload=partial_create_content_object_payload,
+            update_content_object_payload=update_content_object_payload,
             create_revision=create_revision,
             revision_label=revision_label,
             processing_priority=processing_priority,
@@ -7935,7 +7935,7 @@ class ObjectsApi:
     def update_object_with_http_info(
         self,
         object_id: StrictStr,
-        partial_create_content_object_payload: PartialCreateContentObjectPayload,
+        update_content_object_payload: UpdateContentObjectPayload,
         create_revision: Optional[StrictBool] = None,
         revision_label: Optional[StrictStr] = None,
         processing_priority: Optional[StrictStr] = None,
@@ -7943,7 +7943,7 @@ class ObjectsApi:
         x_create_revision: Optional[StrictBool] = None,
         x_revision_label: Optional[StrictStr] = None,
         x_processing_priority: Optional[ContentObjectProcessingPriority] = None,
-        x_suppress_workflows: Optional[StrictBool] = None,
+        x_suppress_workflows: Annotated[Optional[StrictBool], Field(description="Deprecated: Events are now always emitted. This suppresses the Temporal-backed delivery targets (workflow, agent, and process) — webhook deliveries still fire.")] = None,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -7964,8 +7964,8 @@ class ObjectsApi:
 
         :param object_id: (required)
         :type object_id: str
-        :param partial_create_content_object_payload: (required)
-        :type partial_create_content_object_payload: PartialCreateContentObjectPayload
+        :param update_content_object_payload: (required)
+        :type update_content_object_payload: UpdateContentObjectPayload
         :param create_revision:
         :type create_revision: bool
         :param revision_label:
@@ -7980,7 +7980,7 @@ class ObjectsApi:
         :type x_revision_label: str
         :param x_processing_priority:
         :type x_processing_priority: ContentObjectProcessingPriority
-        :param x_suppress_workflows:
+        :param x_suppress_workflows: Deprecated: Events are now always emitted. This suppresses the Temporal-backed delivery targets (workflow, agent, and process) — webhook deliveries still fire.
         :type x_suppress_workflows: bool
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
@@ -8008,7 +8008,7 @@ class ObjectsApi:
 
         _param = self._update_object_serialize(
             object_id=object_id,
-            partial_create_content_object_payload=partial_create_content_object_payload,
+            update_content_object_payload=update_content_object_payload,
             create_revision=create_revision,
             revision_label=revision_label,
             processing_priority=processing_priority,
@@ -8044,7 +8044,7 @@ class ObjectsApi:
     def update_object_without_preload_content(
         self,
         object_id: StrictStr,
-        partial_create_content_object_payload: PartialCreateContentObjectPayload,
+        update_content_object_payload: UpdateContentObjectPayload,
         create_revision: Optional[StrictBool] = None,
         revision_label: Optional[StrictStr] = None,
         processing_priority: Optional[StrictStr] = None,
@@ -8052,7 +8052,7 @@ class ObjectsApi:
         x_create_revision: Optional[StrictBool] = None,
         x_revision_label: Optional[StrictStr] = None,
         x_processing_priority: Optional[ContentObjectProcessingPriority] = None,
-        x_suppress_workflows: Optional[StrictBool] = None,
+        x_suppress_workflows: Annotated[Optional[StrictBool], Field(description="Deprecated: Events are now always emitted. This suppresses the Temporal-backed delivery targets (workflow, agent, and process) — webhook deliveries still fire.")] = None,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -8073,8 +8073,8 @@ class ObjectsApi:
 
         :param object_id: (required)
         :type object_id: str
-        :param partial_create_content_object_payload: (required)
-        :type partial_create_content_object_payload: PartialCreateContentObjectPayload
+        :param update_content_object_payload: (required)
+        :type update_content_object_payload: UpdateContentObjectPayload
         :param create_revision:
         :type create_revision: bool
         :param revision_label:
@@ -8089,7 +8089,7 @@ class ObjectsApi:
         :type x_revision_label: str
         :param x_processing_priority:
         :type x_processing_priority: ContentObjectProcessingPriority
-        :param x_suppress_workflows:
+        :param x_suppress_workflows: Deprecated: Events are now always emitted. This suppresses the Temporal-backed delivery targets (workflow, agent, and process) — webhook deliveries still fire.
         :type x_suppress_workflows: bool
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
@@ -8117,7 +8117,7 @@ class ObjectsApi:
 
         _param = self._update_object_serialize(
             object_id=object_id,
-            partial_create_content_object_payload=partial_create_content_object_payload,
+            update_content_object_payload=update_content_object_payload,
             create_revision=create_revision,
             revision_label=revision_label,
             processing_priority=processing_priority,
@@ -8148,7 +8148,7 @@ class ObjectsApi:
     def _update_object_serialize(
         self,
         object_id,
-        partial_create_content_object_payload,
+        update_content_object_payload,
         create_revision,
         revision_label,
         processing_priority,
@@ -8209,8 +8209,8 @@ class ObjectsApi:
             _header_params['x-api-version'] = x_api_version
         # process the form parameters
         # process the body parameter
-        if partial_create_content_object_payload is not None:
-            _body_params = partial_create_content_object_payload
+        if update_content_object_payload is not None:
+            _body_params = update_content_object_payload
 
 
         # set the HTTP header `Accept`

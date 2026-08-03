@@ -17,6 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
+from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
@@ -45,8 +46,8 @@ class Account(BaseModel):
     feature_flags: Optional[Dict[str, Any]] = Field(default=None, description="Ops-managed per-account feature flags. Untyped by design so operators can add / remove temporary rollout gates without a schema change. Keys are enumerated in the admin UI from a hardcoded registry (studio-server) — flags not in that registry are ignored. Not modifiable through the public account API; admin API only.")
     created_by: StrictStr
     updated_by: StrictStr
-    created_at: StrictStr
-    updated_at: StrictStr
+    created_at: datetime
+    updated_at: datetime
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["id", "name", "namespace", "app_access_message", "email_domains", "onboarding", "datacenter", "account_type", "billing", "quota_tier", "feature_flags", "created_by", "updated_by", "created_at", "updated_at"]
 

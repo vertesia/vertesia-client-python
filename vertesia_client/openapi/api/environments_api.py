@@ -2145,7 +2145,7 @@ class EnvironmentsApi:
     def list_environment_models(
         self,
         env_id: StrictStr,
-        text: StrictStr,
+        text: Optional[StrictStr] = None,
         type: Optional[StrictStr] = None,
         tags: Optional[List[StrictStr]] = None,
         owner: Optional[StrictStr] = None,
@@ -2169,7 +2169,7 @@ class EnvironmentsApi:
 
         :param env_id: (required)
         :type env_id: str
-        :param text: (required)
+        :param text:
         :type text: str
         :param type:
         :type type: str
@@ -2234,7 +2234,7 @@ class EnvironmentsApi:
     def list_environment_models_with_http_info(
         self,
         env_id: StrictStr,
-        text: StrictStr,
+        text: Optional[StrictStr] = None,
         type: Optional[StrictStr] = None,
         tags: Optional[List[StrictStr]] = None,
         owner: Optional[StrictStr] = None,
@@ -2258,7 +2258,7 @@ class EnvironmentsApi:
 
         :param env_id: (required)
         :type env_id: str
-        :param text: (required)
+        :param text:
         :type text: str
         :param type:
         :type type: str
@@ -2323,7 +2323,7 @@ class EnvironmentsApi:
     def list_environment_models_without_preload_content(
         self,
         env_id: StrictStr,
-        text: StrictStr,
+        text: Optional[StrictStr] = None,
         type: Optional[StrictStr] = None,
         tags: Optional[List[StrictStr]] = None,
         owner: Optional[StrictStr] = None,
@@ -2347,7 +2347,7 @@ class EnvironmentsApi:
 
         :param env_id: (required)
         :type env_id: str
-        :param text: (required)
+        :param text:
         :type text: str
         :param type:
         :type type: str

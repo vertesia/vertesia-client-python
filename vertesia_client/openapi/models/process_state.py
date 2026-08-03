@@ -34,6 +34,7 @@ class ProcessState(BaseModel):
     node_history: List[NodeHistoryEntry]
     node_history_ref: Optional[ProcessHistoryRef] = None
     sequence: Union[StrictFloat, StrictInt]
+    additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["context", "current_node", "node_history", "node_history_ref", "sequence"]
 
     model_config = ConfigDict(
@@ -66,8 +67,10 @@ class ProcessState(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -85,6 +88,11 @@ class ProcessState(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of node_history_ref
         if self.node_history_ref:
             _dict['node_history_ref'] = self.node_history_ref.to_dict()
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
         return _dict
 
     @classmethod
@@ -103,6 +111,11 @@ class ProcessState(BaseModel):
             "node_history_ref": ProcessHistoryRef.from_dict(obj["node_history_ref"]) if obj.get("node_history_ref") is not None else None,
             "sequence": obj.get("sequence")
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 

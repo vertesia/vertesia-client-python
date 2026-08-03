@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, Optional, Union
+from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -29,7 +30,7 @@ class ContentTypeIntakePolicyLocate(BaseModel):
     """ # noqa: E501
     instructions: StrictStr = Field(description="What to look for (\"commercial terms, payment schedule, signature pages\").")
     detail: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Pages per contact sheet: 8 = bigger tiles (headings readable). Default 16.")
-    min_pages: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Only run when the page count is at least this. Default 8.")
+    min_pages: Optional[Annotated[int, Field(le=2147483647, strict=True, ge=0)]] = Field(default=None, description="Only run when the page count is at least this. Default 8.")
     __properties: ClassVar[List[str]] = ["instructions", "detail", "min_pages"]
 
     @field_validator('detail')

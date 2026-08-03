@@ -34,6 +34,7 @@ from vertesia_client.openapi.models.content_object_item_api_response import Cont
 from vertesia_client.openapi.models.create_collection_payload import CreateCollectionPayload
 from vertesia_client.openapi.models.delete_count_result import DeleteCountResult
 from vertesia_client.openapi.models.object_search_response import ObjectSearchResponse
+from vertesia_client.openapi.models.update_collection_payload import UpdateCollectionPayload
 
 from vertesia_client.openapi.api_client import ApiClient, RequestSerialized
 from vertesia_client.openapi.api_response import ApiResponse
@@ -3361,7 +3362,7 @@ class CollectionsApi:
     def update_collection(
         self,
         collection_id: StrictStr,
-        create_collection_payload: CreateCollectionPayload,
+        update_collection_payload: UpdateCollectionPayload,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -3382,8 +3383,8 @@ class CollectionsApi:
 
         :param collection_id: (required)
         :type collection_id: str
-        :param create_collection_payload: (required)
-        :type create_collection_payload: CreateCollectionPayload
+        :param update_collection_payload: (required)
+        :type update_collection_payload: UpdateCollectionPayload
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -3410,7 +3411,7 @@ class CollectionsApi:
 
         _param = self._update_collection_serialize(
             collection_id=collection_id,
-            create_collection_payload=create_collection_payload,
+            update_collection_payload=update_collection_payload,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -3438,7 +3439,7 @@ class CollectionsApi:
     def update_collection_with_http_info(
         self,
         collection_id: StrictStr,
-        create_collection_payload: CreateCollectionPayload,
+        update_collection_payload: UpdateCollectionPayload,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -3459,8 +3460,8 @@ class CollectionsApi:
 
         :param collection_id: (required)
         :type collection_id: str
-        :param create_collection_payload: (required)
-        :type create_collection_payload: CreateCollectionPayload
+        :param update_collection_payload: (required)
+        :type update_collection_payload: UpdateCollectionPayload
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -3487,7 +3488,7 @@ class CollectionsApi:
 
         _param = self._update_collection_serialize(
             collection_id=collection_id,
-            create_collection_payload=create_collection_payload,
+            update_collection_payload=update_collection_payload,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -3515,7 +3516,7 @@ class CollectionsApi:
     def update_collection_without_preload_content(
         self,
         collection_id: StrictStr,
-        create_collection_payload: CreateCollectionPayload,
+        update_collection_payload: UpdateCollectionPayload,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -3536,8 +3537,8 @@ class CollectionsApi:
 
         :param collection_id: (required)
         :type collection_id: str
-        :param create_collection_payload: (required)
-        :type create_collection_payload: CreateCollectionPayload
+        :param update_collection_payload: (required)
+        :type update_collection_payload: UpdateCollectionPayload
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -3564,7 +3565,7 @@ class CollectionsApi:
 
         _param = self._update_collection_serialize(
             collection_id=collection_id,
-            create_collection_payload=create_collection_payload,
+            update_collection_payload=update_collection_payload,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -3587,7 +3588,7 @@ class CollectionsApi:
     def _update_collection_serialize(
         self,
         collection_id,
-        create_collection_payload,
+        update_collection_payload,
         x_api_version,
         _request_auth,
         _content_type,
@@ -3618,8 +3619,8 @@ class CollectionsApi:
             _header_params['x-api-version'] = x_api_version
         # process the form parameters
         # process the body parameter
-        if create_collection_payload is not None:
-            _body_params = create_collection_payload
+        if update_collection_payload is not None:
+            _body_params = update_collection_payload
 
 
         # set the HTTP header `Accept`

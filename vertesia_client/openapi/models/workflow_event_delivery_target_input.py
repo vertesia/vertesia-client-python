@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr, field_validator
+from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, Optional
 from vertesia_client.openapi.models.workflow_rule_input_type import WorkflowRuleInputType
 from typing import Optional, Set
@@ -34,7 +34,8 @@ class WorkflowEventDeliveryTargetInput(BaseModel):
     task_queue: Optional[StrictStr] = None
     vars: Optional[Dict[str, Any]] = None
     input_type: Optional[WorkflowRuleInputType] = None
-    __properties: ClassVar[List[str]] = ["type", "endpoint", "workflow_class", "task_queue", "vars", "input_type"]
+    migrated_rule_name: Optional[StrictStr] = Field(default=None, description="Server-managed: ignored on write, echoed back from a read.")
+    __properties: ClassVar[List[str]] = ["type", "endpoint", "workflow_class", "task_queue", "vars", "input_type", "migrated_rule_name"]
 
     @field_validator('type')
     def type_validate_enum(cls, value):
@@ -97,7 +98,8 @@ class WorkflowEventDeliveryTargetInput(BaseModel):
             "workflow_class": obj.get("workflow_class"),
             "task_queue": obj.get("task_queue"),
             "vars": obj.get("vars"),
-            "input_type": obj.get("input_type")
+            "input_type": obj.get("input_type"),
+            "migrated_rule_name": obj.get("migrated_rule_name")
         })
         return _obj
 

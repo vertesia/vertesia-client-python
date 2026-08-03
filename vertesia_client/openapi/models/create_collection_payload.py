@@ -28,8 +28,6 @@ class CreateCollectionPayload(BaseModel):
     """
     CreateCollectionPayload
     """ # noqa: E501
-    name: StrictStr
-    dynamic: StrictBool
     description: Optional[StrictStr] = None
     skip_head_sync: Optional[StrictBool] = None
     tags: Optional[List[StrictStr]] = None
@@ -43,7 +41,9 @@ class CreateCollectionPayload(BaseModel):
     shared_properties: Optional[List[StrictStr]] = None
     sensitivity: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="BLP sensitivity level for member documents")
     compartments: Optional[List[StrictStr]] = Field(default=None, description="Compartments for member documents")
-    __properties: ClassVar[List[str]] = ["name", "dynamic", "description", "skip_head_sync", "tags", "type", "query", "properties", "parent", "table_layout", "allowed_types", "updated_by", "shared_properties", "sensitivity", "compartments"]
+    name: StrictStr
+    dynamic: StrictBool
+    __properties: ClassVar[List[str]] = ["description", "skip_head_sync", "tags", "type", "query", "properties", "parent", "table_layout", "allowed_types", "updated_by", "shared_properties", "sensitivity", "compartments", "name", "dynamic"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -118,8 +118,6 @@ class CreateCollectionPayload(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "name": obj.get("name"),
-            "dynamic": obj.get("dynamic"),
             "description": obj.get("description"),
             "skip_head_sync": obj.get("skip_head_sync"),
             "tags": obj.get("tags"),
@@ -132,7 +130,9 @@ class CreateCollectionPayload(BaseModel):
             "updated_by": obj.get("updated_by"),
             "shared_properties": obj.get("shared_properties"),
             "sensitivity": obj.get("sensitivity"),
-            "compartments": obj.get("compartments")
+            "compartments": obj.get("compartments"),
+            "name": obj.get("name"),
+            "dynamic": obj.get("dynamic")
         })
         return _obj
 

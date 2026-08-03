@@ -25,14 +25,14 @@ from vertesia_client.openapi.models.agent_artifact_url_response import AgentArti
 from vertesia_client.openapi.models.agent_run import AgentRun
 from vertesia_client.openapi.models.agent_run_updates_response import AgentRunUpdatesResponse
 from vertesia_client.openapi.models.answer_process_task_payload import AnswerProcessTaskPayload
-from vertesia_client.openapi.models.create_agent_run_payload import CreateAgentRunPayload
+from vertesia_client.openapi.models.create_run_payload import CreateRunPayload
 from vertesia_client.openapi.models.list_agent_runs_response import ListAgentRunsResponse
 from vertesia_client.openapi.models.list_workflow_runs_response import ListWorkflowRunsResponse
-from vertesia_client.openapi.models.nd_restart_count_number import NdRestartCountNumber
 from vertesia_client.openapi.models.post_agent_run_update_payload import PostAgentRunUpdatePayload
 from vertesia_client.openapi.models.post_agent_run_update_response import PostAgentRunUpdateResponse
 from vertesia_client.openapi.models.process_context_response import ProcessContextResponse
 from vertesia_client.openapi.models.process_history_response import ProcessHistoryResponse
+from vertesia_client.openapi.models.restart_agent_run_payload import RestartAgentRunPayload
 from vertesia_client.openapi.models.retry_process_node_payload import RetryProcessNodePayload
 from vertesia_client.openapi.models.search_agent_runs_response import SearchAgentRunsResponse
 from vertesia_client.openapi.models.signal_agent_response import SignalAgentResponse
@@ -684,7 +684,7 @@ class AgentRunsApi:
     @validate_call
     def create_agent_run(
         self,
-        create_agent_run_payload: CreateAgentRunPayload,
+        create_run_payload: CreateRunPayload,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -703,8 +703,8 @@ class AgentRunsApi:
 
         Creates a stable agent run record and starts the backing workflow. When the request body matches the process-run payload shape, the same endpoint creates a process run that shares the durable agent-run identity, streaming, artifacts, and observability APIs.  **Required permissions:** `workflow:run`
 
-        :param create_agent_run_payload: (required)
-        :type create_agent_run_payload: CreateAgentRunPayload
+        :param create_run_payload: (required)
+        :type create_run_payload: CreateRunPayload
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -730,7 +730,7 @@ class AgentRunsApi:
         """ # noqa: E501
 
         _param = self._create_agent_run_serialize(
-            create_agent_run_payload=create_agent_run_payload,
+            create_run_payload=create_run_payload,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -757,7 +757,7 @@ class AgentRunsApi:
     @validate_call
     def create_agent_run_with_http_info(
         self,
-        create_agent_run_payload: CreateAgentRunPayload,
+        create_run_payload: CreateRunPayload,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -776,8 +776,8 @@ class AgentRunsApi:
 
         Creates a stable agent run record and starts the backing workflow. When the request body matches the process-run payload shape, the same endpoint creates a process run that shares the durable agent-run identity, streaming, artifacts, and observability APIs.  **Required permissions:** `workflow:run`
 
-        :param create_agent_run_payload: (required)
-        :type create_agent_run_payload: CreateAgentRunPayload
+        :param create_run_payload: (required)
+        :type create_run_payload: CreateRunPayload
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -803,7 +803,7 @@ class AgentRunsApi:
         """ # noqa: E501
 
         _param = self._create_agent_run_serialize(
-            create_agent_run_payload=create_agent_run_payload,
+            create_run_payload=create_run_payload,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -830,7 +830,7 @@ class AgentRunsApi:
     @validate_call
     def create_agent_run_without_preload_content(
         self,
-        create_agent_run_payload: CreateAgentRunPayload,
+        create_run_payload: CreateRunPayload,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -849,8 +849,8 @@ class AgentRunsApi:
 
         Creates a stable agent run record and starts the backing workflow. When the request body matches the process-run payload shape, the same endpoint creates a process run that shares the durable agent-run identity, streaming, artifacts, and observability APIs.  **Required permissions:** `workflow:run`
 
-        :param create_agent_run_payload: (required)
-        :type create_agent_run_payload: CreateAgentRunPayload
+        :param create_run_payload: (required)
+        :type create_run_payload: CreateRunPayload
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -876,7 +876,7 @@ class AgentRunsApi:
         """ # noqa: E501
 
         _param = self._create_agent_run_serialize(
-            create_agent_run_payload=create_agent_run_payload,
+            create_run_payload=create_run_payload,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -898,7 +898,7 @@ class AgentRunsApi:
 
     def _create_agent_run_serialize(
         self,
-        create_agent_run_payload,
+        create_run_payload,
         x_api_version,
         _request_auth,
         _content_type,
@@ -927,8 +927,8 @@ class AgentRunsApi:
             _header_params['x-api-version'] = x_api_version
         # process the form parameters
         # process the body parameter
-        if create_agent_run_payload is not None:
-            _body_params = create_agent_run_payload
+        if create_run_payload is not None:
+            _body_params = create_run_payload
 
 
         # set the HTTP header `Accept`
@@ -5726,8 +5726,8 @@ class AgentRunsApi:
     def restart_agent_run(
         self,
         agent_run_id: StrictStr,
-        nd_restart_count_number: NdRestartCountNumber,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
+        restart_agent_run_payload: Optional[RestartAgentRunPayload] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5747,10 +5747,10 @@ class AgentRunsApi:
 
         :param agent_run_id: (required)
         :type agent_run_id: str
-        :param nd_restart_count_number: (required)
-        :type nd_restart_count_number: NdRestartCountNumber
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
+        :param restart_agent_run_payload:
+        :type restart_agent_run_payload: RestartAgentRunPayload
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -5775,8 +5775,8 @@ class AgentRunsApi:
 
         _param = self._restart_agent_run_serialize(
             agent_run_id=agent_run_id,
-            nd_restart_count_number=nd_restart_count_number,
             x_api_version=x_api_version,
+            restart_agent_run_payload=restart_agent_run_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -5803,8 +5803,8 @@ class AgentRunsApi:
     def restart_agent_run_with_http_info(
         self,
         agent_run_id: StrictStr,
-        nd_restart_count_number: NdRestartCountNumber,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
+        restart_agent_run_payload: Optional[RestartAgentRunPayload] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5824,10 +5824,10 @@ class AgentRunsApi:
 
         :param agent_run_id: (required)
         :type agent_run_id: str
-        :param nd_restart_count_number: (required)
-        :type nd_restart_count_number: NdRestartCountNumber
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
+        :param restart_agent_run_payload:
+        :type restart_agent_run_payload: RestartAgentRunPayload
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -5852,8 +5852,8 @@ class AgentRunsApi:
 
         _param = self._restart_agent_run_serialize(
             agent_run_id=agent_run_id,
-            nd_restart_count_number=nd_restart_count_number,
             x_api_version=x_api_version,
+            restart_agent_run_payload=restart_agent_run_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -5880,8 +5880,8 @@ class AgentRunsApi:
     def restart_agent_run_without_preload_content(
         self,
         agent_run_id: StrictStr,
-        nd_restart_count_number: NdRestartCountNumber,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
+        restart_agent_run_payload: Optional[RestartAgentRunPayload] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5901,10 +5901,10 @@ class AgentRunsApi:
 
         :param agent_run_id: (required)
         :type agent_run_id: str
-        :param nd_restart_count_number: (required)
-        :type nd_restart_count_number: NdRestartCountNumber
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
+        :param restart_agent_run_payload:
+        :type restart_agent_run_payload: RestartAgentRunPayload
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -5929,8 +5929,8 @@ class AgentRunsApi:
 
         _param = self._restart_agent_run_serialize(
             agent_run_id=agent_run_id,
-            nd_restart_count_number=nd_restart_count_number,
             x_api_version=x_api_version,
+            restart_agent_run_payload=restart_agent_run_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -5952,8 +5952,8 @@ class AgentRunsApi:
     def _restart_agent_run_serialize(
         self,
         agent_run_id,
-        nd_restart_count_number,
         x_api_version,
+        restart_agent_run_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -5983,8 +5983,8 @@ class AgentRunsApi:
             _header_params['x-api-version'] = x_api_version
         # process the form parameters
         # process the body parameter
-        if nd_restart_count_number is not None:
-            _body_params = nd_restart_count_number
+        if restart_agent_run_payload is not None:
+            _body_params = restart_agent_run_payload
 
 
         # set the HTTP header `Accept`

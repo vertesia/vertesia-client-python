@@ -1220,8 +1220,8 @@ class ViewsApi:
     @validate_call
     def list_views(
         self,
-        limit: Optional[Union[StrictFloat, StrictInt]] = None,
-        offset: Optional[Union[StrictFloat, StrictInt]] = None,
+        limit: Annotated[Optional[Union[StrictFloat, StrictInt]], Field(description="Page size. Clamped to 1..100; anything unparseable falls back to 50.")] = None,
+        offset: Annotated[Optional[Union[StrictFloat, StrictInt]], Field(description="Number of Views to skip. Negative values are clamped to 0.")] = None,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -1240,9 +1240,9 @@ class ViewsApi:
 
         Lists View Experiences in the current project, most recently updated first.  **Required permissions:** `interaction:read`
 
-        :param limit:
+        :param limit: Page size. Clamped to 1..100; anything unparseable falls back to 50.
         :type limit: float
-        :param offset:
+        :param offset: Number of Views to skip. Negative values are clamped to 0.
         :type offset: float
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
@@ -1297,8 +1297,8 @@ class ViewsApi:
     @validate_call
     def list_views_with_http_info(
         self,
-        limit: Optional[Union[StrictFloat, StrictInt]] = None,
-        offset: Optional[Union[StrictFloat, StrictInt]] = None,
+        limit: Annotated[Optional[Union[StrictFloat, StrictInt]], Field(description="Page size. Clamped to 1..100; anything unparseable falls back to 50.")] = None,
+        offset: Annotated[Optional[Union[StrictFloat, StrictInt]], Field(description="Number of Views to skip. Negative values are clamped to 0.")] = None,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -1317,9 +1317,9 @@ class ViewsApi:
 
         Lists View Experiences in the current project, most recently updated first.  **Required permissions:** `interaction:read`
 
-        :param limit:
+        :param limit: Page size. Clamped to 1..100; anything unparseable falls back to 50.
         :type limit: float
-        :param offset:
+        :param offset: Number of Views to skip. Negative values are clamped to 0.
         :type offset: float
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
@@ -1374,8 +1374,8 @@ class ViewsApi:
     @validate_call
     def list_views_without_preload_content(
         self,
-        limit: Optional[Union[StrictFloat, StrictInt]] = None,
-        offset: Optional[Union[StrictFloat, StrictInt]] = None,
+        limit: Annotated[Optional[Union[StrictFloat, StrictInt]], Field(description="Page size. Clamped to 1..100; anything unparseable falls back to 50.")] = None,
+        offset: Annotated[Optional[Union[StrictFloat, StrictInt]], Field(description="Number of Views to skip. Negative values are clamped to 0.")] = None,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -1394,9 +1394,9 @@ class ViewsApi:
 
         Lists View Experiences in the current project, most recently updated first.  **Required permissions:** `interaction:read`
 
-        :param limit:
+        :param limit: Page size. Clamped to 1..100; anything unparseable falls back to 50.
         :type limit: float
-        :param offset:
+        :param offset: Number of Views to skip. Negative values are clamped to 0.
         :type offset: float
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str

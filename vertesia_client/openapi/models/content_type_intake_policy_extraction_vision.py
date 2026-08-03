@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt
+from pydantic import BaseModel, ConfigDict, Field
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.intake_vision_detail import IntakeVisionDetail
 from typing import Optional, Set
 from typing_extensions import Self
@@ -30,9 +31,9 @@ class ContentTypeIntakePolicyExtractionVision(BaseModel):
     """ # noqa: E501
     default_detail: Optional[IntakeVisionDetail] = None
     allowed_details: Optional[List[IntakeVisionDetail]] = None
-    max_image_tokens: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="PRIMARY budget: estimated image tokens per extraction call. Default 16000.")
-    max_payload_mb: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Transport guard in megabytes. Default 16.")
-    max_pages_per_call: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Cap on page images per extraction call. Default 8.")
+    max_image_tokens: Optional[Annotated[int, Field(le=2147483647, strict=True, ge=1)]] = Field(default=None, description="PRIMARY budget: estimated image tokens per extraction call. Default 16000.")
+    max_payload_mb: Optional[Union[Annotated[float, Field(strict=True, ge=1)], Annotated[int, Field(strict=True, ge=1)]]] = Field(default=None, description="Transport guard in megabytes. Default 16.")
+    max_pages_per_call: Optional[Annotated[int, Field(le=2147483647, strict=True, ge=1)]] = Field(default=None, description="Cap on page images per extraction call. Default 8.")
     __properties: ClassVar[List[str]] = ["default_detail", "allowed_details", "max_image_tokens", "max_payload_mb", "max_pages_per_call"]
 
     model_config = ConfigDict(

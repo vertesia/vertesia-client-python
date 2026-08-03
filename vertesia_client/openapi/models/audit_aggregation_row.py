@@ -19,7 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt
 from typing import Any, ClassVar, Dict, Union
-from vertesia_client.openapi.models.partial_record_audit_aggregation_dimension_string_null import PartialRecordAuditAggregationDimensionStringNull
+from vertesia_client.openapi.models.audit_aggregation_dimension_map import AuditAggregationDimensionMap
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -28,7 +28,7 @@ class AuditAggregationRow(BaseModel):
     """
     AuditAggregationRow
     """ # noqa: E501
-    dimensions: PartialRecordAuditAggregationDimensionStringNull
+    dimensions: AuditAggregationDimensionMap
     metrics: Dict[str, Union[StrictFloat, StrictInt]]
     __properties: ClassVar[List[str]] = ["dimensions", "metrics"]
 
@@ -86,7 +86,7 @@ class AuditAggregationRow(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "dimensions": PartialRecordAuditAggregationDimensionStringNull.from_dict(obj["dimensions"]) if obj.get("dimensions") is not None else None,
+            "dimensions": AuditAggregationDimensionMap.from_dict(obj["dimensions"]) if obj.get("dimensions") is not None else None,
             "metrics": obj.get("metrics")
         })
         return _obj

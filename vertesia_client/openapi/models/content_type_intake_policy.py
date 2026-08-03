@@ -23,7 +23,7 @@ from vertesia_client.openapi.models.content_type_intake_policy_extraction import
 from vertesia_client.openapi.models.content_type_intake_policy_identification import ContentTypeIntakePolicyIdentification
 from vertesia_client.openapi.models.content_type_intake_policy_locate import ContentTypeIntakePolicyLocate
 from vertesia_client.openapi.models.content_type_intake_policy_text_conversion import ContentTypeIntakePolicyTextConversion
-from vertesia_client.openapi.models.partial_record_supported_embedding_types_boolean import PartialRecordSupportedEmbeddingTypesBoolean
+from vertesia_client.openapi.models.embedding_type_enabled_map import EmbeddingTypeEnabledMap
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -38,7 +38,7 @@ class ContentTypeIntakePolicy(BaseModel):
     text_conversion: Optional[ContentTypeIntakePolicyTextConversion] = None
     extraction: Optional[ContentTypeIntakePolicyExtraction] = None
     rendering_template: Optional[StrictStr] = Field(default=None, description="Handlebars template used to materialize extracted properties into object text.")
-    embeddings: Optional[PartialRecordSupportedEmbeddingTypesBoolean] = Field(default=None, description="Per-type embedding switches. Unspecified values inherit the project policy.")
+    embeddings: Optional[EmbeddingTypeEnabledMap] = Field(default=None, description="Per-type embedding switches. Unspecified values inherit the project policy.")
     generate_toc: Optional[StrictBool] = Field(default=None, description="Whether intake should generate a table of contents for matching documents.")
     default_view: Optional[StrictStr] = Field(default=None, description="Preferred first view for objects of this type.")
     additional_properties: Dict[str, Any] = {}
@@ -139,7 +139,7 @@ class ContentTypeIntakePolicy(BaseModel):
             "text_conversion": ContentTypeIntakePolicyTextConversion.from_dict(obj["text_conversion"]) if obj.get("text_conversion") is not None else None,
             "extraction": ContentTypeIntakePolicyExtraction.from_dict(obj["extraction"]) if obj.get("extraction") is not None else None,
             "rendering_template": obj.get("rendering_template"),
-            "embeddings": PartialRecordSupportedEmbeddingTypesBoolean.from_dict(obj["embeddings"]) if obj.get("embeddings") is not None else None,
+            "embeddings": EmbeddingTypeEnabledMap.from_dict(obj["embeddings"]) if obj.get("embeddings") is not None else None,
             "generate_toc": obj.get("generate_toc"),
             "default_view": obj.get("default_view")
         })

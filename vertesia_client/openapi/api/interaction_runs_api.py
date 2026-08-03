@@ -15,14 +15,15 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
-from typing import List, Optional, Union
+from pydantic import Field, StrictBool, StrictStr, field_validator
+from typing import List, Optional
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.delete_by_id_result import DeleteByIdResult
 from vertesia_client.openapi.models.execution_run_ref import ExecutionRunRef
-from vertesia_client.openapi.models.partial_execution_run_ref import PartialExecutionRunRef
+from vertesia_client.openapi.models.interaction_execution_result import InteractionExecutionResult
 from vertesia_client.openapi.models.run_create_payload import RunCreatePayload
 from vertesia_client.openapi.models.run_search_payload import RunSearchPayload
+from vertesia_client.openapi.models.update_execution_run_payload import UpdateExecutionRunPayload
 
 from vertesia_client.openapi.api_client import ApiClient, RequestSerialized
 from vertesia_client.openapi.api_response import ApiResponse
@@ -59,7 +60,7 @@ class InteractionRunsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ExecutionRunRef:
+    ) -> InteractionExecutionResult:
         """Create a run
 
         Executes an interaction and creates a run record that tracks the input, output, status, token usage, timing, and execution source. The request can provide input data, execution configuration, result schema, tags, validation behavior, and conversation state.  **Required permissions:** `interaction:execute`
@@ -100,7 +101,7 @@ class InteractionRunsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "ExecutionRunRef",
+            '200': "InteractionExecutionResult",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -132,7 +133,7 @@ class InteractionRunsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[ExecutionRunRef]:
+    ) -> ApiResponse[InteractionExecutionResult]:
         """Create a run
 
         Executes an interaction and creates a run record that tracks the input, output, status, token usage, timing, and execution source. The request can provide input data, execution configuration, result schema, tags, validation behavior, and conversation state.  **Required permissions:** `interaction:execute`
@@ -173,7 +174,7 @@ class InteractionRunsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "ExecutionRunRef",
+            '200': "InteractionExecutionResult",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -246,7 +247,7 @@ class InteractionRunsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "ExecutionRunRef",
+            '200': "InteractionExecutionResult",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -907,28 +908,17 @@ class InteractionRunsApi:
     @validate_call
     def list_runs(
         self,
-        name: Optional[StrictStr] = None,
-        status: Optional[StrictStr] = None,
-        limit: Optional[Union[StrictFloat, StrictInt]] = None,
-        offset: Optional[Union[StrictFloat, StrictInt]] = None,
-        interaction: Optional[StrictStr] = None,
-        environment: Optional[StrictStr] = None,
-        model: Optional[StrictStr] = None,
-        tags: Optional[List[StrictStr]] = None,
-        exclude_tags: Annotated[Optional[List[StrictStr]], Field(description="Tags to exclude. Runs carrying any of these tags are filtered out of the results, counts, and facet buckets. Combined with `tags` (which requires all of the listed tags) as an additional `$nin` constraint on the same field.")] = None,
-        query: Optional[StrictStr] = None,
-        default_query_path: Optional[StrictStr] = None,
-        parent: Optional[List[StrictStr]] = None,
-        is_root: Optional[StrictBool] = None,
-        object: Optional[StrictStr] = None,
-        start: Optional[StrictStr] = None,
-        end: Optional[StrictStr] = None,
-        finish_reason: Optional[StrictStr] = None,
-        created_by: Optional[StrictStr] = None,
-        workflow_run_ids: Optional[List[StrictStr]] = None,
-        workflow_ids: Optional[List[StrictStr]] = None,
-        run_ids: Optional[List[StrictStr]] = None,
-        is_agent: Optional[StrictBool] = None,
+        limit: Annotated[Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]], Field(description="Maximum number of runs to return.")] = None,
+        offset: Annotated[Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]], Field(description="Number of runs to skip.")] = None,
+        interaction: Annotated[Optional[List[StrictStr]], Field(description="Interaction ids, or in-code interaction names, to filter by.")] = None,
+        model: Annotated[Optional[List[StrictStr]], Field(description="Model ids to filter by.")] = None,
+        environment: Annotated[Optional[List[StrictStr]], Field(description="Environment ids to filter by.")] = None,
+        status: Annotated[Optional[List[StrictStr]], Field(description="Run statuses to filter by.")] = None,
+        tag: Annotated[Optional[List[StrictStr]], Field(description="Run tags to filter by.")] = None,
+        parent: Annotated[Optional[List[StrictStr]], Field(description="Parent run ids to filter by. Mutually exclusive with `is_root=true`.")] = None,
+        is_root: Annotated[Optional[StrictBool], Field(description="Return only runs that have no parent. Mutually exclusive with `parent`.")] = None,
+        workflow_run_ids: Annotated[Optional[List[StrictStr]], Field(description="Temporal workflow run ids.")] = None,
+        workflow_ids: Annotated[Optional[List[StrictStr]], Field(description="Temporal workflow ids.")] = None,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -945,52 +935,30 @@ class InteractionRunsApi:
     ) -> List[ExecutionRunRef]:
         """List runs
 
-        Lists execution runs in the current project, sorted by most recently updated first. Supports pagination and query-string filters such as interaction, status, model, environment, tag, parent, finish reason, creator, and date range.  **Required permissions:** `run:read`
+        Lists execution runs in the current project, sorted by most recently updated first. Supports pagination and query-string filters such as interaction, status, model, environment, tag, parent, and workflow.  **Required permissions:** `run:read`
 
-        :param name:
-        :type name: str
-        :param status:
-        :type status: str
-        :param limit:
-        :type limit: float
-        :param offset:
-        :type offset: float
-        :param interaction:
-        :type interaction: str
-        :param environment:
-        :type environment: str
-        :param model:
-        :type model: str
-        :param tags:
-        :type tags: List[str]
-        :param exclude_tags: Tags to exclude. Runs carrying any of these tags are filtered out of the results, counts, and facet buckets. Combined with `tags` (which requires all of the listed tags) as an additional `$nin` constraint on the same field.
-        :type exclude_tags: List[str]
-        :param query:
-        :type query: str
-        :param default_query_path:
-        :type default_query_path: str
-        :param parent:
+        :param limit: Maximum number of runs to return.
+        :type limit: int
+        :param offset: Number of runs to skip.
+        :type offset: int
+        :param interaction: Interaction ids, or in-code interaction names, to filter by.
+        :type interaction: List[str]
+        :param model: Model ids to filter by.
+        :type model: List[str]
+        :param environment: Environment ids to filter by.
+        :type environment: List[str]
+        :param status: Run statuses to filter by.
+        :type status: List[str]
+        :param tag: Run tags to filter by.
+        :type tag: List[str]
+        :param parent: Parent run ids to filter by. Mutually exclusive with `is_root=true`.
         :type parent: List[str]
-        :param is_root:
+        :param is_root: Return only runs that have no parent. Mutually exclusive with `parent`.
         :type is_root: bool
-        :param object:
-        :type object: str
-        :param start:
-        :type start: str
-        :param end:
-        :type end: str
-        :param finish_reason:
-        :type finish_reason: str
-        :param created_by:
-        :type created_by: str
-        :param workflow_run_ids:
+        :param workflow_run_ids: Temporal workflow run ids.
         :type workflow_run_ids: List[str]
-        :param workflow_ids:
+        :param workflow_ids: Temporal workflow ids.
         :type workflow_ids: List[str]
-        :param run_ids:
-        :type run_ids: List[str]
-        :param is_agent:
-        :type is_agent: bool
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -1016,28 +984,17 @@ class InteractionRunsApi:
         """ # noqa: E501
 
         _param = self._list_runs_serialize(
-            name=name,
-            status=status,
             limit=limit,
             offset=offset,
             interaction=interaction,
-            environment=environment,
             model=model,
-            tags=tags,
-            exclude_tags=exclude_tags,
-            query=query,
-            default_query_path=default_query_path,
+            environment=environment,
+            status=status,
+            tag=tag,
             parent=parent,
             is_root=is_root,
-            object=object,
-            start=start,
-            end=end,
-            finish_reason=finish_reason,
-            created_by=created_by,
             workflow_run_ids=workflow_run_ids,
             workflow_ids=workflow_ids,
-            run_ids=run_ids,
-            is_agent=is_agent,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1064,28 +1021,17 @@ class InteractionRunsApi:
     @validate_call
     def list_runs_with_http_info(
         self,
-        name: Optional[StrictStr] = None,
-        status: Optional[StrictStr] = None,
-        limit: Optional[Union[StrictFloat, StrictInt]] = None,
-        offset: Optional[Union[StrictFloat, StrictInt]] = None,
-        interaction: Optional[StrictStr] = None,
-        environment: Optional[StrictStr] = None,
-        model: Optional[StrictStr] = None,
-        tags: Optional[List[StrictStr]] = None,
-        exclude_tags: Annotated[Optional[List[StrictStr]], Field(description="Tags to exclude. Runs carrying any of these tags are filtered out of the results, counts, and facet buckets. Combined with `tags` (which requires all of the listed tags) as an additional `$nin` constraint on the same field.")] = None,
-        query: Optional[StrictStr] = None,
-        default_query_path: Optional[StrictStr] = None,
-        parent: Optional[List[StrictStr]] = None,
-        is_root: Optional[StrictBool] = None,
-        object: Optional[StrictStr] = None,
-        start: Optional[StrictStr] = None,
-        end: Optional[StrictStr] = None,
-        finish_reason: Optional[StrictStr] = None,
-        created_by: Optional[StrictStr] = None,
-        workflow_run_ids: Optional[List[StrictStr]] = None,
-        workflow_ids: Optional[List[StrictStr]] = None,
-        run_ids: Optional[List[StrictStr]] = None,
-        is_agent: Optional[StrictBool] = None,
+        limit: Annotated[Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]], Field(description="Maximum number of runs to return.")] = None,
+        offset: Annotated[Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]], Field(description="Number of runs to skip.")] = None,
+        interaction: Annotated[Optional[List[StrictStr]], Field(description="Interaction ids, or in-code interaction names, to filter by.")] = None,
+        model: Annotated[Optional[List[StrictStr]], Field(description="Model ids to filter by.")] = None,
+        environment: Annotated[Optional[List[StrictStr]], Field(description="Environment ids to filter by.")] = None,
+        status: Annotated[Optional[List[StrictStr]], Field(description="Run statuses to filter by.")] = None,
+        tag: Annotated[Optional[List[StrictStr]], Field(description="Run tags to filter by.")] = None,
+        parent: Annotated[Optional[List[StrictStr]], Field(description="Parent run ids to filter by. Mutually exclusive with `is_root=true`.")] = None,
+        is_root: Annotated[Optional[StrictBool], Field(description="Return only runs that have no parent. Mutually exclusive with `parent`.")] = None,
+        workflow_run_ids: Annotated[Optional[List[StrictStr]], Field(description="Temporal workflow run ids.")] = None,
+        workflow_ids: Annotated[Optional[List[StrictStr]], Field(description="Temporal workflow ids.")] = None,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -1102,52 +1048,30 @@ class InteractionRunsApi:
     ) -> ApiResponse[List[ExecutionRunRef]]:
         """List runs
 
-        Lists execution runs in the current project, sorted by most recently updated first. Supports pagination and query-string filters such as interaction, status, model, environment, tag, parent, finish reason, creator, and date range.  **Required permissions:** `run:read`
+        Lists execution runs in the current project, sorted by most recently updated first. Supports pagination and query-string filters such as interaction, status, model, environment, tag, parent, and workflow.  **Required permissions:** `run:read`
 
-        :param name:
-        :type name: str
-        :param status:
-        :type status: str
-        :param limit:
-        :type limit: float
-        :param offset:
-        :type offset: float
-        :param interaction:
-        :type interaction: str
-        :param environment:
-        :type environment: str
-        :param model:
-        :type model: str
-        :param tags:
-        :type tags: List[str]
-        :param exclude_tags: Tags to exclude. Runs carrying any of these tags are filtered out of the results, counts, and facet buckets. Combined with `tags` (which requires all of the listed tags) as an additional `$nin` constraint on the same field.
-        :type exclude_tags: List[str]
-        :param query:
-        :type query: str
-        :param default_query_path:
-        :type default_query_path: str
-        :param parent:
+        :param limit: Maximum number of runs to return.
+        :type limit: int
+        :param offset: Number of runs to skip.
+        :type offset: int
+        :param interaction: Interaction ids, or in-code interaction names, to filter by.
+        :type interaction: List[str]
+        :param model: Model ids to filter by.
+        :type model: List[str]
+        :param environment: Environment ids to filter by.
+        :type environment: List[str]
+        :param status: Run statuses to filter by.
+        :type status: List[str]
+        :param tag: Run tags to filter by.
+        :type tag: List[str]
+        :param parent: Parent run ids to filter by. Mutually exclusive with `is_root=true`.
         :type parent: List[str]
-        :param is_root:
+        :param is_root: Return only runs that have no parent. Mutually exclusive with `parent`.
         :type is_root: bool
-        :param object:
-        :type object: str
-        :param start:
-        :type start: str
-        :param end:
-        :type end: str
-        :param finish_reason:
-        :type finish_reason: str
-        :param created_by:
-        :type created_by: str
-        :param workflow_run_ids:
+        :param workflow_run_ids: Temporal workflow run ids.
         :type workflow_run_ids: List[str]
-        :param workflow_ids:
+        :param workflow_ids: Temporal workflow ids.
         :type workflow_ids: List[str]
-        :param run_ids:
-        :type run_ids: List[str]
-        :param is_agent:
-        :type is_agent: bool
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -1173,28 +1097,17 @@ class InteractionRunsApi:
         """ # noqa: E501
 
         _param = self._list_runs_serialize(
-            name=name,
-            status=status,
             limit=limit,
             offset=offset,
             interaction=interaction,
-            environment=environment,
             model=model,
-            tags=tags,
-            exclude_tags=exclude_tags,
-            query=query,
-            default_query_path=default_query_path,
+            environment=environment,
+            status=status,
+            tag=tag,
             parent=parent,
             is_root=is_root,
-            object=object,
-            start=start,
-            end=end,
-            finish_reason=finish_reason,
-            created_by=created_by,
             workflow_run_ids=workflow_run_ids,
             workflow_ids=workflow_ids,
-            run_ids=run_ids,
-            is_agent=is_agent,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1221,28 +1134,17 @@ class InteractionRunsApi:
     @validate_call
     def list_runs_without_preload_content(
         self,
-        name: Optional[StrictStr] = None,
-        status: Optional[StrictStr] = None,
-        limit: Optional[Union[StrictFloat, StrictInt]] = None,
-        offset: Optional[Union[StrictFloat, StrictInt]] = None,
-        interaction: Optional[StrictStr] = None,
-        environment: Optional[StrictStr] = None,
-        model: Optional[StrictStr] = None,
-        tags: Optional[List[StrictStr]] = None,
-        exclude_tags: Annotated[Optional[List[StrictStr]], Field(description="Tags to exclude. Runs carrying any of these tags are filtered out of the results, counts, and facet buckets. Combined with `tags` (which requires all of the listed tags) as an additional `$nin` constraint on the same field.")] = None,
-        query: Optional[StrictStr] = None,
-        default_query_path: Optional[StrictStr] = None,
-        parent: Optional[List[StrictStr]] = None,
-        is_root: Optional[StrictBool] = None,
-        object: Optional[StrictStr] = None,
-        start: Optional[StrictStr] = None,
-        end: Optional[StrictStr] = None,
-        finish_reason: Optional[StrictStr] = None,
-        created_by: Optional[StrictStr] = None,
-        workflow_run_ids: Optional[List[StrictStr]] = None,
-        workflow_ids: Optional[List[StrictStr]] = None,
-        run_ids: Optional[List[StrictStr]] = None,
-        is_agent: Optional[StrictBool] = None,
+        limit: Annotated[Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]], Field(description="Maximum number of runs to return.")] = None,
+        offset: Annotated[Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]], Field(description="Number of runs to skip.")] = None,
+        interaction: Annotated[Optional[List[StrictStr]], Field(description="Interaction ids, or in-code interaction names, to filter by.")] = None,
+        model: Annotated[Optional[List[StrictStr]], Field(description="Model ids to filter by.")] = None,
+        environment: Annotated[Optional[List[StrictStr]], Field(description="Environment ids to filter by.")] = None,
+        status: Annotated[Optional[List[StrictStr]], Field(description="Run statuses to filter by.")] = None,
+        tag: Annotated[Optional[List[StrictStr]], Field(description="Run tags to filter by.")] = None,
+        parent: Annotated[Optional[List[StrictStr]], Field(description="Parent run ids to filter by. Mutually exclusive with `is_root=true`.")] = None,
+        is_root: Annotated[Optional[StrictBool], Field(description="Return only runs that have no parent. Mutually exclusive with `parent`.")] = None,
+        workflow_run_ids: Annotated[Optional[List[StrictStr]], Field(description="Temporal workflow run ids.")] = None,
+        workflow_ids: Annotated[Optional[List[StrictStr]], Field(description="Temporal workflow ids.")] = None,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -1259,52 +1161,30 @@ class InteractionRunsApi:
     ) -> RESTResponseType:
         """List runs
 
-        Lists execution runs in the current project, sorted by most recently updated first. Supports pagination and query-string filters such as interaction, status, model, environment, tag, parent, finish reason, creator, and date range.  **Required permissions:** `run:read`
+        Lists execution runs in the current project, sorted by most recently updated first. Supports pagination and query-string filters such as interaction, status, model, environment, tag, parent, and workflow.  **Required permissions:** `run:read`
 
-        :param name:
-        :type name: str
-        :param status:
-        :type status: str
-        :param limit:
-        :type limit: float
-        :param offset:
-        :type offset: float
-        :param interaction:
-        :type interaction: str
-        :param environment:
-        :type environment: str
-        :param model:
-        :type model: str
-        :param tags:
-        :type tags: List[str]
-        :param exclude_tags: Tags to exclude. Runs carrying any of these tags are filtered out of the results, counts, and facet buckets. Combined with `tags` (which requires all of the listed tags) as an additional `$nin` constraint on the same field.
-        :type exclude_tags: List[str]
-        :param query:
-        :type query: str
-        :param default_query_path:
-        :type default_query_path: str
-        :param parent:
+        :param limit: Maximum number of runs to return.
+        :type limit: int
+        :param offset: Number of runs to skip.
+        :type offset: int
+        :param interaction: Interaction ids, or in-code interaction names, to filter by.
+        :type interaction: List[str]
+        :param model: Model ids to filter by.
+        :type model: List[str]
+        :param environment: Environment ids to filter by.
+        :type environment: List[str]
+        :param status: Run statuses to filter by.
+        :type status: List[str]
+        :param tag: Run tags to filter by.
+        :type tag: List[str]
+        :param parent: Parent run ids to filter by. Mutually exclusive with `is_root=true`.
         :type parent: List[str]
-        :param is_root:
+        :param is_root: Return only runs that have no parent. Mutually exclusive with `parent`.
         :type is_root: bool
-        :param object:
-        :type object: str
-        :param start:
-        :type start: str
-        :param end:
-        :type end: str
-        :param finish_reason:
-        :type finish_reason: str
-        :param created_by:
-        :type created_by: str
-        :param workflow_run_ids:
+        :param workflow_run_ids: Temporal workflow run ids.
         :type workflow_run_ids: List[str]
-        :param workflow_ids:
+        :param workflow_ids: Temporal workflow ids.
         :type workflow_ids: List[str]
-        :param run_ids:
-        :type run_ids: List[str]
-        :param is_agent:
-        :type is_agent: bool
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -1330,28 +1210,17 @@ class InteractionRunsApi:
         """ # noqa: E501
 
         _param = self._list_runs_serialize(
-            name=name,
-            status=status,
             limit=limit,
             offset=offset,
             interaction=interaction,
-            environment=environment,
             model=model,
-            tags=tags,
-            exclude_tags=exclude_tags,
-            query=query,
-            default_query_path=default_query_path,
+            environment=environment,
+            status=status,
+            tag=tag,
             parent=parent,
             is_root=is_root,
-            object=object,
-            start=start,
-            end=end,
-            finish_reason=finish_reason,
-            created_by=created_by,
             workflow_run_ids=workflow_run_ids,
             workflow_ids=workflow_ids,
-            run_ids=run_ids,
-            is_agent=is_agent,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1373,28 +1242,17 @@ class InteractionRunsApi:
 
     def _list_runs_serialize(
         self,
-        name,
-        status,
         limit,
         offset,
         interaction,
-        environment,
         model,
-        tags,
-        exclude_tags,
-        query,
-        default_query_path,
+        environment,
+        status,
+        tag,
         parent,
         is_root,
-        object,
-        start,
-        end,
-        finish_reason,
-        created_by,
         workflow_run_ids,
         workflow_ids,
-        run_ids,
-        is_agent,
         x_api_version,
         _request_auth,
         _content_type,
@@ -1405,12 +1263,14 @@ class InteractionRunsApi:
         _host = None
 
         _collection_formats: Dict[str, str] = {
-            'tags': 'multi',
-            'exclude_tags': 'multi',
+            'interaction': 'multi',
+            'model': 'multi',
+            'environment': 'multi',
+            'status': 'multi',
+            'tag': 'multi',
             'parent': 'multi',
             'workflow_run_ids': 'multi',
             'workflow_ids': 'multi',
-            'run_ids': 'multi',
         }
 
         _path_params: Dict[str, str] = {}
@@ -1424,14 +1284,6 @@ class InteractionRunsApi:
 
         # process the path parameters
         # process the query parameters
-        if name is not None:
-            
-            _query_params.append(('name', name))
-            
-        if status is not None:
-            
-            _query_params.append(('status', status))
-            
         if limit is not None:
             
             _query_params.append(('limit', limit))
@@ -1444,29 +1296,21 @@ class InteractionRunsApi:
             
             _query_params.append(('interaction', interaction))
             
-        if environment is not None:
-            
-            _query_params.append(('environment', environment))
-            
         if model is not None:
             
             _query_params.append(('model', model))
             
-        if tags is not None:
+        if environment is not None:
             
-            _query_params.append(('tags', tags))
+            _query_params.append(('environment', environment))
             
-        if exclude_tags is not None:
+        if status is not None:
             
-            _query_params.append(('exclude_tags', exclude_tags))
+            _query_params.append(('status', status))
             
-        if query is not None:
+        if tag is not None:
             
-            _query_params.append(('query', query))
-            
-        if default_query_path is not None:
-            
-            _query_params.append(('default_query_path', default_query_path))
+            _query_params.append(('tag', tag))
             
         if parent is not None:
             
@@ -1476,26 +1320,6 @@ class InteractionRunsApi:
             
             _query_params.append(('is_root', is_root))
             
-        if object is not None:
-            
-            _query_params.append(('object', object))
-            
-        if start is not None:
-            
-            _query_params.append(('start', start))
-            
-        if end is not None:
-            
-            _query_params.append(('end', end))
-            
-        if finish_reason is not None:
-            
-            _query_params.append(('finish_reason', finish_reason))
-            
-        if created_by is not None:
-            
-            _query_params.append(('created_by', created_by))
-            
         if workflow_run_ids is not None:
             
             _query_params.append(('workflow_run_ids', workflow_run_ids))
@@ -1503,14 +1327,6 @@ class InteractionRunsApi:
         if workflow_ids is not None:
             
             _query_params.append(('workflow_ids', workflow_ids))
-            
-        if run_ids is not None:
-            
-            _query_params.append(('run_ids', run_ids))
-            
-        if is_agent is not None:
-            
-            _query_params.append(('is_agent', is_agent))
             
         # process the header parameters
         if x_api_version is not None:
@@ -2136,7 +1952,7 @@ class InteractionRunsApi:
     def update_run(
         self,
         run_id: StrictStr,
-        partial_execution_run_ref: PartialExecutionRunRef,
+        update_execution_run_payload: UpdateExecutionRunPayload,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -2157,8 +1973,8 @@ class InteractionRunsApi:
 
         :param run_id: (required)
         :type run_id: str
-        :param partial_execution_run_ref: (required)
-        :type partial_execution_run_ref: PartialExecutionRunRef
+        :param update_execution_run_payload: (required)
+        :type update_execution_run_payload: UpdateExecutionRunPayload
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -2185,7 +2001,7 @@ class InteractionRunsApi:
 
         _param = self._update_run_serialize(
             run_id=run_id,
-            partial_execution_run_ref=partial_execution_run_ref,
+            update_execution_run_payload=update_execution_run_payload,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -2213,7 +2029,7 @@ class InteractionRunsApi:
     def update_run_with_http_info(
         self,
         run_id: StrictStr,
-        partial_execution_run_ref: PartialExecutionRunRef,
+        update_execution_run_payload: UpdateExecutionRunPayload,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -2234,8 +2050,8 @@ class InteractionRunsApi:
 
         :param run_id: (required)
         :type run_id: str
-        :param partial_execution_run_ref: (required)
-        :type partial_execution_run_ref: PartialExecutionRunRef
+        :param update_execution_run_payload: (required)
+        :type update_execution_run_payload: UpdateExecutionRunPayload
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -2262,7 +2078,7 @@ class InteractionRunsApi:
 
         _param = self._update_run_serialize(
             run_id=run_id,
-            partial_execution_run_ref=partial_execution_run_ref,
+            update_execution_run_payload=update_execution_run_payload,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -2290,7 +2106,7 @@ class InteractionRunsApi:
     def update_run_without_preload_content(
         self,
         run_id: StrictStr,
-        partial_execution_run_ref: PartialExecutionRunRef,
+        update_execution_run_payload: UpdateExecutionRunPayload,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -2311,8 +2127,8 @@ class InteractionRunsApi:
 
         :param run_id: (required)
         :type run_id: str
-        :param partial_execution_run_ref: (required)
-        :type partial_execution_run_ref: PartialExecutionRunRef
+        :param update_execution_run_payload: (required)
+        :type update_execution_run_payload: UpdateExecutionRunPayload
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -2339,7 +2155,7 @@ class InteractionRunsApi:
 
         _param = self._update_run_serialize(
             run_id=run_id,
-            partial_execution_run_ref=partial_execution_run_ref,
+            update_execution_run_payload=update_execution_run_payload,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -2362,7 +2178,7 @@ class InteractionRunsApi:
     def _update_run_serialize(
         self,
         run_id,
-        partial_execution_run_ref,
+        update_execution_run_payload,
         x_api_version,
         _request_auth,
         _content_type,
@@ -2393,8 +2209,8 @@ class InteractionRunsApi:
             _header_params['x-api-version'] = x_api_version
         # process the form parameters
         # process the body parameter
-        if partial_execution_run_ref is not None:
-            _body_params = partial_execution_run_ref
+        if update_execution_run_payload is not None:
+            _body_params = update_execution_run_payload
 
 
         # set the HTTP header `Accept`

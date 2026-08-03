@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, Optional, Union
+from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -31,8 +32,8 @@ class ContentTypeIntakePolicyExtractionVerification(BaseModel):
     model: Optional[StrictStr] = None
     environment: Optional[StrictStr] = None
     materiality: Optional[StrictStr] = None
-    threshold: Optional[Union[StrictFloat, StrictInt]] = None
-    max_retries: Optional[Union[StrictFloat, StrictInt]] = None
+    threshold: Optional[Union[Annotated[float, Field(le=1, strict=True, ge=0)], Annotated[int, Field(le=1, strict=True, ge=0)]]] = None
+    max_retries: Optional[Annotated[int, Field(le=2147483647, strict=True, ge=0)]] = None
     on_fail: Optional[StrictStr] = None
     __properties: ClassVar[List[str]] = ["enabled", "model", "environment", "materiality", "threshold", "max_retries", "on_fail"]
 

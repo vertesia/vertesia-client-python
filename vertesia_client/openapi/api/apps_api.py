@@ -15,8 +15,8 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import Field, StrictStr, field_validator
-from typing import List, Optional
+from pydantic import Field, StrictBytes, StrictStr, field_validator
+from typing import List, Optional, Tuple, Union
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.app_build_progress import AppBuildProgress
 from vertesia_client.openapi.models.app_development_task_details import AppDevelopmentTaskDetails
@@ -40,6 +40,7 @@ from vertesia_client.openapi.models.app_version_record import AppVersionRecord
 from vertesia_client.openapi.models.count_result import CountResult
 from vertesia_client.openapi.models.delete_app_version_response import DeleteAppVersionResponse
 from vertesia_client.openapi.models.project_ref import ProjectRef
+from vertesia_client.openapi.models.promote_app_version_response import PromoteAppVersionResponse
 from vertesia_client.openapi.models.start_app_build_request import StartAppBuildRequest
 from vertesia_client.openapi.models.start_app_build_response import StartAppBuildResponse
 from vertesia_client.openapi.models.start_app_scaffold_request import StartAppScaffoldRequest
@@ -48,7 +49,6 @@ from vertesia_client.openapi.models.update_app_installation_tool_allowlist_paylo
 from vertesia_client.openapi.models.upsert_app_version_request import UpsertAppVersionRequest
 from vertesia_client.openapi.models.validate_url_request import ValidateUrlRequest
 from vertesia_client.openapi.models.validate_url_response import ValidateUrlResponse
-from vertesia_client.openapi.models.version_app_version_record_app_app_manifest import VersionAppVersionRecordAppAppManifest
 
 from vertesia_client.openapi.api_client import ApiClient, RequestSerialized
 from vertesia_client.openapi.api_response import ApiResponse
@@ -2394,7 +2394,7 @@ class AppsApi:
     def get_app_installation_package(
         self,
         install_id: StrictStr,
-        scope: Optional[StrictStr] = None,
+        scope: Annotated[Optional[List[StrictStr]], Field(description="Which capabilities to include in the returned package. Defaults to `all`. Comma-joined (`?scope=ui,tools`) or repeated.")] = None,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -2415,8 +2415,8 @@ class AppsApi:
 
         :param install_id: (required)
         :type install_id: str
-        :param scope:
-        :type scope: str
+        :param scope: Which capabilities to include in the returned package. Defaults to `all`. Comma-joined (`?scope=ui,tools`) or repeated.
+        :type scope: List[str]
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -2471,7 +2471,7 @@ class AppsApi:
     def get_app_installation_package_with_http_info(
         self,
         install_id: StrictStr,
-        scope: Optional[StrictStr] = None,
+        scope: Annotated[Optional[List[StrictStr]], Field(description="Which capabilities to include in the returned package. Defaults to `all`. Comma-joined (`?scope=ui,tools`) or repeated.")] = None,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -2492,8 +2492,8 @@ class AppsApi:
 
         :param install_id: (required)
         :type install_id: str
-        :param scope:
-        :type scope: str
+        :param scope: Which capabilities to include in the returned package. Defaults to `all`. Comma-joined (`?scope=ui,tools`) or repeated.
+        :type scope: List[str]
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -2548,7 +2548,7 @@ class AppsApi:
     def get_app_installation_package_without_preload_content(
         self,
         install_id: StrictStr,
-        scope: Optional[StrictStr] = None,
+        scope: Annotated[Optional[List[StrictStr]], Field(description="Which capabilities to include in the returned package. Defaults to `all`. Comma-joined (`?scope=ui,tools`) or repeated.")] = None,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -2569,8 +2569,8 @@ class AppsApi:
 
         :param install_id: (required)
         :type install_id: str
-        :param scope:
-        :type scope: str
+        :param scope: Which capabilities to include in the returned package. Defaults to `all`. Comma-joined (`?scope=ui,tools`) or repeated.
+        :type scope: List[str]
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -2631,6 +2631,7 @@ class AppsApi:
         _host = None
 
         _collection_formats: Dict[str, str] = {
+            'scope': 'multi',
         }
 
         _path_params: Dict[str, str] = {}
@@ -2694,6 +2695,7 @@ class AppsApi:
     def get_app_package(
         self,
         id: StrictStr,
+        scope: Annotated[Optional[List[StrictStr]], Field(description="Which capabilities to include in the returned package. Defaults to `all`. Comma-joined (`?scope=ui,tools`) or repeated.")] = None,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -2714,6 +2716,8 @@ class AppsApi:
 
         :param id: (required)
         :type id: str
+        :param scope: Which capabilities to include in the returned package. Defaults to `all`. Comma-joined (`?scope=ui,tools`) or repeated.
+        :type scope: List[str]
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -2740,6 +2744,7 @@ class AppsApi:
 
         _param = self._get_app_package_serialize(
             id=id,
+            scope=scope,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -2767,6 +2772,7 @@ class AppsApi:
     def get_app_package_with_http_info(
         self,
         id: StrictStr,
+        scope: Annotated[Optional[List[StrictStr]], Field(description="Which capabilities to include in the returned package. Defaults to `all`. Comma-joined (`?scope=ui,tools`) or repeated.")] = None,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -2787,6 +2793,8 @@ class AppsApi:
 
         :param id: (required)
         :type id: str
+        :param scope: Which capabilities to include in the returned package. Defaults to `all`. Comma-joined (`?scope=ui,tools`) or repeated.
+        :type scope: List[str]
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -2813,6 +2821,7 @@ class AppsApi:
 
         _param = self._get_app_package_serialize(
             id=id,
+            scope=scope,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -2840,6 +2849,7 @@ class AppsApi:
     def get_app_package_without_preload_content(
         self,
         id: StrictStr,
+        scope: Annotated[Optional[List[StrictStr]], Field(description="Which capabilities to include in the returned package. Defaults to `all`. Comma-joined (`?scope=ui,tools`) or repeated.")] = None,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -2860,6 +2870,8 @@ class AppsApi:
 
         :param id: (required)
         :type id: str
+        :param scope: Which capabilities to include in the returned package. Defaults to `all`. Comma-joined (`?scope=ui,tools`) or repeated.
+        :type scope: List[str]
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -2886,6 +2898,7 @@ class AppsApi:
 
         _param = self._get_app_package_serialize(
             id=id,
+            scope=scope,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -2908,6 +2921,7 @@ class AppsApi:
     def _get_app_package_serialize(
         self,
         id,
+        scope,
         x_api_version,
         _request_auth,
         _content_type,
@@ -2918,6 +2932,7 @@ class AppsApi:
         _host = None
 
         _collection_formats: Dict[str, str] = {
+            'scope': 'multi',
         }
 
         _path_params: Dict[str, str] = {}
@@ -2933,6 +2948,10 @@ class AppsApi:
         if id is not None:
             _path_params['id'] = id
         # process the query parameters
+        if scope is not None:
+            
+            _query_params.append(('scope', scope))
+            
         # process the header parameters
         if x_api_version is not None:
             _header_params['x-api-version'] = x_api_version
@@ -3273,7 +3292,7 @@ class AppsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> str:
+    ) -> bytes:
         """Read a file from the app git repository
 
         Returns the original bytes of a single file in the app's git repository at a ref (default branch when ref is omitted). Read-only — reads live from the git server without a clone.  **Required permissions:** `account:member`
@@ -3314,7 +3333,7 @@ class AppsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "str",
+            '200': "bytes",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -3346,7 +3365,7 @@ class AppsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[str]:
+    ) -> ApiResponse[bytes]:
         """Read a file from the app git repository
 
         Returns the original bytes of a single file in the app's git repository at a ref (default branch when ref is omitted). Read-only — reads live from the git server without a clone.  **Required permissions:** `account:member`
@@ -3387,7 +3406,7 @@ class AppsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "str",
+            '200': "bytes",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -3460,7 +3479,7 @@ class AppsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "str",
+            '200': "bytes",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -6103,8 +6122,8 @@ class AppsApi:
     @validate_call
     def list_app_installation_projects(
         self,
-        name: Optional[StrictStr] = None,
-        id: Optional[StrictStr] = None,
+        name: Annotated[Optional[StrictStr], Field(description="App manifest name. One of `name` or `id` is required.")] = None,
+        id: Annotated[Optional[StrictStr], Field(description="App manifest id. One of `name` or `id` is required.")] = None,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -6123,9 +6142,9 @@ class AppsApi:
 
         Lists projects where the given app is installed and accessible to the current principal.
 
-        :param name:
+        :param name: App manifest name. One of `name` or `id` is required.
         :type name: str
-        :param id:
+        :param id: App manifest id. One of `name` or `id` is required.
         :type id: str
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
@@ -6180,8 +6199,8 @@ class AppsApi:
     @validate_call
     def list_app_installation_projects_with_http_info(
         self,
-        name: Optional[StrictStr] = None,
-        id: Optional[StrictStr] = None,
+        name: Annotated[Optional[StrictStr], Field(description="App manifest name. One of `name` or `id` is required.")] = None,
+        id: Annotated[Optional[StrictStr], Field(description="App manifest id. One of `name` or `id` is required.")] = None,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -6200,9 +6219,9 @@ class AppsApi:
 
         Lists projects where the given app is installed and accessible to the current principal.
 
-        :param name:
+        :param name: App manifest name. One of `name` or `id` is required.
         :type name: str
-        :param id:
+        :param id: App manifest id. One of `name` or `id` is required.
         :type id: str
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
@@ -6257,8 +6276,8 @@ class AppsApi:
     @validate_call
     def list_app_installation_projects_without_preload_content(
         self,
-        name: Optional[StrictStr] = None,
-        id: Optional[StrictStr] = None,
+        name: Annotated[Optional[StrictStr], Field(description="App manifest name. One of `name` or `id` is required.")] = None,
+        id: Annotated[Optional[StrictStr], Field(description="App manifest id. One of `name` or `id` is required.")] = None,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -6277,9 +6296,9 @@ class AppsApi:
 
         Lists projects where the given app is installed and accessible to the current principal.
 
-        :param name:
+        :param name: App manifest name. One of `name` or `id` is required.
         :type name: str
-        :param id:
+        :param id: App manifest id. One of `name` or `id` is required.
         :type id: str
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
@@ -6956,8 +6975,8 @@ class AppsApi:
     @validate_call
     def list_app_installations(
         self,
-        kind: Optional[StrictStr] = None,
-        available_in: Optional[StrictStr] = None,
+        kind: Annotated[Optional[StrictStr], Field(description="Which contributions the listing is for. Defaults to `all`.")] = None,
+        available_in: Annotated[Optional[StrictStr], Field(description="Restrict to installations whose manifest declares this surface.")] = None,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -6976,9 +6995,9 @@ class AppsApi:
 
         Lists app installations in the current project that are visible to the current principal.
 
-        :param kind:
+        :param kind: Which contributions the listing is for. Defaults to `all`.
         :type kind: str
-        :param available_in:
+        :param available_in: Restrict to installations whose manifest declares this surface.
         :type available_in: str
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
@@ -7033,8 +7052,8 @@ class AppsApi:
     @validate_call
     def list_app_installations_with_http_info(
         self,
-        kind: Optional[StrictStr] = None,
-        available_in: Optional[StrictStr] = None,
+        kind: Annotated[Optional[StrictStr], Field(description="Which contributions the listing is for. Defaults to `all`.")] = None,
+        available_in: Annotated[Optional[StrictStr], Field(description="Restrict to installations whose manifest declares this surface.")] = None,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -7053,9 +7072,9 @@ class AppsApi:
 
         Lists app installations in the current project that are visible to the current principal.
 
-        :param kind:
+        :param kind: Which contributions the listing is for. Defaults to `all`.
         :type kind: str
-        :param available_in:
+        :param available_in: Restrict to installations whose manifest declares this surface.
         :type available_in: str
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
@@ -7110,8 +7129,8 @@ class AppsApi:
     @validate_call
     def list_app_installations_without_preload_content(
         self,
-        kind: Optional[StrictStr] = None,
-        available_in: Optional[StrictStr] = None,
+        kind: Annotated[Optional[StrictStr], Field(description="Which contributions the listing is for. Defaults to `all`.")] = None,
+        available_in: Annotated[Optional[StrictStr], Field(description="Restrict to installations whose manifest declares this surface.")] = None,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -7130,9 +7149,9 @@ class AppsApi:
 
         Lists app installations in the current project that are visible to the current principal.
 
-        :param kind:
+        :param kind: Which contributions the listing is for. Defaults to `all`.
         :type kind: str
-        :param available_in:
+        :param available_in: Restrict to installations whose manifest declares this surface.
         :type available_in: str
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
@@ -7808,7 +7827,7 @@ class AppsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> VersionAppVersionRecordAppAppManifest:
+    ) -> PromoteAppVersionResponse:
         """Promote an app version
 
         **Required permissions:** `app:manage`
@@ -7849,7 +7868,7 @@ class AppsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "VersionAppVersionRecordAppAppManifest",
+            '200': "PromoteAppVersionResponse",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -7881,7 +7900,7 @@ class AppsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[VersionAppVersionRecordAppAppManifest]:
+    ) -> ApiResponse[PromoteAppVersionResponse]:
         """Promote an app version
 
         **Required permissions:** `app:manage`
@@ -7922,7 +7941,7 @@ class AppsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "VersionAppVersionRecordAppAppManifest",
+            '200': "PromoteAppVersionResponse",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -7995,7 +8014,7 @@ class AppsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "VersionAppVersionRecordAppAppManifest",
+            '200': "PromoteAppVersionResponse",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }

@@ -17,8 +17,8 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
-from typing import Any, ClassVar, Dict, List, Optional, Union
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr, field_validator
+from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.content_type_extraction_grounding_policy import ContentTypeExtractionGroundingPolicy
 from vertesia_client.openapi.models.content_type_intake_policy_extraction_verification import ContentTypeIntakePolicyExtractionVerification
@@ -39,8 +39,8 @@ class ContentTypeIntakePolicyExtraction(BaseModel):
     interaction: Optional[StrictStr] = None
     config: Optional[InteractionExecutionConfiguration] = Field(default=None, description="Model execution config for the standard property-extraction interaction (sys:ExtractInformation). Lets extraction run on a different model/environment than the visual page conversion. When unset, extraction uses the run's model config or the project default model. (Grounded extraction is configured separately via grounding.config.)")
     scope: Optional[IntakePageScope] = Field(default=None, description="Which pages extraction sees: everything or the locate result.")
-    page_ranges: Optional[List[Annotated[List[Union[StrictFloat, StrictInt]], Field(min_length=2, max_length=2)]]] = Field(default=None, description="Static page ranges extraction sees (wins over `scope` when set).")
-    max_pages: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Cap on pages sent to extraction. Default 20.")
+    page_ranges: Optional[List[Annotated[List[Annotated[int, Field(le=2147483647, strict=True, ge=-2147483648)]], Field(min_length=2, max_length=2)]]] = Field(default=None, description="Static page ranges extraction sees (wins over `scope` when set).")
+    max_pages: Optional[Annotated[int, Field(le=2147483647, strict=True, ge=1)]] = Field(default=None, description="Cap on pages sent to extraction. Default 20.")
     vision: Optional[ContentTypeIntakePolicyExtractionVision] = None
     verification: Optional[ContentTypeIntakePolicyExtractionVerification] = None
     grounding: Optional[ContentTypeExtractionGroundingPolicy] = Field(default=None, description="Controls PDF block-level citation grounding with annotated proof output.")

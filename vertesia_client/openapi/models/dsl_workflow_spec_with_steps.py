@@ -32,14 +32,14 @@ class DSLWorkflowSpecWithSteps(BaseModel):
     name: StrictStr
     description: Optional[StrictStr] = None
     tags: Optional[List[StrictStr]] = None
-    steps: List[DSLWorkflowStep]
-    activities: Optional[List[DSLActivitySpec]] = Field(default=None, description="Deprecated: use steps instead")
     vars: Dict[str, Any]
     options: Optional[DSLActivityOptions] = None
     result: Optional[StrictStr] = None
     debug_mode: Optional[StrictBool] = None
+    steps: List[DSLWorkflowStep]
+    activities: Optional[List[DSLActivitySpec]] = Field(default=None, description="Deprecated: use steps instead")
     spec_format: StrictStr
-    __properties: ClassVar[List[str]] = ["name", "description", "tags", "steps", "activities", "vars", "options", "result", "debug_mode", "spec_format"]
+    __properties: ClassVar[List[str]] = ["name", "description", "tags", "vars", "options", "result", "debug_mode", "steps", "activities", "spec_format"]
 
     @field_validator('spec_format')
     def spec_format_validate_enum(cls, value):
@@ -85,6 +85,9 @@ class DSLWorkflowSpecWithSteps(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of options
+        if self.options:
+            _dict['options'] = self.options.to_dict()
         # override the default output from pydantic by calling `to_dict()` of each item in steps (list)
         _items = []
         if self.steps:
@@ -99,9 +102,6 @@ class DSLWorkflowSpecWithSteps(BaseModel):
                 if _item_activities:
                     _items.append(_item_activities.to_dict())
             _dict['activities'] = _items
-        # override the default output from pydantic by calling `to_dict()` of options
-        if self.options:
-            _dict['options'] = self.options.to_dict()
         return _dict
 
     @classmethod
@@ -117,12 +117,12 @@ class DSLWorkflowSpecWithSteps(BaseModel):
             "name": obj.get("name"),
             "description": obj.get("description"),
             "tags": obj.get("tags"),
-            "steps": [DSLWorkflowStep.from_dict(_item) for _item in obj["steps"]] if obj.get("steps") is not None else None,
-            "activities": [DSLActivitySpec.from_dict(_item) for _item in obj["activities"]] if obj.get("activities") is not None else None,
             "vars": obj.get("vars"),
             "options": DSLActivityOptions.from_dict(obj["options"]) if obj.get("options") is not None else None,
             "result": obj.get("result"),
             "debug_mode": obj.get("debug_mode"),
+            "steps": [DSLWorkflowStep.from_dict(_item) for _item in obj["steps"]] if obj.get("steps") is not None else None,
+            "activities": [DSLActivitySpec.from_dict(_item) for _item in obj["activities"]] if obj.get("activities") is not None else None,
             "spec_format": obj.get("spec_format")
         })
         return _obj

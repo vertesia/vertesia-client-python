@@ -19,7 +19,7 @@ import json
 
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict, StrictBool
-from typing import Any, ClassVar, Dict
+from typing import Any, ClassVar, Dict, Optional
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -29,7 +29,7 @@ class AccountOnboarding(BaseModel):
     AccountOnboarding
     """ # noqa: E501
     completed: StrictBool
-    completed_at: datetime
+    completed_at: Optional[datetime] = None
     __properties: ClassVar[List[str]] = ["completed", "completed_at"]
 
     model_config = ConfigDict(

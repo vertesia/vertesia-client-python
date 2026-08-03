@@ -33,7 +33,7 @@ class ViewExecutionResult(BaseModel):
     """ # noqa: E501
     view: StrictStr
     revision: Union[StrictFloat, StrictInt]
-    definition: ViewExecutionDefinition = Field(description="The runtime-safe rendering definition resolved by Zeno for this execution.")
+    definition: ViewExecutionDefinition = Field(description="The runtime-safe rendering definition resolved by the platform for this execution.")
     display: Optional[StrictStr] = None
     sort: Optional[StrictStr] = None
     search: ViewExecutionSearchResult

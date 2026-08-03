@@ -347,7 +347,7 @@ class AuditTrailApi:
         principal_type: Annotated[Optional[StrictStr], Field(description="Filter by top-level actor category (matches principal_type column).")] = None,
         effective_principal_id: Annotated[Optional[StrictStr], Field(description="Filter by delegated/direct effective principal ref (matches effective_principal_id column).")] = None,
         has_effective_principal: Annotated[Optional[StrictBool], Field(description="Filter by whether an event has an effective principal ref.")] = None,
-        project_id: Annotated[Optional[StrictStr], Field(description="Filter by project ID")] = None,
+        project_id: Annotated[Optional[StrictStr], Field(description="Filter by project ID. Honoured only for account-scoped principals; a project-scoped principal always reads its own project.")] = None,
         var_from: Annotated[Optional[StrictStr], Field(description="Start time (ISO string)")] = None,
         to: Annotated[Optional[StrictStr], Field(description="End time (ISO string)")] = None,
         limit: Annotated[Optional[Union[StrictFloat, StrictInt]], Field(description="Pagination: number of items to return (default 50, max 200)")] = None,
@@ -384,7 +384,7 @@ class AuditTrailApi:
         :type effective_principal_id: str
         :param has_effective_principal: Filter by whether an event has an effective principal ref.
         :type has_effective_principal: bool
-        :param project_id: Filter by project ID
+        :param project_id: Filter by project ID. Honoured only for account-scoped principals; a project-scoped principal always reads its own project.
         :type project_id: str
         :param var_from: Start time (ISO string)
         :type var_from: str
@@ -464,7 +464,7 @@ class AuditTrailApi:
         principal_type: Annotated[Optional[StrictStr], Field(description="Filter by top-level actor category (matches principal_type column).")] = None,
         effective_principal_id: Annotated[Optional[StrictStr], Field(description="Filter by delegated/direct effective principal ref (matches effective_principal_id column).")] = None,
         has_effective_principal: Annotated[Optional[StrictBool], Field(description="Filter by whether an event has an effective principal ref.")] = None,
-        project_id: Annotated[Optional[StrictStr], Field(description="Filter by project ID")] = None,
+        project_id: Annotated[Optional[StrictStr], Field(description="Filter by project ID. Honoured only for account-scoped principals; a project-scoped principal always reads its own project.")] = None,
         var_from: Annotated[Optional[StrictStr], Field(description="Start time (ISO string)")] = None,
         to: Annotated[Optional[StrictStr], Field(description="End time (ISO string)")] = None,
         limit: Annotated[Optional[Union[StrictFloat, StrictInt]], Field(description="Pagination: number of items to return (default 50, max 200)")] = None,
@@ -501,7 +501,7 @@ class AuditTrailApi:
         :type effective_principal_id: str
         :param has_effective_principal: Filter by whether an event has an effective principal ref.
         :type has_effective_principal: bool
-        :param project_id: Filter by project ID
+        :param project_id: Filter by project ID. Honoured only for account-scoped principals; a project-scoped principal always reads its own project.
         :type project_id: str
         :param var_from: Start time (ISO string)
         :type var_from: str
@@ -581,7 +581,7 @@ class AuditTrailApi:
         principal_type: Annotated[Optional[StrictStr], Field(description="Filter by top-level actor category (matches principal_type column).")] = None,
         effective_principal_id: Annotated[Optional[StrictStr], Field(description="Filter by delegated/direct effective principal ref (matches effective_principal_id column).")] = None,
         has_effective_principal: Annotated[Optional[StrictBool], Field(description="Filter by whether an event has an effective principal ref.")] = None,
-        project_id: Annotated[Optional[StrictStr], Field(description="Filter by project ID")] = None,
+        project_id: Annotated[Optional[StrictStr], Field(description="Filter by project ID. Honoured only for account-scoped principals; a project-scoped principal always reads its own project.")] = None,
         var_from: Annotated[Optional[StrictStr], Field(description="Start time (ISO string)")] = None,
         to: Annotated[Optional[StrictStr], Field(description="End time (ISO string)")] = None,
         limit: Annotated[Optional[Union[StrictFloat, StrictInt]], Field(description="Pagination: number of items to return (default 50, max 200)")] = None,
@@ -618,7 +618,7 @@ class AuditTrailApi:
         :type effective_principal_id: str
         :param has_effective_principal: Filter by whether an event has an effective principal ref.
         :type has_effective_principal: bool
-        :param project_id: Filter by project ID
+        :param project_id: Filter by project ID. Honoured only for account-scoped principals; a project-scoped principal always reads its own project.
         :type project_id: str
         :param var_from: Start time (ISO string)
         :type var_from: str

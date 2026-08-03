@@ -93,7 +93,7 @@ class TokenServiceApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "IssueTokenResponse",
             '500': "ErrorResponse",
-            '503': "ErrorStringMessageString",
+            '503': "IssueTokenUnavailableResponse",
             '4XX': "ErrorResponse",
         }
         response_data = self.api_client.call_api(
@@ -163,7 +163,7 @@ class TokenServiceApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "IssueTokenResponse",
             '500': "ErrorResponse",
-            '503': "ErrorStringMessageString",
+            '503': "IssueTokenUnavailableResponse",
             '4XX': "ErrorResponse",
         }
         response_data = self.api_client.call_api(
@@ -233,7 +233,7 @@ class TokenServiceApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "IssueTokenResponse",
             '500': "ErrorResponse",
-            '503': "ErrorStringMessageString",
+            '503': "IssueTokenUnavailableResponse",
             '4XX': "ErrorResponse",
         }
         response_data = self.api_client.call_api(

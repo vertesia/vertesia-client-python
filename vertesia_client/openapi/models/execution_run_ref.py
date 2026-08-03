@@ -22,13 +22,13 @@ from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, Stric
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from vertesia_client.openapi.models.account_ref import AccountRef
 from vertesia_client.openapi.models.execution_environment_ref import ExecutionEnvironmentRef
+from vertesia_client.openapi.models.execution_run_evaluation import ExecutionRunEvaluation
+from vertesia_client.openapi.models.execution_run_parent import ExecutionRunParent
 from vertesia_client.openapi.models.execution_run_status import ExecutionRunStatus
 from vertesia_client.openapi.models.execution_run_workflow import ExecutionRunWorkflow
 from vertesia_client.openapi.models.execution_token_usage import ExecutionTokenUsage
 from vertesia_client.openapi.models.interaction_execution_configuration import InteractionExecutionConfiguration
 from vertesia_client.openapi.models.interaction_execution_error import InteractionExecutionError
-from vertesia_client.openapi.models.interaction_execution_result_evaluation import InteractionExecutionResultEvaluation
-from vertesia_client.openapi.models.interaction_execution_result_parent import InteractionExecutionResultParent
 from vertesia_client.openapi.models.interaction_ref import InteractionRef
 from vertesia_client.openapi.models.json_schema import JSONSchema
 from vertesia_client.openapi.models.modalities import Modalities
@@ -43,8 +43,8 @@ class ExecutionRunRef(BaseModel):
     ExecutionRunRef
     """ # noqa: E501
     id: StrictStr
-    parent: Optional[InteractionExecutionResultParent] = None
-    evaluation: Optional[InteractionExecutionResultEvaluation] = None
+    parent: Optional[ExecutionRunParent] = None
+    evaluation: Optional[ExecutionRunEvaluation] = None
     tags: Optional[List[StrictStr]] = None
     environment: ExecutionEnvironmentRef = Field(description="Environment reference - populated with full object in API responses")
     model_id: Optional[StrictStr] = Field(default=None, alias="modelId")
@@ -171,8 +171,8 @@ class ExecutionRunRef(BaseModel):
 
         _obj = cls.model_validate({
             "id": obj.get("id"),
-            "parent": InteractionExecutionResultParent.from_dict(obj["parent"]) if obj.get("parent") is not None else None,
-            "evaluation": InteractionExecutionResultEvaluation.from_dict(obj["evaluation"]) if obj.get("evaluation") is not None else None,
+            "parent": ExecutionRunParent.from_dict(obj["parent"]) if obj.get("parent") is not None else None,
+            "evaluation": ExecutionRunEvaluation.from_dict(obj["evaluation"]) if obj.get("evaluation") is not None else None,
             "tags": obj.get("tags"),
             "environment": ExecutionEnvironmentRef.from_dict(obj["environment"]) if obj.get("environment") is not None else None,
             "modelId": obj.get("modelId"),

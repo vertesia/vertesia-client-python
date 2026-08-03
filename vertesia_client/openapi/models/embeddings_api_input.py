@@ -29,7 +29,7 @@ EMBEDDINGSAPIINPUT_ONE_OF_SCHEMAS = ["EmbeddingsApiAudioInput", "EmbeddingsApiIm
 
 class EmbeddingsApiInput(BaseModel):
     """
-    Wire-format inputs accepted by the studio-server embeddings endpoint. Mirror of
+    Wire-format inputs accepted by the studio-server embeddings endpoint. Mirror of @llumiverse/common's EmbeddingInput, but binary modalities carry a JSON-friendly source (URL or base64) instead of a DataSource. The server wraps each source in a Base64DataSource or URLDataSource before passing the request to the llumiverse driver.
     """
     # data type: EmbeddingsApiTextInput
     oneof_schema_1_validator: Optional[EmbeddingsApiTextInput] = None

@@ -28,7 +28,7 @@ class InCodeViewDefinition(BaseModel):
     """
     A View definition contributed by application code through the app package endpoint.
     """ # noqa: E501
-    id: StrictStr = Field(description="App-local id. Studio normalizes it to app:<app-name>:<id>.")
+    id: StrictStr = Field(description="App-local id. The platform normalizes it to app:<app-name>:<id>.")
     name: StrictStr = Field(description="App-local name used for lookup and diagnostics.")
     title: Optional[StrictStr] = None
     description: Optional[StrictStr] = None

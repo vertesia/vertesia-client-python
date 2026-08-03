@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, Optional, Union
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.content_type_extraction_grounding_review_policy import ContentTypeExtractionGroundingReviewPolicy
 from vertesia_client.openapi.models.interaction_execution_configuration import InteractionExecutionConfiguration
 from typing import Optional, Set
@@ -31,18 +32,18 @@ class ContentTypeExtractionGroundingPolicy(BaseModel):
     """ # noqa: E501
     enabled: Optional[StrictBool] = Field(default=None, description="Enable PDF block-level citation grounding for property extraction.")
     interaction: Optional[StrictStr] = Field(default=None, description="Grounded extraction interaction. Defaults to the system grounded extractor.")
-    max_pages: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Maximum pages to process.")
+    max_pages: Optional[Annotated[int, Field(le=2147483647, strict=True, ge=1)]] = Field(default=None, description="Maximum pages to process.")
     force_ocr: Optional[StrictBool] = Field(default=None, description="Run OCR on every page even when a text layer exists.")
     use_vision: Optional[StrictBool] = Field(default=None, description="Attach instrumented page images to the grounded extraction prompt.")
     raster_mode: Optional[StrictStr] = Field(default=None, description="How to read pages with no digital text layer (scans / image-only pages). 'vision' (default): read them off the page image and skip OCR. 'ocr': legacy path — OCR those pages and block-ground on the (lossy) OCR text.")
-    grid_cell_pt: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="A1 locate-grid cell size in PDF points for vision pages. Smaller = finer grid (more cells, tighter boxes) but can trip weaker models into over-reading; tune per the model in `config`. Default 15.")
+    grid_cell_pt: Optional[Union[Annotated[float, Field(strict=True, ge=1)], Annotated[int, Field(strict=True, ge=1)]]] = Field(default=None, description="A1 locate-grid cell size in PDF points for vision pages. Smaller = finer grid (more cells, tighter boxes) but can trip weaker models into over-reading; tune per the model in `config`. Default 15.")
     omit_block_boxes: Optional[StrictBool] = Field(default=None, description="Drop block bounding boxes from the extraction prompt. Only sound with use_vision (layout comes from the image).")
-    window_pages: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Maximum pages per grounded extraction call before windowing.")
+    window_pages: Optional[Annotated[int, Field(le=2147483647, strict=True, ge=1)]] = Field(default=None, description="Maximum pages per grounded extraction call before windowing.")
     update_properties: Optional[StrictBool] = Field(default=None, description="Update object properties with grounded extraction data. Default true.")
     config: Optional[InteractionExecutionConfiguration] = Field(default=None, description="Model execution configuration for the main grounded extraction interaction.")
     hard_config: Optional[InteractionExecutionConfiguration] = Field(default=None, description="Model execution configuration used for hard-to-read content.")
-    hardness_threshold: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Hardness score at or above which hard_config is used. Default 0.5.")
-    min_citation_density: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Minimum citations-per-leaf-value ratio; completions below it retry with escalation. Default 0.3.")
+    hardness_threshold: Optional[Union[Annotated[float, Field(le=1, strict=True, ge=0)], Annotated[int, Field(le=1, strict=True, ge=0)]]] = Field(default=None, description="Hardness score at or above which hard_config is used. Default 0.5.")
+    min_citation_density: Optional[Union[Annotated[float, Field(le=1, strict=True, ge=0)], Annotated[int, Field(le=1, strict=True, ge=0)]]] = Field(default=None, description="Minimum citations-per-leaf-value ratio; completions below it retry with escalation. Default 0.3.")
     refresh_ocr: Optional[StrictBool] = Field(default=None, description="Re-run OCR instead of restoring durable OCR artifacts (stale pipeline output).")
     review: Optional[ContentTypeExtractionGroundingReviewPolicy] = Field(default=None, description="Optional post-extraction review pass.")
     __properties: ClassVar[List[str]] = ["enabled", "interaction", "max_pages", "force_ocr", "use_vision", "raster_mode", "grid_cell_pt", "omit_block_boxes", "window_pages", "update_properties", "config", "hard_config", "hardness_threshold", "min_citation_density", "refresh_ocr", "review"]

@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt
+from pydantic import BaseModel, ConfigDict, Field, StrictBool
 from typing import Any, ClassVar, Dict, Optional, Union
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.interaction_execution_configuration import InteractionExecutionConfiguration
 from typing import Optional, Set
 from typing_extensions import Self
@@ -30,8 +31,8 @@ class ContentTypeExtractionGroundingReviewPolicy(BaseModel):
     """ # noqa: E501
     enabled: Optional[StrictBool] = Field(default=None, description="Set false to disable an inherited grounding review pass for this type.")
     config: Optional[InteractionExecutionConfiguration] = Field(default=None, description="Model execution configuration for the review interaction.")
-    threshold: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Hardness score at or above which review runs. Defaults to hardness_threshold.")
-    coverage_threshold: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Review also runs when any page's citation coverage falls below this floor (evidence of missed content). Default 0.2.")
+    threshold: Optional[Union[Annotated[float, Field(le=1, strict=True, ge=0)], Annotated[int, Field(le=1, strict=True, ge=0)]]] = Field(default=None, description="Hardness score at or above which review runs. Defaults to hardness_threshold.")
+    coverage_threshold: Optional[Union[Annotated[float, Field(le=1, strict=True, ge=0)], Annotated[int, Field(le=1, strict=True, ge=0)]]] = Field(default=None, description="Review also runs when any page's citation coverage falls below this floor (evidence of missed content). Default 0.2.")
     force: Optional[StrictBool] = Field(default=None, description="Run review regardless of hardness.")
     __properties: ClassVar[List[str]] = ["enabled", "config", "threshold", "coverage_threshold", "force"]
 

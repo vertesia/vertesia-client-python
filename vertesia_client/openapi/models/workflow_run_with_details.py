@@ -24,7 +24,7 @@ from vertesia_client.openapi.models.conversation_visibility import ConversationV
 from vertesia_client.openapi.models.interaction_ref import InteractionRef
 from vertesia_client.openapi.models.pending_activity import PendingActivity
 from vertesia_client.openapi.models.workflow_history import WorkflowHistory
-from vertesia_client.openapi.models.workflow_run_with_details_status import WorkflowRunWithDetailsStatus
+from vertesia_client.openapi.models.workflow_run_status import WorkflowRunStatus
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -33,7 +33,7 @@ class WorkflowRunWithDetails(BaseModel):
     """
     WorkflowRunWithDetails
     """ # noqa: E501
-    status: Optional[WorkflowRunWithDetailsStatus] = None
+    status: Optional[WorkflowRunStatus] = None
     type: Optional[StrictStr] = Field(default=None, description="The Temporal Workflow Type of this Workflow Run.")
     started_at: Optional[StrictStr]
     closed_at: Optional[StrictStr]
@@ -164,7 +164,7 @@ class WorkflowRunWithDetails(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "status": WorkflowRunWithDetailsStatus.from_dict(obj["status"]) if obj.get("status") is not None else None,
+            "status": WorkflowRunStatus.from_dict(obj["status"]) if obj.get("status") is not None else None,
             "type": obj.get("type"),
             "started_at": obj.get("started_at"),
             "closed_at": obj.get("closed_at"),

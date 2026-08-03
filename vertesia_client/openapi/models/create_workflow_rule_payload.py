@@ -35,15 +35,15 @@ class CreateWorkflowRulePayload(BaseModel):
     task_queue: Optional[StrictStr] = Field(default=None, description="Optional task queue name to use when starting workflows for this rule")
     event_subscription_migration_status: Optional[StrictStr] = Field(default=None, description="Event subscription migration status for legacy workflow-rule cutover.")
     event_subscription_migration_error: Optional[StrictStr] = Field(default=None, description="Migration failure or unsupported-match reason, when applicable.")
-    endpoint: StrictStr
     input_type: Optional[WorkflowRuleInputType] = None
-    name: StrictStr = Field(description="Human-readable name or title")
     description: Optional[StrictStr] = Field(default=None, description="Optional detailed description of the object")
     tags: Optional[List[StrictStr]] = Field(default=None, description="Optional array of categorization tags")
     updated_by: Optional[StrictStr] = Field(default=None, description="Identifier of the user who last modified the object")
     created_by: Optional[StrictStr] = Field(default=None, description="Identifier of the user who created the object")
+    endpoint: StrictStr
+    name: StrictStr = Field(description="Human-readable name or title")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["match", "config", "debug", "customer_override", "task_queue", "event_subscription_migration_status", "event_subscription_migration_error", "endpoint", "input_type", "name", "description", "tags", "updated_by", "created_by"]
+    __properties: ClassVar[List[str]] = ["match", "config", "debug", "customer_override", "task_queue", "event_subscription_migration_status", "event_subscription_migration_error", "input_type", "description", "tags", "updated_by", "created_by", "endpoint", "name"]
 
     @field_validator('event_subscription_migration_status')
     def event_subscription_migration_status_validate_enum(cls, value):
@@ -118,13 +118,13 @@ class CreateWorkflowRulePayload(BaseModel):
             "task_queue": obj.get("task_queue"),
             "event_subscription_migration_status": obj.get("event_subscription_migration_status"),
             "event_subscription_migration_error": obj.get("event_subscription_migration_error"),
-            "endpoint": obj.get("endpoint"),
             "input_type": obj.get("input_type"),
-            "name": obj.get("name"),
             "description": obj.get("description"),
             "tags": obj.get("tags"),
             "updated_by": obj.get("updated_by"),
-            "created_by": obj.get("created_by")
+            "created_by": obj.get("created_by"),
+            "endpoint": obj.get("endpoint"),
+            "name": obj.get("name")
         })
         # store additional fields in additional_properties
         for _key in obj.keys():

@@ -19,8 +19,8 @@ import json
 
 from pydantic import BaseModel, ConfigDict, StrictBool
 from typing import Any, ClassVar, Dict, Optional
-from vertesia_client.openapi.models.partial_website_credential_metadata import PartialWebsiteCredentialMetadata
 from vertesia_client.openapi.models.secret_kind import SecretKind
+from vertesia_client.openapi.models.website_credential_metadata_update import WebsiteCredentialMetadataUpdate
 from vertesia_client.openapi.models.website_credential_secret_input import WebsiteCredentialSecretInput
 from typing import Optional, Set
 from typing_extensions import Self
@@ -31,7 +31,7 @@ class UpdateSecretRequest(BaseModel):
     UpdateSecretRequest
     """ # noqa: E501
     kind: Optional[SecretKind] = None
-    metadata: Optional[PartialWebsiteCredentialMetadata] = None
+    metadata: Optional[WebsiteCredentialMetadataUpdate] = None
     secret: Optional[WebsiteCredentialSecretInput] = None
     clear_username_secret: Optional[StrictBool] = None
     clear_password: Optional[StrictBool] = None
@@ -97,7 +97,7 @@ class UpdateSecretRequest(BaseModel):
 
         _obj = cls.model_validate({
             "kind": obj.get("kind"),
-            "metadata": PartialWebsiteCredentialMetadata.from_dict(obj["metadata"]) if obj.get("metadata") is not None else None,
+            "metadata": WebsiteCredentialMetadataUpdate.from_dict(obj["metadata"]) if obj.get("metadata") is not None else None,
             "secret": WebsiteCredentialSecretInput.from_dict(obj["secret"]) if obj.get("secret") is not None else None,
             "clear_username_secret": obj.get("clear_username_secret"),
             "clear_password": obj.get("clear_password"),

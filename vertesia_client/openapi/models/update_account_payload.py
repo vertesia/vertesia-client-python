@@ -21,7 +21,6 @@ from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.account_billing import AccountBilling
-from vertesia_client.openapi.models.quota_tier import QuotaTier
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -34,8 +33,7 @@ class UpdateAccountPayload(BaseModel):
     app_access_message: Optional[Annotated[str, Field(strict=True, max_length=1000)]] = None
     email_domains: Optional[List[StrictStr]] = None
     billing: Optional[AccountBilling] = None
-    quota_tier: Optional[QuotaTier] = None
-    __properties: ClassVar[List[str]] = ["name", "app_access_message", "email_domains", "billing", "quota_tier"]
+    __properties: ClassVar[List[str]] = ["name", "app_access_message", "email_domains", "billing"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -94,8 +92,7 @@ class UpdateAccountPayload(BaseModel):
             "name": obj.get("name"),
             "app_access_message": obj.get("app_access_message"),
             "email_domains": obj.get("email_domains"),
-            "billing": AccountBilling.from_dict(obj["billing"]) if obj.get("billing") is not None else None,
-            "quota_tier": obj.get("quota_tier")
+            "billing": AccountBilling.from_dict(obj["billing"]) if obj.get("billing") is not None else None
         })
         return _obj
 

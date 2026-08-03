@@ -17,8 +17,8 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr
-from typing import Any, ClassVar, Dict
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from typing import Any, ClassVar, Dict, List
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -28,7 +28,9 @@ class AnswerProcessTaskPayload(BaseModel):
     AnswerProcessTaskPayload
     """ # noqa: E501
     task_id: StrictStr
-    __properties: ClassVar[List[str]] = ["task_id"]
+    result: Dict[str, Any] = Field(description="Answers to the task's declared fields, keyed by field name.")
+    additional_properties: Dict[str, Any] = {}
+    __properties: ClassVar[List[str]] = ["task_id", "result"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -60,8 +62,10 @@ class AnswerProcessTaskPayload(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -69,6 +73,11 @@ class AnswerProcessTaskPayload(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
         return _dict
 
     @classmethod
@@ -81,8 +90,14 @@ class AnswerProcessTaskPayload(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "task_id": obj.get("task_id")
+            "task_id": obj.get("task_id"),
+            "result": obj.get("result")
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 

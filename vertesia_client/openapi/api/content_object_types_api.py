@@ -23,6 +23,7 @@ from vertesia_client.openapi.models.content_object_type_catalog_entry import Con
 from vertesia_client.openapi.models.content_object_type_item import ContentObjectTypeItem
 from vertesia_client.openapi.models.create_content_object_type_payload import CreateContentObjectTypePayload
 from vertesia_client.openapi.models.delete_count_result import DeleteCountResult
+from vertesia_client.openapi.models.update_content_object_type_payload import UpdateContentObjectTypePayload
 
 from vertesia_client.openapi.api_client import ApiClient, RequestSerialized
 from vertesia_client.openapi.api_response import ApiResponse
@@ -1208,7 +1209,7 @@ class ContentObjectTypesApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> List[ContentObjectTypeItem]:
+    ) -> List[ContentObjectTypeCatalogEntry]:
         """List application content object types
 
         Lists application-provided content object types.  **Required permissions:** `content:read`
@@ -1261,7 +1262,7 @@ class ContentObjectTypesApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[ContentObjectTypeItem]",
+            '200': "List[ContentObjectTypeCatalogEntry]",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -1297,7 +1298,7 @@ class ContentObjectTypesApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[List[ContentObjectTypeItem]]:
+    ) -> ApiResponse[List[ContentObjectTypeCatalogEntry]]:
         """List application content object types
 
         Lists application-provided content object types.  **Required permissions:** `content:read`
@@ -1350,7 +1351,7 @@ class ContentObjectTypesApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[ContentObjectTypeItem]",
+            '200': "List[ContentObjectTypeCatalogEntry]",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -1439,7 +1440,7 @@ class ContentObjectTypesApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[ContentObjectTypeItem]",
+            '200': "List[ContentObjectTypeCatalogEntry]",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -1561,7 +1562,7 @@ class ContentObjectTypesApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> List[ContentObjectTypeItem]:
+    ) -> List[ContentObjectTypeCatalogEntry]:
         """List content object type catalog entries
 
         Lists available content object types across system, application, and stored catalogs.  **Required permissions:** `content:read`
@@ -1614,7 +1615,7 @@ class ContentObjectTypesApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[ContentObjectTypeItem]",
+            '200': "List[ContentObjectTypeCatalogEntry]",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -1650,7 +1651,7 @@ class ContentObjectTypesApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[List[ContentObjectTypeItem]]:
+    ) -> ApiResponse[List[ContentObjectTypeCatalogEntry]]:
         """List content object type catalog entries
 
         Lists available content object types across system, application, and stored catalogs.  **Required permissions:** `content:read`
@@ -1703,7 +1704,7 @@ class ContentObjectTypesApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[ContentObjectTypeItem]",
+            '200': "List[ContentObjectTypeCatalogEntry]",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -1792,7 +1793,7 @@ class ContentObjectTypesApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[ContentObjectTypeItem]",
+            '200': "List[ContentObjectTypeCatalogEntry]",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -2637,7 +2638,7 @@ class ContentObjectTypesApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> List[ContentObjectTypeItem]:
+    ) -> List[ContentObjectTypeCatalogEntry]:
         """List system content object types
 
         Lists built-in system content object types.  **Required permissions:** `content:read`
@@ -2690,7 +2691,7 @@ class ContentObjectTypesApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[ContentObjectTypeItem]",
+            '200': "List[ContentObjectTypeCatalogEntry]",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -2726,7 +2727,7 @@ class ContentObjectTypesApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[List[ContentObjectTypeItem]]:
+    ) -> ApiResponse[List[ContentObjectTypeCatalogEntry]]:
         """List system content object types
 
         Lists built-in system content object types.  **Required permissions:** `content:read`
@@ -2779,7 +2780,7 @@ class ContentObjectTypesApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[ContentObjectTypeItem]",
+            '200': "List[ContentObjectTypeCatalogEntry]",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -2868,7 +2869,7 @@ class ContentObjectTypesApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[ContentObjectTypeItem]",
+            '200': "List[ContentObjectTypeCatalogEntry]",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -3256,7 +3257,7 @@ class ContentObjectTypesApi:
     def update_content_object_type(
         self,
         type_id: StrictStr,
-        create_content_object_type_payload: CreateContentObjectTypePayload,
+        update_content_object_type_payload: UpdateContentObjectTypePayload,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -3277,8 +3278,8 @@ class ContentObjectTypesApi:
 
         :param type_id: (required)
         :type type_id: str
-        :param create_content_object_type_payload: (required)
-        :type create_content_object_type_payload: CreateContentObjectTypePayload
+        :param update_content_object_type_payload: (required)
+        :type update_content_object_type_payload: UpdateContentObjectTypePayload
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -3305,7 +3306,7 @@ class ContentObjectTypesApi:
 
         _param = self._update_content_object_type_serialize(
             type_id=type_id,
-            create_content_object_type_payload=create_content_object_type_payload,
+            update_content_object_type_payload=update_content_object_type_payload,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -3333,7 +3334,7 @@ class ContentObjectTypesApi:
     def update_content_object_type_with_http_info(
         self,
         type_id: StrictStr,
-        create_content_object_type_payload: CreateContentObjectTypePayload,
+        update_content_object_type_payload: UpdateContentObjectTypePayload,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -3354,8 +3355,8 @@ class ContentObjectTypesApi:
 
         :param type_id: (required)
         :type type_id: str
-        :param create_content_object_type_payload: (required)
-        :type create_content_object_type_payload: CreateContentObjectTypePayload
+        :param update_content_object_type_payload: (required)
+        :type update_content_object_type_payload: UpdateContentObjectTypePayload
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -3382,7 +3383,7 @@ class ContentObjectTypesApi:
 
         _param = self._update_content_object_type_serialize(
             type_id=type_id,
-            create_content_object_type_payload=create_content_object_type_payload,
+            update_content_object_type_payload=update_content_object_type_payload,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -3410,7 +3411,7 @@ class ContentObjectTypesApi:
     def update_content_object_type_without_preload_content(
         self,
         type_id: StrictStr,
-        create_content_object_type_payload: CreateContentObjectTypePayload,
+        update_content_object_type_payload: UpdateContentObjectTypePayload,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -3431,8 +3432,8 @@ class ContentObjectTypesApi:
 
         :param type_id: (required)
         :type type_id: str
-        :param create_content_object_type_payload: (required)
-        :type create_content_object_type_payload: CreateContentObjectTypePayload
+        :param update_content_object_type_payload: (required)
+        :type update_content_object_type_payload: UpdateContentObjectTypePayload
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -3459,7 +3460,7 @@ class ContentObjectTypesApi:
 
         _param = self._update_content_object_type_serialize(
             type_id=type_id,
-            create_content_object_type_payload=create_content_object_type_payload,
+            update_content_object_type_payload=update_content_object_type_payload,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -3482,7 +3483,7 @@ class ContentObjectTypesApi:
     def _update_content_object_type_serialize(
         self,
         type_id,
-        create_content_object_type_payload,
+        update_content_object_type_payload,
         x_api_version,
         _request_auth,
         _content_type,
@@ -3513,8 +3514,8 @@ class ContentObjectTypesApi:
             _header_params['x-api-version'] = x_api_version
         # process the form parameters
         # process the body parameter
-        if create_content_object_type_payload is not None:
-            _body_params = create_content_object_type_payload
+        if update_content_object_type_payload is not None:
+            _body_params = update_content_object_type_payload
 
 
         # set the HTTP header `Accept`

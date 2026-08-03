@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing import Optional, Set
 from typing_extensions import Self
@@ -33,9 +33,10 @@ class UpdateUserPayload(BaseModel):
     language: Optional[StrictStr] = None
     phone: Optional[StrictStr] = None
     last_selected_account: Optional[StrictStr] = None
-    properties: Optional[Dict[str, Any]] = None
-    clearance: Optional[Union[StrictFloat, StrictInt]] = None
-    compartments: Optional[List[StrictStr]] = None
+    properties: Optional[Dict[str, Any]] = Field(default=None, description="Custom properties for dynamic permission matching")
+    clearance: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="BLP clearance level — determines max document sensitivity the user can access")
+    compartments: Optional[List[StrictStr]] = Field(default=None, description="Compartments the user belongs to — restricts access to documents in matching compartments")
+    additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["name", "username", "picture", "language", "phone", "last_selected_account", "properties", "clearance", "compartments"]
 
     model_config = ConfigDict(
@@ -68,8 +69,10 @@ class UpdateUserPayload(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -77,6 +80,11 @@ class UpdateUserPayload(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
         return _dict
 
     @classmethod
@@ -99,6 +107,11 @@ class UpdateUserPayload(BaseModel):
             "clearance": obj.get("clearance"),
             "compartments": obj.get("compartments")
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 

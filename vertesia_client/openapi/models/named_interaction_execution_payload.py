@@ -20,10 +20,10 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from vertesia_client.openapi.models.async_completion_options import AsyncCompletionOptions
+from vertesia_client.openapi.models.async_conversation_execution_payload_result_schema import AsyncConversationExecutionPayloadResultSchema
 from vertesia_client.openapi.models.execution_run_workflow import ExecutionRunWorkflow
 from vertesia_client.openapi.models.in_code_prompt import InCodePrompt
 from vertesia_client.openapi.models.interaction_execution_configuration import InteractionExecutionConfiguration
-from vertesia_client.openapi.models.interaction_update_payload_result_schema import InteractionUpdatePayloadResultSchema
 from vertesia_client.openapi.models.tool_definition import ToolDefinition
 from typing import Optional, Set
 from typing_extensions import Self
@@ -35,7 +35,7 @@ class NamedInteractionExecutionPayload(BaseModel):
     """ # noqa: E501
     data: Optional[Any] = None
     config: Optional[InteractionExecutionConfiguration] = None
-    result_schema: Optional[InteractionUpdatePayloadResultSchema] = None
+    result_schema: Optional[AsyncConversationExecutionPayloadResultSchema] = None
     stream: Optional[StrictBool] = None
     do_validate: Optional[StrictBool] = None
     tags: Optional[List[StrictStr]] = None
@@ -141,7 +141,7 @@ class NamedInteractionExecutionPayload(BaseModel):
         _obj = cls.model_validate({
             "data": obj.get("data"),
             "config": InteractionExecutionConfiguration.from_dict(obj["config"]) if obj.get("config") is not None else None,
-            "result_schema": InteractionUpdatePayloadResultSchema.from_dict(obj["result_schema"]) if obj.get("result_schema") is not None else None,
+            "result_schema": AsyncConversationExecutionPayloadResultSchema.from_dict(obj["result_schema"]) if obj.get("result_schema") is not None else None,
             "stream": obj.get("stream"),
             "do_validate": obj.get("do_validate"),
             "tags": obj.get("tags"),

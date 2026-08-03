@@ -32,6 +32,10 @@ class PromptTemplateUpdatePayload(BaseModel):
     """
     PromptTemplateUpdatePayload
     """ # noqa: E501
+    role: Optional[PromptRole] = None
+    content: Optional[StrictStr] = None
+    content_type: Optional[TemplateType] = None
+    input_schema: Optional[JSONSchema] = Field(default=None, alias="inputSchema")
     name: Optional[StrictStr] = None
     status: Optional[PromptStatus] = None
     version: Optional[Union[StrictFloat, StrictInt]] = None
@@ -41,11 +45,7 @@ class PromptTemplateUpdatePayload(BaseModel):
     script: Optional[StrictStr] = None
     tags: Optional[List[StrictStr]] = None
     last_published_at: Optional[datetime] = None
-    role: Optional[PromptRole] = None
-    content: Optional[StrictStr] = None
-    content_type: Optional[TemplateType] = None
-    input_schema: Optional[JSONSchema] = Field(default=None, alias="inputSchema")
-    __properties: ClassVar[List[str]] = ["name", "status", "version", "parent", "description", "test_data", "script", "tags", "last_published_at", "role", "content", "content_type", "inputSchema"]
+    __properties: ClassVar[List[str]] = ["role", "content", "content_type", "inputSchema", "name", "status", "version", "parent", "description", "test_data", "script", "tags", "last_published_at"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -101,6 +101,10 @@ class PromptTemplateUpdatePayload(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "role": obj.get("role"),
+            "content": obj.get("content"),
+            "content_type": obj.get("content_type"),
+            "inputSchema": JSONSchema.from_dict(obj["inputSchema"]) if obj.get("inputSchema") is not None else None,
             "name": obj.get("name"),
             "status": obj.get("status"),
             "version": obj.get("version"),
@@ -109,11 +113,7 @@ class PromptTemplateUpdatePayload(BaseModel):
             "test_data": obj.get("test_data"),
             "script": obj.get("script"),
             "tags": obj.get("tags"),
-            "last_published_at": obj.get("last_published_at"),
-            "role": obj.get("role"),
-            "content": obj.get("content"),
-            "content_type": obj.get("content_type"),
-            "inputSchema": JSONSchema.from_dict(obj["inputSchema"]) if obj.get("inputSchema") is not None else None
+            "last_published_at": obj.get("last_published_at")
         })
         return _obj
 

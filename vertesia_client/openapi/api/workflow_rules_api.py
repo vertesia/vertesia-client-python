@@ -20,6 +20,7 @@ from typing import List, Optional
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.create_workflow_rule_payload import CreateWorkflowRulePayload
 from vertesia_client.openapi.models.delete_count_result import DeleteCountResult
+from vertesia_client.openapi.models.update_workflow_rule_payload import UpdateWorkflowRulePayload
 from vertesia_client.openapi.models.workflow_rule import WorkflowRule
 from vertesia_client.openapi.models.workflow_rule_item import WorkflowRuleItem
 
@@ -1175,7 +1176,7 @@ class WorkflowRulesApi:
     def update_workflow_rule(
         self,
         rule_id: StrictStr,
-        create_workflow_rule_payload: CreateWorkflowRulePayload,
+        update_workflow_rule_payload: UpdateWorkflowRulePayload,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -1196,8 +1197,8 @@ class WorkflowRulesApi:
 
         :param rule_id: (required)
         :type rule_id: str
-        :param create_workflow_rule_payload: (required)
-        :type create_workflow_rule_payload: CreateWorkflowRulePayload
+        :param update_workflow_rule_payload: (required)
+        :type update_workflow_rule_payload: UpdateWorkflowRulePayload
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -1224,7 +1225,7 @@ class WorkflowRulesApi:
 
         _param = self._update_workflow_rule_serialize(
             rule_id=rule_id,
-            create_workflow_rule_payload=create_workflow_rule_payload,
+            update_workflow_rule_payload=update_workflow_rule_payload,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1252,7 +1253,7 @@ class WorkflowRulesApi:
     def update_workflow_rule_with_http_info(
         self,
         rule_id: StrictStr,
-        create_workflow_rule_payload: CreateWorkflowRulePayload,
+        update_workflow_rule_payload: UpdateWorkflowRulePayload,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -1273,8 +1274,8 @@ class WorkflowRulesApi:
 
         :param rule_id: (required)
         :type rule_id: str
-        :param create_workflow_rule_payload: (required)
-        :type create_workflow_rule_payload: CreateWorkflowRulePayload
+        :param update_workflow_rule_payload: (required)
+        :type update_workflow_rule_payload: UpdateWorkflowRulePayload
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -1301,7 +1302,7 @@ class WorkflowRulesApi:
 
         _param = self._update_workflow_rule_serialize(
             rule_id=rule_id,
-            create_workflow_rule_payload=create_workflow_rule_payload,
+            update_workflow_rule_payload=update_workflow_rule_payload,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1329,7 +1330,7 @@ class WorkflowRulesApi:
     def update_workflow_rule_without_preload_content(
         self,
         rule_id: StrictStr,
-        create_workflow_rule_payload: CreateWorkflowRulePayload,
+        update_workflow_rule_payload: UpdateWorkflowRulePayload,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -1350,8 +1351,8 @@ class WorkflowRulesApi:
 
         :param rule_id: (required)
         :type rule_id: str
-        :param create_workflow_rule_payload: (required)
-        :type create_workflow_rule_payload: CreateWorkflowRulePayload
+        :param update_workflow_rule_payload: (required)
+        :type update_workflow_rule_payload: UpdateWorkflowRulePayload
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -1378,7 +1379,7 @@ class WorkflowRulesApi:
 
         _param = self._update_workflow_rule_serialize(
             rule_id=rule_id,
-            create_workflow_rule_payload=create_workflow_rule_payload,
+            update_workflow_rule_payload=update_workflow_rule_payload,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1401,7 +1402,7 @@ class WorkflowRulesApi:
     def _update_workflow_rule_serialize(
         self,
         rule_id,
-        create_workflow_rule_payload,
+        update_workflow_rule_payload,
         x_api_version,
         _request_auth,
         _content_type,
@@ -1432,8 +1433,8 @@ class WorkflowRulesApi:
             _header_params['x-api-version'] = x_api_version
         # process the form parameters
         # process the body parameter
-        if create_workflow_rule_payload is not None:
-            _body_params = create_workflow_rule_payload
+        if update_workflow_rule_payload is not None:
+            _body_params = update_workflow_rule_payload
 
 
         # set the HTTP header `Accept`

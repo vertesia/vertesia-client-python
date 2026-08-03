@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing import Optional, Set
 from typing_extensions import Self
@@ -30,10 +30,11 @@ class UpdateUserGroupPayload(BaseModel):
     name: StrictStr
     description: Optional[StrictStr] = None
     tags: Optional[List[StrictStr]] = None
-    properties: Optional[Dict[str, Any]] = None
-    clearance: Optional[Union[StrictFloat, StrictInt]] = None
-    compartments: Optional[List[StrictStr]] = None
-    allowed_projects: Optional[List[StrictStr]] = None
+    properties: Optional[Dict[str, Any]] = Field(default=None, description="Custom properties for dynamic permission matching")
+    clearance: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="BLP clearance level — merged with user clearance using max()")
+    compartments: Optional[List[StrictStr]] = Field(default=None, description="Compartments — merged with user compartments using array union")
+    allowed_projects: Optional[List[StrictStr]] = Field(default=None, description="Projects this group is allowed to be used in. When empty or absent the group is org-wide (usable in any project). When set, the group may only be used to grant permissions in the listed projects.")
+    additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["name", "description", "tags", "properties", "clearance", "compartments", "allowed_projects"]
 
     model_config = ConfigDict(
@@ -66,8 +67,10 @@ class UpdateUserGroupPayload(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -75,6 +78,11 @@ class UpdateUserGroupPayload(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
         return _dict
 
     @classmethod
@@ -95,6 +103,11 @@ class UpdateUserGroupPayload(BaseModel):
             "compartments": obj.get("compartments"),
             "allowed_projects": obj.get("allowed_projects")
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 

@@ -28,7 +28,7 @@ class InCodeProcessDefinition(BaseModel):
     """
     InCodeProcessDefinition
     """ # noqa: E501
-    id: StrictStr = Field(description="Process identifier exposed by an app package. App-local ids are normalized by Studio to `app:<app-name>:<id>` when returned to callers.")
+    id: StrictStr = Field(description="Process identifier exposed by an app package. App-local ids are normalized by the platform to `app:<app-name>:<id>` when returned to callers.")
     name: StrictStr = Field(description="Human-readable or app-local process name.")
     title: Optional[StrictStr] = None
     description: Optional[StrictStr] = None

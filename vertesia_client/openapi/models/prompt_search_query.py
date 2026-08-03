@@ -27,13 +27,13 @@ class PromptSearchQuery(BaseModel):
     """
     PromptSearchQuery
     """ # noqa: E501
-    name: Optional[StrictStr] = None
-    status: Optional[List[StrictStr]] = None
-    limit: Optional[Union[StrictFloat, StrictInt]] = None
-    offset: Optional[Union[StrictFloat, StrictInt]] = None
-    role: Optional[StrictStr] = None
-    tags: Optional[List[StrictStr]] = None
-    match_interactions: Optional[StrictBool] = Field(default=None, alias="matchInteractions")
+    name: Optional[StrictStr] = Field(default=None, description="Case-insensitive substring match on the prompt name.")
+    status: Optional[List[StrictStr]] = Field(default=None, description="Accepted and ignored. `GET /prompts` and `POST /prompts/facets` list drafts only, and always have.")
+    limit: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Maximum number of prompts to return. Defaults to 100.")
+    offset: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Number of prompts to skip.")
+    role: Optional[StrictStr] = Field(default=None, description="Exact match on the prompt role.")
+    tags: Optional[List[StrictStr]] = Field(default=None, description="Match prompts carrying any of these tags.")
+    match_interactions: Optional[StrictBool] = Field(default=None, description="Accepted and ignored. It used to attach the interactions referencing each prompt, in a shape no response component ever declared; nothing consumed it.", alias="matchInteractions")
     __properties: ClassVar[List[str]] = ["name", "status", "limit", "offset", "role", "tags", "matchInteractions"]
 
     model_config = ConfigDict(

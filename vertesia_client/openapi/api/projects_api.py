@@ -19,15 +19,13 @@ from pydantic import Field, StrictStr
 from typing import List, Optional
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.composite_app_config import CompositeAppConfig
+from vertesia_client.openapi.models.composite_app_config_payload import CompositeAppConfigPayload
 from vertesia_client.openapi.models.count_result import CountResult
 from vertesia_client.openapi.models.delete_by_id_result import DeleteByIdResult
 from vertesia_client.openapi.models.i_create_project_payload import ICreateProjectPayload
 from vertesia_client.openapi.models.in_code_process_definition import InCodeProcessDefinition
+from vertesia_client.openapi.models.in_code_type_definition import InCodeTypeDefinition
 from vertesia_client.openapi.models.in_code_view_definition import InCodeViewDefinition
-from vertesia_client.openapi.models.partial_omit_composite_app_config_id_project import PartialOmitCompositeAppConfigIdProject
-from vertesia_client.openapi.models.partial_project import PartialProject
-from vertesia_client.openapi.models.partial_project_configuration import PartialProjectConfiguration
-from vertesia_client.openapi.models.pick_content_object_type_item_id_name_description_tags_object_schema_table_layout_is_chunkable_strict_mode_status_intake_editing import PickContentObjectTypeItemIdNameDescriptionTagsObjectSchemaTableLayoutIsChunkableStrictModeStatusIntakeEditing
 from vertesia_client.openapi.models.project import Project
 from vertesia_client.openapi.models.project_configuration import ProjectConfiguration
 from vertesia_client.openapi.models.project_integration_config_request import ProjectIntegrationConfigRequest
@@ -38,6 +36,8 @@ from vertesia_client.openapi.models.project_ref import ProjectRef
 from vertesia_client.openapi.models.project_tool_info import ProjectToolInfo
 from vertesia_client.openapi.models.rendering_template_definition import RenderingTemplateDefinition
 from vertesia_client.openapi.models.rendering_template_definition_ref import RenderingTemplateDefinitionRef
+from vertesia_client.openapi.models.update_project_configuration_payload import UpdateProjectConfigurationPayload
+from vertesia_client.openapi.models.update_project_payload import UpdateProjectPayload
 
 from vertesia_client.openapi.api_client import ApiClient, RequestSerialized
 from vertesia_client.openapi.api_response import ApiResponse
@@ -1533,7 +1533,7 @@ class ProjectsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> PickContentObjectTypeItemIdNameDescriptionTagsObjectSchemaTableLayoutIsChunkableStrictModeStatusIntakeEditing:
+    ) -> InCodeTypeDefinition:
         """Retrieve a project app content type
 
         Retrieves a content type contributed by an installed app.
@@ -1577,7 +1577,7 @@ class ProjectsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "PickContentObjectTypeItemIdNameDescriptionTagsObjectSchemaTableLayoutIsChunkableStrictModeStatusIntakeEditing",
+            '200': "InCodeTypeDefinition",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -1610,7 +1610,7 @@ class ProjectsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[PickContentObjectTypeItemIdNameDescriptionTagsObjectSchemaTableLayoutIsChunkableStrictModeStatusIntakeEditing]:
+    ) -> ApiResponse[InCodeTypeDefinition]:
         """Retrieve a project app content type
 
         Retrieves a content type contributed by an installed app.
@@ -1654,7 +1654,7 @@ class ProjectsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "PickContentObjectTypeItemIdNameDescriptionTagsObjectSchemaTableLayoutIsChunkableStrictModeStatusIntakeEditing",
+            '200': "InCodeTypeDefinition",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -1731,7 +1731,7 @@ class ProjectsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "PickContentObjectTypeItemIdNameDescriptionTagsObjectSchemaTableLayoutIsChunkableStrictModeStatusIntakeEditing",
+            '200': "InCodeTypeDefinition",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -3608,7 +3608,7 @@ class ProjectsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> List[PickContentObjectTypeItemIdNameDescriptionTagsObjectSchemaTableLayoutIsChunkableStrictModeStatusIntakeEditing]:
+    ) -> List[InCodeTypeDefinition]:
         """List project app content types
 
         Lists content types contributed by installed apps in the project.
@@ -3652,7 +3652,7 @@ class ProjectsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[PickContentObjectTypeItemIdNameDescriptionTagsObjectSchemaTableLayoutIsChunkableStrictModeStatusIntakeEditing]",
+            '200': "List[InCodeTypeDefinition]",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -3685,7 +3685,7 @@ class ProjectsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[List[PickContentObjectTypeItemIdNameDescriptionTagsObjectSchemaTableLayoutIsChunkableStrictModeStatusIntakeEditing]]:
+    ) -> ApiResponse[List[InCodeTypeDefinition]]:
         """List project app content types
 
         Lists content types contributed by installed apps in the project.
@@ -3729,7 +3729,7 @@ class ProjectsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[PickContentObjectTypeItemIdNameDescriptionTagsObjectSchemaTableLayoutIsChunkableStrictModeStatusIntakeEditing]",
+            '200': "List[InCodeTypeDefinition]",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -3806,7 +3806,7 @@ class ProjectsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[PickContentObjectTypeItemIdNameDescriptionTagsObjectSchemaTableLayoutIsChunkableStrictModeStatusIntakeEditing]",
+            '200': "List[InCodeTypeDefinition]",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -5328,7 +5328,7 @@ class ProjectsApi:
     def update_project(
         self,
         project_id: StrictStr,
-        partial_project: PartialProject,
+        update_project_payload: UpdateProjectPayload,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -5349,8 +5349,8 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
-        :param partial_project: (required)
-        :type partial_project: PartialProject
+        :param update_project_payload: (required)
+        :type update_project_payload: UpdateProjectPayload
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -5377,7 +5377,7 @@ class ProjectsApi:
 
         _param = self._update_project_serialize(
             project_id=project_id,
-            partial_project=partial_project,
+            update_project_payload=update_project_payload,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -5405,7 +5405,7 @@ class ProjectsApi:
     def update_project_with_http_info(
         self,
         project_id: StrictStr,
-        partial_project: PartialProject,
+        update_project_payload: UpdateProjectPayload,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -5426,8 +5426,8 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
-        :param partial_project: (required)
-        :type partial_project: PartialProject
+        :param update_project_payload: (required)
+        :type update_project_payload: UpdateProjectPayload
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -5454,7 +5454,7 @@ class ProjectsApi:
 
         _param = self._update_project_serialize(
             project_id=project_id,
-            partial_project=partial_project,
+            update_project_payload=update_project_payload,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -5482,7 +5482,7 @@ class ProjectsApi:
     def update_project_without_preload_content(
         self,
         project_id: StrictStr,
-        partial_project: PartialProject,
+        update_project_payload: UpdateProjectPayload,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -5503,8 +5503,8 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
-        :param partial_project: (required)
-        :type partial_project: PartialProject
+        :param update_project_payload: (required)
+        :type update_project_payload: UpdateProjectPayload
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -5531,7 +5531,7 @@ class ProjectsApi:
 
         _param = self._update_project_serialize(
             project_id=project_id,
-            partial_project=partial_project,
+            update_project_payload=update_project_payload,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -5554,7 +5554,7 @@ class ProjectsApi:
     def _update_project_serialize(
         self,
         project_id,
-        partial_project,
+        update_project_payload,
         x_api_version,
         _request_auth,
         _content_type,
@@ -5585,8 +5585,8 @@ class ProjectsApi:
             _header_params['x-api-version'] = x_api_version
         # process the form parameters
         # process the body parameter
-        if partial_project is not None:
-            _body_params = partial_project
+        if update_project_payload is not None:
+            _body_params = update_project_payload
 
 
         # set the HTTP header `Accept`
@@ -5639,7 +5639,7 @@ class ProjectsApi:
     def update_project_composite_app(
         self,
         project_id: StrictStr,
-        body: PartialOmitCompositeAppConfigIdProject,
+        composite_app_config_payload: CompositeAppConfigPayload,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -5660,8 +5660,8 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
-        :param body: (required)
-        :type body: PartialOmitCompositeAppConfigIdProject
+        :param composite_app_config_payload: (required)
+        :type composite_app_config_payload: CompositeAppConfigPayload
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -5688,7 +5688,7 @@ class ProjectsApi:
 
         _param = self._update_project_composite_app_serialize(
             project_id=project_id,
-            body=body,
+            composite_app_config_payload=composite_app_config_payload,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -5716,7 +5716,7 @@ class ProjectsApi:
     def update_project_composite_app_with_http_info(
         self,
         project_id: StrictStr,
-        body: PartialOmitCompositeAppConfigIdProject,
+        composite_app_config_payload: CompositeAppConfigPayload,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -5737,8 +5737,8 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
-        :param body: (required)
-        :type body: PartialOmitCompositeAppConfigIdProject
+        :param composite_app_config_payload: (required)
+        :type composite_app_config_payload: CompositeAppConfigPayload
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -5765,7 +5765,7 @@ class ProjectsApi:
 
         _param = self._update_project_composite_app_serialize(
             project_id=project_id,
-            body=body,
+            composite_app_config_payload=composite_app_config_payload,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -5793,7 +5793,7 @@ class ProjectsApi:
     def update_project_composite_app_without_preload_content(
         self,
         project_id: StrictStr,
-        body: PartialOmitCompositeAppConfigIdProject,
+        composite_app_config_payload: CompositeAppConfigPayload,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -5814,8 +5814,8 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
-        :param body: (required)
-        :type body: PartialOmitCompositeAppConfigIdProject
+        :param composite_app_config_payload: (required)
+        :type composite_app_config_payload: CompositeAppConfigPayload
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -5842,7 +5842,7 @@ class ProjectsApi:
 
         _param = self._update_project_composite_app_serialize(
             project_id=project_id,
-            body=body,
+            composite_app_config_payload=composite_app_config_payload,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -5865,7 +5865,7 @@ class ProjectsApi:
     def _update_project_composite_app_serialize(
         self,
         project_id,
-        body,
+        composite_app_config_payload,
         x_api_version,
         _request_auth,
         _content_type,
@@ -5896,8 +5896,8 @@ class ProjectsApi:
             _header_params['x-api-version'] = x_api_version
         # process the form parameters
         # process the body parameter
-        if body is not None:
-            _body_params = body
+        if composite_app_config_payload is not None:
+            _body_params = composite_app_config_payload
 
 
         # set the HTTP header `Accept`
@@ -5950,7 +5950,7 @@ class ProjectsApi:
     def update_project_configuration(
         self,
         project_id: StrictStr,
-        partial_project_configuration: PartialProjectConfiguration,
+        update_project_configuration_payload: UpdateProjectConfigurationPayload,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -5971,8 +5971,8 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
-        :param partial_project_configuration: (required)
-        :type partial_project_configuration: PartialProjectConfiguration
+        :param update_project_configuration_payload: (required)
+        :type update_project_configuration_payload: UpdateProjectConfigurationPayload
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -5999,7 +5999,7 @@ class ProjectsApi:
 
         _param = self._update_project_configuration_serialize(
             project_id=project_id,
-            partial_project_configuration=partial_project_configuration,
+            update_project_configuration_payload=update_project_configuration_payload,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -6027,7 +6027,7 @@ class ProjectsApi:
     def update_project_configuration_with_http_info(
         self,
         project_id: StrictStr,
-        partial_project_configuration: PartialProjectConfiguration,
+        update_project_configuration_payload: UpdateProjectConfigurationPayload,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -6048,8 +6048,8 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
-        :param partial_project_configuration: (required)
-        :type partial_project_configuration: PartialProjectConfiguration
+        :param update_project_configuration_payload: (required)
+        :type update_project_configuration_payload: UpdateProjectConfigurationPayload
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -6076,7 +6076,7 @@ class ProjectsApi:
 
         _param = self._update_project_configuration_serialize(
             project_id=project_id,
-            partial_project_configuration=partial_project_configuration,
+            update_project_configuration_payload=update_project_configuration_payload,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -6104,7 +6104,7 @@ class ProjectsApi:
     def update_project_configuration_without_preload_content(
         self,
         project_id: StrictStr,
-        partial_project_configuration: PartialProjectConfiguration,
+        update_project_configuration_payload: UpdateProjectConfigurationPayload,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -6125,8 +6125,8 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
-        :param partial_project_configuration: (required)
-        :type partial_project_configuration: PartialProjectConfiguration
+        :param update_project_configuration_payload: (required)
+        :type update_project_configuration_payload: UpdateProjectConfigurationPayload
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -6153,7 +6153,7 @@ class ProjectsApi:
 
         _param = self._update_project_configuration_serialize(
             project_id=project_id,
-            partial_project_configuration=partial_project_configuration,
+            update_project_configuration_payload=update_project_configuration_payload,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -6176,7 +6176,7 @@ class ProjectsApi:
     def _update_project_configuration_serialize(
         self,
         project_id,
-        partial_project_configuration,
+        update_project_configuration_payload,
         x_api_version,
         _request_auth,
         _content_type,
@@ -6207,8 +6207,8 @@ class ProjectsApi:
             _header_params['x-api-version'] = x_api_version
         # process the form parameters
         # process the body parameter
-        if partial_project_configuration is not None:
-            _body_params = partial_project_configuration
+        if update_project_configuration_payload is not None:
+            _body_params = update_project_configuration_payload
 
 
         # set the HTTP header `Accept`

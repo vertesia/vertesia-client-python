@@ -19,7 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
-from vertesia_client.openapi.models.partial_record_supported_embedding_types_boolean import PartialRecordSupportedEmbeddingTypesBoolean
+from vertesia_client.openapi.models.embedding_type_enabled_map import EmbeddingTypeEnabledMap
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -32,7 +32,7 @@ class VectorSearchQuery(BaseModel):
     values: Optional[List[Union[StrictFloat, StrictInt]]] = None
     text: Optional[StrictStr] = None
     image: Optional[StrictStr] = None
-    config: Optional[PartialRecordSupportedEmbeddingTypesBoolean] = None
+    config: Optional[EmbeddingTypeEnabledMap] = None
     __properties: ClassVar[List[str]] = ["objectId", "values", "text", "image", "config"]
 
     model_config = ConfigDict(
@@ -93,7 +93,7 @@ class VectorSearchQuery(BaseModel):
             "values": obj.get("values"),
             "text": obj.get("text"),
             "image": obj.get("image"),
-            "config": PartialRecordSupportedEmbeddingTypesBoolean.from_dict(obj["config"]) if obj.get("config") is not None else None
+            "config": EmbeddingTypeEnabledMap.from_dict(obj["config"]) if obj.get("config") is not None else None
         })
         return _obj
 

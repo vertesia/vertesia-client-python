@@ -19,13 +19,13 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from vertesia_client.openapi.models.content_embedding_map import ContentEmbeddingMap
 from vertesia_client.openapi.models.content_object_status import ContentObjectStatus
 from vertesia_client.openapi.models.content_object_user_permissions import ContentObjectUserPermissions
 from vertesia_client.openapi.models.content_source import ContentSource
 from vertesia_client.openapi.models.create_content_object_payload_tokens import CreateContentObjectPayloadTokens
 from vertesia_client.openapi.models.generation_run_metadata import GenerationRunMetadata
 from vertesia_client.openapi.models.inherited_property_metadata import InheritedPropertyMetadata
-from vertesia_client.openapi.models.partial_record_supported_embedding_types_embedding import PartialRecordSupportedEmbeddingTypesEmbedding
 from vertesia_client.openapi.models.revision_info import RevisionInfo
 from vertesia_client.openapi.models.transcript import Transcript
 from typing import Optional, Set
@@ -38,7 +38,7 @@ class CreateContentObjectPayload(BaseModel):
     """ # noqa: E501
     text: Optional[StrictStr] = None
     text_etag: Optional[StrictStr] = None
-    embeddings: Optional[PartialRecordSupportedEmbeddingTypesEmbedding] = None
+    embeddings: Optional[ContentEmbeddingMap] = None
     parts: Optional[List[StrictStr]] = None
     parts_etag: Optional[StrictStr] = None
     transcript: Optional[Transcript] = None
@@ -158,7 +158,7 @@ class CreateContentObjectPayload(BaseModel):
         _obj = cls.model_validate({
             "text": obj.get("text"),
             "text_etag": obj.get("text_etag"),
-            "embeddings": PartialRecordSupportedEmbeddingTypesEmbedding.from_dict(obj["embeddings"]) if obj.get("embeddings") is not None else None,
+            "embeddings": ContentEmbeddingMap.from_dict(obj["embeddings"]) if obj.get("embeddings") is not None else None,
             "parts": obj.get("parts"),
             "parts_etag": obj.get("parts_etag"),
             "transcript": Transcript.from_dict(obj["transcript"]) if obj.get("transcript") is not None else None,

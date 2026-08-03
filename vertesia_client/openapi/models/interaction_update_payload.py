@@ -21,11 +21,11 @@ from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from vertesia_client.openapi.models.agent_runner_options import AgentRunnerOptions
+from vertesia_client.openapi.models.async_conversation_execution_payload_result_schema import AsyncConversationExecutionPayloadResultSchema
 from vertesia_client.openapi.models.cache_policy import CachePolicy
 from vertesia_client.openapi.models.interaction_environment import InteractionEnvironment
 from vertesia_client.openapi.models.interaction_result_schema import InteractionResultSchema
 from vertesia_client.openapi.models.interaction_status import InteractionStatus
-from vertesia_client.openapi.models.interaction_update_payload_result_schema import InteractionUpdatePayloadResultSchema
 from vertesia_client.openapi.models.interaction_visibility import InteractionVisibility
 from vertesia_client.openapi.models.modalities import Modalities
 from vertesia_client.openapi.models.model_options import ModelOptions
@@ -58,7 +58,7 @@ class InteractionUpdatePayload(BaseModel):
     model_options: Optional[ModelOptions] = None
     restriction: Optional[RunDataStorageLevel] = None
     output_modality: Optional[Modalities] = Field(default=None, description="Deprecated: This is deprecated. Use CompletionResult.type information instead.")
-    result_schema: Optional[InteractionUpdatePayloadResultSchema] = None
+    result_schema: Optional[AsyncConversationExecutionPayloadResultSchema] = None
     __properties: ClassVar[List[str]] = ["status", "parent", "visibility", "version", "test_data", "interaction_schema", "cache_policy", "prompts", "last_published_at", "name", "endpoint", "description", "tags", "agent_runner_options", "environment", "model", "model_options", "restriction", "output_modality", "result_schema"]
 
     model_config = ConfigDict(
@@ -161,7 +161,7 @@ class InteractionUpdatePayload(BaseModel):
             "model_options": ModelOptions.from_dict(obj["model_options"]) if obj.get("model_options") is not None else None,
             "restriction": obj.get("restriction"),
             "output_modality": obj.get("output_modality"),
-            "result_schema": InteractionUpdatePayloadResultSchema.from_dict(obj["result_schema"]) if obj.get("result_schema") is not None else None
+            "result_schema": AsyncConversationExecutionPayloadResultSchema.from_dict(obj["result_schema"]) if obj.get("result_schema") is not None else None
         })
         return _obj
 

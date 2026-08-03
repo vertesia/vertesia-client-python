@@ -36,8 +36,10 @@ from vertesia_client.openapi.models.interaction_endpoint_query import Interactio
 from vertesia_client.openapi.models.interaction_execution_payload import InteractionExecutionPayload
 from vertesia_client.openapi.models.interaction_execution_result import InteractionExecutionResult
 from vertesia_client.openapi.models.interaction_fork_payload import InteractionForkPayload
+from vertesia_client.openapi.models.interaction_name import InteractionName
 from vertesia_client.openapi.models.interaction_publish_payload import InteractionPublishPayload
 from vertesia_client.openapi.models.interaction_ref import InteractionRef
+from vertesia_client.openapi.models.interaction_ref_with_schema import InteractionRefWithSchema
 from vertesia_client.openapi.models.interaction_tags import InteractionTags
 from vertesia_client.openapi.models.interaction_update_payload import InteractionUpdatePayload
 from vertesia_client.openapi.models.interactions_export_payload import InteractionsExportPayload
@@ -2203,7 +2205,7 @@ class InteractionsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> List[Interaction]:
+    ) -> List[InteractionRefWithSchema]:
         """Export interactions
 
         Exports interactions by name, tags, and selected versions, including prompt input schemas.  **Required permissions:** `interaction:read`
@@ -2244,7 +2246,7 @@ class InteractionsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[Interaction]",
+            '200': "List[InteractionRefWithSchema]",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -2276,7 +2278,7 @@ class InteractionsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[List[Interaction]]:
+    ) -> ApiResponse[List[InteractionRefWithSchema]]:
         """Export interactions
 
         Exports interactions by name, tags, and selected versions, including prompt input schemas.  **Required permissions:** `interaction:read`
@@ -2317,7 +2319,7 @@ class InteractionsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[Interaction]",
+            '200': "List[InteractionRefWithSchema]",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -2390,7 +2392,7 @@ class InteractionsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[Interaction]",
+            '200': "List[InteractionRefWithSchema]",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -3122,7 +3124,7 @@ class InteractionsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> List[Dict[str, object]]:
+    ) -> List[object]:
         """Generate interaction test data
 
         Uses a system interaction to generate synthetic input data for the selected interaction.  **Required permissions:** `interaction:read`
@@ -3166,7 +3168,7 @@ class InteractionsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[Dict[str, object]]",
+            '200': "List[object]",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -3199,7 +3201,7 @@ class InteractionsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[List[Dict[str, object]]]:
+    ) -> ApiResponse[List[object]]:
         """Generate interaction test data
 
         Uses a system interaction to generate synthetic input data for the selected interaction.  **Required permissions:** `interaction:read`
@@ -3243,7 +3245,7 @@ class InteractionsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[Dict[str, object]]",
+            '200': "List[object]",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -3320,7 +3322,7 @@ class InteractionsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[Dict[str, object]]",
+            '200': "List[object]",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -4892,7 +4894,7 @@ class InteractionsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> List[Interaction]:
+    ) -> List[InteractionRef]:
         """List interaction forks
 
         Lists draft interactions forked from the selected interaction.  **Required permissions:** `interaction:read`
@@ -4933,7 +4935,7 @@ class InteractionsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[Interaction]",
+            '200': "List[InteractionRef]",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -4965,7 +4967,7 @@ class InteractionsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[List[Interaction]]:
+    ) -> ApiResponse[List[InteractionRef]]:
         """List interaction forks
 
         Lists draft interactions forked from the selected interaction.  **Required permissions:** `interaction:read`
@@ -5006,7 +5008,7 @@ class InteractionsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[Interaction]",
+            '200': "List[InteractionRef]",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -5079,7 +5081,7 @@ class InteractionsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[Interaction]",
+            '200': "List[InteractionRef]",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -5174,7 +5176,7 @@ class InteractionsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> List[Interaction]:
+    ) -> List[InteractionName]:
         """List interaction names
 
         Lists draft interaction names in the current project.  **Required permissions:** `interaction:read`
@@ -5212,7 +5214,7 @@ class InteractionsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[Interaction]",
+            '200': "List[InteractionName]",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -5243,7 +5245,7 @@ class InteractionsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[List[Interaction]]:
+    ) -> ApiResponse[List[InteractionName]]:
         """List interaction names
 
         Lists draft interaction names in the current project.  **Required permissions:** `interaction:read`
@@ -5281,7 +5283,7 @@ class InteractionsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[Interaction]",
+            '200': "List[InteractionName]",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -5350,7 +5352,7 @@ class InteractionsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[Interaction]",
+            '200': "List[InteractionName]",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -5951,7 +5953,7 @@ class InteractionsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> List[Interaction]:
+    ) -> List[InteractionRef]:
         """List interaction versions
 
         Lists published versions for an interaction, sorted by most recently updated first.  **Required permissions:** `interaction:read`
@@ -5992,7 +5994,7 @@ class InteractionsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[Interaction]",
+            '200': "List[InteractionRef]",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -6024,7 +6026,7 @@ class InteractionsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[List[Interaction]]:
+    ) -> ApiResponse[List[InteractionRef]]:
         """List interaction versions
 
         Lists published versions for an interaction, sorted by most recently updated first.  **Required permissions:** `interaction:read`
@@ -6065,7 +6067,7 @@ class InteractionsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[Interaction]",
+            '200': "List[InteractionRef]",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -6138,7 +6140,7 @@ class InteractionsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[Interaction]",
+            '200': "List[InteractionRef]",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -6234,7 +6236,7 @@ class InteractionsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> List[Interaction]:
+    ) -> List[InteractionRef]:
         """List interaction versions by name
 
         Lists published versions for an interaction endpoint name.  **Required permissions:** `interaction:read`
@@ -6275,7 +6277,7 @@ class InteractionsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[Interaction]",
+            '200': "List[InteractionRef]",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -6307,7 +6309,7 @@ class InteractionsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[List[Interaction]]:
+    ) -> ApiResponse[List[InteractionRef]]:
         """List interaction versions by name
 
         Lists published versions for an interaction endpoint name.  **Required permissions:** `interaction:read`
@@ -6348,7 +6350,7 @@ class InteractionsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[Interaction]",
+            '200': "List[InteractionRef]",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -6421,7 +6423,7 @@ class InteractionsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[Interaction]",
+            '200': "List[InteractionRef]",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }

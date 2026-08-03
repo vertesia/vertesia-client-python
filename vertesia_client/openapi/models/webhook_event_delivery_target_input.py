@@ -32,6 +32,8 @@ class WebhookEventDeliveryTargetInput(BaseModel):
     rotate_signing_secret: Optional[StrictBool] = Field(default=None, description="Request rotation of the stored signing secret on update.")
     type: StrictStr
     url: StrictStr
+    has_secret: Optional[StrictBool] = Field(default=None, description="Server-managed: ignored on write, echoed back from a read.")
+    secret_label: Optional[StrictStr] = Field(default=None, description="Server-managed: ignored on write, echoed back from a read.")
     signing_mode: Optional[WebhookSigningMode] = None
     payload_mode: Optional[WebhookPayloadMode] = None
     headers: Optional[Dict[str, StrictStr]] = None
@@ -39,7 +41,7 @@ class WebhookEventDeliveryTargetInput(BaseModel):
     timeout_ms: Optional[Union[StrictFloat, StrictInt]] = None
     result_path: Optional[StrictStr] = None
     custom_data: Optional[Dict[str, Any]] = None
-    __properties: ClassVar[List[str]] = ["rotate_signing_secret", "type", "url", "signing_mode", "payload_mode", "headers", "encrypted_headers", "timeout_ms", "result_path", "custom_data"]
+    __properties: ClassVar[List[str]] = ["rotate_signing_secret", "type", "url", "has_secret", "secret_label", "signing_mode", "payload_mode", "headers", "encrypted_headers", "timeout_ms", "result_path", "custom_data"]
 
     @field_validator('type')
     def type_validate_enum(cls, value):
@@ -100,6 +102,8 @@ class WebhookEventDeliveryTargetInput(BaseModel):
             "rotate_signing_secret": obj.get("rotate_signing_secret"),
             "type": obj.get("type"),
             "url": obj.get("url"),
+            "has_secret": obj.get("has_secret"),
+            "secret_label": obj.get("secret_label"),
             "signing_mode": obj.get("signing_mode"),
             "payload_mode": obj.get("payload_mode"),
             "headers": obj.get("headers"),

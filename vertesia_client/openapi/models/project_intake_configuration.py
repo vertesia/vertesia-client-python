@@ -20,7 +20,7 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, Optional, Union
 from vertesia_client.openapi.models.content_type_intake_policy import ContentTypeIntakePolicy
-from vertesia_client.openapi.models.partial_record_intake_vision_detail_partial_intake_vision_profile_settings import PartialRecordIntakeVisionDetailPartialIntakeVisionProfileSettings
+from vertesia_client.openapi.models.intake_vision_profile_settings_map import IntakeVisionProfileSettingsMap
 from vertesia_client.openapi.models.project_intake_sniff_configuration import ProjectIntakeSniffConfiguration
 from typing import Optional, Set
 from typing_extensions import Self
@@ -33,7 +33,7 @@ class ProjectIntakeConfiguration(BaseModel):
     enabled: Optional[StrictBool] = Field(default=None, description="Master switch for the standard intake pipeline. When false, StandardIntake exits as a no-op WITHOUT touching object status (objects stay in `created`, identifiable as unprocessed). Defaults to true.")
     sniff: Optional[ProjectIntakeSniffConfiguration] = Field(default=None, description="Fast pre-conversion type identification for untyped documents. Absent means enabled with platform default thresholds.")
     default_policy: Optional[ContentTypeIntakePolicy] = Field(default=None, description="Project-level intake policy defaults. Same shape as the per-content-type policy; a type's `intake` block wins field-by-field over these defaults, which in turn win over the legacy flat fields below. `identification` is type-specific and ignored here.")
-    vision_profiles: Optional[PartialRecordIntakeVisionDetailPartialIntakeVisionProfileSettings] = Field(default=None, description="Project overrides for the platform vision detail profiles used by intake visual extraction (`low`/`standard`/`high`). Partial: omitted profiles or fields inherit the platform defaults. Types reference detail NAMES only; the profile settings live here.")
+    vision_profiles: Optional[IntakeVisionProfileSettingsMap] = Field(default=None, description="Project overrides for the platform vision detail profiles used by intake visual extraction (`low`/`standard`/`high`). Partial: omitted profiles or fields inherit the platform defaults. Types reference detail NAMES only; the profile settings live here.")
     generate_toc: Optional[StrictBool] = Field(default=None, description="Generate table-of-content sections during standard document intake. Defaults to false.")
     generate_toc_max_size: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Skip table-of-content generation when the document text exceeds this many characters. Avoids sending very large documents through the TOC interactions. Unset means no limit.")
     generate_content_type: Optional[StrictBool] = Field(default=None, description="Select or assign a content type during standard intake. Defaults to true.")
@@ -104,7 +104,7 @@ class ProjectIntakeConfiguration(BaseModel):
             "enabled": obj.get("enabled"),
             "sniff": ProjectIntakeSniffConfiguration.from_dict(obj["sniff"]) if obj.get("sniff") is not None else None,
             "default_policy": ContentTypeIntakePolicy.from_dict(obj["default_policy"]) if obj.get("default_policy") is not None else None,
-            "vision_profiles": PartialRecordIntakeVisionDetailPartialIntakeVisionProfileSettings.from_dict(obj["vision_profiles"]) if obj.get("vision_profiles") is not None else None,
+            "vision_profiles": IntakeVisionProfileSettingsMap.from_dict(obj["vision_profiles"]) if obj.get("vision_profiles") is not None else None,
             "generate_toc": obj.get("generate_toc"),
             "generate_toc_max_size": obj.get("generate_toc_max_size"),
             "generate_content_type": obj.get("generate_content_type"),
