@@ -47374,7 +47374,8 @@ paths:
       summary: Update an event ingest channel
       description: >-
         Updates a channel. Set rotate_token to true to rotate the ingest token:
-        the new token is returned once in the response.
+        the new token is returned once in the response. Create or rotate the
+        signing secret separately from rotating the ingest token.
 
 
         **Required permissions:** `workflow:admin`

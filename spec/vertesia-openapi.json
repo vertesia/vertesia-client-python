@@ -64676,7 +64676,7 @@
           "Event Ingest Channels"
         ],
         "summary": "Update an event ingest channel",
-        "description": "Updates a channel. Set rotate_token to true to rotate the ingest token: the new token is returned once in the response.\n\n**Required permissions:** `workflow:admin`",
+        "description": "Updates a channel. Set rotate_token to true to rotate the ingest token: the new token is returned once in the response. Create or rotate the signing secret separately from rotating the ingest token.\n\n**Required permissions:** `workflow:admin`",
         "security": [
           {
             "bearerAuth": []
