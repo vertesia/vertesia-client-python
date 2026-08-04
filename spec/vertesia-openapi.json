@@ -63456,6 +63456,9 @@
               }
             }
           },
+          "404": {
+            "description": "The file does not exist."
+          },
           "500": {
             "description": "Internal server error.",
             "content": {

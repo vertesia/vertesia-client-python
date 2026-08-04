@@ -1565,6 +1565,7 @@ class FilesApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "FileMetadataResponse",
+            '404': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -1638,6 +1639,7 @@ class FilesApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "FileMetadataResponse",
+            '404': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -1711,6 +1713,7 @@ class FilesApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "FileMetadataResponse",
+            '404': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
