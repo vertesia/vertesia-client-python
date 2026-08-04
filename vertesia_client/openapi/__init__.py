@@ -245,6 +245,8 @@ __all__ = [
     "BulkUploadUrlsPayloadFilesInner",
     "BulkUploadUrlsResponse",
     "CachePolicy",
+    "CancelEventDeliveryIntentsPayload",
+    "CancelEventDeliveryIntentsResponse",
     "CatalogInteractionRef",
     "ChildWorkflowTask",
     "Collection",
@@ -1283,6 +1285,8 @@ from vertesia_client.openapi.models.bulk_upload_urls_payload import BulkUploadUr
 from vertesia_client.openapi.models.bulk_upload_urls_payload_files_inner import BulkUploadUrlsPayloadFilesInner as BulkUploadUrlsPayloadFilesInner
 from vertesia_client.openapi.models.bulk_upload_urls_response import BulkUploadUrlsResponse as BulkUploadUrlsResponse
 from vertesia_client.openapi.models.cache_policy import CachePolicy as CachePolicy
+from vertesia_client.openapi.models.cancel_event_delivery_intents_payload import CancelEventDeliveryIntentsPayload as CancelEventDeliveryIntentsPayload
+from vertesia_client.openapi.models.cancel_event_delivery_intents_response import CancelEventDeliveryIntentsResponse as CancelEventDeliveryIntentsResponse
 from vertesia_client.openapi.models.catalog_interaction_ref import CatalogInteractionRef as CatalogInteractionRef
 from vertesia_client.openapi.models.child_workflow_task import ChildWorkflowTask as ChildWorkflowTask
 from vertesia_client.openapi.models.collection import Collection as Collection

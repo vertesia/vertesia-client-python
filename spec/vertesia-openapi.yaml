@@ -5307,6 +5307,53 @@ components:
         - varies_on
         - ttl
       additionalProperties: false
+    CancelEventDeliveryIntentsPayload:
+      type: object
+      properties:
+        subscription_id:
+          type: string
+          minLength: 1
+          description: Restrict cancellation to one subscription.
+        target_type:
+          minItems: 1
+          type: array
+          items:
+            type: string
+            enum:
+              - workflow
+              - webhook
+              - agent
+              - process
+          description: Restrict cancellation to one or more delivery target types.
+      additionalProperties: false
+    CancelEventDeliveryIntentsResponse:
+      type: object
+      properties:
+        environment:
+          type: string
+          description: Deployment environment whose queue was changed.
+        cleared_through:
+          type: string
+          format: date-time
+          description: Server-side watermark; intents created after this time were not
+            changed.
+        cancelled:
+          type: integer
+          minimum: 0
+          maximum: 9007199254740991
+          description: Pending or retrying intents moved to the cancelled terminal state.
+        active_untouched:
+          type: integer
+          minimum: 0
+          maximum: 9007199254740991
+          description: Matching evaluating, starting, or running intents left for normal
+            reconciliation.
+      required:
+        - environment
+        - cleared_through
+        - cancelled
+        - active_untouched
+      additionalProperties: false
     CatalogInteractionRef:
       type: object
       properties:
@@ -47292,6 +47339,72 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/EventDeliveryQueueSummaryPayload"
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260803"
+        description: Optional Vertesia API version header. Use `20260803` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /events/deliveries/cancel:
+    post:
+      operationId: CancelEventDeliveryIntents
+      tags:
+        - Events
+      summary: Cancel queued event delivery intents
+      description: >-
+        Cancels matching pending and retrying delivery intents for the current
+        project and deployment environment through a server-side watermark.
+        Active deliveries and later events are not changed.
+
+
+        **Required permissions:** `workflow:run`
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters: []
+      responses:
+        "200":
+          description: Queued event delivery cancellation result.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CancelEventDeliveryIntentsResponse"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - workflow:run
+      x-vertesia-source:
+        file: ../../apps/zeno-server/src/api/events.ts
+        className: EventDeliveriesResource
+        methodName: cancelQueuedDeliveries
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CancelEventDeliveryIntentsPayload"
     parameters:
       - name: x-api-version
         in: header

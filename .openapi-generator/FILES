@@ -223,6 +223,8 @@ vertesia_client/openapi/models/bulk_upload_urls_payload.py
 vertesia_client/openapi/models/bulk_upload_urls_payload_files_inner.py
 vertesia_client/openapi/models/bulk_upload_urls_response.py
 vertesia_client/openapi/models/cache_policy.py
+vertesia_client/openapi/models/cancel_event_delivery_intents_payload.py
+vertesia_client/openapi/models/cancel_event_delivery_intents_response.py
 vertesia_client/openapi/models/catalog_interaction_ref.py
 vertesia_client/openapi/models/child_workflow_task.py
 vertesia_client/openapi/models/collection.py
