@@ -6,6 +6,7 @@ import unittest
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
 from vertesia_client import Client, ClientOptions, VertesiaClientError
+from vertesia_client.client import DEFAULT_API_VERSION
 from vertesia_client.openapi.models.complex_search_payload import ComplexSearchPayload
 
 
@@ -190,7 +191,7 @@ class ClientTest(unittest.TestCase):
         self.assertEqual(auth["bearerAuth"]["value"], "Bearer issued-token")
         self.assertEqual(TokenHandler.requests[0]["path"], "/token/issue")
         self.assertEqual(TokenHandler.requests[0]["authorization"], "Bearer sk-secret")
-        self.assertEqual(TokenHandler.requests[0]["api_version"], "20260319")
+        self.assertEqual(TokenHandler.requests[0]["api_version"], DEFAULT_API_VERSION)
         self.assertEqual(json.loads(TokenHandler.requests[0]["body"]), {"type": "apikey", "key": "sk-secret"})
 
     def test_invalid_api_key_fails_before_network_access(self):
