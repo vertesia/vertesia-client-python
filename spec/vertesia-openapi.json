@@ -2,7 +2,8 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Vertesia API",
-    "version": "1.5.0-dev.20260725.083715Z",
+    "version": "1.5.0-dev.20260804.124748Z",
+    "x-api-version": "20260803",
     "description": "The Vertesia API provides project-scoped access to interaction execution and content workflows. Use it to run interactions, inspect execution history, stream run progress, replay previous executions, and search content objects and collections. Authenticate requests with a bearer token, or use the official `@vertesia/client` package for typed access from Node.js applications.",
     "contact": {
       "name": "Vertesia",
@@ -2372,6 +2373,12 @@
         ],
         "description": "Access control policy for an app installation. Declares which access surfaces are gated by per-user ACEs.\n\n- 'all' (default): every surface (UI portal, tool/endpoint use, contributions) requires   an explicit app_member ACE — the historical behavior.\n- 'ui': UI portal visibility requires an ACE, but tool/endpoint use and contributions   are open to anyone in the project.\n- 'none': fully open within the project — no ACE required for any surface.\n\nDeclared on the manifest as the app's default. May be overridden per-installation."
       },
+      "AppApiKeyCollectionParams": {
+        "type": "object",
+        "additionalProperties": {
+          "$ref": "#/components/schemas/McpApiKeyCredential"
+        }
+      },
       "AppAvailableIn": {
         "type": "string",
         "enum": [
@@ -2526,6 +2533,58 @@
         ],
         "additionalProperties": false,
         "description": "Dashboard definition contributed by an app package.\n\nApp dashboard IDs are local to the app. The platform exposes them as `app:<app_name>:<id>` when listing or retrieving dashboards."
+      },
+      "AppDeleteSummary": {
+        "type": "object",
+        "properties": {
+          "confirmed": {
+            "type": "boolean",
+            "description": "Whether `?confirm=true` was sent. Without it the endpoint reports what WOULD be removed and deletes nothing — `deleted` stays false."
+          },
+          "app_id": {
+            "type": "string"
+          },
+          "app_name": {
+            "type": "string"
+          },
+          "versions": {
+            "type": "number",
+            "description": "AppVersion records the cascade covers."
+          },
+          "installations": {
+            "type": "number",
+            "description": "AppInstallation records the cascade covers."
+          },
+          "storage_prefix": {
+            "type": "string"
+          },
+          "git_repo_url": {
+            "type": "string"
+          },
+          "deleted": {
+            "type": "boolean",
+            "description": "Whether the app record itself was removed. False for a dry run."
+          },
+          "warnings": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Cascade steps that failed without aborting the deletion. Credential cleanup is NOT among them — a failed API key purge fails the request outright and keeps the app row."
+          }
+        },
+        "required": [
+          "confirmed",
+          "app_id",
+          "app_name",
+          "versions",
+          "installations",
+          "storage_prefix",
+          "deleted",
+          "warnings"
+        ],
+        "additionalProperties": false,
+        "description": "Result of `DELETE /apps/:id`. Doubles as the dry-run preview: without `?confirm=true` the same shape comes back with `deleted: false` describing what the cascade would remove."
       },
       "AppDevelopmentTask": {
         "type": "object",
@@ -2953,6 +3012,10 @@
             },
             "$ref": "#/components/schemas/AppOAuthProviderParams",
             "description": "OAuth credentials for named providers, keyed by the provider key from oauth_providers. Collected from the user at install time for providers with required_at_install. Separate from oauth_params to avoid key collisions between provider keys and collection ids."
+          },
+          "api_key_params": {
+            "$ref": "#/components/schemas/AppApiKeyCollectionParams",
+            "description": "API keys for auth: 'api_key' collections, keyed by collection.id. Collected from the user at install time for collections with api_key_config.required_at_install. Each key is stored in the installing project's encrypted secret store, replacing any key already held for that collection."
           }
         },
         "required": [
@@ -19583,6 +19646,21 @@
         ],
         "additionalProperties": false
       },
+      "MCPApiKeyConfig": {
+        "type": "object",
+        "properties": {
+          "required_at_install": {
+            "type": "boolean",
+            "description": "When true, the installer must supply the key in the install dialog. Use this for a manifest published to projects that each hold their own key. Leave unset when the key was already stored by whoever registered the server."
+          },
+          "instructions": {
+            "type": "string",
+            "description": "Shown in the install dialog above the key field — typically where to generate the key on the remote service."
+          }
+        },
+        "additionalProperties": false,
+        "description": "Install-time provisioning blueprint for an `auth: 'api_key'` MCP collection. Declares whether the installer is prompted for the key. Never holds the key itself — manifests are shareable documents."
+      },
       "MCPOAuthConfig": {
         "type": "object",
         "properties": {
@@ -19711,6 +19789,10 @@
             "$ref": "#/components/schemas/MCPOAuthConfig",
             "description": "Install-time OAuth provisioning blueprint. When present, the platform auto-creates an OAuth provider at install time using these values merged with any user-supplied required_at_install params. The created app is recorded in AppInstallation.oauth_bindings. Mutually exclusive with oauth_provider."
           },
+          "api_key_config": {
+            "$ref": "#/components/schemas/MCPApiKeyConfig",
+            "description": "Install-time provisioning blueprint for auth: 'api_key' collections. Only meaningful alongside auth: 'api_key'; ignored otherwise."
+          },
           "oauth_provider": {
             "type": "string",
             "description": "Reference to a key in AppManifestData.oauth_providers. When set, this collection shares the named provider's OAuth provider configuration. Mutually exclusive with oauth_config and oauth_app. Requires auth: \"oauth\" to be set."
@@ -19768,6 +19850,47 @@
           "docx",
           "pdf"
         ]
+      },
+      "McpApiKeyCredential": {
+        "type": "object",
+        "properties": {
+          "api_key": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S",
+            "description": "The key the installer holds for this collection. Surrounding whitespace is stripped. Stored encrypted in the installing project and never returned."
+          }
+        },
+        "required": [
+          "api_key"
+        ],
+        "additionalProperties": false
+      },
+      "McpApiKeyStatus": {
+        "type": "object",
+        "properties": {
+          "configured": {
+            "type": "boolean",
+            "description": "Whether a key is stored for this collection."
+          },
+          "hint": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Last few characters of the stored key, for display only. Null when unset."
+          }
+        },
+        "required": [
+          "configured",
+          "hint"
+        ],
+        "additionalProperties": false,
+        "description": "Whether an API key is configured for an MCP tool collection"
       },
       "McpOAuthConnectResponse": {
         "type": "object",
@@ -25406,6 +25529,21 @@
         ],
         "additionalProperties": false
       },
+      "SetMcpApiKeyRequest": {
+        "type": "object",
+        "properties": {
+          "api_key": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S",
+            "description": "The static key issued by the remote MCP server. Surrounding whitespace is stripped. Stored encrypted in the project secret store and sent as the RFC 6750 bearer token on every request to the collection URL. Never returned by the API."
+          }
+        },
+        "required": [
+          "api_key"
+        ],
+        "additionalProperties": false
+      },
       "SetObjectEmbeddingsResponse": {
         "type": "object",
         "properties": {
@@ -26737,9 +26875,10 @@
         "type": "string",
         "enum": [
           "oauth",
+          "api_key",
           "other"
         ],
-        "description": "Authentication type for tool collections"
+        "description": "Authentication type for tool collections.\n- 'oauth': the runtime resolves a per-user or per-project OAuth access token\n- 'api_key': a static key held in the project's secret store is sent as the RFC 6750 bearer token (`Authorization: Bearer <key>`)"
       },
       "ToolCollectionObject": {
         "oneOf": [
@@ -32171,9 +32310,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -32420,9 +32559,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -32521,9 +32660,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -32712,9 +32851,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -32801,9 +32940,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -32976,9 +33115,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -33065,9 +33204,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -33162,9 +33301,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -33259,9 +33398,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -33356,9 +33495,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -33453,9 +33592,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -33550,9 +33689,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -33647,9 +33786,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -33744,9 +33883,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -33841,9 +33980,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -33938,9 +34077,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -34113,9 +34252,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -34281,9 +34420,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -34532,9 +34671,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -34633,9 +34772,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -34781,9 +34920,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -34882,9 +35021,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -34981,9 +35120,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -35072,9 +35211,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -35173,9 +35312,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -35274,9 +35413,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -35365,9 +35504,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -35464,9 +35603,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -35555,9 +35694,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -35662,9 +35801,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -35753,9 +35892,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -36035,9 +36174,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -36240,9 +36379,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -36332,9 +36471,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -36423,9 +36562,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -36546,9 +36685,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -36638,9 +36777,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -36720,9 +36859,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -36812,9 +36951,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -36904,9 +37043,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -37157,9 +37296,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -37248,9 +37387,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -37339,9 +37478,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -37440,9 +37579,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -37541,9 +37680,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -37642,9 +37781,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -37743,9 +37882,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -37844,9 +37983,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -37945,9 +38084,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -38185,9 +38324,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -38277,9 +38416,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -38528,9 +38667,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -38619,9 +38758,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -38710,9 +38849,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -38811,9 +38950,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -38900,9 +39039,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -39001,9 +39140,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -39363,9 +39502,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -39462,9 +39601,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -39777,9 +39916,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -39875,9 +40014,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -39957,9 +40096,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -40039,9 +40178,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -40198,9 +40337,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -40280,9 +40419,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -40439,9 +40578,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -40521,9 +40660,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -40603,9 +40742,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -40770,9 +40909,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -40852,9 +40991,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -40934,9 +41073,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -41016,9 +41155,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -41188,9 +41327,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -41449,9 +41588,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -41540,9 +41679,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -41755,9 +41894,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -41849,9 +41988,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -41941,9 +42080,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -42033,9 +42172,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -42150,9 +42289,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -42242,9 +42381,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -42324,9 +42463,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -42483,9 +42622,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -42736,9 +42875,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -42816,9 +42955,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -42896,9 +43035,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -43055,9 +43194,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -43137,9 +43276,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -43238,9 +43377,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ],
@@ -43405,9 +43544,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -43588,9 +43727,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -43670,9 +43809,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -43923,9 +44062,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -44014,9 +44153,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -44105,9 +44244,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -44196,9 +44335,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -44287,9 +44426,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -44378,9 +44517,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -44469,9 +44608,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -44568,9 +44707,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -44659,9 +44798,286 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
+          "x-vertesia-global-header": true
+        }
+      ]
+    },
+    "/apps/{id}/collections/{collectionId}/api-key": {
+      "put": {
+        "operationId": "SetMcpCollectionApiKey",
+        "tags": [
+          "Apps"
+        ],
+        "summary": "Set the API key of an MCP tool collection",
+        "description": "Stores the static bearer token for a tool collection declared with auth: 'api_key'. The key is encrypted in the project secret store and is never returned by any endpoint. Replaces any key already stored for the collection.\n\n**Required permissions:** `app:manage`",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OpenID": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "collectionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Whether a key is now configured, with a masked hint.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/McpApiKeyStatus"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [
+          "app:manage"
+        ],
+        "x-vertesia-source": {
+          "file": "../../apps/studio-server/src/api/apps.ts",
+          "className": "AppsResource",
+          "methodName": "setMcpCollectionApiKey"
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetMcpApiKeyRequest"
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "GetMcpCollectionApiKeyStatus",
+        "tags": [
+          "Apps"
+        ],
+        "summary": "Check whether an MCP tool collection has an API key",
+        "description": "Returns whether a key is stored for the collection and a masked hint for display. The key itself is write-only and is never returned.\n\n**Required permissions:** `app:manage`",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OpenID": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "collectionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Whether a key is configured, with a masked hint.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/McpApiKeyStatus"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [
+          "app:manage"
+        ],
+        "x-vertesia-source": {
+          "file": "../../apps/studio-server/src/api/apps.ts",
+          "className": "AppsResource",
+          "methodName": "getMcpCollectionApiKeyStatus"
+        }
+      },
+      "delete": {
+        "operationId": "DeleteMcpCollectionApiKey",
+        "tags": [
+          "Apps"
+        ],
+        "summary": "Delete the API key of an MCP tool collection",
+        "description": "Removes the stored key. The collection stops authenticating until a new key is set, so its tools will fail to load.\n\n**Required permissions:** `app:manage`",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OpenID": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "collectionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The now-empty key status.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/McpApiKeyStatus"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [
+          "app:manage"
+        ],
+        "x-vertesia-source": {
+          "file": "../../apps/studio-server/src/api/apps.ts",
+          "className": "AppsResource",
+          "methodName": "deleteMcpCollectionApiKey"
+        }
+      },
+      "parameters": [
+        {
+          "name": "x-api-version",
+          "in": "header",
+          "required": false,
+          "schema": {
+            "type": "string",
+            "example": "20260803"
+          },
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -44779,9 +45195,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -44938,9 +45354,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -45105,9 +45521,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -45196,9 +45612,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -45287,9 +45703,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -45379,9 +45795,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -45478,9 +45894,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -45579,9 +45995,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -45686,9 +46102,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -45843,9 +46259,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -45943,7 +46359,7 @@
           "Apps"
         ],
         "summary": "Delete an app",
-        "description": "Deletes an app manifest.\n\n**Required permissions:** `app:manage`",
+        "description": "Cascade-deletes an app manifest and everything provisioned from it. Without `?confirm=true` nothing is removed and the same shape comes back as a dry-run preview.\n\n**Required permissions:** `app:manage`",
         "security": [
           {
             "bearerAuth": []
@@ -45964,11 +46380,11 @@
         ],
         "responses": {
           "200": {
-            "description": "App deletion result.",
+            "description": "App deletion result, or the dry-run preview.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CountResult"
+                  "$ref": "#/components/schemas/AppDeleteSummary"
                 }
               }
             }
@@ -46020,9 +46436,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -46112,9 +46528,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -46203,9 +46619,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -46292,9 +46708,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -46393,9 +46809,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -46484,9 +46900,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -46604,9 +47020,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -46695,9 +47111,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -46807,9 +47223,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -46889,9 +47305,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -46969,9 +47385,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -47058,9 +47474,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -47159,9 +47575,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -47260,9 +47676,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -47350,9 +47766,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -47447,9 +47863,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -47544,9 +47960,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -47633,9 +48049,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -47730,9 +48146,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -47827,9 +48243,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -47917,9 +48333,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -48014,9 +48430,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -48173,9 +48589,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -48255,9 +48671,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -48508,9 +48924,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -48694,9 +49110,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -48873,9 +49289,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -48967,9 +49383,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -49126,9 +49542,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -49379,9 +49795,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -49468,9 +49884,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -49558,9 +49974,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -49647,9 +50063,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -49738,9 +50154,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -49827,9 +50243,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -49916,9 +50332,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -50123,9 +50539,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -50440,9 +50856,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -50549,9 +50965,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -50672,9 +51088,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -50762,9 +51178,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -50942,9 +51358,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -51195,9 +51611,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -51287,9 +51703,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -51643,9 +52059,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -51898,9 +52314,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -52066,9 +52482,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -52167,9 +52583,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -52258,9 +52674,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -52367,9 +52783,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -52467,9 +52883,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -52653,9 +53069,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -52761,9 +53177,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -52866,9 +53282,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -53063,9 +53479,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -53283,9 +53699,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -53391,9 +53807,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -53483,9 +53899,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -53575,9 +53991,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -53667,9 +54083,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -53768,9 +54184,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -53869,9 +54285,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -53968,9 +54384,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -54068,9 +54484,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -54160,9 +54576,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -54252,9 +54668,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -54361,9 +54777,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -54453,9 +54869,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -54596,9 +55012,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -54687,9 +55103,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -54788,9 +55204,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -54879,9 +55295,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -54970,9 +55386,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -55052,9 +55468,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -55134,9 +55550,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -55216,9 +55632,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -55299,9 +55715,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -55382,9 +55798,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -55474,9 +55890,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -55566,9 +55982,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -55648,9 +56064,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -55730,9 +56146,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -55937,9 +56353,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -56029,9 +56445,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -56283,9 +56699,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -56384,9 +56800,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -56485,9 +56901,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -56705,9 +57121,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -56956,9 +57372,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -57055,9 +57471,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -57146,9 +57562,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -57238,9 +57654,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -57331,9 +57747,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -57423,9 +57839,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -57515,9 +57931,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -57597,9 +58013,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -57688,9 +58104,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -57787,9 +58203,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -57886,9 +58302,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -58016,9 +58432,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -58108,9 +58524,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -58200,9 +58616,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -58292,9 +58708,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -58618,9 +59034,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -58709,9 +59125,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -58800,9 +59216,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -58931,9 +59347,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -59022,9 +59438,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -59131,9 +59547,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -59222,9 +59638,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -59313,9 +59729,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -59414,9 +59830,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -59505,9 +59921,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -59606,9 +60022,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -59707,9 +60123,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -59798,9 +60214,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -59921,9 +60337,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -60044,9 +60460,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -60167,9 +60583,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -60290,9 +60706,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -60381,9 +60797,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -60589,9 +61005,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -60680,9 +61096,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -60933,9 +61349,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -61093,9 +61509,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -61253,9 +61669,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -61346,9 +61762,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -61454,9 +61870,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -61570,9 +61986,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -61671,9 +62087,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -61800,9 +62216,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -61917,9 +62333,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -62025,9 +62441,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -62132,9 +62548,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -62233,9 +62649,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -62487,9 +62903,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -62588,9 +63004,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -62680,9 +63096,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -62934,9 +63350,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -63102,9 +63518,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -63184,9 +63600,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -63276,9 +63692,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -63368,9 +63784,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -63459,9 +63875,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -63552,9 +63968,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -63644,9 +64060,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -63741,9 +64157,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -63948,9 +64364,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -64040,9 +64456,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -64132,9 +64548,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -64291,9 +64707,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -64544,9 +64960,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -64703,9 +65119,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -64956,9 +65372,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -65036,9 +65452,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -65135,9 +65551,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -65227,9 +65643,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -65319,9 +65735,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -65411,9 +65827,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -65662,9 +66078,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -65871,9 +66287,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -65972,9 +66388,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -66073,9 +66489,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -66175,9 +66591,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -66267,9 +66683,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -66359,9 +66775,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -66460,9 +66876,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -66561,9 +66977,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -66720,9 +67136,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -66887,9 +67303,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -67064,9 +67480,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -67155,9 +67571,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -67332,9 +67748,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -67617,9 +68033,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -67718,9 +68134,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -67817,9 +68233,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -68010,9 +68426,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -68109,9 +68525,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -68218,9 +68634,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -68309,9 +68725,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -68410,9 +68826,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -68511,9 +68927,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -68612,9 +69028,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -68713,9 +69129,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -68890,9 +69306,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -69167,9 +69583,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -69268,9 +69684,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -69369,9 +69785,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -69562,9 +69978,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -69669,9 +70085,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -69786,9 +70202,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -69895,9 +70311,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -69987,9 +70403,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -70086,9 +70502,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -70187,9 +70603,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]
@@ -70279,9 +70695,9 @@
           "required": false,
           "schema": {
             "type": "string",
-            "example": "20260319"
+            "example": "20260803"
           },
-          "description": "Optional Vertesia API version header. Use `20260319` for the current stable API shape.",
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
           "x-vertesia-global-header": true
         }
       ]

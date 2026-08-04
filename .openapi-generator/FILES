@@ -114,6 +114,7 @@ vertesia_client/openapi/models/app_build_progress_status.py
 vertesia_client/openapi/models/app_build_trigger.py
 vertesia_client/openapi/models/app_capabilities.py
 vertesia_client/openapi/models/app_dashboard_definition.py
+vertesia_client/openapi/models/app_delete_summary.py
 vertesia_client/openapi/models/app_development_task.py
 vertesia_client/openapi/models/app_development_task_details.py
 vertesia_client/openapi/models/app_development_task_list.py
@@ -607,6 +608,9 @@ vertesia_client/openapi/models/load_balancing_env_config.py
 vertesia_client/openapi/models/load_balancing_env_entry_config.py
 vertesia_client/openapi/models/magic_pdf_configuration.py
 vertesia_client/openapi/models/markdown_rendition_format.py
+vertesia_client/openapi/models/mcp_api_key_config.py
+vertesia_client/openapi/models/mcp_api_key_credential.py
+vertesia_client/openapi/models/mcp_api_key_status.py
 vertesia_client/openapi/models/mcp_o_auth_connect_response.py
 vertesia_client/openapi/models/mcp_o_auth_disconnect_response.py
 vertesia_client/openapi/models/mcp_o_auth_token_request.py
@@ -813,6 +817,7 @@ vertesia_client/openapi/models/serper_configuration.py
 vertesia_client/openapi/models/serper_configuration_input.py
 vertesia_client/openapi/models/service_account_token_request.py
 vertesia_client/openapi/models/set_file_metadata_payload.py
+vertesia_client/openapi/models/set_mcp_api_key_request.py
 vertesia_client/openapi/models/set_object_embeddings_response.py
 vertesia_client/openapi/models/signal_agent_response.py
 vertesia_client/openapi/models/signal_event_properties.py

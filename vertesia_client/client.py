@@ -49,7 +49,7 @@ from vertesia_client.openapi.configuration import Configuration
 
 DEFAULT_SITE = "api.vertesia.io"
 DEFAULT_TOKEN_URL = "https://sts.vertesia.io"
-DEFAULT_API_VERSION = "20260319"
+DEFAULT_API_VERSION = "20260803"
 TOKEN_REFRESH_WINDOW_SECONDS = 60
 
 
