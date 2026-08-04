@@ -18150,14 +18150,6 @@ components:
     PromptTemplateCreatePayload:
       type: object
       properties:
-        role:
-          $ref: "#/components/schemas/PromptRole"
-        content:
-          type: string
-        content_type:
-          $ref: "#/components/schemas/TemplateType"
-        inputSchema:
-          $ref: "#/components/schemas/JSONSchema"
         name:
           type: string
         parent:
@@ -18175,11 +18167,19 @@ components:
         last_published_at:
           type: string
           format: date-time
+        role:
+          $ref: "#/components/schemas/PromptRole"
+        content:
+          type: string
+        content_type:
+          $ref: "#/components/schemas/TemplateType"
+        inputSchema:
+          $ref: "#/components/schemas/JSONSchema"
       required:
+        - name
         - role
         - content
         - content_type
-        - name
       additionalProperties: false
     PromptTemplateForkPayload:
       type: object
@@ -18844,6 +18844,7 @@ components:
       description: Polled status response for markdown rendering workflow.
     RenderPromptPayload:
       type: object
+      additionalProperties: true
     RenderPromptResponse:
       type: object
       properties:

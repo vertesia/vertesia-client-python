@@ -31,10 +31,6 @@ class PromptTemplateCreatePayload(BaseModel):
     """
     PromptTemplateCreatePayload
     """ # noqa: E501
-    role: PromptRole
-    content: StrictStr
-    content_type: TemplateType
-    input_schema: Optional[JSONSchema] = Field(default=None, alias="inputSchema")
     name: StrictStr
     parent: Optional[StrictStr] = None
     description: Optional[StrictStr] = None
@@ -42,7 +38,11 @@ class PromptTemplateCreatePayload(BaseModel):
     script: Optional[StrictStr] = None
     tags: Optional[List[StrictStr]] = None
     last_published_at: Optional[datetime] = None
-    __properties: ClassVar[List[str]] = ["role", "content", "content_type", "inputSchema", "name", "parent", "description", "test_data", "script", "tags", "last_published_at"]
+    role: PromptRole
+    content: StrictStr
+    content_type: TemplateType
+    input_schema: Optional[JSONSchema] = Field(default=None, alias="inputSchema")
+    __properties: ClassVar[List[str]] = ["name", "parent", "description", "test_data", "script", "tags", "last_published_at", "role", "content", "content_type", "inputSchema"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -98,17 +98,17 @@ class PromptTemplateCreatePayload(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "role": obj.get("role"),
-            "content": obj.get("content"),
-            "content_type": obj.get("content_type"),
-            "inputSchema": JSONSchema.from_dict(obj["inputSchema"]) if obj.get("inputSchema") is not None else None,
             "name": obj.get("name"),
             "parent": obj.get("parent"),
             "description": obj.get("description"),
             "test_data": obj.get("test_data"),
             "script": obj.get("script"),
             "tags": obj.get("tags"),
-            "last_published_at": obj.get("last_published_at")
+            "last_published_at": obj.get("last_published_at"),
+            "role": obj.get("role"),
+            "content": obj.get("content"),
+            "content_type": obj.get("content_type"),
+            "inputSchema": JSONSchema.from_dict(obj["inputSchema"]) if obj.get("inputSchema") is not None else None
         })
         return _obj
 

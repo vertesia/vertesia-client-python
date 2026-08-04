@@ -2758,7 +2758,7 @@ class PromptTemplatesApi:
     def render_prompt(
         self,
         pt_id: StrictStr,
-        body: Dict[str, Any],
+        request_body: Dict[str, Any],
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -2779,8 +2779,8 @@ class PromptTemplatesApi:
 
         :param pt_id: (required)
         :type pt_id: str
-        :param body: (required)
-        :type body: object
+        :param request_body: (required)
+        :type request_body: Dict[str, object]
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -2807,7 +2807,7 @@ class PromptTemplatesApi:
 
         _param = self._render_prompt_serialize(
             pt_id=pt_id,
-            body=body,
+            request_body=request_body,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -2835,7 +2835,7 @@ class PromptTemplatesApi:
     def render_prompt_with_http_info(
         self,
         pt_id: StrictStr,
-        body: Dict[str, Any],
+        request_body: Dict[str, Any],
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -2856,8 +2856,8 @@ class PromptTemplatesApi:
 
         :param pt_id: (required)
         :type pt_id: str
-        :param body: (required)
-        :type body: object
+        :param request_body: (required)
+        :type request_body: Dict[str, object]
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -2884,7 +2884,7 @@ class PromptTemplatesApi:
 
         _param = self._render_prompt_serialize(
             pt_id=pt_id,
-            body=body,
+            request_body=request_body,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -2912,7 +2912,7 @@ class PromptTemplatesApi:
     def render_prompt_without_preload_content(
         self,
         pt_id: StrictStr,
-        body: Dict[str, Any],
+        request_body: Dict[str, Any],
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260319` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -2933,8 +2933,8 @@ class PromptTemplatesApi:
 
         :param pt_id: (required)
         :type pt_id: str
-        :param body: (required)
-        :type body: object
+        :param request_body: (required)
+        :type request_body: Dict[str, object]
         :param x_api_version: Optional Vertesia API version header. Use `20260319` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -2961,7 +2961,7 @@ class PromptTemplatesApi:
 
         _param = self._render_prompt_serialize(
             pt_id=pt_id,
-            body=body,
+            request_body=request_body,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -2984,7 +2984,7 @@ class PromptTemplatesApi:
     def _render_prompt_serialize(
         self,
         pt_id,
-        body,
+        request_body,
         x_api_version,
         _request_auth,
         _content_type,
@@ -3015,8 +3015,8 @@ class PromptTemplatesApi:
             _header_params['x-api-version'] = x_api_version
         # process the form parameters
         # process the body parameter
-        if body is not None:
-            _body_params = body
+        if request_body is not None:
+            _body_params = request_body
 
 
         # set the HTTP header `Accept`
