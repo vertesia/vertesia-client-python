@@ -40,7 +40,8 @@ class ConversationFile(BaseModel):
     error: Optional[StrictStr] = Field(default=None, description="Error message if status is ERROR")
     started_at: Union[StrictFloat, StrictInt] = Field(description="Timestamp when upload started")
     completed_at: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Timestamp when processing completed")
-    __properties: ClassVar[List[str]] = ["id", "name", "content_type", "size", "status", "artifact_path", "reference", "md_path", "text_extracted", "error", "started_at", "completed_at"]
+    consumed_at: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Timestamp when this file was delivered to the agent as part of a user message. Once set, the file is no longer re-attached to later messages — it remains accessible to tools via its artifact_path/md_path.")
+    __properties: ClassVar[List[str]] = ["id", "name", "content_type", "size", "status", "artifact_path", "reference", "md_path", "text_extracted", "error", "started_at", "completed_at", "consumed_at"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -104,7 +105,8 @@ class ConversationFile(BaseModel):
             "text_extracted": obj.get("text_extracted"),
             "error": obj.get("error"),
             "started_at": obj.get("started_at"),
-            "completed_at": obj.get("completed_at")
+            "completed_at": obj.get("completed_at"),
+            "consumed_at": obj.get("consumed_at")
         })
         return _obj
 
