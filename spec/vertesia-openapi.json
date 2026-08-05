@@ -19699,6 +19699,10 @@
           "completed_at": {
             "type": "number",
             "description": "Timestamp when processing completed"
+          },
+          "consumed_at": {
+            "type": "number",
+            "description": "Timestamp when this file was delivered to the agent as part of a user message. Once set, the file is no longer re-attached to later messages — it remains accessible to tools via its artifact_path/md_path."
           }
         },
         "required": [
