@@ -92,6 +92,7 @@ class TokenServiceApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "IssueTokenResponse",
+            '403': "IssueTokenForbiddenResponse",
             '500': "ErrorResponse",
             '503': "IssueTokenUnavailableResponse",
             '4XX': "ErrorResponse",
@@ -162,6 +163,7 @@ class TokenServiceApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "IssueTokenResponse",
+            '403': "IssueTokenForbiddenResponse",
             '500': "ErrorResponse",
             '503': "IssueTokenUnavailableResponse",
             '4XX': "ErrorResponse",
@@ -232,6 +234,7 @@ class TokenServiceApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "IssueTokenResponse",
+            '403': "IssueTokenForbiddenResponse",
             '500': "ErrorResponse",
             '503': "IssueTokenUnavailableResponse",
             '4XX': "ErrorResponse",

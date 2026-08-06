@@ -589,6 +589,7 @@ vertesia_client/openapi/models/invite_acceptance_response.py
 vertesia_client/openapi/models/invite_decline_response.py
 vertesia_client/openapi/models/invite_user_request_payload.py
 vertesia_client/openapi/models/invite_user_response_payload.py
+vertesia_client/openapi/models/issue_token_forbidden_response.py
 vertesia_client/openapi/models/issue_token_request.py
 vertesia_client/openapi/models/issue_token_response.py
 vertesia_client/openapi/models/issue_token_unavailable_response.py

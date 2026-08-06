@@ -611,6 +611,7 @@ __all__ = [
     "InviteDeclineResponse",
     "InviteUserRequestPayload",
     "InviteUserResponsePayload",
+    "IssueTokenForbiddenResponse",
     "IssueTokenRequest",
     "IssueTokenResponse",
     "IssueTokenUnavailableResponse",
@@ -1651,6 +1652,7 @@ from vertesia_client.openapi.models.invite_acceptance_response import InviteAcce
 from vertesia_client.openapi.models.invite_decline_response import InviteDeclineResponse as InviteDeclineResponse
 from vertesia_client.openapi.models.invite_user_request_payload import InviteUserRequestPayload as InviteUserRequestPayload
 from vertesia_client.openapi.models.invite_user_response_payload import InviteUserResponsePayload as InviteUserResponsePayload
+from vertesia_client.openapi.models.issue_token_forbidden_response import IssueTokenForbiddenResponse as IssueTokenForbiddenResponse
 from vertesia_client.openapi.models.issue_token_request import IssueTokenRequest as IssueTokenRequest
 from vertesia_client.openapi.models.issue_token_response import IssueTokenResponse as IssueTokenResponse
 from vertesia_client.openapi.models.issue_token_unavailable_response import IssueTokenUnavailableResponse as IssueTokenUnavailableResponse

@@ -19236,6 +19236,33 @@
         ],
         "additionalProperties": false
       },
+      "IssueTokenForbiddenResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "errorCode": {
+            "type": "string",
+            "enum": [
+              "requested_scope_unavailable",
+              "no_accessible_account",
+              "restricted_environment",
+              "token_issuance_forbidden"
+            ]
+          }
+        },
+        "required": [
+          "error",
+          "message",
+          "errorCode"
+        ],
+        "additionalProperties": false,
+        "description": "A safe, machine-readable denial response. Requested resources are intentionally not identified or confirmed."
+      },
       "IssueTokenRequest": {
         "oneOf": [
           {
@@ -70887,6 +70914,16 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/IssueTokenResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The authenticated identity cannot use the requested scope or environment.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IssueTokenForbiddenResponse"
                 }
               }
             }
