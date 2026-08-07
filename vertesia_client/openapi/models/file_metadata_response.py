@@ -32,8 +32,9 @@ class FileMetadataResponse(BaseModel):
     content_type: StrictStr = Field(alias="contentType")
     content_disposition: Optional[StrictStr] = Field(default=None, alias="contentDisposition")
     etag: Optional[StrictStr] = None
+    generation: Optional[StrictStr] = None
     custom_metadata: Optional[Dict[str, StrictStr]] = Field(default=None, alias="customMetadata")
-    __properties: ClassVar[List[str]] = ["name", "size", "contentType", "contentDisposition", "etag", "customMetadata"]
+    __properties: ClassVar[List[str]] = ["name", "size", "contentType", "contentDisposition", "etag", "generation", "customMetadata"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -91,6 +92,7 @@ class FileMetadataResponse(BaseModel):
             "contentType": obj.get("contentType"),
             "contentDisposition": obj.get("contentDisposition"),
             "etag": obj.get("etag"),
+            "generation": obj.get("generation"),
             "customMetadata": obj.get("customMetadata")
         })
         return _obj

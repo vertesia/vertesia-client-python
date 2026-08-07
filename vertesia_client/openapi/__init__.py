@@ -755,6 +755,7 @@ __all__ = [
     "ProjectSearchTier",
     "ProjectTokenRequest",
     "ProjectToolInfo",
+    "ProjectedContentObjectApiResponse",
     "PromoteAppVersionResponse",
     "PromoteDashboardVersionPayload",
     "PromptImprovementResponse",
@@ -1802,6 +1803,7 @@ from vertesia_client.openapi.models.project_search_property_type import ProjectS
 from vertesia_client.openapi.models.project_search_tier import ProjectSearchTier as ProjectSearchTier
 from vertesia_client.openapi.models.project_token_request import ProjectTokenRequest as ProjectTokenRequest
 from vertesia_client.openapi.models.project_tool_info import ProjectToolInfo as ProjectToolInfo
+from vertesia_client.openapi.models.projected_content_object_api_response import ProjectedContentObjectApiResponse as ProjectedContentObjectApiResponse
 from vertesia_client.openapi.models.promote_app_version_response import PromoteAppVersionResponse as PromoteAppVersionResponse
 from vertesia_client.openapi.models.promote_dashboard_version_payload import PromoteDashboardVersionPayload as PromoteDashboardVersionPayload
 from vertesia_client.openapi.models.prompt_improvement_response import PromptImprovementResponse as PromptImprovementResponse

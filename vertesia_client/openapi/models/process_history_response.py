@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
+from vertesia_client.openapi.models.node_history_entry import NodeHistoryEntry
 from vertesia_client.openapi.models.process_history_response_node_history_ref import ProcessHistoryResponseNodeHistoryRef
 from typing import Optional, Set
 from typing_extensions import Self
@@ -30,9 +31,10 @@ class ProcessHistoryResponse(BaseModel):
     """ # noqa: E501
     run_id: StrictStr
     current_node: StrictStr
+    node_history: List[NodeHistoryEntry]
     node_history_ref: Optional[ProcessHistoryResponseNodeHistoryRef] = None
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["run_id", "current_node", "node_history_ref"]
+    __properties: ClassVar[List[str]] = ["run_id", "current_node", "node_history", "node_history_ref"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -75,6 +77,13 @@ class ProcessHistoryResponse(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of each item in node_history (list)
+        _items = []
+        if self.node_history:
+            for _item_node_history in self.node_history:
+                if _item_node_history:
+                    _items.append(_item_node_history.to_dict())
+            _dict['node_history'] = _items
         # override the default output from pydantic by calling `to_dict()` of node_history_ref
         if self.node_history_ref:
             _dict['node_history_ref'] = self.node_history_ref.to_dict()
@@ -97,6 +106,7 @@ class ProcessHistoryResponse(BaseModel):
         _obj = cls.model_validate({
             "run_id": obj.get("run_id"),
             "current_node": obj.get("current_node"),
+            "node_history": [NodeHistoryEntry.from_dict(_item) for _item in obj["node_history"]] if obj.get("node_history") is not None else None,
             "node_history_ref": ProcessHistoryResponseNodeHistoryRef.from_dict(obj["node_history_ref"]) if obj.get("node_history_ref") is not None else None
         })
         # store additional fields in additional_properties

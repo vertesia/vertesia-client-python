@@ -24,6 +24,7 @@ from vertesia_client.openapi.models.conversation_visibility import ConversationV
 from vertesia_client.openapi.models.interaction_ref import InteractionRef
 from vertesia_client.openapi.models.pending_activity import PendingActivity
 from vertesia_client.openapi.models.workflow_history import WorkflowHistory
+from vertesia_client.openapi.models.workflow_run import WorkflowRun
 from vertesia_client.openapi.models.workflow_run_status import WorkflowRunStatus
 from typing import Optional, Set
 from typing_extensions import Self
@@ -56,7 +57,8 @@ class WorkflowRunWithDetails(BaseModel):
     history: Optional[WorkflowHistory] = None
     memo: Optional[Dict[str, Any]] = None
     pending_activities: Optional[List[PendingActivity]] = Field(default=None, alias="pendingActivities")
-    __properties: ClassVar[List[str]] = ["status", "type", "started_at", "closed_at", "execution_duration", "run_id", "workflow_id", "initiated_by", "interaction_name", "input", "result", "error", "has_reported_errors", "raw", "vertesia_workflow_type", "interactions", "visibility", "topic", "activity_state", "interactive", "history", "memo", "pendingActivities"]
+    children: Optional[List[WorkflowRun]] = None
+    __properties: ClassVar[List[str]] = ["status", "type", "started_at", "closed_at", "execution_duration", "run_id", "workflow_id", "initiated_by", "interaction_name", "input", "result", "error", "has_reported_errors", "raw", "vertesia_workflow_type", "interactions", "visibility", "topic", "activity_state", "interactive", "history", "memo", "pendingActivities", "children"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -117,6 +119,13 @@ class WorkflowRunWithDetails(BaseModel):
                 if _item_pending_activities:
                     _items.append(_item_pending_activities.to_dict())
             _dict['pendingActivities'] = _items
+        # override the default output from pydantic by calling `to_dict()` of each item in children (list)
+        _items = []
+        if self.children:
+            for _item_children in self.children:
+                if _item_children:
+                    _items.append(_item_children.to_dict())
+            _dict['children'] = _items
         # set to None if started_at (nullable) is None
         # and model_fields_set contains the field
         if self.started_at is None and "started_at" in self.model_fields_set:
@@ -186,7 +195,8 @@ class WorkflowRunWithDetails(BaseModel):
             "interactive": obj.get("interactive"),
             "history": WorkflowHistory.from_dict(obj["history"]) if obj.get("history") is not None else None,
             "memo": obj.get("memo"),
-            "pendingActivities": [PendingActivity.from_dict(_item) for _item in obj["pendingActivities"]] if obj.get("pendingActivities") is not None else None
+            "pendingActivities": [PendingActivity.from_dict(_item) for _item in obj["pendingActivities"]] if obj.get("pendingActivities") is not None else None,
+            "children": [WorkflowRun.from_dict(_item) for _item in obj["children"]] if obj.get("children") is not None else None
         })
         return _obj
 

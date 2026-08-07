@@ -16581,6 +16581,9 @@
           "etag": {
             "type": "string"
           },
+          "generation": {
+            "type": "string"
+          },
           "customMetadata": {
             "$ref": "#/components/schemas/StringValueMap"
           }
@@ -21648,7 +21651,7 @@
           "results": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ContentObjectItemApiResponse"
+              "$ref": "#/components/schemas/ProjectedContentObjectApiResponse"
             }
           },
           "facets": {
@@ -22287,11 +22290,15 @@
           },
           "current_node": {
             "type": "string"
+          },
+          "context": {
+            "$ref": "#/components/schemas/JSONObject"
           }
         },
         "required": [
           "run_id",
-          "current_node"
+          "current_node",
+          "context"
         ],
         "additionalProperties": false
       },
@@ -22530,6 +22537,12 @@
           "current_node": {
             "type": "string"
           },
+          "node_history": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NodeHistoryEntry"
+            }
+          },
           "node_history_ref": {
             "type": "object",
             "properties": {
@@ -22553,7 +22566,8 @@
         },
         "required": [
           "run_id",
-          "current_node"
+          "current_node",
+          "node_history"
         ],
         "additionalProperties": false
       },
@@ -23462,6 +23476,144 @@
         "items": {
           "$ref": "#/components/schemas/ProjectToolInfo"
         }
+      },
+      "ProjectedContentObjectApiResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the object"
+          },
+          "name": {
+            "type": "string",
+            "description": "Human-readable name or title"
+          },
+          "description": {
+            "type": "string",
+            "description": "Optional detailed description of the object"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Optional array of categorization tags"
+          },
+          "updated_by": {
+            "type": "string",
+            "description": "Identifier of the user who last modified the object"
+          },
+          "created_by": {
+            "type": "string",
+            "description": "Identifier of the user who created the object"
+          },
+          "created_at": {
+            "type": "string",
+            "description": "ISO timestamp of when the object was created"
+          },
+          "updated_at": {
+            "type": "string",
+            "description": "ISO timestamp of when the object was last updated"
+          },
+          "parent": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ContentObjectStatus"
+          },
+          "type": {
+            "$ref": "#/components/schemas/ContentObjectApiTypeRef"
+          },
+          "content": {
+            "$ref": "#/components/schemas/ContentSource"
+          },
+          "external_id": {
+            "type": "string"
+          },
+          "properties": {
+            "$ref": "#/components/schemas/JSONObject"
+          },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "tokens": {
+            "type": "object",
+            "properties": {
+              "count": {
+                "type": "number"
+              },
+              "encoding": {
+                "type": "string"
+              },
+              "etag": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          },
+          "revision": {
+            "$ref": "#/components/schemas/ContentObjectApiRevision"
+          },
+          "is_deleted": {
+            "type": "boolean"
+          },
+          "is_locked": {
+            "type": "boolean"
+          },
+          "score": {
+            "type": "number"
+          },
+          "user_permissions": {
+            "$ref": "#/components/schemas/ContentObjectUserPermissions"
+          },
+          "text": {
+            "type": "string"
+          },
+          "text_etag": {
+            "type": "string"
+          },
+          "embeddings": {
+            "$ref": "#/components/schemas/EmbeddingMap"
+          },
+          "parts": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "parts_etag": {
+            "type": "string"
+          },
+          "transcript": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "security": {
+            "$ref": "#/components/schemas/StringArrayMap"
+          },
+          "sensitivity": {
+            "type": "number",
+            "description": "BLP sensitivity level — set directly or inherited from collections (max across collections)."
+          },
+          "compartments": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Compartments — set directly or inherited from collections (union across collections)."
+          },
+          "inherited_properties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InheritedPropertyMetadata"
+            }
+          }
+        },
+        "additionalProperties": false
       },
       "PromoteAppVersionResponse": {
         "type": "object",
@@ -32188,6 +32340,17 @@
           "interactive": {
             "type": "boolean",
             "description": "Whether this conversation is interactive (accepts user input)."
+          },
+          "memo": {
+            "anyOf": [
+              {
+                "type": "object",
+                "additionalProperties": true
+              },
+              {
+                "type": "null"
+              }
+            ]
           }
         },
         "required": [
@@ -32401,6 +32564,12 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/PendingActivity"
+            }
+          },
+          "children": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WorkflowRun"
             }
           }
         },
@@ -52076,11 +52245,11 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": "The created and started agent run.",
+            "description": "The created and started agent or process run.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AgentRun"
+                  "$ref": "#/components/schemas/AgentRunResponse"
                 }
               }
             }
@@ -52696,11 +52865,11 @@
         ],
         "responses": {
           "200": {
-            "description": "The requested agent run.",
+            "description": "The requested agent or process run.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AgentRun"
+                  "$ref": "#/components/schemas/AgentRunResponse"
                 }
               }
             }
@@ -59090,11 +59259,11 @@
         ],
         "responses": {
           "200": {
-            "description": "The requested content object.",
+            "description": "The requested content object or projection.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ContentObjectApiResponse"
+                  "$ref": "#/components/schemas/ProjectedContentObjectApiResponse"
                 }
               }
             }

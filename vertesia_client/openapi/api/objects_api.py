@@ -48,6 +48,7 @@ from vertesia_client.openapi.models.grounded_extraction_result_response import G
 from vertesia_client.openapi.models.list_content_object_exports_response import ListContentObjectExportsResponse
 from vertesia_client.openapi.models.list_workflow_runs_response import ListWorkflowRunsResponse
 from vertesia_client.openapi.models.object_search_response import ObjectSearchResponse
+from vertesia_client.openapi.models.projected_content_object_api_response import ProjectedContentObjectApiResponse
 from vertesia_client.openapi.models.set_object_embeddings_response import SetObjectEmbeddingsResponse
 from vertesia_client.openapi.models.start_content_object_export_request import StartContentObjectExportRequest
 from vertesia_client.openapi.models.start_content_object_export_response import StartContentObjectExportResponse
@@ -3401,7 +3402,7 @@ class ObjectsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ContentObjectApiResponse:
+    ) -> ProjectedContentObjectApiResponse:
         """Retrieve a content object
 
         Retrieves a content object by ID, including computed user permissions for the current principal.  **Required permissions:** `content:read`
@@ -3442,7 +3443,7 @@ class ObjectsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "ContentObjectApiResponse",
+            '200': "ProjectedContentObjectApiResponse",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -3474,7 +3475,7 @@ class ObjectsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[ContentObjectApiResponse]:
+    ) -> ApiResponse[ProjectedContentObjectApiResponse]:
         """Retrieve a content object
 
         Retrieves a content object by ID, including computed user permissions for the current principal.  **Required permissions:** `content:read`
@@ -3515,7 +3516,7 @@ class ObjectsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "ContentObjectApiResponse",
+            '200': "ProjectedContentObjectApiResponse",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -3588,7 +3589,7 @@ class ObjectsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "ContentObjectApiResponse",
+            '200': "ProjectedContentObjectApiResponse",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }

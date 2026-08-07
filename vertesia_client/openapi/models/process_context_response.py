@@ -29,7 +29,8 @@ class ProcessContextResponse(BaseModel):
     """ # noqa: E501
     run_id: StrictStr
     current_node: StrictStr
-    __properties: ClassVar[List[str]] = ["run_id", "current_node"]
+    context: Dict[str, Any]
+    __properties: ClassVar[List[str]] = ["run_id", "current_node", "context"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -83,7 +84,8 @@ class ProcessContextResponse(BaseModel):
 
         _obj = cls.model_validate({
             "run_id": obj.get("run_id"),
-            "current_node": obj.get("current_node")
+            "current_node": obj.get("current_node"),
+            "context": obj.get("context")
         })
         return _obj
 

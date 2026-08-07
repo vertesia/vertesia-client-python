@@ -733,6 +733,7 @@ vertesia_client/openapi/models/project_search_property_type.py
 vertesia_client/openapi/models/project_search_tier.py
 vertesia_client/openapi/models/project_token_request.py
 vertesia_client/openapi/models/project_tool_info.py
+vertesia_client/openapi/models/projected_content_object_api_response.py
 vertesia_client/openapi/models/promote_app_version_response.py
 vertesia_client/openapi/models/promote_dashboard_version_payload.py
 vertesia_client/openapi/models/prompt_improvement_response.py

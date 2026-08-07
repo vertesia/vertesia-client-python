@@ -51,7 +51,8 @@ class WorkflowRun(BaseModel):
     topic: Optional[StrictStr] = Field(default=None, description="A brief summary of the conversation workflow.")
     activity_state: Optional[ConversationActivityState] = Field(default=None, description="The current activity state of the conversation. - 'working': The agent is actively processing - 'idle': The agent is waiting for user input")
     interactive: Optional[StrictBool] = Field(default=None, description="Whether this conversation is interactive (accepts user input).")
-    __properties: ClassVar[List[str]] = ["status", "type", "started_at", "closed_at", "execution_duration", "run_id", "workflow_id", "initiated_by", "interaction_name", "input", "result", "error", "has_reported_errors", "raw", "vertesia_workflow_type", "interactions", "visibility", "topic", "activity_state", "interactive"]
+    memo: Optional[Dict[str, Any]] = None
+    __properties: ClassVar[List[str]] = ["status", "type", "started_at", "closed_at", "execution_duration", "run_id", "workflow_id", "initiated_by", "interaction_name", "input", "result", "error", "has_reported_errors", "raw", "vertesia_workflow_type", "interactions", "visibility", "topic", "activity_state", "interactive", "memo"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -132,6 +133,11 @@ class WorkflowRun(BaseModel):
         if self.raw is None and "raw" in self.model_fields_set:
             _dict['raw'] = None
 
+        # set to None if memo (nullable) is None
+        # and model_fields_set contains the field
+        if self.memo is None and "memo" in self.model_fields_set:
+            _dict['memo'] = None
+
         return _dict
 
     @classmethod
@@ -163,7 +169,8 @@ class WorkflowRun(BaseModel):
             "visibility": obj.get("visibility"),
             "topic": obj.get("topic"),
             "activity_state": obj.get("activity_state"),
-            "interactive": obj.get("interactive")
+            "interactive": obj.get("interactive"),
+            "memo": obj.get("memo")
         })
         return _obj
 

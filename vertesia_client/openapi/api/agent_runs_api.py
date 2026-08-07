@@ -23,6 +23,7 @@ from vertesia_client.openapi.models.advance_process_payload import AdvanceProces
 from vertesia_client.openapi.models.agent_artifact_content_response import AgentArtifactContentResponse
 from vertesia_client.openapi.models.agent_artifact_url_response import AgentArtifactUrlResponse
 from vertesia_client.openapi.models.agent_run import AgentRun
+from vertesia_client.openapi.models.agent_run_response import AgentRunResponse
 from vertesia_client.openapi.models.agent_run_updates_response import AgentRunUpdatesResponse
 from vertesia_client.openapi.models.answer_process_task_payload import AnswerProcessTaskPayload
 from vertesia_client.openapi.models.create_run_payload import CreateRunPayload
@@ -698,7 +699,7 @@ class AgentRunsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> AgentRun:
+    ) -> AgentRunResponse:
         """Create an agent run
 
         Creates a stable agent run record and starts the backing workflow. When the request body matches the process-run payload shape, the same endpoint creates a process run that shares the durable agent-run identity, streaming, artifacts, and observability APIs.  **Required permissions:** `workflow:run`
@@ -739,7 +740,7 @@ class AgentRunsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "AgentRun",
+            '200': "AgentRunResponse",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -771,7 +772,7 @@ class AgentRunsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[AgentRun]:
+    ) -> ApiResponse[AgentRunResponse]:
         """Create an agent run
 
         Creates a stable agent run record and starts the backing workflow. When the request body matches the process-run payload shape, the same endpoint creates a process run that shares the durable agent-run identity, streaming, artifacts, and observability APIs.  **Required permissions:** `workflow:run`
@@ -812,7 +813,7 @@ class AgentRunsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "AgentRun",
+            '200': "AgentRunResponse",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -885,7 +886,7 @@ class AgentRunsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "AgentRun",
+            '200': "AgentRunResponse",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -1590,7 +1591,7 @@ class AgentRunsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> AgentRun:
+    ) -> AgentRunResponse:
         """Retrieve an agent run
 
         Retrieves a single agent run by stable agent run ID.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
@@ -1631,7 +1632,7 @@ class AgentRunsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "AgentRun",
+            '200': "AgentRunResponse",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -1663,7 +1664,7 @@ class AgentRunsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[AgentRun]:
+    ) -> ApiResponse[AgentRunResponse]:
         """Retrieve an agent run
 
         Retrieves a single agent run by stable agent run ID.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
@@ -1704,7 +1705,7 @@ class AgentRunsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "AgentRun",
+            '200': "AgentRunResponse",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -1777,7 +1778,7 @@ class AgentRunsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "AgentRun",
+            '200': "AgentRunResponse",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
