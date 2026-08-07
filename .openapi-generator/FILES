@@ -118,6 +118,9 @@ vertesia_client/openapi/models/app_delete_summary.py
 vertesia_client/openapi/models/app_development_task.py
 vertesia_client/openapi/models/app_development_task_details.py
 vertesia_client/openapi/models/app_development_task_list.py
+vertesia_client/openapi/models/app_event_delivery_target.py
+vertesia_client/openapi/models/app_event_delivery_target_input.py
+vertesia_client/openapi/models/app_event_subscription_definition.py
 vertesia_client/openapi/models/app_git_source_config.py
 vertesia_client/openapi/models/app_inspection_capability_report.py
 vertesia_client/openapi/models/app_inspection_issue.py
@@ -134,6 +137,8 @@ vertesia_client/openapi/models/app_manifest_preview_screenshot.py
 vertesia_client/openapi/models/app_manifest_source.py
 vertesia_client/openapi/models/app_manifest_source_git.py
 vertesia_client/openapi/models/app_package.py
+vertesia_client/openapi/models/app_package_event_hook.py
+vertesia_client/openapi/models/app_package_hooks.py
 vertesia_client/openapi/models/app_package_scope.py
 vertesia_client/openapi/models/app_repo_branch.py
 vertesia_client/openapi/models/app_repo_commit.py

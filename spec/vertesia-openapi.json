@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Vertesia API",
-    "version": "1.5.0-dev.20260804.124748Z",
+    "version": "1.5.0-dev.20260807.073259Z",
     "x-api-version": "20260803",
     "description": "The Vertesia API provides project-scoped access to interaction execution and content workflows. Use it to run interactions, inspect execution history, stream run progress, replay previous executions, and search content objects and collections. Authenticate requests with a bearer token, or use the official `@vertesia/client` package for typed access from Node.js applications.",
     "contact": {
@@ -2666,6 +2666,113 @@
         "additionalProperties": false,
         "description": "Git-backed development tasks and the branch used for new tasks by default."
       },
+      "AppEventDeliveryTarget": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "const": "app"
+          },
+          "app_id": {
+            "type": "string"
+          },
+          "installation_id": {
+            "type": "string"
+          },
+          "hook": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "timeout_ms": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "type",
+          "app_id",
+          "installation_id",
+          "hook",
+          "url"
+        ]
+      },
+      "AppEventDeliveryTargetInput": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "const": "app"
+          },
+          "app_id": {
+            "type": "string"
+          },
+          "installation_id": {
+            "type": "string"
+          },
+          "hook": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "timeout_ms": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "type",
+          "app_id",
+          "installation_id",
+          "hook",
+          "url"
+        ]
+      },
+      "AppEventSubscriptionDefinition": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+            "description": "Stable app-local subscription id in kebab case."
+          },
+          "name": {
+            "type": "string",
+            "description": "Human-readable subscription name."
+          },
+          "description": {
+            "type": "string",
+            "description": "Optional description of the subscription behavior."
+          },
+          "hook": {
+            "type": "string",
+            "description": "Name of an event hook registered by the same app package."
+          },
+          "filter": {
+            "$ref": "#/components/schemas/EventSubscriptionFilter"
+          },
+          "run_as_role": {
+            "$ref": "#/components/schemas/SystemRoles",
+            "description": "Identity used for event delivery. Use automation for the standard event-triggered execution identity."
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "Whether the installed subscription is enabled."
+          },
+          "priority": {
+            "$ref": "#/components/schemas/EventPriority",
+            "description": "Delivery priority for matching events."
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "hook",
+          "filter",
+          "run_as_role"
+        ],
+        "description": "An app-owned event subscription. Studio derives its project scope and delivery target from the app installation and referenced event hook."
+      },
       "AppGitSourceConfig": {
         "type": "object",
         "properties": {
@@ -3517,9 +3624,62 @@
           "settings_schema": {
             "$ref": "#/components/schemas/JSONSchema",
             "description": "A JSON chema for the app installation settings."
+          },
+          "hooks": {
+            "$ref": "#/components/schemas/AppPackageHooks"
+          },
+          "subscriptions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AppEventSubscriptionDefinition"
+            },
+            "description": "Event subscriptions contributed by the app."
           }
         },
         "additionalProperties": false
+      },
+      "AppPackageEventHook": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Registered event hook name."
+          },
+          "path": {
+            "type": "string",
+            "description": "Authenticated endpoint that receives the event delivery envelope."
+          },
+          "description": {
+            "type": "string",
+            "description": "Optional description of the event hook behavior."
+          }
+        },
+        "required": [
+          "name",
+          "path"
+        ],
+        "description": "An authenticated event hook exposed by the app runtime."
+      },
+      "AppPackageHooks": {
+        "type": "object",
+        "properties": {
+          "install": {
+            "type": "string",
+            "description": "Authenticated endpoint for the app install hook."
+          },
+          "uninstall": {
+            "type": "string",
+            "description": "Authenticated endpoint for the app uninstall hook."
+          },
+          "events": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AppPackageEventHook"
+            },
+            "description": "Named event hooks exposed by the app runtime."
+          }
+        },
+        "description": "Lifecycle and event hooks exposed by the app runtime. Lifecycle entries are informational; Studio invokes their conventional sibling endpoints directly."
       },
       "AppPackageScope": {
         "type": "string",
@@ -3535,6 +3695,8 @@
           "settings",
           "widgets",
           "activities",
+          "hooks",
+          "subscriptions",
           "all"
         ]
       },
@@ -6610,6 +6772,7 @@
               "enum": [
                 "workflow",
                 "webhook",
+                "app",
                 "agent",
                 "process"
               ]
@@ -8067,6 +8230,17 @@
           },
           "security": {
             "$ref": "#/components/schemas/StringArrayMap"
+          },
+          "sensitivity": {
+            "type": "number",
+            "description": "BLP sensitivity level — set directly or inherited from collections (max across collections)."
+          },
+          "compartments": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Compartments — set directly or inherited from collections (union across collections)."
           },
           "inherited_properties": {
             "type": "array",
@@ -14487,6 +14661,7 @@
             "enum": [
               "workflow",
               "webhook",
+              "app",
               "agent",
               "process"
             ]
@@ -14637,6 +14812,7 @@
             "enum": [
               "workflow",
               "webhook",
+              "app",
               "agent",
               "process"
             ]
@@ -14699,6 +14875,7 @@
               "enum": [
                 "workflow",
                 "webhook",
+                "app",
                 "agent",
                 "process"
               ]
@@ -14838,6 +15015,9 @@
             "$ref": "#/components/schemas/WebhookEventDeliveryTarget"
           },
           {
+            "$ref": "#/components/schemas/AppEventDeliveryTarget"
+          },
+          {
             "$ref": "#/components/schemas/AgentEventDeliveryTarget"
           },
           {
@@ -14849,6 +15029,7 @@
           "mapping": {
             "workflow": "#/components/schemas/WorkflowEventDeliveryTarget",
             "webhook": "#/components/schemas/WebhookEventDeliveryTarget",
+            "app": "#/components/schemas/AppEventDeliveryTarget",
             "agent": "#/components/schemas/AgentEventDeliveryTarget",
             "process": "#/components/schemas/ProcessEventDeliveryTarget"
           }
@@ -14867,6 +15048,9 @@
             "$ref": "#/components/schemas/WebhookEventDeliveryTargetInput"
           },
           {
+            "$ref": "#/components/schemas/AppEventDeliveryTargetInput"
+          },
+          {
             "$ref": "#/components/schemas/AgentEventDeliveryTarget"
           },
           {
@@ -14878,6 +15062,7 @@
           "mapping": {
             "workflow": "#/components/schemas/WorkflowEventDeliveryTargetInput",
             "webhook": "#/components/schemas/WebhookEventDeliveryTargetInput",
+            "app": "#/components/schemas/AppEventDeliveryTargetInput",
             "agent": "#/components/schemas/AgentEventDeliveryTarget",
             "process": "#/components/schemas/ProcessEventDeliveryTarget"
           }
@@ -15331,6 +15516,15 @@
           },
           "priority": {
             "$ref": "#/components/schemas/EventPriority"
+          },
+          "app_installation_id": {
+            "type": "string"
+          },
+          "app_id": {
+            "type": "string"
+          },
+          "app_subscription_id": {
+            "type": "string"
           },
           "created_by": {
             "type": "string"
@@ -45276,6 +45470,8 @@
                   "settings",
                   "widgets",
                   "activities",
+                  "hooks",
+                  "subscriptions",
                   "all"
                 ]
               },
@@ -47101,6 +47297,8 @@
                   "settings",
                   "widgets",
                   "activities",
+                  "hooks",
+                  "subscriptions",
                   "all"
                 ]
               },
