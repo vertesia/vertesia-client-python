@@ -5696,6 +5696,9 @@
             "items": {
               "type": "string"
             }
+          },
+          "include_thoughts": {
+            "type": "boolean"
           }
         },
         "required": [
@@ -5781,6 +5784,9 @@
             "items": {
               "type": "string"
             }
+          },
+          "include_thoughts": {
+            "type": "boolean"
           }
         },
         "required": [
@@ -5809,6 +5815,9 @@
             "items": {
               "type": "string"
             }
+          },
+          "include_thoughts": {
+            "type": "boolean"
           }
         },
         "required": [
@@ -5879,6 +5888,9 @@
             "items": {
               "type": "string"
             }
+          },
+          "include_thoughts": {
+            "type": "boolean"
           }
         },
         "required": [
@@ -5994,6 +6006,9 @@
               "high",
               "auto"
             ]
+          },
+          "include_thoughts": {
+            "type": "boolean"
           }
         },
         "required": [
@@ -6022,6 +6037,9 @@
             "items": {
               "type": "string"
             }
+          },
+          "include_thoughts": {
+            "type": "boolean"
           }
         },
         "required": [
@@ -6050,6 +6068,9 @@
             "items": {
               "type": "string"
             }
+          },
+          "include_thoughts": {
+            "type": "boolean"
           }
         },
         "required": [
@@ -7100,6 +7121,9 @@
             "$ref": "#/components/schemas/TextResult"
           },
           {
+            "$ref": "#/components/schemas/ThoughtsResult"
+          },
+          {
             "$ref": "#/components/schemas/JsonResult"
           },
           {
@@ -7110,6 +7134,7 @@
           "propertyName": "type",
           "mapping": {
             "text": "#/components/schemas/TextResult",
+            "thoughts": "#/components/schemas/ThoughtsResult",
             "json": "#/components/schemas/JsonResult",
             "image": "#/components/schemas/ImageResult"
           }
@@ -21574,6 +21599,12 @@
           "max_tokens": {
             "type": "number"
           },
+          "effort": {
+            "$ref": "#/components/schemas/ReasoningEffort"
+          },
+          "reasoning_effort": {
+            "$ref": "#/components/schemas/ReasoningEffort"
+          },
           "temperature": {
             "type": "number"
           },
@@ -21599,6 +21630,9 @@
               "high",
               "auto"
             ]
+          },
+          "include_thoughts": {
+            "type": "boolean"
           }
         },
         "required": [
@@ -21635,6 +21669,9 @@
               "high",
               "auto"
             ]
+          },
+          "include_thoughts": {
+            "type": "boolean"
           }
         },
         "required": [
@@ -26822,6 +26859,9 @@
             "items": {
               "type": "string"
             }
+          },
+          "include_thoughts": {
+            "type": "boolean"
           }
         },
         "required": [
@@ -26854,6 +26894,22 @@
           "LOW",
           "MINIMAL",
           "THINKING_LEVEL_UNSPECIFIED"
+        ]
+      },
+      "ThoughtsResult": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "const": "thoughts"
+          },
+          "value": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "value"
         ]
       },
       "TimeResolution": {

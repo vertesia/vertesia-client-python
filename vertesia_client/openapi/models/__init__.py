@@ -844,6 +844,7 @@ from vertesia_client.openapi.models.text_artifact_reference import TextArtifactR
 from vertesia_client.openapi.models.text_fallback_options import TextFallbackOptions
 from vertesia_client.openapi.models.text_result import TextResult
 from vertesia_client.openapi.models.thinking_level import ThinkingLevel
+from vertesia_client.openapi.models.thoughts_result import ThoughtsResult
 from vertesia_client.openapi.models.time_resolution import TimeResolution
 from vertesia_client.openapi.models.timer_task import TimerTask
 from vertesia_client.openapi.models.tool_approval_grant import ToolApprovalGrant

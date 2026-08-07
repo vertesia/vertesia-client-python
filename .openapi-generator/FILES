@@ -876,6 +876,7 @@ vertesia_client/openapi/models/text_artifact_reference.py
 vertesia_client/openapi/models/text_fallback_options.py
 vertesia_client/openapi/models/text_result.py
 vertesia_client/openapi/models/thinking_level.py
+vertesia_client/openapi/models/thoughts_result.py
 vertesia_client/openapi/models/time_resolution.py
 vertesia_client/openapi/models/timer_task.py
 vertesia_client/openapi/models/tool_approval_grant.py

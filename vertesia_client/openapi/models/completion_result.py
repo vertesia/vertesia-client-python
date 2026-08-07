@@ -20,11 +20,12 @@ from typing import Any, List, Optional
 from vertesia_client.openapi.models.image_result import ImageResult
 from vertesia_client.openapi.models.json_result import JsonResult
 from vertesia_client.openapi.models.text_result import TextResult
+from vertesia_client.openapi.models.thoughts_result import ThoughtsResult
 from pydantic import StrictStr, Field
 from typing import Union, List, Set, Optional, Dict
 from typing_extensions import Literal, Self
 
-COMPLETIONRESULT_ONE_OF_SCHEMAS = ["ImageResult", "JsonResult", "TextResult"]
+COMPLETIONRESULT_ONE_OF_SCHEMAS = ["ImageResult", "JsonResult", "TextResult", "ThoughtsResult"]
 
 class CompletionResult(BaseModel):
     """
@@ -32,12 +33,14 @@ class CompletionResult(BaseModel):
     """
     # data type: TextResult
     oneof_schema_1_validator: Optional[TextResult] = None
+    # data type: ThoughtsResult
+    oneof_schema_2_validator: Optional[ThoughtsResult] = None
     # data type: JsonResult
-    oneof_schema_2_validator: Optional[JsonResult] = None
+    oneof_schema_3_validator: Optional[JsonResult] = None
     # data type: ImageResult
-    oneof_schema_3_validator: Optional[ImageResult] = None
-    actual_instance: Optional[Union[ImageResult, JsonResult, TextResult]] = None
-    one_of_schemas: Set[str] = { "ImageResult", "JsonResult", "TextResult" }
+    oneof_schema_4_validator: Optional[ImageResult] = None
+    actual_instance: Optional[Union[ImageResult, JsonResult, TextResult, ThoughtsResult]] = None
+    one_of_schemas: Set[str] = { "ImageResult", "JsonResult", "TextResult", "ThoughtsResult" }
 
     model_config = ConfigDict(
         validate_assignment=True,
@@ -68,6 +71,11 @@ class CompletionResult(BaseModel):
             error_messages.append(f"Error! Input type `{type(v)}` is not `TextResult`")
         else:
             match += 1
+        # validate data type: ThoughtsResult
+        if not isinstance(v, ThoughtsResult):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `ThoughtsResult`")
+        else:
+            match += 1
         # validate data type: JsonResult
         if not isinstance(v, JsonResult):
             error_messages.append(f"Error! Input type `{type(v)}` is not `JsonResult`")
@@ -80,10 +88,10 @@ class CompletionResult(BaseModel):
             match += 1
         if match > 1:
             # more than 1 match
-            raise ValueError("Multiple matches found when setting `actual_instance` in CompletionResult with oneOf schemas: ImageResult, JsonResult, TextResult. Details: " + ", ".join(error_messages))
+            raise ValueError("Multiple matches found when setting `actual_instance` in CompletionResult with oneOf schemas: ImageResult, JsonResult, TextResult, ThoughtsResult. Details: " + ", ".join(error_messages))
         elif match == 0:
             # no match
-            raise ValueError("No match found when setting `actual_instance` in CompletionResult with oneOf schemas: ImageResult, JsonResult, TextResult. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when setting `actual_instance` in CompletionResult with oneOf schemas: ImageResult, JsonResult, TextResult, ThoughtsResult. Details: " + ", ".join(error_messages))
         else:
             return v
 
@@ -104,6 +112,12 @@ class CompletionResult(BaseModel):
             match += 1
         except (ValidationError, ValueError) as e:
             error_messages.append(str(e))
+        # deserialize data into ThoughtsResult
+        try:
+            instance.actual_instance = ThoughtsResult.from_json(json_str)
+            match += 1
+        except (ValidationError, ValueError) as e:
+            error_messages.append(str(e))
         # deserialize data into JsonResult
         try:
             instance.actual_instance = JsonResult.from_json(json_str)
@@ -119,10 +133,10 @@ class CompletionResult(BaseModel):
 
         if match > 1:
             # more than 1 match
-            raise ValueError("Multiple matches found when deserializing the JSON string into CompletionResult with oneOf schemas: ImageResult, JsonResult, TextResult. Details: " + ", ".join(error_messages))
+            raise ValueError("Multiple matches found when deserializing the JSON string into CompletionResult with oneOf schemas: ImageResult, JsonResult, TextResult, ThoughtsResult. Details: " + ", ".join(error_messages))
         elif match == 0:
             # no match
-            raise ValueError("No match found when deserializing the JSON string into CompletionResult with oneOf schemas: ImageResult, JsonResult, TextResult. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when deserializing the JSON string into CompletionResult with oneOf schemas: ImageResult, JsonResult, TextResult, ThoughtsResult. Details: " + ", ".join(error_messages))
         else:
             return instance
 
@@ -136,7 +150,7 @@ class CompletionResult(BaseModel):
         else:
             return json.dumps(self.actual_instance)
 
-    def to_dict(self) -> Optional[Union[Dict[str, Any], ImageResult, JsonResult, TextResult]]:
+    def to_dict(self) -> Optional[Union[Dict[str, Any], ImageResult, JsonResult, TextResult, ThoughtsResult]]:
         """Returns the dict representation of the actual instance"""
         if self.actual_instance is None:
             return None

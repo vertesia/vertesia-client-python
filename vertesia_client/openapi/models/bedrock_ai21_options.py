@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr, field_validator
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing import Optional, Set
 from typing_extensions import Self
@@ -32,7 +32,8 @@ class BedrockAI21Options(BaseModel):
     temperature: Optional[Union[StrictFloat, StrictInt]] = None
     top_p: Optional[Union[StrictFloat, StrictInt]] = None
     stop_sequence: Optional[List[StrictStr]] = None
-    __properties: ClassVar[List[str]] = ["_option_id", "max_tokens", "temperature", "top_p", "stop_sequence"]
+    include_thoughts: Optional[StrictBool] = None
+    __properties: ClassVar[List[str]] = ["_option_id", "max_tokens", "temperature", "top_p", "stop_sequence", "include_thoughts"]
 
     @field_validator('option_id')
     def option_id_validate_enum(cls, value):
@@ -94,7 +95,8 @@ class BedrockAI21Options(BaseModel):
             "max_tokens": obj.get("max_tokens"),
             "temperature": obj.get("temperature"),
             "top_p": obj.get("top_p"),
-            "stop_sequence": obj.get("stop_sequence")
+            "stop_sequence": obj.get("stop_sequence"),
+            "include_thoughts": obj.get("include_thoughts")
         })
         return _obj
 

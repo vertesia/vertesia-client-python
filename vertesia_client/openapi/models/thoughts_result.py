@@ -17,26 +17,23 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
-from typing import Any, ClassVar, Dict, List, Optional, Union
+from pydantic import BaseModel, ConfigDict, StrictStr, field_validator
+from typing import Any, ClassVar, Dict, List
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class BedrockNovaOptions(BaseModel):
+class ThoughtsResult(BaseModel):
     """
-    BedrockNovaOptions
+    ThoughtsResult
     """ # noqa: E501
-    option_id: StrictStr = Field(alias="_option_id")
-    max_tokens: Optional[Union[StrictFloat, StrictInt]] = None
-    temperature: Optional[Union[StrictFloat, StrictInt]] = None
-    top_p: Optional[Union[StrictFloat, StrictInt]] = None
-    stop_sequence: Optional[List[StrictStr]] = None
-    include_thoughts: Optional[StrictBool] = None
-    __properties: ClassVar[List[str]] = ["_option_id", "max_tokens", "temperature", "top_p", "stop_sequence", "include_thoughts"]
+    type: StrictStr
+    value: StrictStr
+    additional_properties: Dict[str, Any] = {}
+    __properties: ClassVar[List[str]] = ["type", "value"]
 
-    @field_validator('option_id')
-    def option_id_validate_enum(cls, value):
+    @field_validator('type')
+    def type_validate_enum(cls, value):
         """Validates the enum"""
         return value
 
@@ -58,7 +55,7 @@ class BedrockNovaOptions(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of BedrockNovaOptions from a JSON string"""
+        """Create an instance of ThoughtsResult from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -70,8 +67,10 @@ class BedrockNovaOptions(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -79,11 +78,16 @@ class BedrockNovaOptions(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of BedrockNovaOptions from a dict"""
+        """Create an instance of ThoughtsResult from a dict"""
         if obj is None:
             return None
 
@@ -91,13 +95,14 @@ class BedrockNovaOptions(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "_option_id": obj.get("_option_id"),
-            "max_tokens": obj.get("max_tokens"),
-            "temperature": obj.get("temperature"),
-            "top_p": obj.get("top_p"),
-            "stop_sequence": obj.get("stop_sequence"),
-            "include_thoughts": obj.get("include_thoughts")
+            "type": obj.get("type"),
+            "value": obj.get("value")
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 

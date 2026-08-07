@@ -898,6 +898,7 @@ __all__ = [
     "TextFallbackOptions",
     "TextResult",
     "ThinkingLevel",
+    "ThoughtsResult",
     "TimeResolution",
     "TimerTask",
     "ToolApprovalGrant",
@@ -1939,6 +1940,7 @@ from vertesia_client.openapi.models.text_artifact_reference import TextArtifactR
 from vertesia_client.openapi.models.text_fallback_options import TextFallbackOptions as TextFallbackOptions
 from vertesia_client.openapi.models.text_result import TextResult as TextResult
 from vertesia_client.openapi.models.thinking_level import ThinkingLevel as ThinkingLevel
+from vertesia_client.openapi.models.thoughts_result import ThoughtsResult as ThoughtsResult
 from vertesia_client.openapi.models.time_resolution import TimeResolution as TimeResolution
 from vertesia_client.openapi.models.timer_task import TimerTask as TimerTask
 from vertesia_client.openapi.models.tool_approval_grant import ToolApprovalGrant as ToolApprovalGrant

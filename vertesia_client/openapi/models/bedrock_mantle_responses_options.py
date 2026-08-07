@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr, field_validator
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, Optional, Union
 from typing import Optional, Set
 from typing_extensions import Self
@@ -35,7 +35,8 @@ class BedrockMantleResponsesOptions(BaseModel):
     reasoning_effort: Optional[StrictStr] = None
     verbosity: Optional[StrictStr] = None
     image_detail: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["_option_id", "max_tokens", "temperature", "top_p", "effort", "reasoning_effort", "verbosity", "image_detail"]
+    include_thoughts: Optional[StrictBool] = None
+    __properties: ClassVar[List[str]] = ["_option_id", "max_tokens", "temperature", "top_p", "effort", "reasoning_effort", "verbosity", "image_detail", "include_thoughts"]
 
     @field_validator('option_id')
     def option_id_validate_enum(cls, value):
@@ -132,7 +133,8 @@ class BedrockMantleResponsesOptions(BaseModel):
             "effort": obj.get("effort"),
             "reasoning_effort": obj.get("reasoning_effort"),
             "verbosity": obj.get("verbosity"),
-            "image_detail": obj.get("image_detail")
+            "image_detail": obj.get("image_detail"),
+            "include_thoughts": obj.get("include_thoughts")
         })
         return _obj
 

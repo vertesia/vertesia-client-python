@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr, field_validator
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from vertesia_client.openapi.models.reasoning_effort import ReasoningEffort
 from typing import Optional, Set
@@ -34,7 +34,8 @@ class OpenAiThinkingOptions(BaseModel):
     effort: Optional[ReasoningEffort] = None
     reasoning_effort: Optional[ReasoningEffort] = None
     image_detail: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["_option_id", "max_tokens", "stop_sequence", "effort", "reasoning_effort", "image_detail"]
+    include_thoughts: Optional[StrictBool] = None
+    __properties: ClassVar[List[str]] = ["_option_id", "max_tokens", "stop_sequence", "effort", "reasoning_effort", "image_detail", "include_thoughts"]
 
     @field_validator('option_id')
     def option_id_validate_enum(cls, value):
@@ -105,7 +106,8 @@ class OpenAiThinkingOptions(BaseModel):
             "stop_sequence": obj.get("stop_sequence"),
             "effort": obj.get("effort"),
             "reasoning_effort": obj.get("reasoning_effort"),
-            "image_detail": obj.get("image_detail")
+            "image_detail": obj.get("image_detail"),
+            "include_thoughts": obj.get("include_thoughts")
         })
         return _obj
 

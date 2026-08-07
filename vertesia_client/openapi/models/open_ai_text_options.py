@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr, field_validator
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from vertesia_client.openapi.models.reasoning_effort import ReasoningEffort
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -29,13 +30,16 @@ class OpenAiTextOptions(BaseModel):
     """ # noqa: E501
     option_id: StrictStr = Field(alias="_option_id")
     max_tokens: Optional[Union[StrictFloat, StrictInt]] = None
+    effort: Optional[ReasoningEffort] = None
+    reasoning_effort: Optional[ReasoningEffort] = None
     temperature: Optional[Union[StrictFloat, StrictInt]] = None
     top_p: Optional[Union[StrictFloat, StrictInt]] = None
     presence_penalty: Optional[Union[StrictFloat, StrictInt]] = None
     frequency_penalty: Optional[Union[StrictFloat, StrictInt]] = None
     stop_sequence: Optional[List[StrictStr]] = None
     image_detail: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["_option_id", "max_tokens", "temperature", "top_p", "presence_penalty", "frequency_penalty", "stop_sequence", "image_detail"]
+    include_thoughts: Optional[StrictBool] = None
+    __properties: ClassVar[List[str]] = ["_option_id", "max_tokens", "effort", "reasoning_effort", "temperature", "top_p", "presence_penalty", "frequency_penalty", "stop_sequence", "image_detail", "include_thoughts"]
 
     @field_validator('option_id')
     def option_id_validate_enum(cls, value):
@@ -103,12 +107,15 @@ class OpenAiTextOptions(BaseModel):
         _obj = cls.model_validate({
             "_option_id": obj.get("_option_id"),
             "max_tokens": obj.get("max_tokens"),
+            "effort": obj.get("effort"),
+            "reasoning_effort": obj.get("reasoning_effort"),
             "temperature": obj.get("temperature"),
             "top_p": obj.get("top_p"),
             "presence_penalty": obj.get("presence_penalty"),
             "frequency_penalty": obj.get("frequency_penalty"),
             "stop_sequence": obj.get("stop_sequence"),
-            "image_detail": obj.get("image_detail")
+            "image_detail": obj.get("image_detail"),
+            "include_thoughts": obj.get("include_thoughts")
         })
         return _obj
 
