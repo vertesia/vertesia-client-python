@@ -50832,6 +50832,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Dashboard"
+        "409":
+          description: A dashboard with this name already exists in the project.
         "500":
           description: Internal server error.
           content:

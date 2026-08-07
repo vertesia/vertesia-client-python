@@ -449,6 +449,7 @@ class DataApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '201': "Dashboard",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -526,6 +527,7 @@ class DataApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '201': "Dashboard",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -603,6 +605,7 @@ class DataApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '201': "Dashboard",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }

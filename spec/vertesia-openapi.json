@@ -69691,6 +69691,9 @@
               }
             }
           },
+          "409": {
+            "description": "A dashboard with this name already exists in the project."
+          },
           "500": {
             "description": "Internal server error.",
             "content": {
