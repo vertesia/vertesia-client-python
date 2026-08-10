@@ -932,6 +932,15 @@ components:
           type: string
           const: agent
           description: Internal discriminator key
+        parent_run_id:
+          type: string
+          description: Process run this agent belongs to — set when a process agent node
+            recorded this run. Its conversation lives on the parent run under
+            `workstream_id`.
+        workstream_id:
+          type: string
+          description: Workstream this run occupies inside its parent run (the process
+            node id).
         run_type:
           type: string
           const: autonomous
@@ -4609,6 +4618,15 @@ components:
           type: string
           const: agent
           description: Internal discriminator key
+        parent_run_id:
+          type: string
+          description: Process run this agent belongs to — set when a process agent node
+            recorded this run. Its conversation lives on the parent run under
+            `workstream_id`.
+        workstream_id:
+          type: string
+          description: Workstream this run occupies inside its parent run (the process
+            node id).
         run_type:
           type: string
           const: autonomous

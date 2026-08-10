@@ -63,6 +63,8 @@ class AutonomousRunResponse(BaseModel):
     type: Optional[AgentRunType] = Field(default=None, description="Deprecated: Use source_type for creation source and run_type for runtime mode.")
     id: StrictStr = Field(description="The stable identifier used by all client code")
     run_kind: StrictStr = Field(description="Internal discriminator key")
+    parent_run_id: Optional[StrictStr] = Field(default=None, description="Process run this agent belongs to — set when a process agent node recorded this run. Its conversation lives on the parent run under `workstream_id`.")
+    workstream_id: Optional[StrictStr] = Field(default=None, description="Workstream this run occupies inside its parent run (the process node id).")
     run_type: StrictStr
     account: StrictStr = Field(description="Account ID")
     project: StrictStr = Field(description="Project ID")
@@ -90,7 +92,7 @@ class AutonomousRunResponse(BaseModel):
     last_archive_error: Optional[StrictStr] = Field(default=None, description="Last archive error message (when archive_state === 'failed')")
     forked_from: Optional[StrictStr] = Field(default=None, description="Source agent run ID when this run was forked (enables message history chaining)")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["interaction", "data", "config", "interactive", "tool_approval_mode", "tool_names", "initial_skills", "initial_tool_calls", "excluded_tools", "collection_id", "disabled_mcp_collections", "content_type", "visibility", "tags", "categories", "properties", "source", "schedule_id", "source_type", "type", "id", "run_kind", "run_type", "account", "project", "workflow_id", "first_workflow_run_id", "artifacts_path", "status", "activity_state", "started_by", "started_at", "completed_at", "title", "event_subscription_id", "event_ref", "archive_state", "created_at", "updated_at", "interaction_name", "interactionRef", "environmentRef", "topic", "lessons_learned", "archived_at", "archive_version", "last_archive_error", "forked_from"]
+    __properties: ClassVar[List[str]] = ["interaction", "data", "config", "interactive", "tool_approval_mode", "tool_names", "initial_skills", "initial_tool_calls", "excluded_tools", "collection_id", "disabled_mcp_collections", "content_type", "visibility", "tags", "categories", "properties", "source", "schedule_id", "source_type", "type", "id", "run_kind", "parent_run_id", "workstream_id", "run_type", "account", "project", "workflow_id", "first_workflow_run_id", "artifacts_path", "status", "activity_state", "started_by", "started_at", "completed_at", "title", "event_subscription_id", "event_ref", "archive_state", "created_at", "updated_at", "interaction_name", "interactionRef", "environmentRef", "topic", "lessons_learned", "archived_at", "archive_version", "last_archive_error", "forked_from"]
 
     @field_validator('run_kind')
     def run_kind_validate_enum(cls, value):
@@ -207,6 +209,8 @@ class AutonomousRunResponse(BaseModel):
             "type": obj.get("type"),
             "id": obj.get("id"),
             "run_kind": obj.get("run_kind"),
+            "parent_run_id": obj.get("parent_run_id"),
+            "workstream_id": obj.get("workstream_id"),
             "run_type": obj.get("run_type"),
             "account": obj.get("account"),
             "project": obj.get("project"),
