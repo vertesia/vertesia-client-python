@@ -18252,7 +18252,7 @@ components:
         ignore_malformed:
           type: boolean
           description: Skip malformed values instead of rejecting the whole document.
-            Valid only for long, double, and date mappings.
+            Valid only for long, double, date, and geo_point mappings.
       required:
         - type
       additionalProperties: false
@@ -18275,6 +18275,7 @@ components:
         - long
         - double
         - date
+        - geo_point
       description: Elasticsearch field types that may be explicitly assigned to
         content-object properties. Paths are relative to the object's
         `properties` field.

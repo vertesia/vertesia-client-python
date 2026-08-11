@@ -31,7 +31,7 @@ class ProjectSearchPropertyMapping(BaseModel):
     type: ProjectSearchPropertyType
     format: Optional[StrictStr] = Field(default=None, description="Elasticsearch date format. Valid only when type is `date`.")
     ignore_above: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Maximum indexed string length. Valid only when type is `keyword`.")
-    ignore_malformed: Optional[StrictBool] = Field(default=None, description="Skip malformed values instead of rejecting the whole document. Valid only for long, double, and date mappings.")
+    ignore_malformed: Optional[StrictBool] = Field(default=None, description="Skip malformed values instead of rejecting the whole document. Valid only for long, double, date, and geo_point mappings.")
     __properties: ClassVar[List[str]] = ["type", "format", "ignore_above", "ignore_malformed"]
 
     model_config = ConfigDict(

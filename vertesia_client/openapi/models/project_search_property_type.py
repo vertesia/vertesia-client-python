@@ -32,6 +32,7 @@ class ProjectSearchPropertyType(str, Enum):
     LONG = 'long'
     DOUBLE = 'double'
     DATE = 'date'
+    GEO_POINT = 'geo_point'
 
     @classmethod
     def _missing_(cls, value: object) -> Self:
