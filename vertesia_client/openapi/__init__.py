@@ -114,6 +114,7 @@ __all__ = [
     "AgentToolApprovalClass",
     "AgentToolApprovalMode",
     "AgentToolDefinition",
+    "AgenticViewRerankConfiguration",
     "AgenticViewSearchConfiguration",
     "AggregatedTool",
     "AlterTableOperation",
@@ -966,14 +967,21 @@ __all__ = [
     "VertexAIClaudeOptions",
     "VertexAIGeminiOptions",
     "VertexAIGrokOptions",
+    "ViewActionConfiguration",
+    "ViewActionPlacement",
+    "ViewActionSelectionRequirement",
+    "ViewActionsConfiguration",
+    "ViewAgenticSearchMode",
     "ViewBoardCardConfiguration",
     "ViewBoardColumn",
     "ViewBoardDisplay",
     "ViewCardsDisplay",
     "ViewCollectionNavigation",
     "ViewDisplayConfiguration",
+    "ViewDropConfiguration",
     "ViewExecutionDefinition",
     "ViewExecutionQueryPlan",
+    "ViewExecutionRerankResult",
     "ViewExecutionResult",
     "ViewExecutionSearchConfiguration",
     "ViewExecutionSearchResult",
@@ -997,6 +1005,7 @@ __all__ = [
     "ViewQueryPlanningFailureCode",
     "ViewRangeDefinition",
     "ViewRangeNavigation",
+    "ViewRerankFailureCode",
     "ViewResultField",
     "ViewResultFieldFormat",
     "ViewResultMedia",
@@ -1004,11 +1013,14 @@ __all__ = [
     "ViewSearchConfiguration",
     "ViewSearchFieldDefinition",
     "ViewSearchFieldType",
+    "ViewSelectionConfiguration",
+    "ViewSelectionMode",
     "ViewSortClause",
     "ViewSortOption",
     "ViewTableColumn",
     "ViewTableDisplay",
     "ViewTermsNavigation",
+    "ViewUploadDropParameters",
     "VirtualEnvEntry",
     "WebhookEventDeliveryTarget",
     "WebhookEventDeliveryTargetInput",
@@ -1162,6 +1174,7 @@ from vertesia_client.openapi.models.agent_token_request import AgentTokenRequest
 from vertesia_client.openapi.models.agent_tool_approval_class import AgentToolApprovalClass as AgentToolApprovalClass
 from vertesia_client.openapi.models.agent_tool_approval_mode import AgentToolApprovalMode as AgentToolApprovalMode
 from vertesia_client.openapi.models.agent_tool_definition import AgentToolDefinition as AgentToolDefinition
+from vertesia_client.openapi.models.agentic_view_rerank_configuration import AgenticViewRerankConfiguration as AgenticViewRerankConfiguration
 from vertesia_client.openapi.models.agentic_view_search_configuration import AgenticViewSearchConfiguration as AgenticViewSearchConfiguration
 from vertesia_client.openapi.models.aggregated_tool import AggregatedTool as AggregatedTool
 from vertesia_client.openapi.models.alter_table_operation import AlterTableOperation as AlterTableOperation
@@ -2014,14 +2027,21 @@ from vertesia_client.openapi.models.vertesia_sdk_tool_collection_object import V
 from vertesia_client.openapi.models.vertex_ai_claude_options import VertexAIClaudeOptions as VertexAIClaudeOptions
 from vertesia_client.openapi.models.vertex_ai_gemini_options import VertexAIGeminiOptions as VertexAIGeminiOptions
 from vertesia_client.openapi.models.vertex_ai_grok_options import VertexAIGrokOptions as VertexAIGrokOptions
+from vertesia_client.openapi.models.view_action_configuration import ViewActionConfiguration as ViewActionConfiguration
+from vertesia_client.openapi.models.view_action_placement import ViewActionPlacement as ViewActionPlacement
+from vertesia_client.openapi.models.view_action_selection_requirement import ViewActionSelectionRequirement as ViewActionSelectionRequirement
+from vertesia_client.openapi.models.view_actions_configuration import ViewActionsConfiguration as ViewActionsConfiguration
+from vertesia_client.openapi.models.view_agentic_search_mode import ViewAgenticSearchMode as ViewAgenticSearchMode
 from vertesia_client.openapi.models.view_board_card_configuration import ViewBoardCardConfiguration as ViewBoardCardConfiguration
 from vertesia_client.openapi.models.view_board_column import ViewBoardColumn as ViewBoardColumn
 from vertesia_client.openapi.models.view_board_display import ViewBoardDisplay as ViewBoardDisplay
 from vertesia_client.openapi.models.view_cards_display import ViewCardsDisplay as ViewCardsDisplay
 from vertesia_client.openapi.models.view_collection_navigation import ViewCollectionNavigation as ViewCollectionNavigation
 from vertesia_client.openapi.models.view_display_configuration import ViewDisplayConfiguration as ViewDisplayConfiguration
+from vertesia_client.openapi.models.view_drop_configuration import ViewDropConfiguration as ViewDropConfiguration
 from vertesia_client.openapi.models.view_execution_definition import ViewExecutionDefinition as ViewExecutionDefinition
 from vertesia_client.openapi.models.view_execution_query_plan import ViewExecutionQueryPlan as ViewExecutionQueryPlan
+from vertesia_client.openapi.models.view_execution_rerank_result import ViewExecutionRerankResult as ViewExecutionRerankResult
 from vertesia_client.openapi.models.view_execution_result import ViewExecutionResult as ViewExecutionResult
 from vertesia_client.openapi.models.view_execution_search_configuration import ViewExecutionSearchConfiguration as ViewExecutionSearchConfiguration
 from vertesia_client.openapi.models.view_execution_search_result import ViewExecutionSearchResult as ViewExecutionSearchResult
@@ -2045,6 +2065,7 @@ from vertesia_client.openapi.models.view_navigation_result import ViewNavigation
 from vertesia_client.openapi.models.view_query_planning_failure_code import ViewQueryPlanningFailureCode as ViewQueryPlanningFailureCode
 from vertesia_client.openapi.models.view_range_definition import ViewRangeDefinition as ViewRangeDefinition
 from vertesia_client.openapi.models.view_range_navigation import ViewRangeNavigation as ViewRangeNavigation
+from vertesia_client.openapi.models.view_rerank_failure_code import ViewRerankFailureCode as ViewRerankFailureCode
 from vertesia_client.openapi.models.view_result_field import ViewResultField as ViewResultField
 from vertesia_client.openapi.models.view_result_field_format import ViewResultFieldFormat as ViewResultFieldFormat
 from vertesia_client.openapi.models.view_result_media import ViewResultMedia as ViewResultMedia
@@ -2052,11 +2073,14 @@ from vertesia_client.openapi.models.view_results_configuration import ViewResult
 from vertesia_client.openapi.models.view_search_configuration import ViewSearchConfiguration as ViewSearchConfiguration
 from vertesia_client.openapi.models.view_search_field_definition import ViewSearchFieldDefinition as ViewSearchFieldDefinition
 from vertesia_client.openapi.models.view_search_field_type import ViewSearchFieldType as ViewSearchFieldType
+from vertesia_client.openapi.models.view_selection_configuration import ViewSelectionConfiguration as ViewSelectionConfiguration
+from vertesia_client.openapi.models.view_selection_mode import ViewSelectionMode as ViewSelectionMode
 from vertesia_client.openapi.models.view_sort_clause import ViewSortClause as ViewSortClause
 from vertesia_client.openapi.models.view_sort_option import ViewSortOption as ViewSortOption
 from vertesia_client.openapi.models.view_table_column import ViewTableColumn as ViewTableColumn
 from vertesia_client.openapi.models.view_table_display import ViewTableDisplay as ViewTableDisplay
 from vertesia_client.openapi.models.view_terms_navigation import ViewTermsNavigation as ViewTermsNavigation
+from vertesia_client.openapi.models.view_upload_drop_parameters import ViewUploadDropParameters as ViewUploadDropParameters
 from vertesia_client.openapi.models.virtual_env_entry import VirtualEnvEntry as VirtualEnvEntry
 from vertesia_client.openapi.models.webhook_event_delivery_target import WebhookEventDeliveryTarget as WebhookEventDeliveryTarget
 from vertesia_client.openapi.models.webhook_event_delivery_target_input import WebhookEventDeliveryTargetInput as WebhookEventDeliveryTargetInput

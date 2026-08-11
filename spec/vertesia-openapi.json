@@ -1844,6 +1844,28 @@
         "additionalProperties": false,
         "description": "Tool definition with optional activation control for agent exposure."
       },
+      "AgenticViewRerankConfiguration": {
+        "type": "object",
+        "properties": {
+          "interaction": {
+            "type": "string",
+            "description": "Interaction used only for candidate reranking. Defaults to sys:ContentSearchReranker."
+          },
+          "max_candidates": {
+            "type": "number",
+            "description": "Maximum candidates from the current result page sent to the model."
+          },
+          "include_why_match": {
+            "type": "boolean",
+            "description": "Ask the model for a short per-result explanation. Defaults to true."
+          },
+          "timeout_ms": {
+            "type": "number",
+            "description": "Reranking-stage timeout."
+          }
+        },
+        "additionalProperties": false
+      },
       "AgenticViewSearchConfiguration": {
         "type": "object",
         "properties": {
@@ -1858,14 +1880,18 @@
             "description": "View-specific guidance for Elasticsearch query planning."
           },
           "mode": {
-            "type": "string",
-            "const": "query"
+            "$ref": "#/components/schemas/ViewAgenticSearchMode",
+            "description": "Generate only Elasticsearch DSL, or generate DSL plus a safe ephemeral result presentation."
           },
           "timeout_ms": {
             "type": "number"
           },
           "minimum_confidence": {
             "type": "number"
+          },
+          "rerank": {
+            "$ref": "#/components/schemas/AgenticViewRerankConfiguration",
+            "description": "Optional second stage that reorders an authorized candidate page using the same model configuration."
           }
         },
         "additionalProperties": false
@@ -15699,6 +15725,10 @@
           "navigation": {
             "$ref": "#/components/schemas/StringArrayMap"
           },
+          "navigation_queries": {
+            "$ref": "#/components/schemas/StringValueMap",
+            "description": "Server-side text filters for large navigation sources, keyed by navigation id."
+          },
           "display": {
             "type": "string"
           },
@@ -22218,6 +22248,10 @@
           },
           "navigation": {
             "$ref": "#/components/schemas/StringArrayMap"
+          },
+          "navigation_queries": {
+            "$ref": "#/components/schemas/StringValueMap",
+            "description": "Server-side text filters for large navigation sources, keyed by navigation id."
           },
           "display": {
             "type": "string"
@@ -29673,6 +29707,93 @@
         ],
         "additionalProperties": false
       },
+      "ViewActionConfiguration": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "handler": {
+            "type": "string"
+          },
+          "placement": {
+            "$ref": "#/components/schemas/ViewActionPlacement"
+          },
+          "requires_selection": {
+            "$ref": "#/components/schemas/ViewActionSelectionRequirement"
+          },
+          "destructive": {
+            "type": "boolean"
+          },
+          "confirm": {
+            "type": "boolean"
+          },
+          "params": {
+            "$ref": "#/components/schemas/JSONObject"
+          }
+        },
+        "required": [
+          "id",
+          "label",
+          "handler"
+        ],
+        "additionalProperties": false,
+        "description": "Declarative action exposed by a View. The handler name is resolved by the embedding application; persisted configuration never contains executable code."
+      },
+      "ViewActionPlacement": {
+        "type": "string",
+        "enum": [
+          "toolbar",
+          "row",
+          "selection"
+        ]
+      },
+      "ViewActionSelectionRequirement": {
+        "type": "string",
+        "enum": [
+          "none",
+          "single",
+          "multiple",
+          "any"
+        ]
+      },
+      "ViewActionsConfiguration": {
+        "type": "object",
+        "properties": {
+          "include_defaults": {
+            "type": "boolean",
+            "description": "Include the standard content export and delete actions. Defaults to true when selection is enabled."
+          },
+          "exclude_defaults": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "export",
+                "delete"
+              ]
+            },
+            "description": "Hide individual standard actions while keeping the remaining defaults."
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ViewActionConfiguration"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "ViewAgenticSearchMode": {
+        "type": "string",
+        "enum": [
+          "query",
+          "query_and_view"
+        ]
+      },
       "ViewBoardCardConfiguration": {
         "type": "object",
         "properties": {
@@ -29903,6 +30024,30 @@
           "type"
         ]
       },
+      "ViewDropConfiguration": {
+        "type": "object",
+        "properties": {
+          "handler": {
+            "type": "string",
+            "const": "upload"
+          },
+          "accept": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "const": "files"
+            }
+          },
+          "params": {
+            "$ref": "#/components/schemas/ViewUploadDropParameters"
+          }
+        },
+        "required": [
+          "handler"
+        ],
+        "additionalProperties": false,
+        "description": "A declarative result-area drop target. Stored JSON supports the built-in upload action only."
+      },
       "ViewElasticsearchQuery": {
         "type": "object",
         "description": "An author-provided Elasticsearch query subtree validated by the View runtime."
@@ -29969,6 +30114,42 @@
         ],
         "additionalProperties": false,
         "description": "Safe query-planning diagnostics. The query contains only the model-authored subtree; server-owned scope and content-security filters are never exposed."
+      },
+      "ViewExecutionRerankResult": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "applied",
+              "fallback",
+              "skipped"
+            ]
+          },
+          "candidate_count": {
+            "type": "number"
+          },
+          "skip_reason": {
+            "type": "string",
+            "enum": [
+              "not_enough_candidates",
+              "query_fallback",
+              "explicit_sort",
+              "configured_sort"
+            ]
+          },
+          "error_code": {
+            "$ref": "#/components/schemas/ViewRerankFailureCode"
+          },
+          "error_message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "status",
+          "candidate_count"
+        ],
+        "additionalProperties": false
       },
       "ViewExecutionResult": {
         "type": "object",
@@ -30067,6 +30248,9 @@
           "plan": {
             "$ref": "#/components/schemas/ViewExecutionQueryPlan"
           },
+          "rerank": {
+            "$ref": "#/components/schemas/ViewExecutionRerankResult"
+          },
           "requested_mode": {
             "type": "string",
             "enum": [
@@ -30080,7 +30264,8 @@
             "enum": [
               "browse",
               "deterministic",
-              "query"
+              "query",
+              "query_and_view"
             ]
           },
           "fallback_reason": {
@@ -30665,12 +30850,16 @@
               "$ref": "#/components/schemas/ViewNavigationNode"
             }
           },
+          "query": {
+            "type": "string",
+            "description": "Applied server-side node filter, when the navigation source supports it."
+          },
           "breadcrumbs": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ViewNavigationNode"
             },
-            "description": "Selected hierarchy path from its root through the current value."
+            "description": "Selected drill-down path from its root through the current value."
           },
           "truncated": {
             "type": "boolean"
@@ -30772,6 +30961,15 @@
         ],
         "additionalProperties": false
       },
+      "ViewRerankFailureCode": {
+        "type": "string",
+        "enum": [
+          "interaction_failed",
+          "invalid_output",
+          "timeout",
+          "unknown"
+        ]
+      },
       "ViewResultField": {
         "type": "object",
         "properties": {
@@ -30863,6 +31061,15 @@
             "items": {
               "$ref": "#/components/schemas/ViewSortOption"
             }
+          },
+          "selection": {
+            "$ref": "#/components/schemas/ViewSelectionConfiguration"
+          },
+          "actions": {
+            "$ref": "#/components/schemas/ViewActionsConfiguration"
+          },
+          "drop": {
+            "$ref": "#/components/schemas/ViewDropConfiguration"
           }
         },
         "required": [
@@ -30947,6 +31154,31 @@
           "number",
           "date",
           "boolean"
+        ]
+      },
+      "ViewSelectionConfiguration": {
+        "type": "object",
+        "properties": {
+          "mode": {
+            "$ref": "#/components/schemas/ViewSelectionMode"
+          },
+          "select_all": {
+            "type": "string",
+            "const": "page",
+            "description": "Select-all applies to the currently rendered page."
+          }
+        },
+        "required": [
+          "mode"
+        ],
+        "additionalProperties": false,
+        "description": "Client-side selection behavior for normalized View hits."
+      },
+      "ViewSelectionMode": {
+        "type": "string",
+        "enum": [
+          "single",
+          "multiple"
         ]
       },
       "ViewSortClause": {
@@ -31107,6 +31339,27 @@
           "source",
           "field"
         ],
+        "additionalProperties": false
+      },
+      "ViewUploadDropParameters": {
+        "type": "object",
+        "properties": {
+          "type_id": {
+            "type": "string"
+          },
+          "collection_id": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          },
+          "properties": {
+            "$ref": "#/components/schemas/JSONObject"
+          },
+          "allow_folders": {
+            "type": "boolean"
+          }
+        },
         "additionalProperties": false
       },
       "VirtualEnvEntry": {
@@ -71147,7 +71400,7 @@
           "Views"
         ],
         "summary": "Execute a View Experience",
-        "description": "Executes a stored or app-contributed View by ID. Configuration, scope, and security filters are resolved server-side. Agentic query planning additionally requires interaction execute permission.\n\n**Required permissions:** `content:read`",
+        "description": "Executes a stored, built-in system, or app-contributed View by ID. Configuration, scope, and security filters are resolved server-side. Agentic query planning, optional presentation planning, and optional result reranking additionally require interaction execute permission.\n\n**Required permissions:** `content:read`",
         "security": [
           {
             "bearerAuth": []
@@ -71248,7 +71501,7 @@
           "Views"
         ],
         "summary": "Preview an unsaved View Experience",
-        "description": "Validates an inline (unsaved) View configuration and executes it against content without persisting it, returning normalized results, navigation counts, and any agentic query plan. Agentic query planning additionally requires interaction execute permission.\n\n**Required permissions:** `content:read`",
+        "description": "Validates an inline (unsaved) View configuration and executes it against content without persisting it, returning normalized results, navigation counts, and any agentic query, presentation, and reranking diagnostics. Agentic stages additionally require interaction execute permission.\n\n**Required permissions:** `content:read`",
         "security": [
           {
             "bearerAuth": []

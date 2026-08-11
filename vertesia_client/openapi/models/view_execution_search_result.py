@@ -20,6 +20,7 @@ import json
 from pydantic import BaseModel, ConfigDict, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
 from vertesia_client.openapi.models.view_execution_query_plan import ViewExecutionQueryPlan
+from vertesia_client.openapi.models.view_execution_rerank_result import ViewExecutionRerankResult
 from vertesia_client.openapi.models.view_execution_warning import ViewExecutionWarning
 from typing import Optional, Set
 from typing_extensions import Self
@@ -33,11 +34,12 @@ class ViewExecutionSearchResult(BaseModel):
     interpretation: Optional[StrictStr] = None
     key_terms: Optional[Dict[str, List[StrictStr]]] = None
     plan: Optional[ViewExecutionQueryPlan] = None
+    rerank: Optional[ViewExecutionRerankResult] = None
     requested_mode: StrictStr
     applied_mode: StrictStr
     fallback_reason: Optional[StrictStr] = None
     warnings: List[ViewExecutionWarning]
-    __properties: ClassVar[List[str]] = ["input", "interpretation", "key_terms", "plan", "requested_mode", "applied_mode", "fallback_reason", "warnings"]
+    __properties: ClassVar[List[str]] = ["input", "interpretation", "key_terms", "plan", "rerank", "requested_mode", "applied_mode", "fallback_reason", "warnings"]
 
     @field_validator('requested_mode')
     def requested_mode_validate_enum(cls, value):
@@ -91,6 +93,9 @@ class ViewExecutionSearchResult(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of plan
         if self.plan:
             _dict['plan'] = self.plan.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of rerank
+        if self.rerank:
+            _dict['rerank'] = self.rerank.to_dict()
         # override the default output from pydantic by calling `to_dict()` of each item in warnings (list)
         _items = []
         if self.warnings:
@@ -114,6 +119,7 @@ class ViewExecutionSearchResult(BaseModel):
             "interpretation": obj.get("interpretation"),
             "key_terms": obj.get("key_terms"),
             "plan": ViewExecutionQueryPlan.from_dict(obj["plan"]) if obj.get("plan") is not None else None,
+            "rerank": ViewExecutionRerankResult.from_dict(obj["rerank"]) if obj.get("rerank") is not None else None,
             "requested_mode": obj.get("requested_mode"),
             "applied_mode": obj.get("applied_mode"),
             "fallback_reason": obj.get("fallback_reason"),

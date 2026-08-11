@@ -17,25 +17,21 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional, Union
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
+from typing import Any, ClassVar, Dict, Optional, Union
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class ExecuteViewRequest(BaseModel):
+class AgenticViewRerankConfiguration(BaseModel):
     """
-    ExecuteViewRequest
+    AgenticViewRerankConfiguration
     """ # noqa: E501
-    query: Optional[StrictStr] = None
-    key_terms: Optional[Dict[str, List[StrictStr]]] = None
-    navigation: Optional[Dict[str, List[StrictStr]]] = None
-    navigation_queries: Optional[Dict[str, StrictStr]] = Field(default=None, description="Server-side text filters for large navigation sources, keyed by navigation id.")
-    display: Optional[StrictStr] = None
-    sort: Optional[StrictStr] = None
-    offset: Optional[Union[StrictFloat, StrictInt]] = None
-    limit: Optional[Union[StrictFloat, StrictInt]] = None
-    __properties: ClassVar[List[str]] = ["query", "key_terms", "navigation", "navigation_queries", "display", "sort", "offset", "limit"]
+    interaction: Optional[StrictStr] = Field(default=None, description="Interaction used only for candidate reranking. Defaults to sys:ContentSearchReranker.")
+    max_candidates: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Maximum candidates from the current result page sent to the model.")
+    include_why_match: Optional[StrictBool] = Field(default=None, description="Ask the model for a short per-result explanation. Defaults to true.")
+    timeout_ms: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Reranking-stage timeout.")
+    __properties: ClassVar[List[str]] = ["interaction", "max_candidates", "include_why_match", "timeout_ms"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -55,7 +51,7 @@ class ExecuteViewRequest(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of ExecuteViewRequest from a JSON string"""
+        """Create an instance of AgenticViewRerankConfiguration from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -80,7 +76,7 @@ class ExecuteViewRequest(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of ExecuteViewRequest from a dict"""
+        """Create an instance of AgenticViewRerankConfiguration from a dict"""
         if obj is None:
             return None
 
@@ -88,14 +84,10 @@ class ExecuteViewRequest(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "query": obj.get("query"),
-            "key_terms": obj.get("key_terms"),
-            "navigation": obj.get("navigation"),
-            "navigation_queries": obj.get("navigation_queries"),
-            "display": obj.get("display"),
-            "sort": obj.get("sort"),
-            "offset": obj.get("offset"),
-            "limit": obj.get("limit")
+            "interaction": obj.get("interaction"),
+            "max_candidates": obj.get("max_candidates"),
+            "include_why_match": obj.get("include_why_match"),
+            "timeout_ms": obj.get("timeout_ms")
         })
         return _obj
 

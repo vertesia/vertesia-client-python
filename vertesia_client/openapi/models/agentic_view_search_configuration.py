@@ -17,9 +17,11 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr, field_validator
+from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, Optional, Union
+from vertesia_client.openapi.models.agentic_view_rerank_configuration import AgenticViewRerankConfiguration
 from vertesia_client.openapi.models.interaction_execution_configuration import InteractionExecutionConfiguration
+from vertesia_client.openapi.models.view_agentic_search_mode import ViewAgenticSearchMode
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -31,18 +33,11 @@ class AgenticViewSearchConfiguration(BaseModel):
     interaction: Optional[StrictStr] = None
     config: Optional[InteractionExecutionConfiguration] = None
     instructions: Optional[StrictStr] = Field(default=None, description="View-specific guidance for Elasticsearch query planning.")
-    mode: Optional[StrictStr] = None
+    mode: Optional[ViewAgenticSearchMode] = Field(default=None, description="Generate only Elasticsearch DSL, or generate DSL plus a safe ephemeral result presentation.")
     timeout_ms: Optional[Union[StrictFloat, StrictInt]] = None
     minimum_confidence: Optional[Union[StrictFloat, StrictInt]] = None
-    __properties: ClassVar[List[str]] = ["interaction", "config", "instructions", "mode", "timeout_ms", "minimum_confidence"]
-
-    @field_validator('mode')
-    def mode_validate_enum(cls, value):
-        """Validates the enum"""
-        if value is None:
-            return value
-
-        return value
+    rerank: Optional[AgenticViewRerankConfiguration] = Field(default=None, description="Optional second stage that reorders an authorized candidate page using the same model configuration.")
+    __properties: ClassVar[List[str]] = ["interaction", "config", "instructions", "mode", "timeout_ms", "minimum_confidence", "rerank"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -86,6 +81,9 @@ class AgenticViewSearchConfiguration(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of config
         if self.config:
             _dict['config'] = self.config.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of rerank
+        if self.rerank:
+            _dict['rerank'] = self.rerank.to_dict()
         return _dict
 
     @classmethod
@@ -103,7 +101,8 @@ class AgenticViewSearchConfiguration(BaseModel):
             "instructions": obj.get("instructions"),
             "mode": obj.get("mode"),
             "timeout_ms": obj.get("timeout_ms"),
-            "minimum_confidence": obj.get("minimum_confidence")
+            "minimum_confidence": obj.get("minimum_confidence"),
+            "rerank": AgenticViewRerankConfiguration.from_dict(obj["rerank"]) if obj.get("rerank") is not None else None
         })
         return _obj
 

@@ -644,7 +644,7 @@ class ViewsApi:
     ) -> ViewExecutionResult:
         """Execute a View Experience
 
-        Executes a stored or app-contributed View by ID. Configuration, scope, and security filters are resolved server-side. Agentic query planning additionally requires interaction execute permission.  **Required permissions:** `content:read`
+        Executes a stored, built-in system, or app-contributed View by ID. Configuration, scope, and security filters are resolved server-side. Agentic query planning, optional presentation planning, and optional result reranking additionally require interaction execute permission.  **Required permissions:** `content:read`
 
         :param view_id: (required)
         :type view_id: str
@@ -721,7 +721,7 @@ class ViewsApi:
     ) -> ApiResponse[ViewExecutionResult]:
         """Execute a View Experience
 
-        Executes a stored or app-contributed View by ID. Configuration, scope, and security filters are resolved server-side. Agentic query planning additionally requires interaction execute permission.  **Required permissions:** `content:read`
+        Executes a stored, built-in system, or app-contributed View by ID. Configuration, scope, and security filters are resolved server-side. Agentic query planning, optional presentation planning, and optional result reranking additionally require interaction execute permission.  **Required permissions:** `content:read`
 
         :param view_id: (required)
         :type view_id: str
@@ -798,7 +798,7 @@ class ViewsApi:
     ) -> RESTResponseType:
         """Execute a View Experience
 
-        Executes a stored or app-contributed View by ID. Configuration, scope, and security filters are resolved server-side. Agentic query planning additionally requires interaction execute permission.  **Required permissions:** `content:read`
+        Executes a stored, built-in system, or app-contributed View by ID. Configuration, scope, and security filters are resolved server-side. Agentic query planning, optional presentation planning, and optional result reranking additionally require interaction execute permission.  **Required permissions:** `content:read`
 
         :param view_id: (required)
         :type view_id: str
@@ -1539,7 +1539,7 @@ class ViewsApi:
     ) -> ViewExecutionResult:
         """Preview an unsaved View Experience
 
-        Validates an inline (unsaved) View configuration and executes it against content without persisting it, returning normalized results, navigation counts, and any agentic query plan. Agentic query planning additionally requires interaction execute permission.  **Required permissions:** `content:read`
+        Validates an inline (unsaved) View configuration and executes it against content without persisting it, returning normalized results, navigation counts, and any agentic query, presentation, and reranking diagnostics. Agentic stages additionally require interaction execute permission.  **Required permissions:** `content:read`
 
         :param preview_view_experience_request: (required)
         :type preview_view_experience_request: PreviewViewExperienceRequest
@@ -1612,7 +1612,7 @@ class ViewsApi:
     ) -> ApiResponse[ViewExecutionResult]:
         """Preview an unsaved View Experience
 
-        Validates an inline (unsaved) View configuration and executes it against content without persisting it, returning normalized results, navigation counts, and any agentic query plan. Agentic query planning additionally requires interaction execute permission.  **Required permissions:** `content:read`
+        Validates an inline (unsaved) View configuration and executes it against content without persisting it, returning normalized results, navigation counts, and any agentic query, presentation, and reranking diagnostics. Agentic stages additionally require interaction execute permission.  **Required permissions:** `content:read`
 
         :param preview_view_experience_request: (required)
         :type preview_view_experience_request: PreviewViewExperienceRequest
@@ -1685,7 +1685,7 @@ class ViewsApi:
     ) -> RESTResponseType:
         """Preview an unsaved View Experience
 
-        Validates an inline (unsaved) View configuration and executes it against content without persisting it, returning normalized results, navigation counts, and any agentic query plan. Agentic query planning additionally requires interaction execute permission.  **Required permissions:** `content:read`
+        Validates an inline (unsaved) View configuration and executes it against content without persisting it, returning normalized results, navigation counts, and any agentic query, presentation, and reranking diagnostics. Agentic stages additionally require interaction execute permission.  **Required permissions:** `content:read`
 
         :param preview_view_experience_request: (required)
         :type preview_view_experience_request: PreviewViewExperienceRequest

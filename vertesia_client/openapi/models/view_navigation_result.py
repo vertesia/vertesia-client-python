@@ -31,9 +31,10 @@ class ViewNavigationResult(BaseModel):
     id: StrictStr
     selected: List[StrictStr]
     nodes: List[ViewNavigationNode]
-    breadcrumbs: Optional[List[ViewNavigationNode]] = Field(default=None, description="Selected hierarchy path from its root through the current value.")
+    query: Optional[StrictStr] = Field(default=None, description="Applied server-side node filter, when the navigation source supports it.")
+    breadcrumbs: Optional[List[ViewNavigationNode]] = Field(default=None, description="Selected drill-down path from its root through the current value.")
     truncated: Optional[StrictBool] = None
-    __properties: ClassVar[List[str]] = ["id", "selected", "nodes", "breadcrumbs", "truncated"]
+    __properties: ClassVar[List[str]] = ["id", "selected", "nodes", "query", "breadcrumbs", "truncated"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -103,6 +104,7 @@ class ViewNavigationResult(BaseModel):
             "id": obj.get("id"),
             "selected": obj.get("selected"),
             "nodes": [ViewNavigationNode.from_dict(_item) for _item in obj["nodes"]] if obj.get("nodes") is not None else None,
+            "query": obj.get("query"),
             "breadcrumbs": [ViewNavigationNode.from_dict(_item) for _item in obj["breadcrumbs"]] if obj.get("breadcrumbs") is not None else None,
             "truncated": obj.get("truncated")
         })

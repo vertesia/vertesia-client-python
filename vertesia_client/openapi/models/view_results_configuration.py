@@ -19,7 +19,10 @@ import json
 
 from pydantic import BaseModel, ConfigDict, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
+from vertesia_client.openapi.models.view_actions_configuration import ViewActionsConfiguration
 from vertesia_client.openapi.models.view_display_configuration import ViewDisplayConfiguration
+from vertesia_client.openapi.models.view_drop_configuration import ViewDropConfiguration
+from vertesia_client.openapi.models.view_selection_configuration import ViewSelectionConfiguration
 from vertesia_client.openapi.models.view_sort_option import ViewSortOption
 from typing import Optional, Set
 from typing_extensions import Self
@@ -34,7 +37,10 @@ class ViewResultsConfiguration(BaseModel):
     displays: List[ViewDisplayConfiguration]
     default_sort: Optional[StrictStr] = None
     sort_options: Optional[List[ViewSortOption]] = None
-    __properties: ClassVar[List[str]] = ["default_display", "allow_display_switch", "displays", "default_sort", "sort_options"]
+    selection: Optional[ViewSelectionConfiguration] = None
+    actions: Optional[ViewActionsConfiguration] = None
+    drop: Optional[ViewDropConfiguration] = None
+    __properties: ClassVar[List[str]] = ["default_display", "allow_display_switch", "displays", "default_sort", "sort_options", "selection", "actions", "drop"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -89,6 +95,15 @@ class ViewResultsConfiguration(BaseModel):
                 if _item_sort_options:
                     _items.append(_item_sort_options.to_dict())
             _dict['sort_options'] = _items
+        # override the default output from pydantic by calling `to_dict()` of selection
+        if self.selection:
+            _dict['selection'] = self.selection.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of actions
+        if self.actions:
+            _dict['actions'] = self.actions.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of drop
+        if self.drop:
+            _dict['drop'] = self.drop.to_dict()
         return _dict
 
     @classmethod
@@ -105,7 +120,10 @@ class ViewResultsConfiguration(BaseModel):
             "allow_display_switch": obj.get("allow_display_switch"),
             "displays": [ViewDisplayConfiguration.from_dict(_item) for _item in obj["displays"]] if obj.get("displays") is not None else None,
             "default_sort": obj.get("default_sort"),
-            "sort_options": [ViewSortOption.from_dict(_item) for _item in obj["sort_options"]] if obj.get("sort_options") is not None else None
+            "sort_options": [ViewSortOption.from_dict(_item) for _item in obj["sort_options"]] if obj.get("sort_options") is not None else None,
+            "selection": ViewSelectionConfiguration.from_dict(obj["selection"]) if obj.get("selection") is not None else None,
+            "actions": ViewActionsConfiguration.from_dict(obj["actions"]) if obj.get("actions") is not None else None,
+            "drop": ViewDropConfiguration.from_dict(obj["drop"]) if obj.get("drop") is not None else None
         })
         return _obj
 

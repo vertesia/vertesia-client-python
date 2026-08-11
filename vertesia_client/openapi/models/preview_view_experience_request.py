@@ -31,12 +31,13 @@ class PreviewViewExperienceRequest(BaseModel):
     query: Optional[StrictStr] = None
     key_terms: Optional[Dict[str, List[StrictStr]]] = None
     navigation: Optional[Dict[str, List[StrictStr]]] = None
+    navigation_queries: Optional[Dict[str, StrictStr]] = Field(default=None, description="Server-side text filters for large navigation sources, keyed by navigation id.")
     display: Optional[StrictStr] = None
     sort: Optional[StrictStr] = None
     offset: Optional[Union[StrictFloat, StrictInt]] = None
     limit: Optional[Union[StrictFloat, StrictInt]] = None
     configuration: ViewExperienceConfiguration = Field(description="The unsaved View configuration to validate and execute.")
-    __properties: ClassVar[List[str]] = ["query", "key_terms", "navigation", "display", "sort", "offset", "limit", "configuration"]
+    __properties: ClassVar[List[str]] = ["query", "key_terms", "navigation", "navigation_queries", "display", "sort", "offset", "limit", "configuration"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -95,6 +96,7 @@ class PreviewViewExperienceRequest(BaseModel):
             "query": obj.get("query"),
             "key_terms": obj.get("key_terms"),
             "navigation": obj.get("navigation"),
+            "navigation_queries": obj.get("navigation_queries"),
             "display": obj.get("display"),
             "sort": obj.get("sort"),
             "offset": obj.get("offset"),

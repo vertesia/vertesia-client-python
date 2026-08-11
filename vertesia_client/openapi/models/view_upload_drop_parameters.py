@@ -17,25 +17,22 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional, Union
+from pydantic import BaseModel, ConfigDict, StrictBool, StrictStr
+from typing import Any, ClassVar, Dict, Optional
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class ExecuteViewRequest(BaseModel):
+class ViewUploadDropParameters(BaseModel):
     """
-    ExecuteViewRequest
+    ViewUploadDropParameters
     """ # noqa: E501
-    query: Optional[StrictStr] = None
-    key_terms: Optional[Dict[str, List[StrictStr]]] = None
-    navigation: Optional[Dict[str, List[StrictStr]]] = None
-    navigation_queries: Optional[Dict[str, StrictStr]] = Field(default=None, description="Server-side text filters for large navigation sources, keyed by navigation id.")
-    display: Optional[StrictStr] = None
-    sort: Optional[StrictStr] = None
-    offset: Optional[Union[StrictFloat, StrictInt]] = None
-    limit: Optional[Union[StrictFloat, StrictInt]] = None
-    __properties: ClassVar[List[str]] = ["query", "key_terms", "navigation", "navigation_queries", "display", "sort", "offset", "limit"]
+    type_id: Optional[StrictStr] = None
+    collection_id: Optional[StrictStr] = None
+    location: Optional[StrictStr] = None
+    properties: Optional[Dict[str, Any]] = None
+    allow_folders: Optional[StrictBool] = None
+    __properties: ClassVar[List[str]] = ["type_id", "collection_id", "location", "properties", "allow_folders"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -55,7 +52,7 @@ class ExecuteViewRequest(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of ExecuteViewRequest from a JSON string"""
+        """Create an instance of ViewUploadDropParameters from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -80,7 +77,7 @@ class ExecuteViewRequest(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of ExecuteViewRequest from a dict"""
+        """Create an instance of ViewUploadDropParameters from a dict"""
         if obj is None:
             return None
 
@@ -88,14 +85,11 @@ class ExecuteViewRequest(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "query": obj.get("query"),
-            "key_terms": obj.get("key_terms"),
-            "navigation": obj.get("navigation"),
-            "navigation_queries": obj.get("navigation_queries"),
-            "display": obj.get("display"),
-            "sort": obj.get("sort"),
-            "offset": obj.get("offset"),
-            "limit": obj.get("limit")
+            "type_id": obj.get("type_id"),
+            "collection_id": obj.get("collection_id"),
+            "location": obj.get("location"),
+            "properties": obj.get("properties"),
+            "allow_folders": obj.get("allow_folders")
         })
         return _obj
 

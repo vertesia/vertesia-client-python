@@ -17,25 +17,36 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional, Union
+from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr, field_validator
+from typing import Any, ClassVar, Dict, Optional, Union
+from vertesia_client.openapi.models.view_rerank_failure_code import ViewRerankFailureCode
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class ExecuteViewRequest(BaseModel):
+class ViewExecutionRerankResult(BaseModel):
     """
-    ExecuteViewRequest
+    ViewExecutionRerankResult
     """ # noqa: E501
-    query: Optional[StrictStr] = None
-    key_terms: Optional[Dict[str, List[StrictStr]]] = None
-    navigation: Optional[Dict[str, List[StrictStr]]] = None
-    navigation_queries: Optional[Dict[str, StrictStr]] = Field(default=None, description="Server-side text filters for large navigation sources, keyed by navigation id.")
-    display: Optional[StrictStr] = None
-    sort: Optional[StrictStr] = None
-    offset: Optional[Union[StrictFloat, StrictInt]] = None
-    limit: Optional[Union[StrictFloat, StrictInt]] = None
-    __properties: ClassVar[List[str]] = ["query", "key_terms", "navigation", "navigation_queries", "display", "sort", "offset", "limit"]
+    status: StrictStr
+    candidate_count: Union[StrictFloat, StrictInt]
+    skip_reason: Optional[StrictStr] = None
+    error_code: Optional[ViewRerankFailureCode] = None
+    error_message: Optional[StrictStr] = None
+    __properties: ClassVar[List[str]] = ["status", "candidate_count", "skip_reason", "error_code", "error_message"]
+
+    @field_validator('status')
+    def status_validate_enum(cls, value):
+        """Validates the enum"""
+        return value
+
+    @field_validator('skip_reason')
+    def skip_reason_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -55,7 +66,7 @@ class ExecuteViewRequest(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of ExecuteViewRequest from a JSON string"""
+        """Create an instance of ViewExecutionRerankResult from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -80,7 +91,7 @@ class ExecuteViewRequest(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of ExecuteViewRequest from a dict"""
+        """Create an instance of ViewExecutionRerankResult from a dict"""
         if obj is None:
             return None
 
@@ -88,14 +99,11 @@ class ExecuteViewRequest(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "query": obj.get("query"),
-            "key_terms": obj.get("key_terms"),
-            "navigation": obj.get("navigation"),
-            "navigation_queries": obj.get("navigation_queries"),
-            "display": obj.get("display"),
-            "sort": obj.get("sort"),
-            "offset": obj.get("offset"),
-            "limit": obj.get("limit")
+            "status": obj.get("status"),
+            "candidate_count": obj.get("candidate_count"),
+            "skip_reason": obj.get("skip_reason"),
+            "error_code": obj.get("error_code"),
+            "error_message": obj.get("error_message")
         })
         return _obj
 

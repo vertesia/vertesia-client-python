@@ -17,25 +17,32 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional, Union
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr, field_validator
+from typing import Any, ClassVar, Dict, List, Optional
+from vertesia_client.openapi.models.view_action_configuration import ViewActionConfiguration
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class ExecuteViewRequest(BaseModel):
+class ViewActionsConfiguration(BaseModel):
     """
-    ExecuteViewRequest
+    ViewActionsConfiguration
     """ # noqa: E501
-    query: Optional[StrictStr] = None
-    key_terms: Optional[Dict[str, List[StrictStr]]] = None
-    navigation: Optional[Dict[str, List[StrictStr]]] = None
-    navigation_queries: Optional[Dict[str, StrictStr]] = Field(default=None, description="Server-side text filters for large navigation sources, keyed by navigation id.")
-    display: Optional[StrictStr] = None
-    sort: Optional[StrictStr] = None
-    offset: Optional[Union[StrictFloat, StrictInt]] = None
-    limit: Optional[Union[StrictFloat, StrictInt]] = None
-    __properties: ClassVar[List[str]] = ["query", "key_terms", "navigation", "navigation_queries", "display", "sort", "offset", "limit"]
+    include_defaults: Optional[StrictBool] = Field(default=None, description="Include the standard content export and delete actions. Defaults to true when selection is enabled.")
+    exclude_defaults: Optional[List[StrictStr]] = Field(default=None, description="Hide individual standard actions while keeping the remaining defaults.")
+    items: Optional[List[ViewActionConfiguration]] = None
+    __properties: ClassVar[List[str]] = ["include_defaults", "exclude_defaults", "items"]
+
+    @field_validator('exclude_defaults')
+    def exclude_defaults_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        for i in value:
+            if i not in set(['export', 'delete']):
+                raise ValueError("each list item must be one of ('export', 'delete')")
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -55,7 +62,7 @@ class ExecuteViewRequest(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of ExecuteViewRequest from a JSON string"""
+        """Create an instance of ViewActionsConfiguration from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -76,11 +83,18 @@ class ExecuteViewRequest(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of each item in items (list)
+        _items = []
+        if self.items:
+            for _item_items in self.items:
+                if _item_items:
+                    _items.append(_item_items.to_dict())
+            _dict['items'] = _items
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of ExecuteViewRequest from a dict"""
+        """Create an instance of ViewActionsConfiguration from a dict"""
         if obj is None:
             return None
 
@@ -88,14 +102,9 @@ class ExecuteViewRequest(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "query": obj.get("query"),
-            "key_terms": obj.get("key_terms"),
-            "navigation": obj.get("navigation"),
-            "navigation_queries": obj.get("navigation_queries"),
-            "display": obj.get("display"),
-            "sort": obj.get("sort"),
-            "offset": obj.get("offset"),
-            "limit": obj.get("limit")
+            "include_defaults": obj.get("include_defaults"),
+            "exclude_defaults": obj.get("exclude_defaults"),
+            "items": [ViewActionConfiguration.from_dict(_item) for _item in obj["items"]] if obj.get("items") is not None else None
         })
         return _obj
 
