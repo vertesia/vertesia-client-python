@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.reasoning_effort import ReasoningEffort
 from typing import Optional, Set
 from typing_extensions import Self
@@ -39,7 +40,8 @@ class OpenAiTextOptions(BaseModel):
     stop_sequence: Optional[List[StrictStr]] = None
     image_detail: Optional[StrictStr] = None
     include_thoughts: Optional[StrictBool] = None
-    __properties: ClassVar[List[str]] = ["_option_id", "max_tokens", "effort", "reasoning_effort", "temperature", "top_p", "presence_penalty", "frequency_penalty", "stop_sequence", "image_detail", "include_thoughts"]
+    service_tier: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="Provider-defined processing tier. Unknown non-empty values are preserved for forward compatibility.")
+    __properties: ClassVar[List[str]] = ["_option_id", "max_tokens", "effort", "reasoning_effort", "temperature", "top_p", "presence_penalty", "frequency_penalty", "stop_sequence", "image_detail", "include_thoughts", "service_tier"]
 
     @field_validator('option_id')
     def option_id_validate_enum(cls, value):
@@ -115,7 +117,8 @@ class OpenAiTextOptions(BaseModel):
             "frequency_penalty": obj.get("frequency_penalty"),
             "stop_sequence": obj.get("stop_sequence"),
             "image_detail": obj.get("image_detail"),
-            "include_thoughts": obj.get("include_thoughts")
+            "include_thoughts": obj.get("include_thoughts"),
+            "service_tier": obj.get("service_tier")
         })
         return _obj
 

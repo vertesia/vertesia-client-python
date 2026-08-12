@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -38,7 +39,8 @@ class BedrockClaudeOptions(BaseModel):
     effort: Optional[StrictStr] = None
     cache_enabled: Optional[StrictBool] = None
     cache_ttl: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["_option_id", "max_tokens", "temperature", "top_p", "stop_sequence", "top_k", "thinking_budget_tokens", "include_thoughts", "effort", "cache_enabled", "cache_ttl"]
+    service_tier: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="Provider-defined processing tier. Unknown non-empty values are preserved for forward compatibility.")
+    __properties: ClassVar[List[str]] = ["_option_id", "max_tokens", "temperature", "top_p", "stop_sequence", "top_k", "thinking_budget_tokens", "include_thoughts", "effort", "cache_enabled", "cache_ttl", "service_tier"]
 
     @field_validator('option_id')
     def option_id_validate_enum(cls, value):
@@ -122,7 +124,8 @@ class BedrockClaudeOptions(BaseModel):
             "include_thoughts": obj.get("include_thoughts"),
             "effort": obj.get("effort"),
             "cache_enabled": obj.get("cache_enabled"),
-            "cache_ttl": obj.get("cache_ttl")
+            "cache_ttl": obj.get("cache_ttl"),
+            "service_tier": obj.get("service_tier")
         })
         return _obj
 

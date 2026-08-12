@@ -5951,6 +5951,11 @@
           },
           "include_thoughts": {
             "type": "boolean"
+          },
+          "service_tier": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Provider-defined processing tier. Unknown non-empty values are preserved for forward compatibility."
           }
         },
         "required": [
@@ -6008,6 +6013,11 @@
               "5m",
               "1h"
             ]
+          },
+          "service_tier": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Provider-defined processing tier. Unknown non-empty values are preserved for forward compatibility."
           }
         },
         "required": [
@@ -6039,6 +6049,11 @@
           },
           "include_thoughts": {
             "type": "boolean"
+          },
+          "service_tier": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Provider-defined processing tier. Unknown non-empty values are preserved for forward compatibility."
           }
         },
         "required": [
@@ -6070,6 +6085,11 @@
           },
           "include_thoughts": {
             "type": "boolean"
+          },
+          "service_tier": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Provider-defined processing tier. Unknown non-empty values are preserved for forward compatibility."
           }
         },
         "required": [
@@ -6112,6 +6132,11 @@
           },
           "presence_penalty": {
             "type": "number"
+          },
+          "service_tier": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Provider-defined processing tier. Unknown non-empty values are preserved for forward compatibility."
           }
         },
         "required": [
@@ -6308,6 +6333,11 @@
           },
           "include_thoughts": {
             "type": "boolean"
+          },
+          "service_tier": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Provider-defined processing tier. Unknown non-empty values are preserved for forward compatibility."
           }
         },
         "required": [
@@ -6339,6 +6369,11 @@
           },
           "include_thoughts": {
             "type": "boolean"
+          },
+          "service_tier": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Provider-defined processing tier. Unknown non-empty values are preserved for forward compatibility."
           }
         },
         "required": [
@@ -6379,6 +6414,11 @@
           },
           "presence_penalty": {
             "type": "number"
+          },
+          "service_tier": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Provider-defined processing tier. Unknown non-empty values are preserved for forward compatibility."
           }
         },
         "required": [
@@ -22434,6 +22474,11 @@
           },
           "include_thoughts": {
             "type": "boolean"
+          },
+          "service_tier": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Provider-defined processing tier. Unknown non-empty values are preserved for forward compatibility."
           }
         },
         "required": [
@@ -22473,6 +22518,11 @@
           },
           "include_thoughts": {
             "type": "boolean"
+          },
+          "service_tier": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Provider-defined processing tier. Unknown non-empty values are preserved for forward compatibility."
           }
         },
         "required": [
@@ -28617,6 +28667,11 @@
           },
           "max_tokens": {
             "type": "number"
+          },
+          "service_tier": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Provider-defined processing tier. Unknown non-empty values are preserved for forward compatibility."
           }
         },
         "required": [
@@ -30503,8 +30558,16 @@
           "thinking_level": {
             "$ref": "#/components/schemas/ThinkingLevel"
           },
+          "service_tier": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Provider-defined processing tier. Unknown non-empty values are preserved for forward compatibility."
+          },
           "flex": {
-            "type": "boolean"
+            "type": "boolean",
+            "deprecated": true,
+            "x-deprecated-message": "Use service_tier=\"flex\" instead.",
+            "description": "Deprecated: Use service_tier=\"flex\" instead."
           },
           "image_aspect_ratio": {
             "type": "string",

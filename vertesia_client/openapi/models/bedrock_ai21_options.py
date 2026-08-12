@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -33,7 +34,8 @@ class BedrockAI21Options(BaseModel):
     top_p: Optional[Union[StrictFloat, StrictInt]] = None
     stop_sequence: Optional[List[StrictStr]] = None
     include_thoughts: Optional[StrictBool] = None
-    __properties: ClassVar[List[str]] = ["_option_id", "max_tokens", "temperature", "top_p", "stop_sequence", "include_thoughts"]
+    service_tier: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="Provider-defined processing tier. Unknown non-empty values are preserved for forward compatibility.")
+    __properties: ClassVar[List[str]] = ["_option_id", "max_tokens", "temperature", "top_p", "stop_sequence", "include_thoughts", "service_tier"]
 
     @field_validator('option_id')
     def option_id_validate_enum(cls, value):
@@ -96,7 +98,8 @@ class BedrockAI21Options(BaseModel):
             "temperature": obj.get("temperature"),
             "top_p": obj.get("top_p"),
             "stop_sequence": obj.get("stop_sequence"),
-            "include_thoughts": obj.get("include_thoughts")
+            "include_thoughts": obj.get("include_thoughts"),
+            "service_tier": obj.get("service_tier")
         })
         return _obj
 

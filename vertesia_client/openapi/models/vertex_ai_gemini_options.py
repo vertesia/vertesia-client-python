@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.thinking_level import ThinkingLevel
 from typing import Optional, Set
 from typing_extensions import Self
@@ -41,14 +42,15 @@ class VertexAIGeminiOptions(BaseModel):
     include_thoughts: Optional[StrictBool] = None
     thinking_budget_tokens: Optional[Union[StrictFloat, StrictInt]] = None
     thinking_level: Optional[ThinkingLevel] = None
-    flex: Optional[StrictBool] = None
+    service_tier: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="Provider-defined processing tier. Unknown non-empty values are preserved for forward compatibility.")
+    flex: Optional[StrictBool] = Field(default=None, description="Deprecated: Use service_tier=\"flex\" instead.")
     image_aspect_ratio: Optional[StrictStr] = None
     image_size: Optional[StrictStr] = None
     person_generation: Optional[StrictStr] = None
     prominent_people: Optional[StrictStr] = None
     output_mime_type: Optional[StrictStr] = None
     output_compression_quality: Optional[Union[StrictFloat, StrictInt]] = None
-    __properties: ClassVar[List[str]] = ["_option_id", "max_tokens", "temperature", "top_p", "top_k", "stop_sequence", "presence_penalty", "frequency_penalty", "seed", "effort", "include_thoughts", "thinking_budget_tokens", "thinking_level", "flex", "image_aspect_ratio", "image_size", "person_generation", "prominent_people", "output_mime_type", "output_compression_quality"]
+    __properties: ClassVar[List[str]] = ["_option_id", "max_tokens", "temperature", "top_p", "top_k", "stop_sequence", "presence_penalty", "frequency_penalty", "seed", "effort", "include_thoughts", "thinking_budget_tokens", "thinking_level", "service_tier", "flex", "image_aspect_ratio", "image_size", "person_generation", "prominent_people", "output_mime_type", "output_compression_quality"]
 
     @field_validator('option_id')
     def option_id_validate_enum(cls, value):
@@ -167,6 +169,7 @@ class VertexAIGeminiOptions(BaseModel):
             "include_thoughts": obj.get("include_thoughts"),
             "thinking_budget_tokens": obj.get("thinking_budget_tokens"),
             "thinking_level": obj.get("thinking_level"),
+            "service_tier": obj.get("service_tier"),
             "flex": obj.get("flex"),
             "image_aspect_ratio": obj.get("image_aspect_ratio"),
             "image_size": obj.get("image_size"),

@@ -4889,6 +4889,11 @@ components:
             type: string
         include_thoughts:
           type: boolean
+        service_tier:
+          type: string
+          minLength: 1
+          description: Provider-defined processing tier. Unknown non-empty values are
+            preserved for forward compatibility.
       required:
         - _option_id
       additionalProperties: false
@@ -4929,6 +4934,11 @@ components:
           enum:
             - 5m
             - 1h
+        service_tier:
+          type: string
+          minLength: 1
+          description: Provider-defined processing tier. Unknown non-empty values are
+            preserved for forward compatibility.
       required:
         - _option_id
       additionalProperties: false
@@ -4950,6 +4960,11 @@ components:
             type: string
         include_thoughts:
           type: boolean
+        service_tier:
+          type: string
+          minLength: 1
+          description: Provider-defined processing tier. Unknown non-empty values are
+            preserved for forward compatibility.
       required:
         - _option_id
       additionalProperties: false
@@ -4971,6 +4986,11 @@ components:
             type: string
         include_thoughts:
           type: boolean
+        service_tier:
+          type: string
+          minLength: 1
+          description: Provider-defined processing tier. Unknown non-empty values are
+            preserved for forward compatibility.
       required:
         - _option_id
       additionalProperties: false
@@ -5000,6 +5020,11 @@ components:
           type: number
         presence_penalty:
           type: number
+        service_tier:
+          type: string
+          minLength: 1
+          description: Provider-defined processing tier. Unknown non-empty values are
+            preserved for forward compatibility.
       required:
         - _option_id
       additionalProperties: false
@@ -5139,6 +5164,11 @@ components:
             type: string
         include_thoughts:
           type: boolean
+        service_tier:
+          type: string
+          minLength: 1
+          description: Provider-defined processing tier. Unknown non-empty values are
+            preserved for forward compatibility.
       required:
         - _option_id
       additionalProperties: false
@@ -5160,6 +5190,11 @@ components:
             type: string
         include_thoughts:
           type: boolean
+        service_tier:
+          type: string
+          minLength: 1
+          description: Provider-defined processing tier. Unknown non-empty values are
+            preserved for forward compatibility.
       required:
         - _option_id
       additionalProperties: false
@@ -5187,6 +5222,11 @@ components:
           type: number
         presence_penalty:
           type: number
+        service_tier:
+          type: string
+          minLength: 1
+          description: Provider-defined processing tier. Unknown non-empty values are
+            preserved for forward compatibility.
       required:
         - _option_id
       additionalProperties: false
@@ -17463,6 +17503,11 @@ components:
             - auto
         include_thoughts:
           type: boolean
+        service_tier:
+          type: string
+          minLength: 1
+          description: Provider-defined processing tier. Unknown non-empty values are
+            preserved for forward compatibility.
       required:
         - _option_id
       additionalProperties: false
@@ -17490,6 +17535,11 @@ components:
             - auto
         include_thoughts:
           type: boolean
+        service_tier:
+          type: string
+          minLength: 1
+          description: Provider-defined processing tier. Unknown non-empty values are
+            preserved for forward compatibility.
       required:
         - _option_id
       additionalProperties: false
@@ -22179,6 +22229,11 @@ components:
           type: number
         max_tokens:
           type: number
+        service_tier:
+          type: string
+          minLength: 1
+          description: Provider-defined processing tier. Unknown non-empty values are
+            preserved for forward compatibility.
       required:
         - _option_id
       additionalProperties: false
@@ -23556,8 +23611,16 @@ components:
           type: number
         thinking_level:
           $ref: "#/components/schemas/ThinkingLevel"
+        service_tier:
+          type: string
+          minLength: 1
+          description: Provider-defined processing tier. Unknown non-empty values are
+            preserved for forward compatibility.
         flex:
           type: boolean
+          deprecated: true
+          x-deprecated-message: Use service_tier="flex" instead.
+          description: 'Deprecated: Use service_tier="flex" instead.'
         image_aspect_ratio:
           type: string
           enum:
