@@ -34,6 +34,8 @@ class ProjectConfiguration(BaseModel):
     """
     ProjectConfiguration
     """ # noqa: E501
+    default_environment: Optional[StrictStr] = None
+    default_model: Optional[StrictStr] = None
     human_context: Optional[StrictStr] = None
     defaults: Optional[ProjectModelDefaults] = None
     default_visibility: Optional[ResourceVisibility] = None
@@ -49,7 +51,7 @@ class ProjectConfiguration(BaseModel):
     browser_use: Optional[BrowserUseProjectConfiguration] = Field(default=None, description="Project defaults and caps for browser_use agent workstreams.")
     pdf_template_object_id: Optional[StrictStr] = Field(default=None, description="Object ID of a content object containing a custom LaTeX template (.latex file) to use as the branded PDF template. When set, \"Export as Branded PDF\" uses this template instead of the built-in Vertesia default template. `null` clears it.")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["human_context", "defaults", "default_visibility", "sync_content_properties", "embeddings", "datacenter", "storage_bucket", "agent_streaming_enabled", "agent", "indexing", "intake", "main_language", "browser_use", "pdf_template_object_id"]
+    __properties: ClassVar[List[str]] = ["default_environment", "default_model", "human_context", "defaults", "default_visibility", "sync_content_properties", "embeddings", "datacenter", "storage_bucket", "agent_streaming_enabled", "agent", "indexing", "intake", "main_language", "browser_use", "pdf_template_object_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -132,6 +134,8 @@ class ProjectConfiguration(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "default_environment": obj.get("default_environment"),
+            "default_model": obj.get("default_model"),
             "human_context": obj.get("human_context"),
             "defaults": ProjectModelDefaults.from_dict(obj["defaults"]) if obj.get("defaults") is not None else None,
             "default_visibility": obj.get("default_visibility"),

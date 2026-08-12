@@ -8144,6 +8144,7 @@ class AppsApi:
     @validate_call
     def list_apps(
         self,
+        scope: Annotated[Optional[StrictStr], Field(description="Restrict the listing to apps that belong to the current project — those installed into it or that have built versions in it. Defaults to `account`, which lists every app visible to the account, including the public catalog.")] = None,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -8160,8 +8161,10 @@ class AppsApi:
     ) -> List[AppManifest]:
         """List apps
 
-        Lists apps visible to the current account.
+        Lists apps visible to the current account. Pass `scope=project` to narrow the listing to apps that belong to the current project.
 
+        :param scope: Restrict the listing to apps that belong to the current project — those installed into it or that have built versions in it. Defaults to `account`, which lists every app visible to the account, including the public catalog.
+        :type scope: str
         :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -8187,6 +8190,7 @@ class AppsApi:
         """ # noqa: E501
 
         _param = self._list_apps_serialize(
+            scope=scope,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -8213,6 +8217,7 @@ class AppsApi:
     @validate_call
     def list_apps_with_http_info(
         self,
+        scope: Annotated[Optional[StrictStr], Field(description="Restrict the listing to apps that belong to the current project — those installed into it or that have built versions in it. Defaults to `account`, which lists every app visible to the account, including the public catalog.")] = None,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -8229,8 +8234,10 @@ class AppsApi:
     ) -> ApiResponse[List[AppManifest]]:
         """List apps
 
-        Lists apps visible to the current account.
+        Lists apps visible to the current account. Pass `scope=project` to narrow the listing to apps that belong to the current project.
 
+        :param scope: Restrict the listing to apps that belong to the current project — those installed into it or that have built versions in it. Defaults to `account`, which lists every app visible to the account, including the public catalog.
+        :type scope: str
         :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -8256,6 +8263,7 @@ class AppsApi:
         """ # noqa: E501
 
         _param = self._list_apps_serialize(
+            scope=scope,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -8282,6 +8290,7 @@ class AppsApi:
     @validate_call
     def list_apps_without_preload_content(
         self,
+        scope: Annotated[Optional[StrictStr], Field(description="Restrict the listing to apps that belong to the current project — those installed into it or that have built versions in it. Defaults to `account`, which lists every app visible to the account, including the public catalog.")] = None,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -8298,8 +8307,10 @@ class AppsApi:
     ) -> RESTResponseType:
         """List apps
 
-        Lists apps visible to the current account.
+        Lists apps visible to the current account. Pass `scope=project` to narrow the listing to apps that belong to the current project.
 
+        :param scope: Restrict the listing to apps that belong to the current project — those installed into it or that have built versions in it. Defaults to `account`, which lists every app visible to the account, including the public catalog.
+        :type scope: str
         :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -8325,6 +8336,7 @@ class AppsApi:
         """ # noqa: E501
 
         _param = self._list_apps_serialize(
+            scope=scope,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -8346,6 +8358,7 @@ class AppsApi:
 
     def _list_apps_serialize(
         self,
+        scope,
         x_api_version,
         _request_auth,
         _content_type,
@@ -8369,6 +8382,10 @@ class AppsApi:
 
         # process the path parameters
         # process the query parameters
+        if scope is not None:
+            
+            _query_params.append(('scope', scope))
+            
         # process the header parameters
         if x_api_version is not None:
             _header_params['x-api-version'] = x_api_version

@@ -300,6 +300,7 @@ __all__ = [
     "ConfigModes",
     "ContentEmbeddingMap",
     "ContentObjectApiResponse",
+    "ContentObjectApiResponseSearchTypeResultInner",
     "ContentObjectApiResponseTokens",
     "ContentObjectApiRevision",
     "ContentObjectExportArtifact",
@@ -1386,6 +1387,7 @@ from vertesia_client.openapi.models.computed_facet_response import ComputedFacet
 from vertesia_client.openapi.models.config_modes import ConfigModes as ConfigModes
 from vertesia_client.openapi.models.content_embedding_map import ContentEmbeddingMap as ContentEmbeddingMap
 from vertesia_client.openapi.models.content_object_api_response import ContentObjectApiResponse as ContentObjectApiResponse
+from vertesia_client.openapi.models.content_object_api_response_search_type_result_inner import ContentObjectApiResponseSearchTypeResultInner as ContentObjectApiResponseSearchTypeResultInner
 from vertesia_client.openapi.models.content_object_api_response_tokens import ContentObjectApiResponseTokens as ContentObjectApiResponseTokens
 from vertesia_client.openapi.models.content_object_api_revision import ContentObjectApiRevision as ContentObjectApiRevision
 from vertesia_client.openapi.models.content_object_export_artifact import ContentObjectExportArtifact as ContentObjectExportArtifact

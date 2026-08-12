@@ -21,6 +21,7 @@ from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from vertesia_client.openapi.models.account_ref import AccountRef
+from vertesia_client.openapi.models.completion_result import CompletionResult
 from vertesia_client.openapi.models.execution_environment_ref import ExecutionEnvironmentRef
 from vertesia_client.openapi.models.execution_run_evaluation import ExecutionRunEvaluation
 from vertesia_client.openapi.models.execution_run_parent import ExecutionRunParent
@@ -68,8 +69,10 @@ class ExecutionRunRef(BaseModel):
     updated_by: StrictStr
     workflow: Optional[ExecutionRunWorkflow] = Field(default=None, description="The Vertesia Workflow related to this Interaction Run.  This is only set when the interaction is executed as part of a workflow.")
     interaction: Optional[InteractionRef] = None
+    result: Optional[List[CompletionResult]] = None
+    parameters: Optional[Any] = None
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["id", "parent", "evaluation", "tags", "environment", "modelId", "result_schema", "ttl", "status", "finish_reason", "prompt", "token_use", "chunks", "execution_time", "created_at", "updated_at", "account", "project", "config", "error", "source", "output_modality", "created_by", "updated_by", "workflow", "interaction"]
+    __properties: ClassVar[List[str]] = ["id", "parent", "evaluation", "tags", "environment", "modelId", "result_schema", "ttl", "status", "finish_reason", "prompt", "token_use", "chunks", "execution_time", "created_at", "updated_at", "account", "project", "config", "error", "source", "output_modality", "created_by", "updated_by", "workflow", "interaction", "result", "parameters"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -148,6 +151,13 @@ class ExecutionRunRef(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of interaction
         if self.interaction:
             _dict['interaction'] = self.interaction.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of each item in result (list)
+        _items = []
+        if self.result:
+            for _item_result in self.result:
+                if _item_result:
+                    _items.append(_item_result.to_dict())
+            _dict['result'] = _items
         # puts key-value pairs in additional_properties in the top level
         if self.additional_properties is not None:
             for _key, _value in self.additional_properties.items():
@@ -157,6 +167,11 @@ class ExecutionRunRef(BaseModel):
         # and model_fields_set contains the field
         if self.prompt is None and "prompt" in self.model_fields_set:
             _dict['prompt'] = None
+
+        # set to None if parameters (nullable) is None
+        # and model_fields_set contains the field
+        if self.parameters is None and "parameters" in self.model_fields_set:
+            _dict['parameters'] = None
 
         return _dict
 
@@ -195,7 +210,9 @@ class ExecutionRunRef(BaseModel):
             "created_by": obj.get("created_by"),
             "updated_by": obj.get("updated_by"),
             "workflow": ExecutionRunWorkflow.from_dict(obj["workflow"]) if obj.get("workflow") is not None else None,
-            "interaction": InteractionRef.from_dict(obj["interaction"]) if obj.get("interaction") is not None else None
+            "interaction": InteractionRef.from_dict(obj["interaction"]) if obj.get("interaction") is not None else None,
+            "result": [CompletionResult.from_dict(_item) for _item in obj["result"]] if obj.get("result") is not None else None,
+            "parameters": obj.get("parameters")
         })
         # store additional fields in additional_properties
         for _key in obj.keys():

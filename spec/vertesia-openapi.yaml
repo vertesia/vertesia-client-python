@@ -6662,6 +6662,22 @@ components:
           type: number
         user_permissions:
           $ref: "#/components/schemas/ContentObjectUserPermissions"
+        searchTypeResult:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+              score:
+                type: number
+              rank:
+                type: number
+            required:
+              - type
+              - score
+              - rank
+            additionalProperties: false
         text:
           type: string
         text_etag:
@@ -6680,9 +6696,11 @@ components:
         security:
           $ref: "#/components/schemas/StringArrayMap"
         sensitivity:
-          type: number
-          description: BLP sensitivity level — set directly or inherited from collections
-            (max across collections).
+          anyOf:
+            - type: number
+              description: BLP sensitivity level — set directly or inherited from collections
+                (max across collections).
+            - type: "null"
         compartments:
           type: array
           items:
@@ -6945,6 +6963,51 @@ components:
           type: number
         user_permissions:
           $ref: "#/components/schemas/ContentObjectUserPermissions"
+        searchTypeResult:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+              score:
+                type: number
+              rank:
+                type: number
+            required:
+              - type
+              - score
+              - rank
+            additionalProperties: false
+        text:
+          type: string
+        text_etag:
+          type: string
+        embeddings:
+          $ref: "#/components/schemas/EmbeddingMap"
+        parts:
+          type: array
+          items:
+            type: string
+        parts_etag:
+          type: string
+        transcript:
+          type: object
+          additionalProperties: true
+        security:
+          $ref: "#/components/schemas/StringArrayMap"
+        sensitivity:
+          anyOf:
+            - type: number
+            - type: "null"
+        compartments:
+          type: array
+          items:
+            type: string
+        inherited_properties:
+          type: array
+          items:
+            $ref: "#/components/schemas/InheritedPropertyMetadata"
       required:
         - id
         - name
@@ -13030,6 +13093,11 @@ components:
             workflow.
         interaction:
           $ref: "#/components/schemas/InteractionRef"
+        result:
+          type: array
+          items:
+            $ref: "#/components/schemas/CompletionResult"
+        parameters: {}
       required:
         - id
         - environment
@@ -18215,6 +18283,10 @@ components:
     ProjectConfiguration:
       type: object
       properties:
+        default_environment:
+          type: string
+        default_model:
+          type: string
         human_context:
           type: string
         defaults:
@@ -18706,6 +18778,22 @@ components:
           type: number
         user_permissions:
           $ref: "#/components/schemas/ContentObjectUserPermissions"
+        searchTypeResult:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+              score:
+                type: number
+              rank:
+                type: number
+            required:
+              - type
+              - score
+              - rank
+            additionalProperties: false
         text:
           type: string
         text_etag:
@@ -18724,9 +18812,11 @@ components:
         security:
           $ref: "#/components/schemas/StringArrayMap"
         sensitivity:
-          type: number
-          description: BLP sensitivity level — set directly or inherited from collections
-            (max across collections).
+          anyOf:
+            - type: number
+              description: BLP sensitivity level — set directly or inherited from collections
+                (max across collections).
+            - type: "null"
         compartments:
           type: array
           items:
@@ -22585,6 +22675,10 @@ components:
     UpdateProjectConfigurationPayload:
       type: object
       properties:
+        default_environment:
+          type: string
+        default_model:
+          type: string
         human_context:
           type: string
         defaults:
@@ -35604,11 +35698,29 @@ paths:
       tags:
         - Apps
       summary: List apps
-      description: Lists apps visible to the current account.
+      description: Lists apps visible to the current account. Pass `scope=project` to
+        narrow the listing to apps that belong to the current project.
       security:
         - bearerAuth: []
         - OpenID: []
-      parameters: []
+      parameters:
+        - name: scope
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - account
+              - project
+            description: Restrict the listing to apps that belong to the current project —
+              those installed into it or that have built versions in it.
+              Defaults to `account`, which lists every app visible to the
+              account, including the public catalog.
+          description: Restrict the listing to apps that belong to the current project —
+            those installed into it or that have built versions in it. Defaults
+            to `account`, which lists every app visible to the account,
+            including the public catalog.
+          style: form
       responses:
         "200":
           description: Apps.

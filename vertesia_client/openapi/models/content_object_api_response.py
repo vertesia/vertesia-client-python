@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from vertesia_client.openapi.models.content_object_api_response_search_type_result_inner import ContentObjectApiResponseSearchTypeResultInner
 from vertesia_client.openapi.models.content_object_api_response_tokens import ContentObjectApiResponseTokens
 from vertesia_client.openapi.models.content_object_api_revision import ContentObjectApiRevision
 from vertesia_client.openapi.models.content_object_status import ContentObjectStatus
@@ -57,6 +58,7 @@ class ContentObjectApiResponse(BaseModel):
     is_locked: Optional[StrictBool] = None
     score: Optional[Union[StrictFloat, StrictInt]] = None
     user_permissions: Optional[ContentObjectUserPermissions] = None
+    search_type_result: Optional[List[ContentObjectApiResponseSearchTypeResultInner]] = Field(default=None, alias="searchTypeResult")
     text: Optional[StrictStr] = None
     text_etag: Optional[StrictStr] = None
     embeddings: Optional[Dict[str, Embedding]] = None
@@ -68,7 +70,7 @@ class ContentObjectApiResponse(BaseModel):
     compartments: Optional[List[StrictStr]] = Field(default=None, description="Compartments — set directly or inherited from collections (union across collections).")
     inherited_properties: Optional[List[InheritedPropertyMetadata]] = None
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["id", "name", "description", "tags", "updated_by", "created_by", "created_at", "updated_at", "parent", "location", "status", "type", "content", "external_id", "properties", "metadata", "tokens", "revision", "is_deleted", "is_locked", "score", "user_permissions", "text", "text_etag", "embeddings", "parts", "parts_etag", "transcript", "security", "sensitivity", "compartments", "inherited_properties"]
+    __properties: ClassVar[List[str]] = ["id", "name", "description", "tags", "updated_by", "created_by", "created_at", "updated_at", "parent", "location", "status", "type", "content", "external_id", "properties", "metadata", "tokens", "revision", "is_deleted", "is_locked", "score", "user_permissions", "searchTypeResult", "text", "text_etag", "embeddings", "parts", "parts_etag", "transcript", "security", "sensitivity", "compartments", "inherited_properties"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -126,6 +128,13 @@ class ContentObjectApiResponse(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of user_permissions
         if self.user_permissions:
             _dict['user_permissions'] = self.user_permissions.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of each item in search_type_result (list)
+        _items = []
+        if self.search_type_result:
+            for _item_search_type_result in self.search_type_result:
+                if _item_search_type_result:
+                    _items.append(_item_search_type_result.to_dict())
+            _dict['searchTypeResult'] = _items
         # override the default output from pydantic by calling `to_dict()` of each value in embeddings (dict)
         _field_dict = {}
         if self.embeddings:
@@ -144,6 +153,11 @@ class ContentObjectApiResponse(BaseModel):
         if self.additional_properties is not None:
             for _key, _value in self.additional_properties.items():
                 _dict[_key] = _value
+
+        # set to None if sensitivity (nullable) is None
+        # and model_fields_set contains the field
+        if self.sensitivity is None and "sensitivity" in self.model_fields_set:
+            _dict['sensitivity'] = None
 
         return _dict
 
@@ -179,6 +193,7 @@ class ContentObjectApiResponse(BaseModel):
             "is_locked": obj.get("is_locked"),
             "score": obj.get("score"),
             "user_permissions": ContentObjectUserPermissions.from_dict(obj["user_permissions"]) if obj.get("user_permissions") is not None else None,
+            "searchTypeResult": [ContentObjectApiResponseSearchTypeResultInner.from_dict(_item) for _item in obj["searchTypeResult"]] if obj.get("searchTypeResult") is not None else None,
             "text": obj.get("text"),
             "text_etag": obj.get("text_etag"),
             "embeddings": dict(
