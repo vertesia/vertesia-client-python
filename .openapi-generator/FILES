@@ -197,6 +197,7 @@ vertesia_client/openapi/models/audit_trail_response.py
 vertesia_client/openapi/models/auth_token_response.py
 vertesia_client/openapi/models/autonomous_run_response.py
 vertesia_client/openapi/models/aws_configuration.py
+vertesia_client/openapi/models/azure_foundry_chat_options.py
 vertesia_client/openapi/models/batch_query_payload.py
 vertesia_client/openapi/models/batch_query_payload_queries_inner.py
 vertesia_client/openapi/models/batch_query_result.py
@@ -647,6 +648,7 @@ vertesia_client/openapi/models/mcpo_auth_config.py
 vertesia_client/openapi/models/mediator_env_config.py
 vertesia_client/openapi/models/migration_list_response.py
 vertesia_client/openapi/models/migration_list_response_migrations_inner.py
+vertesia_client/openapi/models/mistral_text_options.py
 vertesia_client/openapi/models/modalities.py
 vertesia_client/openapi/models/modality_defaults.py
 vertesia_client/openapi/models/model_default.py

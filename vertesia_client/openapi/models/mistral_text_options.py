@@ -19,23 +19,30 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class BedrockMantleChatCompletionsOptions(BaseModel):
+class MistralTextOptions(BaseModel):
     """
-    BedrockMantleChatCompletionsOptions
+    MistralTextOptions
     """ # noqa: E501
     option_id: StrictStr = Field(alias="_option_id")
     max_tokens: Optional[Union[StrictFloat, StrictInt]] = None
     temperature: Optional[Union[StrictFloat, StrictInt]] = None
     top_p: Optional[Union[StrictFloat, StrictInt]] = None
+    presence_penalty: Optional[Union[StrictFloat, StrictInt]] = None
+    frequency_penalty: Optional[Union[StrictFloat, StrictInt]] = None
     stop_sequence: Optional[List[StrictStr]] = None
     effort: Optional[StrictStr] = None
-    reasoning_effort: Optional[StrictStr] = None
+    random_seed: Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]] = None
+    safe_prompt: Optional[StrictBool] = None
+    parallel_tool_calls: Optional[StrictBool] = None
+    tool_choice: Optional[StrictStr] = None
+    prompt_mode: Optional[StrictStr] = None
     include_thoughts: Optional[StrictBool] = None
-    __properties: ClassVar[List[str]] = ["_option_id", "max_tokens", "temperature", "top_p", "stop_sequence", "effort", "reasoning_effort", "include_thoughts"]
+    __properties: ClassVar[List[str]] = ["_option_id", "max_tokens", "temperature", "top_p", "presence_penalty", "frequency_penalty", "stop_sequence", "effort", "random_seed", "safe_prompt", "parallel_tool_calls", "tool_choice", "prompt_mode", "include_thoughts"]
 
     @field_validator('option_id')
     def option_id_validate_enum(cls, value):
@@ -50,8 +57,16 @@ class BedrockMantleChatCompletionsOptions(BaseModel):
 
         return value
 
-    @field_validator('reasoning_effort')
-    def reasoning_effort_validate_enum(cls, value):
+    @field_validator('tool_choice')
+    def tool_choice_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        return value
+
+    @field_validator('prompt_mode')
+    def prompt_mode_validate_enum(cls, value):
         """Validates the enum"""
         if value is None:
             return value
@@ -76,7 +91,7 @@ class BedrockMantleChatCompletionsOptions(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of BedrockMantleChatCompletionsOptions from a JSON string"""
+        """Create an instance of MistralTextOptions from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -101,7 +116,7 @@ class BedrockMantleChatCompletionsOptions(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of BedrockMantleChatCompletionsOptions from a dict"""
+        """Create an instance of MistralTextOptions from a dict"""
         if obj is None:
             return None
 
@@ -113,9 +128,15 @@ class BedrockMantleChatCompletionsOptions(BaseModel):
             "max_tokens": obj.get("max_tokens"),
             "temperature": obj.get("temperature"),
             "top_p": obj.get("top_p"),
+            "presence_penalty": obj.get("presence_penalty"),
+            "frequency_penalty": obj.get("frequency_penalty"),
             "stop_sequence": obj.get("stop_sequence"),
             "effort": obj.get("effort"),
-            "reasoning_effort": obj.get("reasoning_effort"),
+            "random_seed": obj.get("random_seed"),
+            "safe_prompt": obj.get("safe_prompt"),
+            "parallel_tool_calls": obj.get("parallel_tool_calls"),
+            "tool_choice": obj.get("tool_choice"),
+            "prompt_mode": obj.get("prompt_mode"),
             "include_thoughts": obj.get("include_thoughts")
         })
         return _obj

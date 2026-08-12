@@ -23,35 +23,29 @@ from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class BedrockMantleChatCompletionsOptions(BaseModel):
+class AzureFoundryChatOptions(BaseModel):
     """
-    BedrockMantleChatCompletionsOptions
+    AzureFoundryChatOptions
     """ # noqa: E501
     option_id: StrictStr = Field(alias="_option_id")
     max_tokens: Optional[Union[StrictFloat, StrictInt]] = None
     temperature: Optional[Union[StrictFloat, StrictInt]] = None
     top_p: Optional[Union[StrictFloat, StrictInt]] = None
+    presence_penalty: Optional[Union[StrictFloat, StrictInt]] = None
+    frequency_penalty: Optional[Union[StrictFloat, StrictInt]] = None
     stop_sequence: Optional[List[StrictStr]] = None
-    effort: Optional[StrictStr] = None
-    reasoning_effort: Optional[StrictStr] = None
+    seed: Optional[Union[StrictFloat, StrictInt]] = None
+    image_detail: Optional[StrictStr] = None
     include_thoughts: Optional[StrictBool] = None
-    __properties: ClassVar[List[str]] = ["_option_id", "max_tokens", "temperature", "top_p", "stop_sequence", "effort", "reasoning_effort", "include_thoughts"]
+    __properties: ClassVar[List[str]] = ["_option_id", "max_tokens", "temperature", "top_p", "presence_penalty", "frequency_penalty", "stop_sequence", "seed", "image_detail", "include_thoughts"]
 
     @field_validator('option_id')
     def option_id_validate_enum(cls, value):
         """Validates the enum"""
         return value
 
-    @field_validator('effort')
-    def effort_validate_enum(cls, value):
-        """Validates the enum"""
-        if value is None:
-            return value
-
-        return value
-
-    @field_validator('reasoning_effort')
-    def reasoning_effort_validate_enum(cls, value):
+    @field_validator('image_detail')
+    def image_detail_validate_enum(cls, value):
         """Validates the enum"""
         if value is None:
             return value
@@ -76,7 +70,7 @@ class BedrockMantleChatCompletionsOptions(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of BedrockMantleChatCompletionsOptions from a JSON string"""
+        """Create an instance of AzureFoundryChatOptions from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -101,7 +95,7 @@ class BedrockMantleChatCompletionsOptions(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of BedrockMantleChatCompletionsOptions from a dict"""
+        """Create an instance of AzureFoundryChatOptions from a dict"""
         if obj is None:
             return None
 
@@ -113,9 +107,11 @@ class BedrockMantleChatCompletionsOptions(BaseModel):
             "max_tokens": obj.get("max_tokens"),
             "temperature": obj.get("temperature"),
             "top_p": obj.get("top_p"),
+            "presence_penalty": obj.get("presence_penalty"),
+            "frequency_penalty": obj.get("frequency_penalty"),
             "stop_sequence": obj.get("stop_sequence"),
-            "effort": obj.get("effort"),
-            "reasoning_effort": obj.get("reasoning_effort"),
+            "seed": obj.get("seed"),
+            "image_detail": obj.get("image_detail"),
             "include_thoughts": obj.get("include_thoughts")
         })
         return _obj

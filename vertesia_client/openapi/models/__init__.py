@@ -162,6 +162,7 @@ from vertesia_client.openapi.models.audit_trail_response import AuditTrailRespon
 from vertesia_client.openapi.models.auth_token_response import AuthTokenResponse
 from vertesia_client.openapi.models.autonomous_run_response import AutonomousRunResponse
 from vertesia_client.openapi.models.aws_configuration import AwsConfiguration
+from vertesia_client.openapi.models.azure_foundry_chat_options import AzureFoundryChatOptions
 from vertesia_client.openapi.models.batch_query_payload import BatchQueryPayload
 from vertesia_client.openapi.models.batch_query_payload_queries_inner import BatchQueryPayloadQueriesInner
 from vertesia_client.openapi.models.batch_query_result import BatchQueryResult
@@ -612,6 +613,7 @@ from vertesia_client.openapi.models.mcp_o_auth_token_response import McpOAuthTok
 from vertesia_client.openapi.models.mediator_env_config import MediatorEnvConfig
 from vertesia_client.openapi.models.migration_list_response import MigrationListResponse
 from vertesia_client.openapi.models.migration_list_response_migrations_inner import MigrationListResponseMigrationsInner
+from vertesia_client.openapi.models.mistral_text_options import MistralTextOptions
 from vertesia_client.openapi.models.modalities import Modalities
 from vertesia_client.openapi.models.modality_defaults import ModalityDefaults
 from vertesia_client.openapi.models.model_default import ModelDefault

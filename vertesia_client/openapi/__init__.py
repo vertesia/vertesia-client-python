@@ -219,6 +219,7 @@ __all__ = [
     "AuthTokenResponse",
     "AutonomousRunResponse",
     "AwsConfiguration",
+    "AzureFoundryChatOptions",
     "BatchQueryPayload",
     "BatchQueryPayloadQueriesInner",
     "BatchQueryResult",
@@ -669,6 +670,7 @@ __all__ = [
     "MediatorEnvConfig",
     "MigrationListResponse",
     "MigrationListResponseMigrationsInner",
+    "MistralTextOptions",
     "Modalities",
     "ModalityDefaults",
     "ModelDefault",
@@ -1306,6 +1308,7 @@ from vertesia_client.openapi.models.audit_trail_response import AuditTrailRespon
 from vertesia_client.openapi.models.auth_token_response import AuthTokenResponse as AuthTokenResponse
 from vertesia_client.openapi.models.autonomous_run_response import AutonomousRunResponse as AutonomousRunResponse
 from vertesia_client.openapi.models.aws_configuration import AwsConfiguration as AwsConfiguration
+from vertesia_client.openapi.models.azure_foundry_chat_options import AzureFoundryChatOptions as AzureFoundryChatOptions
 from vertesia_client.openapi.models.batch_query_payload import BatchQueryPayload as BatchQueryPayload
 from vertesia_client.openapi.models.batch_query_payload_queries_inner import BatchQueryPayloadQueriesInner as BatchQueryPayloadQueriesInner
 from vertesia_client.openapi.models.batch_query_result import BatchQueryResult as BatchQueryResult
@@ -1756,6 +1759,7 @@ from vertesia_client.openapi.models.mcp_o_auth_token_response import McpOAuthTok
 from vertesia_client.openapi.models.mediator_env_config import MediatorEnvConfig as MediatorEnvConfig
 from vertesia_client.openapi.models.migration_list_response import MigrationListResponse as MigrationListResponse
 from vertesia_client.openapi.models.migration_list_response_migrations_inner import MigrationListResponseMigrationsInner as MigrationListResponseMigrationsInner
+from vertesia_client.openapi.models.mistral_text_options import MistralTextOptions as MistralTextOptions
 from vertesia_client.openapi.models.modalities import Modalities as Modalities
 from vertesia_client.openapi.models.modality_defaults import ModalityDefaults as ModalityDefaults
 from vertesia_client.openapi.models.model_default import ModelDefault as ModelDefault

@@ -4775,6 +4775,39 @@ components:
         - enabled
         - s3_role_arn
       additionalProperties: false
+    AzureFoundryChatOptions:
+      type: object
+      properties:
+        _option_id:
+          type: string
+          const: azure-foundry-chat
+        max_tokens:
+          type: number
+        temperature:
+          type: number
+        top_p:
+          type: number
+        presence_penalty:
+          type: number
+        frequency_penalty:
+          type: number
+        stop_sequence:
+          type: array
+          items:
+            type: string
+        seed:
+          type: number
+        image_detail:
+          type: string
+          enum:
+            - low
+            - high
+            - auto
+        include_thoughts:
+          type: boolean
+      required:
+        - _option_id
+      additionalProperties: false
     BatchQueryPayload:
       type: object
       properties:
@@ -4986,6 +5019,18 @@ components:
           type: array
           items:
             type: string
+        effort:
+          type: string
+          enum:
+            - low
+            - medium
+            - high
+        reasoning_effort:
+          type: string
+          enum:
+            - low
+            - medium
+            - high
         include_thoughts:
           type: boolean
       required:
@@ -16260,6 +16305,54 @@ components:
       required:
         - migrations
       additionalProperties: false
+    MistralTextOptions:
+      type: object
+      properties:
+        _option_id:
+          type: string
+          const: mistral-text
+        max_tokens:
+          type: number
+        temperature:
+          type: number
+        top_p:
+          type: number
+        presence_penalty:
+          type: number
+        frequency_penalty:
+          type: number
+        stop_sequence:
+          type: array
+          items:
+            type: string
+        effort:
+          type: string
+          enum:
+            - none
+            - high
+        random_seed:
+          type: integer
+          minimum: -9007199254740991
+          maximum: 9007199254740991
+        safe_prompt:
+          type: boolean
+        parallel_tool_calls:
+          type: boolean
+        tool_choice:
+          type: string
+          enum:
+            - auto
+            - none
+            - any
+            - required
+        prompt_mode:
+          type: string
+          const: reasoning
+        include_thoughts:
+          type: boolean
+      required:
+        - _option_id
+      additionalProperties: false
     Modalities:
       type: string
       enum:
@@ -16292,6 +16385,7 @@ components:
     ModelOptions:
       oneOf:
         - $ref: "#/components/schemas/TextFallbackOptions"
+        - $ref: "#/components/schemas/AzureFoundryChatOptions"
         - $ref: "#/components/schemas/ImagenOptions"
         - $ref: "#/components/schemas/VertexAIClaudeOptions"
         - $ref: "#/components/schemas/VertexAIGeminiOptions"
@@ -16314,10 +16408,12 @@ components:
         - $ref: "#/components/schemas/OpenAiDalleOptions"
         - $ref: "#/components/schemas/OpenAiGptImageOptions"
         - $ref: "#/components/schemas/GroqOptions"
+        - $ref: "#/components/schemas/MistralTextOptions"
       discriminator:
         propertyName: _option_id
         mapping:
           text-fallback: "#/components/schemas/TextFallbackOptions"
+          azure-foundry-chat: "#/components/schemas/AzureFoundryChatOptions"
           vertexai-imagen: "#/components/schemas/ImagenOptions"
           vertexai-claude: "#/components/schemas/VertexAIClaudeOptions"
           vertexai-gemini: "#/components/schemas/VertexAIGeminiOptions"
@@ -16340,6 +16436,7 @@ components:
           openai-dalle: "#/components/schemas/OpenAiDalleOptions"
           openai-gpt-image: "#/components/schemas/OpenAiGptImageOptions"
           groq-deepseek-thinking: "#/components/schemas/GroqOptions"
+          mistral-text: "#/components/schemas/MistralTextOptions"
       type: object
       required:
         - _option_id
