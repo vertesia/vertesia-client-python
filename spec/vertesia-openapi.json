@@ -8975,6 +8975,130 @@
         "additionalProperties": false,
         "description": "Computed per-request permissions for the current user on a content object. Not stored in the database — computed on the fly by the API from the object's security field."
       },
+      "ContentQueryPayload": {
+        "type": "object",
+        "properties": {
+          "sql": {
+            "type": "string"
+          },
+          "esql": {
+            "type": "string"
+          },
+          "dsl": {
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "object",
+                "additionalProperties": true
+              },
+              "aggs": {
+                "type": "object",
+                "additionalProperties": true
+              },
+              "size": {
+                "type": "number"
+              },
+              "from": {
+                "type": "number"
+              },
+              "sort": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            },
+            "additionalProperties": false
+          },
+          "format": {
+            "type": "string",
+            "enum": [
+              "json",
+              "csv",
+              "table"
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+      "ContentQueryResult": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "sql",
+              "esql",
+              "dsl"
+            ]
+          },
+          "columns": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "type"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "rows": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {}
+            }
+          },
+          "hits": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "score": {
+                  "type": "number"
+                },
+                "source": {}
+              },
+              "required": [
+                "id",
+                "score",
+                "source"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "total": {
+            "type": "number"
+          },
+          "aggregations": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "cursor": {
+            "type": "string"
+          },
+          "took": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "type"
+        ],
+        "additionalProperties": false
+      },
       "ContentSource": {
         "type": "object",
         "properties": {
@@ -10702,6 +10826,45 @@
         ],
         "additionalProperties": false,
         "description": "Payload for creating a new data store."
+      },
+      "CreateEmailRouteRequest": {
+        "type": "object",
+        "properties": {
+          "run_id": {
+            "type": "string"
+          },
+          "user_email": {
+            "type": "string"
+          },
+          "thread_subject": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "run_id",
+          "user_email"
+        ],
+        "additionalProperties": false
+      },
+      "CreateEmailRouteResponse": {
+        "type": "object",
+        "properties": {
+          "route_key": {
+            "type": "string"
+          },
+          "reply_to": {
+            "type": "string"
+          },
+          "email_domain": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "route_key",
+          "reply_to",
+          "email_domain"
+        ],
+        "additionalProperties": false
       },
       "CreateEventIngestChannelPayload": {
         "type": "object",
@@ -14193,6 +14356,50 @@
         "additionalProperties": false,
         "description": "Email channel configuration with threading support. Used for email-based agent communication."
       },
+      "EmailRouteResponse": {
+        "type": "object",
+        "properties": {
+          "runId": {
+            "type": "string"
+          },
+          "accountId": {
+            "type": "string"
+          },
+          "projectId": {
+            "type": "string"
+          },
+          "threadSubject": {
+            "type": "string"
+          },
+          "inReplyTo": {
+            "type": "string"
+          },
+          "references": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "userEmail": {
+            "type": "string"
+          },
+          "inboundDomain": {
+            "type": "string"
+          },
+          "route_key": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "runId",
+          "accountId",
+          "projectId",
+          "userEmail",
+          "inboundDomain",
+          "route_key"
+        ],
+        "additionalProperties": false
+      },
       "Embedding": {
         "type": "object",
         "properties": {
@@ -16692,6 +16899,95 @@
         },
         "required": [
           "query"
+        ],
+        "additionalProperties": false
+      },
+      "ForwardEmailRequest": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "object",
+            "properties": {
+              "from": {
+                "type": "string"
+              },
+              "subject": {
+                "type": "string"
+              },
+              "text": {
+                "type": "string"
+              },
+              "html": {
+                "type": "string"
+              },
+              "message_id": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "from",
+              "text"
+            ],
+            "additionalProperties": false
+          },
+          "context": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "attachments": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "filename": {
+                  "type": "string"
+                },
+                "content_type": {
+                  "type": "string"
+                },
+                "size": {
+                  "type": "number"
+                },
+                "download_url": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "filename",
+                "content_type",
+                "size",
+                "download_url"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "email"
+        ],
+        "additionalProperties": false
+      },
+      "ForwardEmailResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "run_id": {
+            "type": "string"
+          },
+          "workflow_id": {
+            "type": "string"
+          },
+          "route_key": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "success",
+          "run_id",
+          "workflow_id",
+          "route_key"
         ],
         "additionalProperties": false
       },
@@ -19859,6 +20155,21 @@
         ],
         "additionalProperties": false
       },
+      "ListPendingAsksResponse": {
+        "type": "object",
+        "properties": {
+          "asks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PendingAskData"
+            }
+          }
+        },
+        "required": [
+          "asks"
+        ],
+        "additionalProperties": false
+      },
       "ListSecretsResponse": {
         "type": "object",
         "properties": {
@@ -22038,6 +22349,85 @@
           "lastStartedTime"
         ],
         "additionalProperties": false
+      },
+      "PendingAskData": {
+        "type": "object",
+        "properties": {
+          "askId": {
+            "type": "string"
+          },
+          "runId": {
+            "type": "string"
+          },
+          "workflowId": {
+            "type": "string"
+          },
+          "projectId": {
+            "type": "string"
+          },
+          "accountId": {
+            "type": "string"
+          },
+          "agentName": {
+            "type": "string"
+          },
+          "questions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "timeoutHours": {
+            "type": "number"
+          },
+          "userChannels": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserChannel"
+            }
+          },
+          "createdAt": {
+            "type": "number"
+          },
+          "expiresAt": {
+            "type": "number"
+          },
+          "status": {
+            "$ref": "#/components/schemas/PendingAskStatus"
+          },
+          "taskId": {
+            "type": "string"
+          },
+          "resolvedAt": {
+            "type": "number"
+          },
+          "response": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "askId",
+          "runId",
+          "workflowId",
+          "projectId",
+          "accountId",
+          "agentName",
+          "questions",
+          "timeoutHours",
+          "userChannels",
+          "createdAt",
+          "expiresAt",
+          "status"
+        ],
+        "additionalProperties": false
+      },
+      "PendingAskStatus": {
+        "type": "string",
+        "enum": [
+          "pending",
+          "resolved",
+          "expired"
+        ]
       },
       "PendingMcpConnection": {
         "type": "object",
@@ -24581,6 +24971,70 @@
           "type": "number"
         }
       },
+      "RegisterPendingAskRequest": {
+        "type": "object",
+        "properties": {
+          "runId": {
+            "type": "string"
+          },
+          "workflowId": {
+            "type": "string"
+          },
+          "agentName": {
+            "type": "string"
+          },
+          "questions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "timeoutHours": {
+            "type": "number"
+          },
+          "userChannels": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserChannel"
+            }
+          },
+          "taskFields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskField"
+            }
+          }
+        },
+        "required": [
+          "runId",
+          "workflowId",
+          "agentName",
+          "questions",
+          "userChannels"
+        ],
+        "additionalProperties": false
+      },
+      "RegisterPendingAskResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "askId": {
+            "type": "string"
+          },
+          "webhookSent": {
+            "type": "boolean"
+          },
+          "error": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "success"
+        ],
+        "additionalProperties": false
+      },
       "ReindexAgentRunsPayload": {
         "type": "object",
         "properties": {
@@ -25093,6 +25547,39 @@
           "integration",
           "enabled",
           "email_domain"
+        ],
+        "additionalProperties": false
+      },
+      "ResolvePendingAskRequest": {
+        "type": "object",
+        "properties": {
+          "response": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "response"
+        ],
+        "additionalProperties": false
+      },
+      "ResolvePendingAskResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "webhookSent": {
+            "type": "boolean"
+          },
+          "waitDurationMs": {
+            "type": "number"
+          },
+          "error": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "success"
         ],
         "additionalProperties": false
       },
@@ -25947,6 +26434,73 @@
         "required": [
           "type"
         ]
+      },
+      "SendEmailRequest": {
+        "type": "object",
+        "properties": {
+          "to_email": {
+            "type": "string"
+          },
+          "subject": {
+            "type": "string"
+          },
+          "body": {
+            "type": "string"
+          },
+          "agent_name": {
+            "type": "string"
+          },
+          "from_name": {
+            "type": "string"
+          },
+          "run_id": {
+            "type": "string"
+          },
+          "route_key": {
+            "type": "string"
+          },
+          "in_reply_to": {
+            "type": "string"
+          },
+          "references": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "to_email",
+          "subject",
+          "body",
+          "agent_name",
+          "run_id"
+        ],
+        "additionalProperties": false
+      },
+      "SendEmailResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "email_id": {
+            "type": "string"
+          },
+          "message_id": {
+            "type": "string"
+          },
+          "route_key": {
+            "type": "string"
+          },
+          "error": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "success"
+        ],
+        "additionalProperties": false
       },
       "SerperConfiguration": {
         "type": "object",
@@ -28206,6 +28760,43 @@
         },
         "additionalProperties": false,
         "description": "Payload for updating a dashboard."
+      },
+      "UpdateEmailRouteRequest": {
+        "type": "object",
+        "properties": {
+          "threadSubject": {
+            "type": "string"
+          },
+          "inReplyTo": {
+            "type": "string"
+          },
+          "references": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "userEmail": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateEmailRouteResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "route_key": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "success",
+          "route_key"
+        ],
+        "additionalProperties": false
       },
       "UpdateEventIngestChannelPayload": {
         "type": "object",
@@ -43840,7 +44431,53 @@
             "OpenID": []
           }
         ],
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tags",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "style": "form",
+            "explode": true
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "project",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "User groups.",
@@ -56939,6 +57576,98 @@
         }
       ]
     },
+    "/query": {
+      "post": {
+        "operationId": "ExecuteContentQuery",
+        "tags": [
+          "Content Query"
+        ],
+        "summary": "Execute a SQL, ES|QL, or Elasticsearch DSL content query",
+        "description": "Execute a query against the project's Elasticsearch index\n\nSecurity filtering is automatically applied based on the authenticated user's principals.\nFor SQL/ES|QL, a WHERE clause is injected.\nFor DSL, a filter clause is added.\n\n**Required permissions:** `content:read`",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OpenID": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Query result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContentQueryResult"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [
+          "content:read"
+        ],
+        "x-vertesia-source": {
+          "file": "../../apps/zeno-server/src/api/query.ts",
+          "className": "QueryResource",
+          "methodName": "executeQuery"
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContentQueryPayload"
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "x-api-version",
+          "in": "header",
+          "required": false,
+          "schema": {
+            "type": "string",
+            "example": "20260803"
+          },
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
+          "x-vertesia-global-header": true
+        }
+      ]
+    },
     "/processes": {
       "get": {
         "operationId": "ListProcessDefinitions",
@@ -64953,6 +65682,469 @@
         }
       ]
     },
+    "/email/send": {
+      "post": {
+        "operationId": "SendAgentEmail",
+        "tags": [
+          "Email"
+        ],
+        "summary": "Send an email from an agent workflow",
+        "description": "Send an email from an agent/workflow.\nCreates a route key if not provided, sends via Resend, and returns routing info.\nResend configuration is fetched from the project's integration settings.\n\n**Required permissions:** `workflow:run`",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OpenID": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Email delivery result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendEmailResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [
+          "workflow:run"
+        ],
+        "x-vertesia-source": {
+          "file": "../../apps/zeno-server/src/api/email.ts",
+          "className": "EmailResource",
+          "methodName": "sendEmail"
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendEmailRequest"
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "x-api-version",
+          "in": "header",
+          "required": false,
+          "schema": {
+            "type": "string",
+            "example": "20260803"
+          },
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
+          "x-vertesia-global-header": true
+        }
+      ]
+    },
+    "/email/routes": {
+      "post": {
+        "operationId": "CreateEmailRoute",
+        "tags": [
+          "Email"
+        ],
+        "summary": "Create an email reply route",
+        "description": "Create a new email route without sending an email.\nUseful for external services that want to handle email sending themselves\nbut need reply routing back to Vertesia workflows.\n\nReturns the route key to use in reply-to addresses: r+{route_key}@{email_domain}\n\n**Required permissions:** `workflow:run`",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OpenID": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Created email route.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateEmailRouteResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [
+          "workflow:run"
+        ],
+        "x-vertesia-source": {
+          "file": "../../apps/zeno-server/src/api/email.ts",
+          "className": "EmailResource",
+          "methodName": "createRoute"
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateEmailRouteRequest"
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "x-api-version",
+          "in": "header",
+          "required": false,
+          "schema": {
+            "type": "string",
+            "example": "20260803"
+          },
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
+          "x-vertesia-global-header": true
+        }
+      ]
+    },
+    "/email/routes/{key}": {
+      "get": {
+        "operationId": "GetEmailRoute",
+        "tags": [
+          "Email"
+        ],
+        "summary": "Retrieve an email route",
+        "description": "Get an email route by key.\n\n**Required permissions:** Any of `agent_run:read`, `workflow:run`",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OpenID": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Email route data.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmailRouteResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [
+          "agent_run:read",
+          "workflow:run"
+        ],
+        "x-vertesia-source": {
+          "file": "../../apps/zeno-server/src/api/email.ts",
+          "className": "EmailResource",
+          "methodName": "getRoute"
+        }
+      },
+      "put": {
+        "operationId": "UpdateEmailRoute",
+        "tags": [
+          "Email"
+        ],
+        "summary": "Update email route threading data",
+        "description": "Update an email route (e.g., to update threading info).\n\n**Required permissions:** `workflow:run`",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OpenID": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Email route update result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateEmailRouteResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [
+          "workflow:run"
+        ],
+        "x-vertesia-source": {
+          "file": "../../apps/zeno-server/src/api/email.ts",
+          "className": "EmailResource",
+          "methodName": "updateRoute"
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateEmailRouteRequest"
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "x-api-version",
+          "in": "header",
+          "required": false,
+          "schema": {
+            "type": "string",
+            "example": "20260803"
+          },
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
+          "x-vertesia-global-header": true
+        }
+      ]
+    },
+    "/email/routes/{key}/forward": {
+      "post": {
+        "operationId": "ForwardEmailToWorkflow",
+        "tags": [
+          "Email"
+        ],
+        "summary": "Forward an email to a workflow",
+        "description": "Forward an email to an existing workflow via route key.\n\nUse this when an external service receives an email reply and needs to\nforward it to the Vertesia workflow. The external service can add custom\ncontext data (like auth tokens) that will be passed to the workflow.\n\n**Required permissions:** `workflow:run`",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OpenID": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Forwarding result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ForwardEmailResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [
+          "workflow:run"
+        ],
+        "x-vertesia-source": {
+          "file": "../../apps/zeno-server/src/api/email.ts",
+          "className": "EmailResource",
+          "methodName": "forwardEmailToWorkflow"
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ForwardEmailRequest"
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "x-api-version",
+          "in": "header",
+          "required": false,
+          "schema": {
+            "type": "string",
+            "example": "20260803"
+          },
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
+          "x-vertesia-global-header": true
+        }
+      ]
+    },
     "/events/stream": {
       "get": {
         "operationId": "StreamEventDeliveries",
@@ -66244,6 +67436,359 @@
           "file": "../../apps/zeno-server/src/api/event-ingest-channels.ts",
           "className": "EventIngestChannelResource",
           "methodName": "deleteChannel"
+        }
+      },
+      "parameters": [
+        {
+          "name": "x-api-version",
+          "in": "header",
+          "required": false,
+          "schema": {
+            "type": "string",
+            "example": "20260803"
+          },
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
+          "x-vertesia-global-header": true
+        }
+      ]
+    },
+    "/pending-asks": {
+      "post": {
+        "operationId": "RegisterPendingAsk",
+        "tags": [
+          "Pending Asks"
+        ],
+        "summary": "Register a pending agent question",
+        "description": "Register a new pending ask.\nCalled when an agent calls ask_user.\n\n**Required permissions:** `workflow:run`",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OpenID": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Registration result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegisterPendingAskResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [
+          "workflow:run"
+        ],
+        "x-vertesia-source": {
+          "file": "../../apps/zeno-server/src/api/pending-asks.ts",
+          "className": "PendingAsksResource",
+          "methodName": "register"
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterPendingAskRequest"
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "ListPendingAsks",
+        "tags": [
+          "Pending Asks"
+        ],
+        "summary": "List pending agent questions",
+        "description": "List all pending asks for the current project.\n\n**Required permissions:** Any of `agent_run:read`, `workflow:run`",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OpenID": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Pending questions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListPendingAsksResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [
+          "agent_run:read",
+          "workflow:run"
+        ],
+        "x-vertesia-source": {
+          "file": "../../apps/zeno-server/src/api/pending-asks.ts",
+          "className": "PendingAsksResource",
+          "methodName": "list"
+        }
+      },
+      "parameters": [
+        {
+          "name": "x-api-version",
+          "in": "header",
+          "required": false,
+          "schema": {
+            "type": "string",
+            "example": "20260803"
+          },
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
+          "x-vertesia-global-header": true
+        }
+      ]
+    },
+    "/pending-asks/{askId}/resolve": {
+      "post": {
+        "operationId": "ResolvePendingAsk",
+        "tags": [
+          "Pending Asks"
+        ],
+        "summary": "Resolve a pending agent question",
+        "description": "Resolve a pending ask with the user's response.\n\n**Required permissions:** `workflow:run`",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OpenID": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "askId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resolution result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResolvePendingAskResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [
+          "workflow:run"
+        ],
+        "x-vertesia-source": {
+          "file": "../../apps/zeno-server/src/api/pending-asks.ts",
+          "className": "PendingAsksResource",
+          "methodName": "resolve"
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResolvePendingAskRequest"
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "x-api-version",
+          "in": "header",
+          "required": false,
+          "schema": {
+            "type": "string",
+            "example": "20260803"
+          },
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
+          "x-vertesia-global-header": true
+        }
+      ]
+    },
+    "/pending-asks/{askId}": {
+      "get": {
+        "operationId": "GetPendingAsk",
+        "tags": [
+          "Pending Asks"
+        ],
+        "summary": "Retrieve a pending agent question",
+        "description": "Get a specific pending ask by ID.\n\n**Required permissions:** Any of `agent_run:read`, `workflow:run`",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OpenID": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "askId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pending question.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PendingAskData"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [
+          "agent_run:read",
+          "workflow:run"
+        ],
+        "x-vertesia-source": {
+          "file": "../../apps/zeno-server/src/api/pending-asks.ts",
+          "className": "PendingAsksResource",
+          "methodName": "retrieve"
         }
       },
       "parameters": [

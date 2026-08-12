@@ -28,8 +28,10 @@ __all__ = [
     "CollectionsApi",
     "CommandsApi",
     "ContentObjectTypesApi",
+    "ContentQueryApi",
     "CostsApi",
     "DataApi",
+    "EmailApi",
     "EnvironmentsApi",
     "EventIngestChannelsApi",
     "EventSubscriptionsApi",
@@ -41,6 +43,7 @@ __all__ = [
     "OAuthGrantsApi",
     "OAuthProvidersApi",
     "ObjectsApi",
+    "PendingAsksApi",
     "ProcessesApi",
     "ProjectsApi",
     "PromptTemplatesApi",
@@ -314,6 +317,11 @@ __all__ = [
     "ContentObjectTypeRef",
     "ContentObjectTypeStatus",
     "ContentObjectUserPermissions",
+    "ContentQueryPayload",
+    "ContentQueryPayloadDsl",
+    "ContentQueryResult",
+    "ContentQueryResultColumnsInner",
+    "ContentQueryResultHitsInner",
     "ContentSource",
     "ContentTypeEditingPolicy",
     "ContentTypeExtractionGroundingPolicy",
@@ -354,6 +362,8 @@ __all__ = [
     "CreateDashboardPayload",
     "CreateDashboardSnapshotPayload",
     "CreateDataStorePayload",
+    "CreateEmailRouteRequest",
+    "CreateEmailRouteResponse",
     "CreateEventIngestChannelPayload",
     "CreateEventSubscriptionPayload",
     "CreateOAuthClientPayload",
@@ -453,6 +463,7 @@ __all__ = [
     "DynamicScalingTypes",
     "ElasticsearchBackend",
     "EmailChannel",
+    "EmailRouteResponse",
     "Embedding",
     "EmbeddingOutput",
     "EmbeddingResultItem",
@@ -534,6 +545,10 @@ __all__ = [
     "FileMetadataUpdateResult",
     "FileProcessingStatus",
     "FindPayload",
+    "ForwardEmailRequest",
+    "ForwardEmailRequestAttachmentsInner",
+    "ForwardEmailRequestEmail",
+    "ForwardEmailResponse",
     "GenerateInteractionPayload",
     "GenerateTestDataPayload",
     "GeneratedInteractionDefinition",
@@ -631,6 +646,7 @@ __all__ = [
     "ListContentObjectExportsResponse",
     "ListEventDeliveriesPayload",
     "ListEventDeliveriesResponse",
+    "ListPendingAsksResponse",
     "ListSecretsResponse",
     "ListWorkflowRunsPayload",
     "ListWorkflowRunsResponse",
@@ -704,6 +720,8 @@ __all__ = [
     "ParallelFailurePolicy",
     "PdfRenderingMetadata",
     "PendingActivity",
+    "PendingAskData",
+    "PendingAskStatus",
     "PendingMcpConnection",
     "PendingToolApprovalResults",
     "Permission",
@@ -796,6 +814,8 @@ __all__ = [
     "RateLimitRequestPayload",
     "RateLimitRequestResponse",
     "ReasoningEffort",
+    "RegisterPendingAskRequest",
+    "RegisterPendingAskResponse",
     "ReindexAgentRunsPayload",
     "ReindexAgentRunsResponse",
     "ReindexAgentRunsResponseErrorsInner",
@@ -808,6 +828,8 @@ __all__ = [
     "RenderingTemplateDefinitionRef",
     "ResendConfiguration",
     "ResendConfigurationInput",
+    "ResolvePendingAskRequest",
+    "ResolvePendingAskResponse",
     "ResolvedEnvironmentInfo",
     "ResolvedInteractionExecutionInfo",
     "ResolvedRuntimeConfig",
@@ -845,6 +867,8 @@ __all__ = [
     "SemanticEvaluationRecord",
     "SemanticEvaluationStatus",
     "SemanticEvaluator",
+    "SendEmailRequest",
+    "SendEmailResponse",
     "SerperConfiguration",
     "SerperConfigurationInput",
     "ServiceAccountTokenRequest",
@@ -935,6 +959,8 @@ __all__ = [
     "UpdateContentObjectPayload",
     "UpdateContentObjectTypePayload",
     "UpdateDashboardPayload",
+    "UpdateEmailRouteRequest",
+    "UpdateEmailRouteResponse",
     "UpdateEventIngestChannelPayload",
     "UpdateEventSubscriptionPayload",
     "UpdateExecutionRunPayload",
@@ -1084,8 +1110,10 @@ from vertesia_client.openapi.api.bulk_operations_api import BulkOperationsApi as
 from vertesia_client.openapi.api.collections_api import CollectionsApi as CollectionsApi
 from vertesia_client.openapi.api.commands_api import CommandsApi as CommandsApi
 from vertesia_client.openapi.api.content_object_types_api import ContentObjectTypesApi as ContentObjectTypesApi
+from vertesia_client.openapi.api.content_query_api import ContentQueryApi as ContentQueryApi
 from vertesia_client.openapi.api.costs_api import CostsApi as CostsApi
 from vertesia_client.openapi.api.data_api import DataApi as DataApi
+from vertesia_client.openapi.api.email_api import EmailApi as EmailApi
 from vertesia_client.openapi.api.environments_api import EnvironmentsApi as EnvironmentsApi
 from vertesia_client.openapi.api.event_ingest_channels_api import EventIngestChannelsApi as EventIngestChannelsApi
 from vertesia_client.openapi.api.event_subscriptions_api import EventSubscriptionsApi as EventSubscriptionsApi
@@ -1097,6 +1125,7 @@ from vertesia_client.openapi.api.o_auth_clients_api import OAuthClientsApi as OA
 from vertesia_client.openapi.api.o_auth_grants_api import OAuthGrantsApi as OAuthGrantsApi
 from vertesia_client.openapi.api.o_auth_providers_api import OAuthProvidersApi as OAuthProvidersApi
 from vertesia_client.openapi.api.objects_api import ObjectsApi as ObjectsApi
+from vertesia_client.openapi.api.pending_asks_api import PendingAsksApi as PendingAsksApi
 from vertesia_client.openapi.api.processes_api import ProcessesApi as ProcessesApi
 from vertesia_client.openapi.api.projects_api import ProjectsApi as ProjectsApi
 from vertesia_client.openapi.api.prompt_templates_api import PromptTemplatesApi as PromptTemplatesApi
@@ -1374,6 +1403,11 @@ from vertesia_client.openapi.models.content_object_type_item import ContentObjec
 from vertesia_client.openapi.models.content_object_type_ref import ContentObjectTypeRef as ContentObjectTypeRef
 from vertesia_client.openapi.models.content_object_type_status import ContentObjectTypeStatus as ContentObjectTypeStatus
 from vertesia_client.openapi.models.content_object_user_permissions import ContentObjectUserPermissions as ContentObjectUserPermissions
+from vertesia_client.openapi.models.content_query_payload import ContentQueryPayload as ContentQueryPayload
+from vertesia_client.openapi.models.content_query_payload_dsl import ContentQueryPayloadDsl as ContentQueryPayloadDsl
+from vertesia_client.openapi.models.content_query_result import ContentQueryResult as ContentQueryResult
+from vertesia_client.openapi.models.content_query_result_columns_inner import ContentQueryResultColumnsInner as ContentQueryResultColumnsInner
+from vertesia_client.openapi.models.content_query_result_hits_inner import ContentQueryResultHitsInner as ContentQueryResultHitsInner
 from vertesia_client.openapi.models.content_source import ContentSource as ContentSource
 from vertesia_client.openapi.models.content_type_editing_policy import ContentTypeEditingPolicy as ContentTypeEditingPolicy
 from vertesia_client.openapi.models.content_type_extraction_grounding_policy import ContentTypeExtractionGroundingPolicy as ContentTypeExtractionGroundingPolicy
@@ -1414,6 +1448,8 @@ from vertesia_client.openapi.models.create_content_object_type_payload import Cr
 from vertesia_client.openapi.models.create_dashboard_payload import CreateDashboardPayload as CreateDashboardPayload
 from vertesia_client.openapi.models.create_dashboard_snapshot_payload import CreateDashboardSnapshotPayload as CreateDashboardSnapshotPayload
 from vertesia_client.openapi.models.create_data_store_payload import CreateDataStorePayload as CreateDataStorePayload
+from vertesia_client.openapi.models.create_email_route_request import CreateEmailRouteRequest as CreateEmailRouteRequest
+from vertesia_client.openapi.models.create_email_route_response import CreateEmailRouteResponse as CreateEmailRouteResponse
 from vertesia_client.openapi.models.create_event_ingest_channel_payload import CreateEventIngestChannelPayload as CreateEventIngestChannelPayload
 from vertesia_client.openapi.models.create_event_subscription_payload import CreateEventSubscriptionPayload as CreateEventSubscriptionPayload
 from vertesia_client.openapi.models.create_o_auth_client_payload import CreateOAuthClientPayload as CreateOAuthClientPayload
@@ -1513,6 +1549,7 @@ from vertesia_client.openapi.models.duration_value import DurationValue as Durat
 from vertesia_client.openapi.models.dynamic_scaling_types import DynamicScalingTypes as DynamicScalingTypes
 from vertesia_client.openapi.models.elasticsearch_backend import ElasticsearchBackend as ElasticsearchBackend
 from vertesia_client.openapi.models.email_channel import EmailChannel as EmailChannel
+from vertesia_client.openapi.models.email_route_response import EmailRouteResponse as EmailRouteResponse
 from vertesia_client.openapi.models.embedding import Embedding as Embedding
 from vertesia_client.openapi.models.embedding_output import EmbeddingOutput as EmbeddingOutput
 from vertesia_client.openapi.models.embedding_result_item import EmbeddingResultItem as EmbeddingResultItem
@@ -1594,6 +1631,10 @@ from vertesia_client.openapi.models.file_metadata_response import FileMetadataRe
 from vertesia_client.openapi.models.file_metadata_update_result import FileMetadataUpdateResult as FileMetadataUpdateResult
 from vertesia_client.openapi.models.file_processing_status import FileProcessingStatus as FileProcessingStatus
 from vertesia_client.openapi.models.find_payload import FindPayload as FindPayload
+from vertesia_client.openapi.models.forward_email_request import ForwardEmailRequest as ForwardEmailRequest
+from vertesia_client.openapi.models.forward_email_request_attachments_inner import ForwardEmailRequestAttachmentsInner as ForwardEmailRequestAttachmentsInner
+from vertesia_client.openapi.models.forward_email_request_email import ForwardEmailRequestEmail as ForwardEmailRequestEmail
+from vertesia_client.openapi.models.forward_email_response import ForwardEmailResponse as ForwardEmailResponse
 from vertesia_client.openapi.models.generate_interaction_payload import GenerateInteractionPayload as GenerateInteractionPayload
 from vertesia_client.openapi.models.generate_test_data_payload import GenerateTestDataPayload as GenerateTestDataPayload
 from vertesia_client.openapi.models.generated_interaction_definition import GeneratedInteractionDefinition as GeneratedInteractionDefinition
@@ -1691,6 +1732,7 @@ from vertesia_client.openapi.models.list_agent_runs_response import ListAgentRun
 from vertesia_client.openapi.models.list_content_object_exports_response import ListContentObjectExportsResponse as ListContentObjectExportsResponse
 from vertesia_client.openapi.models.list_event_deliveries_payload import ListEventDeliveriesPayload as ListEventDeliveriesPayload
 from vertesia_client.openapi.models.list_event_deliveries_response import ListEventDeliveriesResponse as ListEventDeliveriesResponse
+from vertesia_client.openapi.models.list_pending_asks_response import ListPendingAsksResponse as ListPendingAsksResponse
 from vertesia_client.openapi.models.list_secrets_response import ListSecretsResponse as ListSecretsResponse
 from vertesia_client.openapi.models.list_workflow_runs_payload import ListWorkflowRunsPayload as ListWorkflowRunsPayload
 from vertesia_client.openapi.models.list_workflow_runs_response import ListWorkflowRunsResponse as ListWorkflowRunsResponse
@@ -1764,6 +1806,8 @@ from vertesia_client.openapi.models.parallel_collect_mode import ParallelCollect
 from vertesia_client.openapi.models.parallel_failure_policy import ParallelFailurePolicy as ParallelFailurePolicy
 from vertesia_client.openapi.models.pdf_rendering_metadata import PdfRenderingMetadata as PdfRenderingMetadata
 from vertesia_client.openapi.models.pending_activity import PendingActivity as PendingActivity
+from vertesia_client.openapi.models.pending_ask_data import PendingAskData as PendingAskData
+from vertesia_client.openapi.models.pending_ask_status import PendingAskStatus as PendingAskStatus
 from vertesia_client.openapi.models.pending_mcp_connection import PendingMcpConnection as PendingMcpConnection
 from vertesia_client.openapi.models.pending_tool_approval_results import PendingToolApprovalResults as PendingToolApprovalResults
 from vertesia_client.openapi.models.permission import Permission as Permission
@@ -1856,6 +1900,8 @@ from vertesia_client.openapi.models.quota_tier_response import QuotaTierResponse
 from vertesia_client.openapi.models.rate_limit_request_payload import RateLimitRequestPayload as RateLimitRequestPayload
 from vertesia_client.openapi.models.rate_limit_request_response import RateLimitRequestResponse as RateLimitRequestResponse
 from vertesia_client.openapi.models.reasoning_effort import ReasoningEffort as ReasoningEffort
+from vertesia_client.openapi.models.register_pending_ask_request import RegisterPendingAskRequest as RegisterPendingAskRequest
+from vertesia_client.openapi.models.register_pending_ask_response import RegisterPendingAskResponse as RegisterPendingAskResponse
 from vertesia_client.openapi.models.reindex_agent_runs_payload import ReindexAgentRunsPayload as ReindexAgentRunsPayload
 from vertesia_client.openapi.models.reindex_agent_runs_response import ReindexAgentRunsResponse as ReindexAgentRunsResponse
 from vertesia_client.openapi.models.reindex_agent_runs_response_errors_inner import ReindexAgentRunsResponseErrorsInner as ReindexAgentRunsResponseErrorsInner
@@ -1868,6 +1914,8 @@ from vertesia_client.openapi.models.rendering_template_definition import Renderi
 from vertesia_client.openapi.models.rendering_template_definition_ref import RenderingTemplateDefinitionRef as RenderingTemplateDefinitionRef
 from vertesia_client.openapi.models.resend_configuration import ResendConfiguration as ResendConfiguration
 from vertesia_client.openapi.models.resend_configuration_input import ResendConfigurationInput as ResendConfigurationInput
+from vertesia_client.openapi.models.resolve_pending_ask_request import ResolvePendingAskRequest as ResolvePendingAskRequest
+from vertesia_client.openapi.models.resolve_pending_ask_response import ResolvePendingAskResponse as ResolvePendingAskResponse
 from vertesia_client.openapi.models.resolved_environment_info import ResolvedEnvironmentInfo as ResolvedEnvironmentInfo
 from vertesia_client.openapi.models.resolved_interaction_execution_info import ResolvedInteractionExecutionInfo as ResolvedInteractionExecutionInfo
 from vertesia_client.openapi.models.resolved_runtime_config import ResolvedRuntimeConfig as ResolvedRuntimeConfig
@@ -1905,6 +1953,8 @@ from vertesia_client.openapi.models.semantic_condition_on_error import SemanticC
 from vertesia_client.openapi.models.semantic_evaluation_record import SemanticEvaluationRecord as SemanticEvaluationRecord
 from vertesia_client.openapi.models.semantic_evaluation_status import SemanticEvaluationStatus as SemanticEvaluationStatus
 from vertesia_client.openapi.models.semantic_evaluator import SemanticEvaluator as SemanticEvaluator
+from vertesia_client.openapi.models.send_email_request import SendEmailRequest as SendEmailRequest
+from vertesia_client.openapi.models.send_email_response import SendEmailResponse as SendEmailResponse
 from vertesia_client.openapi.models.serper_configuration import SerperConfiguration as SerperConfiguration
 from vertesia_client.openapi.models.serper_configuration_input import SerperConfigurationInput as SerperConfigurationInput
 from vertesia_client.openapi.models.service_account_token_request import ServiceAccountTokenRequest as ServiceAccountTokenRequest
@@ -1995,6 +2045,8 @@ from vertesia_client.openapi.models.update_collection_payload import UpdateColle
 from vertesia_client.openapi.models.update_content_object_payload import UpdateContentObjectPayload as UpdateContentObjectPayload
 from vertesia_client.openapi.models.update_content_object_type_payload import UpdateContentObjectTypePayload as UpdateContentObjectTypePayload
 from vertesia_client.openapi.models.update_dashboard_payload import UpdateDashboardPayload as UpdateDashboardPayload
+from vertesia_client.openapi.models.update_email_route_request import UpdateEmailRouteRequest as UpdateEmailRouteRequest
+from vertesia_client.openapi.models.update_email_route_response import UpdateEmailRouteResponse as UpdateEmailRouteResponse
 from vertesia_client.openapi.models.update_event_ingest_channel_payload import UpdateEventIngestChannelPayload as UpdateEventIngestChannelPayload
 from vertesia_client.openapi.models.update_event_subscription_payload import UpdateEventSubscriptionPayload as UpdateEventSubscriptionPayload
 from vertesia_client.openapi.models.update_execution_run_payload import UpdateExecutionRunPayload as UpdateExecutionRunPayload

@@ -11,8 +11,10 @@ from vertesia_client.openapi.api.bulk_operations_api import BulkOperationsApi
 from vertesia_client.openapi.api.collections_api import CollectionsApi
 from vertesia_client.openapi.api.commands_api import CommandsApi
 from vertesia_client.openapi.api.content_object_types_api import ContentObjectTypesApi
+from vertesia_client.openapi.api.content_query_api import ContentQueryApi
 from vertesia_client.openapi.api.costs_api import CostsApi
 from vertesia_client.openapi.api.data_api import DataApi
+from vertesia_client.openapi.api.email_api import EmailApi
 from vertesia_client.openapi.api.environments_api import EnvironmentsApi
 from vertesia_client.openapi.api.event_ingest_channels_api import EventIngestChannelsApi
 from vertesia_client.openapi.api.event_subscriptions_api import EventSubscriptionsApi
@@ -24,6 +26,7 @@ from vertesia_client.openapi.api.o_auth_clients_api import OAuthClientsApi
 from vertesia_client.openapi.api.o_auth_grants_api import OAuthGrantsApi
 from vertesia_client.openapi.api.o_auth_providers_api import OAuthProvidersApi
 from vertesia_client.openapi.api.objects_api import ObjectsApi
+from vertesia_client.openapi.api.pending_asks_api import PendingAsksApi
 from vertesia_client.openapi.api.processes_api import ProcessesApi
 from vertesia_client.openapi.api.projects_api import ProjectsApi
 from vertesia_client.openapi.api.prompt_templates_api import PromptTemplatesApi

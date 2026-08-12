@@ -10,8 +10,10 @@ vertesia_client/openapi/api/bulk_operations_api.py
 vertesia_client/openapi/api/collections_api.py
 vertesia_client/openapi/api/commands_api.py
 vertesia_client/openapi/api/content_object_types_api.py
+vertesia_client/openapi/api/content_query_api.py
 vertesia_client/openapi/api/costs_api.py
 vertesia_client/openapi/api/data_api.py
+vertesia_client/openapi/api/email_api.py
 vertesia_client/openapi/api/environments_api.py
 vertesia_client/openapi/api/event_ingest_channels_api.py
 vertesia_client/openapi/api/event_subscriptions_api.py
@@ -23,6 +25,7 @@ vertesia_client/openapi/api/o_auth_clients_api.py
 vertesia_client/openapi/api/o_auth_grants_api.py
 vertesia_client/openapi/api/o_auth_providers_api.py
 vertesia_client/openapi/api/objects_api.py
+vertesia_client/openapi/api/pending_asks_api.py
 vertesia_client/openapi/api/processes_api.py
 vertesia_client/openapi/api/projects_api.py
 vertesia_client/openapi/api/prompt_templates_api.py
@@ -292,6 +295,11 @@ vertesia_client/openapi/models/content_object_type_item.py
 vertesia_client/openapi/models/content_object_type_ref.py
 vertesia_client/openapi/models/content_object_type_status.py
 vertesia_client/openapi/models/content_object_user_permissions.py
+vertesia_client/openapi/models/content_query_payload.py
+vertesia_client/openapi/models/content_query_payload_dsl.py
+vertesia_client/openapi/models/content_query_result.py
+vertesia_client/openapi/models/content_query_result_columns_inner.py
+vertesia_client/openapi/models/content_query_result_hits_inner.py
 vertesia_client/openapi/models/content_source.py
 vertesia_client/openapi/models/content_type_editing_policy.py
 vertesia_client/openapi/models/content_type_extraction_grounding_policy.py
@@ -332,6 +340,8 @@ vertesia_client/openapi/models/create_content_object_type_payload.py
 vertesia_client/openapi/models/create_dashboard_payload.py
 vertesia_client/openapi/models/create_dashboard_snapshot_payload.py
 vertesia_client/openapi/models/create_data_store_payload.py
+vertesia_client/openapi/models/create_email_route_request.py
+vertesia_client/openapi/models/create_email_route_response.py
 vertesia_client/openapi/models/create_event_ingest_channel_payload.py
 vertesia_client/openapi/models/create_event_subscription_payload.py
 vertesia_client/openapi/models/create_o_auth_client_payload.py
@@ -431,6 +441,7 @@ vertesia_client/openapi/models/duration_value.py
 vertesia_client/openapi/models/dynamic_scaling_types.py
 vertesia_client/openapi/models/elasticsearch_backend.py
 vertesia_client/openapi/models/email_channel.py
+vertesia_client/openapi/models/email_route_response.py
 vertesia_client/openapi/models/embedding.py
 vertesia_client/openapi/models/embedding_output.py
 vertesia_client/openapi/models/embedding_result_item.py
@@ -512,6 +523,10 @@ vertesia_client/openapi/models/file_metadata_response.py
 vertesia_client/openapi/models/file_metadata_update_result.py
 vertesia_client/openapi/models/file_processing_status.py
 vertesia_client/openapi/models/find_payload.py
+vertesia_client/openapi/models/forward_email_request.py
+vertesia_client/openapi/models/forward_email_request_attachments_inner.py
+vertesia_client/openapi/models/forward_email_request_email.py
+vertesia_client/openapi/models/forward_email_response.py
 vertesia_client/openapi/models/generate_interaction_payload.py
 vertesia_client/openapi/models/generate_test_data_payload.py
 vertesia_client/openapi/models/generated_interaction_definition.py
@@ -609,6 +624,7 @@ vertesia_client/openapi/models/list_agent_runs_response.py
 vertesia_client/openapi/models/list_content_object_exports_response.py
 vertesia_client/openapi/models/list_event_deliveries_payload.py
 vertesia_client/openapi/models/list_event_deliveries_response.py
+vertesia_client/openapi/models/list_pending_asks_response.py
 vertesia_client/openapi/models/list_secrets_response.py
 vertesia_client/openapi/models/list_workflow_runs_payload.py
 vertesia_client/openapi/models/list_workflow_runs_response.py
@@ -682,6 +698,8 @@ vertesia_client/openapi/models/parallel_collect_mode.py
 vertesia_client/openapi/models/parallel_failure_policy.py
 vertesia_client/openapi/models/pdf_rendering_metadata.py
 vertesia_client/openapi/models/pending_activity.py
+vertesia_client/openapi/models/pending_ask_data.py
+vertesia_client/openapi/models/pending_ask_status.py
 vertesia_client/openapi/models/pending_mcp_connection.py
 vertesia_client/openapi/models/pending_tool_approval_results.py
 vertesia_client/openapi/models/permission.py
@@ -774,6 +792,8 @@ vertesia_client/openapi/models/quota_tier_response.py
 vertesia_client/openapi/models/rate_limit_request_payload.py
 vertesia_client/openapi/models/rate_limit_request_response.py
 vertesia_client/openapi/models/reasoning_effort.py
+vertesia_client/openapi/models/register_pending_ask_request.py
+vertesia_client/openapi/models/register_pending_ask_response.py
 vertesia_client/openapi/models/reindex_agent_runs_payload.py
 vertesia_client/openapi/models/reindex_agent_runs_response.py
 vertesia_client/openapi/models/reindex_agent_runs_response_errors_inner.py
@@ -786,6 +806,8 @@ vertesia_client/openapi/models/rendering_template_definition.py
 vertesia_client/openapi/models/rendering_template_definition_ref.py
 vertesia_client/openapi/models/resend_configuration.py
 vertesia_client/openapi/models/resend_configuration_input.py
+vertesia_client/openapi/models/resolve_pending_ask_request.py
+vertesia_client/openapi/models/resolve_pending_ask_response.py
 vertesia_client/openapi/models/resolved_environment_info.py
 vertesia_client/openapi/models/resolved_interaction_execution_info.py
 vertesia_client/openapi/models/resolved_runtime_config.py
@@ -823,6 +845,8 @@ vertesia_client/openapi/models/semantic_condition_on_error.py
 vertesia_client/openapi/models/semantic_evaluation_record.py
 vertesia_client/openapi/models/semantic_evaluation_status.py
 vertesia_client/openapi/models/semantic_evaluator.py
+vertesia_client/openapi/models/send_email_request.py
+vertesia_client/openapi/models/send_email_response.py
 vertesia_client/openapi/models/serper_configuration.py
 vertesia_client/openapi/models/serper_configuration_input.py
 vertesia_client/openapi/models/service_account_token_request.py
@@ -913,6 +937,8 @@ vertesia_client/openapi/models/update_collection_payload.py
 vertesia_client/openapi/models/update_content_object_payload.py
 vertesia_client/openapi/models/update_content_object_type_payload.py
 vertesia_client/openapi/models/update_dashboard_payload.py
+vertesia_client/openapi/models/update_email_route_request.py
+vertesia_client/openapi/models/update_email_route_response.py
 vertesia_client/openapi/models/update_event_ingest_channel_payload.py
 vertesia_client/openapi/models/update_event_subscription_payload.py
 vertesia_client/openapi/models/update_execution_run_payload.py
