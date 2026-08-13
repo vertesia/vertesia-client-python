@@ -811,6 +811,8 @@ vertesia_client/openapi/models/resend_configuration.py
 vertesia_client/openapi/models/resend_configuration_input.py
 vertesia_client/openapi/models/resolve_pending_ask_request.py
 vertesia_client/openapi/models/resolve_pending_ask_response.py
+vertesia_client/openapi/models/resolved_catalog_interaction.py
+vertesia_client/openapi/models/resolved_catalog_interaction_runtime.py
 vertesia_client/openapi/models/resolved_environment_info.py
 vertesia_client/openapi/models/resolved_interaction_execution_info.py
 vertesia_client/openapi/models/resolved_runtime_config.py

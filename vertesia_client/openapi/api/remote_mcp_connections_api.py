@@ -1257,7 +1257,7 @@ class RemoteMCPConnectionsApi:
     ) -> OAuthAuthStatus:
         """Retrieve a remote MCP connection status
 
-        Returns OAuth authentication status for a specific OAuth-enabled MCP collection.
+        Returns authentication status for a specific OAuth or API-key MCP collection.
 
         :param app_install_id: (required)
         :type app_install_id: str
@@ -1334,7 +1334,7 @@ class RemoteMCPConnectionsApi:
     ) -> ApiResponse[OAuthAuthStatus]:
         """Retrieve a remote MCP connection status
 
-        Returns OAuth authentication status for a specific OAuth-enabled MCP collection.
+        Returns authentication status for a specific OAuth or API-key MCP collection.
 
         :param app_install_id: (required)
         :type app_install_id: str
@@ -1411,7 +1411,7 @@ class RemoteMCPConnectionsApi:
     ) -> RESTResponseType:
         """Retrieve a remote MCP connection status
 
-        Returns OAuth authentication status for a specific OAuth-enabled MCP collection.
+        Returns authentication status for a specific OAuth or API-key MCP collection.
 
         :param app_install_id: (required)
         :type app_install_id: str
@@ -1850,7 +1850,7 @@ class RemoteMCPConnectionsApi:
     ) -> List[OAuthAuthStatus]:
         """List remote MCP connection statuses
 
-        Returns OAuth authentication status for all OAuth-enabled MCP collections in an installed app.
+        Returns authentication status for all OAuth and API-key MCP collections in an installed app.
 
         :param app_install_id: (required)
         :type app_install_id: str
@@ -1923,7 +1923,7 @@ class RemoteMCPConnectionsApi:
     ) -> ApiResponse[List[OAuthAuthStatus]]:
         """List remote MCP connection statuses
 
-        Returns OAuth authentication status for all OAuth-enabled MCP collections in an installed app.
+        Returns authentication status for all OAuth and API-key MCP collections in an installed app.
 
         :param app_install_id: (required)
         :type app_install_id: str
@@ -1996,7 +1996,7 @@ class RemoteMCPConnectionsApi:
     ) -> RESTResponseType:
         """List remote MCP connection statuses
 
-        Returns OAuth authentication status for all OAuth-enabled MCP collections in an installed app.
+        Returns authentication status for all OAuth and API-key MCP collections in an installed app.
 
         :param app_install_id: (required)
         :type app_install_id: str

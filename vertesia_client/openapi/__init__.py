@@ -833,6 +833,8 @@ __all__ = [
     "ResendConfigurationInput",
     "ResolvePendingAskRequest",
     "ResolvePendingAskResponse",
+    "ResolvedCatalogInteraction",
+    "ResolvedCatalogInteractionRuntime",
     "ResolvedEnvironmentInfo",
     "ResolvedInteractionExecutionInfo",
     "ResolvedRuntimeConfig",
@@ -1922,6 +1924,8 @@ from vertesia_client.openapi.models.resend_configuration import ResendConfigurat
 from vertesia_client.openapi.models.resend_configuration_input import ResendConfigurationInput as ResendConfigurationInput
 from vertesia_client.openapi.models.resolve_pending_ask_request import ResolvePendingAskRequest as ResolvePendingAskRequest
 from vertesia_client.openapi.models.resolve_pending_ask_response import ResolvePendingAskResponse as ResolvePendingAskResponse
+from vertesia_client.openapi.models.resolved_catalog_interaction import ResolvedCatalogInteraction as ResolvedCatalogInteraction
+from vertesia_client.openapi.models.resolved_catalog_interaction_runtime import ResolvedCatalogInteractionRuntime as ResolvedCatalogInteractionRuntime
 from vertesia_client.openapi.models.resolved_environment_info import ResolvedEnvironmentInfo as ResolvedEnvironmentInfo
 from vertesia_client.openapi.models.resolved_interaction_execution_info import ResolvedInteractionExecutionInfo as ResolvedInteractionExecutionInfo
 from vertesia_client.openapi.models.resolved_runtime_config import ResolvedRuntimeConfig as ResolvedRuntimeConfig

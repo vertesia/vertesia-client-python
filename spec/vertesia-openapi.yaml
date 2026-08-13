@@ -20128,6 +20128,71 @@ components:
       required:
         - success
       additionalProperties: false
+    ResolvedCatalogInteraction:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - sys
+            - app
+            - stored
+            - draft
+          description: The interaction type.
+        id:
+          type: string
+          description: The executable catalog interaction ID.
+        name:
+          type: string
+          description: The interaction code name.
+        version:
+          type: number
+        published:
+          type: boolean
+        title:
+          type: string
+          description: Display title, normalized from the interaction name when absent.
+        description:
+          type: string
+        result_schema:
+          anyOf:
+            - $ref: "#/components/schemas/JSONSchema"
+            - $ref: "#/components/schemas/SchemaRef"
+        output_modality:
+          $ref: "#/components/schemas/Modalities"
+        storage:
+          $ref: "#/components/schemas/RunDataStorageLevel"
+        tags:
+          type: array
+          items:
+            type: string
+          description: Tags, normalized to an empty array when absent.
+        agent_runner_options:
+          $ref: "#/components/schemas/AgentRunnerOptions"
+        model_options:
+          $ref: "#/components/schemas/ModelOptions"
+        prompts:
+          type: array
+          items:
+            $ref: "#/components/schemas/InCodePrompt"
+        externalId:
+          type: string
+        runtime:
+          type: object
+          properties:
+            environment:
+              type: string
+            model:
+              type: string
+          additionalProperties: false
+      required:
+        - type
+        - id
+        - name
+        - title
+        - tags
+        - prompts
+      description: A catalog interaction resolved to its complete executable definition.
     ResolvedEnvironmentInfo:
       type: object
       properties:
@@ -28479,7 +28544,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CatalogInteractionRef"
+                $ref: "#/components/schemas/ResolvedCatalogInteraction"
         "500":
           description: Internal server error.
           content:
@@ -37098,7 +37163,7 @@ paths:
       tags:
         - Remote MCP Connections
       summary: List remote MCP connection statuses
-      description: Returns OAuth authentication status for all OAuth-enabled MCP
+      description: Returns authentication status for all OAuth and API-key MCP
         collections in an installed app.
       security:
         - bearerAuth: []
@@ -37111,7 +37176,7 @@ paths:
             type: string
       responses:
         "200":
-          description: OAuth authentication statuses for the app MCP collections.
+          description: Authentication statuses for the app MCP collections.
           content:
             application/json:
               schema:
@@ -37157,8 +37222,8 @@ paths:
       tags:
         - Remote MCP Connections
       summary: Retrieve a remote MCP connection status
-      description: Returns OAuth authentication status for a specific OAuth-enabled
-        MCP collection.
+      description: Returns authentication status for a specific OAuth or API-key MCP
+        collection.
       security:
         - bearerAuth: []
         - OpenID: []
@@ -37175,7 +37240,7 @@ paths:
             type: string
       responses:
         "200":
-          description: OAuth authentication status for the MCP collection.
+          description: Authentication status for the MCP collection.
           content:
             application/json:
               schema:

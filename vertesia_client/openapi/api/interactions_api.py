@@ -47,6 +47,7 @@ from vertesia_client.openapi.models.named_interaction_execution_payload import N
 from vertesia_client.openapi.models.prompt_improvement_response import PromptImprovementResponse
 from vertesia_client.openapi.models.rate_limit_request_payload import RateLimitRequestPayload
 from vertesia_client.openapi.models.rate_limit_request_response import RateLimitRequestResponse
+from vertesia_client.openapi.models.resolved_catalog_interaction import ResolvedCatalogInteraction
 from vertesia_client.openapi.models.resolved_interaction_execution_info import ResolvedInteractionExecutionInfo
 
 from vertesia_client.openapi.api_client import ApiClient, RequestSerialized
@@ -8238,7 +8239,7 @@ class InteractionsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> CatalogInteractionRef:
+    ) -> ResolvedCatalogInteraction:
         """Resolve catalog interaction
 
         Resolves an in-code catalog interaction by ID for the current principal.  **Required permissions:** `interaction:read`
@@ -8279,7 +8280,7 @@ class InteractionsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "CatalogInteractionRef",
+            '200': "ResolvedCatalogInteraction",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -8311,7 +8312,7 @@ class InteractionsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[CatalogInteractionRef]:
+    ) -> ApiResponse[ResolvedCatalogInteraction]:
         """Resolve catalog interaction
 
         Resolves an in-code catalog interaction by ID for the current principal.  **Required permissions:** `interaction:read`
@@ -8352,7 +8353,7 @@ class InteractionsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "CatalogInteractionRef",
+            '200': "ResolvedCatalogInteraction",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -8425,7 +8426,7 @@ class InteractionsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "CatalogInteractionRef",
+            '200': "ResolvedCatalogInteraction",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
