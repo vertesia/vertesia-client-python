@@ -1103,6 +1103,7 @@ __all__ = [
     "WorkflowSearchAttributeValueInner",
     "WorkflowTask",
     "WorkflowUpdatePublishResponse",
+    "XAIGrokImageOptions",
 ]
 
 # import apis into sdk package
@@ -2195,4 +2196,5 @@ from vertesia_client.openapi.models.workflow_run_with_details import WorkflowRun
 from vertesia_client.openapi.models.workflow_search_attribute_value_inner import WorkflowSearchAttributeValueInner as WorkflowSearchAttributeValueInner
 from vertesia_client.openapi.models.workflow_task import WorkflowTask as WorkflowTask
 from vertesia_client.openapi.models.workflow_update_publish_response import WorkflowUpdatePublishResponse as WorkflowUpdatePublishResponse
+from vertesia_client.openapi.models.xai_grok_image_options import XAIGrokImageOptions as XAIGrokImageOptions
 

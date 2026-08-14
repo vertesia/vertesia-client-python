@@ -42,11 +42,12 @@ from vertesia_client.openapi.models.twelvelabs_pegasus_options import Twelvelabs
 from vertesia_client.openapi.models.vertex_ai_claude_options import VertexAIClaudeOptions
 from vertesia_client.openapi.models.vertex_ai_gemini_options import VertexAIGeminiOptions
 from vertesia_client.openapi.models.vertex_ai_grok_options import VertexAIGrokOptions
+from vertesia_client.openapi.models.xai_grok_image_options import XAIGrokImageOptions
 from pydantic import StrictStr, Field
 from typing import Union, List, Set, Optional, Dict
 from typing_extensions import Literal, Self
 
-MODELOPTIONS_ONE_OF_SCHEMAS = ["AzureFoundryChatOptions", "BedrockAI21Options", "BedrockClaudeOptions", "BedrockCohereCommandOptions", "BedrockConverseOptions", "BedrockGptOssOptions", "BedrockMantleChatCompletionsOptions", "BedrockMantleClaudeOptions", "BedrockMantleResponsesOptions", "BedrockMistralOptions", "BedrockNovaOptions", "BedrockPalmyraOptions", "GroqOptions", "ImagenOptions", "MistralTextOptions", "NovaCanvasOptions", "OpenAiDalleOptions", "OpenAiGptImageOptions", "OpenAiTextOptions", "OpenAiThinkingOptions", "TextFallbackOptions", "TwelvelabsPegasusOptions", "VertexAIClaudeOptions", "VertexAIGeminiOptions", "VertexAIGrokOptions"]
+MODELOPTIONS_ONE_OF_SCHEMAS = ["AzureFoundryChatOptions", "BedrockAI21Options", "BedrockClaudeOptions", "BedrockCohereCommandOptions", "BedrockConverseOptions", "BedrockGptOssOptions", "BedrockMantleChatCompletionsOptions", "BedrockMantleClaudeOptions", "BedrockMantleResponsesOptions", "BedrockMistralOptions", "BedrockNovaOptions", "BedrockPalmyraOptions", "GroqOptions", "ImagenOptions", "MistralTextOptions", "NovaCanvasOptions", "OpenAiDalleOptions", "OpenAiGptImageOptions", "OpenAiTextOptions", "OpenAiThinkingOptions", "TextFallbackOptions", "TwelvelabsPegasusOptions", "VertexAIClaudeOptions", "VertexAIGeminiOptions", "VertexAIGrokOptions", "XAIGrokImageOptions"]
 
 class ModelOptions(BaseModel):
     """
@@ -98,12 +99,14 @@ class ModelOptions(BaseModel):
     oneof_schema_22_validator: Optional[OpenAiDalleOptions] = None
     # data type: OpenAiGptImageOptions
     oneof_schema_23_validator: Optional[OpenAiGptImageOptions] = None
+    # data type: XAIGrokImageOptions
+    oneof_schema_24_validator: Optional[XAIGrokImageOptions] = None
     # data type: GroqOptions
-    oneof_schema_24_validator: Optional[GroqOptions] = None
+    oneof_schema_25_validator: Optional[GroqOptions] = None
     # data type: MistralTextOptions
-    oneof_schema_25_validator: Optional[MistralTextOptions] = None
-    actual_instance: Optional[Union[AzureFoundryChatOptions, BedrockAI21Options, BedrockClaudeOptions, BedrockCohereCommandOptions, BedrockConverseOptions, BedrockGptOssOptions, BedrockMantleChatCompletionsOptions, BedrockMantleClaudeOptions, BedrockMantleResponsesOptions, BedrockMistralOptions, BedrockNovaOptions, BedrockPalmyraOptions, GroqOptions, ImagenOptions, MistralTextOptions, NovaCanvasOptions, OpenAiDalleOptions, OpenAiGptImageOptions, OpenAiTextOptions, OpenAiThinkingOptions, TextFallbackOptions, TwelvelabsPegasusOptions, VertexAIClaudeOptions, VertexAIGeminiOptions, VertexAIGrokOptions]] = None
-    one_of_schemas: Set[str] = { "AzureFoundryChatOptions", "BedrockAI21Options", "BedrockClaudeOptions", "BedrockCohereCommandOptions", "BedrockConverseOptions", "BedrockGptOssOptions", "BedrockMantleChatCompletionsOptions", "BedrockMantleClaudeOptions", "BedrockMantleResponsesOptions", "BedrockMistralOptions", "BedrockNovaOptions", "BedrockPalmyraOptions", "GroqOptions", "ImagenOptions", "MistralTextOptions", "NovaCanvasOptions", "OpenAiDalleOptions", "OpenAiGptImageOptions", "OpenAiTextOptions", "OpenAiThinkingOptions", "TextFallbackOptions", "TwelvelabsPegasusOptions", "VertexAIClaudeOptions", "VertexAIGeminiOptions", "VertexAIGrokOptions" }
+    oneof_schema_26_validator: Optional[MistralTextOptions] = None
+    actual_instance: Optional[Union[AzureFoundryChatOptions, BedrockAI21Options, BedrockClaudeOptions, BedrockCohereCommandOptions, BedrockConverseOptions, BedrockGptOssOptions, BedrockMantleChatCompletionsOptions, BedrockMantleClaudeOptions, BedrockMantleResponsesOptions, BedrockMistralOptions, BedrockNovaOptions, BedrockPalmyraOptions, GroqOptions, ImagenOptions, MistralTextOptions, NovaCanvasOptions, OpenAiDalleOptions, OpenAiGptImageOptions, OpenAiTextOptions, OpenAiThinkingOptions, TextFallbackOptions, TwelvelabsPegasusOptions, VertexAIClaudeOptions, VertexAIGeminiOptions, VertexAIGrokOptions, XAIGrokImageOptions]] = None
+    one_of_schemas: Set[str] = { "AzureFoundryChatOptions", "BedrockAI21Options", "BedrockClaudeOptions", "BedrockCohereCommandOptions", "BedrockConverseOptions", "BedrockGptOssOptions", "BedrockMantleChatCompletionsOptions", "BedrockMantleClaudeOptions", "BedrockMantleResponsesOptions", "BedrockMistralOptions", "BedrockNovaOptions", "BedrockPalmyraOptions", "GroqOptions", "ImagenOptions", "MistralTextOptions", "NovaCanvasOptions", "OpenAiDalleOptions", "OpenAiGptImageOptions", "OpenAiTextOptions", "OpenAiThinkingOptions", "TextFallbackOptions", "TwelvelabsPegasusOptions", "VertexAIClaudeOptions", "VertexAIGeminiOptions", "VertexAIGrokOptions", "XAIGrokImageOptions" }
 
     model_config = ConfigDict(
         validate_assignment=True,
@@ -244,6 +247,11 @@ class ModelOptions(BaseModel):
             error_messages.append(f"Error! Input type `{type(v)}` is not `OpenAiGptImageOptions`")
         else:
             match += 1
+        # validate data type: XAIGrokImageOptions
+        if not isinstance(v, XAIGrokImageOptions):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `XAIGrokImageOptions`")
+        else:
+            match += 1
         # validate data type: GroqOptions
         if not isinstance(v, GroqOptions):
             error_messages.append(f"Error! Input type `{type(v)}` is not `GroqOptions`")
@@ -256,10 +264,10 @@ class ModelOptions(BaseModel):
             match += 1
         if match > 1:
             # more than 1 match
-            raise ValueError("Multiple matches found when setting `actual_instance` in ModelOptions with oneOf schemas: AzureFoundryChatOptions, BedrockAI21Options, BedrockClaudeOptions, BedrockCohereCommandOptions, BedrockConverseOptions, BedrockGptOssOptions, BedrockMantleChatCompletionsOptions, BedrockMantleClaudeOptions, BedrockMantleResponsesOptions, BedrockMistralOptions, BedrockNovaOptions, BedrockPalmyraOptions, GroqOptions, ImagenOptions, MistralTextOptions, NovaCanvasOptions, OpenAiDalleOptions, OpenAiGptImageOptions, OpenAiTextOptions, OpenAiThinkingOptions, TextFallbackOptions, TwelvelabsPegasusOptions, VertexAIClaudeOptions, VertexAIGeminiOptions, VertexAIGrokOptions. Details: " + ", ".join(error_messages))
+            raise ValueError("Multiple matches found when setting `actual_instance` in ModelOptions with oneOf schemas: AzureFoundryChatOptions, BedrockAI21Options, BedrockClaudeOptions, BedrockCohereCommandOptions, BedrockConverseOptions, BedrockGptOssOptions, BedrockMantleChatCompletionsOptions, BedrockMantleClaudeOptions, BedrockMantleResponsesOptions, BedrockMistralOptions, BedrockNovaOptions, BedrockPalmyraOptions, GroqOptions, ImagenOptions, MistralTextOptions, NovaCanvasOptions, OpenAiDalleOptions, OpenAiGptImageOptions, OpenAiTextOptions, OpenAiThinkingOptions, TextFallbackOptions, TwelvelabsPegasusOptions, VertexAIClaudeOptions, VertexAIGeminiOptions, VertexAIGrokOptions, XAIGrokImageOptions. Details: " + ", ".join(error_messages))
         elif match == 0:
             # no match
-            raise ValueError("No match found when setting `actual_instance` in ModelOptions with oneOf schemas: AzureFoundryChatOptions, BedrockAI21Options, BedrockClaudeOptions, BedrockCohereCommandOptions, BedrockConverseOptions, BedrockGptOssOptions, BedrockMantleChatCompletionsOptions, BedrockMantleClaudeOptions, BedrockMantleResponsesOptions, BedrockMistralOptions, BedrockNovaOptions, BedrockPalmyraOptions, GroqOptions, ImagenOptions, MistralTextOptions, NovaCanvasOptions, OpenAiDalleOptions, OpenAiGptImageOptions, OpenAiTextOptions, OpenAiThinkingOptions, TextFallbackOptions, TwelvelabsPegasusOptions, VertexAIClaudeOptions, VertexAIGeminiOptions, VertexAIGrokOptions. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when setting `actual_instance` in ModelOptions with oneOf schemas: AzureFoundryChatOptions, BedrockAI21Options, BedrockClaudeOptions, BedrockCohereCommandOptions, BedrockConverseOptions, BedrockGptOssOptions, BedrockMantleChatCompletionsOptions, BedrockMantleClaudeOptions, BedrockMantleResponsesOptions, BedrockMistralOptions, BedrockNovaOptions, BedrockPalmyraOptions, GroqOptions, ImagenOptions, MistralTextOptions, NovaCanvasOptions, OpenAiDalleOptions, OpenAiGptImageOptions, OpenAiTextOptions, OpenAiThinkingOptions, TextFallbackOptions, TwelvelabsPegasusOptions, VertexAIClaudeOptions, VertexAIGeminiOptions, VertexAIGrokOptions, XAIGrokImageOptions. Details: " + ", ".join(error_messages))
         else:
             return v
 
@@ -412,6 +420,12 @@ class ModelOptions(BaseModel):
             match += 1
         except (ValidationError, ValueError) as e:
             error_messages.append(str(e))
+        # deserialize data into XAIGrokImageOptions
+        try:
+            instance.actual_instance = XAIGrokImageOptions.from_json(json_str)
+            match += 1
+        except (ValidationError, ValueError) as e:
+            error_messages.append(str(e))
         # deserialize data into GroqOptions
         try:
             instance.actual_instance = GroqOptions.from_json(json_str)
@@ -427,10 +441,10 @@ class ModelOptions(BaseModel):
 
         if match > 1:
             # more than 1 match
-            raise ValueError("Multiple matches found when deserializing the JSON string into ModelOptions with oneOf schemas: AzureFoundryChatOptions, BedrockAI21Options, BedrockClaudeOptions, BedrockCohereCommandOptions, BedrockConverseOptions, BedrockGptOssOptions, BedrockMantleChatCompletionsOptions, BedrockMantleClaudeOptions, BedrockMantleResponsesOptions, BedrockMistralOptions, BedrockNovaOptions, BedrockPalmyraOptions, GroqOptions, ImagenOptions, MistralTextOptions, NovaCanvasOptions, OpenAiDalleOptions, OpenAiGptImageOptions, OpenAiTextOptions, OpenAiThinkingOptions, TextFallbackOptions, TwelvelabsPegasusOptions, VertexAIClaudeOptions, VertexAIGeminiOptions, VertexAIGrokOptions. Details: " + ", ".join(error_messages))
+            raise ValueError("Multiple matches found when deserializing the JSON string into ModelOptions with oneOf schemas: AzureFoundryChatOptions, BedrockAI21Options, BedrockClaudeOptions, BedrockCohereCommandOptions, BedrockConverseOptions, BedrockGptOssOptions, BedrockMantleChatCompletionsOptions, BedrockMantleClaudeOptions, BedrockMantleResponsesOptions, BedrockMistralOptions, BedrockNovaOptions, BedrockPalmyraOptions, GroqOptions, ImagenOptions, MistralTextOptions, NovaCanvasOptions, OpenAiDalleOptions, OpenAiGptImageOptions, OpenAiTextOptions, OpenAiThinkingOptions, TextFallbackOptions, TwelvelabsPegasusOptions, VertexAIClaudeOptions, VertexAIGeminiOptions, VertexAIGrokOptions, XAIGrokImageOptions. Details: " + ", ".join(error_messages))
         elif match == 0:
             # no match
-            raise ValueError("No match found when deserializing the JSON string into ModelOptions with oneOf schemas: AzureFoundryChatOptions, BedrockAI21Options, BedrockClaudeOptions, BedrockCohereCommandOptions, BedrockConverseOptions, BedrockGptOssOptions, BedrockMantleChatCompletionsOptions, BedrockMantleClaudeOptions, BedrockMantleResponsesOptions, BedrockMistralOptions, BedrockNovaOptions, BedrockPalmyraOptions, GroqOptions, ImagenOptions, MistralTextOptions, NovaCanvasOptions, OpenAiDalleOptions, OpenAiGptImageOptions, OpenAiTextOptions, OpenAiThinkingOptions, TextFallbackOptions, TwelvelabsPegasusOptions, VertexAIClaudeOptions, VertexAIGeminiOptions, VertexAIGrokOptions. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when deserializing the JSON string into ModelOptions with oneOf schemas: AzureFoundryChatOptions, BedrockAI21Options, BedrockClaudeOptions, BedrockCohereCommandOptions, BedrockConverseOptions, BedrockGptOssOptions, BedrockMantleChatCompletionsOptions, BedrockMantleClaudeOptions, BedrockMantleResponsesOptions, BedrockMistralOptions, BedrockNovaOptions, BedrockPalmyraOptions, GroqOptions, ImagenOptions, MistralTextOptions, NovaCanvasOptions, OpenAiDalleOptions, OpenAiGptImageOptions, OpenAiTextOptions, OpenAiThinkingOptions, TextFallbackOptions, TwelvelabsPegasusOptions, VertexAIClaudeOptions, VertexAIGeminiOptions, VertexAIGrokOptions, XAIGrokImageOptions. Details: " + ", ".join(error_messages))
         else:
             return instance
 
@@ -444,7 +458,7 @@ class ModelOptions(BaseModel):
         else:
             return json.dumps(self.actual_instance)
 
-    def to_dict(self) -> Optional[Union[Dict[str, Any], AzureFoundryChatOptions, BedrockAI21Options, BedrockClaudeOptions, BedrockCohereCommandOptions, BedrockConverseOptions, BedrockGptOssOptions, BedrockMantleChatCompletionsOptions, BedrockMantleClaudeOptions, BedrockMantleResponsesOptions, BedrockMistralOptions, BedrockNovaOptions, BedrockPalmyraOptions, GroqOptions, ImagenOptions, MistralTextOptions, NovaCanvasOptions, OpenAiDalleOptions, OpenAiGptImageOptions, OpenAiTextOptions, OpenAiThinkingOptions, TextFallbackOptions, TwelvelabsPegasusOptions, VertexAIClaudeOptions, VertexAIGeminiOptions, VertexAIGrokOptions]]:
+    def to_dict(self) -> Optional[Union[Dict[str, Any], AzureFoundryChatOptions, BedrockAI21Options, BedrockClaudeOptions, BedrockCohereCommandOptions, BedrockConverseOptions, BedrockGptOssOptions, BedrockMantleChatCompletionsOptions, BedrockMantleClaudeOptions, BedrockMantleResponsesOptions, BedrockMistralOptions, BedrockNovaOptions, BedrockPalmyraOptions, GroqOptions, ImagenOptions, MistralTextOptions, NovaCanvasOptions, OpenAiDalleOptions, OpenAiGptImageOptions, OpenAiTextOptions, OpenAiThinkingOptions, TextFallbackOptions, TwelvelabsPegasusOptions, VertexAIClaudeOptions, VertexAIGeminiOptions, VertexAIGrokOptions, XAIGrokImageOptions]]:
         """Returns the dict representation of the actual instance"""
         if self.actual_instance is None:
             return None
