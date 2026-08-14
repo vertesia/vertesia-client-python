@@ -3758,7 +3758,6 @@ components:
       required:
         - integration
         - enabled
-        - webhook_url
       additionalProperties: false
       description: Configuration for ask_user webhook notifications. Sends webhooks
         when agents call ask_user and when users respond.

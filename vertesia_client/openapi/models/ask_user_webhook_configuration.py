@@ -30,7 +30,7 @@ class AskUserWebhookConfiguration(BaseModel):
     """ # noqa: E501
     integration: SupportedIntegrationsAskUserWebhook
     enabled: StrictBool
-    webhook_url: StrictStr = Field(description="Webhook URL to receive ask_user events")
+    webhook_url: Optional[StrictStr] = Field(default=None, description="Webhook URL to receive ask_user events")
     has_webhook_secret: Optional[StrictBool] = None
     webhook_secret_hint: Optional[StrictStr] = None
     events: Optional[List[StrictStr]] = Field(default=None, description="Which events to send: ['requested', 'resolved'] or subset (default: both)")
