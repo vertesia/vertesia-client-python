@@ -45656,7 +45656,7 @@
           "Users"
         ],
         "summary": "Retrieve the current user's identity",
-        "description": "Returns the current user id plus the merged ABAC principal context (clearance, compartments, email, tags, properties). Conceptually an OIDC-style userinfo / identity-token endpoint: takes no parameters, derives the subject from the JWT, and rejects non-user principals (API keys, service accounts) with 400. Use this client-side to preview how PrincipalSet rules will evaluate for the signed-in user.\n\n**Required permissions:** `account:member`",
+        "description": "Returns the current user id plus the merged ABAC principal context (clearance, compartments, email, tags, properties). Conceptually an OIDC-style userinfo / identity-token endpoint: takes no parameters, derives the subject from a user or OAuth access token, and rejects principals without an underlying user (API keys, service accounts) with 400. Use this client-side to preview how PrincipalSet rules will evaluate for the signed-in user.\n\n**Required permissions:** `account:member`",
         "security": [
           {
             "bearerAuth": []
