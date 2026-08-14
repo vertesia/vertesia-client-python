@@ -1873,7 +1873,7 @@
             "type": "string"
           },
           "config": {
-            "$ref": "#/components/schemas/InteractionExecutionConfiguration"
+            "$ref": "#/components/schemas/ViewAgenticExecutionConfiguration"
           },
           "instructions": {
             "type": "string",
@@ -5785,8 +5785,7 @@
         },
         "required": [
           "integration",
-          "enabled",
-          "s3_role_arn"
+          "enabled"
         ],
         "additionalProperties": false
       },
@@ -9025,6 +9024,10 @@
           },
           "editing": {
             "$ref": "#/components/schemas/ContentTypeEditingPolicy"
+          },
+          "title": {
+            "type": "string",
+            "description": "Display title. Defaults to `name` or `id`."
           },
           "updated_by": {
             "type": "string"
@@ -16988,7 +16991,8 @@
         "type": "object",
         "properties": {
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "Key the buckets are returned under. `total` is reserved for the match count that every facet response carries, and is rejected with a 400."
           },
           "field": {
             "type": "string"
@@ -18420,6 +18424,10 @@
           },
           "editing": {
             "$ref": "#/components/schemas/ContentTypeEditingPolicy"
+          },
+          "title": {
+            "type": "string",
+            "description": "Display title. Defaults to `name` or `id`."
           }
         },
         "required": [
@@ -30821,6 +30829,47 @@
             "items": {
               "$ref": "#/components/schemas/ViewActionConfiguration"
             }
+          }
+        },
+        "additionalProperties": false
+      },
+      "ViewAgenticExecutionConfiguration": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "environment": {
+            "type": "string"
+          },
+          "model": {
+            "type": "string"
+          },
+          "do_validate": {
+            "type": "boolean"
+          },
+          "run_data": {
+            "$ref": "#/components/schemas/RunDataStorageLevel"
+          },
+          "configMode": {
+            "$ref": "#/components/schemas/ConfigModes"
+          },
+          "model_options": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Model options as authored for this View. Open rather than the driver-discriminated `ModelOptions` union, because a View is saved before a driver is resolved."
+          },
+          "prompt_cache_key": {
+            "type": "string",
+            "description": "Stable provider-side routing key for automatic prompt caching."
+          },
+          "prompt_cache_schema_suffix": {
+            "type": "boolean",
+            "description": "Put the result schema after the cached prefix; Vertesia still validates the returned JSON against it."
+          },
+          "http_timeout": {
+            "$ref": "#/components/schemas/HttpTimeoutOptions",
+            "description": "Per-run HTTP timeouts for upstream LLM-provider calls."
           }
         },
         "additionalProperties": false

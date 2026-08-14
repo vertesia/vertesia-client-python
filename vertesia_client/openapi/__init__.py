@@ -1002,6 +1002,7 @@ __all__ = [
     "ViewActionPlacement",
     "ViewActionSelectionRequirement",
     "ViewActionsConfiguration",
+    "ViewAgenticExecutionConfiguration",
     "ViewAgenticSearchMode",
     "ViewBoardCardConfiguration",
     "ViewBoardColumn",
@@ -2093,6 +2094,7 @@ from vertesia_client.openapi.models.view_action_configuration import ViewActionC
 from vertesia_client.openapi.models.view_action_placement import ViewActionPlacement as ViewActionPlacement
 from vertesia_client.openapi.models.view_action_selection_requirement import ViewActionSelectionRequirement as ViewActionSelectionRequirement
 from vertesia_client.openapi.models.view_actions_configuration import ViewActionsConfiguration as ViewActionsConfiguration
+from vertesia_client.openapi.models.view_agentic_execution_configuration import ViewAgenticExecutionConfiguration as ViewAgenticExecutionConfiguration
 from vertesia_client.openapi.models.view_agentic_search_mode import ViewAgenticSearchMode as ViewAgenticSearchMode
 from vertesia_client.openapi.models.view_board_card_configuration import ViewBoardCardConfiguration as ViewBoardCardConfiguration
 from vertesia_client.openapi.models.view_board_column import ViewBoardColumn as ViewBoardColumn

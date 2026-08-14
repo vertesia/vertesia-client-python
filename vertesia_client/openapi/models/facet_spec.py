@@ -27,7 +27,7 @@ class FacetSpec(BaseModel):
     """
     FacetSpec
     """ # noqa: E501
-    name: StrictStr
+    name: StrictStr = Field(description="Key the buckets are returned under. `total` is reserved for the match count that every facet response carries, and is rejected with a 400.")
     var_field: StrictStr = Field(alias="field")
     __properties: ClassVar[List[str]] = ["name", "field"]
 

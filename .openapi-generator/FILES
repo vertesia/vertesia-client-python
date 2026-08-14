@@ -980,6 +980,7 @@ vertesia_client/openapi/models/view_action_configuration.py
 vertesia_client/openapi/models/view_action_placement.py
 vertesia_client/openapi/models/view_action_selection_requirement.py
 vertesia_client/openapi/models/view_actions_configuration.py
+vertesia_client/openapi/models/view_agentic_execution_configuration.py
 vertesia_client/openapi/models/view_agentic_search_mode.py
 vertesia_client/openapi/models/view_board_card_configuration.py
 vertesia_client/openapi/models/view_board_column.py

@@ -42,12 +42,13 @@ class ContentObjectTypeCatalogEntry(BaseModel):
     status: Optional[ContentObjectTypeStatus] = None
     intake: Optional[ContentTypeIntakePolicy] = None
     editing: Optional[ContentTypeEditingPolicy] = None
+    title: Optional[StrictStr] = Field(default=None, description="Display title. Defaults to `name` or `id`.")
     updated_by: Optional[StrictStr] = None
     created_by: Optional[StrictStr] = None
     created_at: Optional[StrictStr] = None
     updated_at: Optional[StrictStr] = None
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["id", "name", "description", "tags", "object_schema", "table_layout", "is_chunkable", "strict_mode", "status", "intake", "editing", "updated_by", "created_by", "created_at", "updated_at"]
+    __properties: ClassVar[List[str]] = ["id", "name", "description", "tags", "object_schema", "table_layout", "is_chunkable", "strict_mode", "status", "intake", "editing", "title", "updated_by", "created_by", "created_at", "updated_at"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -131,6 +132,7 @@ class ContentObjectTypeCatalogEntry(BaseModel):
             "status": obj.get("status"),
             "intake": ContentTypeIntakePolicy.from_dict(obj["intake"]) if obj.get("intake") is not None else None,
             "editing": ContentTypeEditingPolicy.from_dict(obj["editing"]) if obj.get("editing") is not None else None,
+            "title": obj.get("title"),
             "updated_by": obj.get("updated_by"),
             "created_by": obj.get("created_by"),
             "created_at": obj.get("created_at"),

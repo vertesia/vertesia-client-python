@@ -20,7 +20,7 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, Optional, Union
 from vertesia_client.openapi.models.agentic_view_rerank_configuration import AgenticViewRerankConfiguration
-from vertesia_client.openapi.models.interaction_execution_configuration import InteractionExecutionConfiguration
+from vertesia_client.openapi.models.view_agentic_execution_configuration import ViewAgenticExecutionConfiguration
 from vertesia_client.openapi.models.view_agentic_search_mode import ViewAgenticSearchMode
 from typing import Optional, Set
 from typing_extensions import Self
@@ -31,7 +31,7 @@ class AgenticViewSearchConfiguration(BaseModel):
     AgenticViewSearchConfiguration
     """ # noqa: E501
     interaction: Optional[StrictStr] = None
-    config: Optional[InteractionExecutionConfiguration] = None
+    config: Optional[ViewAgenticExecutionConfiguration] = None
     instructions: Optional[StrictStr] = Field(default=None, description="View-specific guidance for Elasticsearch query planning.")
     mode: Optional[ViewAgenticSearchMode] = Field(default=None, description="Generate only Elasticsearch DSL, or generate DSL plus a safe ephemeral result presentation.")
     timeout_ms: Optional[Union[StrictFloat, StrictInt]] = None
@@ -97,7 +97,7 @@ class AgenticViewSearchConfiguration(BaseModel):
 
         _obj = cls.model_validate({
             "interaction": obj.get("interaction"),
-            "config": InteractionExecutionConfiguration.from_dict(obj["config"]) if obj.get("config") is not None else None,
+            "config": ViewAgenticExecutionConfiguration.from_dict(obj["config"]) if obj.get("config") is not None else None,
             "instructions": obj.get("instructions"),
             "mode": obj.get("mode"),
             "timeout_ms": obj.get("timeout_ms"),

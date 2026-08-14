@@ -18,7 +18,7 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, StrictBool, StrictStr
-from typing import Any, ClassVar, Dict
+from typing import Any, ClassVar, Dict, Optional
 from vertesia_client.openapi.models.supported_integrations_aws import SupportedIntegrationsAws
 from typing import Optional, Set
 from typing_extensions import Self
@@ -30,7 +30,7 @@ class AwsConfiguration(BaseModel):
     """ # noqa: E501
     integration: SupportedIntegrationsAws
     enabled: StrictBool
-    s3_role_arn: StrictStr
+    s3_role_arn: Optional[StrictStr] = None
     __properties: ClassVar[List[str]] = ["integration", "enabled", "s3_role_arn"]
 
     model_config = ConfigDict(

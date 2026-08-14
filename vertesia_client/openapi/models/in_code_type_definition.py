@@ -42,8 +42,9 @@ class InCodeTypeDefinition(BaseModel):
     status: Optional[ContentObjectTypeStatus] = None
     intake: Optional[ContentTypeIntakePolicy] = None
     editing: Optional[ContentTypeEditingPolicy] = None
+    title: Optional[StrictStr] = Field(default=None, description="Display title. Defaults to `name` or `id`.")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["id", "name", "description", "tags", "object_schema", "table_layout", "is_chunkable", "strict_mode", "status", "intake", "editing"]
+    __properties: ClassVar[List[str]] = ["id", "name", "description", "tags", "object_schema", "table_layout", "is_chunkable", "strict_mode", "status", "intake", "editing", "title"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -126,7 +127,8 @@ class InCodeTypeDefinition(BaseModel):
             "strict_mode": obj.get("strict_mode"),
             "status": obj.get("status"),
             "intake": ContentTypeIntakePolicy.from_dict(obj["intake"]) if obj.get("intake") is not None else None,
-            "editing": ContentTypeEditingPolicy.from_dict(obj["editing"]) if obj.get("editing") is not None else None
+            "editing": ContentTypeEditingPolicy.from_dict(obj["editing"]) if obj.get("editing") is not None else None,
+            "title": obj.get("title")
         })
         # store additional fields in additional_properties
         for _key in obj.keys():
