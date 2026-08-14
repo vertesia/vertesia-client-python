@@ -45875,7 +45875,7 @@
           "Users"
         ],
         "summary": "Update a user",
-        "description": "Updates allowed profile fields for the caller or, for account admins, another user in the current account.\n\n**Required permissions:** `account:member`",
+        "description": "Updates profile fields for the caller or an administrator. Only account-role administrators may change authorization attributes (properties, clearance, or compartments).\n\n**Required permissions:** `account:member`",
         "security": [
           {
             "bearerAuth": []

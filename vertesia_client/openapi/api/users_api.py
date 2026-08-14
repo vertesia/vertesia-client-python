@@ -896,7 +896,7 @@ class UsersApi:
     ) -> User:
         """Update a user
 
-        Updates allowed profile fields for the caller or, for account admins, another user in the current account.  **Required permissions:** `account:member`
+        Updates profile fields for the caller or an administrator. Only account-role administrators may change authorization attributes (properties, clearance, or compartments).  **Required permissions:** `account:member`
 
         :param user_id: (required)
         :type user_id: str
@@ -973,7 +973,7 @@ class UsersApi:
     ) -> ApiResponse[User]:
         """Update a user
 
-        Updates allowed profile fields for the caller or, for account admins, another user in the current account.  **Required permissions:** `account:member`
+        Updates profile fields for the caller or an administrator. Only account-role administrators may change authorization attributes (properties, clearance, or compartments).  **Required permissions:** `account:member`
 
         :param user_id: (required)
         :type user_id: str
@@ -1050,7 +1050,7 @@ class UsersApi:
     ) -> RESTResponseType:
         """Update a user
 
-        Updates allowed profile fields for the caller or, for account admins, another user in the current account.  **Required permissions:** `account:member`
+        Updates profile fields for the caller or an administrator. Only account-role administrators may change authorization attributes (properties, clearance, or compartments).  **Required permissions:** `account:member`
 
         :param user_id: (required)
         :type user_id: str
