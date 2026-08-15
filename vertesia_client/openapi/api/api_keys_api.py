@@ -1512,7 +1512,7 @@ class APIKeysApi:
     ) -> ApiKey:
         """Update an API key
 
-        Updates API key metadata: name, role, and enabled state.  **Required permissions:** `api_key:update`
+        Updates API key metadata, security attributes, and enabled state.  **Required permissions:** `api_key:update`
 
         :param key_id: (required)
         :type key_id: str
@@ -1589,7 +1589,7 @@ class APIKeysApi:
     ) -> ApiResponse[ApiKey]:
         """Update an API key
 
-        Updates API key metadata: name, role, and enabled state.  **Required permissions:** `api_key:update`
+        Updates API key metadata, security attributes, and enabled state.  **Required permissions:** `api_key:update`
 
         :param key_id: (required)
         :type key_id: str
@@ -1666,7 +1666,7 @@ class APIKeysApi:
     ) -> RESTResponseType:
         """Update an API key
 
-        Updates API key metadata: name, role, and enabled state.  **Required permissions:** `api_key:update`
+        Updates API key metadata, security attributes, and enabled state.  **Required permissions:** `api_key:update`
 
         :param key_id: (required)
         :type key_id: str

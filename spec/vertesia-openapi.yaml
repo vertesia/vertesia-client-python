@@ -32645,7 +32645,7 @@ paths:
         - API Keys
       summary: Update an API key
       description: |-
-        Updates API key metadata: name, role, and enabled state.
+        Updates API key metadata, security attributes, and enabled state.
 
         **Required permissions:** `api_key:update`
       security:
