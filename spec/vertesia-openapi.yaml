@@ -5927,6 +5927,8 @@ components:
             syntax: date?LLL"
         fallback:
           type: string
+          description: Path of an alternate field to display when the primary field is
+            absent
         default:
           description: A default value to be used if the field is not present in the object
       required:
@@ -7160,6 +7162,7 @@ components:
           $ref: "#/components/schemas/ContentObjectTypeStatus"
         is_chunkable:
           type: boolean
+          description: Whether documents of this type can be split into chunks
         intake:
           $ref: "#/components/schemas/ContentTypeIntakePolicy"
         editing:
@@ -7168,13 +7171,15 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ColumnLayout"
-          description: This is only included in ContentObjectTypeItem if explicitly
-            requested It is always included in ContentObjectType
+          description: Column layout used when listing documents of this type. Only
+            included in ContentObjectTypeItem if explicitly requested; always
+            included in ContentObjectType.
         object_schema:
           type: object
           additionalProperties: true
-          description: this is only included in ContentObjectTypeItem if explicitly
-            requested It is always included in ContentObjectType
+          description: JSON Schema for the structured properties extracted into documents
+            of this type. Only included in ContentObjectTypeItem if explicitly
+            requested; always included in ContentObjectType.
         strict_mode:
           type: boolean
           description: Determines if the content will be validated against the object
@@ -7211,16 +7216,19 @@ components:
         object_schema:
           type: object
           additionalProperties: true
-          description: this is only included in ContentObjectTypeItem if explicitly
-            requested It is always included in ContentObjectType
+          description: JSON Schema for the structured properties extracted into documents
+            of this type. Only included in ContentObjectTypeItem if explicitly
+            requested; always included in ContentObjectType.
         table_layout:
           type: array
           items:
             $ref: "#/components/schemas/ColumnLayout"
-          description: This is only included in ContentObjectTypeItem if explicitly
-            requested It is always included in ContentObjectType
+          description: Column layout used when listing documents of this type. Only
+            included in ContentObjectTypeItem if explicitly requested; always
+            included in ContentObjectType.
         is_chunkable:
           type: boolean
+          description: Whether documents of this type can be split into chunks
         strict_mode:
           type: boolean
           description: Determines if the content will be validated against the object
@@ -7283,6 +7291,7 @@ components:
           $ref: "#/components/schemas/ContentObjectTypeStatus"
         is_chunkable:
           type: boolean
+          description: Whether documents of this type can be split into chunks
         intake:
           $ref: "#/components/schemas/ContentTypeIntakePolicy"
         editing:
@@ -7291,13 +7300,15 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ColumnLayout"
-          description: This is only included in ContentObjectTypeItem if explicitly
-            requested It is always included in ContentObjectType
+          description: Column layout used when listing documents of this type. Only
+            included in ContentObjectTypeItem if explicitly requested; always
+            included in ContentObjectType.
         object_schema:
           type: object
           additionalProperties: true
-          description: this is only included in ContentObjectTypeItem if explicitly
-            requested It is always included in ContentObjectType
+          description: JSON Schema for the structured properties extracted into documents
+            of this type. Only included in ContentObjectTypeItem if explicitly
+            requested; always included in ContentObjectType.
         strict_mode:
           type: boolean
           description: Determines if the content will be validated against the object
@@ -8589,42 +8600,55 @@ components:
       properties:
         description:
           type: string
+          description: Description of the collection and its purpose
         skip_head_sync:
           type: boolean
+          description: When true the collection does not track and sync member HEAD
+            revisions. Defaults to false.
         tags:
           type: array
           items:
             type: string
+          description: Categorization tags for the collection
         type:
           type:
             - string
             - "null"
+          description: Default content type ID for documents in the collection
         query:
           type: object
           additionalProperties: true
+          description: MongoDB query that determines membership of a dynamic collection
         properties:
           type: object
           additionalProperties: true
+          description: Metadata properties attached to the collection
         parent:
           type:
             - string
             - "null"
+          description: Parent collection ID when the collection is nested
         table_layout:
           type:
             - array
             - "null"
           items:
             $ref: "#/components/schemas/ColumnLayout"
+          description: Column layout used when listing collection members
         allowed_types:
           type: array
           items:
             type: string
+          description: Content type IDs allowed to be added to the collection
         updated_by:
           type: string
+          description: Identity recorded as the updater of the collection
         shared_properties:
           type: array
           items:
             type: string
+          description: Names of collection properties whose values are propagated to
+            member documents
         sensitivity:
           type: number
           description: BLP sensitivity level for member documents
@@ -8635,8 +8659,11 @@ components:
           description: Compartments for member documents
         name:
           type: string
+          description: Name of the collection
         dynamic:
           type: boolean
+          description: When true, membership is determined by `query`; when false, members
+            are added explicitly
       required:
         - name
         - dynamic
@@ -8771,6 +8798,7 @@ components:
           $ref: "#/components/schemas/ContentObjectTypeStatus"
         is_chunkable:
           type: boolean
+          description: Whether documents of this type can be split into chunks
         intake:
           $ref: "#/components/schemas/ContentTypeIntakePolicy"
         editing:
@@ -8779,13 +8807,15 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ColumnLayout"
-          description: This is only included in ContentObjectTypeItem if explicitly
-            requested It is always included in ContentObjectType
+          description: Column layout used when listing documents of this type. Only
+            included in ContentObjectTypeItem if explicitly requested; always
+            included in ContentObjectType.
         object_schema:
           type: object
           additionalProperties: true
-          description: this is only included in ContentObjectTypeItem if explicitly
-            requested It is always included in ContentObjectType
+          description: JSON Schema for the structured properties extracted into documents
+            of this type. Only included in ContentObjectTypeItem if explicitly
+            requested; always included in ContentObjectType.
         strict_mode:
           type: boolean
           description: Determines if the content will be validated against the object
@@ -14506,16 +14536,19 @@ components:
         object_schema:
           type: object
           additionalProperties: true
-          description: this is only included in ContentObjectTypeItem if explicitly
-            requested It is always included in ContentObjectType
+          description: JSON Schema for the structured properties extracted into documents
+            of this type. Only included in ContentObjectTypeItem if explicitly
+            requested; always included in ContentObjectType.
         table_layout:
           type: array
           items:
             $ref: "#/components/schemas/ColumnLayout"
-          description: This is only included in ContentObjectTypeItem if explicitly
-            requested It is always included in ContentObjectType
+          description: Column layout used when listing documents of this type. Only
+            included in ContentObjectTypeItem if explicitly requested; always
+            included in ContentObjectType.
         is_chunkable:
           type: boolean
+          description: Whether documents of this type can be split into chunks
         strict_mode:
           type: boolean
           description: Determines if the content will be validated against the object
@@ -22391,42 +22424,55 @@ components:
       properties:
         description:
           type: string
+          description: Description of the collection and its purpose
         skip_head_sync:
           type: boolean
+          description: When true the collection does not track and sync member HEAD
+            revisions. Defaults to false.
         tags:
           type: array
           items:
             type: string
+          description: Categorization tags for the collection
         type:
           type:
             - string
             - "null"
+          description: Default content type ID for documents in the collection
         query:
           type: object
           additionalProperties: true
+          description: MongoDB query that determines membership of a dynamic collection
         properties:
           type: object
           additionalProperties: true
+          description: Metadata properties attached to the collection
         parent:
           type:
             - string
             - "null"
+          description: Parent collection ID when the collection is nested
         table_layout:
           type:
             - array
             - "null"
           items:
             $ref: "#/components/schemas/ColumnLayout"
+          description: Column layout used when listing collection members
         allowed_types:
           type: array
           items:
             type: string
+          description: Content type IDs allowed to be added to the collection
         updated_by:
           type: string
+          description: Identity recorded as the updater of the collection
         shared_properties:
           type: array
           items:
             type: string
+          description: Names of collection properties whose values are propagated to
+            member documents
         sensitivity:
           type: number
           description: BLP sensitivity level for member documents
@@ -22437,8 +22483,11 @@ components:
           description: Compartments for member documents
         name:
           type: string
+          description: Name of the collection
         dynamic:
           type: boolean
+          description: When true, membership is determined by `query`; when false, members
+            are added explicitly
       description: Fields to change on a collection. All optional.
     UpdateContentObjectPayload:
       type: object
@@ -22570,6 +22619,7 @@ components:
           $ref: "#/components/schemas/ContentObjectTypeStatus"
         is_chunkable:
           type: boolean
+          description: Whether documents of this type can be split into chunks
         intake:
           $ref: "#/components/schemas/ContentTypeIntakePolicy"
         editing:
@@ -22578,13 +22628,15 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ColumnLayout"
-          description: This is only included in ContentObjectTypeItem if explicitly
-            requested It is always included in ContentObjectType
+          description: Column layout used when listing documents of this type. Only
+            included in ContentObjectTypeItem if explicitly requested; always
+            included in ContentObjectType.
         object_schema:
           type: object
           additionalProperties: true
-          description: this is only included in ContentObjectTypeItem if explicitly
-            requested It is always included in ContentObjectType
+          description: JSON Schema for the structured properties extracted into documents
+            of this type. Only included in ContentObjectTypeItem if explicitly
+            requested; always included in ContentObjectType.
         strict_mode:
           type: boolean
           description: Determines if the content will be validated against the object

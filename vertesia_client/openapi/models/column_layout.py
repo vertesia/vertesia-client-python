@@ -30,7 +30,7 @@ class ColumnLayout(BaseModel):
     var_field: StrictStr = Field(description="The path of the field to use (e.g. \"properties.title\")", alias="field")
     name: StrictStr = Field(description="The name to display in the table column")
     type: Optional[StrictStr] = Field(default=None, description="The type of the field specifies how the rendering will be done. If not specified the string type will be used. The type may contain additional parameters prepended using a web-like query string syntax: date?LLL")
-    fallback: Optional[StrictStr] = None
+    fallback: Optional[StrictStr] = Field(default=None, description="Path of an alternate field to display when the primary field is absent")
     default: Optional[Any] = None
     __properties: ClassVar[List[str]] = ["field", "name", "type", "fallback", "default"]
 

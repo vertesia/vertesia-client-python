@@ -7348,7 +7348,8 @@
             "description": "The type of the field specifies how the rendering will be done. If not specified the string type will be used. The type may contain additional parameters prepended using a web-like query string syntax: date?LLL"
           },
           "fallback": {
-            "type": "string"
+            "type": "string",
+            "description": "Path of an alternate field to display when the primary field is absent"
           },
           "default": {
             "description": "A default value to be used if the field is not present in the object"
@@ -8933,7 +8934,8 @@
             "$ref": "#/components/schemas/ContentObjectTypeStatus"
           },
           "is_chunkable": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether documents of this type can be split into chunks"
           },
           "intake": {
             "$ref": "#/components/schemas/ContentTypeIntakePolicy"
@@ -8946,12 +8948,12 @@
             "items": {
               "$ref": "#/components/schemas/ColumnLayout"
             },
-            "description": "This is only included in ContentObjectTypeItem if explicitly requested It is always included in ContentObjectType"
+            "description": "Column layout used when listing documents of this type. Only included in ContentObjectTypeItem if explicitly requested; always included in ContentObjectType."
           },
           "object_schema": {
             "type": "object",
             "additionalProperties": true,
-            "description": "this is only included in ContentObjectTypeItem if explicitly requested It is always included in ContentObjectType"
+            "description": "JSON Schema for the structured properties extracted into documents of this type. Only included in ContentObjectTypeItem if explicitly requested; always included in ContentObjectType."
           },
           "strict_mode": {
             "type": "boolean",
@@ -8999,17 +9001,18 @@
           "object_schema": {
             "type": "object",
             "additionalProperties": true,
-            "description": "this is only included in ContentObjectTypeItem if explicitly requested It is always included in ContentObjectType"
+            "description": "JSON Schema for the structured properties extracted into documents of this type. Only included in ContentObjectTypeItem if explicitly requested; always included in ContentObjectType."
           },
           "table_layout": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ColumnLayout"
             },
-            "description": "This is only included in ContentObjectTypeItem if explicitly requested It is always included in ContentObjectType"
+            "description": "Column layout used when listing documents of this type. Only included in ContentObjectTypeItem if explicitly requested; always included in ContentObjectType."
           },
           "is_chunkable": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether documents of this type can be split into chunks"
           },
           "strict_mode": {
             "type": "boolean",
@@ -9095,7 +9098,8 @@
             "$ref": "#/components/schemas/ContentObjectTypeStatus"
           },
           "is_chunkable": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether documents of this type can be split into chunks"
           },
           "intake": {
             "$ref": "#/components/schemas/ContentTypeIntakePolicy"
@@ -9108,12 +9112,12 @@
             "items": {
               "$ref": "#/components/schemas/ColumnLayout"
             },
-            "description": "This is only included in ContentObjectTypeItem if explicitly requested It is always included in ContentObjectType"
+            "description": "Column layout used when listing documents of this type. Only included in ContentObjectTypeItem if explicitly requested; always included in ContentObjectType."
           },
           "object_schema": {
             "type": "object",
             "additionalProperties": true,
-            "description": "this is only included in ContentObjectTypeItem if explicitly requested It is always included in ContentObjectType"
+            "description": "JSON Schema for the structured properties extracted into documents of this type. Only included in ContentObjectTypeItem if explicitly requested; always included in ContentObjectType."
           },
           "strict_mode": {
             "type": "boolean",
@@ -10672,36 +10676,43 @@
         "type": "object",
         "properties": {
           "description": {
-            "type": "string"
+            "type": "string",
+            "description": "Description of the collection and its purpose"
           },
           "skip_head_sync": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "When true the collection does not track and sync member HEAD revisions. Defaults to false."
           },
           "tags": {
             "type": "array",
             "items": {
               "type": "string"
-            }
+            },
+            "description": "Categorization tags for the collection"
           },
           "type": {
             "type": [
               "string",
               "null"
-            ]
+            ],
+            "description": "Default content type ID for documents in the collection"
           },
           "query": {
             "type": "object",
-            "additionalProperties": true
+            "additionalProperties": true,
+            "description": "MongoDB query that determines membership of a dynamic collection"
           },
           "properties": {
             "type": "object",
-            "additionalProperties": true
+            "additionalProperties": true,
+            "description": "Metadata properties attached to the collection"
           },
           "parent": {
             "type": [
               "string",
               "null"
-            ]
+            ],
+            "description": "Parent collection ID when the collection is nested"
           },
           "table_layout": {
             "type": [
@@ -10710,22 +10721,26 @@
             ],
             "items": {
               "$ref": "#/components/schemas/ColumnLayout"
-            }
+            },
+            "description": "Column layout used when listing collection members"
           },
           "allowed_types": {
             "type": "array",
             "items": {
               "type": "string"
-            }
+            },
+            "description": "Content type IDs allowed to be added to the collection"
           },
           "updated_by": {
-            "type": "string"
+            "type": "string",
+            "description": "Identity recorded as the updater of the collection"
           },
           "shared_properties": {
             "type": "array",
             "items": {
               "type": "string"
-            }
+            },
+            "description": "Names of collection properties whose values are propagated to member documents"
           },
           "sensitivity": {
             "type": "number",
@@ -10739,10 +10754,12 @@
             "description": "Compartments for member documents"
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "Name of the collection"
           },
           "dynamic": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "When true, membership is determined by `query`; when false, members are added explicitly"
           }
         },
         "required": [
@@ -10904,7 +10921,8 @@
             "$ref": "#/components/schemas/ContentObjectTypeStatus"
           },
           "is_chunkable": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether documents of this type can be split into chunks"
           },
           "intake": {
             "$ref": "#/components/schemas/ContentTypeIntakePolicy"
@@ -10917,12 +10935,12 @@
             "items": {
               "$ref": "#/components/schemas/ColumnLayout"
             },
-            "description": "This is only included in ContentObjectTypeItem if explicitly requested It is always included in ContentObjectType"
+            "description": "Column layout used when listing documents of this type. Only included in ContentObjectTypeItem if explicitly requested; always included in ContentObjectType."
           },
           "object_schema": {
             "type": "object",
             "additionalProperties": true,
-            "description": "this is only included in ContentObjectTypeItem if explicitly requested It is always included in ContentObjectType"
+            "description": "JSON Schema for the structured properties extracted into documents of this type. Only included in ContentObjectTypeItem if explicitly requested; always included in ContentObjectType."
           },
           "strict_mode": {
             "type": "boolean",
@@ -18399,17 +18417,18 @@
           "object_schema": {
             "type": "object",
             "additionalProperties": true,
-            "description": "this is only included in ContentObjectTypeItem if explicitly requested It is always included in ContentObjectType"
+            "description": "JSON Schema for the structured properties extracted into documents of this type. Only included in ContentObjectTypeItem if explicitly requested; always included in ContentObjectType."
           },
           "table_layout": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ColumnLayout"
             },
-            "description": "This is only included in ContentObjectTypeItem if explicitly requested It is always included in ContentObjectType"
+            "description": "Column layout used when listing documents of this type. Only included in ContentObjectTypeItem if explicitly requested; always included in ContentObjectType."
           },
           "is_chunkable": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether documents of this type can be split into chunks"
           },
           "strict_mode": {
             "type": "boolean",
@@ -28894,36 +28913,43 @@
         "type": "object",
         "properties": {
           "description": {
-            "type": "string"
+            "type": "string",
+            "description": "Description of the collection and its purpose"
           },
           "skip_head_sync": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "When true the collection does not track and sync member HEAD revisions. Defaults to false."
           },
           "tags": {
             "type": "array",
             "items": {
               "type": "string"
-            }
+            },
+            "description": "Categorization tags for the collection"
           },
           "type": {
             "type": [
               "string",
               "null"
-            ]
+            ],
+            "description": "Default content type ID for documents in the collection"
           },
           "query": {
             "type": "object",
-            "additionalProperties": true
+            "additionalProperties": true,
+            "description": "MongoDB query that determines membership of a dynamic collection"
           },
           "properties": {
             "type": "object",
-            "additionalProperties": true
+            "additionalProperties": true,
+            "description": "Metadata properties attached to the collection"
           },
           "parent": {
             "type": [
               "string",
               "null"
-            ]
+            ],
+            "description": "Parent collection ID when the collection is nested"
           },
           "table_layout": {
             "type": [
@@ -28932,22 +28958,26 @@
             ],
             "items": {
               "$ref": "#/components/schemas/ColumnLayout"
-            }
+            },
+            "description": "Column layout used when listing collection members"
           },
           "allowed_types": {
             "type": "array",
             "items": {
               "type": "string"
-            }
+            },
+            "description": "Content type IDs allowed to be added to the collection"
           },
           "updated_by": {
-            "type": "string"
+            "type": "string",
+            "description": "Identity recorded as the updater of the collection"
           },
           "shared_properties": {
             "type": "array",
             "items": {
               "type": "string"
-            }
+            },
+            "description": "Names of collection properties whose values are propagated to member documents"
           },
           "sensitivity": {
             "type": "number",
@@ -28961,10 +28991,12 @@
             "description": "Compartments for member documents"
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "Name of the collection"
           },
           "dynamic": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "When true, membership is determined by `query`; when false, members are added explicitly"
           }
         },
         "description": "Fields to change on a collection. All optional."
@@ -29122,7 +29154,8 @@
             "$ref": "#/components/schemas/ContentObjectTypeStatus"
           },
           "is_chunkable": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether documents of this type can be split into chunks"
           },
           "intake": {
             "$ref": "#/components/schemas/ContentTypeIntakePolicy"
@@ -29135,12 +29168,12 @@
             "items": {
               "$ref": "#/components/schemas/ColumnLayout"
             },
-            "description": "This is only included in ContentObjectTypeItem if explicitly requested It is always included in ContentObjectType"
+            "description": "Column layout used when listing documents of this type. Only included in ContentObjectTypeItem if explicitly requested; always included in ContentObjectType."
           },
           "object_schema": {
             "type": "object",
             "additionalProperties": true,
-            "description": "this is only included in ContentObjectTypeItem if explicitly requested It is always included in ContentObjectType"
+            "description": "JSON Schema for the structured properties extracted into documents of this type. Only included in ContentObjectTypeItem if explicitly requested; always included in ContentObjectType."
           },
           "strict_mode": {
             "type": "boolean",

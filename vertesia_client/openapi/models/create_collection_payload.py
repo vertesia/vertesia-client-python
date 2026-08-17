@@ -28,21 +28,22 @@ class CreateCollectionPayload(BaseModel):
     """
     CreateCollectionPayload
     """ # noqa: E501
-    description: Optional[StrictStr] = None
-    skip_head_sync: Optional[StrictBool] = None
-    tags: Optional[List[StrictStr]] = None
-    type: Optional[StrictStr] = None
-    query: Optional[Dict[str, Any]] = None
-    properties: Optional[Dict[str, Any]] = None
-    parent: Optional[StrictStr] = None
-    table_layout: Optional[List[ColumnLayout]] = None
-    allowed_types: Optional[List[StrictStr]] = None
-    updated_by: Optional[StrictStr] = None
-    shared_properties: Optional[List[StrictStr]] = None
+    description: Optional[StrictStr] = Field(default=None, description="Description of the collection and its purpose")
+    skip_head_sync: Optional[StrictBool] = Field(default=None, description="When true the collection does not track and sync member HEAD revisions. Defaults to false.")
+    tags: Optional[List[StrictStr]] = Field(default=None, description="Categorization tags for the collection")
+    type: Optional[StrictStr] = Field(default=None, description="Default content type ID for documents in the collection")
+    query: Optional[Dict[str, Any]] = Field(default=None, description="MongoDB query that determines membership of a dynamic collection")
+    properties: Optional[Dict[str, Any]] = Field(default=None, description="Metadata properties attached to the collection")
+    parent: Optional[StrictStr] = Field(default=None, description="Parent collection ID when the collection is nested")
+    table_layout: Optional[List[ColumnLayout]] = Field(default=None, description="Column layout used when listing collection members")
+    allowed_types: Optional[List[StrictStr]] = Field(default=None, description="Content type IDs allowed to be added to the collection")
+    updated_by: Optional[StrictStr] = Field(default=None, description="Identity recorded as the updater of the collection")
+    shared_properties: Optional[List[StrictStr]] = Field(default=None, description="Names of collection properties whose values are propagated to member documents")
     sensitivity: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="BLP sensitivity level for member documents")
     compartments: Optional[List[StrictStr]] = Field(default=None, description="Compartments for member documents")
-    name: StrictStr
-    dynamic: StrictBool
+    name: StrictStr = Field(description="Name of the collection")
+    dynamic: StrictBool = Field(description="When true, membership is determined by `query`; when false, members are added explicitly")
+    additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["description", "skip_head_sync", "tags", "type", "query", "properties", "parent", "table_layout", "allowed_types", "updated_by", "shared_properties", "sensitivity", "compartments", "name", "dynamic"]
 
     model_config = ConfigDict(
@@ -75,8 +76,10 @@ class CreateCollectionPayload(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -91,6 +94,11 @@ class CreateCollectionPayload(BaseModel):
                 if _item_table_layout:
                     _items.append(_item_table_layout.to_dict())
             _dict['table_layout'] = _items
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
         # set to None if type (nullable) is None
         # and model_fields_set contains the field
         if self.type is None and "type" in self.model_fields_set:
@@ -134,6 +142,11 @@ class CreateCollectionPayload(BaseModel):
             "name": obj.get("name"),
             "dynamic": obj.get("dynamic")
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 

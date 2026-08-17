@@ -28,21 +28,21 @@ class UpdateCollectionPayload(BaseModel):
     """
     Fields to change on a collection. All optional.
     """ # noqa: E501
-    description: Optional[StrictStr] = None
-    skip_head_sync: Optional[StrictBool] = None
-    tags: Optional[List[StrictStr]] = None
-    type: Optional[StrictStr] = None
-    query: Optional[Dict[str, Any]] = None
-    properties: Optional[Dict[str, Any]] = None
-    parent: Optional[StrictStr] = None
-    table_layout: Optional[List[ColumnLayout]] = None
-    allowed_types: Optional[List[StrictStr]] = None
-    updated_by: Optional[StrictStr] = None
-    shared_properties: Optional[List[StrictStr]] = None
+    description: Optional[StrictStr] = Field(default=None, description="Description of the collection and its purpose")
+    skip_head_sync: Optional[StrictBool] = Field(default=None, description="When true the collection does not track and sync member HEAD revisions. Defaults to false.")
+    tags: Optional[List[StrictStr]] = Field(default=None, description="Categorization tags for the collection")
+    type: Optional[StrictStr] = Field(default=None, description="Default content type ID for documents in the collection")
+    query: Optional[Dict[str, Any]] = Field(default=None, description="MongoDB query that determines membership of a dynamic collection")
+    properties: Optional[Dict[str, Any]] = Field(default=None, description="Metadata properties attached to the collection")
+    parent: Optional[StrictStr] = Field(default=None, description="Parent collection ID when the collection is nested")
+    table_layout: Optional[List[ColumnLayout]] = Field(default=None, description="Column layout used when listing collection members")
+    allowed_types: Optional[List[StrictStr]] = Field(default=None, description="Content type IDs allowed to be added to the collection")
+    updated_by: Optional[StrictStr] = Field(default=None, description="Identity recorded as the updater of the collection")
+    shared_properties: Optional[List[StrictStr]] = Field(default=None, description="Names of collection properties whose values are propagated to member documents")
     sensitivity: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="BLP sensitivity level for member documents")
     compartments: Optional[List[StrictStr]] = Field(default=None, description="Compartments for member documents")
-    name: Optional[StrictStr] = None
-    dynamic: Optional[StrictBool] = None
+    name: Optional[StrictStr] = Field(default=None, description="Name of the collection")
+    dynamic: Optional[StrictBool] = Field(default=None, description="When true, membership is determined by `query`; when false, members are added explicitly")
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["description", "skip_head_sync", "tags", "type", "query", "properties", "parent", "table_layout", "allowed_types", "updated_by", "shared_properties", "sensitivity", "compartments", "name", "dynamic"]
 

@@ -32,11 +32,11 @@ class UpdateContentObjectTypePayload(BaseModel):
     Fields to change on a content object type. Every field is optional — only the ones present are written, and the rest are left as they are.
     """ # noqa: E501
     status: Optional[ContentObjectTypeStatus] = None
-    is_chunkable: Optional[StrictBool] = None
+    is_chunkable: Optional[StrictBool] = Field(default=None, description="Whether documents of this type can be split into chunks")
     intake: Optional[ContentTypeIntakePolicy] = None
     editing: Optional[ContentTypeEditingPolicy] = None
-    table_layout: Optional[List[ColumnLayout]] = Field(default=None, description="This is only included in ContentObjectTypeItem if explicitly requested It is always included in ContentObjectType")
-    object_schema: Optional[Dict[str, Any]] = Field(default=None, description="this is only included in ContentObjectTypeItem if explicitly requested It is always included in ContentObjectType")
+    table_layout: Optional[List[ColumnLayout]] = Field(default=None, description="Column layout used when listing documents of this type. Only included in ContentObjectTypeItem if explicitly requested; always included in ContentObjectType.")
+    object_schema: Optional[Dict[str, Any]] = Field(default=None, description="JSON Schema for the structured properties extracted into documents of this type. Only included in ContentObjectTypeItem if explicitly requested; always included in ContentObjectType.")
     strict_mode: Optional[StrictBool] = Field(default=None, description="Determines if the content will be validated against the object schema a generation time and save/update time.")
     name: Optional[StrictStr] = Field(default=None, description="Human-readable name or title")
     description: Optional[StrictStr] = Field(default=None, description="Optional detailed description of the object")
