@@ -17,9 +17,10 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr, field_validator
+from typing import Any, ClassVar, Dict, Optional
 from vertesia_client.openapi.models.agent_tool_approval_class import AgentToolApprovalClass
+from vertesia_client.openapi.models.json_schema import JSONSchema
 from vertesia_client.openapi.models.mcp_tool_annotations import MCPToolAnnotations
 from vertesia_client.openapi.models.process_tool_compatibility import ProcessToolCompatibility
 from vertesia_client.openapi.models.tool_source import ToolSource
@@ -27,24 +28,32 @@ from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class AggregatedTool(BaseModel):
+class ToolInspection(BaseModel):
     """
-    A single tool entry in the unified registry, regardless of where it came from. Returned by `GET /tools` and the resolution map of `POST /tools/validate`.
+    ToolInspection
     """ # noqa: E501
-    name: StrictStr = Field(description="Name as referenced from `agent_runner_options.tool_names`. For interaction skills this is `learn_<endpoint>`.")
+    name: StrictStr
     source: ToolSource
     description: Optional[StrictStr] = None
     title: Optional[StrictStr] = None
-    is_default: Optional[StrictBool] = Field(default=None, description="Whether the tool is part of the default toolkit when no explicit `tool_names` is provided.")
-    annotations: Optional[MCPToolAnnotations] = None
+    input_schema: Optional[JSONSchema] = Field(default=None, description="Exact input schema when the provider supplied one. Omitted rather than fabricated.")
+    output_schema: Optional[JSONSchema] = Field(default=None, description="MCP outputSchema advertised by the provider. It does not describe the process node result transport.")
+    output_contract_status: Optional[StrictStr] = Field(default=None, description="For app tools, whether the provider advertised output schema metadata. Omitted for builtin and interaction tools.")
     approval_class: Optional[AgentToolApprovalClass] = None
+    annotations: Optional[MCPToolAnnotations] = None
+    app_install_id: Optional[StrictStr] = None
+    app_name: Optional[StrictStr] = None
+    ready: StrictBool = Field(description="True only when an exact input schema was resolved.")
     process_compatibility: Optional[ProcessToolCompatibility] = None
-    unlocked_tools: Optional[List[StrictStr]] = Field(default=None, description="For skills (`learn_*`): tool names this skill unlocks when invoked.")
-    app_install_id: Optional[StrictStr] = Field(default=None, description="Present when `source === 'app'`: the app installation that provides this tool.")
-    app_name: Optional[StrictStr] = Field(default=None, description="Present when `source === 'app'`: the app's manifest name (used for `principal.apps` filtering).")
-    interaction_id: Optional[StrictStr] = Field(default=None, description="Present when `source === 'interaction'`: the interaction document id.")
-    is_agent: Optional[StrictBool] = Field(default=None, description="Present when `source === 'interaction'`: true if the interaction has `agent_runner_options.is_agent === true`. Lets UI consumers distinguish sub-agents (autonomous, run-to-completion) from regular interaction tools.")
-    __properties: ClassVar[List[str]] = ["name", "source", "description", "title", "is_default", "annotations", "approval_class", "process_compatibility", "unlocked_tools", "app_install_id", "app_name", "interaction_id", "is_agent"]
+    __properties: ClassVar[List[str]] = ["name", "source", "description", "title", "input_schema", "output_schema", "output_contract_status", "approval_class", "annotations", "app_install_id", "app_name", "ready", "process_compatibility"]
+
+    @field_validator('output_contract_status')
+    def output_contract_status_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -64,7 +73,7 @@ class AggregatedTool(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of AggregatedTool from a JSON string"""
+        """Create an instance of ToolInspection from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -85,6 +94,12 @@ class AggregatedTool(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of input_schema
+        if self.input_schema:
+            _dict['input_schema'] = self.input_schema.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of output_schema
+        if self.output_schema:
+            _dict['output_schema'] = self.output_schema.to_dict()
         # override the default output from pydantic by calling `to_dict()` of annotations
         if self.annotations:
             _dict['annotations'] = self.annotations.to_dict()
@@ -95,7 +110,7 @@ class AggregatedTool(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of AggregatedTool from a dict"""
+        """Create an instance of ToolInspection from a dict"""
         if obj is None:
             return None
 
@@ -107,15 +122,15 @@ class AggregatedTool(BaseModel):
             "source": obj.get("source"),
             "description": obj.get("description"),
             "title": obj.get("title"),
-            "is_default": obj.get("is_default"),
-            "annotations": MCPToolAnnotations.from_dict(obj["annotations"]) if obj.get("annotations") is not None else None,
+            "input_schema": JSONSchema.from_dict(obj["input_schema"]) if obj.get("input_schema") is not None else None,
+            "output_schema": JSONSchema.from_dict(obj["output_schema"]) if obj.get("output_schema") is not None else None,
+            "output_contract_status": obj.get("output_contract_status"),
             "approval_class": obj.get("approval_class"),
-            "process_compatibility": ProcessToolCompatibility.from_dict(obj["process_compatibility"]) if obj.get("process_compatibility") is not None else None,
-            "unlocked_tools": obj.get("unlocked_tools"),
+            "annotations": MCPToolAnnotations.from_dict(obj["annotations"]) if obj.get("annotations") is not None else None,
             "app_install_id": obj.get("app_install_id"),
             "app_name": obj.get("app_name"),
-            "interaction_id": obj.get("interaction_id"),
-            "is_agent": obj.get("is_agent")
+            "ready": obj.get("ready"),
+            "process_compatibility": ProcessToolCompatibility.from_dict(obj["process_compatibility"]) if obj.get("process_compatibility") is not None else None
         })
         return _obj
 

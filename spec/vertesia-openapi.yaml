@@ -1510,6 +1510,12 @@ components:
         input_schema:
           type: object
           additionalProperties: true
+        output_schema:
+          type: object
+          additionalProperties: true
+          description: Optional MCP outputSchema advertised by the provider for its
+            structuredContent payload. Execution adapters may expose results
+            differently.
         url:
           type: string
           description: 'The tool execution URL. It can be an absolute URL or a path in
@@ -1604,6 +1610,10 @@ components:
             `tool_names` is provided.
         annotations:
           $ref: "#/components/schemas/MCPToolAnnotations"
+        approval_class:
+          $ref: "#/components/schemas/AgentToolApprovalClass"
+        process_compatibility:
+          $ref: "#/components/schemas/ProcessToolCompatibility"
         unlocked_tools:
           type: array
           items:
@@ -7920,6 +7930,9 @@ components:
           $ref: "#/components/schemas/ToolReference"
           description: Reference to tools stored in GCP instead of embedding full tool
             definitions
+        tool_catalog_storage_id:
+          type: string
+          description: Artifact-storage scope containing the referenced tool catalog.
         active_tool_names:
           type: array
           items:
@@ -18311,6 +18324,26 @@ components:
         - current_node
         - node_history
         - sequence
+    ProcessToolCompatibility:
+      type: object
+      properties:
+        compatible:
+          type: boolean
+        reason:
+          $ref: "#/components/schemas/ProcessToolCompatibilityReason"
+      required:
+        - compatible
+      additionalProperties: false
+    ProcessToolCompatibilityReason:
+      type: string
+      enum:
+        - skill_not_supported
+        - interaction_not_supported
+        - agent_not_supported
+        - confirmation_not_supported
+        - control_tool_not_supported
+        - approval_metadata_unavailable
+        - ambiguous_name
     ProgrammaticRunResponse:
       type: object
       properties:
@@ -22081,6 +22114,50 @@ components:
         - AJV's JSONSchemaType<T> for type-safe schema generation
 
         - Plain object schemas for simpler cases
+    ToolInspection:
+      type: object
+      properties:
+        name:
+          type: string
+        source:
+          $ref: "#/components/schemas/ToolSource"
+        description:
+          type: string
+        title:
+          type: string
+        input_schema:
+          $ref: "#/components/schemas/JSONSchema"
+          description: Exact input schema when the provider supplied one. Omitted rather
+            than fabricated.
+        output_schema:
+          $ref: "#/components/schemas/JSONSchema"
+          description: MCP outputSchema advertised by the provider. It does not describe
+            the process node result transport.
+        output_contract_status:
+          type: string
+          enum:
+            - provider_supplied
+            - unknown
+          description: For app tools, whether the provider advertised output schema
+            metadata. Omitted for builtin and interaction tools.
+        approval_class:
+          $ref: "#/components/schemas/AgentToolApprovalClass"
+        annotations:
+          $ref: "#/components/schemas/MCPToolAnnotations"
+        app_install_id:
+          type: string
+        app_name:
+          type: string
+        ready:
+          type: boolean
+          description: True only when an exact input schema was resolved.
+        process_compatibility:
+          $ref: "#/components/schemas/ProcessToolCompatibility"
+      required:
+        - name
+        - source
+        - ready
+      additionalProperties: false
     ToolReference:
       type: object
       properties:
@@ -39353,13 +39430,26 @@ paths:
       tags:
         - Tools
       summary: List all tools available in the project
-      description: Returns the unified project-scoped tool registry visible to the
-        current principal. Sources can be filtered via the `sources` query
-        string.
+      description: >-
+        Returns the unified project-scoped tool registry visible to the current
+        principal. Sources can be filtered via the `sources` query string.
+
+
+        **Required permissions:** `account:member`
       security:
         - bearerAuth: []
         - OpenID: []
       parameters:
+        - name: context
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - conversation
+              - process
+            description: The runtime context in which a caller intends to use a tool.
+          style: form
         - name: sources
           in: query
           required: false
@@ -39455,11 +39545,81 @@ paths:
                 error: Bad Request
                 status: 400
                 message: Request validation failed.
-      x-vertesia-permissions: []
+      x-vertesia-permissions:
+        - account:member
       x-vertesia-source:
         file: ../../apps/studio-server/src/api/tools.ts
         className: ToolsResource
         methodName: list
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260803"
+        description: Optional Vertesia API version header. Use `20260803` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /tools/{toolName}:
+    get:
+      operationId: InspectProjectTool
+      tags:
+        - Tools
+      summary: Inspect one project tool
+      description: "**Required permissions:** `account:member`"
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters:
+        - name: toolName
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: context
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - conversation
+              - process
+            description: The runtime context in which a caller intends to use a tool.
+          style: form
+      responses:
+        "200":
+          description: Resolved tool details and input schema.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ToolInspection"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - account:member
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/tools.ts
+        className: ToolsResource
+        methodName: inspect
     parameters:
       - name: x-api-version
         in: header
@@ -39476,8 +39636,12 @@ paths:
       tags:
         - Tools
       summary: Validate tool names against the project registry
-      description: Resolves each name to its source or reports it as invalid with a
+      description: >-
+        Resolves each name to its source or reports it as invalid with a
         suggestion.
+
+
+        **Required permissions:** `account:member`
       security:
         - bearerAuth: []
         - OpenID: []
@@ -39509,7 +39673,8 @@ paths:
                 error: Bad Request
                 status: 400
                 message: Request validation failed.
-      x-vertesia-permissions: []
+      x-vertesia-permissions:
+        - account:member
       x-vertesia-source:
         file: ../../apps/studio-server/src/api/tools.ts
         className: ToolsResource

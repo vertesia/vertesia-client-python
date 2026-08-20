@@ -734,6 +734,8 @@ vertesia_client/openapi/models/process_script_inline_source.py
 vertesia_client/openapi/models/process_script_language.py
 vertesia_client/openapi/models/process_script_resource.py
 vertesia_client/openapi/models/process_state.py
+vertesia_client/openapi/models/process_tool_compatibility.py
+vertesia_client/openapi/models/process_tool_compatibility_reason.py
 vertesia_client/openapi/models/programmatic_run_response.py
 vertesia_client/openapi/models/project.py
 vertesia_client/openapi/models/project_configuration.py
@@ -919,6 +921,7 @@ vertesia_client/openapi/models/tool_approval_grant.py
 vertesia_client/openapi/models/tool_collection_auth_type.py
 vertesia_client/openapi/models/tool_collection_object.py
 vertesia_client/openapi/models/tool_definition.py
+vertesia_client/openapi/models/tool_inspection.py
 vertesia_client/openapi/models/tool_reference.py
 vertesia_client/openapi/models/tool_result.py
 vertesia_client/openapi/models/tool_result_meta.py

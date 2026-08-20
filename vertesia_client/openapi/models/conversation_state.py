@@ -64,6 +64,7 @@ class ConversationState(BaseModel):
     strip_options: Optional[ConversationStripOptions] = Field(default=None, description="Configuration for stripping large data from conversation history. Passed to llumiverse ExecutionOptions.stripImagesAfterTurns.")
     conversation_artifacts_base_url: Optional[StrictStr] = Field(default=None, description="Conversation artifacts base url")
     tool_reference: Optional[ToolReference] = Field(default=None, description="Reference to tools stored in GCP instead of embedding full tool definitions")
+    tool_catalog_storage_id: Optional[StrictStr] = Field(default=None, description="Artifact-storage scope containing the referenced tool catalog.")
     active_tool_names: Optional[List[StrictStr]] = Field(default=None, description="Names of currently active tools (base + unlocked). Tool definitions loaded from tool_reference.")
     pinned_tool_names: Optional[List[StrictStr]] = Field(default=None, description="Active tools that should not be evicted by bounded active-tool pruning.")
     used_skills: Optional[List[UsedSkill]] = Field(default=None, description="Skills that have been used in this conversation (for auto-syncing scripts and package installation)")
@@ -86,7 +87,7 @@ class ConversationState(BaseModel):
     launch_id: Optional[StrictStr] = Field(default=None, description="For workstreams: the launch ID assigned by the parent workflow. When set, artifacts are stored under agents/{agent_run_id}/workstreams/{launch_id}/ to consolidate all artifacts under the parent agent run.")
     app_version: Optional[StrictStr] = Field(default=None, description="The exact app version this run is pinned to, derived from the `@version` on the started interaction ref / the `x-vertesia-app-version` header at start. Persisted on the state so it survives resume, and applied to the activity client (`withAppVersion`) so every app-owned ref the run resolves — interactions, types, processes, tools — targets this version instead of the current/promoted one. Undefined → current/promoted. Resolution-time only; never a stored capability-ref version.")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["run", "environment", "options", "tool_use", "tool_approval_mode", "tool_approval_grants", "pending_tool_approval_results", "latest_user_message", "tool_input_refs", "output", "token_usage", "parent", "ancestors", "task_id", "plan", "debug", "strip_options", "conversation_artifacts_base_url", "tool_reference", "active_tool_names", "pinned_tool_names", "used_skills", "streaming_enabled", "checkpoint_threshold", "checkpoint_tokens", "user_channels", "resolvedInteraction", "end_conversation", "unlocked_tools", "latest_activity_id", "latest_streaming_id", "skill_instructions_delivered", "initialization_call_ids", "disabled_mcp_collections", "pending_mcp_connections", "active_activity_group_id", "finish_reason", "agent_run_id", "launch_id", "app_version"]
+    __properties: ClassVar[List[str]] = ["run", "environment", "options", "tool_use", "tool_approval_mode", "tool_approval_grants", "pending_tool_approval_results", "latest_user_message", "tool_input_refs", "output", "token_usage", "parent", "ancestors", "task_id", "plan", "debug", "strip_options", "conversation_artifacts_base_url", "tool_reference", "tool_catalog_storage_id", "active_tool_names", "pinned_tool_names", "used_skills", "streaming_enabled", "checkpoint_threshold", "checkpoint_tokens", "user_channels", "resolvedInteraction", "end_conversation", "unlocked_tools", "latest_activity_id", "latest_streaming_id", "skill_instructions_delivered", "initialization_call_ids", "disabled_mcp_collections", "pending_mcp_connections", "active_activity_group_id", "finish_reason", "agent_run_id", "launch_id", "app_version"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -263,6 +264,7 @@ class ConversationState(BaseModel):
             "strip_options": ConversationStripOptions.from_dict(obj["strip_options"]) if obj.get("strip_options") is not None else None,
             "conversation_artifacts_base_url": obj.get("conversation_artifacts_base_url"),
             "tool_reference": ToolReference.from_dict(obj["tool_reference"]) if obj.get("tool_reference") is not None else None,
+            "tool_catalog_storage_id": obj.get("tool_catalog_storage_id"),
             "active_tool_names": obj.get("active_tool_names"),
             "pinned_tool_names": obj.get("pinned_tool_names"),
             "used_skills": [UsedSkill.from_dict(_item) for _item in obj["used_skills"]] if obj.get("used_skills") is not None else None,

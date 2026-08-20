@@ -699,6 +699,8 @@ from vertesia_client.openapi.models.process_script_inline_source import ProcessS
 from vertesia_client.openapi.models.process_script_language import ProcessScriptLanguage
 from vertesia_client.openapi.models.process_script_resource import ProcessScriptResource
 from vertesia_client.openapi.models.process_state import ProcessState
+from vertesia_client.openapi.models.process_tool_compatibility import ProcessToolCompatibility
+from vertesia_client.openapi.models.process_tool_compatibility_reason import ProcessToolCompatibilityReason
 from vertesia_client.openapi.models.programmatic_run_response import ProgrammaticRunResponse
 from vertesia_client.openapi.models.project import Project
 from vertesia_client.openapi.models.project_configuration import ProjectConfiguration
@@ -884,6 +886,7 @@ from vertesia_client.openapi.models.tool_approval_grant import ToolApprovalGrant
 from vertesia_client.openapi.models.tool_collection_auth_type import ToolCollectionAuthType
 from vertesia_client.openapi.models.tool_collection_object import ToolCollectionObject
 from vertesia_client.openapi.models.tool_definition import ToolDefinition
+from vertesia_client.openapi.models.tool_inspection import ToolInspection
 from vertesia_client.openapi.models.tool_reference import ToolReference
 from vertesia_client.openapi.models.tool_result import ToolResult
 from vertesia_client.openapi.models.tool_result_meta import ToolResultMeta

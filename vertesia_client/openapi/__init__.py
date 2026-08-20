@@ -756,6 +756,8 @@ __all__ = [
     "ProcessScriptLanguage",
     "ProcessScriptResource",
     "ProcessState",
+    "ProcessToolCompatibility",
+    "ProcessToolCompatibilityReason",
     "ProgrammaticRunResponse",
     "Project",
     "ProjectConfiguration",
@@ -941,6 +943,7 @@ __all__ = [
     "ToolCollectionAuthType",
     "ToolCollectionObject",
     "ToolDefinition",
+    "ToolInspection",
     "ToolReference",
     "ToolResult",
     "ToolResultMeta",
@@ -1849,6 +1852,8 @@ from vertesia_client.openapi.models.process_script_inline_source import ProcessS
 from vertesia_client.openapi.models.process_script_language import ProcessScriptLanguage as ProcessScriptLanguage
 from vertesia_client.openapi.models.process_script_resource import ProcessScriptResource as ProcessScriptResource
 from vertesia_client.openapi.models.process_state import ProcessState as ProcessState
+from vertesia_client.openapi.models.process_tool_compatibility import ProcessToolCompatibility as ProcessToolCompatibility
+from vertesia_client.openapi.models.process_tool_compatibility_reason import ProcessToolCompatibilityReason as ProcessToolCompatibilityReason
 from vertesia_client.openapi.models.programmatic_run_response import ProgrammaticRunResponse as ProgrammaticRunResponse
 from vertesia_client.openapi.models.project import Project as Project
 from vertesia_client.openapi.models.project_configuration import ProjectConfiguration as ProjectConfiguration
@@ -2034,6 +2039,7 @@ from vertesia_client.openapi.models.tool_approval_grant import ToolApprovalGrant
 from vertesia_client.openapi.models.tool_collection_auth_type import ToolCollectionAuthType as ToolCollectionAuthType
 from vertesia_client.openapi.models.tool_collection_object import ToolCollectionObject as ToolCollectionObject
 from vertesia_client.openapi.models.tool_definition import ToolDefinition as ToolDefinition
+from vertesia_client.openapi.models.tool_inspection import ToolInspection as ToolInspection
 from vertesia_client.openapi.models.tool_reference import ToolReference as ToolReference
 from vertesia_client.openapi.models.tool_result import ToolResult as ToolResult
 from vertesia_client.openapi.models.tool_result_meta import ToolResultMeta as ToolResultMeta

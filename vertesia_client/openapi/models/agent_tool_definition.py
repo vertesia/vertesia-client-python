@@ -32,13 +32,15 @@ class AgentToolDefinition(BaseModel):
     name: StrictStr
     description: Optional[StrictStr] = None
     input_schema: Dict[str, Any]
+    output_schema: Optional[Dict[str, Any]] = Field(default=None, description="Optional MCP outputSchema advertised by the provider for its structuredContent payload. Execution adapters may expose results differently.")
     url: Optional[StrictStr] = Field(default=None, description="The tool execution URL. It can be an absolute URL or a path in which case the URL is obtained using the base URL of the tool server API. Ex: http://tool-server.com/api/ Example of relative URLs: \"tools/my-tool-collection\" or \"/api/tools/my-tool-collection\"")
     category: Optional[StrictStr] = Field(default=None, description="The tool category if any - for UI purposes.")
     default: Optional[StrictBool] = Field(default=None, description="Whether this tool is available by default. - true/undefined: Tool is always available to agents - false: Tool is only available when enabled by a skill via `tools`")
     tools: Optional[List[StrictStr]] = Field(default=None, description="For skill tools (`learn_*`): the tool names this skill enables when called. Matches the `tools:` key used in SKILL.md frontmatter and built-in skill definitions — one name across the whole stack.")
     annotations: Optional[MCPToolAnnotations] = Field(default=None, description="MCP tool annotations providing hints about tool behavior and safety.")
     approval_class: Optional[AgentToolApprovalClass] = Field(default=None, description="Approval classification used by interactive agent approval modes. Use `requires_confirmation` for actions that must prompt even in full-control mode.")
-    __properties: ClassVar[List[str]] = ["name", "description", "input_schema", "url", "category", "default", "tools", "annotations", "approval_class"]
+    additional_properties: Dict[str, Any] = {}
+    __properties: ClassVar[List[str]] = ["name", "description", "input_schema", "output_schema", "url", "category", "default", "tools", "annotations", "approval_class"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -70,8 +72,10 @@ class AgentToolDefinition(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -82,6 +86,11 @@ class AgentToolDefinition(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of annotations
         if self.annotations:
             _dict['annotations'] = self.annotations.to_dict()
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
         return _dict
 
     @classmethod
@@ -97,6 +106,7 @@ class AgentToolDefinition(BaseModel):
             "name": obj.get("name"),
             "description": obj.get("description"),
             "input_schema": obj.get("input_schema"),
+            "output_schema": obj.get("output_schema"),
             "url": obj.get("url"),
             "category": obj.get("category"),
             "default": obj.get("default"),
@@ -104,6 +114,11 @@ class AgentToolDefinition(BaseModel):
             "annotations": MCPToolAnnotations.from_dict(obj["annotations"]) if obj.get("annotations") is not None else None,
             "approval_class": obj.get("approval_class")
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 
