@@ -19,10 +19,12 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, Optional
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.http_timeout_options import HttpTimeoutOptions
 from vertesia_client.openapi.models.json_schema import JSONSchema
 from vertesia_client.openapi.models.modalities import Modalities
 from vertesia_client.openapi.models.model_options import ModelOptions
+from vertesia_client.openapi.models.prompt_cache_mode import PromptCacheMode
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -37,9 +39,11 @@ class StatelessExecutionOptions(BaseModel):
     include_original_response: Optional[StrictBool] = Field(default=None, description="If set to true the original response from the target LLM will be included in the response under the original_response field. This is useful for debugging and for some advanced use cases. It is ignored on streaming requests")
     model_options: Optional[ModelOptions] = None
     prompt_cache_key: Optional[StrictStr] = Field(default=None, description="Stable identity for prompt caching. Providers with cache routing keys receive the value directly; providers with cache breakpoints use its presence to cache the stable prefix before the final dynamic block. Providers with fully implicit caching still require an identical prompt prefix.")
+    prompt_cache_mode: Optional[PromptCacheMode] = Field(default=None, description="Controls provider-side explicit caches — cache resources the driver creates and reuses (e.g. Vertex cachedContents). \"auto\" (default) caches the static prefix whenever prompt_cache_key is set; \"off\" never creates or uses a cache resource and leaves the provider payload unchanged. Implicit caching and cache breakpoints are unaffected.")
+    prompt_cache_ttl_seconds: Optional[Annotated[int, Field(le=9007199254740991, strict=True, gt=0)]] = Field(default=None, description="Lifetime, in seconds, of a provider-side cache resource created for this execution. Defaults to 1800 (30 minutes). Ignored by providers without an explicit cache API.")
     http_timeout: Optional[HttpTimeoutOptions] = Field(default=None, description="Per-call HTTP timeouts for upstream LLM-provider calls. These override the driver's default `DriverOptions.httpTimeout` for this execution only.", alias="httpTimeout")
     output_modality: Optional[Modalities] = Field(default=None, description="Deprecated: This is deprecated. Use CompletionResult.type information instead.")
-    __properties: ClassVar[List[str]] = ["model", "result_schema", "prompt_cache_schema_suffix", "include_original_response", "model_options", "prompt_cache_key", "httpTimeout", "output_modality"]
+    __properties: ClassVar[List[str]] = ["model", "result_schema", "prompt_cache_schema_suffix", "include_original_response", "model_options", "prompt_cache_key", "prompt_cache_mode", "prompt_cache_ttl_seconds", "httpTimeout", "output_modality"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -107,6 +111,8 @@ class StatelessExecutionOptions(BaseModel):
             "include_original_response": obj.get("include_original_response"),
             "model_options": ModelOptions.from_dict(obj["model_options"]) if obj.get("model_options") is not None else None,
             "prompt_cache_key": obj.get("prompt_cache_key"),
+            "prompt_cache_mode": obj.get("prompt_cache_mode"),
+            "prompt_cache_ttl_seconds": obj.get("prompt_cache_ttl_seconds"),
             "httpTimeout": HttpTimeoutOptions.from_dict(obj["httpTimeout"]) if obj.get("httpTimeout") is not None else None,
             "output_modality": obj.get("output_modality")
         })
