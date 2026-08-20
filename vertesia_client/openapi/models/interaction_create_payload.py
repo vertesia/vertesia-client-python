@@ -18,7 +18,7 @@ import re  # noqa: F401
 import json
 
 from datetime import datetime
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from vertesia_client.openapi.models.agent_runner_options import AgentRunnerOptions
 from vertesia_client.openapi.models.cache_policy import CachePolicy
@@ -51,11 +51,12 @@ class InteractionCreatePayload(BaseModel):
     environment: Optional[InteractionEnvironment] = None
     model: Optional[StrictStr] = None
     model_options: Optional[ModelOptions] = None
+    store_media_results: Optional[StrictBool] = None
     restriction: Optional[RunDataStorageLevel] = None
     output_modality: Optional[Modalities] = Field(default=None, description="Deprecated: This is deprecated. Use CompletionResult.type information instead.")
     visibility: Optional[InteractionVisibility] = None
     tags: Optional[List[StrictStr]] = None
-    __properties: ClassVar[List[str]] = ["status", "test_data", "interaction_schema", "cache_policy", "prompts", "last_published_at", "name", "description", "agent_runner_options", "result_schema", "environment", "model", "model_options", "restriction", "output_modality", "visibility", "tags"]
+    __properties: ClassVar[List[str]] = ["status", "test_data", "interaction_schema", "cache_policy", "prompts", "last_published_at", "name", "description", "agent_runner_options", "result_schema", "environment", "model", "model_options", "store_media_results", "restriction", "output_modality", "visibility", "tags"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -146,6 +147,7 @@ class InteractionCreatePayload(BaseModel):
             "environment": InteractionEnvironment.from_dict(obj["environment"]) if obj.get("environment") is not None else None,
             "model": obj.get("model"),
             "model_options": ModelOptions.from_dict(obj["model_options"]) if obj.get("model_options") is not None else None,
+            "store_media_results": obj.get("store_media_results"),
             "restriction": obj.get("restriction"),
             "output_modality": obj.get("output_modality"),
             "visibility": obj.get("visibility"),

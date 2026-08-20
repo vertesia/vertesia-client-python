@@ -7447,6 +7447,9 @@
           },
           {
             "$ref": "#/components/schemas/ImageResult"
+          },
+          {
+            "$ref": "#/components/schemas/VideoResult"
           }
         ],
         "discriminator": {
@@ -7455,7 +7458,8 @@
             "text": "#/components/schemas/TextResult",
             "thoughts": "#/components/schemas/ThoughtsResult",
             "json": "#/components/schemas/JsonResult",
-            "image": "#/components/schemas/ImageResult"
+            "image": "#/components/schemas/ImageResult",
+            "video": "#/components/schemas/VideoResult"
           }
         },
         "type": "object",
@@ -16690,8 +16694,18 @@
             }
           },
           "environment": {
-            "$ref": "#/components/schemas/ExecutionEnvironmentRef",
-            "description": "Environment reference - populated with full object in API responses"
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ExecutionEnvironmentRef"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Environment reference. API responses normally contain the populated environment object; the stored environment ID or null is retained when the referenced environment no longer exists."
           },
           "modelId": {
             "type": "string"
@@ -18963,6 +18977,9 @@
           "model_options": {
             "$ref": "#/components/schemas/ModelOptions"
           },
+          "store_media_results": {
+            "type": "boolean"
+          },
           "restriction": {
             "$ref": "#/components/schemas/RunDataStorageLevel"
           },
@@ -19108,6 +19125,9 @@
           },
           "model_options": {
             "$ref": "#/components/schemas/ModelOptions"
+          },
+          "store_media_results": {
+            "type": "boolean"
           },
           "restriction": {
             "$ref": "#/components/schemas/RunDataStorageLevel"
@@ -19913,6 +19933,9 @@
           },
           "model_options": {
             "$ref": "#/components/schemas/ModelOptions"
+          },
+          "store_media_results": {
+            "type": "boolean"
           },
           "restriction": {
             "$ref": "#/components/schemas/RunDataStorageLevel"
@@ -21044,6 +21067,9 @@
             "$ref": "#/components/schemas/VertexAIGeminiOptions"
           },
           {
+            "$ref": "#/components/schemas/VertexAIGeminiOmniVideoOptions"
+          },
+          {
             "$ref": "#/components/schemas/VertexAIGrokOptions"
           },
           {
@@ -21115,6 +21141,7 @@
             "vertexai-imagen": "#/components/schemas/ImagenOptions",
             "vertexai-claude": "#/components/schemas/VertexAIClaudeOptions",
             "vertexai-gemini": "#/components/schemas/VertexAIGeminiOptions",
+            "vertexai-gemini-omni-video": "#/components/schemas/VertexAIGeminiOmniVideoOptions",
             "vertexai-grok": "#/components/schemas/VertexAIGrokOptions",
             "bedrock-nova-canvas": "#/components/schemas/NovaCanvasOptions",
             "bedrock-converse": "#/components/schemas/BedrockConverseOptions",
@@ -30745,6 +30772,39 @@
         ],
         "additionalProperties": false
       },
+      "VertexAIGeminiOmniVideoOptions": {
+        "type": "object",
+        "properties": {
+          "_option_id": {
+            "type": "string",
+            "const": "vertexai-gemini-omni-video"
+          },
+          "task": {
+            "type": "string",
+            "enum": [
+              "text_to_video",
+              "image_to_video",
+              "reference_to_video"
+            ]
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "16:9",
+              "9:16"
+            ]
+          },
+          "duration_seconds": {
+            "type": "integer",
+            "minimum": 3,
+            "maximum": 10
+          }
+        },
+        "required": [
+          "_option_id"
+        ],
+        "additionalProperties": false
+      },
       "VertexAIGeminiOptions": {
         "type": "object",
         "properties": {
@@ -30886,6 +30946,23 @@
         },
         "required": [
           "_option_id"
+        ],
+        "additionalProperties": false
+      },
+      "VideoResult": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "const": "video"
+          },
+          "value": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "value"
         ],
         "additionalProperties": false
       },

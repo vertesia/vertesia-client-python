@@ -18,7 +18,7 @@ import re  # noqa: F401
 import json
 
 from datetime import datetime
-from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from vertesia_client.openapi.models.agent_runner_options import AgentRunnerOptions
 from vertesia_client.openapi.models.cache_policy import CachePolicy
@@ -50,6 +50,7 @@ class Interaction(BaseModel):
     environment: Optional[InteractionEnvironment] = None
     model: Optional[StrictStr] = None
     model_options: Optional[ModelOptions] = None
+    store_media_results: Optional[StrictBool] = None
     restriction: Optional[RunDataStorageLevel] = None
     output_modality: Optional[Modalities] = Field(default=None, description="Deprecated: This is deprecated. Use CompletionResult.type information instead.")
     status: InteractionStatus
@@ -65,7 +66,7 @@ class Interaction(BaseModel):
     updated_by: StrictStr
     created_at: datetime
     updated_at: datetime
-    __properties: ClassVar[List[str]] = ["id", "name", "endpoint", "description", "project", "tags", "agent_runner_options", "result_schema", "environment", "model", "model_options", "restriction", "output_modality", "status", "parent", "visibility", "version", "test_data", "interaction_schema", "cache_policy", "prompts", "last_published_at", "created_by", "updated_by", "created_at", "updated_at"]
+    __properties: ClassVar[List[str]] = ["id", "name", "endpoint", "description", "project", "tags", "agent_runner_options", "result_schema", "environment", "model", "model_options", "store_media_results", "restriction", "output_modality", "status", "parent", "visibility", "version", "test_data", "interaction_schema", "cache_policy", "prompts", "last_published_at", "created_by", "updated_by", "created_at", "updated_at"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -157,6 +158,7 @@ class Interaction(BaseModel):
             "environment": InteractionEnvironment.from_dict(obj["environment"]) if obj.get("environment") is not None else None,
             "model": obj.get("model"),
             "model_options": ModelOptions.from_dict(obj["model_options"]) if obj.get("model_options") is not None else None,
+            "store_media_results": obj.get("store_media_results"),
             "restriction": obj.get("restriction"),
             "output_modality": obj.get("output_modality"),
             "status": obj.get("status"),

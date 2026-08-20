@@ -22,9 +22,9 @@ from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, Stric
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from vertesia_client.openapi.models.account_ref import AccountRef
 from vertesia_client.openapi.models.completion_result import CompletionResult
-from vertesia_client.openapi.models.execution_environment_ref import ExecutionEnvironmentRef
 from vertesia_client.openapi.models.execution_run_evaluation import ExecutionRunEvaluation
 from vertesia_client.openapi.models.execution_run_parent import ExecutionRunParent
+from vertesia_client.openapi.models.execution_run_ref_environment import ExecutionRunRefEnvironment
 from vertesia_client.openapi.models.execution_run_status import ExecutionRunStatus
 from vertesia_client.openapi.models.execution_run_workflow import ExecutionRunWorkflow
 from vertesia_client.openapi.models.execution_token_usage import ExecutionTokenUsage
@@ -47,7 +47,7 @@ class ExecutionRunRef(BaseModel):
     parent: Optional[ExecutionRunParent] = None
     evaluation: Optional[ExecutionRunEvaluation] = None
     tags: Optional[List[StrictStr]] = None
-    environment: ExecutionEnvironmentRef = Field(description="Environment reference - populated with full object in API responses")
+    environment: Optional[ExecutionRunRefEnvironment]
     model_id: Optional[StrictStr] = Field(default=None, alias="modelId")
     result_schema: Optional[JSONSchema] = None
     ttl: Union[StrictFloat, StrictInt]
@@ -163,6 +163,11 @@ class ExecutionRunRef(BaseModel):
             for _key, _value in self.additional_properties.items():
                 _dict[_key] = _value
 
+        # set to None if environment (nullable) is None
+        # and model_fields_set contains the field
+        if self.environment is None and "environment" in self.model_fields_set:
+            _dict['environment'] = None
+
         # set to None if prompt (nullable) is None
         # and model_fields_set contains the field
         if self.prompt is None and "prompt" in self.model_fields_set:
@@ -189,7 +194,7 @@ class ExecutionRunRef(BaseModel):
             "parent": ExecutionRunParent.from_dict(obj["parent"]) if obj.get("parent") is not None else None,
             "evaluation": ExecutionRunEvaluation.from_dict(obj["evaluation"]) if obj.get("evaluation") is not None else None,
             "tags": obj.get("tags"),
-            "environment": ExecutionEnvironmentRef.from_dict(obj["environment"]) if obj.get("environment") is not None else None,
+            "environment": ExecutionRunRefEnvironment.from_dict(obj["environment"]) if obj.get("environment") is not None else None,
             "modelId": obj.get("modelId"),
             "result_schema": JSONSchema.from_dict(obj["result_schema"]) if obj.get("result_schema") is not None else None,
             "ttl": obj.get("ttl"),

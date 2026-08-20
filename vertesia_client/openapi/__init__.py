@@ -530,6 +530,7 @@ __all__ = [
     "ExecutionRunInteraction",
     "ExecutionRunParent",
     "ExecutionRunRef",
+    "ExecutionRunRefEnvironment",
     "ExecutionRunStatus",
     "ExecutionRunWorkflow",
     "ExecutionTokenUsage",
@@ -999,8 +1000,10 @@ __all__ = [
     "VectorSearchQuery",
     "VertesiaSDKToolCollectionObject",
     "VertexAIClaudeOptions",
+    "VertexAIGeminiOmniVideoOptions",
     "VertexAIGeminiOptions",
     "VertexAIGrokOptions",
+    "VideoResult",
     "ViewActionConfiguration",
     "ViewActionPlacement",
     "ViewActionSelectionRequirement",
@@ -1626,6 +1629,7 @@ from vertesia_client.openapi.models.execution_run_evaluation import ExecutionRun
 from vertesia_client.openapi.models.execution_run_interaction import ExecutionRunInteraction as ExecutionRunInteraction
 from vertesia_client.openapi.models.execution_run_parent import ExecutionRunParent as ExecutionRunParent
 from vertesia_client.openapi.models.execution_run_ref import ExecutionRunRef as ExecutionRunRef
+from vertesia_client.openapi.models.execution_run_ref_environment import ExecutionRunRefEnvironment as ExecutionRunRefEnvironment
 from vertesia_client.openapi.models.execution_run_status import ExecutionRunStatus as ExecutionRunStatus
 from vertesia_client.openapi.models.execution_run_workflow import ExecutionRunWorkflow as ExecutionRunWorkflow
 from vertesia_client.openapi.models.execution_token_usage import ExecutionTokenUsage as ExecutionTokenUsage
@@ -2095,8 +2099,10 @@ from vertesia_client.openapi.models.validate_url_response import ValidateUrlResp
 from vertesia_client.openapi.models.vector_search_query import VectorSearchQuery as VectorSearchQuery
 from vertesia_client.openapi.models.vertesia_sdk_tool_collection_object import VertesiaSDKToolCollectionObject as VertesiaSDKToolCollectionObject
 from vertesia_client.openapi.models.vertex_ai_claude_options import VertexAIClaudeOptions as VertexAIClaudeOptions
+from vertesia_client.openapi.models.vertex_ai_gemini_omni_video_options import VertexAIGeminiOmniVideoOptions as VertexAIGeminiOmniVideoOptions
 from vertesia_client.openapi.models.vertex_ai_gemini_options import VertexAIGeminiOptions as VertexAIGeminiOptions
 from vertesia_client.openapi.models.vertex_ai_grok_options import VertexAIGrokOptions as VertexAIGrokOptions
+from vertesia_client.openapi.models.video_result import VideoResult as VideoResult
 from vertesia_client.openapi.models.view_action_configuration import ViewActionConfiguration as ViewActionConfiguration
 from vertesia_client.openapi.models.view_action_placement import ViewActionPlacement as ViewActionPlacement
 from vertesia_client.openapi.models.view_action_selection_requirement import ViewActionSelectionRequirement as ViewActionSelectionRequirement

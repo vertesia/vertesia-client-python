@@ -18,7 +18,7 @@ import re  # noqa: F401
 import json
 
 from datetime import datetime
-from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from vertesia_client.openapi.models.agent_runner_options import AgentRunnerOptions
 from vertesia_client.openapi.models.async_conversation_execution_payload_result_schema import AsyncConversationExecutionPayloadResultSchema
@@ -56,10 +56,11 @@ class InteractionUpdatePayload(BaseModel):
     environment: Optional[InteractionEnvironment] = None
     model: Optional[StrictStr] = None
     model_options: Optional[ModelOptions] = None
+    store_media_results: Optional[StrictBool] = None
     restriction: Optional[RunDataStorageLevel] = None
     output_modality: Optional[Modalities] = Field(default=None, description="Deprecated: This is deprecated. Use CompletionResult.type information instead.")
     result_schema: Optional[AsyncConversationExecutionPayloadResultSchema] = None
-    __properties: ClassVar[List[str]] = ["status", "parent", "visibility", "version", "test_data", "interaction_schema", "cache_policy", "prompts", "last_published_at", "name", "endpoint", "description", "tags", "agent_runner_options", "environment", "model", "model_options", "restriction", "output_modality", "result_schema"]
+    __properties: ClassVar[List[str]] = ["status", "parent", "visibility", "version", "test_data", "interaction_schema", "cache_policy", "prompts", "last_published_at", "name", "endpoint", "description", "tags", "agent_runner_options", "environment", "model", "model_options", "store_media_results", "restriction", "output_modality", "result_schema"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -159,6 +160,7 @@ class InteractionUpdatePayload(BaseModel):
             "environment": InteractionEnvironment.from_dict(obj["environment"]) if obj.get("environment") is not None else None,
             "model": obj.get("model"),
             "model_options": ModelOptions.from_dict(obj["model_options"]) if obj.get("model_options") is not None else None,
+            "store_media_results": obj.get("store_media_results"),
             "restriction": obj.get("restriction"),
             "output_modality": obj.get("output_modality"),
             "result_schema": AsyncConversationExecutionPayloadResultSchema.from_dict(obj["result_schema"]) if obj.get("result_schema") is not None else None
