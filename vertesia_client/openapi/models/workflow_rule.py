@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.workflow_rule_input_type import WorkflowRuleInputType
 from typing import Optional, Set
 from typing_extensions import Self
@@ -29,6 +30,7 @@ class WorkflowRule(BaseModel):
     WorkflowRule
     """ # noqa: E501
     id: StrictStr = Field(description="Unique identifier for the object")
+    edit_revision: Annotated[int, Field(le=9007199254740991, strict=True, ge=1)] = Field(description="Monotonic edit revision used to detect concurrent updates.")
     name: StrictStr = Field(description="Human-readable name or title")
     description: Optional[StrictStr] = Field(default=None, description="Optional detailed description of the object")
     tags: Optional[List[StrictStr]] = Field(default=None, description="Optional array of categorization tags")
@@ -46,7 +48,7 @@ class WorkflowRule(BaseModel):
     event_subscription_migration_status: Optional[StrictStr] = Field(default=None, description="Event subscription migration status for legacy workflow-rule cutover.")
     event_subscription_migration_error: Optional[StrictStr] = Field(default=None, description="Migration failure or unsupported-match reason, when applicable.")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["id", "name", "description", "tags", "updated_by", "created_by", "created_at", "updated_at", "endpoint", "input_type", "match", "config", "debug", "customer_override", "task_queue", "event_subscription_migration_status", "event_subscription_migration_error"]
+    __properties: ClassVar[List[str]] = ["id", "edit_revision", "name", "description", "tags", "updated_by", "created_by", "created_at", "updated_at", "endpoint", "input_type", "match", "config", "debug", "customer_override", "task_queue", "event_subscription_migration_status", "event_subscription_migration_error"]
 
     @field_validator('event_subscription_migration_status')
     def event_subscription_migration_status_validate_enum(cls, value):
@@ -115,6 +117,7 @@ class WorkflowRule(BaseModel):
 
         _obj = cls.model_validate({
             "id": obj.get("id"),
+            "edit_revision": obj.get("edit_revision"),
             "name": obj.get("name"),
             "description": obj.get("description"),
             "tags": obj.get("tags"),

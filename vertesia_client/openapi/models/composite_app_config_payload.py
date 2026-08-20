@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field
 from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.composite_app_card_overrides import CompositeAppCardOverrides
 from vertesia_client.openapi.models.composite_app_entry import CompositeAppEntry
 from vertesia_client.openapi.models.composite_app_header_item import CompositeAppHeaderItem
@@ -39,6 +40,7 @@ class CompositeAppConfigPayload(BaseModel):
     """
     CompositeAppConfigPayload
     """ # noqa: E501
+    expected_edit_revision: Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=1)]] = Field(default=None, description="Edit revision returned by the last read. Stale revisions are rejected with HTTP 409. Omit for legacy last-write-wins behavior.")
     card: Optional[CompositeAppCardOverrides] = Field(default=None, description="Card display overrides (includes visibility)")
     logo: Optional[CompositeAppLogoOverrides] = Field(default=None, description="Optional logo overrides (replaces default Vertesia logo)")
     message: Optional[CompositeAppMessageOverrides] = Field(default=None, description="Optional message banner overrides")
@@ -51,7 +53,7 @@ class CompositeAppConfigPayload(BaseModel):
     home_plugin: Optional[CompositeAppHomePlugin] = Field(default=None, description="Optional home page override. When set, redirects \"/\" to the specified app route instead of the dashboard. Send null to unset.", alias="homePlugin")
     apps: Optional[List[CompositeAppEntry]] = Field(default=None, description="List of apps to include in the CompositeApp (used for installation tracking and fallback sidebar)")
     menu: Optional[List[CompositeAppMenuSection]] = Field(default=None, description="Optional sidebar menu. When present, the sidebar renders from this instead of the apps-based pipeline. Top-level array is sections; each section contains nav-items.")
-    __properties: ClassVar[List[str]] = ["card", "logo", "message", "switchers", "sidebar", "header", "userMenu", "headerMenu", "theme", "homePlugin", "apps", "menu"]
+    __properties: ClassVar[List[str]] = ["expected_edit_revision", "card", "logo", "message", "switchers", "sidebar", "header", "userMenu", "headerMenu", "theme", "homePlugin", "apps", "menu"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -157,6 +159,7 @@ class CompositeAppConfigPayload(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "expected_edit_revision": obj.get("expected_edit_revision"),
             "card": CompositeAppCardOverrides.from_dict(obj["card"]) if obj.get("card") is not None else None,
             "logo": CompositeAppLogoOverrides.from_dict(obj["logo"]) if obj.get("logo") is not None else None,
             "message": CompositeAppMessageOverrides.from_dict(obj["message"]) if obj.get("message") is not None else None,

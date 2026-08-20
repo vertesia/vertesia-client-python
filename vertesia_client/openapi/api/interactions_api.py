@@ -7678,6 +7678,7 @@ class InteractionsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "Interaction",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -7755,6 +7756,7 @@ class InteractionsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "Interaction",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -7832,6 +7834,7 @@ class InteractionsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "Interaction",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -9230,6 +9233,7 @@ class InteractionsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "Interaction",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -9307,6 +9311,7 @@ class InteractionsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "Interaction",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -9384,6 +9389,7 @@ class InteractionsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "Interaction",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }

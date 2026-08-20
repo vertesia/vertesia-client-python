@@ -1235,6 +1235,7 @@ class WorkflowRulesApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "WorkflowRule",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -1312,6 +1313,7 @@ class WorkflowRulesApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "WorkflowRule",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -1389,6 +1391,7 @@ class WorkflowRulesApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "WorkflowRule",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }

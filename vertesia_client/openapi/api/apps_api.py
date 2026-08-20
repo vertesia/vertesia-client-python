@@ -49,6 +49,7 @@ from vertesia_client.openapi.models.start_app_build_response import StartAppBuil
 from vertesia_client.openapi.models.start_app_scaffold_request import StartAppScaffoldRequest
 from vertesia_client.openapi.models.start_app_scaffold_response import StartAppScaffoldResponse
 from vertesia_client.openapi.models.update_app_installation_tool_allowlist_payload import UpdateAppInstallationToolAllowlistPayload
+from vertesia_client.openapi.models.update_app_payload import UpdateAppPayload
 from vertesia_client.openapi.models.upsert_app_version_request import UpsertAppVersionRequest
 from vertesia_client.openapi.models.validate_url_request import ValidateUrlRequest
 from vertesia_client.openapi.models.validate_url_response import ValidateUrlResponse
@@ -10212,7 +10213,7 @@ class AppsApi:
     def update_app(
         self,
         id: StrictStr,
-        app_manifest_data: AppManifestData,
+        update_app_payload: UpdateAppPayload,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -10233,8 +10234,8 @@ class AppsApi:
 
         :param id: (required)
         :type id: str
-        :param app_manifest_data: (required)
-        :type app_manifest_data: AppManifestData
+        :param update_app_payload: (required)
+        :type update_app_payload: UpdateAppPayload
         :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -10261,7 +10262,7 @@ class AppsApi:
 
         _param = self._update_app_serialize(
             id=id,
-            app_manifest_data=app_manifest_data,
+            update_app_payload=update_app_payload,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -10271,6 +10272,7 @@ class AppsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "AppManifest",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -10289,7 +10291,7 @@ class AppsApi:
     def update_app_with_http_info(
         self,
         id: StrictStr,
-        app_manifest_data: AppManifestData,
+        update_app_payload: UpdateAppPayload,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -10310,8 +10312,8 @@ class AppsApi:
 
         :param id: (required)
         :type id: str
-        :param app_manifest_data: (required)
-        :type app_manifest_data: AppManifestData
+        :param update_app_payload: (required)
+        :type update_app_payload: UpdateAppPayload
         :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -10338,7 +10340,7 @@ class AppsApi:
 
         _param = self._update_app_serialize(
             id=id,
-            app_manifest_data=app_manifest_data,
+            update_app_payload=update_app_payload,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -10348,6 +10350,7 @@ class AppsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "AppManifest",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -10366,7 +10369,7 @@ class AppsApi:
     def update_app_without_preload_content(
         self,
         id: StrictStr,
-        app_manifest_data: AppManifestData,
+        update_app_payload: UpdateAppPayload,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -10387,8 +10390,8 @@ class AppsApi:
 
         :param id: (required)
         :type id: str
-        :param app_manifest_data: (required)
-        :type app_manifest_data: AppManifestData
+        :param update_app_payload: (required)
+        :type update_app_payload: UpdateAppPayload
         :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -10415,7 +10418,7 @@ class AppsApi:
 
         _param = self._update_app_serialize(
             id=id,
-            app_manifest_data=app_manifest_data,
+            update_app_payload=update_app_payload,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -10425,6 +10428,7 @@ class AppsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "AppManifest",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -10438,7 +10442,7 @@ class AppsApi:
     def _update_app_serialize(
         self,
         id,
-        app_manifest_data,
+        update_app_payload,
         x_api_version,
         _request_auth,
         _content_type,
@@ -10469,8 +10473,8 @@ class AppsApi:
             _header_params['x-api-version'] = x_api_version
         # process the form parameters
         # process the body parameter
-        if app_manifest_data is not None:
-            _body_params = app_manifest_data
+        if update_app_payload is not None:
+            _body_params = update_app_payload
 
 
         # set the HTTP header `Accept`

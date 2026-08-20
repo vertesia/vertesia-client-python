@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.dsl_activity_options import DSLActivityOptions
 from vertesia_client.openapi.models.dsl_activity_spec import DSLActivitySpec
 from vertesia_client.openapi.models.dsl_workflow_step import DSLWorkflowStep
@@ -40,13 +41,14 @@ class DSLWorkflowDefinitionResponse(BaseModel):
     result: Optional[StrictStr] = None
     debug_mode: Optional[StrictBool] = None
     id: StrictStr = Field(description="Unique identifier for the object")
+    edit_revision: Annotated[int, Field(le=9007199254740991, strict=True, ge=1)] = Field(description="Monotonic edit revision used to detect concurrent updates.")
     updated_by: StrictStr = Field(description="Identifier of the user who last modified the object")
     created_by: StrictStr = Field(description="Identifier of the user who created the object")
     created_at: StrictStr = Field(description="ISO timestamp of when the object was created")
     updated_at: StrictStr = Field(description="ISO timestamp of when the object was last updated")
     input_schema: Optional[Dict[str, Any]] = None
     spec_format: StrictStr
-    __properties: ClassVar[List[str]] = ["name", "description", "tags", "steps", "activities", "vars", "options", "result", "debug_mode", "id", "updated_by", "created_by", "created_at", "updated_at", "input_schema", "spec_format"]
+    __properties: ClassVar[List[str]] = ["name", "description", "tags", "steps", "activities", "vars", "options", "result", "debug_mode", "id", "edit_revision", "updated_by", "created_by", "created_at", "updated_at", "input_schema", "spec_format"]
 
     @field_validator('spec_format')
     def spec_format_validate_enum(cls, value):
@@ -131,6 +133,7 @@ class DSLWorkflowDefinitionResponse(BaseModel):
             "result": obj.get("result"),
             "debug_mode": obj.get("debug_mode"),
             "id": obj.get("id"),
+            "edit_revision": obj.get("edit_revision"),
             "updated_by": obj.get("updated_by"),
             "created_by": obj.get("created_by"),
             "created_at": obj.get("created_at"),

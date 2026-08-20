@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.workflow_rule_input_type import WorkflowRuleInputType
 from typing import Optional, Set
 from typing_extensions import Self
@@ -29,6 +30,7 @@ class WorkflowRuleItem(BaseModel):
     WorkflowRuleItem
     """ # noqa: E501
     id: StrictStr = Field(description="Unique identifier for the object")
+    edit_revision: Annotated[int, Field(le=9007199254740991, strict=True, ge=1)] = Field(description="Monotonic edit revision used to detect concurrent updates.")
     name: StrictStr = Field(description="Human-readable name or title")
     description: Optional[StrictStr] = Field(default=None, description="Optional detailed description of the object")
     tags: Optional[List[StrictStr]] = Field(default=None, description="Optional array of categorization tags")
@@ -38,7 +40,7 @@ class WorkflowRuleItem(BaseModel):
     updated_at: StrictStr = Field(description="ISO timestamp of when the object was last updated")
     endpoint: StrictStr
     input_type: WorkflowRuleInputType
-    __properties: ClassVar[List[str]] = ["id", "name", "description", "tags", "updated_by", "created_by", "created_at", "updated_at", "endpoint", "input_type"]
+    __properties: ClassVar[List[str]] = ["id", "edit_revision", "name", "description", "tags", "updated_by", "created_by", "created_at", "updated_at", "endpoint", "input_type"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -92,6 +94,7 @@ class WorkflowRuleItem(BaseModel):
 
         _obj = cls.model_validate({
             "id": obj.get("id"),
+            "edit_revision": obj.get("edit_revision"),
             "name": obj.get("name"),
             "description": obj.get("description"),
             "tags": obj.get("tags"),

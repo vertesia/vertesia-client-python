@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.column_layout import ColumnLayout
 from vertesia_client.openapi.models.content_object_type_status import ContentObjectTypeStatus
 from vertesia_client.openapi.models.content_type_editing_policy import ContentTypeEditingPolicy
@@ -47,8 +48,9 @@ class ContentObjectTypeCatalogEntry(BaseModel):
     created_by: Optional[StrictStr] = None
     created_at: Optional[StrictStr] = None
     updated_at: Optional[StrictStr] = None
+    edit_revision: Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=1)]] = Field(default=None, description="Stored-resource revision. Omitted for app-contributed in-code types.")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["id", "name", "description", "tags", "object_schema", "table_layout", "is_chunkable", "strict_mode", "status", "intake", "editing", "title", "updated_by", "created_by", "created_at", "updated_at"]
+    __properties: ClassVar[List[str]] = ["id", "name", "description", "tags", "object_schema", "table_layout", "is_chunkable", "strict_mode", "status", "intake", "editing", "title", "updated_by", "created_by", "created_at", "updated_at", "edit_revision"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -136,7 +138,8 @@ class ContentObjectTypeCatalogEntry(BaseModel):
             "updated_by": obj.get("updated_by"),
             "created_by": obj.get("created_by"),
             "created_at": obj.get("created_at"),
-            "updated_at": obj.get("updated_at")
+            "updated_at": obj.get("updated_at"),
+            "edit_revision": obj.get("edit_revision")
         })
         # store additional fields in additional_properties
         for _key in obj.keys():

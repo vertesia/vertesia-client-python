@@ -1604,6 +1604,7 @@ class ProcessesApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "ProcessDefinition",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -1681,6 +1682,7 @@ class ProcessesApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "ProcessDefinition",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -1758,6 +1760,7 @@ class ProcessesApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "ProcessDefinition",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -1915,6 +1918,7 @@ class ProcessesApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "ProcessDefinition",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -1992,6 +1996,7 @@ class ProcessesApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "ProcessDefinition",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -2069,6 +2074,7 @@ class ProcessesApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "ProcessDefinition",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -2184,7 +2190,7 @@ class ProcessesApi:
     ) -> ProcessDefinition:
         """Update a process definition
 
-        Updates the latest draft revision in place when the current head is a draft. Updating a published head forks a new latest draft revision while keeping the published revision immutable.  **Required permissions:** `workflow:admin`
+        Updates the latest draft revision in place when the current head is a draft. Updating a published head forks a new latest draft revision while keeping the published revision immutable. The processId must identify the current head; non-head revisions are rejected with HTTP 400 and the response identifies the head to update.  **Required permissions:** `workflow:admin`
 
         :param process_id: (required)
         :type process_id: str
@@ -2226,6 +2232,7 @@ class ProcessesApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "ProcessDefinition",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -2261,7 +2268,7 @@ class ProcessesApi:
     ) -> ApiResponse[ProcessDefinition]:
         """Update a process definition
 
-        Updates the latest draft revision in place when the current head is a draft. Updating a published head forks a new latest draft revision while keeping the published revision immutable.  **Required permissions:** `workflow:admin`
+        Updates the latest draft revision in place when the current head is a draft. Updating a published head forks a new latest draft revision while keeping the published revision immutable. The processId must identify the current head; non-head revisions are rejected with HTTP 400 and the response identifies the head to update.  **Required permissions:** `workflow:admin`
 
         :param process_id: (required)
         :type process_id: str
@@ -2303,6 +2310,7 @@ class ProcessesApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "ProcessDefinition",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -2338,7 +2346,7 @@ class ProcessesApi:
     ) -> RESTResponseType:
         """Update a process definition
 
-        Updates the latest draft revision in place when the current head is a draft. Updating a published head forks a new latest draft revision while keeping the published revision immutable.  **Required permissions:** `workflow:admin`
+        Updates the latest draft revision in place when the current head is a draft. Updating a published head forks a new latest draft revision while keeping the published revision immutable. The processId must identify the current head; non-head revisions are rejected with HTTP 400 and the response identifies the head to update.  **Required permissions:** `workflow:admin`
 
         :param process_id: (required)
         :type process_id: str
@@ -2380,6 +2388,7 @@ class ProcessesApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "ProcessDefinition",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }

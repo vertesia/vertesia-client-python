@@ -20,39 +20,34 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
-from vertesia_client.openapi.models.workflow_rule_input_type import WorkflowRuleInputType
+from vertesia_client.openapi.models.dsl_activity_options import DSLActivityOptions
+from vertesia_client.openapi.models.dsl_activity_spec import DSLActivitySpec
+from vertesia_client.openapi.models.dsl_workflow_step import DSLWorkflowStep
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class UpdateWorkflowRulePayload(BaseModel):
+class UpdateWorkflowDefinitionPayloadWithSteps(BaseModel):
     """
-    Fields to change on a workflow rule. All optional.
+    UpdateWorkflowDefinitionPayloadWithSteps
     """ # noqa: E501
+    name: StrictStr
+    description: Optional[StrictStr] = None
+    tags: Optional[List[StrictStr]] = None
+    vars: Dict[str, Any]
+    options: Optional[DSLActivityOptions] = None
+    result: Optional[StrictStr] = None
+    debug_mode: Optional[StrictBool] = None
     expected_edit_revision: Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=1)]] = Field(default=None, description="Edit revision returned by the last read. Stale revisions are rejected with HTTP 409. Omit for legacy last-write-wins behavior.")
-    match: Optional[Dict[str, Any]] = None
-    config: Optional[Dict[str, Any]] = Field(default=None, description="Activities configuration if any.")
-    debug: Optional[StrictBool] = Field(default=False, description="Debug mode for the rule")
-    customer_override: Optional[StrictBool] = Field(default=None, description="Customer override for the rule When set to true the rule will not be updated by the system")
-    task_queue: Optional[StrictStr] = Field(default=None, description="Optional task queue name to use when starting workflows for this rule")
-    event_subscription_migration_status: Optional[StrictStr] = Field(default=None, description="Event subscription migration status for legacy workflow-rule cutover.")
-    event_subscription_migration_error: Optional[StrictStr] = Field(default=None, description="Migration failure or unsupported-match reason, when applicable.")
-    input_type: Optional[WorkflowRuleInputType] = None
-    description: Optional[StrictStr] = Field(default=None, description="Optional detailed description of the object")
-    tags: Optional[List[StrictStr]] = Field(default=None, description="Optional array of categorization tags")
-    updated_by: Optional[StrictStr] = Field(default=None, description="Identifier of the user who last modified the object")
-    created_by: Optional[StrictStr] = Field(default=None, description="Identifier of the user who created the object")
-    endpoint: Optional[StrictStr] = None
-    name: Optional[StrictStr] = Field(default=None, description="Human-readable name or title")
+    steps: List[DSLWorkflowStep]
+    activities: Optional[List[DSLActivitySpec]] = Field(default=None, description="Deprecated: use steps instead")
+    spec_format: StrictStr
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["expected_edit_revision", "match", "config", "debug", "customer_override", "task_queue", "event_subscription_migration_status", "event_subscription_migration_error", "input_type", "description", "tags", "updated_by", "created_by", "endpoint", "name"]
+    __properties: ClassVar[List[str]] = ["name", "description", "tags", "vars", "options", "result", "debug_mode", "expected_edit_revision", "steps", "activities", "spec_format"]
 
-    @field_validator('event_subscription_migration_status')
-    def event_subscription_migration_status_validate_enum(cls, value):
+    @field_validator('spec_format')
+    def spec_format_validate_enum(cls, value):
         """Validates the enum"""
-        if value is None:
-            return value
-
         return value
 
     model_config = ConfigDict(
@@ -73,7 +68,7 @@ class UpdateWorkflowRulePayload(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of UpdateWorkflowRulePayload from a JSON string"""
+        """Create an instance of UpdateWorkflowDefinitionPayloadWithSteps from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -96,6 +91,23 @@ class UpdateWorkflowRulePayload(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of options
+        if self.options:
+            _dict['options'] = self.options.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of each item in steps (list)
+        _items = []
+        if self.steps:
+            for _item_steps in self.steps:
+                if _item_steps:
+                    _items.append(_item_steps.to_dict())
+            _dict['steps'] = _items
+        # override the default output from pydantic by calling `to_dict()` of each item in activities (list)
+        _items = []
+        if self.activities:
+            for _item_activities in self.activities:
+                if _item_activities:
+                    _items.append(_item_activities.to_dict())
+            _dict['activities'] = _items
         # puts key-value pairs in additional_properties in the top level
         if self.additional_properties is not None:
             for _key, _value in self.additional_properties.items():
@@ -105,7 +117,7 @@ class UpdateWorkflowRulePayload(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of UpdateWorkflowRulePayload from a dict"""
+        """Create an instance of UpdateWorkflowDefinitionPayloadWithSteps from a dict"""
         if obj is None:
             return None
 
@@ -113,21 +125,17 @@ class UpdateWorkflowRulePayload(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "expected_edit_revision": obj.get("expected_edit_revision"),
-            "match": obj.get("match"),
-            "config": obj.get("config"),
-            "debug": obj.get("debug") if obj.get("debug") is not None else False,
-            "customer_override": obj.get("customer_override"),
-            "task_queue": obj.get("task_queue"),
-            "event_subscription_migration_status": obj.get("event_subscription_migration_status"),
-            "event_subscription_migration_error": obj.get("event_subscription_migration_error"),
-            "input_type": obj.get("input_type"),
+            "name": obj.get("name"),
             "description": obj.get("description"),
             "tags": obj.get("tags"),
-            "updated_by": obj.get("updated_by"),
-            "created_by": obj.get("created_by"),
-            "endpoint": obj.get("endpoint"),
-            "name": obj.get("name")
+            "vars": obj.get("vars"),
+            "options": DSLActivityOptions.from_dict(obj["options"]) if obj.get("options") is not None else None,
+            "result": obj.get("result"),
+            "debug_mode": obj.get("debug_mode"),
+            "expected_edit_revision": obj.get("expected_edit_revision"),
+            "steps": [DSLWorkflowStep.from_dict(_item) for _item in obj["steps"]] if obj.get("steps") is not None else None,
+            "activities": [DSLActivitySpec.from_dict(_item) for _item in obj["activities"]] if obj.get("activities") is not None else None,
+            "spec_format": obj.get("spec_format")
         })
         # store additional fields in additional_properties
         for _key in obj.keys():

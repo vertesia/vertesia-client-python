@@ -17,27 +17,23 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional, Union
-from typing_extensions import Annotated
-from vertesia_client.openapi.models.process_definition_body import ProcessDefinitionBody
-from vertesia_client.openapi.models.process_definition_status import ProcessDefinitionStatus
+from pydantic import BaseModel, ConfigDict, StrictStr
+from typing import Any, ClassVar, Dict, Optional
+from vertesia_client.openapi.models.interaction_prompt_segment_input_template import InteractionPromptSegmentInputTemplate
+from vertesia_client.openapi.models.prompt_segment_def_type import PromptSegmentDefType
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class UpdateProcessDefinitionPayload(BaseModel):
+class InteractionPromptSegmentInput(BaseModel):
     """
-    UpdateProcessDefinitionPayload
+    InteractionPromptSegmentInput
     """ # noqa: E501
-    expected_edit_revision: Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=1)]] = Field(default=None, description="Edit revision returned by the last read. Stale revisions are rejected with HTTP 409. Omit for legacy last-write-wins behavior.")
-    name: Optional[StrictStr] = None
-    description: Optional[StrictStr] = None
-    status: Optional[ProcessDefinitionStatus] = Field(default=None, description="Deprecated: Status is server-owned. Use publish/archive endpoints instead of updating it directly.")
-    version: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Deprecated: Version is server-owned. Use the publish endpoint to create the next version.")
-    tags: Optional[List[StrictStr]] = None
-    definition: Optional[ProcessDefinitionBody] = None
-    __properties: ClassVar[List[str]] = ["expected_edit_revision", "name", "description", "status", "version", "tags", "definition"]
+    id: Optional[StrictStr] = None
+    type: PromptSegmentDefType
+    template: Optional[InteractionPromptSegmentInputTemplate] = None
+    configuration: Optional[Any] = None
+    __properties: ClassVar[List[str]] = ["id", "type", "template", "configuration"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -57,7 +53,7 @@ class UpdateProcessDefinitionPayload(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of UpdateProcessDefinitionPayload from a JSON string"""
+        """Create an instance of InteractionPromptSegmentInput from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -78,14 +74,19 @@ class UpdateProcessDefinitionPayload(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of definition
-        if self.definition:
-            _dict['definition'] = self.definition.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of template
+        if self.template:
+            _dict['template'] = self.template.to_dict()
+        # set to None if configuration (nullable) is None
+        # and model_fields_set contains the field
+        if self.configuration is None and "configuration" in self.model_fields_set:
+            _dict['configuration'] = None
+
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of UpdateProcessDefinitionPayload from a dict"""
+        """Create an instance of InteractionPromptSegmentInput from a dict"""
         if obj is None:
             return None
 
@@ -93,13 +94,10 @@ class UpdateProcessDefinitionPayload(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "expected_edit_revision": obj.get("expected_edit_revision"),
-            "name": obj.get("name"),
-            "description": obj.get("description"),
-            "status": obj.get("status"),
-            "version": obj.get("version"),
-            "tags": obj.get("tags"),
-            "definition": ProcessDefinitionBody.from_dict(obj["definition"]) if obj.get("definition") is not None else None
+            "id": obj.get("id"),
+            "type": obj.get("type"),
+            "template": InteractionPromptSegmentInputTemplate.from_dict(obj["template"]) if obj.get("template") is not None else None,
+            "configuration": obj.get("configuration")
         })
         return _obj
 

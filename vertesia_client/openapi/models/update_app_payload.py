@@ -23,7 +23,7 @@ from typing_extensions import Annotated
 from vertesia_client.openapi.models.app_access_control import AppAccessControl
 from vertesia_client.openapi.models.app_capabilities import AppCapabilities
 from vertesia_client.openapi.models.app_manifest_preview_screenshot import AppManifestPreviewScreenshot
-from vertesia_client.openapi.models.app_manifest_source import AppManifestSource
+from vertesia_client.openapi.models.app_source_config import AppSourceConfig
 from vertesia_client.openapi.models.app_ui_config import AppUIConfig
 from vertesia_client.openapi.models.json_schema import JSONSchema
 from vertesia_client.openapi.models.mcpo_auth_config import MCPOAuthConfig
@@ -32,11 +32,10 @@ from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class AppManifest(BaseModel):
+class UpdateAppPayload(BaseModel):
     """
-    AppManifest
+    UpdateAppPayload
     """ # noqa: E501
-    edit_revision: Annotated[int, Field(le=9007199254740991, strict=True, ge=1)] = Field(description="Monotonic edit revision used to detect concurrent updates.")
     name: StrictStr = Field(description="The name of the app, used as the id in the system. Must be in kebab case (e.g. my-app).")
     visibility: StrictStr = Field(description="Visibility level of the app: - \"public\": visible to all accounts - \"private\": visible only to the owning account - \"vertesia\": visible only to Vertesia team members (any project)")
     title: StrictStr
@@ -55,15 +54,12 @@ class AppManifest(BaseModel):
     endpoint: Optional[StrictStr] = Field(default=None, description="The app endpoint URL This URL should return a JSON object describing the contributions provided by the app. The object shape must satisfies AppPackage interface. The endpoint must support GET method and a `scope` parameter to filter which resources are included in the returned AppPackage: The supported scope values are: - ui - tools - interactions - types - processes - templates - dashboards - settings - all (the default if no scope is provided)  You can also use comma-separated values to combine scopes (e.g. \"ui,tools\").  Example: - ?scope=ui,tools - returns only the UI configuration")
     endpoint_overrides: Optional[Dict[str, StrictStr]] = Field(default=None, description="Optional endpoint overrides keyed by environment name. When resolving the app endpoint, if the current environment name matches a key, the corresponding URL is used instead of the main `endpoint`. Only dev environment names are allowed as keys (starting with \"desktop-\" or \"dev-\").")
     version: Optional[StrictStr] = Field(default=None, description="Optional app version string (e.g. \"1.0.0\") — informational.")
-    source: Optional[AppManifestSource] = Field(default=None, description="Source metadata for generated or synced app manifests.")
+    source: Optional[AppSourceConfig] = Field(default=None, description="Source repository configuration for apps generated and maintained through AppGen. Branches are mutable development lanes; immutable app versions record their exact source commit in AppVersionRecord.source_commit and AppVersionRecord.storage.source_git.")
     tags: Optional[List[StrictStr]] = Field(default=None, description="Free-form tags used for classification and filtering. Platform apps carry `\"system\"` so UIs can skip install/uninstall/manage-permission controls that don't apply to synthetic installations.")
     access_control: Optional[AppAccessControl] = Field(default=None, description="Access control policy for the app. Defaults to 'all' (ACE-gated everywhere) when undefined. See  {@link  AppAccessControl }  for semantics. May be overridden on the AppInstallation.")
-    id: StrictStr
-    account: Optional[StrictStr] = Field(default=None, description="The owning account. Undefined for apps imported from a master region.")
-    created_at: StrictStr
-    updated_at: StrictStr
+    expected_edit_revision: Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=1)]] = Field(default=None, description="Edit revision returned by the last read. Stale revisions are rejected with HTTP 409. Omit for legacy last-write-wins behavior.")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["edit_revision", "name", "visibility", "title", "description", "publisher", "icon", "color", "preview_screenshot", "status", "ui", "tool_collections", "oauth_providers", "interactions", "settings_schema", "capabilities", "endpoint", "endpoint_overrides", "version", "source", "tags", "access_control", "id", "account", "created_at", "updated_at"]
+    __properties: ClassVar[List[str]] = ["name", "visibility", "title", "description", "publisher", "icon", "color", "preview_screenshot", "status", "ui", "tool_collections", "oauth_providers", "interactions", "settings_schema", "capabilities", "endpoint", "endpoint_overrides", "version", "source", "tags", "access_control", "expected_edit_revision"]
 
     @field_validator('visibility')
     def visibility_validate_enum(cls, value):
@@ -93,7 +89,7 @@ class AppManifest(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of AppManifest from a JSON string"""
+        """Create an instance of UpdateAppPayload from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -151,7 +147,7 @@ class AppManifest(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of AppManifest from a dict"""
+        """Create an instance of UpdateAppPayload from a dict"""
         if obj is None:
             return None
 
@@ -159,7 +155,6 @@ class AppManifest(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "edit_revision": obj.get("edit_revision"),
             "name": obj.get("name"),
             "visibility": obj.get("visibility"),
             "title": obj.get("title"),
@@ -183,13 +178,10 @@ class AppManifest(BaseModel):
             "endpoint": obj.get("endpoint"),
             "endpoint_overrides": obj.get("endpoint_overrides"),
             "version": obj.get("version"),
-            "source": AppManifestSource.from_dict(obj["source"]) if obj.get("source") is not None else None,
+            "source": AppSourceConfig.from_dict(obj["source"]) if obj.get("source") is not None else None,
             "tags": obj.get("tags"),
             "access_control": obj.get("access_control"),
-            "id": obj.get("id"),
-            "account": obj.get("account"),
-            "created_at": obj.get("created_at"),
-            "updated_at": obj.get("updated_at")
+            "expected_edit_revision": obj.get("expected_edit_revision")
         })
         # store additional fields in additional_properties
         for _key in obj.keys():

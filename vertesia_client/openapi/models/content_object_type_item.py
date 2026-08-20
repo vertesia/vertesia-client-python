@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.column_layout import ColumnLayout
 from vertesia_client.openapi.models.content_object_type_status import ContentObjectTypeStatus
 from vertesia_client.openapi.models.content_type_editing_policy import ContentTypeEditingPolicy
@@ -32,6 +33,7 @@ class ContentObjectTypeItem(BaseModel):
     ContentObjectTypeItem
     """ # noqa: E501
     id: StrictStr = Field(description="Unique identifier for the object")
+    edit_revision: Annotated[int, Field(le=9007199254740991, strict=True, ge=1)] = Field(description="Monotonic edit revision used to detect concurrent updates.")
     name: StrictStr = Field(description="Human-readable name or title")
     description: Optional[StrictStr] = Field(default=None, description="Optional detailed description of the object")
     tags: Optional[List[StrictStr]] = Field(default=None, description="Optional array of categorization tags")
@@ -46,7 +48,7 @@ class ContentObjectTypeItem(BaseModel):
     table_layout: Optional[List[ColumnLayout]] = Field(default=None, description="Column layout used when listing documents of this type. Only included in ContentObjectTypeItem if explicitly requested; always included in ContentObjectType.")
     object_schema: Optional[Dict[str, Any]] = Field(default=None, description="JSON Schema for the structured properties extracted into documents of this type. Only included in ContentObjectTypeItem if explicitly requested; always included in ContentObjectType.")
     strict_mode: Optional[StrictBool] = Field(default=None, description="Determines if the content will be validated against the object schema a generation time and save/update time.")
-    __properties: ClassVar[List[str]] = ["id", "name", "description", "tags", "updated_by", "created_by", "created_at", "updated_at", "status", "is_chunkable", "intake", "editing", "table_layout", "object_schema", "strict_mode"]
+    __properties: ClassVar[List[str]] = ["id", "edit_revision", "name", "description", "tags", "updated_by", "created_by", "created_at", "updated_at", "status", "is_chunkable", "intake", "editing", "table_layout", "object_schema", "strict_mode"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -113,6 +115,7 @@ class ContentObjectTypeItem(BaseModel):
 
         _obj = cls.model_validate({
             "id": obj.get("id"),
+            "edit_revision": obj.get("edit_revision"),
             "name": obj.get("name"),
             "description": obj.get("description"),
             "tags": obj.get("tags"),

@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.composite_app_card_overrides import CompositeAppCardOverrides
 from vertesia_client.openapi.models.composite_app_entry import CompositeAppEntry
 from vertesia_client.openapi.models.composite_app_header_item import CompositeAppHeaderItem
@@ -39,6 +40,7 @@ class CompositeAppConfig(BaseModel):
     """
     CompositeApp shell configuration. This is the main configuration interface for storing CompositeApp settings. Used as the MongoDB model for persisting CompositeApp configurations.
     """ # noqa: E501
+    edit_revision: Annotated[int, Field(le=9007199254740991, strict=True, ge=1)] = Field(description="Monotonic edit revision used to detect concurrent updates.")
     id: Optional[StrictStr] = Field(default=None, description="The unique identifier for this CompositeApp configuration Undefined if the configuration doesn't exists yet.")
     project: StrictStr = Field(description="The project this CompositeApp belongs to")
     card: Optional[CompositeAppCardOverrides] = Field(default=None, description="Card display overrides (includes visibility)")
@@ -53,7 +55,7 @@ class CompositeAppConfig(BaseModel):
     home_plugin: Optional[CompositeAppHomePlugin] = Field(default=None, description="Optional home page override. When set, redirects \"/\" to the specified app route instead of the dashboard. Send null to unset.", alias="homePlugin")
     apps: List[CompositeAppEntry] = Field(description="List of apps to include in the CompositeApp (used for installation tracking and fallback sidebar)")
     menu: Optional[List[CompositeAppMenuSection]] = Field(default=None, description="Optional sidebar menu. When present, the sidebar renders from this instead of the apps-based pipeline. Top-level array is sections; each section contains nav-items.")
-    __properties: ClassVar[List[str]] = ["id", "project", "card", "logo", "message", "switchers", "sidebar", "header", "userMenu", "headerMenu", "theme", "homePlugin", "apps", "menu"]
+    __properties: ClassVar[List[str]] = ["edit_revision", "id", "project", "card", "logo", "message", "switchers", "sidebar", "header", "userMenu", "headerMenu", "theme", "homePlugin", "apps", "menu"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -159,6 +161,7 @@ class CompositeAppConfig(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "edit_revision": obj.get("edit_revision"),
             "id": obj.get("id"),
             "project": obj.get("project"),
             "card": CompositeAppCardOverrides.from_dict(obj["card"]) if obj.get("card") is not None else None,

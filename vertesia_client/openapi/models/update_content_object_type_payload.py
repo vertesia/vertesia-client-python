@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.column_layout import ColumnLayout
 from vertesia_client.openapi.models.content_object_type_status import ContentObjectTypeStatus
 from vertesia_client.openapi.models.content_type_editing_policy import ContentTypeEditingPolicy
@@ -29,7 +30,7 @@ from pydantic_core import to_jsonable_python
 
 class UpdateContentObjectTypePayload(BaseModel):
     """
-    Fields to change on a content object type. Every field is optional — only the ones present are written, and the rest are left as they are.
+    Fields to change on a content object type. Only fields present are written; expected_edit_revision prevents overwriting a concurrent edit.
     """ # noqa: E501
     status: Optional[ContentObjectTypeStatus] = None
     is_chunkable: Optional[StrictBool] = Field(default=None, description="Whether documents of this type can be split into chunks")
@@ -41,8 +42,9 @@ class UpdateContentObjectTypePayload(BaseModel):
     name: Optional[StrictStr] = Field(default=None, description="Human-readable name or title")
     description: Optional[StrictStr] = Field(default=None, description="Optional detailed description of the object")
     tags: Optional[List[StrictStr]] = Field(default=None, description="Optional array of categorization tags")
+    expected_edit_revision: Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=1)]] = Field(default=None, description="Edit revision returned by the last read. Stale revisions are rejected with HTTP 409. Omit for legacy last-write-wins behavior.")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["status", "is_chunkable", "intake", "editing", "table_layout", "object_schema", "strict_mode", "name", "description", "tags"]
+    __properties: ClassVar[List[str]] = ["status", "is_chunkable", "intake", "editing", "table_layout", "object_schema", "strict_mode", "name", "description", "tags", "expected_edit_revision"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -124,7 +126,8 @@ class UpdateContentObjectTypePayload(BaseModel):
             "strict_mode": obj.get("strict_mode"),
             "name": obj.get("name"),
             "description": obj.get("description"),
-            "tags": obj.get("tags")
+            "tags": obj.get("tags"),
+            "expected_edit_revision": obj.get("expected_edit_revision")
         })
         # store additional fields in additional_properties
         for _key in obj.keys():

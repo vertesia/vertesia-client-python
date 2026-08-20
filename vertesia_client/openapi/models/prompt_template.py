@@ -20,6 +20,7 @@ import json
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.interaction_project import InteractionProject
 from vertesia_client.openapi.models.json_schema import JSONSchema
 from vertesia_client.openapi.models.prompt_role import PromptRole
@@ -41,6 +42,7 @@ class PromptTemplate(BaseModel):
     name: StrictStr
     status: PromptStatus
     version: Union[StrictFloat, StrictInt]
+    edit_revision: Annotated[int, Field(le=9007199254740991, strict=True, ge=1)] = Field(description="Monotonic edit revision used to detect concurrent updates.")
     parent: Optional[StrictStr] = None
     description: Optional[StrictStr] = None
     test_data: Optional[Dict[str, Any]] = None
@@ -52,7 +54,7 @@ class PromptTemplate(BaseModel):
     updated_by: StrictStr
     created_at: datetime
     updated_at: datetime
-    __properties: ClassVar[List[str]] = ["role", "content", "content_type", "inputSchema", "id", "name", "status", "version", "parent", "description", "test_data", "script", "project", "tags", "last_published_at", "created_by", "updated_by", "created_at", "updated_at"]
+    __properties: ClassVar[List[str]] = ["role", "content", "content_type", "inputSchema", "id", "name", "status", "version", "edit_revision", "parent", "description", "test_data", "script", "project", "tags", "last_published_at", "created_by", "updated_by", "created_at", "updated_at"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -119,6 +121,7 @@ class PromptTemplate(BaseModel):
             "name": obj.get("name"),
             "status": obj.get("status"),
             "version": obj.get("version"),
+            "edit_revision": obj.get("edit_revision"),
             "parent": obj.get("parent"),
             "description": obj.get("description"),
             "test_data": obj.get("test_data"),

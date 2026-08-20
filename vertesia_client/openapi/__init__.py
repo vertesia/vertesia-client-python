@@ -618,6 +618,9 @@ __all__ = [
     "InteractionForkPayload",
     "InteractionName",
     "InteractionProject",
+    "InteractionPromptSegmentInput",
+    "InteractionPromptSegmentInputTemplate",
+    "InteractionPromptTemplateInput",
     "InteractionPublishPayload",
     "InteractionRef",
     "InteractionRefWithSchema",
@@ -965,6 +968,7 @@ __all__ = [
     "UpdateAgentArtifactContentResponse",
     "UpdateApiKeyPayload",
     "UpdateAppInstallationToolAllowlistPayload",
+    "UpdateAppPayload",
     "UpdateCollectionPayload",
     "UpdateContentObjectPayload",
     "UpdateContentObjectTypePayload",
@@ -985,6 +989,9 @@ __all__ = [
     "UpdateUserGroupPayload",
     "UpdateUserPayload",
     "UpdateViewExperienceRequest",
+    "UpdateWorkflowDefinitionPayload",
+    "UpdateWorkflowDefinitionPayloadWithActivities",
+    "UpdateWorkflowDefinitionPayloadWithSteps",
     "UpdateWorkflowRulePayload",
     "UpsertAppVersionRequest",
     "UsedSkill",
@@ -1718,6 +1725,9 @@ from vertesia_client.openapi.models.interaction_execution_result import Interact
 from vertesia_client.openapi.models.interaction_fork_payload import InteractionForkPayload as InteractionForkPayload
 from vertesia_client.openapi.models.interaction_name import InteractionName as InteractionName
 from vertesia_client.openapi.models.interaction_project import InteractionProject as InteractionProject
+from vertesia_client.openapi.models.interaction_prompt_segment_input import InteractionPromptSegmentInput as InteractionPromptSegmentInput
+from vertesia_client.openapi.models.interaction_prompt_segment_input_template import InteractionPromptSegmentInputTemplate as InteractionPromptSegmentInputTemplate
+from vertesia_client.openapi.models.interaction_prompt_template_input import InteractionPromptTemplateInput as InteractionPromptTemplateInput
 from vertesia_client.openapi.models.interaction_publish_payload import InteractionPublishPayload as InteractionPublishPayload
 from vertesia_client.openapi.models.interaction_ref import InteractionRef as InteractionRef
 from vertesia_client.openapi.models.interaction_ref_with_schema import InteractionRefWithSchema as InteractionRefWithSchema
@@ -2065,6 +2075,7 @@ from vertesia_client.openapi.models.update_agent_artifact_content_payload import
 from vertesia_client.openapi.models.update_agent_artifact_content_response import UpdateAgentArtifactContentResponse as UpdateAgentArtifactContentResponse
 from vertesia_client.openapi.models.update_api_key_payload import UpdateApiKeyPayload as UpdateApiKeyPayload
 from vertesia_client.openapi.models.update_app_installation_tool_allowlist_payload import UpdateAppInstallationToolAllowlistPayload as UpdateAppInstallationToolAllowlistPayload
+from vertesia_client.openapi.models.update_app_payload import UpdateAppPayload as UpdateAppPayload
 from vertesia_client.openapi.models.update_collection_payload import UpdateCollectionPayload as UpdateCollectionPayload
 from vertesia_client.openapi.models.update_content_object_payload import UpdateContentObjectPayload as UpdateContentObjectPayload
 from vertesia_client.openapi.models.update_content_object_type_payload import UpdateContentObjectTypePayload as UpdateContentObjectTypePayload
@@ -2085,6 +2096,9 @@ from vertesia_client.openapi.models.update_task_payload import UpdateTaskPayload
 from vertesia_client.openapi.models.update_user_group_payload import UpdateUserGroupPayload as UpdateUserGroupPayload
 from vertesia_client.openapi.models.update_user_payload import UpdateUserPayload as UpdateUserPayload
 from vertesia_client.openapi.models.update_view_experience_request import UpdateViewExperienceRequest as UpdateViewExperienceRequest
+from vertesia_client.openapi.models.update_workflow_definition_payload import UpdateWorkflowDefinitionPayload as UpdateWorkflowDefinitionPayload
+from vertesia_client.openapi.models.update_workflow_definition_payload_with_activities import UpdateWorkflowDefinitionPayloadWithActivities as UpdateWorkflowDefinitionPayloadWithActivities
+from vertesia_client.openapi.models.update_workflow_definition_payload_with_steps import UpdateWorkflowDefinitionPayloadWithSteps as UpdateWorkflowDefinitionPayloadWithSteps
 from vertesia_client.openapi.models.update_workflow_rule_payload import UpdateWorkflowRulePayload as UpdateWorkflowRulePayload
 from vertesia_client.openapi.models.upsert_app_version_request import UpsertAppVersionRequest as UpsertAppVersionRequest
 from vertesia_client.openapi.models.used_skill import UsedSkill as UsedSkill

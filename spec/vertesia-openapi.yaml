@@ -2710,6 +2710,11 @@ components:
     AppManifest:
       type: object
       properties:
+        edit_revision:
+          type: integer
+          minimum: 1
+          maximum: 9007199254740991
+          description: Monotonic edit revision used to detect concurrent updates.
         name:
           type: string
           description: The name of the app, used as the id in the system. Must be in kebab
@@ -2870,6 +2875,7 @@ components:
         updated_at:
           type: string
       required:
+        - edit_revision
         - name
         - visibility
         - title
@@ -6164,6 +6170,11 @@ components:
     CompositeAppConfig:
       type: object
       properties:
+        edit_revision:
+          type: integer
+          minimum: 1
+          maximum: 9007199254740991
+          description: Monotonic edit revision used to detect concurrent updates.
         id:
           type: string
           description: The unique identifier for this CompositeApp configuration Undefined
@@ -6248,6 +6259,7 @@ components:
             instead of the apps-based pipeline. Top-level array is sections;
             each section contains nav-items.
       required:
+        - edit_revision
         - project
         - apps
       additionalProperties: false
@@ -6257,6 +6269,12 @@ components:
     CompositeAppConfigPayload:
       type: object
       properties:
+        expected_edit_revision:
+          type: integer
+          minimum: 1
+          maximum: 9007199254740991
+          description: Edit revision returned by the last read. Stale revisions are
+            rejected with HTTP 409. Omit for legacy last-write-wins behavior.
         card:
           $ref: "#/components/schemas/CompositeAppCardOverrides"
           description: Card display overrides (includes visibility)
@@ -7147,6 +7165,11 @@ components:
         id:
           type: string
           description: Unique identifier for the object
+        edit_revision:
+          type: integer
+          minimum: 1
+          maximum: 9007199254740991
+          description: Monotonic edit revision used to detect concurrent updates.
         name:
           type: string
           description: Human-readable name or title
@@ -7198,6 +7221,7 @@ components:
             schema a generation time and save/update time.
       required:
         - id
+        - edit_revision
         - name
         - updated_by
         - created_by
@@ -7262,6 +7286,11 @@ components:
           type: string
         updated_at:
           type: string
+        edit_revision:
+          type: integer
+          minimum: 1
+          maximum: 9007199254740991
+          description: Stored-resource revision. Omitted for app-contributed in-code types.
       required:
         - id
         - name
@@ -7276,6 +7305,11 @@ components:
         id:
           type: string
           description: Unique identifier for the object
+        edit_revision:
+          type: integer
+          minimum: 1
+          maximum: 9007199254740991
+          description: Monotonic edit revision used to detect concurrent updates.
         name:
           type: string
           description: Human-readable name or title
@@ -7327,6 +7361,7 @@ components:
             schema a generation time and save/update time.
       required:
         - id
+        - edit_revision
         - name
         - updated_by
         - created_by
@@ -9667,6 +9702,11 @@ components:
         id:
           type: string
           description: Unique identifier for the object
+        edit_revision:
+          type: integer
+          minimum: 1
+          maximum: 9007199254740991
+          description: Monotonic edit revision used to detect concurrent updates.
         updated_by:
           type: string
           description: Identifier of the user who last modified the object
@@ -9691,6 +9731,7 @@ components:
         - name
         - vars
         - id
+        - edit_revision
         - updated_by
         - created_by
         - created_at
@@ -9807,6 +9848,11 @@ components:
         id:
           type: string
           description: Unique identifier for the object
+        edit_revision:
+          type: integer
+          minimum: 1
+          maximum: 9007199254740991
+          description: Monotonic edit revision used to detect concurrent updates.
         name:
           type: string
           description: Human-readable name or title
@@ -9931,6 +9977,7 @@ components:
           description: URL of last rendered image
       required:
         - id
+        - edit_revision
         - name
         - tags
         - updated_by
@@ -10078,6 +10125,11 @@ components:
         id:
           type: string
           description: Unique identifier for the object
+        edit_revision:
+          type: integer
+          minimum: 1
+          maximum: 9007199254740991
+          description: Monotonic edit revision used to detect concurrent updates.
         name:
           type: string
           description: Human-readable name or title
@@ -10130,6 +10182,7 @@ components:
           description: App dashboards are read-only until cloned into a stored dashboard.
       required:
         - id
+        - edit_revision
         - name
         - tags
         - updated_by
@@ -14947,6 +15000,11 @@ components:
       properties:
         id:
           type: string
+        edit_revision:
+          type: integer
+          minimum: 1
+          maximum: 9007199254740991
+          description: Monotonic edit revision used to detect concurrent updates.
         name:
           type: string
         endpoint:
@@ -15020,6 +15078,7 @@ components:
           format: date-time
       required:
         - id
+        - edit_revision
         - name
         - endpoint
         - project
@@ -15049,7 +15108,7 @@ components:
         prompts:
           type: array
           items:
-            $ref: "#/components/schemas/PromptSegmentDef"
+            $ref: "#/components/schemas/InteractionPromptSegmentInput"
         last_published_at:
           type: string
           format: date-time
@@ -15422,6 +15481,90 @@ components:
       type: array
       items:
         $ref: "#/components/schemas/InteractionName"
+    InteractionPromptSegmentInput:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          $ref: "#/components/schemas/PromptSegmentDefType"
+        template:
+          anyOf:
+            - type: string
+            - $ref: "#/components/schemas/PromptTemplate"
+            - $ref: "#/components/schemas/InteractionPromptTemplateInput"
+            - $ref: "#/components/schemas/PromptTemplateRef"
+        configuration: {}
+      required:
+        - type
+      additionalProperties: false
+    InteractionPromptTemplateInput:
+      type: object
+      properties:
+        role:
+          $ref: "#/components/schemas/PromptRole"
+        content:
+          type: string
+        content_type:
+          $ref: "#/components/schemas/TemplateType"
+        inputSchema:
+          $ref: "#/components/schemas/JSONSchema"
+        id:
+          type: string
+        name:
+          type: string
+        status:
+          $ref: "#/components/schemas/PromptStatus"
+        version:
+          type: number
+        edit_revision:
+          type: integer
+          minimum: 1
+          maximum: 9007199254740991
+          description: Monotonic edit revision used to detect concurrent updates.
+        parent:
+          type: string
+        description:
+          type: string
+        test_data:
+          $ref: "#/components/schemas/JSONObject"
+        script:
+          type: string
+        project:
+          anyOf:
+            - type: string
+            - $ref: "#/components/schemas/ProjectRef"
+        tags:
+          type: array
+          items:
+            type: string
+        last_published_at:
+          type: string
+          format: date-time
+        created_by:
+          type: string
+        updated_by:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - role
+        - content
+        - content_type
+        - id
+        - name
+        - status
+        - version
+        - project
+        - created_by
+        - updated_by
+        - created_at
+        - updated_at
+      additionalProperties: false
     InteractionPublishPayload:
       type: object
       properties:
@@ -15622,6 +15765,12 @@ components:
     InteractionUpdatePayload:
       type: object
       properties:
+        expected_edit_revision:
+          type: integer
+          minimum: 1
+          maximum: 9007199254740991
+          description: Edit revision returned by the last read. Stale revisions are
+            rejected with HTTP 409. Omit for legacy last-write-wins behavior.
         status:
           $ref: "#/components/schemas/InteractionStatus"
         parent:
@@ -15641,7 +15790,7 @@ components:
         prompts:
           type: array
           items:
-            $ref: "#/components/schemas/PromptSegmentDef"
+            $ref: "#/components/schemas/InteractionPromptSegmentInput"
         last_published_at:
           type: string
           format: date-time
@@ -18008,6 +18157,11 @@ components:
       properties:
         id:
           type: string
+        edit_revision:
+          type: integer
+          minimum: 1
+          maximum: 9007199254740991
+          description: Monotonic edit revision used to detect concurrent updates.
         account:
           type: string
         project:
@@ -18040,6 +18194,7 @@ components:
           type: string
       required:
         - id
+        - edit_revision
         - account
         - project
         - name
@@ -19224,6 +19379,11 @@ components:
           $ref: "#/components/schemas/PromptStatus"
         version:
           type: number
+        edit_revision:
+          type: integer
+          minimum: 1
+          maximum: 9007199254740991
+          description: Monotonic edit revision used to detect concurrent updates.
         parent:
           type: string
         description:
@@ -19261,6 +19421,7 @@ components:
         - name
         - status
         - version
+        - edit_revision
         - project
         - created_by
         - updated_by
@@ -19418,6 +19579,12 @@ components:
         last_published_at:
           type: string
           format: date-time
+        expected_edit_revision:
+          type: integer
+          minimum: 1
+          maximum: 9007199254740991
+          description: Edit revision returned by the last read. Stale revisions are
+            rejected with HTTP 409. Omit for legacy last-write-wins behavior.
       additionalProperties: false
     PropertyConditionValue:
       description: A single condition value. Resolved and evaluated dynamically by
@@ -22531,6 +22698,177 @@ components:
       required:
         - tool_allowlist
       additionalProperties: false
+    UpdateAppPayload:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the app, used as the id in the system. Must be in kebab
+            case (e.g. my-app).
+        visibility:
+          type: string
+          enum:
+            - public
+            - private
+            - vertesia
+          description: |-
+            Visibility level of the app:
+            - "public": visible to all accounts
+            - "private": visible only to the owning account
+            - "vertesia": visible only to Vertesia team members (any project)
+        title:
+          type: string
+        description:
+          type: string
+        publisher:
+          type: string
+        icon:
+          type: string
+          description: A svg icon for the app.
+        color:
+          type: string
+          description: A color name to be used as the color of the app card (e.g. blue,
+            red, green, etc.) If not specified a random color will be picked.
+        preview_screenshot:
+          type: object
+          properties:
+            agent_run_id:
+              type: string
+              description: Agent run id whose artifact storage holds the screenshot.
+            artifact:
+              type: string
+              description: Artifact path within that storage, e.g.
+                "preview-checks/app-preview-<ts>.png".
+          required:
+            - agent_run_id
+            - artifact
+          additionalProperties: false
+          description: Optional preview screenshot for the app-management UI, captured by
+            the builder during a build/QA run. Resolved client-side from the
+            owning agent run's artifact storage, so it carries both the run id
+            and the artifact path.
+        status:
+          type: string
+          enum:
+            - beta
+            - stable
+            - deprecated
+        ui:
+          $ref: "#/components/schemas/AppUIConfig"
+          description: The UI configuration of the app. If not specified and the app "ui"
+            is in the app capabilities then the ui configuration will be fetched
+            from the endpoint property.
+        tool_collections:
+          type: array
+          items:
+            $ref: "#/components/schemas/ToolCollectionObject"
+          description: A list of tool collections endpoints to be used by this app. Prefer
+            using endpoint over tool_collections.
+        oauth_providers:
+          $ref: "#/components/schemas/MCPOAuthConfigMap"
+          description: Named OAuth providers shared across multiple MCP tool collections.
+            Keys must be kebab-case identifiers. Each value is an MCPOAuthConfig
+            blueprint. Collections reference a provider via
+            MCPToolCollectionObject.oauth_provider. One OAuth provider is
+            created per provider at install time; all referencing collections
+            share that app via AppInstallation.provider_bindings.
+        interactions:
+          type: string
+          description: "An URL providing interactions definitions in JSON format. The URL
+            must provide 2 endpoints: 1. GET URL - must return a JSON array with
+            the list of interactions (as AppInteractionRef[]) 2. GET
+            URL/{interaction_name} - must return the full interaction definition
+            for the specified interaction. This feature is for advanced
+            composition of interactions. Prefer using endpoint."
+        settings_schema:
+          deprecated: true
+          x-deprecated-message: Use endpoint to provide settings_schema instead
+          $ref: "#/components/schemas/JSONSchema"
+          description: |-
+            A JSON chema for the app installation settings.
+
+            Deprecated: Use endpoint to provide settings_schema instead
+        capabilities:
+          type: array
+          items:
+            $ref: "#/components/schemas/AppCapabilities"
+          description: Describe the capabiltities of this app - which kind of
+            contributions it provides.
+        endpoint:
+          type: string
+          description: >-
+            The app endpoint URL This URL should return a JSON object describing
+            the contributions provided by the app. The object shape must
+            satisfies AppPackage interface. The endpoint must support GET method
+            and a `scope` parameter to filter which resources are included in
+            the returned AppPackage: The supported scope values are:
+
+            - ui
+
+            - tools
+
+            - interactions
+
+            - types
+
+            - processes
+
+            - templates
+
+            - dashboards
+
+            - settings
+
+            - all (the default if no scope is provided)  You can also use
+            comma-separated values to combine scopes (e.g. "ui,tools").
+
+
+            Example:
+
+            - ?scope=ui,tools - returns only the UI configuration
+        endpoint_overrides:
+          $ref: "#/components/schemas/StringValueMap"
+          description: Optional endpoint overrides keyed by environment name. When
+            resolving the app endpoint, if the current environment name matches
+            a key, the corresponding URL is used instead of the main `endpoint`.
+            Only dev environment names are allowed as keys (starting with
+            "desktop-" or "dev-").
+        version:
+          type: string
+          description: Optional app version string (e.g. "1.0.0") — informational.
+        source:
+          $ref: "#/components/schemas/AppSourceConfig"
+          description: Source repository configuration for apps generated and maintained
+            through AppGen. Branches are mutable development lanes; immutable
+            app versions record their exact source commit in
+            AppVersionRecord.source_commit and
+            AppVersionRecord.storage.source_git.
+        tags:
+          type: array
+          items:
+            type: string
+          description: Free-form tags used for classification and filtering. Platform apps
+            carry `"system"` so UIs can skip install/uninstall/manage-permission
+            controls that don't apply to synthetic installations.
+        access_control:
+          $ref: "#/components/schemas/AppAccessControl"
+          description: Access control policy for the app. Defaults to 'all' (ACE-gated
+            everywhere) when undefined. See  {@link  AppAccessControl }  for
+            semantics. May be overridden on the AppInstallation.
+        expected_edit_revision:
+          type: integer
+          minimum: 1
+          maximum: 9007199254740991
+          description: Edit revision returned by the last read. Stale revisions are
+            rejected with HTTP 409. Omit for legacy last-write-wins behavior.
+      required:
+        - name
+        - visibility
+        - title
+        - description
+        - publisher
+        - status
+      additionalProperties: false
     UpdateCollectionPayload:
       type: object
       properties:
@@ -22764,9 +23102,15 @@ components:
           items:
             type: string
           description: Optional array of categorization tags
+        expected_edit_revision:
+          type: integer
+          minimum: 1
+          maximum: 9007199254740991
+          description: Edit revision returned by the last read. Stale revisions are
+            rejected with HTTP 409. Omit for legacy last-write-wins behavior.
       additionalProperties: false
-      description: Fields to change on a content object type. Every field is optional
-        — only the ones present are written, and the rest are left as they are.
+      description: Fields to change on a content object type. Only fields present are
+        written; expected_edit_revision prevents overwriting a concurrent edit.
     UpdateDashboardPayload:
       type: object
       properties:
@@ -22794,6 +23138,12 @@ components:
           additionalProperties: true
           description: Complete Vega-Lite specification (use vconcat/hconcat for multiple
             panels)
+        expected_edit_revision:
+          type: integer
+          minimum: 1
+          maximum: 9007199254740991
+          description: Edit revision returned by the last read. Stale revisions are
+            rejected with HTTP 409. Omit for legacy last-write-wins behavior.
         skip_versioning:
           type: boolean
           description: Skip auto-version creation
@@ -23036,6 +23386,12 @@ components:
     UpdateProcessDefinitionPayload:
       type: object
       properties:
+        expected_edit_revision:
+          type: integer
+          minimum: 1
+          maximum: 9007199254740991
+          description: Edit revision returned by the last read. Stale revisions are
+            rejected with HTTP 409. Omit for legacy last-write-wins behavior.
         name:
           type: string
         description:
@@ -23324,9 +23680,117 @@ components:
         - revision
       additionalProperties: false
       description: PUT uses full replacement so omitted optional configuration is removed.
+    UpdateWorkflowDefinitionPayload:
+      oneOf:
+        - $ref: "#/components/schemas/UpdateWorkflowDefinitionPayloadWithSteps"
+        - $ref: "#/components/schemas/UpdateWorkflowDefinitionPayloadWithActivities"
+      discriminator:
+        propertyName: spec_format
+        mapping:
+          steps: "#/components/schemas/UpdateWorkflowDefinitionPayloadWithSteps"
+          activities: "#/components/schemas/UpdateWorkflowDefinitionPayloadWithActivities"
+      type: object
+      required:
+        - spec_format
+    UpdateWorkflowDefinitionPayloadWithActivities:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        vars:
+          type: object
+          additionalProperties: true
+        options:
+          $ref: "#/components/schemas/DSLActivityOptions"
+        result:
+          type: string
+        debug_mode:
+          type: boolean
+        expected_edit_revision:
+          type: integer
+          minimum: 1
+          maximum: 9007199254740991
+          description: Edit revision returned by the last read. Stale revisions are
+            rejected with HTTP 409. Omit for legacy last-write-wins behavior.
+        steps:
+          type: array
+          items:
+            $ref: "#/components/schemas/DSLWorkflowStep"
+        activities:
+          type: array
+          items:
+            $ref: "#/components/schemas/DSLActivitySpec"
+          deprecated: true
+          x-deprecated-message: use steps instead
+          description: "Deprecated: use steps instead"
+        spec_format:
+          type: string
+          const: activities
+      required:
+        - name
+        - vars
+        - activities
+        - spec_format
+    UpdateWorkflowDefinitionPayloadWithSteps:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        vars:
+          type: object
+          additionalProperties: true
+        options:
+          $ref: "#/components/schemas/DSLActivityOptions"
+        result:
+          type: string
+        debug_mode:
+          type: boolean
+        expected_edit_revision:
+          type: integer
+          minimum: 1
+          maximum: 9007199254740991
+          description: Edit revision returned by the last read. Stale revisions are
+            rejected with HTTP 409. Omit for legacy last-write-wins behavior.
+        steps:
+          type: array
+          items:
+            $ref: "#/components/schemas/DSLWorkflowStep"
+        activities:
+          type: array
+          items:
+            $ref: "#/components/schemas/DSLActivitySpec"
+          deprecated: true
+          x-deprecated-message: use steps instead
+          description: "Deprecated: use steps instead"
+        spec_format:
+          type: string
+          const: steps
+      required:
+        - name
+        - vars
+        - steps
+        - spec_format
     UpdateWorkflowRulePayload:
       type: object
       properties:
+        expected_edit_revision:
+          type: integer
+          minimum: 1
+          maximum: 9007199254740991
+          description: Edit revision returned by the last read. Stale revisions are
+            rejected with HTTP 409. Omit for legacy last-write-wins behavior.
         match:
           type: object
           additionalProperties: true
@@ -25892,6 +26356,11 @@ components:
         id:
           type: string
           description: Unique identifier for the object
+        edit_revision:
+          type: integer
+          minimum: 1
+          maximum: 9007199254740991
+          description: Monotonic edit revision used to detect concurrent updates.
         name:
           type: string
           description: Human-readable name or title
@@ -25949,6 +26418,7 @@ components:
           description: Migration failure or unsupported-match reason, when applicable.
       required:
         - id
+        - edit_revision
         - name
         - updated_by
         - created_by
@@ -25969,6 +26439,11 @@ components:
         id:
           type: string
           description: Unique identifier for the object
+        edit_revision:
+          type: integer
+          minimum: 1
+          maximum: 9007199254740991
+          description: Monotonic edit revision used to detect concurrent updates.
         name:
           type: string
           description: Human-readable name or title
@@ -25998,6 +26473,7 @@ components:
           $ref: "#/components/schemas/WorkflowRuleInputType"
       required:
         - id
+        - edit_revision
         - name
         - updated_by
         - created_by
@@ -27678,6 +28154,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/CompositeAppConfig"
+        "409":
+          description: The composite app configuration was changed after the caller read it.
         "500":
           description: Internal server error.
           content:
@@ -29738,6 +30216,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Interaction"
+        "409":
+          description: The interaction was changed after the caller read it.
         "500":
           description: Internal server error.
           content:
@@ -29988,6 +30468,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Interaction"
+        "409":
+          description: The interaction or one of its prompts changed while publishing.
         "500":
           description: Internal server error.
           content:
@@ -30696,6 +31178,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PromptTemplate"
+        "409":
+          description: The prompt was changed after the caller read it.
         "500":
           description: Internal server error.
           content:
@@ -36301,6 +36785,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/AppManifest"
+        "409":
+          description: The app manifest was changed after the caller read it.
         "500":
           description: Internal server error.
           content:
@@ -36332,7 +36818,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/AppManifestData"
+              $ref: "#/components/schemas/UpdateAppPayload"
     delete:
       operationId: DeleteApp
       tags:
@@ -43614,7 +44100,9 @@ paths:
       description: >-
         Updates the latest draft revision in place when the current head is a
         draft. Updating a published head forks a new latest draft revision while
-        keeping the published revision immutable.
+        keeping the published revision immutable. The processId must identify
+        the current head; non-head revisions are rejected with HTTP 400 and the
+        response identifies the head to update.
 
 
         **Required permissions:** `workflow:admin`
@@ -43634,6 +44122,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ProcessDefinition"
+        "409":
+          description: The process definition was changed after the caller read it.
         "500":
           description: Internal server error.
           content:
@@ -43756,6 +44246,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ProcessDefinition"
+        "409":
+          description: The process definition changed while it was being published.
         "500":
           description: Internal server error.
           content:
@@ -43828,6 +44320,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ProcessDefinition"
+        "409":
+          description: The process definition changed while it was being reverted.
         "500":
           description: Internal server error.
           content:
@@ -46831,6 +47325,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ContentObjectType"
+        "409":
+          description: The content type was changed after the caller read it.
         "500":
           description: Internal server error.
           content:
@@ -47841,6 +48337,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/WorkflowRule"
+        "409":
+          description: The workflow rule was changed after the caller read it.
         "500":
           description: Internal server error.
           content:
@@ -48197,6 +48695,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/DSLWorkflowDefinitionResponse"
+        "409":
+          description: The workflow definition was changed after the caller read it.
         "500":
           description: Internal server error.
           content:
@@ -48228,7 +48728,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/WorkflowDefinitionPayload"
+              $ref: "#/components/schemas/UpdateWorkflowDefinitionPayload"
     delete:
       operationId: DeleteWorkflowDefinition
       tags:
@@ -53091,6 +53591,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Dashboard"
+        "409":
+          description: The dashboard was changed after the caller read it.
         "500":
           description: Internal server error.
           content:

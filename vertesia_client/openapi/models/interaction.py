@@ -20,6 +20,7 @@ import json
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.agent_runner_options import AgentRunnerOptions
 from vertesia_client.openapi.models.cache_policy import CachePolicy
 from vertesia_client.openapi.models.interaction_environment import InteractionEnvironment
@@ -40,6 +41,7 @@ class Interaction(BaseModel):
     Interaction
     """ # noqa: E501
     id: StrictStr
+    edit_revision: Annotated[int, Field(le=9007199254740991, strict=True, ge=1)] = Field(description="Monotonic edit revision used to detect concurrent updates.")
     name: StrictStr
     endpoint: StrictStr
     description: Optional[StrictStr] = None
@@ -66,7 +68,7 @@ class Interaction(BaseModel):
     updated_by: StrictStr
     created_at: datetime
     updated_at: datetime
-    __properties: ClassVar[List[str]] = ["id", "name", "endpoint", "description", "project", "tags", "agent_runner_options", "result_schema", "environment", "model", "model_options", "store_media_results", "restriction", "output_modality", "status", "parent", "visibility", "version", "test_data", "interaction_schema", "cache_policy", "prompts", "last_published_at", "created_by", "updated_by", "created_at", "updated_at"]
+    __properties: ClassVar[List[str]] = ["id", "edit_revision", "name", "endpoint", "description", "project", "tags", "agent_runner_options", "result_schema", "environment", "model", "model_options", "store_media_results", "restriction", "output_modality", "status", "parent", "visibility", "version", "test_data", "interaction_schema", "cache_policy", "prompts", "last_published_at", "created_by", "updated_by", "created_at", "updated_at"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -148,6 +150,7 @@ class Interaction(BaseModel):
 
         _obj = cls.model_validate({
             "id": obj.get("id"),
+            "edit_revision": obj.get("edit_revision"),
             "name": obj.get("name"),
             "endpoint": obj.get("endpoint"),
             "description": obj.get("description"),

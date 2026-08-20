@@ -23,12 +23,12 @@ from typing import Any, ClassVar, Dict, List, Optional
 from vertesia_client.openapi.models.agent_runner_options import AgentRunnerOptions
 from vertesia_client.openapi.models.cache_policy import CachePolicy
 from vertesia_client.openapi.models.interaction_environment import InteractionEnvironment
+from vertesia_client.openapi.models.interaction_prompt_segment_input import InteractionPromptSegmentInput
 from vertesia_client.openapi.models.interaction_result_schema import InteractionResultSchema
 from vertesia_client.openapi.models.interaction_status import InteractionStatus
 from vertesia_client.openapi.models.interaction_visibility import InteractionVisibility
 from vertesia_client.openapi.models.modalities import Modalities
 from vertesia_client.openapi.models.model_options import ModelOptions
-from vertesia_client.openapi.models.prompt_segment_def import PromptSegmentDef
 from vertesia_client.openapi.models.run_data_storage_level import RunDataStorageLevel
 from typing import Optional, Set
 from typing_extensions import Self
@@ -42,7 +42,7 @@ class InteractionCreatePayload(BaseModel):
     test_data: Optional[Dict[str, Any]] = None
     interaction_schema: Optional[InteractionResultSchema] = None
     cache_policy: Optional[CachePolicy] = None
-    prompts: List[PromptSegmentDef]
+    prompts: List[InteractionPromptSegmentInput]
     last_published_at: Optional[datetime] = None
     name: StrictStr
     description: Optional[StrictStr] = None
@@ -138,7 +138,7 @@ class InteractionCreatePayload(BaseModel):
             "test_data": obj.get("test_data"),
             "interaction_schema": InteractionResultSchema.from_dict(obj["interaction_schema"]) if obj.get("interaction_schema") is not None else None,
             "cache_policy": CachePolicy.from_dict(obj["cache_policy"]) if obj.get("cache_policy") is not None else None,
-            "prompts": [PromptSegmentDef.from_dict(_item) for _item in obj["prompts"]] if obj.get("prompts") is not None else None,
+            "prompts": [InteractionPromptSegmentInput.from_dict(_item) for _item in obj["prompts"]] if obj.get("prompts") is not None else None,
             "last_published_at": obj.get("last_published_at"),
             "name": obj.get("name"),
             "description": obj.get("description"),

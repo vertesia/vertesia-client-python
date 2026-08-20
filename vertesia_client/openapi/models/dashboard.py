@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.dashboard_data_source import DashboardDataSource
 from vertesia_client.openapi.models.dashboard_layout import DashboardLayout
 from vertesia_client.openapi.models.dashboard_panel import DashboardPanel
@@ -33,6 +34,7 @@ class Dashboard(BaseModel):
     Full dashboard with SQL query and Vega-Lite specification.  **New architecture (v2):** - `dataSource` field with either SQL or Store Elasticsearch DSL - Single `spec` field with complete Vega-Lite spec (vconcat/hconcat for multiple panels) - Cross-panel interactivity via Vega selections - Legacy top-level `query` fields are treated as a SQL data source  **Legacy architecture (v1, deprecated):** - Multiple `queries` with named data sources - Multiple `panels` with separate specs and dataSources references - `layout` for grid positioning - No cross-panel interactivity
     """ # noqa: E501
     id: StrictStr = Field(description="Unique identifier for the object")
+    edit_revision: Annotated[int, Field(le=9007199254740991, strict=True, ge=1)] = Field(description="Monotonic edit revision used to detect concurrent updates.")
     name: StrictStr = Field(description="Human-readable name or title")
     description: Optional[StrictStr] = Field(default=None, description="Optional detailed description of the object")
     tags: List[StrictStr] = Field(description="Tags for organization")
@@ -58,7 +60,7 @@ class Dashboard(BaseModel):
     layout: DashboardLayout = Field(description="Deprecated: Layout is now handled within the Vega-Lite spec. Layout configuration (kept for backwards compatibility).")
     last_render_url: Optional[StrictStr] = Field(default=None, description="URL of last rendered image")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["id", "name", "description", "tags", "updated_by", "created_by", "created_at", "updated_at", "store_id", "status", "panel_count", "query_count", "last_rendered_at", "source", "app_name", "readonly", "dataSource", "query", "queryLimit", "queryParameters", "spec", "queries", "panels", "layout", "last_render_url"]
+    __properties: ClassVar[List[str]] = ["id", "edit_revision", "name", "description", "tags", "updated_by", "created_by", "created_at", "updated_at", "store_id", "status", "panel_count", "query_count", "last_rendered_at", "source", "app_name", "readonly", "dataSource", "query", "queryLimit", "queryParameters", "spec", "queries", "panels", "layout", "last_render_url"]
 
     @field_validator('source')
     def source_validate_enum(cls, value):
@@ -147,6 +149,7 @@ class Dashboard(BaseModel):
 
         _obj = cls.model_validate({
             "id": obj.get("id"),
+            "edit_revision": obj.get("edit_revision"),
             "name": obj.get("name"),
             "description": obj.get("description"),
             "tags": obj.get("tags"),

@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.dashboard_data_source import DashboardDataSource
 from typing import Optional, Set
 from typing_extensions import Self
@@ -35,9 +36,10 @@ class UpdateDashboardPayload(BaseModel):
     query_limit: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Maximum rows to return from the query (default: 10000)", alias="queryLimit")
     query_parameters: Optional[Dict[str, StrictStr]] = Field(default=None, description="Default values for SQL {{param}} placeholders", alias="queryParameters")
     spec: Optional[Dict[str, Any]] = Field(default=None, description="Complete Vega-Lite specification (use vconcat/hconcat for multiple panels)")
+    expected_edit_revision: Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=1)]] = Field(default=None, description="Edit revision returned by the last read. Stale revisions are rejected with HTTP 409. Omit for legacy last-write-wins behavior.")
     skip_versioning: Optional[StrictBool] = Field(default=None, description="Skip auto-version creation")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["name", "summary", "dataSource", "query", "queryLimit", "queryParameters", "spec", "skip_versioning"]
+    __properties: ClassVar[List[str]] = ["name", "summary", "dataSource", "query", "queryLimit", "queryParameters", "spec", "expected_edit_revision", "skip_versioning"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -107,6 +109,7 @@ class UpdateDashboardPayload(BaseModel):
             "queryLimit": obj.get("queryLimit"),
             "queryParameters": obj.get("queryParameters"),
             "spec": obj.get("spec"),
+            "expected_edit_revision": obj.get("expected_edit_revision"),
             "skip_versioning": obj.get("skip_versioning")
         })
         # store additional fields in additional_properties

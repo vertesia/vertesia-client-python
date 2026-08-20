@@ -21,33 +21,40 @@ from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing_extensions import Annotated
-from vertesia_client.openapi.models.process_definition_body import ProcessDefinitionBody
-from vertesia_client.openapi.models.process_definition_revision_info import ProcessDefinitionRevisionInfo
-from vertesia_client.openapi.models.process_definition_status import ProcessDefinitionStatus
+from vertesia_client.openapi.models.interaction_project import InteractionProject
+from vertesia_client.openapi.models.json_schema import JSONSchema
+from vertesia_client.openapi.models.prompt_role import PromptRole
+from vertesia_client.openapi.models.prompt_status import PromptStatus
+from vertesia_client.openapi.models.template_type import TemplateType
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class ProcessDefinition(BaseModel):
+class InteractionPromptTemplateInput(BaseModel):
     """
-    ProcessDefinition
+    InteractionPromptTemplateInput
     """ # noqa: E501
+    role: PromptRole
+    content: StrictStr
+    content_type: TemplateType
+    input_schema: Optional[JSONSchema] = Field(default=None, alias="inputSchema")
     id: StrictStr
-    edit_revision: Annotated[int, Field(le=9007199254740991, strict=True, ge=1)] = Field(description="Monotonic edit revision used to detect concurrent updates.")
-    account: StrictStr
-    project: StrictStr
     name: StrictStr
-    description: Optional[StrictStr] = None
-    status: ProcessDefinitionStatus
+    status: PromptStatus
     version: Union[StrictFloat, StrictInt]
-    revision: Optional[ProcessDefinitionRevisionInfo] = None
+    edit_revision: Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=1)]] = Field(default=None, description="Monotonic edit revision used to detect concurrent updates.")
+    parent: Optional[StrictStr] = None
+    description: Optional[StrictStr] = None
+    test_data: Optional[Dict[str, Any]] = None
+    script: Optional[StrictStr] = None
+    project: InteractionProject
     tags: Optional[List[StrictStr]] = None
-    definition: ProcessDefinitionBody
-    created_at: datetime
-    updated_at: datetime
+    last_published_at: Optional[datetime] = None
     created_by: StrictStr
     updated_by: StrictStr
-    __properties: ClassVar[List[str]] = ["id", "edit_revision", "account", "project", "name", "description", "status", "version", "revision", "tags", "definition", "created_at", "updated_at", "created_by", "updated_by"]
+    created_at: datetime
+    updated_at: datetime
+    __properties: ClassVar[List[str]] = ["role", "content", "content_type", "inputSchema", "id", "name", "status", "version", "edit_revision", "parent", "description", "test_data", "script", "project", "tags", "last_published_at", "created_by", "updated_by", "created_at", "updated_at"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -67,7 +74,7 @@ class ProcessDefinition(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of ProcessDefinition from a JSON string"""
+        """Create an instance of InteractionPromptTemplateInput from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -88,17 +95,17 @@ class ProcessDefinition(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of revision
-        if self.revision:
-            _dict['revision'] = self.revision.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of definition
-        if self.definition:
-            _dict['definition'] = self.definition.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of input_schema
+        if self.input_schema:
+            _dict['inputSchema'] = self.input_schema.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of project
+        if self.project:
+            _dict['project'] = self.project.to_dict()
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of ProcessDefinition from a dict"""
+        """Create an instance of InteractionPromptTemplateInput from a dict"""
         if obj is None:
             return None
 
@@ -106,21 +113,26 @@ class ProcessDefinition(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "role": obj.get("role"),
+            "content": obj.get("content"),
+            "content_type": obj.get("content_type"),
+            "inputSchema": JSONSchema.from_dict(obj["inputSchema"]) if obj.get("inputSchema") is not None else None,
             "id": obj.get("id"),
-            "edit_revision": obj.get("edit_revision"),
-            "account": obj.get("account"),
-            "project": obj.get("project"),
             "name": obj.get("name"),
-            "description": obj.get("description"),
             "status": obj.get("status"),
             "version": obj.get("version"),
-            "revision": ProcessDefinitionRevisionInfo.from_dict(obj["revision"]) if obj.get("revision") is not None else None,
+            "edit_revision": obj.get("edit_revision"),
+            "parent": obj.get("parent"),
+            "description": obj.get("description"),
+            "test_data": obj.get("test_data"),
+            "script": obj.get("script"),
+            "project": InteractionProject.from_dict(obj["project"]) if obj.get("project") is not None else None,
             "tags": obj.get("tags"),
-            "definition": ProcessDefinitionBody.from_dict(obj["definition"]) if obj.get("definition") is not None else None,
-            "created_at": obj.get("created_at"),
-            "updated_at": obj.get("updated_at"),
+            "last_published_at": obj.get("last_published_at"),
             "created_by": obj.get("created_by"),
-            "updated_by": obj.get("updated_by")
+            "updated_by": obj.get("updated_by"),
+            "created_at": obj.get("created_at"),
+            "updated_at": obj.get("updated_at")
         })
         return _obj
 

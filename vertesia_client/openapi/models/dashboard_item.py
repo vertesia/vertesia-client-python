@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.dashboard_status import DashboardStatus
 from typing import Optional, Set
 from typing_extensions import Self
@@ -29,6 +30,7 @@ class DashboardItem(BaseModel):
     Summary view of a dashboard (for listings).
     """ # noqa: E501
     id: StrictStr = Field(description="Unique identifier for the object")
+    edit_revision: Annotated[int, Field(le=9007199254740991, strict=True, ge=1)] = Field(description="Monotonic edit revision used to detect concurrent updates.")
     name: StrictStr = Field(description="Human-readable name or title")
     description: Optional[StrictStr] = Field(default=None, description="Optional detailed description of the object")
     tags: List[StrictStr] = Field(description="Tags for organization")
@@ -44,7 +46,7 @@ class DashboardItem(BaseModel):
     source: Optional[StrictStr] = Field(default=None, description="Source of the dashboard definition. Defaults to stored dashboards.")
     app_name: Optional[StrictStr] = Field(default=None, description="App name when `source` is `app`.")
     readonly: Optional[StrictBool] = Field(default=None, description="App dashboards are read-only until cloned into a stored dashboard.")
-    __properties: ClassVar[List[str]] = ["id", "name", "description", "tags", "updated_by", "created_by", "created_at", "updated_at", "store_id", "status", "panel_count", "query_count", "last_rendered_at", "source", "app_name", "readonly"]
+    __properties: ClassVar[List[str]] = ["id", "edit_revision", "name", "description", "tags", "updated_by", "created_by", "created_at", "updated_at", "store_id", "status", "panel_count", "query_count", "last_rendered_at", "source", "app_name", "readonly"]
 
     @field_validator('source')
     def source_validate_enum(cls, value):
@@ -106,6 +108,7 @@ class DashboardItem(BaseModel):
 
         _obj = cls.model_validate({
             "id": obj.get("id"),
+            "edit_revision": obj.get("edit_revision"),
             "name": obj.get("name"),
             "description": obj.get("description"),
             "tags": obj.get("tags"),

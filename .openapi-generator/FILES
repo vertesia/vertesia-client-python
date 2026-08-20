@@ -596,6 +596,9 @@ vertesia_client/openapi/models/interaction_execution_result.py
 vertesia_client/openapi/models/interaction_fork_payload.py
 vertesia_client/openapi/models/interaction_name.py
 vertesia_client/openapi/models/interaction_project.py
+vertesia_client/openapi/models/interaction_prompt_segment_input.py
+vertesia_client/openapi/models/interaction_prompt_segment_input_template.py
+vertesia_client/openapi/models/interaction_prompt_template_input.py
 vertesia_client/openapi/models/interaction_publish_payload.py
 vertesia_client/openapi/models/interaction_ref.py
 vertesia_client/openapi/models/interaction_ref_with_schema.py
@@ -943,6 +946,7 @@ vertesia_client/openapi/models/update_agent_artifact_content_payload.py
 vertesia_client/openapi/models/update_agent_artifact_content_response.py
 vertesia_client/openapi/models/update_api_key_payload.py
 vertesia_client/openapi/models/update_app_installation_tool_allowlist_payload.py
+vertesia_client/openapi/models/update_app_payload.py
 vertesia_client/openapi/models/update_collection_payload.py
 vertesia_client/openapi/models/update_content_object_payload.py
 vertesia_client/openapi/models/update_content_object_type_payload.py
@@ -963,6 +967,9 @@ vertesia_client/openapi/models/update_task_payload.py
 vertesia_client/openapi/models/update_user_group_payload.py
 vertesia_client/openapi/models/update_user_payload.py
 vertesia_client/openapi/models/update_view_experience_request.py
+vertesia_client/openapi/models/update_workflow_definition_payload.py
+vertesia_client/openapi/models/update_workflow_definition_payload_with_activities.py
+vertesia_client/openapi/models/update_workflow_definition_payload_with_steps.py
 vertesia_client/openapi/models/update_workflow_rule_payload.py
 vertesia_client/openapi/models/upsert_app_version_request.py
 vertesia_client/openapi/models/used_skill.py

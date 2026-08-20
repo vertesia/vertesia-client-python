@@ -20,6 +20,7 @@ import json
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.json_schema import JSONSchema
 from vertesia_client.openapi.models.prompt_role import PromptRole
 from vertesia_client.openapi.models.prompt_status import PromptStatus
@@ -45,7 +46,8 @@ class PromptTemplateUpdatePayload(BaseModel):
     script: Optional[StrictStr] = None
     tags: Optional[List[StrictStr]] = None
     last_published_at: Optional[datetime] = None
-    __properties: ClassVar[List[str]] = ["role", "content", "content_type", "inputSchema", "name", "status", "version", "parent", "description", "test_data", "script", "tags", "last_published_at"]
+    expected_edit_revision: Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=1)]] = Field(default=None, description="Edit revision returned by the last read. Stale revisions are rejected with HTTP 409. Omit for legacy last-write-wins behavior.")
+    __properties: ClassVar[List[str]] = ["role", "content", "content_type", "inputSchema", "name", "status", "version", "parent", "description", "test_data", "script", "tags", "last_published_at", "expected_edit_revision"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -113,7 +115,8 @@ class PromptTemplateUpdatePayload(BaseModel):
             "test_data": obj.get("test_data"),
             "script": obj.get("script"),
             "tags": obj.get("tags"),
-            "last_published_at": obj.get("last_published_at")
+            "last_published_at": obj.get("last_published_at"),
+            "expected_edit_revision": obj.get("expected_edit_revision")
         })
         return _obj
 

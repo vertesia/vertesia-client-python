@@ -20,6 +20,7 @@ from typing import List, Optional
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.dsl_workflow_definition_response import DSLWorkflowDefinitionResponse
 from vertesia_client.openapi.models.delete_count_result import DeleteCountResult
+from vertesia_client.openapi.models.update_workflow_definition_payload import UpdateWorkflowDefinitionPayload
 from vertesia_client.openapi.models.workflow_definition_payload import WorkflowDefinitionPayload
 from vertesia_client.openapi.models.workflow_definition_ref import WorkflowDefinitionRef
 
@@ -1175,7 +1176,7 @@ class WorkflowDefinitionsApi:
     def update_workflow_definition(
         self,
         workflow_id: StrictStr,
-        workflow_definition_payload: WorkflowDefinitionPayload,
+        update_workflow_definition_payload: UpdateWorkflowDefinitionPayload,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -1196,8 +1197,8 @@ class WorkflowDefinitionsApi:
 
         :param workflow_id: (required)
         :type workflow_id: str
-        :param workflow_definition_payload: (required)
-        :type workflow_definition_payload: WorkflowDefinitionPayload
+        :param update_workflow_definition_payload: (required)
+        :type update_workflow_definition_payload: UpdateWorkflowDefinitionPayload
         :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -1224,7 +1225,7 @@ class WorkflowDefinitionsApi:
 
         _param = self._update_workflow_definition_serialize(
             workflow_id=workflow_id,
-            workflow_definition_payload=workflow_definition_payload,
+            update_workflow_definition_payload=update_workflow_definition_payload,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1234,6 +1235,7 @@ class WorkflowDefinitionsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "DSLWorkflowDefinitionResponse",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -1252,7 +1254,7 @@ class WorkflowDefinitionsApi:
     def update_workflow_definition_with_http_info(
         self,
         workflow_id: StrictStr,
-        workflow_definition_payload: WorkflowDefinitionPayload,
+        update_workflow_definition_payload: UpdateWorkflowDefinitionPayload,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -1273,8 +1275,8 @@ class WorkflowDefinitionsApi:
 
         :param workflow_id: (required)
         :type workflow_id: str
-        :param workflow_definition_payload: (required)
-        :type workflow_definition_payload: WorkflowDefinitionPayload
+        :param update_workflow_definition_payload: (required)
+        :type update_workflow_definition_payload: UpdateWorkflowDefinitionPayload
         :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -1301,7 +1303,7 @@ class WorkflowDefinitionsApi:
 
         _param = self._update_workflow_definition_serialize(
             workflow_id=workflow_id,
-            workflow_definition_payload=workflow_definition_payload,
+            update_workflow_definition_payload=update_workflow_definition_payload,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1311,6 +1313,7 @@ class WorkflowDefinitionsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "DSLWorkflowDefinitionResponse",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -1329,7 +1332,7 @@ class WorkflowDefinitionsApi:
     def update_workflow_definition_without_preload_content(
         self,
         workflow_id: StrictStr,
-        workflow_definition_payload: WorkflowDefinitionPayload,
+        update_workflow_definition_payload: UpdateWorkflowDefinitionPayload,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -1350,8 +1353,8 @@ class WorkflowDefinitionsApi:
 
         :param workflow_id: (required)
         :type workflow_id: str
-        :param workflow_definition_payload: (required)
-        :type workflow_definition_payload: WorkflowDefinitionPayload
+        :param update_workflow_definition_payload: (required)
+        :type update_workflow_definition_payload: UpdateWorkflowDefinitionPayload
         :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -1378,7 +1381,7 @@ class WorkflowDefinitionsApi:
 
         _param = self._update_workflow_definition_serialize(
             workflow_id=workflow_id,
-            workflow_definition_payload=workflow_definition_payload,
+            update_workflow_definition_payload=update_workflow_definition_payload,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1388,6 +1391,7 @@ class WorkflowDefinitionsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "DSLWorkflowDefinitionResponse",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -1401,7 +1405,7 @@ class WorkflowDefinitionsApi:
     def _update_workflow_definition_serialize(
         self,
         workflow_id,
-        workflow_definition_payload,
+        update_workflow_definition_payload,
         x_api_version,
         _request_auth,
         _content_type,
@@ -1432,8 +1436,8 @@ class WorkflowDefinitionsApi:
             _header_params['x-api-version'] = x_api_version
         # process the form parameters
         # process the body parameter
-        if workflow_definition_payload is not None:
-            _body_params = workflow_definition_payload
+        if update_workflow_definition_payload is not None:
+            _body_params = update_workflow_definition_payload
 
 
         # set the HTTP header `Accept`
