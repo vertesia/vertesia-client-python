@@ -1014,6 +1014,13 @@ components:
         topic:
           type: string
           description: Conversation topic (longer description from topic analysis)
+        generate_topic:
+          type: boolean
+          description: Whether automatic conversation title/topic generation is enabled
+            for this run.
+        generate_lessons:
+          type: boolean
+          description: Whether automatic lessons generation is enabled for this run.
         lessons_learned:
           type: array
           items:
@@ -3878,6 +3885,24 @@ components:
             is specified then the latest version is used. Example:
             ReviewContract, ReviewContract@draft, ReviewContract@1,
             ReviewContract@some-tag"
+        title:
+          type: string
+          minLength: 1
+          description: Caller-provided conversation title.
+        topic:
+          type: string
+          minLength: 1
+          description: Caller-provided conversation topic. Suppresses automatic topic
+            generation.
+        generate_topic:
+          type: boolean
+          description: Whether to generate a conversation title and topic automatically.
+            Defaults to true; a caller-provided topic always suppresses
+            generation.
+        generate_lessons:
+          type: boolean
+          description: Whether to generate lessons automatically at completion. Defaults
+            to true; conversation content remains searchable when disabled.
         app_version:
           type: string
           description: Immutable app-version target inherited by this conversation
@@ -4736,6 +4761,13 @@ components:
         topic:
           type: string
           description: Conversation topic (longer description from topic analysis)
+        generate_topic:
+          type: boolean
+          description: Whether automatic conversation title/topic generation is enabled
+            for this run.
+        generate_lessons:
+          type: boolean
+          description: Whether automatic lessons generation is enabled for this run.
         lessons_learned:
           type: array
           items:
@@ -8495,6 +8527,24 @@ components:
         interaction:
           type: string
           description: Interaction ID or code (e.g. "sys:generic_question").
+        title:
+          type: string
+          minLength: 1
+          description: Caller-provided conversation title.
+        topic:
+          type: string
+          minLength: 1
+          description: Caller-provided conversation topic. Suppresses automatic topic
+            generation.
+        generate_topic:
+          type: boolean
+          description: Whether to generate a conversation title and topic automatically.
+            Defaults to true; a caller-provided topic always suppresses
+            generation.
+        generate_lessons:
+          type: boolean
+          description: Whether to generate lessons automatically at completion. Defaults
+            to true; conversation content remains searchable when disabled.
         data:
           type: object
           additionalProperties: true

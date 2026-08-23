@@ -86,13 +86,15 @@ class AgentRun(BaseModel):
     interaction_ref: InteractionRef = Field(alias="interactionRef")
     environment_ref: Optional[ResourceRef] = Field(default=None, description="Resolved environment reference (name resolved from `config.environment` id). Populated by the list endpoint; may be absent on other endpoints or when the id cannot be resolved, in which case consumers should fall back to `config.environment`.", alias="environmentRef")
     topic: Optional[StrictStr] = Field(default=None, description="Conversation topic (longer description from topic analysis)")
+    generate_topic: Optional[StrictBool] = Field(default=None, description="Whether automatic conversation title/topic generation is enabled for this run.")
+    generate_lessons: Optional[StrictBool] = Field(default=None, description="Whether automatic lessons generation is enabled for this run.")
     lessons_learned: Optional[List[StrictStr]] = Field(default=None, description="Lessons learned from the conversation (extracted at completion)")
     archived_at: Optional[datetime] = Field(default=None, description="When the last successful archive completed")
     archive_version: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Archive format version (for forward compatibility)")
     last_archive_error: Optional[StrictStr] = Field(default=None, description="Last archive error message (when archive_state === 'failed')")
     forked_from: Optional[StrictStr] = Field(default=None, description="Source agent run ID when this run was forked (enables message history chaining)")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["interaction", "data", "config", "interactive", "tool_approval_mode", "tool_names", "initial_skills", "initial_tool_calls", "excluded_tools", "collection_id", "disabled_mcp_collections", "content_type", "visibility", "tags", "categories", "properties", "source", "schedule_id", "source_type", "type", "id", "run_kind", "parent_run_id", "workstream_id", "run_type", "account", "project", "workflow_id", "first_workflow_run_id", "artifacts_path", "status", "activity_state", "started_by", "started_at", "completed_at", "title", "event_subscription_id", "event_ref", "archive_state", "created_at", "updated_at", "interaction_name", "interactionRef", "environmentRef", "topic", "lessons_learned", "archived_at", "archive_version", "last_archive_error", "forked_from"]
+    __properties: ClassVar[List[str]] = ["interaction", "data", "config", "interactive", "tool_approval_mode", "tool_names", "initial_skills", "initial_tool_calls", "excluded_tools", "collection_id", "disabled_mcp_collections", "content_type", "visibility", "tags", "categories", "properties", "source", "schedule_id", "source_type", "type", "id", "run_kind", "parent_run_id", "workstream_id", "run_type", "account", "project", "workflow_id", "first_workflow_run_id", "artifacts_path", "status", "activity_state", "started_by", "started_at", "completed_at", "title", "event_subscription_id", "event_ref", "archive_state", "created_at", "updated_at", "interaction_name", "interactionRef", "environmentRef", "topic", "generate_topic", "generate_lessons", "lessons_learned", "archived_at", "archive_version", "last_archive_error", "forked_from"]
 
     @field_validator('run_kind')
     def run_kind_validate_enum(cls, value):
@@ -232,6 +234,8 @@ class AgentRun(BaseModel):
             "interactionRef": InteractionRef.from_dict(obj["interactionRef"]) if obj.get("interactionRef") is not None else None,
             "environmentRef": ResourceRef.from_dict(obj["environmentRef"]) if obj.get("environmentRef") is not None else None,
             "topic": obj.get("topic"),
+            "generate_topic": obj.get("generate_topic"),
+            "generate_lessons": obj.get("generate_lessons"),
             "lessons_learned": obj.get("lessons_learned"),
             "archived_at": obj.get("archived_at"),
             "archive_version": obj.get("archive_version"),

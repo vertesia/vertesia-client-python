@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.agent_checkpoint_configuration import AgentCheckpointConfiguration
 from vertesia_client.openapi.models.agent_search_scope_collection import AgentSearchScopeCollection
 from vertesia_client.openapi.models.agent_tool_approval_mode import AgentToolApprovalMode
@@ -40,6 +41,10 @@ class AsyncConversationExecutionPayload(BaseModel):
     AsyncConversationExecutionPayload
     """ # noqa: E501
     interaction: StrictStr = Field(description="The interaction name and suffixed by an optional tag or version separated from the name using a @ character If no version/tag part is specified then the latest version is used. Example: ReviewContract, ReviewContract@draft, ReviewContract@1, ReviewContract@some-tag")
+    title: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="Caller-provided conversation title.")
+    topic: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="Caller-provided conversation topic. Suppresses automatic topic generation.")
+    generate_topic: Optional[StrictBool] = Field(default=None, description="Whether to generate a conversation title and topic automatically. Defaults to true; a caller-provided topic always suppresses generation.")
+    generate_lessons: Optional[StrictBool] = Field(default=None, description="Whether to generate lessons automatically at completion. Defaults to true; conversation content remains searchable when disabled.")
     app_version: Optional[StrictStr] = Field(default=None, description="Immutable app-version target inherited by this conversation execution. The workflow applies it to app-owned resource resolution; callers normally set the x-vertesia-app-version header instead of populating this field directly.")
     data: Optional[Any] = None
     config: Optional[InteractionExecutionConfiguration] = None
@@ -81,7 +86,7 @@ class AsyncConversationExecutionPayload(BaseModel):
     agent_run_id: Optional[StrictStr] = Field(default=None, description="The AgentRun MongoDB _id. Used for artifact storage paths: agents/{agent_run_id}/ Flows into ConversationState and down to workstreams. Undefined for legacy workflows started before the AgentRun system.")
     schedule_id: Optional[StrictStr] = Field(default=None, description="The Schedule MongoDB _id. Set when this execution was triggered by a Temporal schedule. Used by the workflow to create an AgentRun on first run if agent_run_id is absent.")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["interaction", "app_version", "data", "config", "result_schema", "do_validate", "tags", "conversation", "workflow", "prompts", "asyncCompletion", "type", "notify_endpoints", "task_queue", "tool_approval_mode", "visibility", "tool_names", "initial_skills", "initial_tool_calls", "excluded_tools", "max_iterations", "interactive", "user_channels", "disable_interaction_tools", "search_scope", "collection_id", "disabled_mcp_collections", "checkpoint_tokens", "checkpoint", "strip_options", "task_id", "launch_id", "debug_mode", "max_nested_conversation_depth", "parent_metadata", "non_blocking_subagents", "restart_from_workflow_run_id", "source_first_workflow_run_id", "is_fork", "agent_run_id", "schedule_id"]
+    __properties: ClassVar[List[str]] = ["interaction", "title", "topic", "generate_topic", "generate_lessons", "app_version", "data", "config", "result_schema", "do_validate", "tags", "conversation", "workflow", "prompts", "asyncCompletion", "type", "notify_endpoints", "task_queue", "tool_approval_mode", "visibility", "tool_names", "initial_skills", "initial_tool_calls", "excluded_tools", "max_iterations", "interactive", "user_channels", "disable_interaction_tools", "search_scope", "collection_id", "disabled_mcp_collections", "checkpoint_tokens", "checkpoint", "strip_options", "task_id", "launch_id", "debug_mode", "max_nested_conversation_depth", "parent_metadata", "non_blocking_subagents", "restart_from_workflow_run_id", "source_first_workflow_run_id", "is_fork", "agent_run_id", "schedule_id"]
 
     @field_validator('type')
     def type_validate_enum(cls, value):
@@ -201,6 +206,10 @@ class AsyncConversationExecutionPayload(BaseModel):
 
         _obj = cls.model_validate({
             "interaction": obj.get("interaction"),
+            "title": obj.get("title"),
+            "topic": obj.get("topic"),
+            "generate_topic": obj.get("generate_topic"),
+            "generate_lessons": obj.get("generate_lessons"),
             "app_version": obj.get("app_version"),
             "data": obj.get("data"),
             "config": InteractionExecutionConfiguration.from_dict(obj["config"]) if obj.get("config") is not None else None,
