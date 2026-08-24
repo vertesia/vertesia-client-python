@@ -9271,6 +9271,21 @@ components:
       required:
         - process_definition
       description: Payload to start a process from an inline definition.
+    CreateProcessTestSuitePayload:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        scenarios:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProcessTestScenario"
+      required:
+        - name
+        - scenarios
+      additionalProperties: false
     CreateRunPayload:
       anyOf:
         - $ref: "#/components/schemas/CreateAgentRunPayload"
@@ -18544,6 +18559,512 @@ components:
         - current_node
         - node_history
         - sequence
+    ProcessTestActorDecision:
+      type: object
+      properties:
+        node:
+          type: string
+        actor:
+          type: string
+        decision:
+          type: string
+          enum:
+            - accepted
+            - forbidden
+        message:
+          type: string
+      required:
+        - node
+        - actor
+        - decision
+      additionalProperties: false
+    ProcessTestAssertionResult:
+      type: object
+      properties:
+        assertion:
+          type: string
+        passed:
+          type: boolean
+        expected: {}
+        actual: {}
+        message:
+          type: string
+      required:
+        - assertion
+        - passed
+      additionalProperties: false
+    ProcessTestAssertions:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+            - completed
+            - failed
+            - cancelled
+        path:
+          type: array
+          items:
+            type: string
+        required_nodes:
+          type: array
+          items:
+            type: string
+        forbidden_nodes:
+          type: array
+          items:
+            type: string
+        context:
+          $ref: "#/components/schemas/JSONObject"
+        fixture_calls:
+          type: object
+          additionalProperties:
+            type: number
+        context_at_nodes:
+          type: object
+          additionalProperties:
+            $ref: "#/components/schemas/JSONObject"
+      additionalProperties: false
+    ProcessTestChildTrace:
+      type: object
+      properties:
+        workflow_path:
+          type: array
+          items:
+            type: string
+        status:
+          $ref: "#/components/schemas/ProcessTestRunStatus"
+        error:
+          type: string
+        process_state:
+          $ref: "#/components/schemas/ProcessState"
+        node_history:
+          type: array
+          items:
+            $ref: "#/components/schemas/NodeHistoryEntry"
+        coverage:
+          $ref: "#/components/schemas/ProcessTestCoverage"
+        fixture_calls:
+          type: object
+          additionalProperties:
+            type: number
+        actor_decisions:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProcessTestActorDecision"
+      required:
+        - workflow_path
+        - status
+        - node_history
+        - coverage
+        - fixture_calls
+        - actor_decisions
+      additionalProperties: false
+    ProcessTestCoverage:
+      type: object
+      properties:
+        nodes:
+          type: array
+          items:
+            type: string
+        transitions:
+          type: array
+          items:
+            type: string
+        node_percent:
+          type: number
+        transition_percent:
+          type: number
+      required:
+        - nodes
+        - transitions
+        - node_percent
+        - transition_percent
+      additionalProperties: false
+    ProcessTestFixtureError:
+      type: object
+      properties:
+        kind:
+          type: string
+          const: error
+        message:
+          type: string
+        retry:
+          type: boolean
+      required:
+        - kind
+        - message
+        - retry
+      additionalProperties: false
+    ProcessTestFixtureResponse:
+      oneOf:
+        - $ref: "#/components/schemas/ProcessTestFixtureResult"
+        - $ref: "#/components/schemas/ProcessTestFixtureError"
+      discriminator:
+        propertyName: kind
+        mapping:
+          result: "#/components/schemas/ProcessTestFixtureResult"
+          error: "#/components/schemas/ProcessTestFixtureError"
+      type: object
+      required:
+        - kind
+    ProcessTestFixtureResult:
+      type: object
+      properties:
+        kind:
+          type: string
+          const: result
+        output: {}
+        context_update:
+          $ref: "#/components/schemas/JSONObject"
+        transition_to:
+          type: string
+        skip_node:
+          type: boolean
+      required:
+        - kind
+      additionalProperties: false
+    ProcessTestHumanAction:
+      type: object
+      properties:
+        node:
+          type: string
+        workflow_path:
+          type: array
+          items:
+            type: string
+        actor:
+          type: string
+        result:
+          $ref: "#/components/schemas/JSONObject"
+        expect:
+          type: string
+          enum:
+            - accepted
+            - forbidden
+      required:
+        - node
+        - actor
+        - result
+        - expect
+      additionalProperties: false
+    ProcessTestInlineSubject:
+      type: object
+      properties:
+        kind:
+          type: string
+          const: inline
+      required:
+        - kind
+      additionalProperties: false
+    ProcessTestNodeFixture:
+      type: object
+      properties:
+        node:
+          type: string
+        workflow_path:
+          type: array
+          items:
+            type: string
+        responses:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProcessTestFixtureResponse"
+        guard_facts:
+          $ref: "#/components/schemas/JSONObject"
+      required:
+        - node
+        - responses
+      additionalProperties: false
+    ProcessTestResolvedSubject:
+      type: object
+      properties:
+        kind:
+          type: string
+          const: resolved
+        process_id:
+          type: string
+        app_version:
+          type: string
+      required:
+        - kind
+        - process_id
+      additionalProperties: false
+    ProcessTestRun:
+      type: object
+      properties:
+        id:
+          type: string
+        account:
+          type: string
+        project:
+          type: string
+        subject:
+          $ref: "#/components/schemas/ProcessTestSubject"
+        process_root_id:
+          type: string
+        process_revision_id:
+          type: string
+        suite_id:
+          type: string
+        definition_hash:
+          type: string
+        status:
+          $ref: "#/components/schemas/ProcessTestRunStatus"
+        stale:
+          type: boolean
+        process_definition_snapshot:
+          $ref: "#/components/schemas/ProcessDefinitionBody"
+        scenarios:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProcessTestScenarioResult"
+        created_by:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        started_at:
+          type: string
+          format: date-time
+        completed_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - account
+        - project
+        - subject
+        - definition_hash
+        - status
+        - stale
+        - process_definition_snapshot
+        - scenarios
+        - created_by
+        - created_at
+      additionalProperties: false
+    ProcessTestRunArray:
+      type: array
+      items:
+        $ref: "#/components/schemas/ProcessTestRun"
+    ProcessTestRunStatus:
+      type: string
+      enum:
+        - pending
+        - running
+        - passed
+        - failed
+        - cancelled
+    ProcessTestScenario:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        initial_context:
+          $ref: "#/components/schemas/JSONObject"
+        actors:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProcessTestVirtualActor"
+        fixtures:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProcessTestNodeFixture"
+        human_actions:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProcessTestHumanAction"
+        assertions:
+          $ref: "#/components/schemas/ProcessTestAssertions"
+        timeout_seconds:
+          default: 30
+          type: integer
+          minimum: 1
+          maximum: 300
+      required:
+        - id
+        - name
+        - initial_context
+        - actors
+        - fixtures
+        - human_actions
+        - assertions
+      additionalProperties: false
+    ProcessTestScenarioResult:
+      type: object
+      properties:
+        scenario_id:
+          type: string
+        name:
+          type: string
+        initial_context:
+          $ref: "#/components/schemas/JSONObject"
+        status:
+          $ref: "#/components/schemas/ProcessTestRunStatus"
+        error:
+          type: string
+        process_state:
+          $ref: "#/components/schemas/ProcessState"
+        node_history:
+          type: array
+          items:
+            $ref: "#/components/schemas/NodeHistoryEntry"
+        assertions:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProcessTestAssertionResult"
+        fixture_calls:
+          type: object
+          additionalProperties:
+            type: number
+        actor_decisions:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProcessTestActorDecision"
+        coverage:
+          $ref: "#/components/schemas/ProcessTestCoverage"
+        child_traces:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProcessTestChildTrace"
+        started_at:
+          type: string
+          format: date-time
+        completed_at:
+          type: string
+          format: date-time
+      required:
+        - scenario_id
+        - name
+        - status
+        - node_history
+        - assertions
+        - fixture_calls
+        - actor_decisions
+        - coverage
+        - child_traces
+        - started_at
+      additionalProperties: false
+    ProcessTestStoredSubject:
+      type: object
+      properties:
+        kind:
+          type: string
+          const: stored
+        process_root_id:
+          type: string
+        process_revision_id:
+          type: string
+      required:
+        - kind
+        - process_root_id
+        - process_revision_id
+      additionalProperties: false
+    ProcessTestSubject:
+      oneOf:
+        - $ref: "#/components/schemas/ProcessTestStoredSubject"
+        - $ref: "#/components/schemas/ProcessTestResolvedSubject"
+        - $ref: "#/components/schemas/ProcessTestInlineSubject"
+      discriminator:
+        propertyName: kind
+        mapping:
+          stored: "#/components/schemas/ProcessTestStoredSubject"
+          resolved: "#/components/schemas/ProcessTestResolvedSubject"
+          inline: "#/components/schemas/ProcessTestInlineSubject"
+      type: object
+      required:
+        - kind
+    ProcessTestSuite:
+      type: object
+      properties:
+        id:
+          type: string
+        account:
+          type: string
+        project:
+          type: string
+        process_root_id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        scenarios:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProcessTestScenario"
+        created_by:
+          type: string
+        updated_by:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - account
+        - project
+        - process_root_id
+        - name
+        - scenarios
+        - created_by
+        - updated_by
+        - created_at
+        - updated_at
+      additionalProperties: false
+    ProcessTestSuiteArray:
+      type: array
+      items:
+        $ref: "#/components/schemas/ProcessTestSuite"
+    ProcessTestTarget:
+      anyOf:
+        - $ref: "#/components/schemas/ProcessTestTargetById"
+        - $ref: "#/components/schemas/ProcessTestTargetWithDefinition"
+    ProcessTestTargetById:
+      type: object
+      properties:
+        id:
+          type: string
+        app_version:
+          type: string
+      required:
+        - id
+      additionalProperties: false
+    ProcessTestTargetWithDefinition:
+      type: object
+      properties:
+        definition:
+          $ref: "#/components/schemas/ProcessDefinitionBody"
+      required:
+        - definition
+      additionalProperties: false
+    ProcessTestVirtualActor:
+      type: object
+      properties:
+        id:
+          type: string
+        label:
+          type: string
+        refs:
+          type: array
+          items:
+            type: string
+        permissions:
+          type: array
+          items:
+            $ref: "#/components/schemas/Permission"
+      required:
+        - id
+        - refs
+        - permissions
+      additionalProperties: false
     ProcessToolCompatibility:
       type: object
       properties:
@@ -21589,6 +22110,21 @@ components:
         - run_id
         - export_id
       additionalProperties: false
+    StartProcessTestRunPayload:
+      type: object
+      properties:
+        suite_id:
+          type: string
+        process_revision_id:
+          type: string
+        scenario_ids:
+          type: array
+          items:
+            type: string
+      required:
+        - suite_id
+        - process_revision_id
+      additionalProperties: false
     StartProjectReindexPayload:
       type: object
       properties:
@@ -21775,6 +22311,20 @@ components:
       type: object
       required:
         - status
+    SubmitProcessTestRunPayload:
+      type: object
+      properties:
+        process:
+          $ref: "#/components/schemas/ProcessTestTarget"
+        scenarios:
+          minItems: 1
+          type: array
+          items:
+            $ref: "#/components/schemas/ProcessTestScenario"
+      required:
+        - process
+        - scenarios
+      additionalProperties: false
     SuccessResponse:
       type: object
       properties:
@@ -23466,6 +24016,18 @@ components:
             type: string
         definition:
           $ref: "#/components/schemas/ProcessDefinitionBody"
+      additionalProperties: false
+    UpdateProcessTestSuitePayload:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        scenarios:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProcessTestScenario"
       additionalProperties: false
     UpdateProjectConfigurationPayload:
       type: object
@@ -44089,6 +44651,503 @@ paths:
         description: Optional Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
+  /processes/{processId}/test-suites:
+    get:
+      operationId: ListProcessTestSuites
+      tags:
+        - Processes
+      summary: List process test suites
+      description: >-
+        Lists deterministic test suites attached to this process revision
+        family.
+
+
+        **Required permissions:** Any of `workflow:read`, `workflow:run`
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters:
+        - name: processId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Matching process test suites.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProcessTestSuiteArray"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - workflow:read
+        - workflow:run
+      x-vertesia-source:
+        file: ../../apps/zeno-server/src/api/processes.ts
+        className: ProcessDefinitionResource
+        methodName: listTestSuites
+    post:
+      operationId: CreateProcessTestSuite
+      tags:
+        - Processes
+      summary: Create process test suite
+      description: "**Required permissions:** `workflow:admin`"
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters:
+        - name: processId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "201":
+          description: Created process test suite.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProcessTestSuite"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - workflow:admin
+      x-vertesia-source:
+        file: ../../apps/zeno-server/src/api/processes.ts
+        className: ProcessDefinitionResource
+        methodName: createTestSuite
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateProcessTestSuitePayload"
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260803"
+        description: Optional Vertesia API version header. Use `20260803` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /processes/{processId}/test-suites/{suiteId}:
+    put:
+      operationId: UpdateProcessTestSuite
+      tags:
+        - Processes
+      summary: Update process test suite
+      description: "**Required permissions:** `workflow:admin`"
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters:
+        - name: processId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: suiteId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Updated process test suite.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProcessTestSuite"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - workflow:admin
+      x-vertesia-source:
+        file: ../../apps/zeno-server/src/api/processes.ts
+        className: ProcessDefinitionResource
+        methodName: updateTestSuite
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateProcessTestSuitePayload"
+    delete:
+      operationId: DeleteProcessTestSuite
+      tags:
+        - Processes
+      summary: Delete process test suite
+      description: "**Required permissions:** `workflow:admin`"
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters:
+        - name: processId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: suiteId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Process test suite deletion result.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteCountResult"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - workflow:admin
+      x-vertesia-source:
+        file: ../../apps/zeno-server/src/api/processes.ts
+        className: ProcessDefinitionResource
+        methodName: deleteTestSuite
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260803"
+        description: Optional Vertesia API version header. Use `20260803` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /processes/{processId}/test-runs:
+    post:
+      operationId: StartProcessTestRun
+      tags:
+        - Processes
+      summary: Start process test run
+      description: >-
+        Starts isolated deterministic scenarios against an explicit stored
+        process revision.
+
+
+        **Required permissions:** `workflow:run`
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters:
+        - name: processId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "201":
+          description: Started process test run.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProcessTestRun"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - workflow:run
+      x-vertesia-source:
+        file: ../../apps/zeno-server/src/api/processes.ts
+        className: ProcessDefinitionResource
+        methodName: startTestRun
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StartProcessTestRunPayload"
+    get:
+      operationId: ListProcessTestRuns
+      tags:
+        - Processes
+      summary: List process test runs
+      description: "**Required permissions:** Any of `workflow:read`, `workflow:run`"
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters:
+        - name: processId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+      responses:
+        "200":
+          description: Matching process test runs.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProcessTestRunArray"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - workflow:read
+        - workflow:run
+      x-vertesia-source:
+        file: ../../apps/zeno-server/src/api/processes.ts
+        className: ProcessDefinitionResource
+        methodName: listTestRuns
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260803"
+        description: Optional Vertesia API version header. Use `20260803` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /processes/{processId}/test-runs/{runId}:
+    get:
+      operationId: GetProcessTestRun
+      tags:
+        - Processes
+      summary: Retrieve process test run
+      description: "**Required permissions:** Any of `workflow:read`, `workflow:run`"
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters:
+        - name: processId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: runId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Requested process test run.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProcessTestRun"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - workflow:read
+        - workflow:run
+      x-vertesia-source:
+        file: ../../apps/zeno-server/src/api/processes.ts
+        className: ProcessDefinitionResource
+        methodName: getTestRun
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260803"
+        description: Optional Vertesia API version header. Use `20260803` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /processes/{processId}/test-runs/{runId}/cancel:
+    post:
+      operationId: CancelProcessTestRun
+      tags:
+        - Processes
+      summary: Cancel process test run
+      description: "**Required permissions:** `workflow:run`"
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters:
+        - name: processId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: runId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Cancelled process test run.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProcessTestRun"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - workflow:run
+      x-vertesia-source:
+        file: ../../apps/zeno-server/src/api/processes.ts
+        className: ProcessDefinitionResource
+        methodName: cancelTestRun
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260803"
+        description: Optional Vertesia API version header. Use `20260803` for the
+          current stable API shape.
+        x-vertesia-global-header: true
   /processes/{processId}:
     get:
       operationId: GetProcessDefinition
@@ -44404,6 +45463,254 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/RevertProcessDefinitionPayload"
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260803"
+        description: Optional Vertesia API version header. Use `20260803` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /process-test-runs:
+    post:
+      operationId: SubmitProcessTestRun
+      tags:
+        - Processes
+      summary: Submit a process test run
+      description: >-
+        Starts deterministic test scenarios against an in-code process (`app:`
+        or `sys:`) or an inline definition, with the scenarios supplied in the
+        request instead of a stored suite. Use POST
+        /processes/{processId}/test-runs for stored process definitions.
+
+
+        **Required permissions:** `workflow:run`
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters: []
+      responses:
+        "201":
+          description: Started process test run.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProcessTestRun"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - workflow:run
+      x-vertesia-source:
+        file: ../../apps/zeno-server/src/api/process-test-runs.ts
+        className: ProcessTestRunResource
+        methodName: submit
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SubmitProcessTestRunPayload"
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260803"
+        description: Optional Vertesia API version header. Use `20260803` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /process-test-runs/{runId}:
+    get:
+      operationId: GetProcessTestRunById
+      tags:
+        - Processes
+      summary: Retrieve a process test run by id
+      description: >-
+        Retrieves any process test run by its own id, whatever it was started
+        against. Runs against a stored process report staleness against the
+        current head revision; runs against an in-code or inline definition are
+        never stale, since no later revision exists to drift from.
+
+
+        **Required permissions:** Any of `workflow:read`, `workflow:run`
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters:
+        - name: runId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Requested process test run.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProcessTestRun"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - workflow:read
+        - workflow:run
+      x-vertesia-source:
+        file: ../../apps/zeno-server/src/api/process-test-runs.ts
+        className: ProcessTestRunResource
+        methodName: get
+    delete:
+      operationId: DeleteProcessTestRun
+      tags:
+        - Processes
+      summary: Delete a process test run
+      description: >-
+        Deletes a process test run and its definition snapshot. A run that is
+        still active is cancelled first. Test runs are disposable diagnostic
+        records; this is how a CI client or a test fixture cleans up after
+        itself.
+
+
+        **Required permissions:** `workflow:admin`
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters:
+        - name: runId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Process test run deletion result.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteCountResult"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - workflow:admin
+      x-vertesia-source:
+        file: ../../apps/zeno-server/src/api/process-test-runs.ts
+        className: ProcessTestRunResource
+        methodName: delete
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260803"
+        description: Optional Vertesia API version header. Use `20260803` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /process-test-runs/{runId}/cancel:
+    post:
+      operationId: CancelProcessTestRunById
+      tags:
+        - Processes
+      summary: Cancel a process test run by id
+      description: "**Required permissions:** `workflow:run`"
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters:
+        - name: runId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Cancelled process test run.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProcessTestRun"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - workflow:run
+      x-vertesia-source:
+        file: ../../apps/zeno-server/src/api/process-test-runs.ts
+        className: ProcessTestRunResource
+        methodName: cancel
     parameters:
       - name: x-api-version
         in: header
@@ -54642,7 +55949,7 @@ tags:
       evolution, imports, snapshots, queries, and dashboards.
   - name: Processes
     description: Process endpoints manage versioned process definitions, revisions,
-      publishing, and rollback.
+      publishing, rollback, and isolated process test suites and test runs.
   - name: Tasks
     description: Task endpoints manage durable human tasks used by process runs and
       agent asks.

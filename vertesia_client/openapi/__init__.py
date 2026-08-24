@@ -373,6 +373,7 @@ __all__ = [
     "CreateProcessDefinitionPayload",
     "CreateProcessRunByIdPayload",
     "CreateProcessRunWithDefinitionPayload",
+    "CreateProcessTestSuitePayload",
     "CreateRunPayload",
     "CreateSecretRequest",
     "CreateSnapshotPayload",
@@ -760,6 +761,29 @@ __all__ = [
     "ProcessScriptLanguage",
     "ProcessScriptResource",
     "ProcessState",
+    "ProcessTestActorDecision",
+    "ProcessTestAssertionResult",
+    "ProcessTestAssertions",
+    "ProcessTestChildTrace",
+    "ProcessTestCoverage",
+    "ProcessTestFixtureError",
+    "ProcessTestFixtureResponse",
+    "ProcessTestFixtureResult",
+    "ProcessTestHumanAction",
+    "ProcessTestInlineSubject",
+    "ProcessTestNodeFixture",
+    "ProcessTestResolvedSubject",
+    "ProcessTestRun",
+    "ProcessTestRunStatus",
+    "ProcessTestScenario",
+    "ProcessTestScenarioResult",
+    "ProcessTestStoredSubject",
+    "ProcessTestSubject",
+    "ProcessTestSuite",
+    "ProcessTestTarget",
+    "ProcessTestTargetById",
+    "ProcessTestTargetWithDefinition",
+    "ProcessTestVirtualActor",
     "ProcessToolCompatibility",
     "ProcessToolCompatibilityReason",
     "ProgrammaticRunResponse",
@@ -901,6 +925,7 @@ __all__ = [
     "StartAppScaffoldResponse",
     "StartContentObjectExportRequest",
     "StartContentObjectExportResponse",
+    "StartProcessTestRunPayload",
     "StartProjectReindexPayload",
     "StatelessExecutionOptions",
     "StoredTypeRef",
@@ -909,6 +934,7 @@ __all__ = [
     "StripeBillingDisabled",
     "StripeBillingEnabled",
     "StripeBillingStatusResponse",
+    "SubmitProcessTestRunPayload",
     "SuccessResponse",
     "SupervisedRunResponse",
     "SupportedEmbeddingTypes",
@@ -981,6 +1007,7 @@ __all__ = [
     "UpdateOAuthClientPayload",
     "UpdateOAuthProviderPayload",
     "UpdateProcessDefinitionPayload",
+    "UpdateProcessTestSuitePayload",
     "UpdateProjectConfigurationPayload",
     "UpdateProjectPayload",
     "UpdateSchemaPayload",
@@ -1480,6 +1507,7 @@ from vertesia_client.openapi.models.create_o_auth_provider_payload import Create
 from vertesia_client.openapi.models.create_process_definition_payload import CreateProcessDefinitionPayload as CreateProcessDefinitionPayload
 from vertesia_client.openapi.models.create_process_run_by_id_payload import CreateProcessRunByIdPayload as CreateProcessRunByIdPayload
 from vertesia_client.openapi.models.create_process_run_with_definition_payload import CreateProcessRunWithDefinitionPayload as CreateProcessRunWithDefinitionPayload
+from vertesia_client.openapi.models.create_process_test_suite_payload import CreateProcessTestSuitePayload as CreateProcessTestSuitePayload
 from vertesia_client.openapi.models.create_run_payload import CreateRunPayload as CreateRunPayload
 from vertesia_client.openapi.models.create_secret_request import CreateSecretRequest as CreateSecretRequest
 from vertesia_client.openapi.models.create_snapshot_payload import CreateSnapshotPayload as CreateSnapshotPayload
@@ -1867,6 +1895,29 @@ from vertesia_client.openapi.models.process_script_inline_source import ProcessS
 from vertesia_client.openapi.models.process_script_language import ProcessScriptLanguage as ProcessScriptLanguage
 from vertesia_client.openapi.models.process_script_resource import ProcessScriptResource as ProcessScriptResource
 from vertesia_client.openapi.models.process_state import ProcessState as ProcessState
+from vertesia_client.openapi.models.process_test_actor_decision import ProcessTestActorDecision as ProcessTestActorDecision
+from vertesia_client.openapi.models.process_test_assertion_result import ProcessTestAssertionResult as ProcessTestAssertionResult
+from vertesia_client.openapi.models.process_test_assertions import ProcessTestAssertions as ProcessTestAssertions
+from vertesia_client.openapi.models.process_test_child_trace import ProcessTestChildTrace as ProcessTestChildTrace
+from vertesia_client.openapi.models.process_test_coverage import ProcessTestCoverage as ProcessTestCoverage
+from vertesia_client.openapi.models.process_test_fixture_error import ProcessTestFixtureError as ProcessTestFixtureError
+from vertesia_client.openapi.models.process_test_fixture_response import ProcessTestFixtureResponse as ProcessTestFixtureResponse
+from vertesia_client.openapi.models.process_test_fixture_result import ProcessTestFixtureResult as ProcessTestFixtureResult
+from vertesia_client.openapi.models.process_test_human_action import ProcessTestHumanAction as ProcessTestHumanAction
+from vertesia_client.openapi.models.process_test_inline_subject import ProcessTestInlineSubject as ProcessTestInlineSubject
+from vertesia_client.openapi.models.process_test_node_fixture import ProcessTestNodeFixture as ProcessTestNodeFixture
+from vertesia_client.openapi.models.process_test_resolved_subject import ProcessTestResolvedSubject as ProcessTestResolvedSubject
+from vertesia_client.openapi.models.process_test_run import ProcessTestRun as ProcessTestRun
+from vertesia_client.openapi.models.process_test_run_status import ProcessTestRunStatus as ProcessTestRunStatus
+from vertesia_client.openapi.models.process_test_scenario import ProcessTestScenario as ProcessTestScenario
+from vertesia_client.openapi.models.process_test_scenario_result import ProcessTestScenarioResult as ProcessTestScenarioResult
+from vertesia_client.openapi.models.process_test_stored_subject import ProcessTestStoredSubject as ProcessTestStoredSubject
+from vertesia_client.openapi.models.process_test_subject import ProcessTestSubject as ProcessTestSubject
+from vertesia_client.openapi.models.process_test_suite import ProcessTestSuite as ProcessTestSuite
+from vertesia_client.openapi.models.process_test_target import ProcessTestTarget as ProcessTestTarget
+from vertesia_client.openapi.models.process_test_target_by_id import ProcessTestTargetById as ProcessTestTargetById
+from vertesia_client.openapi.models.process_test_target_with_definition import ProcessTestTargetWithDefinition as ProcessTestTargetWithDefinition
+from vertesia_client.openapi.models.process_test_virtual_actor import ProcessTestVirtualActor as ProcessTestVirtualActor
 from vertesia_client.openapi.models.process_tool_compatibility import ProcessToolCompatibility as ProcessToolCompatibility
 from vertesia_client.openapi.models.process_tool_compatibility_reason import ProcessToolCompatibilityReason as ProcessToolCompatibilityReason
 from vertesia_client.openapi.models.programmatic_run_response import ProgrammaticRunResponse as ProgrammaticRunResponse
@@ -2008,6 +2059,7 @@ from vertesia_client.openapi.models.start_app_scaffold_request import StartAppSc
 from vertesia_client.openapi.models.start_app_scaffold_response import StartAppScaffoldResponse as StartAppScaffoldResponse
 from vertesia_client.openapi.models.start_content_object_export_request import StartContentObjectExportRequest as StartContentObjectExportRequest
 from vertesia_client.openapi.models.start_content_object_export_response import StartContentObjectExportResponse as StartContentObjectExportResponse
+from vertesia_client.openapi.models.start_process_test_run_payload import StartProcessTestRunPayload as StartProcessTestRunPayload
 from vertesia_client.openapi.models.start_project_reindex_payload import StartProjectReindexPayload as StartProjectReindexPayload
 from vertesia_client.openapi.models.stateless_execution_options import StatelessExecutionOptions as StatelessExecutionOptions
 from vertesia_client.openapi.models.stored_type_ref import StoredTypeRef as StoredTypeRef
@@ -2016,6 +2068,7 @@ from vertesia_client.openapi.models.streaming_telemetry_context import Streaming
 from vertesia_client.openapi.models.stripe_billing_disabled import StripeBillingDisabled as StripeBillingDisabled
 from vertesia_client.openapi.models.stripe_billing_enabled import StripeBillingEnabled as StripeBillingEnabled
 from vertesia_client.openapi.models.stripe_billing_status_response import StripeBillingStatusResponse as StripeBillingStatusResponse
+from vertesia_client.openapi.models.submit_process_test_run_payload import SubmitProcessTestRunPayload as SubmitProcessTestRunPayload
 from vertesia_client.openapi.models.success_response import SuccessResponse as SuccessResponse
 from vertesia_client.openapi.models.supervised_run_response import SupervisedRunResponse as SupervisedRunResponse
 from vertesia_client.openapi.models.supported_embedding_types import SupportedEmbeddingTypes as SupportedEmbeddingTypes
@@ -2088,6 +2141,7 @@ from vertesia_client.openapi.models.update_execution_run_payload import UpdateEx
 from vertesia_client.openapi.models.update_o_auth_client_payload import UpdateOAuthClientPayload as UpdateOAuthClientPayload
 from vertesia_client.openapi.models.update_o_auth_provider_payload import UpdateOAuthProviderPayload as UpdateOAuthProviderPayload
 from vertesia_client.openapi.models.update_process_definition_payload import UpdateProcessDefinitionPayload as UpdateProcessDefinitionPayload
+from vertesia_client.openapi.models.update_process_test_suite_payload import UpdateProcessTestSuitePayload as UpdateProcessTestSuitePayload
 from vertesia_client.openapi.models.update_project_configuration_payload import UpdateProjectConfigurationPayload as UpdateProjectConfigurationPayload
 from vertesia_client.openapi.models.update_project_payload import UpdateProjectPayload as UpdateProjectPayload
 from vertesia_client.openapi.models.update_schema_payload import UpdateSchemaPayload as UpdateSchemaPayload
