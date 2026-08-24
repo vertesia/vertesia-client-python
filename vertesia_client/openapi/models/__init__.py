@@ -864,6 +864,7 @@ from vertesia_client.openapi.models.sort_option import SortOption
 from vertesia_client.openapi.models.sort_order import SortOrder
 from vertesia_client.openapi.models.start_app_build_request import StartAppBuildRequest
 from vertesia_client.openapi.models.start_app_build_response import StartAppBuildResponse
+from vertesia_client.openapi.models.start_app_development_task_request import StartAppDevelopmentTaskRequest
 from vertesia_client.openapi.models.start_app_scaffold_request import StartAppScaffoldRequest
 from vertesia_client.openapi.models.start_app_scaffold_response import StartAppScaffoldResponse
 from vertesia_client.openapi.models.start_content_object_export_request import StartContentObjectExportRequest

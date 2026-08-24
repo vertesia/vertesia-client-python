@@ -17,23 +17,22 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional
-from vertesia_client.openapi.models.app_scaffold_module import AppScaffoldModule
+from pydantic import BaseModel, ConfigDict, Field, StrictBool
+from typing import Any, ClassVar, Dict, Optional
+from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class StartAppScaffoldRequest(BaseModel):
+class StartAppDevelopmentTaskRequest(BaseModel):
     """
-    StartAppScaffoldRequest
+    StartAppDevelopmentTaskRequest
     """ # noqa: E501
-    app_id: StrictStr = Field(description="Package name for the new app to create and scaffold. This is not the id of an existing app.")
-    title: Optional[StrictStr] = None
-    description: Optional[StrictStr] = None
-    modules: Optional[List[AppScaffoldModule]] = None
-    create_version: Optional[StrictBool] = Field(default=None, description="Start an initial app version build after the source has been pushed. Defaults to true.")
-    __properties: ClassVar[List[str]] = ["app_id", "title", "description", "modules", "create_version"]
+    prompt: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Development request passed to the App Builder parent.")
+    environment: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Execution environment id for the App Builder run.")
+    model: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Model id for the App Builder run.")
+    build_version: Optional[StrictBool] = Field(default=None, description="Create one immutable app version after validation. Defaults to false.")
+    __properties: ClassVar[List[str]] = ["prompt", "environment", "model", "build_version"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -53,7 +52,7 @@ class StartAppScaffoldRequest(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of StartAppScaffoldRequest from a JSON string"""
+        """Create an instance of StartAppDevelopmentTaskRequest from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -78,7 +77,7 @@ class StartAppScaffoldRequest(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of StartAppScaffoldRequest from a dict"""
+        """Create an instance of StartAppDevelopmentTaskRequest from a dict"""
         if obj is None:
             return None
 
@@ -86,11 +85,10 @@ class StartAppScaffoldRequest(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "app_id": obj.get("app_id"),
-            "title": obj.get("title"),
-            "description": obj.get("description"),
-            "modules": obj.get("modules"),
-            "create_version": obj.get("create_version")
+            "prompt": obj.get("prompt"),
+            "environment": obj.get("environment"),
+            "model": obj.get("model"),
+            "build_version": obj.get("build_version")
         })
         return _obj
 

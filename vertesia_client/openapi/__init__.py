@@ -921,6 +921,7 @@ __all__ = [
     "SortOrder",
     "StartAppBuildRequest",
     "StartAppBuildResponse",
+    "StartAppDevelopmentTaskRequest",
     "StartAppScaffoldRequest",
     "StartAppScaffoldResponse",
     "StartContentObjectExportRequest",
@@ -2055,6 +2056,7 @@ from vertesia_client.openapi.models.sort_option import SortOption as SortOption
 from vertesia_client.openapi.models.sort_order import SortOrder as SortOrder
 from vertesia_client.openapi.models.start_app_build_request import StartAppBuildRequest as StartAppBuildRequest
 from vertesia_client.openapi.models.start_app_build_response import StartAppBuildResponse as StartAppBuildResponse
+from vertesia_client.openapi.models.start_app_development_task_request import StartAppDevelopmentTaskRequest as StartAppDevelopmentTaskRequest
 from vertesia_client.openapi.models.start_app_scaffold_request import StartAppScaffoldRequest as StartAppScaffoldRequest
 from vertesia_client.openapi.models.start_app_scaffold_response import StartAppScaffoldResponse as StartAppScaffoldResponse
 from vertesia_client.openapi.models.start_content_object_export_request import StartContentObjectExportRequest as StartContentObjectExportRequest

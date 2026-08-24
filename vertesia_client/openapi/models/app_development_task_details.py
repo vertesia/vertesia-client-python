@@ -32,7 +32,7 @@ class AppDevelopmentTaskDetails(BaseModel):
     branch: StrictStr = Field(description="Complete Git branch name.")
     source_commit: StrictStr = Field(description="Commit currently at the branch head.")
     commit_date: Optional[StrictStr] = Field(default=None, description="Branch-head commit date, when available.")
-    agent_run: Optional[AgentRunSearchHit] = Field(default=None, description="Latest Studio Assistant run started for this task branch.")
+    agent_run: Optional[AgentRunSearchHit] = Field(default=None, description="Latest App Builder parent run started for this task branch.")
     __properties: ClassVar[List[str]] = ["id", "branch", "source_commit", "commit_date", "agent_run"]
 
     model_config = ConfigDict(

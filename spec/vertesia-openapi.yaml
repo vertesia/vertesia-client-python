@@ -2208,7 +2208,7 @@ components:
           description: Branch-head commit date, when available.
         agent_run:
           $ref: "#/components/schemas/AgentRunSearchHit"
-          description: Latest Studio Assistant run started for this task branch.
+          description: Latest App Builder parent run started for this task branch.
       required:
         - id
         - branch
@@ -8091,9 +8091,10 @@ components:
 
 
             Unlike `unlocked_tools` (which must survive a checkpoint so tools
-            stay unlocked), this list is reset when a checkpoint compacts the
-            conversation, because the summary no longer carries the skill
-            instructions and the next call must re-deliver them.
+            stay unlocked), this list tracks only instructions present in the
+            current compacted conversation. Checkpoints restore active builtin
+            skill bodies and preserve their names; skills that cannot be
+            restored are removed so the next call can re-deliver them.
         initialization_call_ids:
           type: array
           items:
@@ -22029,13 +22030,36 @@ components:
         - run_id
         - app_id
       additionalProperties: false
+    StartAppDevelopmentTaskRequest:
+      type: object
+      properties:
+        prompt:
+          type: string
+          minLength: 1
+          description: Development request passed to the App Builder parent.
+        environment:
+          type: string
+          minLength: 1
+          description: Execution environment id for the App Builder run.
+        model:
+          type: string
+          minLength: 1
+          description: Model id for the App Builder run.
+        build_version:
+          type: boolean
+          description: Create one immutable app version after validation. Defaults to false.
+      required:
+        - prompt
+        - environment
+        - model
+      additionalProperties: false
     StartAppScaffoldRequest:
       type: object
       properties:
         app_id:
           type: string
-          description: App id / package name to create. It is normalized to the same slug
-            rules used by
+          description: Package name for the new app to create and scaffold. This is not
+            the id of an existing app.
         title:
           type: string
         description:
@@ -36217,8 +36241,8 @@ paths:
         - Apps
       summary: Get an app development task
       description: >-
-        Returns the agent/* Git branch and the latest matching parent Studio
-        Assistant run, when started.
+        Returns the agent/* Git branch and the latest matching App Builder
+        parent run, when started.
 
 
         **Required permissions:** `account:member`
@@ -36269,6 +36293,82 @@ paths:
         file: ../../apps/studio-server/src/api/apps.ts
         className: AppsResource
         methodName: getAppDevelopmentTask
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260803"
+        description: Optional Vertesia API version header. Use `20260803` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /apps/{id}/development-tasks/{taskId}/runs:
+    post:
+      operationId: StartAppDevelopmentTask
+      tags:
+        - Apps
+      summary: Start an app development task run
+      description: >-
+        Starts the policy-controlled App Builder parent on an existing agent/*
+        task branch. The server fixes the interaction, orchestration skill,
+        implementation denylist, lifecycle data, and run tags.
+
+
+        **Required permissions:** `app:manage`
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: taskId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The started App Builder parent run.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AgentRunResponse"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - app:manage
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/apps.ts
+        className: AppsResource
+        methodName: startAppDevelopmentTask
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StartAppDevelopmentTaskRequest"
     parameters:
       - name: x-api-version
         in: header

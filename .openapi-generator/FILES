@@ -899,6 +899,7 @@ vertesia_client/openapi/models/sort_option.py
 vertesia_client/openapi/models/sort_order.py
 vertesia_client/openapi/models/start_app_build_request.py
 vertesia_client/openapi/models/start_app_build_response.py
+vertesia_client/openapi/models/start_app_development_task_request.py
 vertesia_client/openapi/models/start_app_scaffold_request.py
 vertesia_client/openapi/models/start_app_scaffold_response.py
 vertesia_client/openapi/models/start_content_object_export_request.py
