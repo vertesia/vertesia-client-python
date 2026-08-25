@@ -18,7 +18,8 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, StrictBool
-from typing import Any, ClassVar, Dict, List
+from typing import Any, ClassVar, Dict, List, Optional
+from vertesia_client.openapi.models.cost_analytics_response_pricing_coverage import CostAnalyticsResponsePricingCoverage
 from vertesia_client.openapi.models.cost_analytics_response_query_range import CostAnalyticsResponseQueryRange
 from vertesia_client.openapi.models.cost_by_dimension import CostByDimension
 from vertesia_client.openapi.models.cost_summary import CostSummary
@@ -36,10 +37,11 @@ class CostAnalyticsResponse(BaseModel):
     by_dimension: List[CostByDimension]
     time_series: List[CostTimeSeriesPoint]
     pricing: List[ModelPricing]
+    pricing_coverage: Optional[CostAnalyticsResponsePricingCoverage] = None
     query_range: CostAnalyticsResponseQueryRange
     cached: StrictBool
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["summary", "by_dimension", "time_series", "pricing", "query_range", "cached"]
+    __properties: ClassVar[List[str]] = ["summary", "by_dimension", "time_series", "pricing", "pricing_coverage", "query_range", "cached"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -106,6 +108,9 @@ class CostAnalyticsResponse(BaseModel):
                 if _item_pricing:
                     _items.append(_item_pricing.to_dict())
             _dict['pricing'] = _items
+        # override the default output from pydantic by calling `to_dict()` of pricing_coverage
+        if self.pricing_coverage:
+            _dict['pricing_coverage'] = self.pricing_coverage.to_dict()
         # override the default output from pydantic by calling `to_dict()` of query_range
         if self.query_range:
             _dict['query_range'] = self.query_range.to_dict()
@@ -130,6 +135,7 @@ class CostAnalyticsResponse(BaseModel):
             "by_dimension": [CostByDimension.from_dict(_item) for _item in obj["by_dimension"]] if obj.get("by_dimension") is not None else None,
             "time_series": [CostTimeSeriesPoint.from_dict(_item) for _item in obj["time_series"]] if obj.get("time_series") is not None else None,
             "pricing": [ModelPricing.from_dict(_item) for _item in obj["pricing"]] if obj.get("pricing") is not None else None,
+            "pricing_coverage": CostAnalyticsResponsePricingCoverage.from_dict(obj["pricing_coverage"]) if obj.get("pricing_coverage") is not None else None,
             "query_range": CostAnalyticsResponseQueryRange.from_dict(obj["query_range"]) if obj.get("query_range") is not None else None,
             "cached": obj.get("cached")
         })

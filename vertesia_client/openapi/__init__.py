@@ -346,6 +346,8 @@ __all__ = [
     "CopyFileResponse",
     "CostAnalyticsQuery",
     "CostAnalyticsResponse",
+    "CostAnalyticsResponsePricingCoverage",
+    "CostAnalyticsResponsePricingCoverageUnpricedInner",
     "CostAnalyticsResponseQueryRange",
     "CostByDimension",
     "CostRunPriceQuery",
@@ -1481,6 +1483,8 @@ from vertesia_client.openapi.models.copy_file_payload import CopyFilePayload as 
 from vertesia_client.openapi.models.copy_file_response import CopyFileResponse as CopyFileResponse
 from vertesia_client.openapi.models.cost_analytics_query import CostAnalyticsQuery as CostAnalyticsQuery
 from vertesia_client.openapi.models.cost_analytics_response import CostAnalyticsResponse as CostAnalyticsResponse
+from vertesia_client.openapi.models.cost_analytics_response_pricing_coverage import CostAnalyticsResponsePricingCoverage as CostAnalyticsResponsePricingCoverage
+from vertesia_client.openapi.models.cost_analytics_response_pricing_coverage_unpriced_inner import CostAnalyticsResponsePricingCoverageUnpricedInner as CostAnalyticsResponsePricingCoverageUnpricedInner
 from vertesia_client.openapi.models.cost_analytics_response_query_range import CostAnalyticsResponseQueryRange as CostAnalyticsResponseQueryRange
 from vertesia_client.openapi.models.cost_by_dimension import CostByDimension as CostByDimension
 from vertesia_client.openapi.models.cost_run_price_query import CostRunPriceQuery as CostRunPriceQuery

@@ -17,31 +17,21 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr, field_validator
+from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, Optional, Union
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class ModelPricing(BaseModel):
+class CostAnalyticsResponsePricingCoverageUnpricedInner(BaseModel):
     """
-    ModelPricing
+    CostAnalyticsResponsePricingCoverageUnpricedInner
     """ # noqa: E501
     model: StrictStr
     provider: Optional[StrictStr] = None
-    provider_account_id: Optional[StrictStr] = None
-    service_tier: Optional[StrictStr] = Field(default=None, description="Processing tier this price applies to")
-    input_price_per_m_tokens: Union[StrictFloat, StrictInt]
-    cached_input_price_per_m_tokens: Optional[Union[StrictFloat, StrictInt]] = None
-    cache_write_input_price_per_m_tokens: Optional[Union[StrictFloat, StrictInt]] = None
-    output_price_per_m_tokens: Union[StrictFloat, StrictInt]
-    source: StrictStr
-    __properties: ClassVar[List[str]] = ["model", "provider", "provider_account_id", "service_tier", "input_price_per_m_tokens", "cached_input_price_per_m_tokens", "cache_write_input_price_per_m_tokens", "output_price_per_m_tokens", "source"]
-
-    @field_validator('source')
-    def source_validate_enum(cls, value):
-        """Validates the enum"""
-        return value
+    service_tier: StrictStr
+    calls: Union[StrictFloat, StrictInt]
+    __properties: ClassVar[List[str]] = ["model", "provider", "service_tier", "calls"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -61,7 +51,7 @@ class ModelPricing(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of ModelPricing from a JSON string"""
+        """Create an instance of CostAnalyticsResponsePricingCoverageUnpricedInner from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -86,7 +76,7 @@ class ModelPricing(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of ModelPricing from a dict"""
+        """Create an instance of CostAnalyticsResponsePricingCoverageUnpricedInner from a dict"""
         if obj is None:
             return None
 
@@ -96,13 +86,8 @@ class ModelPricing(BaseModel):
         _obj = cls.model_validate({
             "model": obj.get("model"),
             "provider": obj.get("provider"),
-            "provider_account_id": obj.get("provider_account_id"),
             "service_tier": obj.get("service_tier"),
-            "input_price_per_m_tokens": obj.get("input_price_per_m_tokens"),
-            "cached_input_price_per_m_tokens": obj.get("cached_input_price_per_m_tokens"),
-            "cache_write_input_price_per_m_tokens": obj.get("cache_write_input_price_per_m_tokens"),
-            "output_price_per_m_tokens": obj.get("output_price_per_m_tokens"),
-            "source": obj.get("source")
+            "calls": obj.get("calls")
         })
         return _obj
 

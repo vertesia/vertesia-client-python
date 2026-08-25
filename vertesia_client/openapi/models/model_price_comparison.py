@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr, field_validator
+from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, Optional, Union
 from typing import Optional, Set
 from typing_extensions import Self
@@ -30,6 +30,7 @@ class ModelPriceComparison(BaseModel):
     model: StrictStr
     provider: Optional[StrictStr] = None
     provider_account_id: Optional[StrictStr] = None
+    service_tier: Optional[StrictStr] = Field(default=None, description="Processing tier this price applies to")
     list_price_date: Optional[StrictStr] = None
     effective_from: Optional[StrictStr] = None
     effective_to: Optional[StrictStr] = None
@@ -42,7 +43,7 @@ class ModelPriceComparison(BaseModel):
     output_list_price_per_m_tokens: Optional[Union[StrictFloat, StrictInt]] = None
     output_effective_price_per_m_tokens: Optional[Union[StrictFloat, StrictInt]] = None
     source: StrictStr
-    __properties: ClassVar[List[str]] = ["model", "provider", "provider_account_id", "list_price_date", "effective_from", "effective_to", "input_list_price_per_m_tokens", "input_effective_price_per_m_tokens", "cached_input_list_price_per_m_tokens", "cached_input_effective_price_per_m_tokens", "cache_write_input_list_price_per_m_tokens", "cache_write_input_effective_price_per_m_tokens", "output_list_price_per_m_tokens", "output_effective_price_per_m_tokens", "source"]
+    __properties: ClassVar[List[str]] = ["model", "provider", "provider_account_id", "service_tier", "list_price_date", "effective_from", "effective_to", "input_list_price_per_m_tokens", "input_effective_price_per_m_tokens", "cached_input_list_price_per_m_tokens", "cached_input_effective_price_per_m_tokens", "cache_write_input_list_price_per_m_tokens", "cache_write_input_effective_price_per_m_tokens", "output_list_price_per_m_tokens", "output_effective_price_per_m_tokens", "source"]
 
     @field_validator('source')
     def source_validate_enum(cls, value):
@@ -103,6 +104,7 @@ class ModelPriceComparison(BaseModel):
             "model": obj.get("model"),
             "provider": obj.get("provider"),
             "provider_account_id": obj.get("provider_account_id"),
+            "service_tier": obj.get("service_tier"),
             "list_price_date": obj.get("list_price_date"),
             "effective_from": obj.get("effective_from"),
             "effective_to": obj.get("effective_to"),

@@ -31,6 +31,7 @@ class CostByDimension(BaseModel):
     dimension: StrictStr
     label: Optional[StrictStr] = None
     provider: Optional[StrictStr] = None
+    service_tier: Optional[StrictStr] = None
     cost: Union[StrictFloat, StrictInt]
     input_tokens: Union[StrictFloat, StrictInt]
     cached_input_tokens: Optional[Union[StrictFloat, StrictInt]] = None
@@ -38,7 +39,7 @@ class CostByDimension(BaseModel):
     output_tokens: Union[StrictFloat, StrictInt]
     calls: Union[StrictFloat, StrictInt]
     periods: Optional[List[CostTimeSeriesPoint]] = None
-    __properties: ClassVar[List[str]] = ["dimension", "label", "provider", "cost", "input_tokens", "cached_input_tokens", "cache_write_input_tokens", "output_tokens", "calls", "periods"]
+    __properties: ClassVar[List[str]] = ["dimension", "label", "provider", "service_tier", "cost", "input_tokens", "cached_input_tokens", "cache_write_input_tokens", "output_tokens", "calls", "periods"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -101,6 +102,7 @@ class CostByDimension(BaseModel):
             "dimension": obj.get("dimension"),
             "label": obj.get("label"),
             "provider": obj.get("provider"),
+            "service_tier": obj.get("service_tier"),
             "cost": obj.get("cost"),
             "input_tokens": obj.get("input_tokens"),
             "cached_input_tokens": obj.get("cached_input_tokens"),
