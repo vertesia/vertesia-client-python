@@ -810,7 +810,9 @@ __all__ = [
     "ProjectedContentObjectApiResponse",
     "PromoteAppVersionResponse",
     "PromoteDashboardVersionPayload",
+    "PromptCacheDiagnostic",
     "PromptCacheMode",
+    "PromptCachePath",
     "PromptImprovementResponse",
     "PromptModalities",
     "PromptRole",
@@ -1945,7 +1947,9 @@ from vertesia_client.openapi.models.project_tool_info import ProjectToolInfo as 
 from vertesia_client.openapi.models.projected_content_object_api_response import ProjectedContentObjectApiResponse as ProjectedContentObjectApiResponse
 from vertesia_client.openapi.models.promote_app_version_response import PromoteAppVersionResponse as PromoteAppVersionResponse
 from vertesia_client.openapi.models.promote_dashboard_version_payload import PromoteDashboardVersionPayload as PromoteDashboardVersionPayload
+from vertesia_client.openapi.models.prompt_cache_diagnostic import PromptCacheDiagnostic as PromptCacheDiagnostic
 from vertesia_client.openapi.models.prompt_cache_mode import PromptCacheMode as PromptCacheMode
+from vertesia_client.openapi.models.prompt_cache_path import PromptCachePath as PromptCachePath
 from vertesia_client.openapi.models.prompt_improvement_response import PromptImprovementResponse as PromptImprovementResponse
 from vertesia_client.openapi.models.prompt_modalities import PromptModalities as PromptModalities
 from vertesia_client.openapi.models.prompt_role import PromptRole as PromptRole

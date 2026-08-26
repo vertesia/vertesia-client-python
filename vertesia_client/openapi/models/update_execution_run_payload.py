@@ -33,6 +33,7 @@ from vertesia_client.openapi.models.interaction_ref import InteractionRef
 from vertesia_client.openapi.models.json_schema import JSONSchema
 from vertesia_client.openapi.models.modalities import Modalities
 from vertesia_client.openapi.models.project_ref import ProjectRef
+from vertesia_client.openapi.models.prompt_cache_diagnostic import PromptCacheDiagnostic
 from vertesia_client.openapi.models.run_source import RunSource
 from typing import Optional, Set
 from typing_extensions import Self
@@ -54,6 +55,7 @@ class UpdateExecutionRunPayload(BaseModel):
     finish_reason: Optional[StrictStr] = None
     prompt: Optional[Any] = None
     token_use: Optional[ExecutionTokenUsage] = None
+    prompt_cache_diagnostics: Optional[List[PromptCacheDiagnostic]] = None
     chunks: Optional[Union[StrictFloat, StrictInt]] = None
     execution_time: Optional[Union[StrictFloat, StrictInt]] = None
     created_at: Optional[datetime] = None
@@ -69,7 +71,7 @@ class UpdateExecutionRunPayload(BaseModel):
     workflow: Optional[ExecutionRunWorkflow] = Field(default=None, description="The Vertesia Workflow related to this Interaction Run.  This is only set when the interaction is executed as part of a workflow.")
     interaction: Optional[InteractionRef] = None
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["id", "parent", "evaluation", "tags", "environment", "modelId", "result_schema", "ttl", "status", "finish_reason", "prompt", "token_use", "chunks", "execution_time", "created_at", "updated_at", "account", "project", "config", "error", "source", "output_modality", "created_by", "updated_by", "workflow", "interaction"]
+    __properties: ClassVar[List[str]] = ["id", "parent", "evaluation", "tags", "environment", "modelId", "result_schema", "ttl", "status", "finish_reason", "prompt", "token_use", "prompt_cache_diagnostics", "chunks", "execution_time", "created_at", "updated_at", "account", "project", "config", "error", "source", "output_modality", "created_by", "updated_by", "workflow", "interaction"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -127,6 +129,13 @@ class UpdateExecutionRunPayload(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of token_use
         if self.token_use:
             _dict['token_use'] = self.token_use.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of each item in prompt_cache_diagnostics (list)
+        _items = []
+        if self.prompt_cache_diagnostics:
+            for _item_prompt_cache_diagnostics in self.prompt_cache_diagnostics:
+                if _item_prompt_cache_diagnostics:
+                    _items.append(_item_prompt_cache_diagnostics.to_dict())
+            _dict['prompt_cache_diagnostics'] = _items
         # override the default output from pydantic by calling `to_dict()` of account
         if self.account:
             _dict['account'] = self.account.to_dict()
@@ -182,6 +191,7 @@ class UpdateExecutionRunPayload(BaseModel):
             "finish_reason": obj.get("finish_reason"),
             "prompt": obj.get("prompt"),
             "token_use": ExecutionTokenUsage.from_dict(obj["token_use"]) if obj.get("token_use") is not None else None,
+            "prompt_cache_diagnostics": [PromptCacheDiagnostic.from_dict(_item) for _item in obj["prompt_cache_diagnostics"]] if obj.get("prompt_cache_diagnostics") is not None else None,
             "chunks": obj.get("chunks"),
             "execution_time": obj.get("execution_time"),
             "created_at": obj.get("created_at"),

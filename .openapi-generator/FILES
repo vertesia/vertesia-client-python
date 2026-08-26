@@ -788,7 +788,9 @@ vertesia_client/openapi/models/project_tool_info.py
 vertesia_client/openapi/models/projected_content_object_api_response.py
 vertesia_client/openapi/models/promote_app_version_response.py
 vertesia_client/openapi/models/promote_dashboard_version_payload.py
+vertesia_client/openapi/models/prompt_cache_diagnostic.py
 vertesia_client/openapi/models/prompt_cache_mode.py
+vertesia_client/openapi/models/prompt_cache_path.py
 vertesia_client/openapi/models/prompt_improvement_response.py
 vertesia_client/openapi/models/prompt_modalities.py
 vertesia_client/openapi/models/prompt_role.py
