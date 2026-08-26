@@ -18,17 +18,28 @@ from enum import Enum
 from typing_extensions import Self
 
 
-class PromptCacheMode(str, Enum):
+class PromptCachePath(str, Enum):
     """
-    PromptCacheMode
+    PromptCachePath
     """
 
     """
     allowed enum values
     """
-    AUTO = 'auto'
-    OFF = 'off'
-    REQUIRED = 'required'
+    DISABLED = 'disabled'
+    NO_KEY = 'no_key'
+    LOCAL_MEMO_HIT = 'local_memo_hit'
+    DISTRIBUTED_REGISTRY_HIT = 'distributed_registry_hit'
+    PROVIDER_LIST_RECOVERY = 'provider_list_recovery'
+    CREATED = 'created'
+    WAITED_FOR_CREATOR = 'waited_for_creator'
+    REFRESHED = 'refreshed'
+    FALLBACK_QUOTA = 'fallback_quota'
+    FALLBACK_PROVIDER_ERROR = 'fallback_provider_error'
+    FALLBACK_COORDINATION_UNAVAILABLE = 'fallback_coordination_unavailable'
+    FALLBACK_WAIT_TIMEOUT = 'fallback_wait_timeout'
+    MINIMUM_TOKEN_REJECTION = 'minimum_token_rejection'
+    UNUSABLE_RESOURCE_RECREATED = 'unusable_resource_recreated'
 
     @classmethod
     def _missing_(cls, value: object) -> Self:
@@ -42,7 +53,7 @@ class PromptCacheMode(str, Enum):
 
     @classmethod
     def from_json(cls, json_str: str) -> Self:
-        """Create an instance of PromptCacheMode from a JSON string"""
+        """Create an instance of PromptCachePath from a JSON string"""
         return cls(json.loads(json_str))
 
 
