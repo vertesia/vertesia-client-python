@@ -28,8 +28,10 @@ class DSLChildWorkflowStep(BaseModel):
     """
     DSLChildWorkflowStep
     """ # noqa: E501
-    type: StrictStr = Field(description="The type fo the step. If not set defaults to \"activity\"")
+    type: StrictStr = Field(description="Identifies this step as a child workflow")
     name: StrictStr
+    title: Optional[StrictStr] = Field(default=None, description="Title of the child workflow to be displayed in the UI workflow builder")
+    description: Optional[StrictStr] = Field(default=None, description="Description of the child workflow displayed in the UI workflow builder")
     vars: Optional[Dict[str, Any]] = Field(default=None, description="The parameters to pass to the child workflow. These parameters will be merged over the parent workflow vars and passed altogether to the child workflow.")
     var_async: Optional[StrictBool] = Field(default=None, alias="async")
     output: Optional[StrictStr] = Field(default=None, description="The name of the workflow variable that will store the result of the child workflow (if async the workflow id is stored) If not specified the result will not be stored The parameters describe how the actual parameters will be obtained from the workflow execution vars. since it may contain references to workflow execution vars.")
@@ -37,7 +39,7 @@ class DSLChildWorkflowStep(BaseModel):
     spec: Optional[DSLWorkflowSpec] = Field(default=None, description="In case the dslWorkflow is used as a child workflow the spec is used to define the child workflow. If spec is defined then the name must be \"dslWorkflow\"")
     options: Optional[DSLChildWorkflowStepOptions] = None
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["type", "name", "vars", "async", "output", "condition", "spec", "options"]
+    __properties: ClassVar[List[str]] = ["type", "name", "title", "description", "vars", "async", "output", "condition", "spec", "options"]
 
     @field_validator('type')
     def type_validate_enum(cls, value):
@@ -110,6 +112,8 @@ class DSLChildWorkflowStep(BaseModel):
         _obj = cls.model_validate({
             "type": obj.get("type"),
             "name": obj.get("name"),
+            "title": obj.get("title"),
+            "description": obj.get("description"),
             "vars": obj.get("vars"),
             "async": obj.get("async"),
             "output": obj.get("output"),

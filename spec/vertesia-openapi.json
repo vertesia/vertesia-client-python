@@ -4484,6 +4484,17 @@
           "webhook_secret_hint": {
             "type": "string"
           },
+          "webhook_secret": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "Decrypted credential returned only to authenticated agent principals for runtime use. Human and service-account callers receive null; presence and hint fields report configuration status."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
           "events": {
             "type": "array",
             "items": {
@@ -4502,7 +4513,8 @@
         },
         "required": [
           "integration",
-          "enabled"
+          "enabled",
+          "webhook_secret"
         ],
         "additionalProperties": false,
         "description": "Configuration for ask_user webhook notifications. Sends webhooks when agents call ask_user and when users respond."
@@ -12114,10 +12126,18 @@
           "type": {
             "type": "string",
             "const": "workflow",
-            "description": "The type fo the step. If not set defaults to \"activity\""
+            "description": "Identifies this step as a child workflow"
           },
           "name": {
             "type": "string"
+          },
+          "title": {
+            "type": "string",
+            "description": "Title of the child workflow to be displayed in the UI workflow builder"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the child workflow displayed in the UI workflow builder"
           },
           "vars": {
             "type": "object",
@@ -16374,11 +16394,23 @@
           },
           "api_key_hint": {
             "type": "string"
+          },
+          "api_key": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "Decrypted credential returned only to authenticated agent principals for runtime use. Human and service-account callers receive null; presence and hint fields report configuration status."
+              },
+              {
+                "type": "null"
+              }
+            ]
           }
         },
         "required": [
           "integration",
-          "enabled"
+          "enabled",
+          "api_key"
         ],
         "additionalProperties": false
       },
@@ -17861,13 +17893,25 @@
           "api_key_hint": {
             "type": "string"
           },
+          "api_key": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "Decrypted credential returned only to authenticated agent principals for runtime use. Human and service-account callers receive null; presence and hint fields report configuration status."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
           "url": {
             "type": "string"
           }
         },
         "required": [
           "integration",
-          "enabled"
+          "enabled",
+          "api_key"
         ],
         "additionalProperties": false
       },
@@ -20687,11 +20731,23 @@
           },
           "api_key_hint": {
             "type": "string"
+          },
+          "api_key": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "Decrypted credential returned only to authenticated agent principals for runtime use. Human and service-account callers receive null; presence and hint fields report configuration status."
+              },
+              {
+                "type": "null"
+              }
+            ]
           }
         },
         "required": [
           "integration",
-          "enabled"
+          "enabled",
+          "api_key"
         ],
         "additionalProperties": false
       },
@@ -27133,6 +27189,17 @@
           "api_key_hint": {
             "type": "string"
           },
+          "api_key": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "Decrypted credential returned only to authenticated agent principals for runtime use. Human and service-account callers receive null; presence and hint fields report configuration status."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
           "email_domain": {
             "type": "string",
             "description": "Domain for email (both sending and receiving). Must be verified in Resend."
@@ -27146,6 +27213,17 @@
           },
           "webhook_secret_hint": {
             "type": "string"
+          },
+          "webhook_secret": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "Decrypted credential returned only to authenticated agent principals for runtime use. Human and service-account callers receive null; presence and hint fields report configuration status."
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "allowed_sender_domains": {
             "type": "array",
@@ -27166,7 +27244,9 @@
         "required": [
           "integration",
           "enabled",
-          "email_domain"
+          "api_key",
+          "email_domain",
+          "webhook_secret"
         ],
         "additionalProperties": false
       },
@@ -28280,13 +28360,25 @@
           "api_key_hint": {
             "type": "string"
           },
+          "api_key": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "Decrypted credential returned only to authenticated agent principals for runtime use. Human and service-account callers receive null; presence and hint fields report configuration status."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
           "url": {
             "type": "string"
           }
         },
         "required": [
           "integration",
-          "enabled"
+          "enabled",
+          "api_key"
         ],
         "additionalProperties": false
       },

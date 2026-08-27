@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictBool, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, Optional
 from vertesia_client.openapi.models.supported_integrations_serper import SupportedIntegrationsSerper
 from typing import Optional, Set
@@ -32,8 +32,9 @@ class SerperConfiguration(BaseModel):
     enabled: StrictBool
     has_api_key: Optional[StrictBool] = None
     api_key_hint: Optional[StrictStr] = None
+    api_key: Optional[StrictStr] = Field(description="Decrypted credential returned only to authenticated agent principals for runtime use. Human and service-account callers receive null; presence and hint fields report configuration status.")
     url: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["integration", "enabled", "has_api_key", "api_key_hint", "url"]
+    __properties: ClassVar[List[str]] = ["integration", "enabled", "has_api_key", "api_key_hint", "api_key", "url"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -74,6 +75,11 @@ class SerperConfiguration(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # set to None if api_key (nullable) is None
+        # and model_fields_set contains the field
+        if self.api_key is None and "api_key" in self.model_fields_set:
+            _dict['api_key'] = None
+
         return _dict
 
     @classmethod
@@ -90,6 +96,7 @@ class SerperConfiguration(BaseModel):
             "enabled": obj.get("enabled"),
             "has_api_key": obj.get("has_api_key"),
             "api_key_hint": obj.get("api_key_hint"),
+            "api_key": obj.get("api_key"),
             "url": obj.get("url")
         })
         return _obj
