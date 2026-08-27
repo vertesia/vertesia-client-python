@@ -42,6 +42,7 @@ class DataStoreTableDetail(BaseModel):
     created_at: Optional[StrictStr] = Field(default=None, description="Table creation timestamp")
     updated_at: Optional[StrictStr] = Field(default=None, description="Last modification timestamp")
     sample_data: Optional[List[Dict[str, Any]]] = None
+    additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["name", "description", "columns", "foreign_keys", "indexes", "semantic_type", "tags", "row_count", "created_at", "updated_at", "sample_data"]
 
     model_config = ConfigDict(
@@ -74,8 +75,10 @@ class DataStoreTableDetail(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -104,6 +107,11 @@ class DataStoreTableDetail(BaseModel):
                 if _item_indexes:
                     _items.append(_item_indexes.to_dict())
             _dict['indexes'] = _items
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
         return _dict
 
     @classmethod
@@ -128,6 +136,11 @@ class DataStoreTableDetail(BaseModel):
             "updated_at": obj.get("updated_at"),
             "sample_data": obj.get("sample_data")
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 

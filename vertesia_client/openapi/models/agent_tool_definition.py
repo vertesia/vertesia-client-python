@@ -31,7 +31,7 @@ class AgentToolDefinition(BaseModel):
     """ # noqa: E501
     name: StrictStr
     description: Optional[StrictStr] = None
-    input_schema: Dict[str, Any]
+    input_schema: Optional[Dict[str, Any]]
     output_schema: Optional[Dict[str, Any]] = Field(default=None, description="Optional MCP outputSchema advertised by the provider for its structuredContent payload. Execution adapters may expose results differently.")
     url: Optional[StrictStr] = Field(default=None, description="The tool execution URL. It can be an absolute URL or a path in which case the URL is obtained using the base URL of the tool server API. Ex: http://tool-server.com/api/ Example of relative URLs: \"tools/my-tool-collection\" or \"/api/tools/my-tool-collection\"")
     category: Optional[StrictStr] = Field(default=None, description="The tool category if any - for UI purposes.")
@@ -90,6 +90,11 @@ class AgentToolDefinition(BaseModel):
         if self.additional_properties is not None:
             for _key, _value in self.additional_properties.items():
                 _dict[_key] = _value
+
+        # set to None if input_schema (nullable) is None
+        # and model_fields_set contains the field
+        if self.input_schema is None and "input_schema" in self.model_fields_set:
+            _dict['input_schema'] = None
 
         return _dict
 

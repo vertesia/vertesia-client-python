@@ -29,11 +29,12 @@ class BatchQueryResultItem(BaseModel):
     BatchQueryResultItem
     """ # noqa: E501
     columns: List[QueryResultColumn] = Field(description="Column metadata")
-    rows: List[Dict[str, Any]] = Field(description="Result rows")
+    rows: List[Optional[Dict[str, Any]]] = Field(description="Result rows")
     row_count: Union[StrictFloat, StrictInt] = Field(description="Number of rows returned")
     execution_time_ms: Union[StrictFloat, StrictInt] = Field(description="Query execution time in milliseconds")
     error: Optional[StrictStr] = Field(default=None, description="Error message if query failed (used in batch queries)")
     name: StrictStr
+    additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["columns", "rows", "row_count", "execution_time_ms", "error", "name"]
 
     model_config = ConfigDict(
@@ -66,8 +67,10 @@ class BatchQueryResultItem(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -82,6 +85,11 @@ class BatchQueryResultItem(BaseModel):
                 if _item_columns:
                     _items.append(_item_columns.to_dict())
             _dict['columns'] = _items
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
         return _dict
 
     @classmethod
@@ -101,6 +109,11 @@ class BatchQueryResultItem(BaseModel):
             "error": obj.get("error"),
             "name": obj.get("name")
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 

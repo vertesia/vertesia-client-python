@@ -42,6 +42,7 @@ class WebsiteCredentialMetadata(BaseModel):
     notes: Optional[StrictStr] = None
     totp: Optional[WebsiteCredentialTotpMetadata] = None
     expires_at: Optional[StrictStr] = Field(default=None, description="Optional ISO timestamp after which the credential is no longer usable. Expired credentials are hidden from lookup and cannot be filled.")
+    additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["name", "websites", "username", "username_hint", "username_secret", "properties", "tags", "enabled", "capabilities", "notes", "totp", "expires_at"]
 
     model_config = ConfigDict(
@@ -74,8 +75,10 @@ class WebsiteCredentialMetadata(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -93,6 +96,16 @@ class WebsiteCredentialMetadata(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of totp
         if self.totp:
             _dict['totp'] = self.totp.to_dict()
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
+        # set to None if properties (nullable) is None
+        # and model_fields_set contains the field
+        if self.properties is None and "properties" in self.model_fields_set:
+            _dict['properties'] = None
+
         return _dict
 
     @classmethod
@@ -118,6 +131,11 @@ class WebsiteCredentialMetadata(BaseModel):
             "totp": WebsiteCredentialTotpMetadata.from_dict(obj["totp"]) if obj.get("totp") is not None else None,
             "expires_at": obj.get("expires_at")
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 

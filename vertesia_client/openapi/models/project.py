@@ -93,6 +93,11 @@ class Project(BaseModel):
             for _key, _value in self.additional_properties.items():
                 _dict[_key] = _value
 
+        # set to None if integrations (nullable) is None
+        # and model_fields_set contains the field
+        if self.integrations is None and "integrations" in self.model_fields_set:
+            _dict['integrations'] = None
+
         return _dict
 
     @classmethod

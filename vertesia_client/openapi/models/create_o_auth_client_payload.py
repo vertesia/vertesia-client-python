@@ -45,6 +45,7 @@ class CreateOAuthClientPayload(BaseModel):
     restrict_to_owner_account: Optional[StrictBool] = None
     client_secret: Optional[StrictStr] = None
     metadata: Optional[Dict[str, Any]] = None
+    additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["client_name", "client_type", "redirect_uris", "grant_types", "response_types", "token_endpoint_auth_method", "allowed_scopes", "default_scopes", "project_binding_mode", "fixed_project_id", "restrict_to_owner_account", "client_secret", "metadata"]
 
     model_config = ConfigDict(
@@ -77,8 +78,10 @@ class CreateOAuthClientPayload(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -86,6 +89,16 @@ class CreateOAuthClientPayload(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
+        # set to None if metadata (nullable) is None
+        # and model_fields_set contains the field
+        if self.metadata is None and "metadata" in self.model_fields_set:
+            _dict['metadata'] = None
+
         return _dict
 
     @classmethod
@@ -112,6 +125,11 @@ class CreateOAuthClientPayload(BaseModel):
             "client_secret": obj.get("client_secret"),
             "metadata": obj.get("metadata")
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 

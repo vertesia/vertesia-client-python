@@ -42,6 +42,7 @@ class NodeHistoryEntry(BaseModel):
     child_workflow_run_id: Optional[StrictStr] = None
     artifacts: Optional[List[StrictStr]] = None
     log_ref: Optional[StrictStr] = None
+    additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["id", "node", "attempt", "entered_at", "exited_at", "status", "context_diff", "data_ref", "sequence", "child_run_id", "child_workflow_id", "child_workflow_run_id", "artifacts", "log_ref"]
 
     @field_validator('status')
@@ -79,8 +80,10 @@ class NodeHistoryEntry(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -88,6 +91,16 @@ class NodeHistoryEntry(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
+        # set to None if context_diff (nullable) is None
+        # and model_fields_set contains the field
+        if self.context_diff is None and "context_diff" in self.model_fields_set:
+            _dict['context_diff'] = None
+
         return _dict
 
     @classmethod
@@ -115,6 +128,11 @@ class NodeHistoryEntry(BaseModel):
             "artifacts": obj.get("artifacts"),
             "log_ref": obj.get("log_ref")
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 

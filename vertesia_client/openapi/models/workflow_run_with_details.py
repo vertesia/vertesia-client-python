@@ -58,6 +58,7 @@ class WorkflowRunWithDetails(BaseModel):
     memo: Optional[Dict[str, Any]] = None
     pending_activities: Optional[List[PendingActivity]] = Field(default=None, alias="pendingActivities")
     children: Optional[List[WorkflowRun]] = None
+    additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["status", "type", "started_at", "closed_at", "execution_duration", "run_id", "workflow_id", "initiated_by", "interaction_name", "input", "result", "error", "has_reported_errors", "raw", "vertesia_workflow_type", "interactions", "visibility", "topic", "activity_state", "interactive", "history", "memo", "pendingActivities", "children"]
 
     model_config = ConfigDict(
@@ -90,8 +91,10 @@ class WorkflowRunWithDetails(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -126,6 +129,11 @@ class WorkflowRunWithDetails(BaseModel):
                 if _item_children:
                     _items.append(_item_children.to_dict())
             _dict['children'] = _items
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
         # set to None if started_at (nullable) is None
         # and model_fields_set contains the field
         if self.started_at is None and "started_at" in self.model_fields_set:
@@ -198,6 +206,11 @@ class WorkflowRunWithDetails(BaseModel):
             "pendingActivities": [PendingActivity.from_dict(_item) for _item in obj["pendingActivities"]] if obj.get("pendingActivities") is not None else None,
             "children": [WorkflowRun.from_dict(_item) for _item in obj["children"]] if obj.get("children") is not None else None
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 

@@ -105,6 +105,11 @@ class ContentQueryResult(BaseModel):
             for _key, _value in self.additional_properties.items():
                 _dict[_key] = _value
 
+        # set to None if aggregations (nullable) is None
+        # and model_fields_set contains the field
+        if self.aggregations is None and "aggregations" in self.model_fields_set:
+            _dict['aggregations'] = None
+
         return _dict
 
     @classmethod

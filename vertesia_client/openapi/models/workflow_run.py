@@ -52,6 +52,7 @@ class WorkflowRun(BaseModel):
     activity_state: Optional[ConversationActivityState] = Field(default=None, description="The current activity state of the conversation. - 'working': The agent is actively processing - 'idle': The agent is waiting for user input")
     interactive: Optional[StrictBool] = Field(default=None, description="Whether this conversation is interactive (accepts user input).")
     memo: Optional[Dict[str, Any]] = None
+    additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["status", "type", "started_at", "closed_at", "execution_duration", "run_id", "workflow_id", "initiated_by", "interaction_name", "input", "result", "error", "has_reported_errors", "raw", "vertesia_workflow_type", "interactions", "visibility", "topic", "activity_state", "interactive", "memo"]
 
     model_config = ConfigDict(
@@ -84,8 +85,10 @@ class WorkflowRun(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -103,6 +106,11 @@ class WorkflowRun(BaseModel):
                 if _item_interactions:
                     _items.append(_item_interactions.to_dict())
             _dict['interactions'] = _items
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
         # set to None if started_at (nullable) is None
         # and model_fields_set contains the field
         if self.started_at is None and "started_at" in self.model_fields_set:
@@ -172,6 +180,11 @@ class WorkflowRun(BaseModel):
             "interactive": obj.get("interactive"),
             "memo": obj.get("memo")
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 

@@ -53,6 +53,7 @@ class OAuthClient(BaseModel):
     created_at: StrictStr
     updated_at: StrictStr
     client_id: StrictStr
+    additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["client_name", "client_type", "redirect_uris", "grant_types", "response_types", "token_endpoint_auth_method", "allowed_scopes", "default_scopes", "registration_source", "status", "project_binding_mode", "fixed_project_id", "restrict_to_owner_account", "metadata", "created_by", "client_secret_configured", "created_at", "updated_at", "client_id"]
 
     model_config = ConfigDict(
@@ -85,8 +86,10 @@ class OAuthClient(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -94,6 +97,16 @@ class OAuthClient(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
+        # set to None if metadata (nullable) is None
+        # and model_fields_set contains the field
+        if self.metadata is None and "metadata" in self.model_fields_set:
+            _dict['metadata'] = None
+
         return _dict
 
     @classmethod
@@ -126,6 +139,11 @@ class OAuthClient(BaseModel):
             "updated_at": obj.get("updated_at"),
             "client_id": obj.get("client_id")
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 

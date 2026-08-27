@@ -41,6 +41,7 @@ class UpdateProjectPayload(BaseModel):
     updated_by: Optional[StrictStr] = None
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
+    additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["id", "name", "namespace", "description", "account", "configuration", "integrations", "plugins", "created_by", "updated_by", "created_at", "updated_at"]
 
     model_config = ConfigDict(
@@ -73,8 +74,10 @@ class UpdateProjectPayload(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -85,6 +88,16 @@ class UpdateProjectPayload(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of configuration
         if self.configuration:
             _dict['configuration'] = self.configuration.to_dict()
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
+        # set to None if integrations (nullable) is None
+        # and model_fields_set contains the field
+        if self.integrations is None and "integrations" in self.model_fields_set:
+            _dict['integrations'] = None
+
         return _dict
 
     @classmethod
@@ -110,6 +123,11 @@ class UpdateProjectPayload(BaseModel):
             "created_at": obj.get("created_at"),
             "updated_at": obj.get("updated_at")
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 

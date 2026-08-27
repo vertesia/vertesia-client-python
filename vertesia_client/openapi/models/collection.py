@@ -51,6 +51,7 @@ class Collection(BaseModel):
     sensitivity: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="BLP sensitivity level — propagated to member documents (max across collections)")
     compartments: Optional[List[StrictStr]] = Field(default=None, description="Compartments — propagated to member documents (union across collections)")
     shared_properties: Optional[List[StrictStr]] = Field(default=None, description="List of property names from the collection's properties that should be shared with (injected into) member objects. These properties will be propagated to all members of this collection and merged as arrays.")
+    additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["id", "name", "description", "tags", "updated_by", "created_by", "created_at", "updated_at", "dynamic", "status", "type", "skip_head_sync", "parents", "table_layout", "allowed_types", "properties", "query", "security", "sensitivity", "compartments", "shared_properties"]
 
     model_config = ConfigDict(
@@ -83,8 +84,10 @@ class Collection(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -102,10 +105,25 @@ class Collection(BaseModel):
                 if _item_table_layout:
                     _items.append(_item_table_layout.to_dict())
             _dict['table_layout'] = _items
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
         # set to None if parents (nullable) is None
         # and model_fields_set contains the field
         if self.parents is None and "parents" in self.model_fields_set:
             _dict['parents'] = None
+
+        # set to None if properties (nullable) is None
+        # and model_fields_set contains the field
+        if self.properties is None and "properties" in self.model_fields_set:
+            _dict['properties'] = None
+
+        # set to None if query (nullable) is None
+        # and model_fields_set contains the field
+        if self.query is None and "query" in self.model_fields_set:
+            _dict['query'] = None
 
         return _dict
 
@@ -141,6 +159,11 @@ class Collection(BaseModel):
             "compartments": obj.get("compartments"),
             "shared_properties": obj.get("shared_properties")
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 

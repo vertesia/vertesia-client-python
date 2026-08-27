@@ -33,7 +33,7 @@ class WorkflowDefinitionPayloadWithSteps(BaseModel):
     name: StrictStr
     description: Optional[StrictStr] = None
     tags: Optional[List[StrictStr]] = None
-    vars: Dict[str, Any]
+    vars: Optional[Dict[str, Any]]
     options: Optional[DSLActivityOptions] = None
     result: Optional[StrictStr] = None
     debug_mode: Optional[StrictBool] = None
@@ -113,6 +113,11 @@ class WorkflowDefinitionPayloadWithSteps(BaseModel):
         if self.additional_properties is not None:
             for _key, _value in self.additional_properties.items():
                 _dict[_key] = _value
+
+        # set to None if vars (nullable) is None
+        # and model_fields_set contains the field
+        if self.vars is None and "vars" in self.model_fields_set:
+            _dict['vars'] = None
 
         return _dict
 

@@ -37,7 +37,9 @@ class OpenAiThinkingOptions(BaseModel):
     image_detail: Optional[StrictStr] = None
     include_thoughts: Optional[StrictBool] = None
     service_tier: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="Provider-defined processing tier. Unknown non-empty values are preserved for forward compatibility.")
-    __properties: ClassVar[List[str]] = ["_option_id", "max_tokens", "stop_sequence", "effort", "reasoning_effort", "image_detail", "include_thoughts", "service_tier"]
+    extra_body: Optional[Dict[str, Any]] = Field(default=None, description="Additional provider-specific fields merged into the OpenAI-compatible request body.")
+    additional_properties: Dict[str, Any] = {}
+    __properties: ClassVar[List[str]] = ["_option_id", "max_tokens", "stop_sequence", "effort", "reasoning_effort", "image_detail", "include_thoughts", "service_tier", "extra_body"]
 
     @field_validator('option_id')
     def option_id_validate_enum(cls, value):
@@ -82,8 +84,10 @@ class OpenAiThinkingOptions(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -91,6 +95,11 @@ class OpenAiThinkingOptions(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
         return _dict
 
     @classmethod
@@ -110,8 +119,14 @@ class OpenAiThinkingOptions(BaseModel):
             "reasoning_effort": obj.get("reasoning_effort"),
             "image_detail": obj.get("image_detail"),
             "include_thoughts": obj.get("include_thoughts"),
-            "service_tier": obj.get("service_tier")
+            "service_tier": obj.get("service_tier"),
+            "extra_body": obj.get("extra_body")
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 

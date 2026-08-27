@@ -33,6 +33,7 @@ class QueryResult(BaseModel):
     row_count: Union[StrictFloat, StrictInt] = Field(description="Number of rows returned")
     execution_time_ms: Union[StrictFloat, StrictInt] = Field(description="Query execution time in milliseconds")
     error: Optional[StrictStr] = Field(default=None, description="Error message if query failed (used in batch queries)")
+    additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["columns", "rows", "row_count", "execution_time_ms", "error"]
 
     model_config = ConfigDict(
@@ -65,8 +66,10 @@ class QueryResult(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -81,6 +84,11 @@ class QueryResult(BaseModel):
                 if _item_columns:
                     _items.append(_item_columns.to_dict())
             _dict['columns'] = _items
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
         return _dict
 
     @classmethod
@@ -99,6 +107,11 @@ class QueryResult(BaseModel):
             "execution_time_ms": obj.get("execution_time_ms"),
             "error": obj.get("error")
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 

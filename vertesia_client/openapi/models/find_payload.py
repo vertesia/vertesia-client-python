@@ -18,7 +18,7 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, StrictBool, StrictFloat, StrictInt, StrictStr
-from typing import Any, ClassVar, Dict, Optional, Union
+from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -27,12 +27,13 @@ class FindPayload(BaseModel):
     """
     FindPayload
     """ # noqa: E501
-    query: Dict[str, Any]
+    query: Optional[Dict[str, Any]]
     offset: Optional[Union[StrictFloat, StrictInt]] = None
     limit: Optional[Union[StrictFloat, StrictInt]] = None
     select: Optional[StrictStr] = None
     all_revisions: Optional[StrictBool] = None
     from_root: Optional[StrictStr] = None
+    additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["query", "offset", "limit", "select", "all_revisions", "from_root"]
 
     model_config = ConfigDict(
@@ -65,8 +66,10 @@ class FindPayload(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -74,6 +77,16 @@ class FindPayload(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
+        # set to None if query (nullable) is None
+        # and model_fields_set contains the field
+        if self.query is None and "query" in self.model_fields_set:
+            _dict['query'] = None
+
         return _dict
 
     @classmethod
@@ -93,6 +106,11 @@ class FindPayload(BaseModel):
             "all_revisions": obj.get("all_revisions"),
             "from_root": obj.get("from_root")
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 
