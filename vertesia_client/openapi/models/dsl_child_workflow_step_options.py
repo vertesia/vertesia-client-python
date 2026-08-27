@@ -110,6 +110,11 @@ class DSLChildWorkflowStepOptions(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of workflow_task_timeout
         if self.workflow_task_timeout:
             _dict['workflowTaskTimeout'] = self.workflow_task_timeout.to_dict()
+        # set to None if memo (nullable) is None
+        # and model_fields_set contains the field
+        if self.memo is None and "memo" in self.model_fields_set:
+            _dict['memo'] = None
+
         return _dict
 
     @classmethod

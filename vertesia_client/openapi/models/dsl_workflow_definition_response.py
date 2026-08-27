@@ -36,7 +36,7 @@ class DSLWorkflowDefinitionResponse(BaseModel):
     tags: Optional[List[StrictStr]] = Field(default=None, description="Optional array of categorization tags")
     steps: Optional[List[DSLWorkflowStep]] = None
     activities: Optional[List[DSLActivitySpec]] = None
-    vars: Dict[str, Any]
+    vars: Optional[Dict[str, Any]]
     options: Optional[DSLActivityOptions] = None
     result: Optional[StrictStr] = None
     debug_mode: Optional[StrictBool] = None
@@ -48,6 +48,7 @@ class DSLWorkflowDefinitionResponse(BaseModel):
     updated_at: StrictStr = Field(description="ISO timestamp of when the object was last updated")
     input_schema: Optional[Dict[str, Any]] = None
     spec_format: StrictStr
+    additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["name", "description", "tags", "steps", "activities", "vars", "options", "result", "debug_mode", "id", "edit_revision", "updated_by", "created_by", "created_at", "updated_at", "input_schema", "spec_format"]
 
     @field_validator('spec_format')
@@ -85,8 +86,10 @@ class DSLWorkflowDefinitionResponse(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -111,6 +114,21 @@ class DSLWorkflowDefinitionResponse(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of options
         if self.options:
             _dict['options'] = self.options.to_dict()
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
+        # set to None if vars (nullable) is None
+        # and model_fields_set contains the field
+        if self.vars is None and "vars" in self.model_fields_set:
+            _dict['vars'] = None
+
+        # set to None if input_schema (nullable) is None
+        # and model_fields_set contains the field
+        if self.input_schema is None and "input_schema" in self.model_fields_set:
+            _dict['input_schema'] = None
+
         return _dict
 
     @classmethod
@@ -141,6 +159,11 @@ class DSLWorkflowDefinitionResponse(BaseModel):
             "input_schema": obj.get("input_schema"),
             "spec_format": obj.get("spec_format")
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 

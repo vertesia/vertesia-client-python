@@ -25,26 +25,32 @@ from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class OpenAiThinkingOptions(BaseModel):
+class OpenRouterTextOptions(BaseModel):
     """
-    OpenAiThinkingOptions
+    OpenRouterTextOptions
     """ # noqa: E501
-    option_id: StrictStr = Field(alias="_option_id")
     max_tokens: Optional[Union[StrictFloat, StrictInt]] = None
-    stop_sequence: Optional[List[StrictStr]] = None
     effort: Optional[ReasoningEffort] = None
     reasoning_effort: Optional[ReasoningEffort] = None
+    temperature: Optional[Union[StrictFloat, StrictInt]] = None
+    top_p: Optional[Union[StrictFloat, StrictInt]] = None
+    presence_penalty: Optional[Union[StrictFloat, StrictInt]] = None
+    frequency_penalty: Optional[Union[StrictFloat, StrictInt]] = None
+    stop_sequence: Optional[List[StrictStr]] = None
     image_detail: Optional[StrictStr] = None
     include_thoughts: Optional[StrictBool] = None
     service_tier: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="Provider-defined processing tier. Unknown non-empty values are preserved for forward compatibility.")
-    extra_body: Optional[Dict[str, Any]] = Field(default=None, description="Additional provider-specific fields merged into the OpenAI-compatible request body.")
-    additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["_option_id", "max_tokens", "stop_sequence", "effort", "reasoning_effort", "image_detail", "include_thoughts", "service_tier", "extra_body"]
-
-    @field_validator('option_id')
-    def option_id_validate_enum(cls, value):
-        """Validates the enum"""
-        return value
+    option_id: StrictStr = Field(alias="_option_id")
+    provider_sort: Optional[StrictStr] = None
+    provider_order: Optional[List[StrictStr]] = None
+    provider_only: Optional[List[StrictStr]] = None
+    provider_ignore: Optional[List[StrictStr]] = None
+    provider_allow_fallbacks: Optional[StrictBool] = None
+    provider_require_parameters: Optional[StrictBool] = None
+    provider_data_collection: Optional[StrictStr] = None
+    provider_zdr: Optional[StrictBool] = None
+    provider_quantizations: Optional[List[StrictStr]] = None
+    __properties: ClassVar[List[str]] = ["max_tokens", "effort", "reasoning_effort", "temperature", "top_p", "presence_penalty", "frequency_penalty", "stop_sequence", "image_detail", "include_thoughts", "service_tier", "_option_id", "provider_sort", "provider_order", "provider_only", "provider_ignore", "provider_allow_fallbacks", "provider_require_parameters", "provider_data_collection", "provider_zdr", "provider_quantizations"]
 
     @field_validator('image_detail')
     def image_detail_validate_enum(cls, value):
@@ -52,6 +58,38 @@ class OpenAiThinkingOptions(BaseModel):
         if value is None:
             return value
 
+        return value
+
+    @field_validator('option_id')
+    def option_id_validate_enum(cls, value):
+        """Validates the enum"""
+        return value
+
+    @field_validator('provider_sort')
+    def provider_sort_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        return value
+
+    @field_validator('provider_data_collection')
+    def provider_data_collection_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        return value
+
+    @field_validator('provider_quantizations')
+    def provider_quantizations_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        for i in value:
+            if i not in set(['int4', 'int8', 'fp4', 'mxfp4', 'nvfp4', 'fp6', 'fp8', 'mxfp8', 'fp16', 'bf16', 'fp32', 'unknown']):
+                raise ValueError("each list item must be one of ('int4', 'int8', 'fp4', 'mxfp4', 'nvfp4', 'fp6', 'fp8', 'mxfp8', 'fp16', 'bf16', 'fp32', 'unknown')")
         return value
 
     model_config = ConfigDict(
@@ -72,7 +110,7 @@ class OpenAiThinkingOptions(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of OpenAiThinkingOptions from a JSON string"""
+        """Create an instance of OpenRouterTextOptions from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -84,10 +122,8 @@ class OpenAiThinkingOptions(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
-        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
-            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -95,16 +131,11 @@ class OpenAiThinkingOptions(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # puts key-value pairs in additional_properties in the top level
-        if self.additional_properties is not None:
-            for _key, _value in self.additional_properties.items():
-                _dict[_key] = _value
-
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of OpenAiThinkingOptions from a dict"""
+        """Create an instance of OpenRouterTextOptions from a dict"""
         if obj is None:
             return None
 
@@ -112,21 +143,28 @@ class OpenAiThinkingOptions(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "_option_id": obj.get("_option_id"),
             "max_tokens": obj.get("max_tokens"),
-            "stop_sequence": obj.get("stop_sequence"),
             "effort": obj.get("effort"),
             "reasoning_effort": obj.get("reasoning_effort"),
+            "temperature": obj.get("temperature"),
+            "top_p": obj.get("top_p"),
+            "presence_penalty": obj.get("presence_penalty"),
+            "frequency_penalty": obj.get("frequency_penalty"),
+            "stop_sequence": obj.get("stop_sequence"),
             "image_detail": obj.get("image_detail"),
             "include_thoughts": obj.get("include_thoughts"),
             "service_tier": obj.get("service_tier"),
-            "extra_body": obj.get("extra_body")
+            "_option_id": obj.get("_option_id"),
+            "provider_sort": obj.get("provider_sort"),
+            "provider_order": obj.get("provider_order"),
+            "provider_only": obj.get("provider_only"),
+            "provider_ignore": obj.get("provider_ignore"),
+            "provider_allow_fallbacks": obj.get("provider_allow_fallbacks"),
+            "provider_require_parameters": obj.get("provider_require_parameters"),
+            "provider_data_collection": obj.get("provider_data_collection"),
+            "provider_zdr": obj.get("provider_zdr"),
+            "provider_quantizations": obj.get("provider_quantizations")
         })
-        # store additional fields in additional_properties
-        for _key in obj.keys():
-            if _key not in cls.__properties:
-                _obj.additional_properties[_key] = obj.get(_key)
-
         return _obj
 
 

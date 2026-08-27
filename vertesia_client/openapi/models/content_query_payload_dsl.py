@@ -31,7 +31,7 @@ class ContentQueryPayloadDsl(BaseModel):
     aggs: Optional[Dict[str, Any]] = None
     size: Optional[Union[StrictFloat, StrictInt]] = None
     var_from: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, alias="from")
-    sort: Optional[List[Dict[str, Any]]] = None
+    sort: Optional[List[Optional[Dict[str, Any]]]] = None
     __properties: ClassVar[List[str]] = ["query", "aggs", "size", "from", "sort"]
 
     model_config = ConfigDict(
@@ -73,6 +73,16 @@ class ContentQueryPayloadDsl(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # set to None if query (nullable) is None
+        # and model_fields_set contains the field
+        if self.query is None and "query" in self.model_fields_set:
+            _dict['query'] = None
+
+        # set to None if aggs (nullable) is None
+        # and model_fields_set contains the field
+        if self.aggs is None and "aggs" in self.model_fields_set:
+            _dict['aggs'] = None
+
         return _dict
 
     @classmethod

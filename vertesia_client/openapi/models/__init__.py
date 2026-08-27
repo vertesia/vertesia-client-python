@@ -667,6 +667,7 @@ from vertesia_client.openapi.models.open_ai_dalle_options import OpenAiDalleOpti
 from vertesia_client.openapi.models.open_ai_gpt_image_options import OpenAiGptImageOptions
 from vertesia_client.openapi.models.open_ai_text_options import OpenAiTextOptions
 from vertesia_client.openapi.models.open_ai_thinking_options import OpenAiThinkingOptions
+from vertesia_client.openapi.models.open_router_text_options import OpenRouterTextOptions
 from vertesia_client.openapi.models.parallel_collect_definition import ParallelCollectDefinition
 from vertesia_client.openapi.models.parallel_collect_field import ParallelCollectField
 from vertesia_client.openapi.models.parallel_collect_mode import ParallelCollectMode

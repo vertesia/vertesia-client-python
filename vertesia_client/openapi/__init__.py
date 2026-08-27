@@ -724,6 +724,7 @@ __all__ = [
     "OpenAiGptImageOptions",
     "OpenAiTextOptions",
     "OpenAiThinkingOptions",
+    "OpenRouterTextOptions",
     "ParallelCollectDefinition",
     "ParallelCollectField",
     "ParallelCollectMode",
@@ -1863,6 +1864,7 @@ from vertesia_client.openapi.models.open_ai_dalle_options import OpenAiDalleOpti
 from vertesia_client.openapi.models.open_ai_gpt_image_options import OpenAiGptImageOptions as OpenAiGptImageOptions
 from vertesia_client.openapi.models.open_ai_text_options import OpenAiTextOptions as OpenAiTextOptions
 from vertesia_client.openapi.models.open_ai_thinking_options import OpenAiThinkingOptions as OpenAiThinkingOptions
+from vertesia_client.openapi.models.open_router_text_options import OpenRouterTextOptions as OpenRouterTextOptions
 from vertesia_client.openapi.models.parallel_collect_definition import ParallelCollectDefinition as ParallelCollectDefinition
 from vertesia_client.openapi.models.parallel_collect_field import ParallelCollectField as ParallelCollectField
 from vertesia_client.openapi.models.parallel_collect_mode import ParallelCollectMode as ParallelCollectMode

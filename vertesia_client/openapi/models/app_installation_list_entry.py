@@ -42,6 +42,7 @@ class AppInstallationListEntry(BaseModel):
     updated_at: StrictStr
     manifest: Optional[AppManifest]
     oauth_collection_ids: Optional[List[StrictStr]] = None
+    additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["id", "project", "settings", "tool_allowlist", "oauth_bindings", "provider_bindings", "access_control", "created_at", "updated_at", "manifest", "oauth_collection_ids"]
 
     model_config = ConfigDict(
@@ -74,8 +75,10 @@ class AppInstallationListEntry(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -100,6 +103,16 @@ class AppInstallationListEntry(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of manifest
         if self.manifest:
             _dict['manifest'] = self.manifest.to_dict()
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
+        # set to None if settings (nullable) is None
+        # and model_fields_set contains the field
+        if self.settings is None and "settings" in self.model_fields_set:
+            _dict['settings'] = None
+
         # set to None if manifest (nullable) is None
         # and model_fields_set contains the field
         if self.manifest is None and "manifest" in self.model_fields_set:
@@ -129,6 +142,11 @@ class AppInstallationListEntry(BaseModel):
             "manifest": AppManifest.from_dict(obj["manifest"]) if obj.get("manifest") is not None else None,
             "oauth_collection_ids": obj.get("oauth_collection_ids")
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 

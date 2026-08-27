@@ -702,6 +702,7 @@ vertesia_client/openapi/models/open_ai_dalle_options.py
 vertesia_client/openapi/models/open_ai_gpt_image_options.py
 vertesia_client/openapi/models/open_ai_text_options.py
 vertesia_client/openapi/models/open_ai_thinking_options.py
+vertesia_client/openapi/models/open_router_text_options.py
 vertesia_client/openapi/models/parallel_collect_definition.py
 vertesia_client/openapi/models/parallel_collect_field.py
 vertesia_client/openapi/models/parallel_collect_mode.py

@@ -70,6 +70,7 @@ class NodeDefinition(BaseModel):
     join: Optional[BranchJoinPolicy] = None
     branches: Optional[List[NodeDefinitionBranchesInner]] = None
     metadata: Optional[Dict[str, Any]] = None
+    additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["type", "tool", "script", "timeout", "interaction", "process", "process_definition", "process_version", "run_type", "returns", "result_schema", "prompt", "input", "config", "title", "description", "human_description", "writes", "skippable", "max_retries", "transitions", "tools", "model", "task", "foreach", "as", "item_id", "node", "max_concurrency", "collect", "failure_policy", "join", "branches", "metadata"]
 
     model_config = ConfigDict(
@@ -102,8 +103,10 @@ class NodeDefinition(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -143,6 +146,21 @@ class NodeDefinition(BaseModel):
                 if _item_branches:
                     _items.append(_item_branches.to_dict())
             _dict['branches'] = _items
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
+        # set to None if input (nullable) is None
+        # and model_fields_set contains the field
+        if self.input is None and "input" in self.model_fields_set:
+            _dict['input'] = None
+
+        # set to None if config (nullable) is None
+        # and model_fields_set contains the field
+        if self.config is None and "config" in self.model_fields_set:
+            _dict['config'] = None
+
         return _dict
 
     @classmethod
@@ -190,6 +208,11 @@ class NodeDefinition(BaseModel):
             "branches": [NodeDefinitionBranchesInner.from_dict(_item) for _item in obj["branches"]] if obj.get("branches") is not None else None,
             "metadata": obj.get("metadata")
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 from vertesia_client.openapi.models.node_definition_branches_inner import NodeDefinitionBranchesInner

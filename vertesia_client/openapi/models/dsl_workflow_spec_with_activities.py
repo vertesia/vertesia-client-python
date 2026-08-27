@@ -32,13 +32,14 @@ class DSLWorkflowSpecWithActivities(BaseModel):
     name: StrictStr
     description: Optional[StrictStr] = None
     tags: Optional[List[StrictStr]] = None
-    vars: Dict[str, Any]
+    vars: Optional[Dict[str, Any]]
     options: Optional[DSLActivityOptions] = None
     result: Optional[StrictStr] = None
     debug_mode: Optional[StrictBool] = None
     steps: Optional[List[DSLWorkflowStep]] = None
     activities: List[DSLActivitySpec] = Field(description="Deprecated: use steps instead")
     spec_format: StrictStr
+    additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["name", "description", "tags", "vars", "options", "result", "debug_mode", "steps", "activities", "spec_format"]
 
     @field_validator('spec_format')
@@ -76,8 +77,10 @@ class DSLWorkflowSpecWithActivities(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -102,6 +105,16 @@ class DSLWorkflowSpecWithActivities(BaseModel):
                 if _item_activities:
                     _items.append(_item_activities.to_dict())
             _dict['activities'] = _items
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
+        # set to None if vars (nullable) is None
+        # and model_fields_set contains the field
+        if self.vars is None and "vars" in self.model_fields_set:
+            _dict['vars'] = None
+
         return _dict
 
     @classmethod
@@ -125,6 +138,11 @@ class DSLWorkflowSpecWithActivities(BaseModel):
             "activities": [DSLActivitySpec.from_dict(_item) for _item in obj["activities"]] if obj.get("activities") is not None else None,
             "spec_format": obj.get("spec_format")
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 from vertesia_client.openapi.models.dsl_workflow_step import DSLWorkflowStep

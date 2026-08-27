@@ -18,7 +18,7 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
-from typing import Any, ClassVar, Dict, Optional
+from typing import Any, ClassVar, Dict, List, Optional
 from vertesia_client.openapi.models.app_access_control import AppAccessControl
 from vertesia_client.openapi.models.mcp_api_key_credential import McpApiKeyCredential
 from vertesia_client.openapi.models.o_auth_client_credentials import OAuthClientCredentials
@@ -36,6 +36,7 @@ class AppInstallationPayload(BaseModel):
     oauth_params: Optional[Dict[str, OAuthClientCredentials]] = Field(default=None, description="OAuth credentials for each collection, keyed by collection.id. Legacy callers may still use collection.name for older manifests. Collected from the user at install time for collections with oauth_config.required_at_install.")
     oauth_provider_params: Optional[Dict[str, OAuthClientCredentials]] = Field(default=None, description="OAuth credentials for named providers, keyed by the provider key from oauth_providers. Collected from the user at install time for providers with required_at_install. Separate from oauth_params to avoid key collisions between provider keys and collection ids.")
     api_key_params: Optional[Dict[str, McpApiKeyCredential]] = Field(default=None, description="API keys for auth: 'api_key' collections, keyed by collection.id. Collected from the user at install time for collections with api_key_config.required_at_install. Each key is stored in the installing project's encrypted secret store, replacing any key already held for that collection.")
+    additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["app_id", "settings", "access_control", "oauth_params", "oauth_provider_params", "api_key_params"]
 
     model_config = ConfigDict(
@@ -68,8 +69,10 @@ class AppInstallationPayload(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -98,6 +101,16 @@ class AppInstallationPayload(BaseModel):
                 if self.api_key_params[_key_api_key_params]:
                     _field_dict[_key_api_key_params] = self.api_key_params[_key_api_key_params].to_dict()
             _dict['api_key_params'] = _field_dict
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
+        # set to None if settings (nullable) is None
+        # and model_fields_set contains the field
+        if self.settings is None and "settings" in self.model_fields_set:
+            _dict['settings'] = None
+
         # set to None if access_control (nullable) is None
         # and model_fields_set contains the field
         if self.access_control is None and "access_control" in self.model_fields_set:
@@ -137,6 +150,11 @@ class AppInstallationPayload(BaseModel):
             if obj.get("api_key_params") is not None
             else None
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 

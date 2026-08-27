@@ -29,7 +29,7 @@ class ProcessState(BaseModel):
     """
     ProcessState
     """ # noqa: E501
-    context: Dict[str, Any]
+    context: Optional[Dict[str, Any]]
     current_node: StrictStr
     node_history: List[NodeHistoryEntry]
     node_history_ref: Optional[ProcessHistoryRef] = None
@@ -92,6 +92,11 @@ class ProcessState(BaseModel):
         if self.additional_properties is not None:
             for _key, _value in self.additional_properties.items():
                 _dict[_key] = _value
+
+        # set to None if context (nullable) is None
+        # and model_fields_set contains the field
+        if self.context is None and "context" in self.model_fields_set:
+            _dict['context'] = None
 
         return _dict
 

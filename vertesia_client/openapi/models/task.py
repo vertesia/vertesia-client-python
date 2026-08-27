@@ -45,6 +45,7 @@ class Task(BaseModel):
     created_at: datetime
     completed_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
+    additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["id", "account", "project", "title", "description", "status", "assignee", "fields", "result", "source", "due_at", "created_at", "completed_at", "updated_at"]
 
     model_config = ConfigDict(
@@ -77,8 +78,10 @@ class Task(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -96,6 +99,16 @@ class Task(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of source
         if self.source:
             _dict['source'] = self.source.to_dict()
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
+        # set to None if result (nullable) is None
+        # and model_fields_set contains the field
+        if self.result is None and "result" in self.model_fields_set:
+            _dict['result'] = None
+
         return _dict
 
     @classmethod
@@ -123,6 +136,11 @@ class Task(BaseModel):
             "completed_at": obj.get("completed_at"),
             "updated_at": obj.get("updated_at")
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 

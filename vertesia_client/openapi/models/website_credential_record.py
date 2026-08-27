@@ -52,6 +52,7 @@ class WebsiteCredentialRecord(BaseModel):
     has_totp: StrictBool
     has_oauth: StrictBool
     password_hint: Optional[StrictStr] = None
+    additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["id", "credential_ref", "project", "name", "websites", "username", "username_hint", "username_secret_enabled", "properties", "tags", "enabled", "capabilities", "notes", "totp_metadata", "expires_at", "created_at", "updated_at", "has_username_secret", "has_password", "has_totp", "has_oauth", "password_hint"]
 
     model_config = ConfigDict(
@@ -84,8 +85,10 @@ class WebsiteCredentialRecord(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -103,6 +106,16 @@ class WebsiteCredentialRecord(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of totp_metadata
         if self.totp_metadata:
             _dict['totp_metadata'] = self.totp_metadata.to_dict()
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
+        # set to None if properties (nullable) is None
+        # and model_fields_set contains the field
+        if self.properties is None and "properties" in self.model_fields_set:
+            _dict['properties'] = None
+
         return _dict
 
     @classmethod
@@ -138,6 +151,11 @@ class WebsiteCredentialRecord(BaseModel):
             "has_oauth": obj.get("has_oauth"),
             "password_hint": obj.get("password_hint")
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 

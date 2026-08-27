@@ -41,6 +41,7 @@ class SupportedProviders(str, Enum):
     WATSONX = 'watsonx'
     XAI = 'xai'
     ANTHROPIC = 'anthropic'
+    OPENROUTER = 'openrouter'
     VIRTUAL_LB = 'virtual_lb'
     VIRTUAL_MEDIATOR = 'virtual_mediator'
     TEST = 'test'

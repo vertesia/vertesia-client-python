@@ -18,7 +18,7 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
-from typing import Any, ClassVar, Dict, Optional, Union
+from typing import Any, ClassVar, Dict, List, Optional, Union
 from vertesia_client.openapi.models.webhook_payload_mode import WebhookPayloadMode
 from vertesia_client.openapi.models.webhook_signing_mode import WebhookSigningMode
 from typing import Optional, Set
@@ -40,6 +40,7 @@ class WebhookEventDeliveryTarget(BaseModel):
     timeout_ms: Optional[Union[StrictFloat, StrictInt]] = None
     result_path: Optional[StrictStr] = None
     custom_data: Optional[Dict[str, Any]] = None
+    additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["type", "url", "has_secret", "secret_label", "signing_mode", "payload_mode", "headers", "encrypted_headers", "timeout_ms", "result_path", "custom_data"]
 
     @field_validator('type')
@@ -77,8 +78,10 @@ class WebhookEventDeliveryTarget(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -86,6 +89,16 @@ class WebhookEventDeliveryTarget(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
+        # set to None if custom_data (nullable) is None
+        # and model_fields_set contains the field
+        if self.custom_data is None and "custom_data" in self.model_fields_set:
+            _dict['custom_data'] = None
+
         return _dict
 
     @classmethod
@@ -110,6 +123,11 @@ class WebhookEventDeliveryTarget(BaseModel):
             "result_path": obj.get("result_path"),
             "custom_data": obj.get("custom_data")
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 

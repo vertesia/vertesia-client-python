@@ -41,7 +41,8 @@ class OpenAiTextOptions(BaseModel):
     image_detail: Optional[StrictStr] = None
     include_thoughts: Optional[StrictBool] = None
     service_tier: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="Provider-defined processing tier. Unknown non-empty values are preserved for forward compatibility.")
-    __properties: ClassVar[List[str]] = ["_option_id", "max_tokens", "effort", "reasoning_effort", "temperature", "top_p", "presence_penalty", "frequency_penalty", "stop_sequence", "image_detail", "include_thoughts", "service_tier"]
+    extra_body: Optional[Dict[str, Any]] = Field(default=None, description="Additional provider-specific fields merged into the OpenAI-compatible request body.")
+    __properties: ClassVar[List[str]] = ["_option_id", "max_tokens", "effort", "reasoning_effort", "temperature", "top_p", "presence_penalty", "frequency_penalty", "stop_sequence", "image_detail", "include_thoughts", "service_tier", "extra_body"]
 
     @field_validator('option_id')
     def option_id_validate_enum(cls, value):
@@ -118,7 +119,8 @@ class OpenAiTextOptions(BaseModel):
             "stop_sequence": obj.get("stop_sequence"),
             "image_detail": obj.get("image_detail"),
             "include_thoughts": obj.get("include_thoughts"),
-            "service_tier": obj.get("service_tier")
+            "service_tier": obj.get("service_tier"),
+            "extra_body": obj.get("extra_body")
         })
         return _obj
 
