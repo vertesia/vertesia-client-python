@@ -32,14 +32,16 @@ class ResendConfiguration(BaseModel):
     enabled: StrictBool
     has_api_key: Optional[StrictBool] = None
     api_key_hint: Optional[StrictStr] = None
+    api_key: Optional[StrictStr] = Field(description="Decrypted credential returned only to authenticated agent principals for runtime use. Human and service-account callers receive null; presence and hint fields report configuration status.")
     email_domain: StrictStr = Field(description="Domain for email (both sending and receiving). Must be verified in Resend.")
     default_from_name: Optional[StrictStr] = Field(default=None, description="Default display name for outgoing emails (e.g., \"Vertesia - Project Name\")")
     has_webhook_secret: Optional[StrictBool] = None
     webhook_secret_hint: Optional[StrictStr] = None
+    webhook_secret: Optional[StrictStr] = Field(description="Decrypted credential returned only to authenticated agent principals for runtime use. Human and service-account callers receive null; presence and hint fields report configuration status.")
     allowed_sender_domains: Optional[List[StrictStr]] = Field(default=None, description="Domains allowed to send emails TO start agents (for inbound validation)")
     require_project_access: Optional[StrictBool] = Field(default=None, description="Require sender to have project access to start agents via email (default: true)")
     require_email_auth: Optional[StrictBool] = Field(default=None, description="Require DKIM/SPF authentication to pass for inbound emails (default: true)")
-    __properties: ClassVar[List[str]] = ["integration", "enabled", "has_api_key", "api_key_hint", "email_domain", "default_from_name", "has_webhook_secret", "webhook_secret_hint", "allowed_sender_domains", "require_project_access", "require_email_auth"]
+    __properties: ClassVar[List[str]] = ["integration", "enabled", "has_api_key", "api_key_hint", "api_key", "email_domain", "default_from_name", "has_webhook_secret", "webhook_secret_hint", "webhook_secret", "allowed_sender_domains", "require_project_access", "require_email_auth"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -80,6 +82,16 @@ class ResendConfiguration(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # set to None if api_key (nullable) is None
+        # and model_fields_set contains the field
+        if self.api_key is None and "api_key" in self.model_fields_set:
+            _dict['api_key'] = None
+
+        # set to None if webhook_secret (nullable) is None
+        # and model_fields_set contains the field
+        if self.webhook_secret is None and "webhook_secret" in self.model_fields_set:
+            _dict['webhook_secret'] = None
+
         return _dict
 
     @classmethod
@@ -96,10 +108,12 @@ class ResendConfiguration(BaseModel):
             "enabled": obj.get("enabled"),
             "has_api_key": obj.get("has_api_key"),
             "api_key_hint": obj.get("api_key_hint"),
+            "api_key": obj.get("api_key"),
             "email_domain": obj.get("email_domain"),
             "default_from_name": obj.get("default_from_name"),
             "has_webhook_secret": obj.get("has_webhook_secret"),
             "webhook_secret_hint": obj.get("webhook_secret_hint"),
+            "webhook_secret": obj.get("webhook_secret"),
             "allowed_sender_domains": obj.get("allowed_sender_domains"),
             "require_project_access": obj.get("require_project_access"),
             "require_email_auth": obj.get("require_email_auth")

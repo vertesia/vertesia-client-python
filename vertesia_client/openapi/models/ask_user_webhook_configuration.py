@@ -33,9 +33,10 @@ class AskUserWebhookConfiguration(BaseModel):
     webhook_url: Optional[StrictStr] = Field(default=None, description="Webhook URL to receive ask_user events")
     has_webhook_secret: Optional[StrictBool] = None
     webhook_secret_hint: Optional[StrictStr] = None
+    webhook_secret: Optional[StrictStr] = Field(description="Decrypted credential returned only to authenticated agent principals for runtime use. Human and service-account callers receive null; presence and hint fields report configuration status.")
     events: Optional[List[StrictStr]] = Field(default=None, description="Which events to send: ['requested', 'resolved'] or subset (default: both)")
     custom_headers: Optional[Dict[str, StrictStr]] = Field(default=None, description="Custom headers to include in webhook requests")
-    __properties: ClassVar[List[str]] = ["integration", "enabled", "webhook_url", "has_webhook_secret", "webhook_secret_hint", "events", "custom_headers"]
+    __properties: ClassVar[List[str]] = ["integration", "enabled", "webhook_url", "has_webhook_secret", "webhook_secret_hint", "webhook_secret", "events", "custom_headers"]
 
     @field_validator('events')
     def events_validate_enum(cls, value):
@@ -87,6 +88,11 @@ class AskUserWebhookConfiguration(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # set to None if webhook_secret (nullable) is None
+        # and model_fields_set contains the field
+        if self.webhook_secret is None and "webhook_secret" in self.model_fields_set:
+            _dict['webhook_secret'] = None
+
         return _dict
 
     @classmethod
@@ -104,6 +110,7 @@ class AskUserWebhookConfiguration(BaseModel):
             "webhook_url": obj.get("webhook_url"),
             "has_webhook_secret": obj.get("has_webhook_secret"),
             "webhook_secret_hint": obj.get("webhook_secret_hint"),
+            "webhook_secret": obj.get("webhook_secret"),
             "events": obj.get("events"),
             "custom_headers": obj.get("custom_headers")
         })
