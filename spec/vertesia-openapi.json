@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Vertesia API",
-    "version": "1.5.0-dev.20260826.064249Z",
+    "version": "1.5.0-dev.20260901.005903Z",
     "x-api-version": "20260803",
     "description": "The Vertesia API provides project-scoped access to interaction execution and content workflows. Use it to run interactions, inspect execution history, stream run progress, replay previous executions, and search content objects and collections. Authenticate requests with a bearer token, or use the official `@vertesia/client` package for typed access from Node.js applications.",
     "contact": {
