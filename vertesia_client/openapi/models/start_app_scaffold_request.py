@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.app_scaffold_module import AppScaffoldModule
 from typing import Optional, Set
 from typing_extensions import Self
@@ -32,8 +33,22 @@ class StartAppScaffoldRequest(BaseModel):
     title: Optional[StrictStr] = None
     description: Optional[StrictStr] = None
     modules: Optional[List[AppScaffoldModule]] = None
+    appgen_package_spec: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Optional Vertesia SDK version or package track for this scaffold. Overrides the deployment default.")
     create_version: Optional[StrictBool] = Field(default=None, description="Start an initial app version build after the source has been pushed. Defaults to true.")
-    __properties: ClassVar[List[str]] = ["app_id", "title", "description", "modules", "create_version"]
+    __properties: ClassVar[List[str]] = ["app_id", "title", "description", "modules", "appgen_package_spec", "create_version"]
+
+    @field_validator('appgen_package_spec')
+    def appgen_package_spec_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if value is None:
+            return value
+
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"^(?:latest|dev|dev-[0-9]+\.[0-9]+|snapshot-[0-9a-f]{7}|[0-9]+\.[0-9]+\.[0-9]+(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?)$", value):
+            raise ValueError(r"must validate the regular expression /^(?:latest|dev|dev-[0-9]+\.[0-9]+|snapshot-[0-9a-f]{7}|[0-9]+\.[0-9]+\.[0-9]+(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?)$/")
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -90,6 +105,7 @@ class StartAppScaffoldRequest(BaseModel):
             "title": obj.get("title"),
             "description": obj.get("description"),
             "modules": obj.get("modules"),
+            "appgen_package_spec": obj.get("appgen_package_spec"),
             "create_version": obj.get("create_version")
         })
         return _obj
