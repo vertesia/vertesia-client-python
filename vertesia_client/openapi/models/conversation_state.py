@@ -51,7 +51,7 @@ class ConversationState(BaseModel):
     tool_use: Optional[List[ToolUse]] = Field(default=None, description="The tools to call next.")
     tool_approval_mode: Optional[AgentToolApprovalMode] = Field(default=None, description="Effective side-effecting tool approval mode for this interactive conversation.")
     tool_approval_grants: Optional[Dict[str, ToolApprovalGrant]] = Field(default=None, description="Run-scoped, exact-target grants created by \"allow this action for this run\".")
-    pending_tool_approval_results: Optional[PendingToolApprovalResults] = Field(default=None, description="Buffered tool results held while approval denial pauses until the next user message.")
+    pending_tool_approval_results: Optional[PendingToolApprovalResults] = Field(default=None, description="Buffered tool results held across an interactive pause until the next user message.")
     latest_user_message: Optional[StrictStr] = Field(default=None, description="Compact, redacted latest user intent for reviewer-style system interactions.")
     tool_input_refs: Optional[Dict[str, List[ExternalizedToolInputRef]]] = Field(default=None, description="Transport sidecar for large generated tool input fields.  These refs are intentionally kept out of tool_use.tool_input so they are not shown to the model. Tool execution hydrates them from artifact storage immediately before activity validation.")
     output: List[CompletionResult] = Field(description="The output of the this conversation step")

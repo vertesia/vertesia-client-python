@@ -31,6 +31,7 @@ from vertesia_client.openapi.models.execution_run_workflow import ExecutionRunWo
 from vertesia_client.openapi.models.in_code_prompt import InCodePrompt
 from vertesia_client.openapi.models.initial_tool_call import InitialToolCall
 from vertesia_client.openapi.models.interaction_execution_configuration import InteractionExecutionConfiguration
+from vertesia_client.openapi.models.process_agent_execution_policy import ProcessAgentExecutionPolicy
 from vertesia_client.openapi.models.user_channel import UserChannel
 from typing import Optional, Set
 from typing_extensions import Self
@@ -64,6 +65,7 @@ class AsyncConversationExecutionPayload(BaseModel):
     initial_skills: Optional[List[StrictStr]] = Field(default=None, description="Builtin system skills to activate at conversation start. Their related tools are exposed from the first turn and their instructions are injected into the initial context, replacing the learn_<skill> round-trip.")
     initial_tool_calls: Optional[List[InitialToolCall]] = Field(default=None, description="Tool calls executed before the first model turn. Results are injected into the initial context. These run sequentially with the caller's authority before the first model turn. Only a bounded set of read/hydration tools is accepted.")
     excluded_tools: Optional[List[StrictStr]] = Field(default=None, description="Hard denylist of tool names for this conversation. Excluded tools are never exposed to the model and are refused at execution time, even when a skill or tool refresh would otherwise unlock them. Takes precedence over tool_names, initial_skills, and skill-based tool activation.")
+    agent_policy: Optional[ProcessAgentExecutionPolicy] = Field(default=None, description="Process-authored successful-tool phases enforced by this child conversation. Ordinary conversation callers should leave this unset.")
     max_iterations: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="The maximum number of iterations in case of a conversation. If <=0 the default of 20 will be used.")
     interactive: Optional[StrictBool] = Field(default=None, description="Whether the conversation should be interactive or not")
     user_channels: Optional[List[UserChannel]] = Field(default=None, description="Array of channels to use for user communication. Multiple channels can be active simultaneously (e.g., both email and interactive). Each channel contains its own configuration and state (e.g., email threading info).")
@@ -86,7 +88,7 @@ class AsyncConversationExecutionPayload(BaseModel):
     agent_run_id: Optional[StrictStr] = Field(default=None, description="The AgentRun MongoDB _id. Used for artifact storage paths: agents/{agent_run_id}/ Flows into ConversationState and down to workstreams. Undefined for legacy workflows started before the AgentRun system.")
     schedule_id: Optional[StrictStr] = Field(default=None, description="The Schedule MongoDB _id. Set when this execution was triggered by a Temporal schedule. Used by the workflow to create an AgentRun on first run if agent_run_id is absent.")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["interaction", "title", "topic", "generate_topic", "generate_lessons", "app_version", "data", "config", "result_schema", "do_validate", "tags", "conversation", "workflow", "prompts", "asyncCompletion", "type", "notify_endpoints", "task_queue", "tool_approval_mode", "visibility", "tool_names", "initial_skills", "initial_tool_calls", "excluded_tools", "max_iterations", "interactive", "user_channels", "disable_interaction_tools", "search_scope", "collection_id", "disabled_mcp_collections", "checkpoint_tokens", "checkpoint", "strip_options", "task_id", "launch_id", "debug_mode", "max_nested_conversation_depth", "parent_metadata", "non_blocking_subagents", "restart_from_workflow_run_id", "source_first_workflow_run_id", "is_fork", "agent_run_id", "schedule_id"]
+    __properties: ClassVar[List[str]] = ["interaction", "title", "topic", "generate_topic", "generate_lessons", "app_version", "data", "config", "result_schema", "do_validate", "tags", "conversation", "workflow", "prompts", "asyncCompletion", "type", "notify_endpoints", "task_queue", "tool_approval_mode", "visibility", "tool_names", "initial_skills", "initial_tool_calls", "excluded_tools", "agent_policy", "max_iterations", "interactive", "user_channels", "disable_interaction_tools", "search_scope", "collection_id", "disabled_mcp_collections", "checkpoint_tokens", "checkpoint", "strip_options", "task_id", "launch_id", "debug_mode", "max_nested_conversation_depth", "parent_metadata", "non_blocking_subagents", "restart_from_workflow_run_id", "source_first_workflow_run_id", "is_fork", "agent_run_id", "schedule_id"]
 
     @field_validator('type')
     def type_validate_enum(cls, value):
@@ -160,6 +162,9 @@ class AsyncConversationExecutionPayload(BaseModel):
                 if _item_initial_tool_calls:
                     _items.append(_item_initial_tool_calls.to_dict())
             _dict['initial_tool_calls'] = _items
+        # override the default output from pydantic by calling `to_dict()` of agent_policy
+        if self.agent_policy:
+            _dict['agent_policy'] = self.agent_policy.to_dict()
         # override the default output from pydantic by calling `to_dict()` of each item in user_channels (list)
         _items = []
         if self.user_channels:
@@ -229,6 +234,7 @@ class AsyncConversationExecutionPayload(BaseModel):
             "initial_skills": obj.get("initial_skills"),
             "initial_tool_calls": [InitialToolCall.from_dict(_item) for _item in obj["initial_tool_calls"]] if obj.get("initial_tool_calls") is not None else None,
             "excluded_tools": obj.get("excluded_tools"),
+            "agent_policy": ProcessAgentExecutionPolicy.from_dict(obj["agent_policy"]) if obj.get("agent_policy") is not None else None,
             "max_iterations": obj.get("max_iterations"),
             "interactive": obj.get("interactive"),
             "user_channels": [UserChannel.from_dict(_item) for _item in obj["user_channels"]] if obj.get("user_channels") is not None else None,

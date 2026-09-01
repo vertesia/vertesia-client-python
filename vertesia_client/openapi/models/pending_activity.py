@@ -33,7 +33,8 @@ class PendingActivity(BaseModel):
     maximum_attempts: Union[StrictFloat, StrictInt] = Field(alias="maximumAttempts")
     last_failure: Optional[StrictStr] = Field(default=None, alias="lastFailure")
     last_started_time: Optional[StrictStr] = Field(alias="lastStartedTime")
-    __properties: ClassVar[List[str]] = ["activityId", "activityType", "attempt", "maximumAttempts", "lastFailure", "lastStartedTime"]
+    last_heartbeat_time: Optional[StrictStr] = Field(default=None, alias="lastHeartbeatTime")
+    __properties: ClassVar[List[str]] = ["activityId", "activityType", "attempt", "maximumAttempts", "lastFailure", "lastStartedTime", "lastHeartbeatTime"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -79,6 +80,11 @@ class PendingActivity(BaseModel):
         if self.last_started_time is None and "last_started_time" in self.model_fields_set:
             _dict['lastStartedTime'] = None
 
+        # set to None if last_heartbeat_time (nullable) is None
+        # and model_fields_set contains the field
+        if self.last_heartbeat_time is None and "last_heartbeat_time" in self.model_fields_set:
+            _dict['lastHeartbeatTime'] = None
+
         return _dict
 
     @classmethod
@@ -96,7 +102,8 @@ class PendingActivity(BaseModel):
             "attempt": obj.get("attempt"),
             "maximumAttempts": obj.get("maximumAttempts"),
             "lastFailure": obj.get("lastFailure"),
-            "lastStartedTime": obj.get("lastStartedTime")
+            "lastStartedTime": obj.get("lastStartedTime"),
+            "lastHeartbeatTime": obj.get("lastHeartbeatTime")
         })
         return _obj
 

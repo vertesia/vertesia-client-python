@@ -17,38 +17,23 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr, field_validator
+from pydantic import BaseModel, ConfigDict, Field
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
-from vertesia_client.openapi.models.app_scaffold_module import AppScaffoldModule
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class StartAppScaffoldRequest(BaseModel):
+class ProcessAgentToolInputContains(BaseModel):
     """
-    StartAppScaffoldRequest
+    ProcessAgentToolInputContains
     """ # noqa: E501
-    app_id: StrictStr = Field(description="Package name for the new app to create and scaffold. This is not the id of an existing app.")
-    title: Optional[StrictStr] = None
-    description: Optional[StrictStr] = None
-    modules: Optional[List[AppScaffoldModule]] = None
-    appgen_package_spec: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Optional Vertesia SDK version or package track for this scaffold. Overrides the deployment default.")
-    create_version: Optional[StrictBool] = Field(default=None, description="Start an initial app version build after the source has been pushed. Defaults to true.")
-    __properties: ClassVar[List[str]] = ["app_id", "title", "description", "modules", "appgen_package_spec", "create_version"]
-
-    @field_validator('appgen_package_spec')
-    def appgen_package_spec_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if value is None:
-            return value
-
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^(?:latest|dev|dev-[0-9]+\.[0-9]+|snapshot-[0-9a-f]{7}|[0-9]+\.[0-9]+\.[0-9]+(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?)$", value):
-            raise ValueError(r"must validate the regular expression /^(?:latest|dev|dev-[0-9]+\.[0-9]+|snapshot-[0-9a-f]{7}|[0-9]+\.[0-9]+\.[0-9]+(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?)$/")
-        return value
+    var_field: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Top-level tool-input field to inspect.", alias="field")
+    contains: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Case-sensitive substring required in the string field.")
+    not_contains: Optional[Annotated[List[Annotated[str, Field(min_length=1, strict=True)]], Field(min_length=1)]] = Field(default=None, description="Case-sensitive substrings forbidden in the same string field.")
+    min_length: Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=0)]] = Field(default=None, description="Minimum string length required for the same field.")
+    additional_properties: Dict[str, Any] = {}
+    __properties: ClassVar[List[str]] = ["field", "contains", "not_contains", "min_length"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -68,7 +53,7 @@ class StartAppScaffoldRequest(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of StartAppScaffoldRequest from a JSON string"""
+        """Create an instance of ProcessAgentToolInputContains from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -80,8 +65,10 @@ class StartAppScaffoldRequest(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -89,11 +76,16 @@ class StartAppScaffoldRequest(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of StartAppScaffoldRequest from a dict"""
+        """Create an instance of ProcessAgentToolInputContains from a dict"""
         if obj is None:
             return None
 
@@ -101,13 +93,16 @@ class StartAppScaffoldRequest(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "app_id": obj.get("app_id"),
-            "title": obj.get("title"),
-            "description": obj.get("description"),
-            "modules": obj.get("modules"),
-            "appgen_package_spec": obj.get("appgen_package_spec"),
-            "create_version": obj.get("create_version")
+            "field": obj.get("field"),
+            "contains": obj.get("contains"),
+            "not_contains": obj.get("not_contains"),
+            "min_length": obj.get("min_length")
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 

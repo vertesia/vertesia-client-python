@@ -24,6 +24,7 @@ from vertesia_client.openapi.models.human_task_definition import HumanTaskDefini
 from vertesia_client.openapi.models.json_schema import JSONSchema
 from vertesia_client.openapi.models.node_definition_collect import NodeDefinitionCollect
 from vertesia_client.openapi.models.parallel_failure_policy import ParallelFailurePolicy
+from vertesia_client.openapi.models.process_agent_execution_policy import ProcessAgentExecutionPolicy
 from vertesia_client.openapi.models.process_node_returns_definition import ProcessNodeReturnsDefinition
 from vertesia_client.openapi.models.process_node_run_type import ProcessNodeRunType
 from vertesia_client.openapi.models.process_node_type import ProcessNodeType
@@ -49,6 +50,7 @@ class NodeDefinition(BaseModel):
     result_schema: Optional[JSONSchema] = Field(default=None, description="Optional JSON Schema for structured output produced by interaction and agent nodes. When omitted, the process engine derives a schema from `writes` and the process context schema.")
     prompt: Optional[StrictStr] = None
     input: Optional[Dict[str, Any]] = None
+    inherit_context: Optional[StrictBool] = Field(default=None, description="Whether interaction and custom-agent nodes receive the complete process context in addition to resolved input. Defaults to true; set false for input-only specialist prompts.")
     config: Optional[Dict[str, Any]] = None
     title: Optional[StrictStr] = None
     description: Optional[StrictStr] = None
@@ -58,6 +60,9 @@ class NodeDefinition(BaseModel):
     max_retries: Optional[Union[StrictFloat, StrictInt]] = None
     transitions: Optional[List[TransitionDefinition]] = None
     tools: Optional[List[StrictStr]] = None
+    initial_skills: Optional[List[StrictStr]] = Field(default=None, description="Builtin system skills activated before the agent node's first model turn.")
+    excluded_tools: Optional[List[StrictStr]] = Field(default=None, description="Execution-time tool denylist for the agent node's child conversation.")
+    agent_policy: Optional[ProcessAgentExecutionPolicy] = Field(default=None, description="Declarative successful-tool phases and completion behavior for this agent node. The Process owns this policy; the child conversation enforces it generically.")
     model: Optional[StrictStr] = Field(default=None, description="Model id override for this node. If unset, falls back to the process run's `config.model`, then to the project's default. Useful when a specific node needs heavier reasoning (e.g. Opus for legal flagging) while the rest of the process uses a cheaper default.")
     task: Optional[HumanTaskDefinition] = None
     foreach: Optional[StrictStr] = None
@@ -71,7 +76,7 @@ class NodeDefinition(BaseModel):
     branches: Optional[List[NodeDefinitionBranchesInner]] = None
     metadata: Optional[Dict[str, Any]] = None
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["type", "tool", "script", "timeout", "interaction", "process", "process_definition", "process_version", "run_type", "returns", "result_schema", "prompt", "input", "config", "title", "description", "human_description", "writes", "skippable", "max_retries", "transitions", "tools", "model", "task", "foreach", "as", "item_id", "node", "max_concurrency", "collect", "failure_policy", "join", "branches", "metadata"]
+    __properties: ClassVar[List[str]] = ["type", "tool", "script", "timeout", "interaction", "process", "process_definition", "process_version", "run_type", "returns", "result_schema", "prompt", "input", "inherit_context", "config", "title", "description", "human_description", "writes", "skippable", "max_retries", "transitions", "tools", "initial_skills", "excluded_tools", "agent_policy", "model", "task", "foreach", "as", "item_id", "node", "max_concurrency", "collect", "failure_policy", "join", "branches", "metadata"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -130,6 +135,9 @@ class NodeDefinition(BaseModel):
                 if _item_transitions:
                     _items.append(_item_transitions.to_dict())
             _dict['transitions'] = _items
+        # override the default output from pydantic by calling `to_dict()` of agent_policy
+        if self.agent_policy:
+            _dict['agent_policy'] = self.agent_policy.to_dict()
         # override the default output from pydantic by calling `to_dict()` of task
         if self.task:
             _dict['task'] = self.task.to_dict()
@@ -186,6 +194,7 @@ class NodeDefinition(BaseModel):
             "result_schema": JSONSchema.from_dict(obj["result_schema"]) if obj.get("result_schema") is not None else None,
             "prompt": obj.get("prompt"),
             "input": obj.get("input"),
+            "inherit_context": obj.get("inherit_context"),
             "config": obj.get("config"),
             "title": obj.get("title"),
             "description": obj.get("description"),
@@ -195,6 +204,9 @@ class NodeDefinition(BaseModel):
             "max_retries": obj.get("max_retries"),
             "transitions": [TransitionDefinition.from_dict(_item) for _item in obj["transitions"]] if obj.get("transitions") is not None else None,
             "tools": obj.get("tools"),
+            "initial_skills": obj.get("initial_skills"),
+            "excluded_tools": obj.get("excluded_tools"),
+            "agent_policy": ProcessAgentExecutionPolicy.from_dict(obj["agent_policy"]) if obj.get("agent_policy") is not None else None,
             "model": obj.get("model"),
             "task": HumanTaskDefinition.from_dict(obj["task"]) if obj.get("task") is not None else None,
             "foreach": obj.get("foreach"),

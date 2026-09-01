@@ -30,6 +30,7 @@ class OpenRouterTextOptions(BaseModel):
     OpenRouterTextOptions
     """ # noqa: E501
     max_tokens: Optional[Union[StrictFloat, StrictInt]] = None
+    tool_choice: Optional[StrictStr] = None
     effort: Optional[ReasoningEffort] = None
     reasoning_effort: Optional[ReasoningEffort] = None
     temperature: Optional[Union[StrictFloat, StrictInt]] = None
@@ -50,7 +51,15 @@ class OpenRouterTextOptions(BaseModel):
     provider_data_collection: Optional[StrictStr] = None
     provider_zdr: Optional[StrictBool] = None
     provider_quantizations: Optional[List[StrictStr]] = None
-    __properties: ClassVar[List[str]] = ["max_tokens", "effort", "reasoning_effort", "temperature", "top_p", "presence_penalty", "frequency_penalty", "stop_sequence", "image_detail", "include_thoughts", "service_tier", "_option_id", "provider_sort", "provider_order", "provider_only", "provider_ignore", "provider_allow_fallbacks", "provider_require_parameters", "provider_data_collection", "provider_zdr", "provider_quantizations"]
+    __properties: ClassVar[List[str]] = ["max_tokens", "tool_choice", "effort", "reasoning_effort", "temperature", "top_p", "presence_penalty", "frequency_penalty", "stop_sequence", "image_detail", "include_thoughts", "service_tier", "_option_id", "provider_sort", "provider_order", "provider_only", "provider_ignore", "provider_allow_fallbacks", "provider_require_parameters", "provider_data_collection", "provider_zdr", "provider_quantizations"]
+
+    @field_validator('tool_choice')
+    def tool_choice_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        return value
 
     @field_validator('image_detail')
     def image_detail_validate_enum(cls, value):
@@ -144,6 +153,7 @@ class OpenRouterTextOptions(BaseModel):
 
         _obj = cls.model_validate({
             "max_tokens": obj.get("max_tokens"),
+            "tool_choice": obj.get("tool_choice"),
             "effort": obj.get("effort"),
             "reasoning_effort": obj.get("reasoning_effort"),
             "temperature": obj.get("temperature"),

@@ -720,6 +720,10 @@ vertesia_client/openapi/models/post_agent_run_update_payload.py
 vertesia_client/openapi/models/post_agent_run_update_response.py
 vertesia_client/openapi/models/preview_view_experience_request.py
 vertesia_client/openapi/models/principal_identity.py
+vertesia_client/openapi/models/process_agent_execution_policy.py
+vertesia_client/openapi/models/process_agent_phase_reset.py
+vertesia_client/openapi/models/process_agent_tool_input_contains.py
+vertesia_client/openapi/models/process_agent_tool_phase.py
 vertesia_client/openapi/models/process_context_definition.py
 vertesia_client/openapi/models/process_context_response.py
 vertesia_client/openapi/models/process_definition.py

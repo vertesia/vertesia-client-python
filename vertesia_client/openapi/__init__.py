@@ -742,6 +742,10 @@ __all__ = [
     "PostAgentRunUpdateResponse",
     "PreviewViewExperienceRequest",
     "PrincipalIdentity",
+    "ProcessAgentExecutionPolicy",
+    "ProcessAgentPhaseReset",
+    "ProcessAgentToolInputContains",
+    "ProcessAgentToolPhase",
     "ProcessContextDefinition",
     "ProcessContextResponse",
     "ProcessDefinition",
@@ -1882,6 +1886,10 @@ from vertesia_client.openapi.models.post_agent_run_update_payload import PostAge
 from vertesia_client.openapi.models.post_agent_run_update_response import PostAgentRunUpdateResponse as PostAgentRunUpdateResponse
 from vertesia_client.openapi.models.preview_view_experience_request import PreviewViewExperienceRequest as PreviewViewExperienceRequest
 from vertesia_client.openapi.models.principal_identity import PrincipalIdentity as PrincipalIdentity
+from vertesia_client.openapi.models.process_agent_execution_policy import ProcessAgentExecutionPolicy as ProcessAgentExecutionPolicy
+from vertesia_client.openapi.models.process_agent_phase_reset import ProcessAgentPhaseReset as ProcessAgentPhaseReset
+from vertesia_client.openapi.models.process_agent_tool_input_contains import ProcessAgentToolInputContains as ProcessAgentToolInputContains
+from vertesia_client.openapi.models.process_agent_tool_phase import ProcessAgentToolPhase as ProcessAgentToolPhase
 from vertesia_client.openapi.models.process_context_definition import ProcessContextDefinition as ProcessContextDefinition
 from vertesia_client.openapi.models.process_context_response import ProcessContextResponse as ProcessContextResponse
 from vertesia_client.openapi.models.process_definition import ProcessDefinition as ProcessDefinition

@@ -31,6 +31,7 @@ class OpenAiThinkingOptions(BaseModel):
     """ # noqa: E501
     option_id: StrictStr = Field(alias="_option_id")
     max_tokens: Optional[Union[StrictFloat, StrictInt]] = None
+    tool_choice: Optional[StrictStr] = None
     stop_sequence: Optional[List[StrictStr]] = None
     effort: Optional[ReasoningEffort] = None
     reasoning_effort: Optional[ReasoningEffort] = None
@@ -39,11 +40,19 @@ class OpenAiThinkingOptions(BaseModel):
     service_tier: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="Provider-defined processing tier. Unknown non-empty values are preserved for forward compatibility.")
     extra_body: Optional[Dict[str, Any]] = Field(default=None, description="Additional provider-specific fields merged into the OpenAI-compatible request body.")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["_option_id", "max_tokens", "stop_sequence", "effort", "reasoning_effort", "image_detail", "include_thoughts", "service_tier", "extra_body"]
+    __properties: ClassVar[List[str]] = ["_option_id", "max_tokens", "tool_choice", "stop_sequence", "effort", "reasoning_effort", "image_detail", "include_thoughts", "service_tier", "extra_body"]
 
     @field_validator('option_id')
     def option_id_validate_enum(cls, value):
         """Validates the enum"""
+        return value
+
+    @field_validator('tool_choice')
+    def tool_choice_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
         return value
 
     @field_validator('image_detail')
@@ -114,6 +123,7 @@ class OpenAiThinkingOptions(BaseModel):
         _obj = cls.model_validate({
             "_option_id": obj.get("_option_id"),
             "max_tokens": obj.get("max_tokens"),
+            "tool_choice": obj.get("tool_choice"),
             "stop_sequence": obj.get("stop_sequence"),
             "effort": obj.get("effort"),
             "reasoning_effort": obj.get("reasoning_effort"),

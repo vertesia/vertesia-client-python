@@ -29,6 +29,7 @@ class TextFallbackOptions(BaseModel):
     """ # noqa: E501
     option_id: StrictStr = Field(alias="_option_id")
     max_tokens: Optional[Union[StrictFloat, StrictInt]] = None
+    tool_choice: Optional[StrictStr] = None
     temperature: Optional[Union[StrictFloat, StrictInt]] = None
     top_p: Optional[Union[StrictFloat, StrictInt]] = None
     top_k: Optional[Union[StrictFloat, StrictInt]] = None
@@ -36,11 +37,19 @@ class TextFallbackOptions(BaseModel):
     frequency_penalty: Optional[Union[StrictFloat, StrictInt]] = None
     stop_sequence: Optional[List[StrictStr]] = None
     include_thoughts: Optional[StrictBool] = None
-    __properties: ClassVar[List[str]] = ["_option_id", "max_tokens", "temperature", "top_p", "top_k", "presence_penalty", "frequency_penalty", "stop_sequence", "include_thoughts"]
+    __properties: ClassVar[List[str]] = ["_option_id", "max_tokens", "tool_choice", "temperature", "top_p", "top_k", "presence_penalty", "frequency_penalty", "stop_sequence", "include_thoughts"]
 
     @field_validator('option_id')
     def option_id_validate_enum(cls, value):
         """Validates the enum"""
+        return value
+
+    @field_validator('tool_choice')
+    def tool_choice_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
         return value
 
     model_config = ConfigDict(
@@ -96,6 +105,7 @@ class TextFallbackOptions(BaseModel):
         _obj = cls.model_validate({
             "_option_id": obj.get("_option_id"),
             "max_tokens": obj.get("max_tokens"),
+            "tool_choice": obj.get("tool_choice"),
             "temperature": obj.get("temperature"),
             "top_p": obj.get("top_p"),
             "top_k": obj.get("top_k"),
