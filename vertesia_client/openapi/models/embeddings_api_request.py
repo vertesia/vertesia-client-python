@@ -17,10 +17,11 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from vertesia_client.openapi.models.embedding_task_type import EmbeddingTaskType
 from vertesia_client.openapi.models.embeddings_api_input import EmbeddingsApiInput
+from vertesia_client.openapi.models.supported_embedding_types import SupportedEmbeddingTypes
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -30,10 +31,11 @@ class EmbeddingsApiRequest(BaseModel):
     EmbeddingsApiRequest
     """ # noqa: E501
     inputs: List[EmbeddingsApiInput]
-    model: Optional[StrictStr] = None
+    embedding_type: Optional[SupportedEmbeddingTypes] = Field(default=None, description="Logical project embedding type. This distinguishes properties embeddings from text inputs when the server resolves an omitted model from project settings.")
+    model: Optional[StrictStr] = Field(default=None, description="Explicit model override intended for validating a configuration before it is saved. Normal callers should omit this field and provide embedding_type so the project model is resolved.")
     task_type: Optional[EmbeddingTaskType] = None
     dimensions: Optional[Union[StrictFloat, StrictInt]] = None
-    __properties: ClassVar[List[str]] = ["inputs", "model", "task_type", "dimensions"]
+    __properties: ClassVar[List[str]] = ["inputs", "embedding_type", "model", "task_type", "dimensions"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -94,6 +96,7 @@ class EmbeddingsApiRequest(BaseModel):
 
         _obj = cls.model_validate({
             "inputs": [EmbeddingsApiInput.from_dict(_item) for _item in obj["inputs"]] if obj.get("inputs") is not None else None,
+            "embedding_type": obj.get("embedding_type"),
             "model": obj.get("model"),
             "task_type": obj.get("task_type"),
             "dimensions": obj.get("dimensions")
