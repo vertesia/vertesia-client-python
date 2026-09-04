@@ -32,7 +32,8 @@ class VertexAIGeminiOmniVideoOptions(BaseModel):
     task: Optional[StrictStr] = None
     aspect_ratio: Optional[StrictStr] = None
     duration_seconds: Optional[Annotated[int, Field(le=10, strict=True, ge=3)]] = None
-    __properties: ClassVar[List[str]] = ["_option_id", "task", "aspect_ratio", "duration_seconds"]
+    resolution: Optional[StrictStr] = None
+    __properties: ClassVar[List[str]] = ["_option_id", "task", "aspect_ratio", "duration_seconds", "resolution"]
 
     @field_validator('option_id')
     def option_id_validate_enum(cls, value):
@@ -49,6 +50,14 @@ class VertexAIGeminiOmniVideoOptions(BaseModel):
 
     @field_validator('aspect_ratio')
     def aspect_ratio_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        return value
+
+    @field_validator('resolution')
+    def resolution_validate_enum(cls, value):
         """Validates the enum"""
         if value is None:
             return value
@@ -109,7 +118,8 @@ class VertexAIGeminiOmniVideoOptions(BaseModel):
             "_option_id": obj.get("_option_id"),
             "task": obj.get("task"),
             "aspect_ratio": obj.get("aspect_ratio"),
-            "duration_seconds": obj.get("duration_seconds")
+            "duration_seconds": obj.get("duration_seconds"),
+            "resolution": obj.get("resolution")
         })
         return _obj
 
