@@ -324,6 +324,8 @@ vertesia_client/openapi/models/copy_file_payload.py
 vertesia_client/openapi/models/copy_file_response.py
 vertesia_client/openapi/models/cost_analytics_query.py
 vertesia_client/openapi/models/cost_analytics_response.py
+vertesia_client/openapi/models/cost_analytics_response_pricing_coverage.py
+vertesia_client/openapi/models/cost_analytics_response_pricing_coverage_unpriced_inner.py
 vertesia_client/openapi/models/cost_analytics_response_query_range.py
 vertesia_client/openapi/models/cost_by_dimension.py
 vertesia_client/openapi/models/cost_run_price_query.py

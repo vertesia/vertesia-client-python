@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: Vertesia API
-  version: 1.5.0-dev.20260901.052906Z
+  version: 1.5.0-dev.20260905.011013Z
   x-api-version: "20260803"
   description: The Vertesia API provides project-scoped access to interaction
     execution and content workflows. Use it to run interactions, inspect
@@ -8258,6 +8258,7 @@ components:
             - project
             - project_tag
             - provider
+            - service_tier
             - interaction
             - workflow
           description: Group results by this dimension
@@ -8278,6 +8279,9 @@ components:
         provider:
           type: string
           description: Filter by provider
+        service_tier:
+          type: string
+          description: Filter by resolved processing tier
         project_id:
           type: string
           description: Filter by project ID (optional, for org scope)
@@ -8338,6 +8342,39 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ModelPricing"
+        pricing_coverage:
+          type: object
+          properties:
+            priced_calls:
+              type: number
+            unpriced_calls:
+              type: number
+            assumed_default_calls:
+              type: number
+            unpriced:
+              type: array
+              items:
+                type: object
+                properties:
+                  model:
+                    type: string
+                  provider:
+                    type: string
+                  service_tier:
+                    type: string
+                  calls:
+                    type: number
+                required:
+                  - model
+                  - service_tier
+                  - calls
+                additionalProperties: false
+          required:
+            - priced_calls
+            - unpriced_calls
+            - assumed_default_calls
+            - unpriced
+          additionalProperties: false
         query_range:
           type: object
           properties:
@@ -8367,6 +8404,8 @@ components:
         label:
           type: string
         provider:
+          type: string
+        service_tier:
           type: string
         cost:
           type: number
@@ -8455,6 +8494,39 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ModelPricing"
+        pricing_coverage:
+          type: object
+          properties:
+            priced_calls:
+              type: number
+            unpriced_calls:
+              type: number
+            assumed_default_calls:
+              type: number
+            unpriced:
+              type: array
+              items:
+                type: object
+                properties:
+                  model:
+                    type: string
+                  provider:
+                    type: string
+                  service_tier:
+                    type: string
+                  calls:
+                    type: number
+                required:
+                  - model
+                  - service_tier
+                  - calls
+                additionalProperties: false
+          required:
+            - priced_calls
+            - unpriced_calls
+            - assumed_default_calls
+            - unpriced
+          additionalProperties: false
         query_range:
           type: object
           properties:
@@ -16852,6 +16924,9 @@ components:
           type: string
         provider_account_id:
           type: string
+        service_tier:
+          type: string
+          description: Processing tier this price applies to
         list_price_date:
           type: string
         effective_from:
@@ -16914,6 +16989,9 @@ components:
           type: string
         provider_account_id:
           type: string
+        service_tier:
+          type: string
+          description: Processing tier this price applies to
         input_price_per_m_tokens:
           type: number
         cached_input_price_per_m_tokens:
