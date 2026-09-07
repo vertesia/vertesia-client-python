@@ -36,7 +36,8 @@ class RegisterPendingAskRequest(BaseModel):
     timeout_hours: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, alias="timeoutHours")
     user_channels: List[UserChannel] = Field(alias="userChannels")
     task_fields: Optional[List[TaskField]] = Field(default=None, alias="taskFields")
-    __properties: ClassVar[List[str]] = ["runId", "workflowId", "agentName", "questions", "timeoutHours", "userChannels", "taskFields"]
+    request_id: Optional[StrictStr] = Field(default=None, alias="requestId")
+    __properties: ClassVar[List[str]] = ["runId", "workflowId", "agentName", "questions", "timeoutHours", "userChannels", "taskFields", "requestId"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -109,7 +110,8 @@ class RegisterPendingAskRequest(BaseModel):
             "questions": obj.get("questions"),
             "timeoutHours": obj.get("timeoutHours"),
             "userChannels": [UserChannel.from_dict(_item) for _item in obj["userChannels"]] if obj.get("userChannels") is not None else None,
-            "taskFields": [TaskField.from_dict(_item) for _item in obj["taskFields"]] if obj.get("taskFields") is not None else None
+            "taskFields": [TaskField.from_dict(_item) for _item in obj["taskFields"]] if obj.get("taskFields") is not None else None,
+            "requestId": obj.get("requestId")
         })
         return _obj
 
