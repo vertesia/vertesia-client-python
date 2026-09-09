@@ -31,6 +31,7 @@ class LlmCallType(str, Enum):
     RESUME_USER = 'resume_user'
     CHECKPOINT = 'checkpoint'
     NESTED_INTERACTION = 'nested_interaction'
+    BACKGROUND = 'background'
 
     @classmethod
     def _missing_(cls, value: object) -> Self:
