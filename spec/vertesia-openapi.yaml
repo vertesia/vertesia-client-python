@@ -13503,6 +13503,10 @@ components:
     ExecutionRunWorkflow:
       type: object
       properties:
+        agent_run_id:
+          type: string
+          description: Root agent run owning this inference, including inference performed
+            by child workstreams.
         rate_limit_id:
           type: string
           description: Stable identifier pairing an interaction rate-limit admission with
@@ -16467,6 +16471,7 @@ components:
         - resume_user
         - checkpoint
         - nested_interaction
+        - background
       description: Types of LLM calls in a conversation
     LoadBalancingEnvConfig:
       type: object
