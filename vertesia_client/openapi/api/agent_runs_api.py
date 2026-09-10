@@ -2512,6 +2512,9 @@ class AgentRunsApi:
         self,
         agent_run_id: StrictStr,
         child_workflow_id: StrictStr,
+        var_from: Annotated[Optional[Annotated[str, Field(strict=True, max_length=12000)]], Field(description="Opaque history cursor from next_from; requires include_history. Invalid or expired cursors return a snapshot.")] = None,
+        include_history: Optional[StrictBool] = None,
+        hydrate_payloads: Optional[StrictBool] = None,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -2534,6 +2537,12 @@ class AgentRunsApi:
         :type agent_run_id: str
         :param child_workflow_id: (required)
         :type child_workflow_id: str
+        :param var_from: Opaque history cursor from next_from; requires include_history. Invalid or expired cursors return a snapshot.
+        :type var_from: str
+        :param include_history:
+        :type include_history: bool
+        :param hydrate_payloads:
+        :type hydrate_payloads: bool
         :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -2561,6 +2570,9 @@ class AgentRunsApi:
         _param = self._get_agent_run_child_details_serialize(
             agent_run_id=agent_run_id,
             child_workflow_id=child_workflow_id,
+            var_from=var_from,
+            include_history=include_history,
+            hydrate_payloads=hydrate_payloads,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -2589,6 +2601,9 @@ class AgentRunsApi:
         self,
         agent_run_id: StrictStr,
         child_workflow_id: StrictStr,
+        var_from: Annotated[Optional[Annotated[str, Field(strict=True, max_length=12000)]], Field(description="Opaque history cursor from next_from; requires include_history. Invalid or expired cursors return a snapshot.")] = None,
+        include_history: Optional[StrictBool] = None,
+        hydrate_payloads: Optional[StrictBool] = None,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -2611,6 +2626,12 @@ class AgentRunsApi:
         :type agent_run_id: str
         :param child_workflow_id: (required)
         :type child_workflow_id: str
+        :param var_from: Opaque history cursor from next_from; requires include_history. Invalid or expired cursors return a snapshot.
+        :type var_from: str
+        :param include_history:
+        :type include_history: bool
+        :param hydrate_payloads:
+        :type hydrate_payloads: bool
         :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -2638,6 +2659,9 @@ class AgentRunsApi:
         _param = self._get_agent_run_child_details_serialize(
             agent_run_id=agent_run_id,
             child_workflow_id=child_workflow_id,
+            var_from=var_from,
+            include_history=include_history,
+            hydrate_payloads=hydrate_payloads,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -2666,6 +2690,9 @@ class AgentRunsApi:
         self,
         agent_run_id: StrictStr,
         child_workflow_id: StrictStr,
+        var_from: Annotated[Optional[Annotated[str, Field(strict=True, max_length=12000)]], Field(description="Opaque history cursor from next_from; requires include_history. Invalid or expired cursors return a snapshot.")] = None,
+        include_history: Optional[StrictBool] = None,
+        hydrate_payloads: Optional[StrictBool] = None,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -2688,6 +2715,12 @@ class AgentRunsApi:
         :type agent_run_id: str
         :param child_workflow_id: (required)
         :type child_workflow_id: str
+        :param var_from: Opaque history cursor from next_from; requires include_history. Invalid or expired cursors return a snapshot.
+        :type var_from: str
+        :param include_history:
+        :type include_history: bool
+        :param hydrate_payloads:
+        :type hydrate_payloads: bool
         :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -2715,6 +2748,9 @@ class AgentRunsApi:
         _param = self._get_agent_run_child_details_serialize(
             agent_run_id=agent_run_id,
             child_workflow_id=child_workflow_id,
+            var_from=var_from,
+            include_history=include_history,
+            hydrate_payloads=hydrate_payloads,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -2738,6 +2774,9 @@ class AgentRunsApi:
         self,
         agent_run_id,
         child_workflow_id,
+        var_from,
+        include_history,
+        hydrate_payloads,
         x_api_version,
         _request_auth,
         _content_type,
@@ -2765,6 +2804,18 @@ class AgentRunsApi:
         if child_workflow_id is not None:
             _path_params['childWorkflowId'] = child_workflow_id
         # process the query parameters
+        if var_from is not None:
+            
+            _query_params.append(('from', var_from))
+            
+        if include_history is not None:
+            
+            _query_params.append(('include_history', include_history))
+            
+        if hydrate_payloads is not None:
+            
+            _query_params.append(('hydrate_payloads', hydrate_payloads))
+            
         # process the header parameters
         if x_api_version is not None:
             _header_params['x-api-version'] = x_api_version
@@ -2809,6 +2860,7 @@ class AgentRunsApi:
     def get_agent_run_details(
         self,
         agent_run_id: StrictStr,
+        var_from: Annotated[Optional[Annotated[str, Field(strict=True, max_length=12000)]], Field(description="Opaque history cursor from next_from; requires include_history. Invalid or expired cursors return a snapshot.")] = None,
         include_history: Optional[StrictBool] = None,
         hydrate_payloads: Optional[StrictBool] = None,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
@@ -2831,6 +2883,8 @@ class AgentRunsApi:
 
         :param agent_run_id: (required)
         :type agent_run_id: str
+        :param var_from: Opaque history cursor from next_from; requires include_history. Invalid or expired cursors return a snapshot.
+        :type var_from: str
         :param include_history:
         :type include_history: bool
         :param hydrate_payloads:
@@ -2861,6 +2915,7 @@ class AgentRunsApi:
 
         _param = self._get_agent_run_details_serialize(
             agent_run_id=agent_run_id,
+            var_from=var_from,
             include_history=include_history,
             hydrate_payloads=hydrate_payloads,
             x_api_version=x_api_version,
@@ -2890,6 +2945,7 @@ class AgentRunsApi:
     def get_agent_run_details_with_http_info(
         self,
         agent_run_id: StrictStr,
+        var_from: Annotated[Optional[Annotated[str, Field(strict=True, max_length=12000)]], Field(description="Opaque history cursor from next_from; requires include_history. Invalid or expired cursors return a snapshot.")] = None,
         include_history: Optional[StrictBool] = None,
         hydrate_payloads: Optional[StrictBool] = None,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
@@ -2912,6 +2968,8 @@ class AgentRunsApi:
 
         :param agent_run_id: (required)
         :type agent_run_id: str
+        :param var_from: Opaque history cursor from next_from; requires include_history. Invalid or expired cursors return a snapshot.
+        :type var_from: str
         :param include_history:
         :type include_history: bool
         :param hydrate_payloads:
@@ -2942,6 +3000,7 @@ class AgentRunsApi:
 
         _param = self._get_agent_run_details_serialize(
             agent_run_id=agent_run_id,
+            var_from=var_from,
             include_history=include_history,
             hydrate_payloads=hydrate_payloads,
             x_api_version=x_api_version,
@@ -2971,6 +3030,7 @@ class AgentRunsApi:
     def get_agent_run_details_without_preload_content(
         self,
         agent_run_id: StrictStr,
+        var_from: Annotated[Optional[Annotated[str, Field(strict=True, max_length=12000)]], Field(description="Opaque history cursor from next_from; requires include_history. Invalid or expired cursors return a snapshot.")] = None,
         include_history: Optional[StrictBool] = None,
         hydrate_payloads: Optional[StrictBool] = None,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
@@ -2993,6 +3053,8 @@ class AgentRunsApi:
 
         :param agent_run_id: (required)
         :type agent_run_id: str
+        :param var_from: Opaque history cursor from next_from; requires include_history. Invalid or expired cursors return a snapshot.
+        :type var_from: str
         :param include_history:
         :type include_history: bool
         :param hydrate_payloads:
@@ -3023,6 +3085,7 @@ class AgentRunsApi:
 
         _param = self._get_agent_run_details_serialize(
             agent_run_id=agent_run_id,
+            var_from=var_from,
             include_history=include_history,
             hydrate_payloads=hydrate_payloads,
             x_api_version=x_api_version,
@@ -3047,6 +3110,7 @@ class AgentRunsApi:
     def _get_agent_run_details_serialize(
         self,
         agent_run_id,
+        var_from,
         include_history,
         hydrate_payloads,
         x_api_version,
@@ -3074,6 +3138,10 @@ class AgentRunsApi:
         if agent_run_id is not None:
             _path_params['agentRunId'] = agent_run_id
         # process the query parameters
+        if var_from is not None:
+            
+            _query_params.append(('from', var_from))
+            
         if include_history is not None:
             
             _query_params.append(('include_history', include_history))

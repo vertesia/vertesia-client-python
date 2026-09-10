@@ -1603,6 +1603,10 @@
       "AgentTask": {
         "type": "object",
         "properties": {
+          "history_id": {
+            "type": "string",
+            "description": "Stable observability row identity across refreshes."
+          },
           "taskType": {
             "type": "string",
             "enum": [
@@ -35769,6 +35773,18 @@
                 "type": "string",
                 "const": "agent"
               },
+              "mode": {
+                "type": "string",
+                "enum": [
+                  "snapshot",
+                  "delta"
+                ],
+                "description": "Snapshot replaces all history; delta replaces returned rows by history_id and retains other rows."
+              },
+              "next_from": {
+                "type": "string",
+                "description": "Pass as from on the next refresh with the same options. Absence disables incremental refresh."
+              },
               "agentTasks": {
                 "type": "array",
                 "items": {
@@ -58391,6 +58407,17 @@
             }
           },
           {
+            "name": "from",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 12000,
+              "description": "Opaque history cursor from next_from; requires include_history. Invalid or expired cursors return a snapshot."
+            },
+            "description": "Opaque history cursor from next_from; requires include_history. Invalid or expired cursors return a snapshot."
+          },
+          {
             "name": "include_history",
             "in": "query",
             "required": false,
@@ -59081,6 +59108,33 @@
             "required": true,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 12000,
+              "description": "Opaque history cursor from next_from; requires include_history. Invalid or expired cursors return a snapshot."
+            },
+            "description": "Opaque history cursor from next_from; requires include_history. Invalid or expired cursors return a snapshot."
+          },
+          {
+            "name": "include_history",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "hydrate_payloads",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
             }
           }
         ],

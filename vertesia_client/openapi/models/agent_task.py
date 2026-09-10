@@ -28,6 +28,7 @@ class AgentTask(BaseModel):
     """
     Agent task information for workflow history UI representation. This is separate from the analytics AgentEvent types. Consistent with WorkflowTask naming convention.  Currently represents tool calls, but designed to be extensible for other task types (LLM calls, checkpoints, etc.)
     """ # noqa: E501
+    history_id: Optional[StrictStr] = Field(default=None, description="Stable observability row identity across refreshes.")
     task_type: StrictStr = Field(description="Type discriminator for future task types", alias="taskType")
     tool_name: StrictStr = Field(description="Tool-specific fields", alias="toolName")
     tool_use_id: Optional[StrictStr] = Field(default=None, alias="toolUseId")
@@ -50,7 +51,7 @@ class AgentTask(BaseModel):
     finish_reason: Optional[StrictStr] = Field(default=None, description="LLM stop reason for llm_call tasks (e.g., \"stop\", \"length\", \"tool_use\")")
     warnings: Optional[List[StrictStr]] = Field(default=None, description="Warnings about the task outcome (e.g. unexpected model behavior).")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["taskType", "toolName", "toolUseId", "toolRunId", "toolType", "iteration", "scheduled_at", "started_at", "completed_at", "status", "parameters", "result", "error", "retries", "activeTools", "availableSkills", "runId", "workstreamId", "direction", "finish_reason", "warnings"]
+    __properties: ClassVar[List[str]] = ["history_id", "taskType", "toolName", "toolUseId", "toolRunId", "toolType", "iteration", "scheduled_at", "started_at", "completed_at", "status", "parameters", "result", "error", "retries", "activeTools", "availableSkills", "runId", "workstreamId", "direction", "finish_reason", "warnings"]
 
     @field_validator('task_type')
     def task_type_validate_enum(cls, value):
@@ -154,6 +155,7 @@ class AgentTask(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "history_id": obj.get("history_id"),
             "taskType": obj.get("taskType"),
             "toolName": obj.get("toolName"),
             "toolUseId": obj.get("toolUseId"),

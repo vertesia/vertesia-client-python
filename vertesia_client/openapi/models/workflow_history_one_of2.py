@@ -18,7 +18,7 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
-from typing import Any, ClassVar, Dict, List
+from typing import Any, ClassVar, Dict, List, Optional
 from vertesia_client.openapi.models.agent_task import AgentTask
 from typing import Optional, Set
 from typing_extensions import Self
@@ -29,12 +29,22 @@ class WorkflowHistoryOneOf2(BaseModel):
     WorkflowHistoryOneOf2
     """ # noqa: E501
     type: StrictStr
+    mode: Optional[StrictStr] = Field(default=None, description="Snapshot replaces all history; delta replaces returned rows by history_id and retains other rows.")
+    next_from: Optional[StrictStr] = Field(default=None, description="Pass as from on the next refresh with the same options. Absence disables incremental refresh.")
     agent_tasks: List[AgentTask] = Field(alias="agentTasks")
-    __properties: ClassVar[List[str]] = ["type", "agentTasks"]
+    __properties: ClassVar[List[str]] = ["type", "mode", "next_from", "agentTasks"]
 
     @field_validator('type')
     def type_validate_enum(cls, value):
         """Validates the enum"""
+        return value
+
+    @field_validator('mode')
+    def mode_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
         return value
 
     model_config = ConfigDict(
@@ -96,6 +106,8 @@ class WorkflowHistoryOneOf2(BaseModel):
 
         _obj = cls.model_validate({
             "type": obj.get("type"),
+            "mode": obj.get("mode"),
+            "next_from": obj.get("next_from"),
             "agentTasks": [AgentTask.from_dict(_item) for _item in obj["agentTasks"]] if obj.get("agentTasks") is not None else None
         })
         return _obj
