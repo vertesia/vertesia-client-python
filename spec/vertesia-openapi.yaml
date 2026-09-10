@@ -47744,7 +47744,20 @@ paths:
             type: boolean
       responses:
         "200":
-          description: Rendition URLs or generation status.
+          description: Rendition URLs.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetRenditionResponse"
+        "202":
+          description: Rendition generation is in progress.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetRenditionResponse"
+        "422":
+          description: "Rendition generation failed. Returns status: failed and
+            workflow_run_id when available."
           content:
             application/json:
               schema:

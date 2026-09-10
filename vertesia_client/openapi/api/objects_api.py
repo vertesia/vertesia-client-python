@@ -4596,6 +4596,8 @@ class ObjectsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "GetRenditionResponse",
+            '202': "GetRenditionResponse",
+            '422': "GetRenditionResponse",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -4689,6 +4691,8 @@ class ObjectsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "GetRenditionResponse",
+            '202': "GetRenditionResponse",
+            '422': "GetRenditionResponse",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -4782,6 +4786,8 @@ class ObjectsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "GetRenditionResponse",
+            '202': "GetRenditionResponse",
+            '422': "GetRenditionResponse",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
