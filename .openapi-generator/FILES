@@ -13,6 +13,7 @@ vertesia_client/openapi/api/content_object_types_api.py
 vertesia_client/openapi/api/content_query_api.py
 vertesia_client/openapi/api/costs_api.py
 vertesia_client/openapi/api/data_api.py
+vertesia_client/openapi/api/delegation_grants_api.py
 vertesia_client/openapi/api/email_api.py
 vertesia_client/openapi/api/environments_api.py
 vertesia_client/openapi/api/event_ingest_channels_api.py
@@ -344,6 +345,7 @@ vertesia_client/openapi/models/create_content_object_type_payload.py
 vertesia_client/openapi/models/create_dashboard_payload.py
 vertesia_client/openapi/models/create_dashboard_snapshot_payload.py
 vertesia_client/openapi/models/create_data_store_payload.py
+vertesia_client/openapi/models/create_delegation_grant_payload.py
 vertesia_client/openapi/models/create_email_route_request.py
 vertesia_client/openapi/models/create_email_route_response.py
 vertesia_client/openapi/models/create_event_ingest_channel_payload.py
@@ -413,6 +415,7 @@ vertesia_client/openapi/models/data_table.py
 vertesia_client/openapi/models/data_table_for_ai.py
 vertesia_client/openapi/models/data_table_semantic_type.py
 vertesia_client/openapi/models/data_table_summary.py
+vertesia_client/openapi/models/delegation_grant.py
 vertesia_client/openapi/models/delete_app_version_response.py
 vertesia_client/openapi/models/delete_by_id_result.py
 vertesia_client/openapi/models/delete_content_object_export_response.py

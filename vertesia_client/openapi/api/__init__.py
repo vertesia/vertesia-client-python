@@ -14,6 +14,7 @@ from vertesia_client.openapi.api.content_object_types_api import ContentObjectTy
 from vertesia_client.openapi.api.content_query_api import ContentQueryApi
 from vertesia_client.openapi.api.costs_api import CostsApi
 from vertesia_client.openapi.api.data_api import DataApi
+from vertesia_client.openapi.api.delegation_grants_api import DelegationGrantsApi
 from vertesia_client.openapi.api.email_api import EmailApi
 from vertesia_client.openapi.api.environments_api import EnvironmentsApi
 from vertesia_client.openapi.api.event_ingest_channels_api import EventIngestChannelsApi

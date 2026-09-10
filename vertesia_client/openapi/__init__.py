@@ -31,6 +31,7 @@ __all__ = [
     "ContentQueryApi",
     "CostsApi",
     "DataApi",
+    "DelegationGrantsApi",
     "EmailApi",
     "EnvironmentsApi",
     "EventIngestChannelsApi",
@@ -366,6 +367,7 @@ __all__ = [
     "CreateDashboardPayload",
     "CreateDashboardSnapshotPayload",
     "CreateDataStorePayload",
+    "CreateDelegationGrantPayload",
     "CreateEmailRouteRequest",
     "CreateEmailRouteResponse",
     "CreateEventIngestChannelPayload",
@@ -446,6 +448,7 @@ __all__ = [
     "DataTableForAI",
     "DataTableSemanticType",
     "DataTableSummary",
+    "DelegationGrant",
     "DeleteAppVersionResponse",
     "DeleteByIdResult",
     "DeleteContentObjectExportResponse",
@@ -1171,6 +1174,7 @@ from vertesia_client.openapi.api.content_object_types_api import ContentObjectTy
 from vertesia_client.openapi.api.content_query_api import ContentQueryApi as ContentQueryApi
 from vertesia_client.openapi.api.costs_api import CostsApi as CostsApi
 from vertesia_client.openapi.api.data_api import DataApi as DataApi
+from vertesia_client.openapi.api.delegation_grants_api import DelegationGrantsApi as DelegationGrantsApi
 from vertesia_client.openapi.api.email_api import EmailApi as EmailApi
 from vertesia_client.openapi.api.environments_api import EnvironmentsApi as EnvironmentsApi
 from vertesia_client.openapi.api.event_ingest_channels_api import EventIngestChannelsApi as EventIngestChannelsApi
@@ -1510,6 +1514,7 @@ from vertesia_client.openapi.models.create_content_object_type_payload import Cr
 from vertesia_client.openapi.models.create_dashboard_payload import CreateDashboardPayload as CreateDashboardPayload
 from vertesia_client.openapi.models.create_dashboard_snapshot_payload import CreateDashboardSnapshotPayload as CreateDashboardSnapshotPayload
 from vertesia_client.openapi.models.create_data_store_payload import CreateDataStorePayload as CreateDataStorePayload
+from vertesia_client.openapi.models.create_delegation_grant_payload import CreateDelegationGrantPayload as CreateDelegationGrantPayload
 from vertesia_client.openapi.models.create_email_route_request import CreateEmailRouteRequest as CreateEmailRouteRequest
 from vertesia_client.openapi.models.create_email_route_response import CreateEmailRouteResponse as CreateEmailRouteResponse
 from vertesia_client.openapi.models.create_event_ingest_channel_payload import CreateEventIngestChannelPayload as CreateEventIngestChannelPayload
@@ -1590,6 +1595,7 @@ from vertesia_client.openapi.models.data_table import DataTable as DataTable
 from vertesia_client.openapi.models.data_table_for_ai import DataTableForAI as DataTableForAI
 from vertesia_client.openapi.models.data_table_semantic_type import DataTableSemanticType as DataTableSemanticType
 from vertesia_client.openapi.models.data_table_summary import DataTableSummary as DataTableSummary
+from vertesia_client.openapi.models.delegation_grant import DelegationGrant as DelegationGrant
 from vertesia_client.openapi.models.delete_app_version_response import DeleteAppVersionResponse as DeleteAppVersionResponse
 from vertesia_client.openapi.models.delete_by_id_result import DeleteByIdResult as DeleteByIdResult
 from vertesia_client.openapi.models.delete_content_object_export_response import DeleteContentObjectExportResponse as DeleteContentObjectExportResponse

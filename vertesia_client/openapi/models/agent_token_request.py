@@ -29,13 +29,16 @@ class AgentTokenRequest(BaseModel):
     Agent token for a service account to act as agent on behalf of a user.  Two trust paths are supported:  - `user_access_token`: a live signed Vertesia token. STS verifies the user context from that token. - `workload_id_token`: a workload acts on behalf of a user. It implies that a full verification   will be performed based on the workload identity.
     """ # noqa: E501
     type: StrictStr
+    delegation_grant_id: Optional[StrictStr] = None
+    delegation_policy_hash: Optional[StrictStr] = None
+    continuation_token: Optional[StrictStr] = None
     audience: Optional[StrictStr] = None
     algorithm: Optional[SigningAlgorithm] = Field(default=None, description="Signing algorithm - defaults to ES256. Use RS256 for Azure AD compatibility.")
     account_id: StrictStr
     project_id: StrictStr
     name: Optional[StrictStr] = None
     on_behalf_of: StrictStr = Field(description="User information.  The value of this field can be either:   - a signed Vertesia token used to verify the user context   - a user ID prefixed with `user:` to indicate the user on behalf of whom the agent is     acting.")
-    __properties: ClassVar[List[str]] = ["type", "audience", "algorithm", "account_id", "project_id", "name", "on_behalf_of"]
+    __properties: ClassVar[List[str]] = ["type", "delegation_grant_id", "delegation_policy_hash", "continuation_token", "audience", "algorithm", "account_id", "project_id", "name", "on_behalf_of"]
 
     @field_validator('type')
     def type_validate_enum(cls, value):
@@ -94,6 +97,9 @@ class AgentTokenRequest(BaseModel):
 
         _obj = cls.model_validate({
             "type": obj.get("type"),
+            "delegation_grant_id": obj.get("delegation_grant_id"),
+            "delegation_policy_hash": obj.get("delegation_policy_hash"),
+            "continuation_token": obj.get("continuation_token"),
             "audience": obj.get("audience"),
             "algorithm": obj.get("algorithm"),
             "account_id": obj.get("account_id"),

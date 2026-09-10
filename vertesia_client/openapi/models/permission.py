@@ -26,6 +26,7 @@ class Permission(str, Enum):
     """
     allowed enum values
     """
+    SCHEDULE_COLON_DELEGATE = 'schedule:delegate'
     INTERACTION_COLON_READ = 'interaction:read'
     INTERACTION_COLON_WRITE = 'interaction:write'
     INTERACTION_COLON_DELETE = 'interaction:delete'
