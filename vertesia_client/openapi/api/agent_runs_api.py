@@ -23,6 +23,8 @@ from vertesia_client.openapi.models.advance_process_payload import AdvanceProces
 from vertesia_client.openapi.models.agent_artifact_content_response import AgentArtifactContentResponse
 from vertesia_client.openapi.models.agent_artifact_url_response import AgentArtifactUrlResponse
 from vertesia_client.openapi.models.agent_run import AgentRun
+from vertesia_client.openapi.models.agent_run_feedback_payload import AgentRunFeedbackPayload
+from vertesia_client.openapi.models.agent_run_feedback_response import AgentRunFeedbackResponse
 from vertesia_client.openapi.models.agent_run_response import AgentRunResponse
 from vertesia_client.openapi.models.agent_run_updates_response import AgentRunUpdatesResponse
 from vertesia_client.openapi.models.answer_process_task_payload import AnswerProcessTaskPayload
@@ -4657,6 +4659,10 @@ class AgentRunsApi:
         run_kind: Annotated[Optional[StrictStr], Field(description="Filter by internal run discriminator")] = None,
         sort: Annotated[Optional[StrictStr], Field(description="Field to sort by")] = None,
         order: Annotated[Optional[StrictStr], Field(description="Sort order")] = None,
+        evaluation_severity: Annotated[Optional[List[StrictStr]], Field(description="Filter by evaluation severity; `unrated` selects runs without an evaluation")] = None,
+        evaluation_flag: Annotated[Optional[List[StrictStr]], Field(description="Filter by evaluation flag (any of)")] = None,
+        feedback_rating: Annotated[Optional[StrictStr], Field(description="Filter by last feedback rating")] = None,
+        contradicted: Annotated[Optional[StrictBool], Field(description="Only runs whose feedback or judge contradicts the detectors")] = None,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -4705,6 +4711,14 @@ class AgentRunsApi:
         :type sort: str
         :param order: Sort order
         :type order: str
+        :param evaluation_severity: Filter by evaluation severity; `unrated` selects runs without an evaluation
+        :type evaluation_severity: List[str]
+        :param evaluation_flag: Filter by evaluation flag (any of)
+        :type evaluation_flag: List[str]
+        :param feedback_rating: Filter by last feedback rating
+        :type feedback_rating: str
+        :param contradicted: Only runs whose feedback or judge contradicts the detectors
+        :type contradicted: bool
         :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -4745,6 +4759,10 @@ class AgentRunsApi:
             run_kind=run_kind,
             sort=sort,
             order=order,
+            evaluation_severity=evaluation_severity,
+            evaluation_flag=evaluation_flag,
+            feedback_rating=feedback_rating,
+            contradicted=contradicted,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -4786,6 +4804,10 @@ class AgentRunsApi:
         run_kind: Annotated[Optional[StrictStr], Field(description="Filter by internal run discriminator")] = None,
         sort: Annotated[Optional[StrictStr], Field(description="Field to sort by")] = None,
         order: Annotated[Optional[StrictStr], Field(description="Sort order")] = None,
+        evaluation_severity: Annotated[Optional[List[StrictStr]], Field(description="Filter by evaluation severity; `unrated` selects runs without an evaluation")] = None,
+        evaluation_flag: Annotated[Optional[List[StrictStr]], Field(description="Filter by evaluation flag (any of)")] = None,
+        feedback_rating: Annotated[Optional[StrictStr], Field(description="Filter by last feedback rating")] = None,
+        contradicted: Annotated[Optional[StrictBool], Field(description="Only runs whose feedback or judge contradicts the detectors")] = None,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -4834,6 +4856,14 @@ class AgentRunsApi:
         :type sort: str
         :param order: Sort order
         :type order: str
+        :param evaluation_severity: Filter by evaluation severity; `unrated` selects runs without an evaluation
+        :type evaluation_severity: List[str]
+        :param evaluation_flag: Filter by evaluation flag (any of)
+        :type evaluation_flag: List[str]
+        :param feedback_rating: Filter by last feedback rating
+        :type feedback_rating: str
+        :param contradicted: Only runs whose feedback or judge contradicts the detectors
+        :type contradicted: bool
         :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -4874,6 +4904,10 @@ class AgentRunsApi:
             run_kind=run_kind,
             sort=sort,
             order=order,
+            evaluation_severity=evaluation_severity,
+            evaluation_flag=evaluation_flag,
+            feedback_rating=feedback_rating,
+            contradicted=contradicted,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -4915,6 +4949,10 @@ class AgentRunsApi:
         run_kind: Annotated[Optional[StrictStr], Field(description="Filter by internal run discriminator")] = None,
         sort: Annotated[Optional[StrictStr], Field(description="Field to sort by")] = None,
         order: Annotated[Optional[StrictStr], Field(description="Sort order")] = None,
+        evaluation_severity: Annotated[Optional[List[StrictStr]], Field(description="Filter by evaluation severity; `unrated` selects runs without an evaluation")] = None,
+        evaluation_flag: Annotated[Optional[List[StrictStr]], Field(description="Filter by evaluation flag (any of)")] = None,
+        feedback_rating: Annotated[Optional[StrictStr], Field(description="Filter by last feedback rating")] = None,
+        contradicted: Annotated[Optional[StrictBool], Field(description="Only runs whose feedback or judge contradicts the detectors")] = None,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -4963,6 +5001,14 @@ class AgentRunsApi:
         :type sort: str
         :param order: Sort order
         :type order: str
+        :param evaluation_severity: Filter by evaluation severity; `unrated` selects runs without an evaluation
+        :type evaluation_severity: List[str]
+        :param evaluation_flag: Filter by evaluation flag (any of)
+        :type evaluation_flag: List[str]
+        :param feedback_rating: Filter by last feedback rating
+        :type feedback_rating: str
+        :param contradicted: Only runs whose feedback or judge contradicts the detectors
+        :type contradicted: bool
         :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -5003,6 +5049,10 @@ class AgentRunsApi:
             run_kind=run_kind,
             sort=sort,
             order=order,
+            evaluation_severity=evaluation_severity,
+            evaluation_flag=evaluation_flag,
+            feedback_rating=feedback_rating,
+            contradicted=contradicted,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -5039,6 +5089,10 @@ class AgentRunsApi:
         run_kind,
         sort,
         order,
+        evaluation_severity,
+        evaluation_flag,
+        feedback_rating,
+        contradicted,
         x_api_version,
         _request_auth,
         _content_type,
@@ -5051,6 +5105,8 @@ class AgentRunsApi:
         _collection_formats: Dict[str, str] = {
             'status': 'multi',
             'run_type': 'multi',
+            'evaluation_severity': 'multi',
+            'evaluation_flag': 'multi',
         }
 
         _path_params: Dict[str, str] = {}
@@ -5141,6 +5197,22 @@ class AgentRunsApi:
         if order is not None:
             
             _query_params.append(('order', order))
+            
+        if evaluation_severity is not None:
+            
+            _query_params.append(('evaluation_severity', evaluation_severity))
+            
+        if evaluation_flag is not None:
+            
+            _query_params.append(('evaluation_flag', evaluation_flag))
+            
+        if feedback_rating is not None:
+            
+            _query_params.append(('feedback_rating', feedback_rating))
+            
+        if contradicted is not None:
+            
+            _query_params.append(('contradicted', contradicted))
             
         # process the header parameters
         if x_api_version is not None:
@@ -5776,6 +5848,317 @@ class AgentRunsApi:
         return self.api_client.param_serialize(
             method='GET',
             resource_path='/agents/{agentRunId}/query/{queryName}',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def record_agent_run_feedback(
+        self,
+        agent_run_id: StrictStr,
+        agent_run_feedback_payload: AgentRunFeedbackPayload,
+        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> AgentRunFeedbackResponse:
+        """Rate an agent run
+
+        Records a thumbs up/down, an optional reason code and an optional comment against an agent run. One active rating per user and scope; a new rating replaces the previous one and a retried `feedback_id` is idempotent. The comment stays in the project; only its presence is exported.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
+
+        :param agent_run_id: (required)
+        :type agent_run_id: str
+        :param agent_run_feedback_payload: (required)
+        :type agent_run_feedback_payload: AgentRunFeedbackPayload
+        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :type x_api_version: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._record_agent_run_feedback_serialize(
+            agent_run_id=agent_run_id,
+            agent_run_feedback_payload=agent_run_feedback_payload,
+            x_api_version=x_api_version,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "AgentRunFeedbackResponse",
+            '500': "ErrorResponse",
+            '4XX': "ErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def record_agent_run_feedback_with_http_info(
+        self,
+        agent_run_id: StrictStr,
+        agent_run_feedback_payload: AgentRunFeedbackPayload,
+        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[AgentRunFeedbackResponse]:
+        """Rate an agent run
+
+        Records a thumbs up/down, an optional reason code and an optional comment against an agent run. One active rating per user and scope; a new rating replaces the previous one and a retried `feedback_id` is idempotent. The comment stays in the project; only its presence is exported.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
+
+        :param agent_run_id: (required)
+        :type agent_run_id: str
+        :param agent_run_feedback_payload: (required)
+        :type agent_run_feedback_payload: AgentRunFeedbackPayload
+        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :type x_api_version: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._record_agent_run_feedback_serialize(
+            agent_run_id=agent_run_id,
+            agent_run_feedback_payload=agent_run_feedback_payload,
+            x_api_version=x_api_version,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "AgentRunFeedbackResponse",
+            '500': "ErrorResponse",
+            '4XX': "ErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def record_agent_run_feedback_without_preload_content(
+        self,
+        agent_run_id: StrictStr,
+        agent_run_feedback_payload: AgentRunFeedbackPayload,
+        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Rate an agent run
+
+        Records a thumbs up/down, an optional reason code and an optional comment against an agent run. One active rating per user and scope; a new rating replaces the previous one and a retried `feedback_id` is idempotent. The comment stays in the project; only its presence is exported.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
+
+        :param agent_run_id: (required)
+        :type agent_run_id: str
+        :param agent_run_feedback_payload: (required)
+        :type agent_run_feedback_payload: AgentRunFeedbackPayload
+        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :type x_api_version: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._record_agent_run_feedback_serialize(
+            agent_run_id=agent_run_id,
+            agent_run_feedback_payload=agent_run_feedback_payload,
+            x_api_version=x_api_version,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "AgentRunFeedbackResponse",
+            '500': "ErrorResponse",
+            '4XX': "ErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _record_agent_run_feedback_serialize(
+        self,
+        agent_run_id,
+        agent_run_feedback_payload,
+        x_api_version,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if agent_run_id is not None:
+            _path_params['agentRunId'] = agent_run_id
+        # process the query parameters
+        # process the header parameters
+        if x_api_version is not None:
+            _header_params['x-api-version'] = x_api_version
+        # process the form parameters
+        # process the body parameter
+        if agent_run_feedback_payload is not None:
+            _body_params = agent_run_feedback_payload
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+        # set the HTTP header `Content-Type`
+        if _content_type:
+            _header_params['Content-Type'] = _content_type
+        else:
+            _default_content_type = (
+                self.api_client.select_header_content_type(
+                    [
+                        'application/json'
+                    ]
+                )
+            )
+            if _default_content_type is not None:
+                _header_params['Content-Type'] = _default_content_type
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'bearerAuth', 
+            'OpenID'
+        ]
+
+        return self.api_client.param_serialize(
+            method='POST',
+            resource_path='/agents/{agentRunId}/feedback',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,

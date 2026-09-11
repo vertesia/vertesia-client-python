@@ -103,6 +103,18 @@ __all__ = [
     "AgentResourceType",
     "AgentRun",
     "AgentRunArchiveState",
+    "AgentRunContradictionReason",
+    "AgentRunEvaluation",
+    "AgentRunEvaluationRollup",
+    "AgentRunEvaluationRollupTotals",
+    "AgentRunFeedbackCounts",
+    "AgentRunFeedbackEntry",
+    "AgentRunFeedbackPayload",
+    "AgentRunFeedbackRating",
+    "AgentRunFeedbackReasonCode",
+    "AgentRunFeedbackResponse",
+    "AgentRunFeedbackStatus",
+    "AgentRunJudgeResult",
     "AgentRunResponse",
     "AgentRunSearchHit",
     "AgentRunStatus",
@@ -491,6 +503,7 @@ __all__ = [
     "EnableEnvironmentModelPayload",
     "EnvironmentTokenRequest",
     "ErrorResponse",
+    "EvaluationSeverity",
     "EventCategory",
     "EventDeliveryIntentStatus",
     "EventDeliveryIntentSummary",
@@ -651,6 +664,9 @@ __all__ = [
     "JSONSchema",
     "JSONSchemaAdditionalProperties",
     "JsonResult",
+    "JudgeGateReason",
+    "JudgeOutcome",
+    "JudgeVerdict",
     "KnownAuditAction",
     "LinkupConfiguration",
     "LinkupConfigurationInput",
@@ -1001,6 +1017,8 @@ __all__ = [
     "TransientTokenUserInviteTokenData",
     "TransitionDefinition",
     "TransitionTrigger",
+    "TurnEvaluationFlag",
+    "TurnTerminalType",
     "TwelvelabsPegasusOptions",
     "UpdateAccountPayload",
     "UpdateAgentArtifactContentPayload",
@@ -1250,6 +1268,18 @@ from vertesia_client.openapi.models.agent_resource_reference import AgentResourc
 from vertesia_client.openapi.models.agent_resource_type import AgentResourceType as AgentResourceType
 from vertesia_client.openapi.models.agent_run import AgentRun as AgentRun
 from vertesia_client.openapi.models.agent_run_archive_state import AgentRunArchiveState as AgentRunArchiveState
+from vertesia_client.openapi.models.agent_run_contradiction_reason import AgentRunContradictionReason as AgentRunContradictionReason
+from vertesia_client.openapi.models.agent_run_evaluation import AgentRunEvaluation as AgentRunEvaluation
+from vertesia_client.openapi.models.agent_run_evaluation_rollup import AgentRunEvaluationRollup as AgentRunEvaluationRollup
+from vertesia_client.openapi.models.agent_run_evaluation_rollup_totals import AgentRunEvaluationRollupTotals as AgentRunEvaluationRollupTotals
+from vertesia_client.openapi.models.agent_run_feedback_counts import AgentRunFeedbackCounts as AgentRunFeedbackCounts
+from vertesia_client.openapi.models.agent_run_feedback_entry import AgentRunFeedbackEntry as AgentRunFeedbackEntry
+from vertesia_client.openapi.models.agent_run_feedback_payload import AgentRunFeedbackPayload as AgentRunFeedbackPayload
+from vertesia_client.openapi.models.agent_run_feedback_rating import AgentRunFeedbackRating as AgentRunFeedbackRating
+from vertesia_client.openapi.models.agent_run_feedback_reason_code import AgentRunFeedbackReasonCode as AgentRunFeedbackReasonCode
+from vertesia_client.openapi.models.agent_run_feedback_response import AgentRunFeedbackResponse as AgentRunFeedbackResponse
+from vertesia_client.openapi.models.agent_run_feedback_status import AgentRunFeedbackStatus as AgentRunFeedbackStatus
+from vertesia_client.openapi.models.agent_run_judge_result import AgentRunJudgeResult as AgentRunJudgeResult
 from vertesia_client.openapi.models.agent_run_response import AgentRunResponse as AgentRunResponse
 from vertesia_client.openapi.models.agent_run_search_hit import AgentRunSearchHit as AgentRunSearchHit
 from vertesia_client.openapi.models.agent_run_status import AgentRunStatus as AgentRunStatus
@@ -1638,6 +1668,7 @@ from vertesia_client.openapi.models.embeddings_token_usage import EmbeddingsToke
 from vertesia_client.openapi.models.enable_environment_model_payload import EnableEnvironmentModelPayload as EnableEnvironmentModelPayload
 from vertesia_client.openapi.models.environment_token_request import EnvironmentTokenRequest as EnvironmentTokenRequest
 from vertesia_client.openapi.models.error_response import ErrorResponse as ErrorResponse
+from vertesia_client.openapi.models.evaluation_severity import EvaluationSeverity as EvaluationSeverity
 from vertesia_client.openapi.models.event_category import EventCategory as EventCategory
 from vertesia_client.openapi.models.event_delivery_intent_status import EventDeliveryIntentStatus as EventDeliveryIntentStatus
 from vertesia_client.openapi.models.event_delivery_intent_summary import EventDeliveryIntentSummary as EventDeliveryIntentSummary
@@ -1798,6 +1829,9 @@ from vertesia_client.openapi.models.issue_token_unavailable_response import Issu
 from vertesia_client.openapi.models.json_schema import JSONSchema as JSONSchema
 from vertesia_client.openapi.models.json_schema_additional_properties import JSONSchemaAdditionalProperties as JSONSchemaAdditionalProperties
 from vertesia_client.openapi.models.json_result import JsonResult as JsonResult
+from vertesia_client.openapi.models.judge_gate_reason import JudgeGateReason as JudgeGateReason
+from vertesia_client.openapi.models.judge_outcome import JudgeOutcome as JudgeOutcome
+from vertesia_client.openapi.models.judge_verdict import JudgeVerdict as JudgeVerdict
 from vertesia_client.openapi.models.known_audit_action import KnownAuditAction as KnownAuditAction
 from vertesia_client.openapi.models.linkup_configuration import LinkupConfiguration as LinkupConfiguration
 from vertesia_client.openapi.models.linkup_configuration_input import LinkupConfigurationInput as LinkupConfigurationInput
@@ -2148,6 +2182,8 @@ from vertesia_client.openapi.models.transient_token_type import TransientTokenTy
 from vertesia_client.openapi.models.transient_token_user_invite_token_data import TransientTokenUserInviteTokenData as TransientTokenUserInviteTokenData
 from vertesia_client.openapi.models.transition_definition import TransitionDefinition as TransitionDefinition
 from vertesia_client.openapi.models.transition_trigger import TransitionTrigger as TransitionTrigger
+from vertesia_client.openapi.models.turn_evaluation_flag import TurnEvaluationFlag as TurnEvaluationFlag
+from vertesia_client.openapi.models.turn_terminal_type import TurnTerminalType as TurnTerminalType
 from vertesia_client.openapi.models.twelvelabs_pegasus_options import TwelvelabsPegasusOptions as TwelvelabsPegasusOptions
 from vertesia_client.openapi.models.update_account_payload import UpdateAccountPayload as UpdateAccountPayload
 from vertesia_client.openapi.models.update_agent_artifact_content_payload import UpdateAgentArtifactContentPayload as UpdateAgentArtifactContentPayload

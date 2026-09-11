@@ -21,6 +21,8 @@ from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from vertesia_client.openapi.models.agent_run_archive_state import AgentRunArchiveState
+from vertesia_client.openapi.models.agent_run_evaluation import AgentRunEvaluation
+from vertesia_client.openapi.models.agent_run_feedback_entry import AgentRunFeedbackEntry
 from vertesia_client.openapi.models.agent_run_status import AgentRunStatus
 from vertesia_client.openapi.models.agent_run_type import AgentRunType
 from vertesia_client.openapi.models.agent_tool_approval_mode import AgentToolApprovalMode
@@ -89,12 +91,14 @@ class AutonomousRunResponse(BaseModel):
     generate_topic: Optional[StrictBool] = Field(default=None, description="Whether automatic conversation title/topic generation is enabled for this run.")
     generate_lessons: Optional[StrictBool] = Field(default=None, description="Whether automatic lessons generation is enabled for this run.")
     lessons_learned: Optional[List[StrictStr]] = Field(default=None, description="Lessons learned from the conversation (extracted at completion)")
+    evaluation: Optional[AgentRunEvaluation] = Field(default=None, description="Evaluation summary of the run.")
+    feedback: Optional[List[AgentRunFeedbackEntry]] = Field(default=None, description="Retained user ratings on the run.")
     archived_at: Optional[datetime] = Field(default=None, description="When the last successful archive completed")
     archive_version: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Archive format version (for forward compatibility)")
     last_archive_error: Optional[StrictStr] = Field(default=None, description="Last archive error message (when archive_state === 'failed')")
     forked_from: Optional[StrictStr] = Field(default=None, description="Source agent run ID when this run was forked (enables message history chaining)")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["interaction", "data", "config", "interactive", "tool_approval_mode", "tool_names", "initial_skills", "initial_tool_calls", "excluded_tools", "collection_id", "disabled_mcp_collections", "content_type", "visibility", "tags", "categories", "properties", "source", "schedule_id", "source_type", "type", "id", "run_kind", "parent_run_id", "workstream_id", "run_type", "account", "project", "workflow_id", "first_workflow_run_id", "artifacts_path", "status", "activity_state", "started_by", "started_at", "completed_at", "title", "event_subscription_id", "event_ref", "archive_state", "created_at", "updated_at", "interaction_name", "interactionRef", "environmentRef", "topic", "generate_topic", "generate_lessons", "lessons_learned", "archived_at", "archive_version", "last_archive_error", "forked_from"]
+    __properties: ClassVar[List[str]] = ["interaction", "data", "config", "interactive", "tool_approval_mode", "tool_names", "initial_skills", "initial_tool_calls", "excluded_tools", "collection_id", "disabled_mcp_collections", "content_type", "visibility", "tags", "categories", "properties", "source", "schedule_id", "source_type", "type", "id", "run_kind", "parent_run_id", "workstream_id", "run_type", "account", "project", "workflow_id", "first_workflow_run_id", "artifacts_path", "status", "activity_state", "started_by", "started_at", "completed_at", "title", "event_subscription_id", "event_ref", "archive_state", "created_at", "updated_at", "interaction_name", "interactionRef", "environmentRef", "topic", "generate_topic", "generate_lessons", "lessons_learned", "evaluation", "feedback", "archived_at", "archive_version", "last_archive_error", "forked_from"]
 
     @field_validator('run_kind')
     def run_kind_validate_enum(cls, value):
@@ -172,6 +176,16 @@ class AutonomousRunResponse(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of environment_ref
         if self.environment_ref:
             _dict['environmentRef'] = self.environment_ref.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of evaluation
+        if self.evaluation:
+            _dict['evaluation'] = self.evaluation.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of each item in feedback (list)
+        _items = []
+        if self.feedback:
+            for _item_feedback in self.feedback:
+                if _item_feedback:
+                    _items.append(_item_feedback.to_dict())
+            _dict['feedback'] = _items
         # puts key-value pairs in additional_properties in the top level
         if self.additional_properties is not None:
             for _key, _value in self.additional_properties.items():
@@ -237,6 +251,8 @@ class AutonomousRunResponse(BaseModel):
             "generate_topic": obj.get("generate_topic"),
             "generate_lessons": obj.get("generate_lessons"),
             "lessons_learned": obj.get("lessons_learned"),
+            "evaluation": AgentRunEvaluation.from_dict(obj["evaluation"]) if obj.get("evaluation") is not None else None,
+            "feedback": [AgentRunFeedbackEntry.from_dict(_item) for _item in obj["feedback"]] if obj.get("feedback") is not None else None,
             "archived_at": obj.get("archived_at"),
             "archive_version": obj.get("archive_version"),
             "last_archive_error": obj.get("last_archive_error"),

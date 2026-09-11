@@ -1258,6 +1258,17 @@
             },
             "description": "Lessons learned from the conversation (extracted at completion)"
           },
+          "evaluation": {
+            "$ref": "#/components/schemas/AgentRunEvaluation",
+            "description": "Evaluation summary of the run."
+          },
+          "feedback": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AgentRunFeedbackEntry"
+            },
+            "description": "Retained user ratings on the run."
+          },
           "archived_at": {
             "type": "string",
             "format": "date-time",
@@ -1309,6 +1320,431 @@
         "items": {
           "type": "string"
         }
+      },
+      "AgentRunContradictionReason": {
+        "type": "string",
+        "enum": [
+          "feedback_down_on_clean_run",
+          "judge_failure_on_clean_run"
+        ]
+      },
+      "AgentRunEvaluation": {
+        "type": "object",
+        "properties": {
+          "rev": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991,
+            "description": "Bumped on every change to any part of the summary."
+          },
+          "rollup": {
+            "$ref": "#/components/schemas/AgentRunEvaluationRollup"
+          },
+          "feedback_counts": {
+            "$ref": "#/components/schemas/AgentRunFeedbackCounts"
+          },
+          "judge": {
+            "$ref": "#/components/schemas/AgentRunJudgeResult"
+          },
+          "severity": {
+            "$ref": "#/components/schemas/EvaluationSeverity"
+          },
+          "flags": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TurnEvaluationFlag"
+            }
+          },
+          "contradicted": {
+            "type": "boolean"
+          },
+          "contradiction_reasons": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AgentRunContradictionReason"
+            }
+          },
+          "deployment_env": {
+            "type": "string"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "rev",
+          "severity",
+          "flags",
+          "contradicted",
+          "updated_at"
+        ],
+        "additionalProperties": false,
+        "description": "Evaluation summary of an agent run."
+      },
+      "AgentRunEvaluationRollup": {
+        "type": "object",
+        "properties": {
+          "seq": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991,
+            "description": "Monotonic per run; the server ignores a rollup older than the one it holds."
+          },
+          "detector_version": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "turns": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "severity": {
+            "$ref": "#/components/schemas/EvaluationSeverity"
+          },
+          "flags": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TurnEvaluationFlag"
+            }
+          },
+          "worst_turn_seq": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "last_terminal_type": {
+            "$ref": "#/components/schemas/TurnTerminalType"
+          },
+          "terminal_error_class": {
+            "type": "string"
+          },
+          "partial": {
+            "type": "boolean"
+          },
+          "totals": {
+            "type": "object",
+            "properties": {
+              "tool_calls": {
+                "type": "integer",
+                "minimum": -9007199254740991,
+                "maximum": 9007199254740991
+              },
+              "error_tool_results": {
+                "type": "integer",
+                "minimum": -9007199254740991,
+                "maximum": 9007199254740991
+              },
+              "unrecovered_tools": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "llm_calls": {
+                "type": "integer",
+                "minimum": -9007199254740991,
+                "maximum": 9007199254740991
+              },
+              "prompt_tokens": {
+                "type": "number"
+              },
+              "completion_tokens": {
+                "type": "number"
+              },
+              "cached_tokens": {
+                "type": "number"
+              },
+              "retry_completion_tokens": {
+                "type": "number"
+              },
+              "active_ms": {
+                "type": "number"
+              },
+              "ask_user_wait_ms": {
+                "type": "number"
+              },
+              "approval_wait_ms": {
+                "type": "number"
+              },
+              "followups": {
+                "type": "integer",
+                "minimum": -9007199254740991,
+                "maximum": 9007199254740991
+              },
+              "approvals_requested": {
+                "type": "integer",
+                "minimum": -9007199254740991,
+                "maximum": 9007199254740991
+              },
+              "approvals_denied": {
+                "type": "integer",
+                "minimum": -9007199254740991,
+                "maximum": 9007199254740991
+              },
+              "stop_requests": {
+                "type": "integer",
+                "minimum": -9007199254740991,
+                "maximum": 9007199254740991
+              }
+            },
+            "required": [
+              "tool_calls",
+              "error_tool_results",
+              "unrecovered_tools",
+              "llm_calls",
+              "prompt_tokens",
+              "completion_tokens",
+              "cached_tokens",
+              "retry_completion_tokens",
+              "active_ms",
+              "ask_user_wait_ms",
+              "approval_wait_ms",
+              "followups",
+              "approvals_requested",
+              "approvals_denied",
+              "stop_requests"
+            ],
+            "additionalProperties": false
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "seq",
+          "detector_version",
+          "turns",
+          "severity",
+          "flags",
+          "totals",
+          "updated_at"
+        ],
+        "additionalProperties": false,
+        "description": "Fold of the turn evaluations of a run."
+      },
+      "AgentRunFeedbackCounts": {
+        "type": "object",
+        "properties": {
+          "up": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "down": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "last_rating": {
+            "$ref": "#/components/schemas/AgentRunFeedbackRating"
+          },
+          "last_reason_code": {
+            "$ref": "#/components/schemas/AgentRunFeedbackReasonCode"
+          }
+        },
+        "required": [
+          "up",
+          "down"
+        ],
+        "additionalProperties": false,
+        "description": "Ratings over the retained feedback entries."
+      },
+      "AgentRunFeedbackEntry": {
+        "type": "object",
+        "properties": {
+          "feedback_id": {
+            "type": "string"
+          },
+          "rating": {
+            "$ref": "#/components/schemas/AgentRunFeedbackRating"
+          },
+          "reason_code": {
+            "$ref": "#/components/schemas/AgentRunFeedbackReasonCode"
+          },
+          "comment": {
+            "type": "string"
+          },
+          "message_id": {
+            "type": "string"
+          },
+          "message_seq": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "message_scoped": {
+            "type": "boolean"
+          },
+          "user_id": {
+            "type": "string"
+          },
+          "rated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "replaced_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "feedback_id",
+          "rating",
+          "message_scoped",
+          "user_id",
+          "rated_at"
+        ],
+        "additionalProperties": false,
+        "description": "One recorded rating on an agent run."
+      },
+      "AgentRunFeedbackPayload": {
+        "type": "object",
+        "properties": {
+          "feedback_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64,
+            "description": "Client-generated idempotency key (a UUID). A retried request with the same id is a no-op."
+          },
+          "rating": {
+            "$ref": "#/components/schemas/AgentRunFeedbackRating"
+          },
+          "reason_code": {
+            "$ref": "#/components/schemas/AgentRunFeedbackReasonCode"
+          },
+          "comment": {
+            "type": "string",
+            "maxLength": 2000,
+            "description": "Free-text comment. Stored with the tenant; only its presence is ever counted."
+          },
+          "message_id": {
+            "type": "string",
+            "description": "Rate one message rather than the run as a whole."
+          },
+          "message_seq": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991,
+            "description": "Position of the rated message in the run, when a message is rated."
+          }
+        },
+        "required": [
+          "feedback_id",
+          "rating"
+        ],
+        "additionalProperties": false,
+        "description": "A user rating on an agent run."
+      },
+      "AgentRunFeedbackRating": {
+        "type": "string",
+        "enum": [
+          "up",
+          "down"
+        ],
+        "description": "Thumbs up or thumbs down on an agent run."
+      },
+      "AgentRunFeedbackReasonCode": {
+        "type": "string",
+        "enum": [
+          "accurate",
+          "helpful",
+          "fast",
+          "well_explained",
+          "wrong_result",
+          "incomplete",
+          "misunderstood_request",
+          "too_slow",
+          "tool_failure",
+          "unsafe_action",
+          "other"
+        ],
+        "description": "Why the run was rated the way it was."
+      },
+      "AgentRunFeedbackResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/AgentRunFeedbackStatus"
+          },
+          "feedback_counts": {
+            "$ref": "#/components/schemas/AgentRunFeedbackCounts"
+          }
+        },
+        "required": [
+          "status"
+        ],
+        "additionalProperties": false,
+        "description": "Result of rating an agent run."
+      },
+      "AgentRunFeedbackStatus": {
+        "type": "string",
+        "enum": [
+          "recorded",
+          "replaced",
+          "disabled"
+        ],
+        "description": "Whether the rating was recorded."
+      },
+      "AgentRunJudgeResult": {
+        "type": "object",
+        "properties": {
+          "rev": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "gate": {
+            "$ref": "#/components/schemas/JudgeGateReason"
+          },
+          "sample_rate": {
+            "type": "number"
+          },
+          "selected_probability": {
+            "type": "number"
+          },
+          "outcome": {
+            "$ref": "#/components/schemas/JudgeOutcome"
+          },
+          "verdict": {
+            "$ref": "#/components/schemas/JudgeVerdict"
+          },
+          "score": {
+            "type": "number"
+          },
+          "model": {
+            "type": "string"
+          },
+          "prompt_version": {
+            "type": "string"
+          },
+          "turns_judged": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": -9007199254740991,
+              "maximum": 9007199254740991
+            }
+          },
+          "judged_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "rev",
+          "gate",
+          "sample_rate",
+          "selected_probability",
+          "outcome",
+          "prompt_version",
+          "judged_at"
+        ],
+        "additionalProperties": false,
+        "description": "Latest judge result for a run."
       },
       "AgentRunResponse": {
         "oneOf": [
@@ -5815,6 +6251,17 @@
               "type": "string"
             },
             "description": "Lessons learned from the conversation (extracted at completion)"
+          },
+          "evaluation": {
+            "$ref": "#/components/schemas/AgentRunEvaluation",
+            "description": "Evaluation summary of the run."
+          },
+          "feedback": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AgentRunFeedbackEntry"
+            },
+            "description": "Retained user ratings on the run."
           },
           "archived_at": {
             "type": "string",
@@ -15515,6 +15962,16 @@
         ],
         "additionalProperties": false
       },
+      "EvaluationSeverity": {
+        "type": "string",
+        "enum": [
+          "none",
+          "low",
+          "medium",
+          "high"
+        ],
+        "description": "Worst deterministic detector level. `none` means no detector fired, not success."
+      },
       "EventCategory": {
         "type": "string",
         "enum": [
@@ -20852,6 +21309,32 @@
           "value"
         ],
         "additionalProperties": false
+      },
+      "JudgeGateReason": {
+        "type": "string",
+        "enum": [
+          "signal",
+          "sample"
+        ],
+        "description": "Why the judge looked at a run."
+      },
+      "JudgeOutcome": {
+        "type": "string",
+        "enum": [
+          "judged",
+          "skipped_unarchived",
+          "failed"
+        ],
+        "description": "What a judge run produced."
+      },
+      "JudgeVerdict": {
+        "type": "string",
+        "enum": [
+          "success",
+          "partial",
+          "failure"
+        ],
+        "description": "The judge's reading of a turn."
       },
       "KnownAuditAction": {
         "type": "string",
@@ -30896,6 +31379,35 @@
           "agent",
           "user"
         ]
+      },
+      "TurnEvaluationFlag": {
+        "type": "string",
+        "enum": [
+          "user_stopped_after_failure",
+          "mutation_unsuccessful",
+          "run_failed",
+          "unrecovered_tool",
+          "fail_streak",
+          "identical_retry",
+          "reread",
+          "high_gather",
+          "overhead",
+          "followup_after_answer",
+          "approval_denied"
+        ],
+        "description": "Reason behind an evaluation severity."
+      },
+      "TurnTerminalType": {
+        "type": "string",
+        "enum": [
+          "answer",
+          "user_stopped",
+          "completed",
+          "failed",
+          "cancelled",
+          "interrupted"
+        ],
+        "description": "How an agent turn ended."
       },
       "TwelvelabsPegasusOptions": {
         "type": "object",
@@ -57232,6 +57744,82 @@
               "description": "Sort order"
             },
             "description": "Sort order"
+          },
+          {
+            "name": "evaluation_severity",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "unrated",
+                  "none",
+                  "low",
+                  "medium",
+                  "high"
+                ]
+              },
+              "description": "Filter by evaluation severity; `unrated` selects runs without an evaluation"
+            },
+            "description": "Filter by evaluation severity; `unrated` selects runs without an evaluation",
+            "style": "form",
+            "explode": true
+          },
+          {
+            "name": "evaluation_flag",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "user_stopped_after_failure",
+                  "mutation_unsuccessful",
+                  "run_failed",
+                  "unrecovered_tool",
+                  "fail_streak",
+                  "identical_retry",
+                  "reread",
+                  "high_gather",
+                  "overhead",
+                  "followup_after_answer",
+                  "approval_denied"
+                ],
+                "description": "Reason behind an evaluation severity."
+              },
+              "description": "Filter by evaluation flag (any of)"
+            },
+            "description": "Filter by evaluation flag (any of)",
+            "style": "form",
+            "explode": true
+          },
+          {
+            "name": "feedback_rating",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "up",
+                "down"
+              ],
+              "description": "Filter by last feedback rating"
+            },
+            "description": "Filter by last feedback rating",
+            "style": "form"
+          },
+          {
+            "name": "contradicted",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Only runs whose feedback or judge contradicts the detectors"
+            },
+            "description": "Only runs whose feedback or judge contradicts the detectors"
           }
         ],
         "responses": {
@@ -59839,6 +60427,108 @@
           "file": "../../apps/zeno-server/src/api/agents.ts",
           "className": "AgentsResource",
           "methodName": "streamRunDetails"
+        }
+      },
+      "parameters": [
+        {
+          "name": "x-api-version",
+          "in": "header",
+          "required": false,
+          "schema": {
+            "type": "string",
+            "example": "20260803"
+          },
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
+          "x-vertesia-global-header": true
+        }
+      ]
+    },
+    "/agents/{agentRunId}/feedback": {
+      "post": {
+        "operationId": "RecordAgentRunFeedback",
+        "tags": [
+          "Agent Runs"
+        ],
+        "summary": "Rate an agent run",
+        "description": "Records a thumbs up/down, an optional reason code and an optional comment against an agent run. One active rating per user and scope; a new rating replaces the previous one and a retried `feedback_id` is idempotent. The comment stays in the project; only its presence is exported.\n\n**Required permissions:** Any of `agent_run:read`, `workflow:run`",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OpenID": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "agentRunId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Whether the rating was recorded, replaced or disabled.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentRunFeedbackResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [
+          "agent_run:read",
+          "workflow:run"
+        ],
+        "x-vertesia-source": {
+          "file": "../../apps/zeno-server/src/api/agents.ts",
+          "className": "AgentsResource",
+          "methodName": "recordFeedback"
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AgentRunFeedbackPayload"
+              }
+            }
+          }
         }
       },
       "parameters": [

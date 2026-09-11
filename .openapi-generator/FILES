@@ -79,6 +79,18 @@ vertesia_client/openapi/models/agent_resource_reference.py
 vertesia_client/openapi/models/agent_resource_type.py
 vertesia_client/openapi/models/agent_run.py
 vertesia_client/openapi/models/agent_run_archive_state.py
+vertesia_client/openapi/models/agent_run_contradiction_reason.py
+vertesia_client/openapi/models/agent_run_evaluation.py
+vertesia_client/openapi/models/agent_run_evaluation_rollup.py
+vertesia_client/openapi/models/agent_run_evaluation_rollup_totals.py
+vertesia_client/openapi/models/agent_run_feedback_counts.py
+vertesia_client/openapi/models/agent_run_feedback_entry.py
+vertesia_client/openapi/models/agent_run_feedback_payload.py
+vertesia_client/openapi/models/agent_run_feedback_rating.py
+vertesia_client/openapi/models/agent_run_feedback_reason_code.py
+vertesia_client/openapi/models/agent_run_feedback_response.py
+vertesia_client/openapi/models/agent_run_feedback_status.py
+vertesia_client/openapi/models/agent_run_judge_result.py
 vertesia_client/openapi/models/agent_run_response.py
 vertesia_client/openapi/models/agent_run_search_hit.py
 vertesia_client/openapi/models/agent_run_status.py
@@ -469,6 +481,7 @@ vertesia_client/openapi/models/embeddings_token_usage.py
 vertesia_client/openapi/models/enable_environment_model_payload.py
 vertesia_client/openapi/models/environment_token_request.py
 vertesia_client/openapi/models/error_response.py
+vertesia_client/openapi/models/evaluation_severity.py
 vertesia_client/openapi/models/event_category.py
 vertesia_client/openapi/models/event_delivery_intent_status.py
 vertesia_client/openapi/models/event_delivery_intent_summary.py
@@ -629,6 +642,9 @@ vertesia_client/openapi/models/issue_token_unavailable_response.py
 vertesia_client/openapi/models/json_result.py
 vertesia_client/openapi/models/json_schema.py
 vertesia_client/openapi/models/json_schema_additional_properties.py
+vertesia_client/openapi/models/judge_gate_reason.py
+vertesia_client/openapi/models/judge_outcome.py
+vertesia_client/openapi/models/judge_verdict.py
 vertesia_client/openapi/models/known_audit_action.py
 vertesia_client/openapi/models/linkup_configuration.py
 vertesia_client/openapi/models/linkup_configuration_input.py
@@ -979,6 +995,8 @@ vertesia_client/openapi/models/transient_token_type.py
 vertesia_client/openapi/models/transient_token_user_invite_token_data.py
 vertesia_client/openapi/models/transition_definition.py
 vertesia_client/openapi/models/transition_trigger.py
+vertesia_client/openapi/models/turn_evaluation_flag.py
+vertesia_client/openapi/models/turn_terminal_type.py
 vertesia_client/openapi/models/twelvelabs_pegasus_options.py
 vertesia_client/openapi/models/update_account_payload.py
 vertesia_client/openapi/models/update_agent_artifact_content_payload.py
