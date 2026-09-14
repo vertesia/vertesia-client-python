@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Vertesia API",
-    "version": "1.6.0-dev",
+    "version": "1.6.0-dev.20260912.110338Z",
     "x-api-version": "20260803",
     "description": "The Vertesia API provides project-scoped access to interaction execution and content workflows. Use it to run interactions, inspect execution history, stream run progress, replay previous executions, and search content objects and collections. Authenticate requests with a bearer token, or use the official `@vertesia/client` package for typed access from Node.js applications.",
     "contact": {
@@ -1488,6 +1488,11 @@
                 "type": "integer",
                 "minimum": -9007199254740991,
                 "maximum": 9007199254740991
+              },
+              "stall_trips": {
+                "type": "integer",
+                "minimum": -9007199254740991,
+                "maximum": 9007199254740991
               }
             },
             "required": [
@@ -2615,6 +2620,10 @@
           "enabled": {
             "type": "boolean"
           },
+          "scim_provisioning": {
+            "type": "boolean",
+            "description": "Organization-wide SCIM provisioning credential. Only account administrators may create or manage these keys. May be enabled by account administrators on existing keys; disable or delete to revoke access."
+          },
           "created_by": {
             "type": "string"
           },
@@ -2700,6 +2709,10 @@
           },
           "enabled": {
             "type": "boolean"
+          },
+          "scim_provisioning": {
+            "type": "boolean",
+            "description": "Organization-wide SCIM provisioning credential. Only account administrators may create or manage these keys. May be enabled by account administrators on existing keys; disable or delete to revoke access."
           },
           "created_by": {
             "type": "string"
@@ -2811,6 +2824,10 @@
           },
           "enabled": {
             "type": "boolean"
+          },
+          "scim_provisioning": {
+            "type": "boolean",
+            "description": "Organization-wide SCIM provisioning credential. Only account administrators may create or manage these keys. May be enabled by account administrators on existing keys; disable or delete to revoke access."
           },
           "created_by": {
             "type": "string"
@@ -11338,6 +11355,10 @@
           "expires_at": {
             "type": "string",
             "format": "date-time"
+          },
+          "scim_provisioning": {
+            "type": "boolean",
+            "description": "Organization-wide SCIM provisioning credential. Only account administrators may create or manage these keys. May be enabled by account administrators on existing keys; disable or delete to revoke access."
           },
           "properties": {
             "type": "object",
@@ -31393,7 +31414,8 @@
           "high_gather",
           "overhead",
           "followup_after_answer",
-          "approval_denied"
+          "approval_denied",
+          "circuit_breaker"
         ],
         "description": "Reason behind an evaluation severity."
       },
@@ -31500,6 +31522,10 @@
           },
           "enabled": {
             "type": "boolean"
+          },
+          "scim_provisioning": {
+            "type": "boolean",
+            "description": "Organization-wide SCIM provisioning credential. Only account administrators may create or manage these keys. May be enabled by account administrators on existing keys; disable or delete to revoke access."
           },
           "properties": {
             "type": "object",
@@ -57786,7 +57812,8 @@
                   "high_gather",
                   "overhead",
                   "followup_after_answer",
-                  "approval_denied"
+                  "approval_denied",
+                  "circuit_breaker"
                 ],
                 "description": "Reason behind an evaluation severity."
               },
