@@ -18,7 +18,7 @@ import re  # noqa: F401
 import json
 
 from datetime import datetime
-from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from vertesia_client.openapi.models.api_key_types import ApiKeyTypes
 from vertesia_client.openapi.models.system_roles import SystemRoles
@@ -34,11 +34,12 @@ class CreateApiKeyPayload(BaseModel):
     role: SystemRoles
     type: Optional[ApiKeyTypes] = None
     expires_at: Optional[datetime] = None
+    scim_provisioning: Optional[StrictBool] = Field(default=None, description="Organization-wide SCIM provisioning credential. Only account administrators may create or manage these keys. May be enabled by account administrators on existing keys; disable or delete to revoke access.")
     properties: Optional[Dict[str, Any]] = Field(default=None, description="Custom properties for dynamic permission matching (PrincipalSet / $principal. conditions)")
     clearance: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="BLP clearance level — the maximum document sensitivity the key can access")
     compartments: Optional[List[StrictStr]] = Field(default=None, description="Compartments the key belongs to — restricts access to matching documents")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["name", "role", "type", "expires_at", "properties", "clearance", "compartments"]
+    __properties: ClassVar[List[str]] = ["name", "role", "type", "expires_at", "scim_provisioning", "properties", "clearance", "compartments"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -102,6 +103,7 @@ class CreateApiKeyPayload(BaseModel):
             "role": obj.get("role"),
             "type": obj.get("type"),
             "expires_at": obj.get("expires_at"),
+            "scim_provisioning": obj.get("scim_provisioning"),
             "properties": obj.get("properties"),
             "clearance": obj.get("clearance"),
             "compartments": obj.get("compartments")

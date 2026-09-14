@@ -40,6 +40,7 @@ class ApiKey(BaseModel):
     account: StrictStr
     project: ProjectRef
     enabled: StrictBool
+    scim_provisioning: Optional[StrictBool] = Field(default=None, description="Organization-wide SCIM provisioning credential. Only account administrators may create or manage these keys. May be enabled by account administrators on existing keys; disable or delete to revoke access.")
     created_by: StrictStr
     updated_by: StrictStr
     created_at: datetime
@@ -49,7 +50,7 @@ class ApiKey(BaseModel):
     clearance: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="BLP clearance level — the maximum document sensitivity the key can access")
     compartments: Optional[List[StrictStr]] = Field(default=None, description="Compartments the key belongs to — restricts access to matching documents")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["id", "name", "type", "role", "maskedValue", "can_retrieve_value", "account", "project", "enabled", "created_by", "updated_by", "created_at", "updated_at", "expires_at", "properties", "clearance", "compartments"]
+    __properties: ClassVar[List[str]] = ["id", "name", "type", "role", "maskedValue", "can_retrieve_value", "account", "project", "enabled", "scim_provisioning", "created_by", "updated_by", "created_at", "updated_at", "expires_at", "properties", "clearance", "compartments"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -121,6 +122,7 @@ class ApiKey(BaseModel):
             "account": obj.get("account"),
             "project": ProjectRef.from_dict(obj["project"]) if obj.get("project") is not None else None,
             "enabled": obj.get("enabled"),
+            "scim_provisioning": obj.get("scim_provisioning"),
             "created_by": obj.get("created_by"),
             "updated_by": obj.get("updated_by"),
             "created_at": obj.get("created_at"),
