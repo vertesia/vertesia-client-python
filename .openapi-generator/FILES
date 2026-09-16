@@ -13,6 +13,7 @@ vertesia_client/openapi/api/content_object_types_api.py
 vertesia_client/openapi/api/content_query_api.py
 vertesia_client/openapi/api/costs_api.py
 vertesia_client/openapi/api/data_api.py
+vertesia_client/openapi/api/default_api.py
 vertesia_client/openapi/api/delegation_grants_api.py
 vertesia_client/openapi/api/email_api.py
 vertesia_client/openapi/api/environments_api.py
@@ -54,6 +55,8 @@ vertesia_client/openapi/models/access_control_entry.py
 vertesia_client/openapi/models/access_control_principal_type.py
 vertesia_client/openapi/models/access_control_resource_type.py
 vertesia_client/openapi/models/account.py
+vertesia_client/openapi/models/account_api_key.py
+vertesia_client/openapi/models/account_api_key_with_value.py
 vertesia_client/openapi/models/account_billing.py
 vertesia_client/openapi/models/account_onboarding.py
 vertesia_client/openapi/models/account_projects_response.py
@@ -348,6 +351,7 @@ vertesia_client/openapi/models/cost_run_price_response.py
 vertesia_client/openapi/models/cost_summary.py
 vertesia_client/openapi/models/cost_time_series_point.py
 vertesia_client/openapi/models/count_result.py
+vertesia_client/openapi/models/create_account_api_key_payload.py
 vertesia_client/openapi/models/create_agent_run_payload.py
 vertesia_client/openapi/models/create_api_key_payload.py
 vertesia_client/openapi/models/create_collection_payload.py
@@ -998,6 +1002,7 @@ vertesia_client/openapi/models/transition_trigger.py
 vertesia_client/openapi/models/turn_evaluation_flag.py
 vertesia_client/openapi/models/turn_terminal_type.py
 vertesia_client/openapi/models/twelvelabs_pegasus_options.py
+vertesia_client/openapi/models/update_account_api_key_payload.py
 vertesia_client/openapi/models/update_account_payload.py
 vertesia_client/openapi/models/update_agent_artifact_content_payload.py
 vertesia_client/openapi/models/update_agent_artifact_content_response.py

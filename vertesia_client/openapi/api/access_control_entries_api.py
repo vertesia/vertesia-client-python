@@ -61,7 +61,7 @@ class AccessControlEntriesApi:
     ) -> AccessControlEntry:
         """Create an access control entry
 
-        Creates a new access control entry for an account, project, or application resource.  **Required permissions:** `account:admin`
+        Creates a new access control entry for an account, project, or application resource.  **Required permissions:** Any of `account:admin`, `account:membership:manage`
 
         :param ace_create_payload: (required)
         :type ace_create_payload: ACECreatePayload
@@ -134,7 +134,7 @@ class AccessControlEntriesApi:
     ) -> ApiResponse[AccessControlEntry]:
         """Create an access control entry
 
-        Creates a new access control entry for an account, project, or application resource.  **Required permissions:** `account:admin`
+        Creates a new access control entry for an account, project, or application resource.  **Required permissions:** Any of `account:admin`, `account:membership:manage`
 
         :param ace_create_payload: (required)
         :type ace_create_payload: ACECreatePayload
@@ -207,7 +207,7 @@ class AccessControlEntriesApi:
     ) -> RESTResponseType:
         """Create an access control entry
 
-        Creates a new access control entry for an account, project, or application resource.  **Required permissions:** `account:admin`
+        Creates a new access control entry for an account, project, or application resource.  **Required permissions:** Any of `account:admin`, `account:membership:manage`
 
         :param ace_create_payload: (required)
         :type ace_create_payload: ACECreatePayload
@@ -357,7 +357,7 @@ class AccessControlEntriesApi:
     ) -> DeleteByIdResult:
         """Delete an access control entry
 
-        Deletes an access control entry by ID.  **Required permissions:** `account:admin`
+        Deletes an access control entry by ID.  **Required permissions:** Any of `account:admin`, `account:membership:manage`
 
         :param ace_id: (required)
         :type ace_id: str
@@ -430,7 +430,7 @@ class AccessControlEntriesApi:
     ) -> ApiResponse[DeleteByIdResult]:
         """Delete an access control entry
 
-        Deletes an access control entry by ID.  **Required permissions:** `account:admin`
+        Deletes an access control entry by ID.  **Required permissions:** Any of `account:admin`, `account:membership:manage`
 
         :param ace_id: (required)
         :type ace_id: str
@@ -503,7 +503,7 @@ class AccessControlEntriesApi:
     ) -> RESTResponseType:
         """Delete an access control entry
 
-        Deletes an access control entry by ID.  **Required permissions:** `account:admin`
+        Deletes an access control entry by ID.  **Required permissions:** Any of `account:admin`, `account:membership:manage`
 
         :param ace_id: (required)
         :type ace_id: str
@@ -640,7 +640,7 @@ class AccessControlEntriesApi:
     ) -> AccessControlEntry:
         """Retrieve an access control entry
 
-        Retrieves an access control entry by ID.  **Required permissions:** `account:read`
+        Retrieves an access control entry by ID.  **Required permissions:** Any of `account:read`, `account:membership:read`
 
         :param ace_id: (required)
         :type ace_id: str
@@ -713,7 +713,7 @@ class AccessControlEntriesApi:
     ) -> ApiResponse[AccessControlEntry]:
         """Retrieve an access control entry
 
-        Retrieves an access control entry by ID.  **Required permissions:** `account:read`
+        Retrieves an access control entry by ID.  **Required permissions:** Any of `account:read`, `account:membership:read`
 
         :param ace_id: (required)
         :type ace_id: str
@@ -786,7 +786,7 @@ class AccessControlEntriesApi:
     ) -> RESTResponseType:
         """Retrieve an access control entry
 
-        Retrieves an access control entry by ID.  **Required permissions:** `account:read`
+        Retrieves an access control entry by ID.  **Required permissions:** Any of `account:read`, `account:membership:read`
 
         :param ace_id: (required)
         :type ace_id: str
@@ -922,7 +922,7 @@ class AccessControlEntriesApi:
     ) -> List[AccessControlEntry]:
         """List access control entries
 
-        Lists access control entries visible in the current account and project context.  **Required permissions:** `account:read`
+        Lists access control entries visible in the current account and project context.  **Required permissions:** Any of `account:read`, `account:membership:read`
 
         :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
         :type x_api_version: str
@@ -991,7 +991,7 @@ class AccessControlEntriesApi:
     ) -> ApiResponse[List[AccessControlEntry]]:
         """List access control entries
 
-        Lists access control entries visible in the current account and project context.  **Required permissions:** `account:read`
+        Lists access control entries visible in the current account and project context.  **Required permissions:** Any of `account:read`, `account:membership:read`
 
         :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
         :type x_api_version: str
@@ -1060,7 +1060,7 @@ class AccessControlEntriesApi:
     ) -> RESTResponseType:
         """List access control entries
 
-        Lists access control entries visible in the current account and project context.  **Required permissions:** `account:read`
+        Lists access control entries visible in the current account and project context.  **Required permissions:** Any of `account:read`, `account:membership:read`
 
         :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
         :type x_api_version: str
@@ -1460,7 +1460,7 @@ class AccessControlEntriesApi:
     ) -> AccessControlEntry:
         """Update an access control entry
 
-        Updates an access control entry by ID.  **Required permissions:** `account:admin`
+        Updates an access control entry by ID.  **Required permissions:** Any of `account:admin`, `account:membership:manage`
 
         :param ace_id: (required)
         :type ace_id: str
@@ -1537,7 +1537,7 @@ class AccessControlEntriesApi:
     ) -> ApiResponse[AccessControlEntry]:
         """Update an access control entry
 
-        Updates an access control entry by ID.  **Required permissions:** `account:admin`
+        Updates an access control entry by ID.  **Required permissions:** Any of `account:admin`, `account:membership:manage`
 
         :param ace_id: (required)
         :type ace_id: str
@@ -1614,7 +1614,7 @@ class AccessControlEntriesApi:
     ) -> RESTResponseType:
         """Update an access control entry
 
-        Updates an access control entry by ID.  **Required permissions:** `account:admin`
+        Updates an access control entry by ID.  **Required permissions:** Any of `account:admin`, `account:membership:manage`
 
         :param ace_id: (required)
         :type ace_id: str

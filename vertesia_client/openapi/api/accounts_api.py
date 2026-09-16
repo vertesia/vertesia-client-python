@@ -1197,7 +1197,7 @@ class AccountsApi:
     ) -> Account:
         """Retrieve the current account
 
-        Retrieves the current authenticated account.  **Required permissions:** `account:member`
+        Retrieves the current authenticated account.  **Required permissions:** Any of `account:member`, `account:read`
 
         :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
         :type x_api_version: str
@@ -1266,7 +1266,7 @@ class AccountsApi:
     ) -> ApiResponse[Account]:
         """Retrieve the current account
 
-        Retrieves the current authenticated account.  **Required permissions:** `account:member`
+        Retrieves the current authenticated account.  **Required permissions:** Any of `account:member`, `account:read`
 
         :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
         :type x_api_version: str
@@ -1335,7 +1335,7 @@ class AccountsApi:
     ) -> RESTResponseType:
         """Retrieve the current account
 
-        Retrieves the current authenticated account.  **Required permissions:** `account:member`
+        Retrieves the current authenticated account.  **Required permissions:** Any of `account:member`, `account:read`
 
         :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
         :type x_api_version: str
@@ -1465,7 +1465,7 @@ class AccountsApi:
     ) -> StripeBillingStatusResponse:
         """Get Stripe billing status
 
-        Returns Stripe billing portal availability and status for the current account.  **Required permissions:** `account:billing`
+        Returns Stripe billing portal availability and status for the current account.  **Required permissions:** Any of `account:billing`, `account:billing:status_read`
 
         :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
         :type x_api_version: str
@@ -1534,7 +1534,7 @@ class AccountsApi:
     ) -> ApiResponse[StripeBillingStatusResponse]:
         """Get Stripe billing status
 
-        Returns Stripe billing portal availability and status for the current account.  **Required permissions:** `account:billing`
+        Returns Stripe billing portal availability and status for the current account.  **Required permissions:** Any of `account:billing`, `account:billing:status_read`
 
         :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
         :type x_api_version: str
@@ -1603,7 +1603,7 @@ class AccountsApi:
     ) -> RESTResponseType:
         """Get Stripe billing status
 
-        Returns Stripe billing portal availability and status for the current account.  **Required permissions:** `account:billing`
+        Returns Stripe billing portal availability and status for the current account.  **Required permissions:** Any of `account:billing`, `account:billing:status_read`
 
         :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
         :type x_api_version: str
@@ -2001,7 +2001,7 @@ class AccountsApi:
     ) -> List[User]:
         """List account members
 
-        Lists members who have access to the current account or its projects.  **Required permissions:** `account:member`
+        Lists members who have access to the current account or its projects.  **Required permissions:** Any of `account:member`, `account:user:read`
 
         :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
         :type x_api_version: str
@@ -2070,7 +2070,7 @@ class AccountsApi:
     ) -> ApiResponse[List[User]]:
         """List account members
 
-        Lists members who have access to the current account or its projects.  **Required permissions:** `account:member`
+        Lists members who have access to the current account or its projects.  **Required permissions:** Any of `account:member`, `account:user:read`
 
         :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
         :type x_api_version: str
@@ -2139,7 +2139,7 @@ class AccountsApi:
     ) -> RESTResponseType:
         """List account members
 
-        Lists members who have access to the current account or its projects.  **Required permissions:** `account:member`
+        Lists members who have access to the current account or its projects.  **Required permissions:** Any of `account:member`, `account:user:read`
 
         :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
         :type x_api_version: str
@@ -2269,7 +2269,7 @@ class AccountsApi:
     ) -> AccountProjectsResponse:
         """List account projects
 
-        Lists projects in the current account.  **Required permissions:** `account:member`
+        Lists projects in the current account.  **Required permissions:** Any of `account:member`, `account:read`
 
         :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
         :type x_api_version: str
@@ -2338,7 +2338,7 @@ class AccountsApi:
     ) -> ApiResponse[AccountProjectsResponse]:
         """List account projects
 
-        Lists projects in the current account.  **Required permissions:** `account:member`
+        Lists projects in the current account.  **Required permissions:** Any of `account:member`, `account:read`
 
         :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
         :type x_api_version: str
@@ -2407,7 +2407,7 @@ class AccountsApi:
     ) -> RESTResponseType:
         """List account projects
 
-        Lists projects in the current account.  **Required permissions:** `account:member`
+        Lists projects in the current account.  **Required permissions:** Any of `account:member`, `account:read`
 
         :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
         :type x_api_version: str

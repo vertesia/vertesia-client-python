@@ -323,6 +323,107 @@ components:
         - created_at
         - updated_at
       additionalProperties: false
+    AccountApiKey:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        account:
+          type: string
+        enabled:
+          type: boolean
+        maskedValue:
+          type: string
+        created_by:
+          type: string
+        updated_by:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        expires_at:
+          type: string
+          format: date-time
+        scope:
+          type: string
+          const: account
+        profile:
+          type: string
+          const: account_admin_v1
+        last_used_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - name
+        - account
+        - enabled
+        - created_by
+        - updated_by
+        - created_at
+        - updated_at
+        - scope
+        - profile
+      additionalProperties: false
+    AccountApiKeyArray:
+      type: array
+      items:
+        $ref: "#/components/schemas/AccountApiKey"
+    AccountApiKeyWithValue:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        account:
+          type: string
+        enabled:
+          type: boolean
+        maskedValue:
+          type: string
+        created_by:
+          type: string
+        updated_by:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        expires_at:
+          type: string
+          format: date-time
+        scope:
+          type: string
+          const: account
+        profile:
+          type: string
+          const: account_admin_v1
+        last_used_at:
+          type: string
+          format: date-time
+        value:
+          type: string
+      required:
+        - id
+        - name
+        - account
+        - enabled
+        - created_by
+        - updated_by
+        - created_at
+        - updated_at
+        - scope
+        - profile
+        - value
+      additionalProperties: false
     AccountBilling:
       type: object
       properties:
@@ -8982,6 +9083,19 @@ components:
           type: number
       required:
         - count
+      additionalProperties: false
+    CreateAccountApiKeyPayload:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          pattern: \S
+        expires_at:
+          type: string
+          format: date-time
+      required:
+        - name
       additionalProperties: false
     CreateAgentRunPayload:
       type: object
@@ -18845,6 +18959,16 @@ components:
     Permission:
       type: string
       enum:
+        - account:user:read
+        - account:user:manage
+        - account:group:read
+        - account:group:manage
+        - account:membership:read
+        - account:membership:manage
+        - account:api_key:read
+        - account:api_key:manage
+        - account:billing:status_read
+        - account:billing:portal_create
         - schedule:delegate
         - interaction:read
         - interaction:write
@@ -23407,7 +23531,10 @@ components:
           type: string
           const: stripe
         portal_url:
-          type: string
+          anyOf:
+            - type: string
+            - type: "null"
+          description: Interactive billing portal URL; null for account API keys.
       required:
         - status
         - billing_method
@@ -24369,6 +24496,16 @@ components:
             preserved for forward compatibility.
       required:
         - _option_id
+      additionalProperties: false
+    UpdateAccountApiKeyPayload:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          pattern: \S
+        enabled:
+          type: boolean
       additionalProperties: false
     UpdateAccountPayload:
       type: object
@@ -34283,7 +34420,7 @@ paths:
       description: |-
         Retrieves the current authenticated account.
 
-        **Required permissions:** `account:member`
+        **Required permissions:** Any of `account:member`, `account:read`
       security:
         - bearerAuth: []
         - OpenID: []
@@ -34317,6 +34454,7 @@ paths:
                 message: Request validation failed.
       x-vertesia-permissions:
         - account:member
+        - account:read
       x-vertesia-source:
         file: ../../apps/studio-server/src/api/account.ts
         className: AccountResource
@@ -34394,7 +34532,7 @@ paths:
       description: |-
         Lists projects in the current account.
 
-        **Required permissions:** `account:member`
+        **Required permissions:** Any of `account:member`, `account:read`
       security:
         - bearerAuth: []
         - OpenID: []
@@ -34428,6 +34566,7 @@ paths:
                 message: Request validation failed.
       x-vertesia-permissions:
         - account:member
+        - account:read
       x-vertesia-source:
         file: ../../apps/studio-server/src/api/account.ts
         className: AccountResource
@@ -34844,7 +34983,7 @@ paths:
       description: |-
         Lists members who have access to the current account or its projects.
 
-        **Required permissions:** `account:member`
+        **Required permissions:** Any of `account:member`, `account:user:read`
       security:
         - bearerAuth: []
         - OpenID: []
@@ -34878,6 +35017,7 @@ paths:
                 message: Request validation failed.
       x-vertesia-permissions:
         - account:member
+        - account:user:read
       x-vertesia-source:
         file: ../../apps/studio-server/src/api/account.ts
         className: AccountResource
@@ -34903,7 +35043,8 @@ paths:
         account.
 
 
-        **Required permissions:** `account:billing`
+        **Required permissions:** Any of `account:billing`,
+        `account:billing:status_read`
       security:
         - bearerAuth: []
         - OpenID: []
@@ -34937,10 +35078,255 @@ paths:
                 message: Request validation failed.
       x-vertesia-permissions:
         - account:billing
+        - account:billing:status_read
       x-vertesia-source:
         file: ../../apps/studio-server/src/api/account.ts
         className: AccountResource
         methodName: getStripeBillingStatus
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260803"
+        description: Optional Vertesia API version header. Use `20260803` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /account/apikeys:
+    post:
+      operationId: CreateAccountApiKey
+      summary: Create an account API key
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters: []
+      responses:
+        "200":
+          description: Account key; secret returned once.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccountApiKeyWithValue"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions: []
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/account-apikeys.ts
+        className: AccountApiKeysResource
+        methodName: create
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateAccountApiKeyPayload"
+    get:
+      operationId: ListAccountApiKeys
+      summary: List account API keys
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters: []
+      responses:
+        "200":
+          description: Account key metadata; never contains secrets.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccountApiKeyArray"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions: []
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/account-apikeys.ts
+        className: AccountApiKeysResource
+        methodName: list
+    parameters:
+      - name: x-api-version
+        in: header
+        required: false
+        schema:
+          type: string
+          example: "20260803"
+        description: Optional Vertesia API version header. Use `20260803` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /account/apikeys/{keyId}:
+    get:
+      operationId: GetAccountApiKey
+      summary: Get account API key metadata
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters:
+        - name: keyId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Account key metadata.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccountApiKey"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions: []
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/account-apikeys.ts
+        className: AccountApiKeysResource
+        methodName: retrieve
+    put:
+      operationId: UpdateAccountApiKey
+      summary: Update an account API key
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters:
+        - name: keyId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Updated account key metadata.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccountApiKey"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions: []
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/account-apikeys.ts
+        className: AccountApiKeysResource
+        methodName: update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateAccountApiKeyPayload"
+    delete:
+      operationId: DeleteAccountApiKey
+      summary: Delete an account API key
+      security:
+        - bearerAuth: []
+        - OpenID: []
+      parameters:
+        - name: keyId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Account key deletion result.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteOperationResult"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions: []
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/account-apikeys.ts
+        className: AccountApiKeysResource
+        methodName: delete
     parameters:
       - name: x-api-version
         in: header
@@ -36153,7 +36539,8 @@ paths:
         context.
 
 
-        **Required permissions:** `account:read`
+        **Required permissions:** Any of `account:read`,
+        `account:membership:read`
       security:
         - bearerAuth: []
         - OpenID: []
@@ -36187,6 +36574,7 @@ paths:
                 message: Request validation failed.
       x-vertesia-permissions:
         - account:read
+        - account:membership:read
       x-vertesia-source:
         file: ../../apps/studio-server/src/api/iam/access-control.ts
         className: AccessControlResource
@@ -36201,7 +36589,8 @@ paths:
         application resource.
 
 
-        **Required permissions:** `account:admin`
+        **Required permissions:** Any of `account:admin`,
+        `account:membership:manage`
       security:
         - bearerAuth: []
         - OpenID: []
@@ -36235,6 +36624,7 @@ paths:
                 message: Request validation failed.
       x-vertesia-permissions:
         - account:admin
+        - account:membership:manage
       x-vertesia-source:
         file: ../../apps/studio-server/src/api/iam/access-control.ts
         className: AccessControlResource
@@ -36261,10 +36651,12 @@ paths:
       tags:
         - Access Control Entries
       summary: Retrieve an access control entry
-      description: |-
+      description: >-
         Retrieves an access control entry by ID.
 
-        **Required permissions:** `account:read`
+
+        **Required permissions:** Any of `account:read`,
+        `account:membership:read`
       security:
         - bearerAuth: []
         - OpenID: []
@@ -36303,6 +36695,7 @@ paths:
                 message: Request validation failed.
       x-vertesia-permissions:
         - account:read
+        - account:membership:read
       x-vertesia-source:
         file: ../../apps/studio-server/src/api/iam/access-control.ts
         className: AccessControlEntryResource
@@ -36312,10 +36705,12 @@ paths:
       tags:
         - Access Control Entries
       summary: Update an access control entry
-      description: |-
+      description: >-
         Updates an access control entry by ID.
 
-        **Required permissions:** `account:admin`
+
+        **Required permissions:** Any of `account:admin`,
+        `account:membership:manage`
       security:
         - bearerAuth: []
         - OpenID: []
@@ -36354,6 +36749,7 @@ paths:
                 message: Request validation failed.
       x-vertesia-permissions:
         - account:admin
+        - account:membership:manage
       x-vertesia-source:
         file: ../../apps/studio-server/src/api/iam/access-control.ts
         className: AccessControlEntryResource
@@ -36369,10 +36765,12 @@ paths:
       tags:
         - Access Control Entries
       summary: Delete an access control entry
-      description: |-
+      description: >-
         Deletes an access control entry by ID.
 
-        **Required permissions:** `account:admin`
+
+        **Required permissions:** Any of `account:admin`,
+        `account:membership:manage`
       security:
         - bearerAuth: []
         - OpenID: []
@@ -36411,6 +36809,7 @@ paths:
                 message: Request validation failed.
       x-vertesia-permissions:
         - account:admin
+        - account:membership:manage
       x-vertesia-source:
         file: ../../apps/studio-server/src/api/iam/access-control.ts
         className: AccessControlEntryResource
@@ -36547,7 +36946,7 @@ paths:
         it).
 
 
-        **Required permissions:** `account:read`
+        **Required permissions:** Any of `account:read`, `account:group:read`
       security:
         - bearerAuth: []
         - OpenID: []
@@ -36610,6 +37009,7 @@ paths:
                 message: Request validation failed.
       x-vertesia-permissions:
         - account:read
+        - account:group:read
       x-vertesia-source:
         file: ../../apps/studio-server/src/api/iam/groups.ts
         className: UserGroupsResource
@@ -36624,7 +37024,7 @@ paths:
         to restrict the group to specific projects (empty/absent = org-wide).
 
 
-        **Required permissions:** `account:admin`
+        **Required permissions:** Any of `account:admin`, `account:group:manage`
       security:
         - bearerAuth: []
         - OpenID: []
@@ -36658,6 +37058,7 @@ paths:
                 message: Request validation failed.
       x-vertesia-permissions:
         - account:admin
+        - account:group:manage
       x-vertesia-source:
         file: ../../apps/studio-server/src/api/iam/groups.ts
         className: UserGroupsResource
@@ -36687,7 +37088,7 @@ paths:
       description: |-
         Synchronizes the built-in members group with current account membership.
 
-        **Required permissions:** `account:admin`
+        **Required permissions:** Any of `account:admin`, `account:group:manage`
       security:
         - bearerAuth: []
         - OpenID: []
@@ -36721,6 +37122,7 @@ paths:
                 message: Request validation failed.
       x-vertesia-permissions:
         - account:admin
+        - account:group:manage
       x-vertesia-source:
         file: ../../apps/studio-server/src/api/iam/groups.ts
         className: UserGroupsResource
@@ -36744,7 +37146,7 @@ paths:
       description: |-
         Updates a user group by ID.
 
-        **Required permissions:** `account:admin`
+        **Required permissions:** Any of `account:admin`, `account:group:manage`
       security:
         - bearerAuth: []
         - OpenID: []
@@ -36783,6 +37185,7 @@ paths:
                 message: Request validation failed.
       x-vertesia-permissions:
         - account:admin
+        - account:group:manage
       x-vertesia-source:
         file: ../../apps/studio-server/src/api/iam/groups.ts
         className: UserGroupsResource
@@ -36811,7 +37214,7 @@ paths:
       description: |-
         Retrieves a user group by ID.
 
-        **Required permissions:** `account:read`
+        **Required permissions:** Any of `account:read`, `account:group:read`
       security:
         - bearerAuth: []
         - OpenID: []
@@ -36850,6 +37253,7 @@ paths:
                 message: Request validation failed.
       x-vertesia-permissions:
         - account:read
+        - account:group:read
       x-vertesia-source:
         file: ../../apps/studio-server/src/api/iam/groups.ts
         className: UserGroupResource
@@ -36863,7 +37267,7 @@ paths:
       description: |-
         Lists members of a user group.
 
-        **Required permissions:** `account:read`
+        **Required permissions:** Any of `account:read`, `account:group:read`
       security:
         - bearerAuth: []
         - OpenID: []
@@ -36902,6 +37306,7 @@ paths:
                 message: Request validation failed.
       x-vertesia-permissions:
         - account:read
+        - account:group:read
       x-vertesia-source:
         file: ../../apps/studio-server/src/api/iam/groups.ts
         className: UserGroupResource
@@ -36925,7 +37330,7 @@ paths:
       description: |-
         Adds a user to a user group.
 
-        **Required permissions:** `account:admin`
+        **Required permissions:** Any of `account:admin`, `account:group:manage`
       security:
         - bearerAuth: []
         - OpenID: []
@@ -36969,6 +37374,7 @@ paths:
                 message: Request validation failed.
       x-vertesia-permissions:
         - account:admin
+        - account:group:manage
       x-vertesia-source:
         file: ../../apps/studio-server/src/api/iam/groups.ts
         className: UserGroupResource
@@ -36981,7 +37387,7 @@ paths:
       description: |-
         Removes a user from a user group.
 
-        **Required permissions:** `account:admin`
+        **Required permissions:** Any of `account:admin`, `account:group:manage`
       security:
         - bearerAuth: []
         - OpenID: []
@@ -37025,6 +37431,7 @@ paths:
                 message: Request validation failed.
       x-vertesia-permissions:
         - account:admin
+        - account:group:manage
       x-vertesia-source:
         file: ../../apps/studio-server/src/api/iam/groups.ts
         className: UserGroupResource
@@ -37114,7 +37521,7 @@ paths:
         is the caller.
 
 
-        **Required permissions:** `account:member`
+        **Required permissions:** Any of `account:member`, `account:user:read`
       security:
         - bearerAuth: []
         - OpenID: []
@@ -37153,6 +37560,7 @@ paths:
                 message: Request validation failed.
       x-vertesia-permissions:
         - account:member
+        - account:user:read
       x-vertesia-source:
         file: ../../apps/studio-server/src/api/iam/users.ts
         className: UserResource
@@ -37168,7 +37576,7 @@ paths:
         (properties, clearance, or compartments).
 
 
-        **Required permissions:** `account:member`
+        **Required permissions:** Any of `account:member`, `account:user:manage`
       security:
         - bearerAuth: []
         - OpenID: []
@@ -37207,6 +37615,7 @@ paths:
                 message: Request validation failed.
       x-vertesia-permissions:
         - account:member
+        - account:user:manage
       x-vertesia-source:
         file: ../../apps/studio-server/src/api/iam/users.ts
         className: UserResource

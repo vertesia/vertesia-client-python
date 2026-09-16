@@ -410,6 +410,142 @@
         ],
         "additionalProperties": false
       },
+      "AccountApiKey": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "account": {
+            "type": "string"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "maskedValue": {
+            "type": "string"
+          },
+          "created_by": {
+            "type": "string"
+          },
+          "updated_by": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "scope": {
+            "type": "string",
+            "const": "account"
+          },
+          "profile": {
+            "type": "string",
+            "const": "account_admin_v1"
+          },
+          "last_used_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "account",
+          "enabled",
+          "created_by",
+          "updated_by",
+          "created_at",
+          "updated_at",
+          "scope",
+          "profile"
+        ],
+        "additionalProperties": false
+      },
+      "AccountApiKeyArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/AccountApiKey"
+        }
+      },
+      "AccountApiKeyWithValue": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "account": {
+            "type": "string"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "maskedValue": {
+            "type": "string"
+          },
+          "created_by": {
+            "type": "string"
+          },
+          "updated_by": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "scope": {
+            "type": "string",
+            "const": "account"
+          },
+          "profile": {
+            "type": "string",
+            "const": "account_admin_v1"
+          },
+          "last_used_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "value": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "account",
+          "enabled",
+          "created_by",
+          "updated_by",
+          "created_at",
+          "updated_at",
+          "scope",
+          "profile",
+          "value"
+        ],
+        "additionalProperties": false
+      },
       "AccountBilling": {
         "type": "object",
         "properties": {
@@ -11166,6 +11302,24 @@
         },
         "required": [
           "count"
+        ],
+        "additionalProperties": false
+      },
+      "CreateAccountApiKeyPayload": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "name"
         ],
         "additionalProperties": false
       },
@@ -24190,6 +24344,16 @@
       "Permission": {
         "type": "string",
         "enum": [
+          "account:user:read",
+          "account:user:manage",
+          "account:group:read",
+          "account:group:manage",
+          "account:membership:read",
+          "account:membership:manage",
+          "account:api_key:read",
+          "account:api_key:manage",
+          "account:billing:status_read",
+          "account:billing:portal_create",
           "schedule:delegate",
           "interaction:read",
           "interaction:write",
@@ -30205,7 +30369,15 @@
             "const": "stripe"
           },
           "portal_url": {
-            "type": "string"
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Interactive billing portal URL; null for account API keys."
           }
         },
         "required": [
@@ -31453,6 +31625,20 @@
         "required": [
           "_option_id"
         ],
+        "additionalProperties": false
+      },
+      "UpdateAccountApiKeyPayload": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "enabled": {
+            "type": "boolean"
+          }
+        },
         "additionalProperties": false
       },
       "UpdateAccountPayload": {
@@ -45246,7 +45432,7 @@
           "Accounts"
         ],
         "summary": "Retrieve the current account",
-        "description": "Retrieves the current authenticated account.\n\n**Required permissions:** `account:member`",
+        "description": "Retrieves the current authenticated account.\n\n**Required permissions:** Any of `account:member`, `account:read`",
         "security": [
           {
             "bearerAuth": []
@@ -45299,7 +45485,8 @@
           }
         },
         "x-vertesia-permissions": [
-          "account:member"
+          "account:member",
+          "account:read"
         ],
         "x-vertesia-source": {
           "file": "../../apps/studio-server/src/api/account.ts",
@@ -45405,7 +45592,7 @@
           "Accounts"
         ],
         "summary": "List account projects",
-        "description": "Lists projects in the current account.\n\n**Required permissions:** `account:member`",
+        "description": "Lists projects in the current account.\n\n**Required permissions:** Any of `account:member`, `account:read`",
         "security": [
           {
             "bearerAuth": []
@@ -45458,7 +45645,8 @@
           }
         },
         "x-vertesia-permissions": [
-          "account:member"
+          "account:member",
+          "account:read"
         ],
         "x-vertesia-source": {
           "file": "../../apps/studio-server/src/api/account.ts",
@@ -46059,7 +46247,7 @@
           "Accounts"
         ],
         "summary": "List account members",
-        "description": "Lists members who have access to the current account or its projects.\n\n**Required permissions:** `account:member`",
+        "description": "Lists members who have access to the current account or its projects.\n\n**Required permissions:** Any of `account:member`, `account:user:read`",
         "security": [
           {
             "bearerAuth": []
@@ -46112,7 +46300,8 @@
           }
         },
         "x-vertesia-permissions": [
-          "account:member"
+          "account:member",
+          "account:user:read"
         ],
         "x-vertesia-source": {
           "file": "../../apps/studio-server/src/api/account.ts",
@@ -46141,7 +46330,7 @@
           "Accounts"
         ],
         "summary": "Get Stripe billing status",
-        "description": "Returns Stripe billing portal availability and status for the current account.\n\n**Required permissions:** `account:billing`",
+        "description": "Returns Stripe billing portal availability and status for the current account.\n\n**Required permissions:** Any of `account:billing`, `account:billing:status_read`",
         "security": [
           {
             "bearerAuth": []
@@ -46194,12 +46383,395 @@
           }
         },
         "x-vertesia-permissions": [
-          "account:billing"
+          "account:billing",
+          "account:billing:status_read"
         ],
         "x-vertesia-source": {
           "file": "../../apps/studio-server/src/api/account.ts",
           "className": "AccountResource",
           "methodName": "getStripeBillingStatus"
+        }
+      },
+      "parameters": [
+        {
+          "name": "x-api-version",
+          "in": "header",
+          "required": false,
+          "schema": {
+            "type": "string",
+            "example": "20260803"
+          },
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
+          "x-vertesia-global-header": true
+        }
+      ]
+    },
+    "/account/apikeys": {
+      "post": {
+        "operationId": "CreateAccountApiKey",
+        "summary": "Create an account API key",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OpenID": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Account key; secret returned once.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountApiKeyWithValue"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [],
+        "x-vertesia-source": {
+          "file": "../../apps/studio-server/src/api/account-apikeys.ts",
+          "className": "AccountApiKeysResource",
+          "methodName": "create"
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAccountApiKeyPayload"
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "ListAccountApiKeys",
+        "summary": "List account API keys",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OpenID": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Account key metadata; never contains secrets.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountApiKeyArray"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [],
+        "x-vertesia-source": {
+          "file": "../../apps/studio-server/src/api/account-apikeys.ts",
+          "className": "AccountApiKeysResource",
+          "methodName": "list"
+        }
+      },
+      "parameters": [
+        {
+          "name": "x-api-version",
+          "in": "header",
+          "required": false,
+          "schema": {
+            "type": "string",
+            "example": "20260803"
+          },
+          "description": "Optional Vertesia API version header. Use `20260803` for the current stable API shape.",
+          "x-vertesia-global-header": true
+        }
+      ]
+    },
+    "/account/apikeys/{keyId}": {
+      "get": {
+        "operationId": "GetAccountApiKey",
+        "summary": "Get account API key metadata",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OpenID": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "keyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Account key metadata.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountApiKey"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [],
+        "x-vertesia-source": {
+          "file": "../../apps/studio-server/src/api/account-apikeys.ts",
+          "className": "AccountApiKeysResource",
+          "methodName": "retrieve"
+        }
+      },
+      "put": {
+        "operationId": "UpdateAccountApiKey",
+        "summary": "Update an account API key",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OpenID": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "keyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated account key metadata.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountApiKey"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [],
+        "x-vertesia-source": {
+          "file": "../../apps/studio-server/src/api/account-apikeys.ts",
+          "className": "AccountApiKeysResource",
+          "methodName": "update"
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAccountApiKeyPayload"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "DeleteAccountApiKey",
+        "summary": "Delete an account API key",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OpenID": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "keyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Account key deletion result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteOperationResult"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [],
+        "x-vertesia-source": {
+          "file": "../../apps/studio-server/src/api/account-apikeys.ts",
+          "className": "AccountApiKeysResource",
+          "methodName": "delete"
         }
       },
       "parameters": [
@@ -47948,7 +48520,7 @@
           "Access Control Entries"
         ],
         "summary": "List access control entries",
-        "description": "Lists access control entries visible in the current account and project context.\n\n**Required permissions:** `account:read`",
+        "description": "Lists access control entries visible in the current account and project context.\n\n**Required permissions:** Any of `account:read`, `account:membership:read`",
         "security": [
           {
             "bearerAuth": []
@@ -48001,7 +48573,8 @@
           }
         },
         "x-vertesia-permissions": [
-          "account:read"
+          "account:read",
+          "account:membership:read"
         ],
         "x-vertesia-source": {
           "file": "../../apps/studio-server/src/api/iam/access-control.ts",
@@ -48015,7 +48588,7 @@
           "Access Control Entries"
         ],
         "summary": "Create an access control entry",
-        "description": "Creates a new access control entry for an account, project, or application resource.\n\n**Required permissions:** `account:admin`",
+        "description": "Creates a new access control entry for an account, project, or application resource.\n\n**Required permissions:** Any of `account:admin`, `account:membership:manage`",
         "security": [
           {
             "bearerAuth": []
@@ -48068,7 +48641,8 @@
           }
         },
         "x-vertesia-permissions": [
-          "account:admin"
+          "account:admin",
+          "account:membership:manage"
         ],
         "x-vertesia-source": {
           "file": "../../apps/studio-server/src/api/iam/access-control.ts",
@@ -48107,7 +48681,7 @@
           "Access Control Entries"
         ],
         "summary": "Retrieve an access control entry",
-        "description": "Retrieves an access control entry by ID.\n\n**Required permissions:** `account:read`",
+        "description": "Retrieves an access control entry by ID.\n\n**Required permissions:** Any of `account:read`, `account:membership:read`",
         "security": [
           {
             "bearerAuth": []
@@ -48169,7 +48743,8 @@
           }
         },
         "x-vertesia-permissions": [
-          "account:read"
+          "account:read",
+          "account:membership:read"
         ],
         "x-vertesia-source": {
           "file": "../../apps/studio-server/src/api/iam/access-control.ts",
@@ -48183,7 +48758,7 @@
           "Access Control Entries"
         ],
         "summary": "Update an access control entry",
-        "description": "Updates an access control entry by ID.\n\n**Required permissions:** `account:admin`",
+        "description": "Updates an access control entry by ID.\n\n**Required permissions:** Any of `account:admin`, `account:membership:manage`",
         "security": [
           {
             "bearerAuth": []
@@ -48245,7 +48820,8 @@
           }
         },
         "x-vertesia-permissions": [
-          "account:admin"
+          "account:admin",
+          "account:membership:manage"
         ],
         "x-vertesia-source": {
           "file": "../../apps/studio-server/src/api/iam/access-control.ts",
@@ -48269,7 +48845,7 @@
           "Access Control Entries"
         ],
         "summary": "Delete an access control entry",
-        "description": "Deletes an access control entry by ID.\n\n**Required permissions:** `account:admin`",
+        "description": "Deletes an access control entry by ID.\n\n**Required permissions:** Any of `account:admin`, `account:membership:manage`",
         "security": [
           {
             "bearerAuth": []
@@ -48331,7 +48907,8 @@
           }
         },
         "x-vertesia-permissions": [
-          "account:admin"
+          "account:admin",
+          "account:membership:manage"
         ],
         "x-vertesia-source": {
           "file": "../../apps/studio-server/src/api/iam/access-control.ts",
@@ -48520,7 +49097,7 @@
           "User Groups"
         ],
         "summary": "List user groups",
-        "description": "Lists user groups in the current account. Pass `project` to return only groups usable in that project (org-wide groups plus groups restricted to it).\n\n**Required permissions:** `account:read`",
+        "description": "Lists user groups in the current account. Pass `project` to return only groups usable in that project (org-wide groups plus groups restricted to it).\n\n**Required permissions:** Any of `account:read`, `account:group:read`",
         "security": [
           {
             "bearerAuth": []
@@ -48619,7 +49196,8 @@
           }
         },
         "x-vertesia-permissions": [
-          "account:read"
+          "account:read",
+          "account:group:read"
         ],
         "x-vertesia-source": {
           "file": "../../apps/studio-server/src/api/iam/groups.ts",
@@ -48633,7 +49211,7 @@
           "User Groups"
         ],
         "summary": "Create a user group",
-        "description": "Creates a new user group in the current account. Pass `allowed_projects` to restrict the group to specific projects (empty/absent = org-wide).\n\n**Required permissions:** `account:admin`",
+        "description": "Creates a new user group in the current account. Pass `allowed_projects` to restrict the group to specific projects (empty/absent = org-wide).\n\n**Required permissions:** Any of `account:admin`, `account:group:manage`",
         "security": [
           {
             "bearerAuth": []
@@ -48686,7 +49264,8 @@
           }
         },
         "x-vertesia-permissions": [
-          "account:admin"
+          "account:admin",
+          "account:group:manage"
         ],
         "x-vertesia-source": {
           "file": "../../apps/studio-server/src/api/iam/groups.ts",
@@ -48725,7 +49304,7 @@
           "User Groups"
         ],
         "summary": "Sync the members group",
-        "description": "Synchronizes the built-in members group with current account membership.\n\n**Required permissions:** `account:admin`",
+        "description": "Synchronizes the built-in members group with current account membership.\n\n**Required permissions:** Any of `account:admin`, `account:group:manage`",
         "security": [
           {
             "bearerAuth": []
@@ -48778,7 +49357,8 @@
           }
         },
         "x-vertesia-permissions": [
-          "account:admin"
+          "account:admin",
+          "account:group:manage"
         ],
         "x-vertesia-source": {
           "file": "../../apps/studio-server/src/api/iam/groups.ts",
@@ -48807,7 +49387,7 @@
           "User Groups"
         ],
         "summary": "Update a user group",
-        "description": "Updates a user group by ID.\n\n**Required permissions:** `account:admin`",
+        "description": "Updates a user group by ID.\n\n**Required permissions:** Any of `account:admin`, `account:group:manage`",
         "security": [
           {
             "bearerAuth": []
@@ -48869,7 +49449,8 @@
           }
         },
         "x-vertesia-permissions": [
-          "account:admin"
+          "account:admin",
+          "account:group:manage"
         ],
         "x-vertesia-source": {
           "file": "../../apps/studio-server/src/api/iam/groups.ts",
@@ -48906,7 +49487,7 @@
           "User Groups"
         ],
         "summary": "Retrieve a user group",
-        "description": "Retrieves a user group by ID.\n\n**Required permissions:** `account:read`",
+        "description": "Retrieves a user group by ID.\n\n**Required permissions:** Any of `account:read`, `account:group:read`",
         "security": [
           {
             "bearerAuth": []
@@ -48968,7 +49549,8 @@
           }
         },
         "x-vertesia-permissions": [
-          "account:read"
+          "account:read",
+          "account:group:read"
         ],
         "x-vertesia-source": {
           "file": "../../apps/studio-server/src/api/iam/groups.ts",
@@ -48984,7 +49566,7 @@
           "User Groups"
         ],
         "summary": "List user group members",
-        "description": "Lists members of a user group.\n\n**Required permissions:** `account:read`",
+        "description": "Lists members of a user group.\n\n**Required permissions:** Any of `account:read`, `account:group:read`",
         "security": [
           {
             "bearerAuth": []
@@ -49046,7 +49628,8 @@
           }
         },
         "x-vertesia-permissions": [
-          "account:read"
+          "account:read",
+          "account:group:read"
         ],
         "x-vertesia-source": {
           "file": "../../apps/studio-server/src/api/iam/groups.ts",
@@ -49075,7 +49658,7 @@
           "User Groups"
         ],
         "summary": "Add a user to a group",
-        "description": "Adds a user to a user group.\n\n**Required permissions:** `account:admin`",
+        "description": "Adds a user to a user group.\n\n**Required permissions:** Any of `account:admin`, `account:group:manage`",
         "security": [
           {
             "bearerAuth": []
@@ -49145,7 +49728,8 @@
           }
         },
         "x-vertesia-permissions": [
-          "account:admin"
+          "account:admin",
+          "account:group:manage"
         ],
         "x-vertesia-source": {
           "file": "../../apps/studio-server/src/api/iam/groups.ts",
@@ -49159,7 +49743,7 @@
           "User Groups"
         ],
         "summary": "Remove a user from a group",
-        "description": "Removes a user from a user group.\n\n**Required permissions:** `account:admin`",
+        "description": "Removes a user from a user group.\n\n**Required permissions:** Any of `account:admin`, `account:group:manage`",
         "security": [
           {
             "bearerAuth": []
@@ -49229,7 +49813,8 @@
           }
         },
         "x-vertesia-permissions": [
-          "account:admin"
+          "account:admin",
+          "account:group:manage"
         ],
         "x-vertesia-source": {
           "file": "../../apps/studio-server/src/api/iam/groups.ts",
@@ -49340,7 +49925,7 @@
           "Users"
         ],
         "summary": "Retrieve a user",
-        "description": "Retrieves a user by ID when the user belongs to the current account or is the caller.\n\n**Required permissions:** `account:member`",
+        "description": "Retrieves a user by ID when the user belongs to the current account or is the caller.\n\n**Required permissions:** Any of `account:member`, `account:user:read`",
         "security": [
           {
             "bearerAuth": []
@@ -49402,7 +49987,8 @@
           }
         },
         "x-vertesia-permissions": [
-          "account:member"
+          "account:member",
+          "account:user:read"
         ],
         "x-vertesia-source": {
           "file": "../../apps/studio-server/src/api/iam/users.ts",
@@ -49416,7 +50002,7 @@
           "Users"
         ],
         "summary": "Update a user",
-        "description": "Updates profile fields for the caller or an administrator. Only account-role administrators may change authorization attributes (properties, clearance, or compartments).\n\n**Required permissions:** `account:member`",
+        "description": "Updates profile fields for the caller or an administrator. Only account-role administrators may change authorization attributes (properties, clearance, or compartments).\n\n**Required permissions:** Any of `account:member`, `account:user:manage`",
         "security": [
           {
             "bearerAuth": []
@@ -49478,7 +50064,8 @@
           }
         },
         "x-vertesia-permissions": [
-          "account:member"
+          "account:member",
+          "account:user:manage"
         ],
         "x-vertesia-source": {
           "file": "../../apps/studio-server/src/api/iam/users.ts",

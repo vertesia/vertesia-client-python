@@ -62,6 +62,7 @@ __all__ = [
     "WorkflowDefinitionsApi",
     "WorkflowRulesApi",
     "WorkflowRunsApi",
+    "DefaultApi",
     "ApiResponse",
     "ApiClient",
     "Configuration",
@@ -80,6 +81,8 @@ __all__ = [
     "AccessControlPrincipalType",
     "AccessControlResourceType",
     "Account",
+    "AccountApiKey",
+    "AccountApiKeyWithValue",
     "AccountBilling",
     "AccountOnboarding",
     "AccountProjectsResponse",
@@ -370,6 +373,7 @@ __all__ = [
     "CostSummary",
     "CostTimeSeriesPoint",
     "CountResult",
+    "CreateAccountApiKeyPayload",
     "CreateAgentRunPayload",
     "CreateApiKeyPayload",
     "CreateCollectionPayload",
@@ -1020,6 +1024,7 @@ __all__ = [
     "TurnEvaluationFlag",
     "TurnTerminalType",
     "TwelvelabsPegasusOptions",
+    "UpdateAccountApiKeyPayload",
     "UpdateAccountPayload",
     "UpdateAgentArtifactContentPayload",
     "UpdateAgentArtifactContentResponse",
@@ -1223,6 +1228,7 @@ from vertesia_client.openapi.api.views_api import ViewsApi as ViewsApi
 from vertesia_client.openapi.api.workflow_definitions_api import WorkflowDefinitionsApi as WorkflowDefinitionsApi
 from vertesia_client.openapi.api.workflow_rules_api import WorkflowRulesApi as WorkflowRulesApi
 from vertesia_client.openapi.api.workflow_runs_api import WorkflowRunsApi as WorkflowRunsApi
+from vertesia_client.openapi.api.default_api import DefaultApi as DefaultApi
 
 # import ApiClient
 from vertesia_client.openapi.api_response import ApiResponse as ApiResponse
@@ -1245,6 +1251,8 @@ from vertesia_client.openapi.models.access_control_entry import AccessControlEnt
 from vertesia_client.openapi.models.access_control_principal_type import AccessControlPrincipalType as AccessControlPrincipalType
 from vertesia_client.openapi.models.access_control_resource_type import AccessControlResourceType as AccessControlResourceType
 from vertesia_client.openapi.models.account import Account as Account
+from vertesia_client.openapi.models.account_api_key import AccountApiKey as AccountApiKey
+from vertesia_client.openapi.models.account_api_key_with_value import AccountApiKeyWithValue as AccountApiKeyWithValue
 from vertesia_client.openapi.models.account_billing import AccountBilling as AccountBilling
 from vertesia_client.openapi.models.account_onboarding import AccountOnboarding as AccountOnboarding
 from vertesia_client.openapi.models.account_projects_response import AccountProjectsResponse as AccountProjectsResponse
@@ -1535,6 +1543,7 @@ from vertesia_client.openapi.models.cost_run_price_response import CostRunPriceR
 from vertesia_client.openapi.models.cost_summary import CostSummary as CostSummary
 from vertesia_client.openapi.models.cost_time_series_point import CostTimeSeriesPoint as CostTimeSeriesPoint
 from vertesia_client.openapi.models.count_result import CountResult as CountResult
+from vertesia_client.openapi.models.create_account_api_key_payload import CreateAccountApiKeyPayload as CreateAccountApiKeyPayload
 from vertesia_client.openapi.models.create_agent_run_payload import CreateAgentRunPayload as CreateAgentRunPayload
 from vertesia_client.openapi.models.create_api_key_payload import CreateApiKeyPayload as CreateApiKeyPayload
 from vertesia_client.openapi.models.create_collection_payload import CreateCollectionPayload as CreateCollectionPayload
@@ -2185,6 +2194,7 @@ from vertesia_client.openapi.models.transition_trigger import TransitionTrigger 
 from vertesia_client.openapi.models.turn_evaluation_flag import TurnEvaluationFlag as TurnEvaluationFlag
 from vertesia_client.openapi.models.turn_terminal_type import TurnTerminalType as TurnTerminalType
 from vertesia_client.openapi.models.twelvelabs_pegasus_options import TwelvelabsPegasusOptions as TwelvelabsPegasusOptions
+from vertesia_client.openapi.models.update_account_api_key_payload import UpdateAccountApiKeyPayload as UpdateAccountApiKeyPayload
 from vertesia_client.openapi.models.update_account_payload import UpdateAccountPayload as UpdateAccountPayload
 from vertesia_client.openapi.models.update_agent_artifact_content_payload import UpdateAgentArtifactContentPayload as UpdateAgentArtifactContentPayload
 from vertesia_client.openapi.models.update_agent_artifact_content_response import UpdateAgentArtifactContentResponse as UpdateAgentArtifactContentResponse

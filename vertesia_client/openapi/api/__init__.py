@@ -45,4 +45,5 @@ from vertesia_client.openapi.api.views_api import ViewsApi
 from vertesia_client.openapi.api.workflow_definitions_api import WorkflowDefinitionsApi
 from vertesia_client.openapi.api.workflow_rules_api import WorkflowRulesApi
 from vertesia_client.openapi.api.workflow_runs_api import WorkflowRunsApi
+from vertesia_client.openapi.api.default_api import DefaultApi
 

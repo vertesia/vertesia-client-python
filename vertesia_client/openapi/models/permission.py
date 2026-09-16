@@ -26,6 +26,16 @@ class Permission(str, Enum):
     """
     allowed enum values
     """
+    ACCOUNT_COLON_USER_COLON_READ = 'account:user:read'
+    ACCOUNT_COLON_USER_COLON_MANAGE = 'account:user:manage'
+    ACCOUNT_COLON_GROUP_COLON_READ = 'account:group:read'
+    ACCOUNT_COLON_GROUP_COLON_MANAGE = 'account:group:manage'
+    ACCOUNT_COLON_MEMBERSHIP_COLON_READ = 'account:membership:read'
+    ACCOUNT_COLON_MEMBERSHIP_COLON_MANAGE = 'account:membership:manage'
+    ACCOUNT_COLON_API_KEY_COLON_READ = 'account:api_key:read'
+    ACCOUNT_COLON_API_KEY_COLON_MANAGE = 'account:api_key:manage'
+    ACCOUNT_COLON_BILLING_COLON_STATUS_READ = 'account:billing:status_read'
+    ACCOUNT_COLON_BILLING_COLON_PORTAL_CREATE = 'account:billing:portal_create'
     SCHEDULE_COLON_DELEGATE = 'schedule:delegate'
     INTERACTION_COLON_READ = 'interaction:read'
     INTERACTION_COLON_WRITE = 'interaction:write'

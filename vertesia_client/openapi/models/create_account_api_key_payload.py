@@ -17,29 +17,30 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
+from datetime import datetime
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 from typing import Any, ClassVar, Dict, Optional
+from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class StripeBillingEnabled(BaseModel):
+class CreateAccountApiKeyPayload(BaseModel):
     """
-    StripeBillingEnabled
+    CreateAccountApiKeyPayload
     """ # noqa: E501
-    status: StrictStr
-    billing_method: StrictStr
-    portal_url: Optional[StrictStr] = Field(description="Interactive billing portal URL; null for account API keys.")
-    __properties: ClassVar[List[str]] = ["status", "billing_method", "portal_url"]
+    name: Annotated[str, Field(min_length=1, strict=True)]
+    expires_at: Optional[datetime] = None
+    __properties: ClassVar[List[str]] = ["name", "expires_at"]
 
-    @field_validator('status')
-    def status_validate_enum(cls, value):
-        """Validates the enum"""
-        return value
+    @field_validator('name')
+    def name_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if not isinstance(value, str):
+            value = str(value)
 
-    @field_validator('billing_method')
-    def billing_method_validate_enum(cls, value):
-        """Validates the enum"""
+        if not re.match(r"\S", value):
+            raise ValueError(r"must validate the regular expression /\S/")
         return value
 
     model_config = ConfigDict(
@@ -60,7 +61,7 @@ class StripeBillingEnabled(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of StripeBillingEnabled from a JSON string"""
+        """Create an instance of CreateAccountApiKeyPayload from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -81,16 +82,11 @@ class StripeBillingEnabled(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # set to None if portal_url (nullable) is None
-        # and model_fields_set contains the field
-        if self.portal_url is None and "portal_url" in self.model_fields_set:
-            _dict['portal_url'] = None
-
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of StripeBillingEnabled from a dict"""
+        """Create an instance of CreateAccountApiKeyPayload from a dict"""
         if obj is None:
             return None
 
@@ -98,9 +94,8 @@ class StripeBillingEnabled(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "status": obj.get("status"),
-            "billing_method": obj.get("billing_method"),
-            "portal_url": obj.get("portal_url")
+            "name": obj.get("name"),
+            "expires_at": obj.get("expires_at")
         })
         return _obj
 
