@@ -26,7 +26,7 @@ from pydantic_core import to_jsonable_python
 
 class ProjectSearchPropertyMapping(BaseModel):
     """
-    Explicit search mapping for one content-object property.  Changing a mapping requires a full reindex. Existing Elasticsearch fields cannot change type in place.
+    Explicit search mapping for one content-object property.  Changing a mapping requires a full reindex. Existing Elasticsearch fields cannot change type in place. A `nested` mapping accepts no scalar options; declare its searchable child fields as separate mappings below its path.
     """ # noqa: E501
     type: ProjectSearchPropertyType
     format: Optional[StrictStr] = Field(default=None, description="Elasticsearch date format. Valid only when type is `date`.")
