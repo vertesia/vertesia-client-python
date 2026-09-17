@@ -20,7 +20,7 @@ from typing_extensions import Self
 
 class ProjectSearchPropertyType(str, Enum):
     """
-    Elasticsearch field types that may be explicitly assigned to content-object properties. Paths are relative to the object's `properties` field.
+    Elasticsearch field types that may be explicitly assigned to content-object properties. Declare nested object-array paths with type `nested` and their children as separate dotted paths. Paths are relative to the object's `properties` field.
     """
 
     """
@@ -33,6 +33,7 @@ class ProjectSearchPropertyType(str, Enum):
     DOUBLE = 'double'
     DATE = 'date'
     GEO_POINT = 'geo_point'
+    NESTED = 'nested'
 
     @classmethod
     def _missing_(cls, value: object) -> Self:
