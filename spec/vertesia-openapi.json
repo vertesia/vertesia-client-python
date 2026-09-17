@@ -76774,7 +76774,7 @@
           "Data"
         ],
         "summary": "Import data into a data store",
-        "description": "Starts an atomic multi-table import job and returns the import job record.\n\n**Required permissions:** `content:write`",
+        "description": "Starts an atomic multi-table import. Background-enabled deployments return 202 after durable acceptance; poll the original import ID until completed or failed.\n\n**Required permissions:** `content:write`",
         "security": [
           {
             "bearerAuth": []
@@ -76796,6 +76796,16 @@
         "responses": {
           "200": {
             "description": "Import job record.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImportJob"
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "Durably accepted import; poll its status.",
             "content": {
               "application/json": {
                 "schema": {
