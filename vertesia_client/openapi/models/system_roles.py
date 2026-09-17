@@ -28,6 +28,7 @@ class SystemRoles(str, Enum):
     """
     OWNER = 'owner'
     ADMIN = 'admin'
+    APP_ADMIN = 'app_admin'
     MANAGER = 'manager'
     DEVELOPER = 'developer'
     APPLICATION = 'application'
