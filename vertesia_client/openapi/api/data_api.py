@@ -5228,7 +5228,7 @@ class DataApi:
     ) -> ImportJob:
         """Import data into a data store
 
-        Starts an atomic multi-table import job and returns the import job record.  **Required permissions:** `content:write`
+        Starts an atomic multi-table import. Background-enabled deployments return 202 after durable acceptance; poll the original import ID until completed or failed.  **Required permissions:** `content:write`
 
         :param store_id: (required)
         :type store_id: str
@@ -5270,6 +5270,7 @@ class DataApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "ImportJob",
+            '202': "ImportJob",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -5305,7 +5306,7 @@ class DataApi:
     ) -> ApiResponse[ImportJob]:
         """Import data into a data store
 
-        Starts an atomic multi-table import job and returns the import job record.  **Required permissions:** `content:write`
+        Starts an atomic multi-table import. Background-enabled deployments return 202 after durable acceptance; poll the original import ID until completed or failed.  **Required permissions:** `content:write`
 
         :param store_id: (required)
         :type store_id: str
@@ -5347,6 +5348,7 @@ class DataApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "ImportJob",
+            '202': "ImportJob",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -5382,7 +5384,7 @@ class DataApi:
     ) -> RESTResponseType:
         """Import data into a data store
 
-        Starts an atomic multi-table import job and returns the import job record.  **Required permissions:** `content:write`
+        Starts an atomic multi-table import. Background-enabled deployments return 202 after durable acceptance; poll the original import ID until completed or failed.  **Required permissions:** `content:write`
 
         :param store_id: (required)
         :type store_id: str
@@ -5424,6 +5426,7 @@ class DataApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "ImportJob",
+            '202': "ImportJob",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
