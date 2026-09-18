@@ -15,7 +15,7 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import Field, StrictStr, field_validator
+from pydantic import Field, StrictBool, StrictStr, field_validator
 from typing import Optional
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.drift_analysis_status_response import DriftAnalysisStatusResponse
@@ -2812,6 +2812,8 @@ class CommandsApi:
         self,
         type: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        mode: Annotated[Optional[StrictStr], Field(description="Force synchronous per-object recalculation. When omitted, batch inference is used when supported.")] = None,
+        force: Annotated[Optional[StrictBool], Field(description="Recalculate all eligible objects, including current embeddings. Token limits still apply; existing renditions are reused.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2827,12 +2829,16 @@ class CommandsApi:
     ) -> GenericCommandResponse:
         """Recalculate embeddings
 
-        Queues recalculation workflows for objects that are missing or have stale embeddings for the selected embedding type.  **Required permissions:** `project:admin`
+        Queues recalculation for missing or outdated embeddings, or all eligible objects with force=true. Uses batch inference when supported unless mode=sync is specified. Token limits still apply and existing renditions are reused.  **Required permissions:** `project:admin`
 
         :param type: (required)
         :type type: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
+        :param mode: Force synchronous per-object recalculation. When omitted, batch inference is used when supported.
+        :type mode: str
+        :param force: Recalculate all eligible objects, including current embeddings. Token limits still apply; existing renditions are reused.
+        :type force: bool
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2858,6 +2864,8 @@ class CommandsApi:
         _param = self._recalculate_project_embeddings_serialize(
             type=type,
             x_api_version=x_api_version,
+            mode=mode,
+            force=force,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2885,6 +2893,8 @@ class CommandsApi:
         self,
         type: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        mode: Annotated[Optional[StrictStr], Field(description="Force synchronous per-object recalculation. When omitted, batch inference is used when supported.")] = None,
+        force: Annotated[Optional[StrictBool], Field(description="Recalculate all eligible objects, including current embeddings. Token limits still apply; existing renditions are reused.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2900,12 +2910,16 @@ class CommandsApi:
     ) -> ApiResponse[GenericCommandResponse]:
         """Recalculate embeddings
 
-        Queues recalculation workflows for objects that are missing or have stale embeddings for the selected embedding type.  **Required permissions:** `project:admin`
+        Queues recalculation for missing or outdated embeddings, or all eligible objects with force=true. Uses batch inference when supported unless mode=sync is specified. Token limits still apply and existing renditions are reused.  **Required permissions:** `project:admin`
 
         :param type: (required)
         :type type: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
+        :param mode: Force synchronous per-object recalculation. When omitted, batch inference is used when supported.
+        :type mode: str
+        :param force: Recalculate all eligible objects, including current embeddings. Token limits still apply; existing renditions are reused.
+        :type force: bool
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2931,6 +2945,8 @@ class CommandsApi:
         _param = self._recalculate_project_embeddings_serialize(
             type=type,
             x_api_version=x_api_version,
+            mode=mode,
+            force=force,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2958,6 +2974,8 @@ class CommandsApi:
         self,
         type: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        mode: Annotated[Optional[StrictStr], Field(description="Force synchronous per-object recalculation. When omitted, batch inference is used when supported.")] = None,
+        force: Annotated[Optional[StrictBool], Field(description="Recalculate all eligible objects, including current embeddings. Token limits still apply; existing renditions are reused.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2973,12 +2991,16 @@ class CommandsApi:
     ) -> RESTResponseType:
         """Recalculate embeddings
 
-        Queues recalculation workflows for objects that are missing or have stale embeddings for the selected embedding type.  **Required permissions:** `project:admin`
+        Queues recalculation for missing or outdated embeddings, or all eligible objects with force=true. Uses batch inference when supported unless mode=sync is specified. Token limits still apply and existing renditions are reused.  **Required permissions:** `project:admin`
 
         :param type: (required)
         :type type: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
+        :param mode: Force synchronous per-object recalculation. When omitted, batch inference is used when supported.
+        :type mode: str
+        :param force: Recalculate all eligible objects, including current embeddings. Token limits still apply; existing renditions are reused.
+        :type force: bool
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3004,6 +3026,8 @@ class CommandsApi:
         _param = self._recalculate_project_embeddings_serialize(
             type=type,
             x_api_version=x_api_version,
+            mode=mode,
+            force=force,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3026,6 +3050,8 @@ class CommandsApi:
         self,
         type,
         x_api_version,
+        mode,
+        force,
         _request_auth,
         _content_type,
         _headers,
@@ -3050,6 +3076,14 @@ class CommandsApi:
         if type is not None:
             _path_params['type'] = type
         # process the query parameters
+        if mode is not None:
+            
+            _query_params.append(('mode', mode))
+            
+        if force is not None:
+            
+            _query_params.append(('force', force))
+            
         # process the header parameters
         if x_api_version is not None:
             _header_params['x-api-version'] = x_api_version
