@@ -20,12 +20,13 @@ from typing_extensions import Self
 
 class ToolCollectionAuthType(str, Enum):
     """
-    Authentication type for tool collections. - 'oauth': the runtime resolves a per-user or per-project OAuth access token - 'api_key': a static key held in the project's secret store is sent as the RFC 6750 bearer token (`Authorization: Bearer <key>`)
+    Authentication type for tool collections. - 'none': connect directly without credentials for MCP collections; does not disable authentication for Vertesia SDK collections - 'oauth': the runtime resolves a per-user or per-project OAuth access token - 'api_key': a static key held in the project's secret store is sent as the RFC 6750 bearer token (`Authorization: Bearer <key>`) - 'other' or omitted: use the legacy provider connection-details flow for MCP collections
     """
 
     """
     allowed enum values
     """
+    NONE = 'none'
     OAUTH = 'oauth'
     API_KEY = 'api_key'
     OTHER = 'other'
