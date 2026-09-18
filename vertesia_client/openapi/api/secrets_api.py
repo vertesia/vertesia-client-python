@@ -47,9 +47,9 @@ class SecretsApi:
     @validate_call
     def create_secret(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_secret_request: CreateSecretRequest,
         project_id: Annotated[Optional[StrictStr], Field(description="Project scope for top-level secret APIs. Must match the authenticated project context.")] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -67,12 +67,12 @@ class SecretsApi:
 
         Creates a project-scoped website_credential secret. Secret values are encrypted and never returned.  **Required permissions:** `project:admin`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param create_secret_request: (required)
         :type create_secret_request: CreateSecretRequest
         :param project_id: Project scope for top-level secret APIs. Must match the authenticated project context.
         :type project_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -96,9 +96,9 @@ class SecretsApi:
         """ # noqa: E501
 
         _param = self._create_secret_serialize(
+            x_api_version=x_api_version,
             create_secret_request=create_secret_request,
             project_id=project_id,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -124,9 +124,9 @@ class SecretsApi:
     @validate_call
     def create_secret_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_secret_request: CreateSecretRequest,
         project_id: Annotated[Optional[StrictStr], Field(description="Project scope for top-level secret APIs. Must match the authenticated project context.")] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -144,12 +144,12 @@ class SecretsApi:
 
         Creates a project-scoped website_credential secret. Secret values are encrypted and never returned.  **Required permissions:** `project:admin`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param create_secret_request: (required)
         :type create_secret_request: CreateSecretRequest
         :param project_id: Project scope for top-level secret APIs. Must match the authenticated project context.
         :type project_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -173,9 +173,9 @@ class SecretsApi:
         """ # noqa: E501
 
         _param = self._create_secret_serialize(
+            x_api_version=x_api_version,
             create_secret_request=create_secret_request,
             project_id=project_id,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -201,9 +201,9 @@ class SecretsApi:
     @validate_call
     def create_secret_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_secret_request: CreateSecretRequest,
         project_id: Annotated[Optional[StrictStr], Field(description="Project scope for top-level secret APIs. Must match the authenticated project context.")] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -221,12 +221,12 @@ class SecretsApi:
 
         Creates a project-scoped website_credential secret. Secret values are encrypted and never returned.  **Required permissions:** `project:admin`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param create_secret_request: (required)
         :type create_secret_request: CreateSecretRequest
         :param project_id: Project scope for top-level secret APIs. Must match the authenticated project context.
         :type project_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -250,9 +250,9 @@ class SecretsApi:
         """ # noqa: E501
 
         _param = self._create_secret_serialize(
+            x_api_version=x_api_version,
             create_secret_request=create_secret_request,
             project_id=project_id,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -273,9 +273,9 @@ class SecretsApi:
 
     def _create_secret_serialize(
         self,
+        x_api_version,
         create_secret_request,
         project_id,
-        x_api_version,
         _request_auth,
         _content_type,
         _headers,
@@ -361,9 +361,9 @@ class SecretsApi:
     def delete_secret(
         self,
         secret_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         project_id: Annotated[Optional[StrictStr], Field(description="Project scope for top-level secret APIs. Must match the authenticated project context.")] = None,
         kind: Optional[StrictStr] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -383,12 +383,12 @@ class SecretsApi:
 
         :param secret_id: (required)
         :type secret_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param project_id: Project scope for top-level secret APIs. Must match the authenticated project context.
         :type project_id: str
         :param kind:
         :type kind: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -413,9 +413,9 @@ class SecretsApi:
 
         _param = self._delete_secret_serialize(
             secret_id=secret_id,
+            x_api_version=x_api_version,
             project_id=project_id,
             kind=kind,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -442,9 +442,9 @@ class SecretsApi:
     def delete_secret_with_http_info(
         self,
         secret_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         project_id: Annotated[Optional[StrictStr], Field(description="Project scope for top-level secret APIs. Must match the authenticated project context.")] = None,
         kind: Optional[StrictStr] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -464,12 +464,12 @@ class SecretsApi:
 
         :param secret_id: (required)
         :type secret_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param project_id: Project scope for top-level secret APIs. Must match the authenticated project context.
         :type project_id: str
         :param kind:
         :type kind: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -494,9 +494,9 @@ class SecretsApi:
 
         _param = self._delete_secret_serialize(
             secret_id=secret_id,
+            x_api_version=x_api_version,
             project_id=project_id,
             kind=kind,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -523,9 +523,9 @@ class SecretsApi:
     def delete_secret_without_preload_content(
         self,
         secret_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         project_id: Annotated[Optional[StrictStr], Field(description="Project scope for top-level secret APIs. Must match the authenticated project context.")] = None,
         kind: Optional[StrictStr] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -545,12 +545,12 @@ class SecretsApi:
 
         :param secret_id: (required)
         :type secret_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param project_id: Project scope for top-level secret APIs. Must match the authenticated project context.
         :type project_id: str
         :param kind:
         :type kind: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -575,9 +575,9 @@ class SecretsApi:
 
         _param = self._delete_secret_serialize(
             secret_id=secret_id,
+            x_api_version=x_api_version,
             project_id=project_id,
             kind=kind,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -599,9 +599,9 @@ class SecretsApi:
     def _delete_secret_serialize(
         self,
         secret_id,
+        x_api_version,
         project_id,
         kind,
-        x_api_version,
         _request_auth,
         _content_type,
         _headers,
@@ -678,9 +678,9 @@ class SecretsApi:
     def fill_website_credential(
         self,
         secret_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         website_credential_fill_request: WebsiteCredentialFillRequest,
         project_id: Annotated[Optional[StrictStr], Field(description="Project scope for top-level secret APIs. Must match the authenticated project context.")] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -700,12 +700,12 @@ class SecretsApi:
 
         :param secret_id: (required)
         :type secret_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param website_credential_fill_request: (required)
         :type website_credential_fill_request: WebsiteCredentialFillRequest
         :param project_id: Project scope for top-level secret APIs. Must match the authenticated project context.
         :type project_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -730,9 +730,9 @@ class SecretsApi:
 
         _param = self._fill_website_credential_serialize(
             secret_id=secret_id,
+            x_api_version=x_api_version,
             website_credential_fill_request=website_credential_fill_request,
             project_id=project_id,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -759,9 +759,9 @@ class SecretsApi:
     def fill_website_credential_with_http_info(
         self,
         secret_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         website_credential_fill_request: WebsiteCredentialFillRequest,
         project_id: Annotated[Optional[StrictStr], Field(description="Project scope for top-level secret APIs. Must match the authenticated project context.")] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -781,12 +781,12 @@ class SecretsApi:
 
         :param secret_id: (required)
         :type secret_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param website_credential_fill_request: (required)
         :type website_credential_fill_request: WebsiteCredentialFillRequest
         :param project_id: Project scope for top-level secret APIs. Must match the authenticated project context.
         :type project_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -811,9 +811,9 @@ class SecretsApi:
 
         _param = self._fill_website_credential_serialize(
             secret_id=secret_id,
+            x_api_version=x_api_version,
             website_credential_fill_request=website_credential_fill_request,
             project_id=project_id,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -840,9 +840,9 @@ class SecretsApi:
     def fill_website_credential_without_preload_content(
         self,
         secret_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         website_credential_fill_request: WebsiteCredentialFillRequest,
         project_id: Annotated[Optional[StrictStr], Field(description="Project scope for top-level secret APIs. Must match the authenticated project context.")] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -862,12 +862,12 @@ class SecretsApi:
 
         :param secret_id: (required)
         :type secret_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param website_credential_fill_request: (required)
         :type website_credential_fill_request: WebsiteCredentialFillRequest
         :param project_id: Project scope for top-level secret APIs. Must match the authenticated project context.
         :type project_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -892,9 +892,9 @@ class SecretsApi:
 
         _param = self._fill_website_credential_serialize(
             secret_id=secret_id,
+            x_api_version=x_api_version,
             website_credential_fill_request=website_credential_fill_request,
             project_id=project_id,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -916,9 +916,9 @@ class SecretsApi:
     def _fill_website_credential_serialize(
         self,
         secret_id,
+        x_api_version,
         website_credential_fill_request,
         project_id,
-        x_api_version,
         _request_auth,
         _content_type,
         _headers,
@@ -1006,9 +1006,9 @@ class SecretsApi:
     def get_secret(
         self,
         secret_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         project_id: Annotated[Optional[StrictStr], Field(description="Project scope for top-level secret APIs. Must match the authenticated project context.")] = None,
         kind: Optional[StrictStr] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1028,12 +1028,12 @@ class SecretsApi:
 
         :param secret_id: (required)
         :type secret_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param project_id: Project scope for top-level secret APIs. Must match the authenticated project context.
         :type project_id: str
         :param kind:
         :type kind: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1058,9 +1058,9 @@ class SecretsApi:
 
         _param = self._get_secret_serialize(
             secret_id=secret_id,
+            x_api_version=x_api_version,
             project_id=project_id,
             kind=kind,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1087,9 +1087,9 @@ class SecretsApi:
     def get_secret_with_http_info(
         self,
         secret_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         project_id: Annotated[Optional[StrictStr], Field(description="Project scope for top-level secret APIs. Must match the authenticated project context.")] = None,
         kind: Optional[StrictStr] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1109,12 +1109,12 @@ class SecretsApi:
 
         :param secret_id: (required)
         :type secret_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param project_id: Project scope for top-level secret APIs. Must match the authenticated project context.
         :type project_id: str
         :param kind:
         :type kind: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1139,9 +1139,9 @@ class SecretsApi:
 
         _param = self._get_secret_serialize(
             secret_id=secret_id,
+            x_api_version=x_api_version,
             project_id=project_id,
             kind=kind,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1168,9 +1168,9 @@ class SecretsApi:
     def get_secret_without_preload_content(
         self,
         secret_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         project_id: Annotated[Optional[StrictStr], Field(description="Project scope for top-level secret APIs. Must match the authenticated project context.")] = None,
         kind: Optional[StrictStr] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1190,12 +1190,12 @@ class SecretsApi:
 
         :param secret_id: (required)
         :type secret_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param project_id: Project scope for top-level secret APIs. Must match the authenticated project context.
         :type project_id: str
         :param kind:
         :type kind: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1220,9 +1220,9 @@ class SecretsApi:
 
         _param = self._get_secret_serialize(
             secret_id=secret_id,
+            x_api_version=x_api_version,
             project_id=project_id,
             kind=kind,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1244,9 +1244,9 @@ class SecretsApi:
     def _get_secret_serialize(
         self,
         secret_id,
+        x_api_version,
         project_id,
         kind,
-        x_api_version,
         _request_auth,
         _content_type,
         _headers,
@@ -1322,11 +1322,11 @@ class SecretsApi:
     @validate_call
     def list_secrets(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         project_id: Annotated[Optional[StrictStr], Field(description="Project scope for top-level secret APIs. Must match the authenticated project context.")] = None,
         kind: Optional[StrictStr] = None,
         host: Optional[StrictStr] = None,
         enabled: Optional[StrictBool] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1344,6 +1344,8 @@ class SecretsApi:
 
         Lists project-scoped secrets. This version returns website_credential secrets. Secret values are never returned.
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param project_id: Project scope for top-level secret APIs. Must match the authenticated project context.
         :type project_id: str
         :param kind:
@@ -1352,8 +1354,6 @@ class SecretsApi:
         :type host: str
         :param enabled:
         :type enabled: bool
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1377,11 +1377,11 @@ class SecretsApi:
         """ # noqa: E501
 
         _param = self._list_secrets_serialize(
+            x_api_version=x_api_version,
             project_id=project_id,
             kind=kind,
             host=host,
             enabled=enabled,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1407,11 +1407,11 @@ class SecretsApi:
     @validate_call
     def list_secrets_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         project_id: Annotated[Optional[StrictStr], Field(description="Project scope for top-level secret APIs. Must match the authenticated project context.")] = None,
         kind: Optional[StrictStr] = None,
         host: Optional[StrictStr] = None,
         enabled: Optional[StrictBool] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1429,6 +1429,8 @@ class SecretsApi:
 
         Lists project-scoped secrets. This version returns website_credential secrets. Secret values are never returned.
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param project_id: Project scope for top-level secret APIs. Must match the authenticated project context.
         :type project_id: str
         :param kind:
@@ -1437,8 +1439,6 @@ class SecretsApi:
         :type host: str
         :param enabled:
         :type enabled: bool
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1462,11 +1462,11 @@ class SecretsApi:
         """ # noqa: E501
 
         _param = self._list_secrets_serialize(
+            x_api_version=x_api_version,
             project_id=project_id,
             kind=kind,
             host=host,
             enabled=enabled,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1492,11 +1492,11 @@ class SecretsApi:
     @validate_call
     def list_secrets_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         project_id: Annotated[Optional[StrictStr], Field(description="Project scope for top-level secret APIs. Must match the authenticated project context.")] = None,
         kind: Optional[StrictStr] = None,
         host: Optional[StrictStr] = None,
         enabled: Optional[StrictBool] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1514,6 +1514,8 @@ class SecretsApi:
 
         Lists project-scoped secrets. This version returns website_credential secrets. Secret values are never returned.
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param project_id: Project scope for top-level secret APIs. Must match the authenticated project context.
         :type project_id: str
         :param kind:
@@ -1522,8 +1524,6 @@ class SecretsApi:
         :type host: str
         :param enabled:
         :type enabled: bool
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1547,11 +1547,11 @@ class SecretsApi:
         """ # noqa: E501
 
         _param = self._list_secrets_serialize(
+            x_api_version=x_api_version,
             project_id=project_id,
             kind=kind,
             host=host,
             enabled=enabled,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1572,11 +1572,11 @@ class SecretsApi:
 
     def _list_secrets_serialize(
         self,
+        x_api_version,
         project_id,
         kind,
         host,
         enabled,
-        x_api_version,
         _request_auth,
         _content_type,
         _headers,
@@ -1659,10 +1659,10 @@ class SecretsApi:
     def update_secret(
         self,
         secret_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_secret_request: UpdateSecretRequest,
         project_id: Annotated[Optional[StrictStr], Field(description="Project scope for top-level secret APIs. Must match the authenticated project context.")] = None,
         kind: Optional[StrictStr] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1682,14 +1682,14 @@ class SecretsApi:
 
         :param secret_id: (required)
         :type secret_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param update_secret_request: (required)
         :type update_secret_request: UpdateSecretRequest
         :param project_id: Project scope for top-level secret APIs. Must match the authenticated project context.
         :type project_id: str
         :param kind:
         :type kind: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1714,10 +1714,10 @@ class SecretsApi:
 
         _param = self._update_secret_serialize(
             secret_id=secret_id,
+            x_api_version=x_api_version,
             update_secret_request=update_secret_request,
             project_id=project_id,
             kind=kind,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1744,10 +1744,10 @@ class SecretsApi:
     def update_secret_with_http_info(
         self,
         secret_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_secret_request: UpdateSecretRequest,
         project_id: Annotated[Optional[StrictStr], Field(description="Project scope for top-level secret APIs. Must match the authenticated project context.")] = None,
         kind: Optional[StrictStr] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1767,14 +1767,14 @@ class SecretsApi:
 
         :param secret_id: (required)
         :type secret_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param update_secret_request: (required)
         :type update_secret_request: UpdateSecretRequest
         :param project_id: Project scope for top-level secret APIs. Must match the authenticated project context.
         :type project_id: str
         :param kind:
         :type kind: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1799,10 +1799,10 @@ class SecretsApi:
 
         _param = self._update_secret_serialize(
             secret_id=secret_id,
+            x_api_version=x_api_version,
             update_secret_request=update_secret_request,
             project_id=project_id,
             kind=kind,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1829,10 +1829,10 @@ class SecretsApi:
     def update_secret_without_preload_content(
         self,
         secret_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_secret_request: UpdateSecretRequest,
         project_id: Annotated[Optional[StrictStr], Field(description="Project scope for top-level secret APIs. Must match the authenticated project context.")] = None,
         kind: Optional[StrictStr] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1852,14 +1852,14 @@ class SecretsApi:
 
         :param secret_id: (required)
         :type secret_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param update_secret_request: (required)
         :type update_secret_request: UpdateSecretRequest
         :param project_id: Project scope for top-level secret APIs. Must match the authenticated project context.
         :type project_id: str
         :param kind:
         :type kind: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1884,10 +1884,10 @@ class SecretsApi:
 
         _param = self._update_secret_serialize(
             secret_id=secret_id,
+            x_api_version=x_api_version,
             update_secret_request=update_secret_request,
             project_id=project_id,
             kind=kind,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1909,10 +1909,10 @@ class SecretsApi:
     def _update_secret_serialize(
         self,
         secret_id,
+        x_api_version,
         update_secret_request,
         project_id,
         kind,
-        x_api_version,
         _request_auth,
         _content_type,
         _headers,

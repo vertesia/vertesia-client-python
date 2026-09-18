@@ -45,8 +45,8 @@ class ToolsApi:
     def inspect_project_tool(
         self,
         tool_name: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         context: Optional[StrictStr] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -66,10 +66,10 @@ class ToolsApi:
 
         :param tool_name: (required)
         :type tool_name: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param context:
         :type context: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -94,8 +94,8 @@ class ToolsApi:
 
         _param = self._inspect_project_tool_serialize(
             tool_name=tool_name,
-            context=context,
             x_api_version=x_api_version,
+            context=context,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -122,8 +122,8 @@ class ToolsApi:
     def inspect_project_tool_with_http_info(
         self,
         tool_name: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         context: Optional[StrictStr] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -143,10 +143,10 @@ class ToolsApi:
 
         :param tool_name: (required)
         :type tool_name: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param context:
         :type context: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -171,8 +171,8 @@ class ToolsApi:
 
         _param = self._inspect_project_tool_serialize(
             tool_name=tool_name,
-            context=context,
             x_api_version=x_api_version,
+            context=context,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -199,8 +199,8 @@ class ToolsApi:
     def inspect_project_tool_without_preload_content(
         self,
         tool_name: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         context: Optional[StrictStr] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -220,10 +220,10 @@ class ToolsApi:
 
         :param tool_name: (required)
         :type tool_name: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param context:
         :type context: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -248,8 +248,8 @@ class ToolsApi:
 
         _param = self._inspect_project_tool_serialize(
             tool_name=tool_name,
-            context=context,
             x_api_version=x_api_version,
+            context=context,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -271,8 +271,8 @@ class ToolsApi:
     def _inspect_project_tool_serialize(
         self,
         tool_name,
-        context,
         x_api_version,
+        context,
         _request_auth,
         _content_type,
         _headers,
@@ -344,10 +344,10 @@ class ToolsApi:
     @validate_call
     def list_agent_tools(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         context: Optional[StrictStr] = None,
         sources: Annotated[Optional[List[StrictStr]], Field(description="Include only these sources.")] = None,
         exclude: Annotated[Optional[List[StrictStr]], Field(description="Drop these sources from the result (and skip their fetch). Applied after `sources`.")] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -365,14 +365,14 @@ class ToolsApi:
 
         Returns the unified project-scoped tool registry visible to the current principal. Sources can be filtered via the `sources` query string.  **Required permissions:** `account:member`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param context:
         :type context: str
         :param sources: Include only these sources.
         :type sources: List[str]
         :param exclude: Drop these sources from the result (and skip their fetch). Applied after `sources`.
         :type exclude: List[str]
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -396,10 +396,10 @@ class ToolsApi:
         """ # noqa: E501
 
         _param = self._list_agent_tools_serialize(
+            x_api_version=x_api_version,
             context=context,
             sources=sources,
             exclude=exclude,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -425,10 +425,10 @@ class ToolsApi:
     @validate_call
     def list_agent_tools_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         context: Optional[StrictStr] = None,
         sources: Annotated[Optional[List[StrictStr]], Field(description="Include only these sources.")] = None,
         exclude: Annotated[Optional[List[StrictStr]], Field(description="Drop these sources from the result (and skip their fetch). Applied after `sources`.")] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -446,14 +446,14 @@ class ToolsApi:
 
         Returns the unified project-scoped tool registry visible to the current principal. Sources can be filtered via the `sources` query string.  **Required permissions:** `account:member`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param context:
         :type context: str
         :param sources: Include only these sources.
         :type sources: List[str]
         :param exclude: Drop these sources from the result (and skip their fetch). Applied after `sources`.
         :type exclude: List[str]
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -477,10 +477,10 @@ class ToolsApi:
         """ # noqa: E501
 
         _param = self._list_agent_tools_serialize(
+            x_api_version=x_api_version,
             context=context,
             sources=sources,
             exclude=exclude,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -506,10 +506,10 @@ class ToolsApi:
     @validate_call
     def list_agent_tools_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         context: Optional[StrictStr] = None,
         sources: Annotated[Optional[List[StrictStr]], Field(description="Include only these sources.")] = None,
         exclude: Annotated[Optional[List[StrictStr]], Field(description="Drop these sources from the result (and skip their fetch). Applied after `sources`.")] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -527,14 +527,14 @@ class ToolsApi:
 
         Returns the unified project-scoped tool registry visible to the current principal. Sources can be filtered via the `sources` query string.  **Required permissions:** `account:member`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param context:
         :type context: str
         :param sources: Include only these sources.
         :type sources: List[str]
         :param exclude: Drop these sources from the result (and skip their fetch). Applied after `sources`.
         :type exclude: List[str]
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -558,10 +558,10 @@ class ToolsApi:
         """ # noqa: E501
 
         _param = self._list_agent_tools_serialize(
+            x_api_version=x_api_version,
             context=context,
             sources=sources,
             exclude=exclude,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -582,10 +582,10 @@ class ToolsApi:
 
     def _list_agent_tools_serialize(
         self,
+        x_api_version,
         context,
         sources,
         exclude,
-        x_api_version,
         _request_auth,
         _content_type,
         _headers,
@@ -665,8 +665,8 @@ class ToolsApi:
     @validate_call
     def validate_agent_tool_names(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         validate_tool_names_payload: ValidateToolNamesPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -684,10 +684,10 @@ class ToolsApi:
 
         Resolves each name to its source or reports it as invalid with a suggestion.  **Required permissions:** `account:member`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param validate_tool_names_payload: (required)
         :type validate_tool_names_payload: ValidateToolNamesPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -711,8 +711,8 @@ class ToolsApi:
         """ # noqa: E501
 
         _param = self._validate_agent_tool_names_serialize(
-            validate_tool_names_payload=validate_tool_names_payload,
             x_api_version=x_api_version,
+            validate_tool_names_payload=validate_tool_names_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -738,8 +738,8 @@ class ToolsApi:
     @validate_call
     def validate_agent_tool_names_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         validate_tool_names_payload: ValidateToolNamesPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -757,10 +757,10 @@ class ToolsApi:
 
         Resolves each name to its source or reports it as invalid with a suggestion.  **Required permissions:** `account:member`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param validate_tool_names_payload: (required)
         :type validate_tool_names_payload: ValidateToolNamesPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -784,8 +784,8 @@ class ToolsApi:
         """ # noqa: E501
 
         _param = self._validate_agent_tool_names_serialize(
-            validate_tool_names_payload=validate_tool_names_payload,
             x_api_version=x_api_version,
+            validate_tool_names_payload=validate_tool_names_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -811,8 +811,8 @@ class ToolsApi:
     @validate_call
     def validate_agent_tool_names_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         validate_tool_names_payload: ValidateToolNamesPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -830,10 +830,10 @@ class ToolsApi:
 
         Resolves each name to its source or reports it as invalid with a suggestion.  **Required permissions:** `account:member`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param validate_tool_names_payload: (required)
         :type validate_tool_names_payload: ValidateToolNamesPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -857,8 +857,8 @@ class ToolsApi:
         """ # noqa: E501
 
         _param = self._validate_agent_tool_names_serialize(
-            validate_tool_names_payload=validate_tool_names_payload,
             x_api_version=x_api_version,
+            validate_tool_names_payload=validate_tool_names_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -879,8 +879,8 @@ class ToolsApi:
 
     def _validate_agent_tool_names_serialize(
         self,
-        validate_tool_names_payload,
         x_api_version,
+        validate_tool_names_payload,
         _request_auth,
         _content_type,
         _headers,

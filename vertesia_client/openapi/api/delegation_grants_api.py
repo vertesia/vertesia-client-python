@@ -15,8 +15,8 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import Field, StrictStr
-from typing import List, Optional
+from pydantic import Field, StrictStr, field_validator
+from typing import List
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.create_delegation_grant_payload import CreateDelegationGrantPayload
 from vertesia_client.openapi.models.delegation_grant import DelegationGrant
@@ -42,8 +42,8 @@ class DelegationGrantsApi:
     @validate_call
     def create_delegation_grant(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_delegation_grant_payload: CreateDelegationGrantPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -61,10 +61,10 @@ class DelegationGrantsApi:
 
         **Required permissions:** `schedule:delegate`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param create_delegation_grant_payload: (required)
         :type create_delegation_grant_payload: CreateDelegationGrantPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -88,8 +88,8 @@ class DelegationGrantsApi:
         """ # noqa: E501
 
         _param = self._create_delegation_grant_serialize(
-            create_delegation_grant_payload=create_delegation_grant_payload,
             x_api_version=x_api_version,
+            create_delegation_grant_payload=create_delegation_grant_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -115,8 +115,8 @@ class DelegationGrantsApi:
     @validate_call
     def create_delegation_grant_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_delegation_grant_payload: CreateDelegationGrantPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -134,10 +134,10 @@ class DelegationGrantsApi:
 
         **Required permissions:** `schedule:delegate`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param create_delegation_grant_payload: (required)
         :type create_delegation_grant_payload: CreateDelegationGrantPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -161,8 +161,8 @@ class DelegationGrantsApi:
         """ # noqa: E501
 
         _param = self._create_delegation_grant_serialize(
-            create_delegation_grant_payload=create_delegation_grant_payload,
             x_api_version=x_api_version,
+            create_delegation_grant_payload=create_delegation_grant_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -188,8 +188,8 @@ class DelegationGrantsApi:
     @validate_call
     def create_delegation_grant_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_delegation_grant_payload: CreateDelegationGrantPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -207,10 +207,10 @@ class DelegationGrantsApi:
 
         **Required permissions:** `schedule:delegate`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param create_delegation_grant_payload: (required)
         :type create_delegation_grant_payload: CreateDelegationGrantPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -234,8 +234,8 @@ class DelegationGrantsApi:
         """ # noqa: E501
 
         _param = self._create_delegation_grant_serialize(
-            create_delegation_grant_payload=create_delegation_grant_payload,
             x_api_version=x_api_version,
+            create_delegation_grant_payload=create_delegation_grant_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -256,8 +256,8 @@ class DelegationGrantsApi:
 
     def _create_delegation_grant_serialize(
         self,
-        create_delegation_grant_payload,
         x_api_version,
+        create_delegation_grant_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -339,7 +339,7 @@ class DelegationGrantsApi:
     def get_delegation_grant(
         self,
         grant_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -359,7 +359,7 @@ class DelegationGrantsApi:
 
         :param grant_id: (required)
         :type grant_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -412,7 +412,7 @@ class DelegationGrantsApi:
     def get_delegation_grant_with_http_info(
         self,
         grant_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -432,7 +432,7 @@ class DelegationGrantsApi:
 
         :param grant_id: (required)
         :type grant_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -485,7 +485,7 @@ class DelegationGrantsApi:
     def get_delegation_grant_without_preload_content(
         self,
         grant_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -505,7 +505,7 @@ class DelegationGrantsApi:
 
         :param grant_id: (required)
         :type grant_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -621,7 +621,7 @@ class DelegationGrantsApi:
     @validate_call
     def list_delegation_grants(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -639,7 +639,7 @@ class DelegationGrantsApi:
 
         **Required permissions:** `account:read`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -690,7 +690,7 @@ class DelegationGrantsApi:
     @validate_call
     def list_delegation_grants_with_http_info(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -708,7 +708,7 @@ class DelegationGrantsApi:
 
         **Required permissions:** `account:read`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -759,7 +759,7 @@ class DelegationGrantsApi:
     @validate_call
     def list_delegation_grants_without_preload_content(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -777,7 +777,7 @@ class DelegationGrantsApi:
 
         **Required permissions:** `account:read`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -889,7 +889,7 @@ class DelegationGrantsApi:
     @validate_call
     def list_my_delegation_grants(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -906,7 +906,7 @@ class DelegationGrantsApi:
         """List grants acting as the current user
 
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -957,7 +957,7 @@ class DelegationGrantsApi:
     @validate_call
     def list_my_delegation_grants_with_http_info(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -974,7 +974,7 @@ class DelegationGrantsApi:
         """List grants acting as the current user
 
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1025,7 +1025,7 @@ class DelegationGrantsApi:
     @validate_call
     def list_my_delegation_grants_without_preload_content(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1042,7 +1042,7 @@ class DelegationGrantsApi:
         """List grants acting as the current user
 
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1155,7 +1155,7 @@ class DelegationGrantsApi:
     def revoke_delegation_grant(
         self,
         grant_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1174,7 +1174,7 @@ class DelegationGrantsApi:
 
         :param grant_id: (required)
         :type grant_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1227,7 +1227,7 @@ class DelegationGrantsApi:
     def revoke_delegation_grant_with_http_info(
         self,
         grant_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1246,7 +1246,7 @@ class DelegationGrantsApi:
 
         :param grant_id: (required)
         :type grant_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1299,7 +1299,7 @@ class DelegationGrantsApi:
     def revoke_delegation_grant_without_preload_content(
         self,
         grant_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1318,7 +1318,7 @@ class DelegationGrantsApi:
 
         :param grant_id: (required)
         :type grant_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request

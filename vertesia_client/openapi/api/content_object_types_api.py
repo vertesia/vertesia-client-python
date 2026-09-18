@@ -15,7 +15,7 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import Field, StrictBool, StrictFloat, StrictInt, StrictStr
+from pydantic import Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import List, Optional, Union
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.content_object_type import ContentObjectType
@@ -46,8 +46,8 @@ class ContentObjectTypesApi:
     @validate_call
     def create_content_object_type(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_content_object_type_payload: CreateContentObjectTypePayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -65,10 +65,10 @@ class ContentObjectTypesApi:
 
         Creates a new content object type after validating its JSON Schema.  **Required permissions:** `content:admin`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param create_content_object_type_payload: (required)
         :type create_content_object_type_payload: CreateContentObjectTypePayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -92,8 +92,8 @@ class ContentObjectTypesApi:
         """ # noqa: E501
 
         _param = self._create_content_object_type_serialize(
-            create_content_object_type_payload=create_content_object_type_payload,
             x_api_version=x_api_version,
+            create_content_object_type_payload=create_content_object_type_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -119,8 +119,8 @@ class ContentObjectTypesApi:
     @validate_call
     def create_content_object_type_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_content_object_type_payload: CreateContentObjectTypePayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -138,10 +138,10 @@ class ContentObjectTypesApi:
 
         Creates a new content object type after validating its JSON Schema.  **Required permissions:** `content:admin`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param create_content_object_type_payload: (required)
         :type create_content_object_type_payload: CreateContentObjectTypePayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -165,8 +165,8 @@ class ContentObjectTypesApi:
         """ # noqa: E501
 
         _param = self._create_content_object_type_serialize(
-            create_content_object_type_payload=create_content_object_type_payload,
             x_api_version=x_api_version,
+            create_content_object_type_payload=create_content_object_type_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -192,8 +192,8 @@ class ContentObjectTypesApi:
     @validate_call
     def create_content_object_type_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_content_object_type_payload: CreateContentObjectTypePayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -211,10 +211,10 @@ class ContentObjectTypesApi:
 
         Creates a new content object type after validating its JSON Schema.  **Required permissions:** `content:admin`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param create_content_object_type_payload: (required)
         :type create_content_object_type_payload: CreateContentObjectTypePayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -238,8 +238,8 @@ class ContentObjectTypesApi:
         """ # noqa: E501
 
         _param = self._create_content_object_type_serialize(
-            create_content_object_type_payload=create_content_object_type_payload,
             x_api_version=x_api_version,
+            create_content_object_type_payload=create_content_object_type_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -260,8 +260,8 @@ class ContentObjectTypesApi:
 
     def _create_content_object_type_serialize(
         self,
-        create_content_object_type_payload,
         x_api_version,
+        create_content_object_type_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -343,7 +343,7 @@ class ContentObjectTypesApi:
     def delete_content_object_type(
         self,
         type_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -363,7 +363,7 @@ class ContentObjectTypesApi:
 
         :param type_id: (required)
         :type type_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -416,7 +416,7 @@ class ContentObjectTypesApi:
     def delete_content_object_type_with_http_info(
         self,
         type_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -436,7 +436,7 @@ class ContentObjectTypesApi:
 
         :param type_id: (required)
         :type type_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -489,7 +489,7 @@ class ContentObjectTypesApi:
     def delete_content_object_type_without_preload_content(
         self,
         type_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -509,7 +509,7 @@ class ContentObjectTypesApi:
 
         :param type_id: (required)
         :type type_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -626,7 +626,7 @@ class ContentObjectTypesApi:
     def get_content_object_type(
         self,
         type_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -646,7 +646,7 @@ class ContentObjectTypesApi:
 
         :param type_id: (required)
         :type type_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -699,7 +699,7 @@ class ContentObjectTypesApi:
     def get_content_object_type_with_http_info(
         self,
         type_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -719,7 +719,7 @@ class ContentObjectTypesApi:
 
         :param type_id: (required)
         :type type_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -772,7 +772,7 @@ class ContentObjectTypesApi:
     def get_content_object_type_without_preload_content(
         self,
         type_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -792,7 +792,7 @@ class ContentObjectTypesApi:
 
         :param type_id: (required)
         :type type_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -909,7 +909,7 @@ class ContentObjectTypesApi:
     def get_content_object_type_by_name(
         self,
         name: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -929,7 +929,7 @@ class ContentObjectTypesApi:
 
         :param name: (required)
         :type name: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -982,7 +982,7 @@ class ContentObjectTypesApi:
     def get_content_object_type_by_name_with_http_info(
         self,
         name: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1002,7 +1002,7 @@ class ContentObjectTypesApi:
 
         :param name: (required)
         :type name: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1055,7 +1055,7 @@ class ContentObjectTypesApi:
     def get_content_object_type_by_name_without_preload_content(
         self,
         name: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1075,7 +1075,7 @@ class ContentObjectTypesApi:
 
         :param name: (required)
         :type name: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1191,12 +1191,12 @@ class ContentObjectTypesApi:
     @validate_call
     def list_application_content_object_types(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         tag: Optional[StrictStr] = None,
         layout: Optional[StrictBool] = None,
         var_schema: Optional[StrictBool] = None,
         limit: Optional[Union[StrictFloat, StrictInt]] = None,
         offset: Optional[Union[StrictFloat, StrictInt]] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1214,6 +1214,8 @@ class ContentObjectTypesApi:
 
         Lists application-provided content object types.  **Required permissions:** `content:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param tag:
         :type tag: str
         :param layout:
@@ -1224,8 +1226,6 @@ class ContentObjectTypesApi:
         :type limit: float
         :param offset:
         :type offset: float
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1249,12 +1249,12 @@ class ContentObjectTypesApi:
         """ # noqa: E501
 
         _param = self._list_application_content_object_types_serialize(
+            x_api_version=x_api_version,
             tag=tag,
             layout=layout,
             var_schema=var_schema,
             limit=limit,
             offset=offset,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1280,12 +1280,12 @@ class ContentObjectTypesApi:
     @validate_call
     def list_application_content_object_types_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         tag: Optional[StrictStr] = None,
         layout: Optional[StrictBool] = None,
         var_schema: Optional[StrictBool] = None,
         limit: Optional[Union[StrictFloat, StrictInt]] = None,
         offset: Optional[Union[StrictFloat, StrictInt]] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1303,6 +1303,8 @@ class ContentObjectTypesApi:
 
         Lists application-provided content object types.  **Required permissions:** `content:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param tag:
         :type tag: str
         :param layout:
@@ -1313,8 +1315,6 @@ class ContentObjectTypesApi:
         :type limit: float
         :param offset:
         :type offset: float
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1338,12 +1338,12 @@ class ContentObjectTypesApi:
         """ # noqa: E501
 
         _param = self._list_application_content_object_types_serialize(
+            x_api_version=x_api_version,
             tag=tag,
             layout=layout,
             var_schema=var_schema,
             limit=limit,
             offset=offset,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1369,12 +1369,12 @@ class ContentObjectTypesApi:
     @validate_call
     def list_application_content_object_types_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         tag: Optional[StrictStr] = None,
         layout: Optional[StrictBool] = None,
         var_schema: Optional[StrictBool] = None,
         limit: Optional[Union[StrictFloat, StrictInt]] = None,
         offset: Optional[Union[StrictFloat, StrictInt]] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1392,6 +1392,8 @@ class ContentObjectTypesApi:
 
         Lists application-provided content object types.  **Required permissions:** `content:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param tag:
         :type tag: str
         :param layout:
@@ -1402,8 +1404,6 @@ class ContentObjectTypesApi:
         :type limit: float
         :param offset:
         :type offset: float
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1427,12 +1427,12 @@ class ContentObjectTypesApi:
         """ # noqa: E501
 
         _param = self._list_application_content_object_types_serialize(
+            x_api_version=x_api_version,
             tag=tag,
             layout=layout,
             var_schema=var_schema,
             limit=limit,
             offset=offset,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1453,12 +1453,12 @@ class ContentObjectTypesApi:
 
     def _list_application_content_object_types_serialize(
         self,
+        x_api_version,
         tag,
         layout,
         var_schema,
         limit,
         offset,
-        x_api_version,
         _request_auth,
         _content_type,
         _headers,
@@ -1544,12 +1544,12 @@ class ContentObjectTypesApi:
     @validate_call
     def list_content_object_type_catalog(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         tag: Optional[StrictStr] = None,
         layout: Optional[StrictBool] = None,
         var_schema: Optional[StrictBool] = None,
         limit: Optional[Union[StrictFloat, StrictInt]] = None,
         offset: Optional[Union[StrictFloat, StrictInt]] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1567,6 +1567,8 @@ class ContentObjectTypesApi:
 
         Lists available content object types across system, application, and stored catalogs.  **Required permissions:** `content:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param tag:
         :type tag: str
         :param layout:
@@ -1577,8 +1579,6 @@ class ContentObjectTypesApi:
         :type limit: float
         :param offset:
         :type offset: float
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1602,12 +1602,12 @@ class ContentObjectTypesApi:
         """ # noqa: E501
 
         _param = self._list_content_object_type_catalog_serialize(
+            x_api_version=x_api_version,
             tag=tag,
             layout=layout,
             var_schema=var_schema,
             limit=limit,
             offset=offset,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1633,12 +1633,12 @@ class ContentObjectTypesApi:
     @validate_call
     def list_content_object_type_catalog_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         tag: Optional[StrictStr] = None,
         layout: Optional[StrictBool] = None,
         var_schema: Optional[StrictBool] = None,
         limit: Optional[Union[StrictFloat, StrictInt]] = None,
         offset: Optional[Union[StrictFloat, StrictInt]] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1656,6 +1656,8 @@ class ContentObjectTypesApi:
 
         Lists available content object types across system, application, and stored catalogs.  **Required permissions:** `content:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param tag:
         :type tag: str
         :param layout:
@@ -1666,8 +1668,6 @@ class ContentObjectTypesApi:
         :type limit: float
         :param offset:
         :type offset: float
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1691,12 +1691,12 @@ class ContentObjectTypesApi:
         """ # noqa: E501
 
         _param = self._list_content_object_type_catalog_serialize(
+            x_api_version=x_api_version,
             tag=tag,
             layout=layout,
             var_schema=var_schema,
             limit=limit,
             offset=offset,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1722,12 +1722,12 @@ class ContentObjectTypesApi:
     @validate_call
     def list_content_object_type_catalog_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         tag: Optional[StrictStr] = None,
         layout: Optional[StrictBool] = None,
         var_schema: Optional[StrictBool] = None,
         limit: Optional[Union[StrictFloat, StrictInt]] = None,
         offset: Optional[Union[StrictFloat, StrictInt]] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1745,6 +1745,8 @@ class ContentObjectTypesApi:
 
         Lists available content object types across system, application, and stored catalogs.  **Required permissions:** `content:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param tag:
         :type tag: str
         :param layout:
@@ -1755,8 +1757,6 @@ class ContentObjectTypesApi:
         :type limit: float
         :param offset:
         :type offset: float
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1780,12 +1780,12 @@ class ContentObjectTypesApi:
         """ # noqa: E501
 
         _param = self._list_content_object_type_catalog_serialize(
+            x_api_version=x_api_version,
             tag=tag,
             layout=layout,
             var_schema=var_schema,
             limit=limit,
             offset=offset,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1806,12 +1806,12 @@ class ContentObjectTypesApi:
 
     def _list_content_object_type_catalog_serialize(
         self,
+        x_api_version,
         tag,
         layout,
         var_schema,
         limit,
         offset,
-        x_api_version,
         _request_auth,
         _content_type,
         _headers,
@@ -1897,13 +1897,13 @@ class ContentObjectTypesApi:
     @validate_call
     def list_content_object_types(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         name: Optional[StrictStr] = None,
         chunkable: Optional[StrictBool] = None,
         layout: Optional[StrictBool] = None,
         var_schema: Optional[StrictBool] = None,
         limit: Optional[Union[StrictFloat, StrictInt]] = None,
         offset: Optional[Union[StrictFloat, StrictInt]] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1921,6 +1921,8 @@ class ContentObjectTypesApi:
 
         Lists content object types with optional filtering by name, chunkability, schema, and layout inclusion.  **Required permissions:** `content:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param name:
         :type name: str
         :param chunkable:
@@ -1933,8 +1935,6 @@ class ContentObjectTypesApi:
         :type limit: float
         :param offset:
         :type offset: float
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1958,13 +1958,13 @@ class ContentObjectTypesApi:
         """ # noqa: E501
 
         _param = self._list_content_object_types_serialize(
+            x_api_version=x_api_version,
             name=name,
             chunkable=chunkable,
             layout=layout,
             var_schema=var_schema,
             limit=limit,
             offset=offset,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1990,13 +1990,13 @@ class ContentObjectTypesApi:
     @validate_call
     def list_content_object_types_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         name: Optional[StrictStr] = None,
         chunkable: Optional[StrictBool] = None,
         layout: Optional[StrictBool] = None,
         var_schema: Optional[StrictBool] = None,
         limit: Optional[Union[StrictFloat, StrictInt]] = None,
         offset: Optional[Union[StrictFloat, StrictInt]] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2014,6 +2014,8 @@ class ContentObjectTypesApi:
 
         Lists content object types with optional filtering by name, chunkability, schema, and layout inclusion.  **Required permissions:** `content:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param name:
         :type name: str
         :param chunkable:
@@ -2026,8 +2028,6 @@ class ContentObjectTypesApi:
         :type limit: float
         :param offset:
         :type offset: float
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2051,13 +2051,13 @@ class ContentObjectTypesApi:
         """ # noqa: E501
 
         _param = self._list_content_object_types_serialize(
+            x_api_version=x_api_version,
             name=name,
             chunkable=chunkable,
             layout=layout,
             var_schema=var_schema,
             limit=limit,
             offset=offset,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2083,13 +2083,13 @@ class ContentObjectTypesApi:
     @validate_call
     def list_content_object_types_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         name: Optional[StrictStr] = None,
         chunkable: Optional[StrictBool] = None,
         layout: Optional[StrictBool] = None,
         var_schema: Optional[StrictBool] = None,
         limit: Optional[Union[StrictFloat, StrictInt]] = None,
         offset: Optional[Union[StrictFloat, StrictInt]] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2107,6 +2107,8 @@ class ContentObjectTypesApi:
 
         Lists content object types with optional filtering by name, chunkability, schema, and layout inclusion.  **Required permissions:** `content:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param name:
         :type name: str
         :param chunkable:
@@ -2119,8 +2121,6 @@ class ContentObjectTypesApi:
         :type limit: float
         :param offset:
         :type offset: float
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2144,13 +2144,13 @@ class ContentObjectTypesApi:
         """ # noqa: E501
 
         _param = self._list_content_object_types_serialize(
+            x_api_version=x_api_version,
             name=name,
             chunkable=chunkable,
             layout=layout,
             var_schema=var_schema,
             limit=limit,
             offset=offset,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2171,13 +2171,13 @@ class ContentObjectTypesApi:
 
     def _list_content_object_types_serialize(
         self,
+        x_api_version,
         name,
         chunkable,
         layout,
         var_schema,
         limit,
         offset,
-        x_api_version,
         _request_auth,
         _content_type,
         _headers,
@@ -2267,12 +2267,12 @@ class ContentObjectTypesApi:
     @validate_call
     def list_stored_content_object_types(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         tag: Optional[StrictStr] = None,
         layout: Optional[StrictBool] = None,
         var_schema: Optional[StrictBool] = None,
         limit: Optional[Union[StrictFloat, StrictInt]] = None,
         offset: Optional[Union[StrictFloat, StrictInt]] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2290,6 +2290,8 @@ class ContentObjectTypesApi:
 
         Lists stored content object types defined in the current project.  **Required permissions:** `content:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param tag:
         :type tag: str
         :param layout:
@@ -2300,8 +2302,6 @@ class ContentObjectTypesApi:
         :type limit: float
         :param offset:
         :type offset: float
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2325,12 +2325,12 @@ class ContentObjectTypesApi:
         """ # noqa: E501
 
         _param = self._list_stored_content_object_types_serialize(
+            x_api_version=x_api_version,
             tag=tag,
             layout=layout,
             var_schema=var_schema,
             limit=limit,
             offset=offset,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2356,12 +2356,12 @@ class ContentObjectTypesApi:
     @validate_call
     def list_stored_content_object_types_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         tag: Optional[StrictStr] = None,
         layout: Optional[StrictBool] = None,
         var_schema: Optional[StrictBool] = None,
         limit: Optional[Union[StrictFloat, StrictInt]] = None,
         offset: Optional[Union[StrictFloat, StrictInt]] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2379,6 +2379,8 @@ class ContentObjectTypesApi:
 
         Lists stored content object types defined in the current project.  **Required permissions:** `content:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param tag:
         :type tag: str
         :param layout:
@@ -2389,8 +2391,6 @@ class ContentObjectTypesApi:
         :type limit: float
         :param offset:
         :type offset: float
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2414,12 +2414,12 @@ class ContentObjectTypesApi:
         """ # noqa: E501
 
         _param = self._list_stored_content_object_types_serialize(
+            x_api_version=x_api_version,
             tag=tag,
             layout=layout,
             var_schema=var_schema,
             limit=limit,
             offset=offset,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2445,12 +2445,12 @@ class ContentObjectTypesApi:
     @validate_call
     def list_stored_content_object_types_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         tag: Optional[StrictStr] = None,
         layout: Optional[StrictBool] = None,
         var_schema: Optional[StrictBool] = None,
         limit: Optional[Union[StrictFloat, StrictInt]] = None,
         offset: Optional[Union[StrictFloat, StrictInt]] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2468,6 +2468,8 @@ class ContentObjectTypesApi:
 
         Lists stored content object types defined in the current project.  **Required permissions:** `content:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param tag:
         :type tag: str
         :param layout:
@@ -2478,8 +2480,6 @@ class ContentObjectTypesApi:
         :type limit: float
         :param offset:
         :type offset: float
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2503,12 +2503,12 @@ class ContentObjectTypesApi:
         """ # noqa: E501
 
         _param = self._list_stored_content_object_types_serialize(
+            x_api_version=x_api_version,
             tag=tag,
             layout=layout,
             var_schema=var_schema,
             limit=limit,
             offset=offset,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2529,12 +2529,12 @@ class ContentObjectTypesApi:
 
     def _list_stored_content_object_types_serialize(
         self,
+        x_api_version,
         tag,
         layout,
         var_schema,
         limit,
         offset,
-        x_api_version,
         _request_auth,
         _content_type,
         _headers,
@@ -2620,12 +2620,12 @@ class ContentObjectTypesApi:
     @validate_call
     def list_system_content_object_types(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         tag: Optional[StrictStr] = None,
         layout: Optional[StrictBool] = None,
         var_schema: Optional[StrictBool] = None,
         limit: Optional[Union[StrictFloat, StrictInt]] = None,
         offset: Optional[Union[StrictFloat, StrictInt]] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2643,6 +2643,8 @@ class ContentObjectTypesApi:
 
         Lists built-in system content object types.  **Required permissions:** `content:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param tag:
         :type tag: str
         :param layout:
@@ -2653,8 +2655,6 @@ class ContentObjectTypesApi:
         :type limit: float
         :param offset:
         :type offset: float
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2678,12 +2678,12 @@ class ContentObjectTypesApi:
         """ # noqa: E501
 
         _param = self._list_system_content_object_types_serialize(
+            x_api_version=x_api_version,
             tag=tag,
             layout=layout,
             var_schema=var_schema,
             limit=limit,
             offset=offset,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2709,12 +2709,12 @@ class ContentObjectTypesApi:
     @validate_call
     def list_system_content_object_types_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         tag: Optional[StrictStr] = None,
         layout: Optional[StrictBool] = None,
         var_schema: Optional[StrictBool] = None,
         limit: Optional[Union[StrictFloat, StrictInt]] = None,
         offset: Optional[Union[StrictFloat, StrictInt]] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2732,6 +2732,8 @@ class ContentObjectTypesApi:
 
         Lists built-in system content object types.  **Required permissions:** `content:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param tag:
         :type tag: str
         :param layout:
@@ -2742,8 +2744,6 @@ class ContentObjectTypesApi:
         :type limit: float
         :param offset:
         :type offset: float
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2767,12 +2767,12 @@ class ContentObjectTypesApi:
         """ # noqa: E501
 
         _param = self._list_system_content_object_types_serialize(
+            x_api_version=x_api_version,
             tag=tag,
             layout=layout,
             var_schema=var_schema,
             limit=limit,
             offset=offset,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2798,12 +2798,12 @@ class ContentObjectTypesApi:
     @validate_call
     def list_system_content_object_types_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         tag: Optional[StrictStr] = None,
         layout: Optional[StrictBool] = None,
         var_schema: Optional[StrictBool] = None,
         limit: Optional[Union[StrictFloat, StrictInt]] = None,
         offset: Optional[Union[StrictFloat, StrictInt]] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2821,6 +2821,8 @@ class ContentObjectTypesApi:
 
         Lists built-in system content object types.  **Required permissions:** `content:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param tag:
         :type tag: str
         :param layout:
@@ -2831,8 +2833,6 @@ class ContentObjectTypesApi:
         :type limit: float
         :param offset:
         :type offset: float
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2856,12 +2856,12 @@ class ContentObjectTypesApi:
         """ # noqa: E501
 
         _param = self._list_system_content_object_types_serialize(
+            x_api_version=x_api_version,
             tag=tag,
             layout=layout,
             var_schema=var_schema,
             limit=limit,
             offset=offset,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2882,12 +2882,12 @@ class ContentObjectTypesApi:
 
     def _list_system_content_object_types_serialize(
         self,
+        x_api_version,
         tag,
         layout,
         var_schema,
         limit,
         offset,
-        x_api_version,
         _request_auth,
         _content_type,
         _headers,
@@ -2974,7 +2974,7 @@ class ContentObjectTypesApi:
     def resolve_content_object_type_catalog_entry(
         self,
         type_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2994,7 +2994,7 @@ class ContentObjectTypesApi:
 
         :param type_id: (required)
         :type type_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -3047,7 +3047,7 @@ class ContentObjectTypesApi:
     def resolve_content_object_type_catalog_entry_with_http_info(
         self,
         type_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3067,7 +3067,7 @@ class ContentObjectTypesApi:
 
         :param type_id: (required)
         :type type_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -3120,7 +3120,7 @@ class ContentObjectTypesApi:
     def resolve_content_object_type_catalog_entry_without_preload_content(
         self,
         type_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3140,7 +3140,7 @@ class ContentObjectTypesApi:
 
         :param type_id: (required)
         :type type_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -3257,8 +3257,8 @@ class ContentObjectTypesApi:
     def update_content_object_type(
         self,
         type_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_content_object_type_payload: UpdateContentObjectTypePayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3278,10 +3278,10 @@ class ContentObjectTypesApi:
 
         :param type_id: (required)
         :type type_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param update_content_object_type_payload: (required)
         :type update_content_object_type_payload: UpdateContentObjectTypePayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3306,8 +3306,8 @@ class ContentObjectTypesApi:
 
         _param = self._update_content_object_type_serialize(
             type_id=type_id,
-            update_content_object_type_payload=update_content_object_type_payload,
             x_api_version=x_api_version,
+            update_content_object_type_payload=update_content_object_type_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3335,8 +3335,8 @@ class ContentObjectTypesApi:
     def update_content_object_type_with_http_info(
         self,
         type_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_content_object_type_payload: UpdateContentObjectTypePayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3356,10 +3356,10 @@ class ContentObjectTypesApi:
 
         :param type_id: (required)
         :type type_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param update_content_object_type_payload: (required)
         :type update_content_object_type_payload: UpdateContentObjectTypePayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3384,8 +3384,8 @@ class ContentObjectTypesApi:
 
         _param = self._update_content_object_type_serialize(
             type_id=type_id,
-            update_content_object_type_payload=update_content_object_type_payload,
             x_api_version=x_api_version,
+            update_content_object_type_payload=update_content_object_type_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3413,8 +3413,8 @@ class ContentObjectTypesApi:
     def update_content_object_type_without_preload_content(
         self,
         type_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_content_object_type_payload: UpdateContentObjectTypePayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3434,10 +3434,10 @@ class ContentObjectTypesApi:
 
         :param type_id: (required)
         :type type_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param update_content_object_type_payload: (required)
         :type update_content_object_type_payload: UpdateContentObjectTypePayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3462,8 +3462,8 @@ class ContentObjectTypesApi:
 
         _param = self._update_content_object_type_serialize(
             type_id=type_id,
-            update_content_object_type_payload=update_content_object_type_payload,
             x_api_version=x_api_version,
+            update_content_object_type_payload=update_content_object_type_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3486,8 +3486,8 @@ class ContentObjectTypesApi:
     def _update_content_object_type_serialize(
         self,
         type_id,
-        update_content_object_type_payload,
         x_api_version,
+        update_content_object_type_payload,
         _request_auth,
         _content_type,
         _headers,

@@ -15,7 +15,7 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import Field, StrictStr
+from pydantic import Field, StrictStr, field_validator
 from typing import List, Optional
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.composite_app_config import CompositeAppConfig
@@ -60,8 +60,8 @@ class ProjectsApi:
     @validate_call
     def create_project(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         i_create_project_payload: ICreateProjectPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -79,10 +79,10 @@ class ProjectsApi:
 
         Creates a new project in the current account and initializes default project resources.  **Required permissions:** `account:admin`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param i_create_project_payload: (required)
         :type i_create_project_payload: ICreateProjectPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -106,8 +106,8 @@ class ProjectsApi:
         """ # noqa: E501
 
         _param = self._create_project_serialize(
-            i_create_project_payload=i_create_project_payload,
             x_api_version=x_api_version,
+            i_create_project_payload=i_create_project_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -133,8 +133,8 @@ class ProjectsApi:
     @validate_call
     def create_project_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         i_create_project_payload: ICreateProjectPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -152,10 +152,10 @@ class ProjectsApi:
 
         Creates a new project in the current account and initializes default project resources.  **Required permissions:** `account:admin`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param i_create_project_payload: (required)
         :type i_create_project_payload: ICreateProjectPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -179,8 +179,8 @@ class ProjectsApi:
         """ # noqa: E501
 
         _param = self._create_project_serialize(
-            i_create_project_payload=i_create_project_payload,
             x_api_version=x_api_version,
+            i_create_project_payload=i_create_project_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -206,8 +206,8 @@ class ProjectsApi:
     @validate_call
     def create_project_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         i_create_project_payload: ICreateProjectPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -225,10 +225,10 @@ class ProjectsApi:
 
         Creates a new project in the current account and initializes default project resources.  **Required permissions:** `account:admin`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param i_create_project_payload: (required)
         :type i_create_project_payload: ICreateProjectPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -252,8 +252,8 @@ class ProjectsApi:
         """ # noqa: E501
 
         _param = self._create_project_serialize(
-            i_create_project_payload=i_create_project_payload,
             x_api_version=x_api_version,
+            i_create_project_payload=i_create_project_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -274,8 +274,8 @@ class ProjectsApi:
 
     def _create_project_serialize(
         self,
-        i_create_project_payload,
         x_api_version,
+        i_create_project_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -357,7 +357,7 @@ class ProjectsApi:
     def delete_project(
         self,
         project_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -377,7 +377,7 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -430,7 +430,7 @@ class ProjectsApi:
     def delete_project_with_http_info(
         self,
         project_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -450,7 +450,7 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -503,7 +503,7 @@ class ProjectsApi:
     def delete_project_without_preload_content(
         self,
         project_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -523,7 +523,7 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -640,7 +640,7 @@ class ProjectsApi:
     def get_project(
         self,
         project_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -660,7 +660,7 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -713,7 +713,7 @@ class ProjectsApi:
     def get_project_with_http_info(
         self,
         project_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -733,7 +733,7 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -786,7 +786,7 @@ class ProjectsApi:
     def get_project_without_preload_content(
         self,
         project_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -806,7 +806,7 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -924,7 +924,7 @@ class ProjectsApi:
         self,
         project_id: StrictStr,
         process_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -946,7 +946,7 @@ class ProjectsApi:
         :type project_id: str
         :param process_id: (required)
         :type process_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1001,7 +1001,7 @@ class ProjectsApi:
         self,
         project_id: StrictStr,
         process_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1023,7 +1023,7 @@ class ProjectsApi:
         :type project_id: str
         :param process_id: (required)
         :type process_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1078,7 +1078,7 @@ class ProjectsApi:
         self,
         project_id: StrictStr,
         process_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1100,7 +1100,7 @@ class ProjectsApi:
         :type project_id: str
         :param process_id: (required)
         :type process_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1222,7 +1222,7 @@ class ProjectsApi:
         self,
         project_id: StrictStr,
         template_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1244,7 +1244,7 @@ class ProjectsApi:
         :type project_id: str
         :param template_id: (required)
         :type template_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1299,7 +1299,7 @@ class ProjectsApi:
         self,
         project_id: StrictStr,
         template_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1321,7 +1321,7 @@ class ProjectsApi:
         :type project_id: str
         :param template_id: (required)
         :type template_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1376,7 +1376,7 @@ class ProjectsApi:
         self,
         project_id: StrictStr,
         template_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1398,7 +1398,7 @@ class ProjectsApi:
         :type project_id: str
         :param template_id: (required)
         :type template_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1520,7 +1520,7 @@ class ProjectsApi:
         self,
         project_id: StrictStr,
         type_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1542,7 +1542,7 @@ class ProjectsApi:
         :type project_id: str
         :param type_id: (required)
         :type type_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1597,7 +1597,7 @@ class ProjectsApi:
         self,
         project_id: StrictStr,
         type_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1619,7 +1619,7 @@ class ProjectsApi:
         :type project_id: str
         :param type_id: (required)
         :type type_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1674,7 +1674,7 @@ class ProjectsApi:
         self,
         project_id: StrictStr,
         type_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1696,7 +1696,7 @@ class ProjectsApi:
         :type project_id: str
         :param type_id: (required)
         :type type_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1818,7 +1818,7 @@ class ProjectsApi:
         self,
         project_id: StrictStr,
         view_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1840,7 +1840,7 @@ class ProjectsApi:
         :type project_id: str
         :param view_id: (required)
         :type view_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1895,7 +1895,7 @@ class ProjectsApi:
         self,
         project_id: StrictStr,
         view_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1917,7 +1917,7 @@ class ProjectsApi:
         :type project_id: str
         :param view_id: (required)
         :type view_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1972,7 +1972,7 @@ class ProjectsApi:
         self,
         project_id: StrictStr,
         view_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1994,7 +1994,7 @@ class ProjectsApi:
         :type project_id: str
         :param view_id: (required)
         :type view_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2115,7 +2115,7 @@ class ProjectsApi:
     def get_project_composite_app(
         self,
         project_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2135,7 +2135,7 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2188,7 +2188,7 @@ class ProjectsApi:
     def get_project_composite_app_with_http_info(
         self,
         project_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2208,7 +2208,7 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2261,7 +2261,7 @@ class ProjectsApi:
     def get_project_composite_app_without_preload_content(
         self,
         project_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2281,7 +2281,7 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2399,7 +2399,7 @@ class ProjectsApi:
         self,
         project_id: StrictStr,
         integration_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2421,7 +2421,7 @@ class ProjectsApi:
         :type project_id: str
         :param integration_id: (required)
         :type integration_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2476,7 +2476,7 @@ class ProjectsApi:
         self,
         project_id: StrictStr,
         integration_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2498,7 +2498,7 @@ class ProjectsApi:
         :type project_id: str
         :param integration_id: (required)
         :type integration_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2553,7 +2553,7 @@ class ProjectsApi:
         self,
         project_id: StrictStr,
         integration_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2575,7 +2575,7 @@ class ProjectsApi:
         :type project_id: str
         :param integration_id: (required)
         :type integration_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2697,7 +2697,7 @@ class ProjectsApi:
         self,
         project_id: StrictStr,
         tool_name: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2719,7 +2719,7 @@ class ProjectsApi:
         :type project_id: str
         :param tool_name: (required)
         :type tool_name: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2774,7 +2774,7 @@ class ProjectsApi:
         self,
         project_id: StrictStr,
         tool_name: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2796,7 +2796,7 @@ class ProjectsApi:
         :type project_id: str
         :param tool_name: (required)
         :type tool_name: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2851,7 +2851,7 @@ class ProjectsApi:
         self,
         project_id: StrictStr,
         tool_name: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2873,7 +2873,7 @@ class ProjectsApi:
         :type project_id: str
         :param tool_name: (required)
         :type tool_name: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2994,8 +2994,8 @@ class ProjectsApi:
     def list_project_app_processes(
         self,
         project_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         tag: Optional[StrictStr] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3015,10 +3015,10 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param tag:
         :type tag: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3043,8 +3043,8 @@ class ProjectsApi:
 
         _param = self._list_project_app_processes_serialize(
             project_id=project_id,
-            tag=tag,
             x_api_version=x_api_version,
+            tag=tag,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3071,8 +3071,8 @@ class ProjectsApi:
     def list_project_app_processes_with_http_info(
         self,
         project_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         tag: Optional[StrictStr] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3092,10 +3092,10 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param tag:
         :type tag: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3120,8 +3120,8 @@ class ProjectsApi:
 
         _param = self._list_project_app_processes_serialize(
             project_id=project_id,
-            tag=tag,
             x_api_version=x_api_version,
+            tag=tag,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3148,8 +3148,8 @@ class ProjectsApi:
     def list_project_app_processes_without_preload_content(
         self,
         project_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         tag: Optional[StrictStr] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3169,10 +3169,10 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param tag:
         :type tag: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3197,8 +3197,8 @@ class ProjectsApi:
 
         _param = self._list_project_app_processes_serialize(
             project_id=project_id,
-            tag=tag,
             x_api_version=x_api_version,
+            tag=tag,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3220,8 +3220,8 @@ class ProjectsApi:
     def _list_project_app_processes_serialize(
         self,
         project_id,
-        tag,
         x_api_version,
+        tag,
         _request_auth,
         _content_type,
         _headers,
@@ -3294,8 +3294,8 @@ class ProjectsApi:
     def list_project_app_templates(
         self,
         project_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         tag: Optional[StrictStr] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3315,10 +3315,10 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param tag:
         :type tag: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3343,8 +3343,8 @@ class ProjectsApi:
 
         _param = self._list_project_app_templates_serialize(
             project_id=project_id,
-            tag=tag,
             x_api_version=x_api_version,
+            tag=tag,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3371,8 +3371,8 @@ class ProjectsApi:
     def list_project_app_templates_with_http_info(
         self,
         project_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         tag: Optional[StrictStr] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3392,10 +3392,10 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param tag:
         :type tag: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3420,8 +3420,8 @@ class ProjectsApi:
 
         _param = self._list_project_app_templates_serialize(
             project_id=project_id,
-            tag=tag,
             x_api_version=x_api_version,
+            tag=tag,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3448,8 +3448,8 @@ class ProjectsApi:
     def list_project_app_templates_without_preload_content(
         self,
         project_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         tag: Optional[StrictStr] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3469,10 +3469,10 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param tag:
         :type tag: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3497,8 +3497,8 @@ class ProjectsApi:
 
         _param = self._list_project_app_templates_serialize(
             project_id=project_id,
-            tag=tag,
             x_api_version=x_api_version,
+            tag=tag,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3520,8 +3520,8 @@ class ProjectsApi:
     def _list_project_app_templates_serialize(
         self,
         project_id,
-        tag,
         x_api_version,
+        tag,
         _request_auth,
         _content_type,
         _headers,
@@ -3594,8 +3594,8 @@ class ProjectsApi:
     def list_project_app_types(
         self,
         project_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         tag: Optional[StrictStr] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3615,10 +3615,10 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param tag:
         :type tag: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3643,8 +3643,8 @@ class ProjectsApi:
 
         _param = self._list_project_app_types_serialize(
             project_id=project_id,
-            tag=tag,
             x_api_version=x_api_version,
+            tag=tag,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3671,8 +3671,8 @@ class ProjectsApi:
     def list_project_app_types_with_http_info(
         self,
         project_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         tag: Optional[StrictStr] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3692,10 +3692,10 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param tag:
         :type tag: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3720,8 +3720,8 @@ class ProjectsApi:
 
         _param = self._list_project_app_types_serialize(
             project_id=project_id,
-            tag=tag,
             x_api_version=x_api_version,
+            tag=tag,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3748,8 +3748,8 @@ class ProjectsApi:
     def list_project_app_types_without_preload_content(
         self,
         project_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         tag: Optional[StrictStr] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3769,10 +3769,10 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param tag:
         :type tag: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3797,8 +3797,8 @@ class ProjectsApi:
 
         _param = self._list_project_app_types_serialize(
             project_id=project_id,
-            tag=tag,
             x_api_version=x_api_version,
+            tag=tag,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3820,8 +3820,8 @@ class ProjectsApi:
     def _list_project_app_types_serialize(
         self,
         project_id,
-        tag,
         x_api_version,
+        tag,
         _request_auth,
         _content_type,
         _headers,
@@ -3894,8 +3894,8 @@ class ProjectsApi:
     def list_project_app_views(
         self,
         project_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         tag: Optional[StrictStr] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3915,10 +3915,10 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param tag:
         :type tag: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3943,8 +3943,8 @@ class ProjectsApi:
 
         _param = self._list_project_app_views_serialize(
             project_id=project_id,
-            tag=tag,
             x_api_version=x_api_version,
+            tag=tag,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3971,8 +3971,8 @@ class ProjectsApi:
     def list_project_app_views_with_http_info(
         self,
         project_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         tag: Optional[StrictStr] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3992,10 +3992,10 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param tag:
         :type tag: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4020,8 +4020,8 @@ class ProjectsApi:
 
         _param = self._list_project_app_views_serialize(
             project_id=project_id,
-            tag=tag,
             x_api_version=x_api_version,
+            tag=tag,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4048,8 +4048,8 @@ class ProjectsApi:
     def list_project_app_views_without_preload_content(
         self,
         project_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         tag: Optional[StrictStr] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4069,10 +4069,10 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param tag:
         :type tag: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4097,8 +4097,8 @@ class ProjectsApi:
 
         _param = self._list_project_app_views_serialize(
             project_id=project_id,
-            tag=tag,
             x_api_version=x_api_version,
+            tag=tag,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4120,8 +4120,8 @@ class ProjectsApi:
     def _list_project_app_views_serialize(
         self,
         project_id,
-        tag,
         x_api_version,
+        tag,
         _request_auth,
         _content_type,
         _headers,
@@ -4194,7 +4194,7 @@ class ProjectsApi:
     def list_project_integrations(
         self,
         project_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4214,7 +4214,7 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -4267,7 +4267,7 @@ class ProjectsApi:
     def list_project_integrations_with_http_info(
         self,
         project_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4287,7 +4287,7 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -4340,7 +4340,7 @@ class ProjectsApi:
     def list_project_integrations_without_preload_content(
         self,
         project_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4360,7 +4360,7 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -4477,7 +4477,7 @@ class ProjectsApi:
     def list_project_plugins(
         self,
         project_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4497,7 +4497,7 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -4550,7 +4550,7 @@ class ProjectsApi:
     def list_project_plugins_with_http_info(
         self,
         project_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4570,7 +4570,7 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -4623,7 +4623,7 @@ class ProjectsApi:
     def list_project_plugins_without_preload_content(
         self,
         project_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4643,7 +4643,7 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -4760,7 +4760,7 @@ class ProjectsApi:
     def list_project_tools(
         self,
         project_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4780,7 +4780,7 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -4833,7 +4833,7 @@ class ProjectsApi:
     def list_project_tools_with_http_info(
         self,
         project_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4853,7 +4853,7 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -4906,7 +4906,7 @@ class ProjectsApi:
     def list_project_tools_without_preload_content(
         self,
         project_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4926,7 +4926,7 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -5042,8 +5042,8 @@ class ProjectsApi:
     @validate_call
     def list_projects(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         account: Optional[StrictStr] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5061,10 +5061,10 @@ class ProjectsApi:
 
         Lists projects visible to the current principal.
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param account:
         :type account: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -5088,8 +5088,8 @@ class ProjectsApi:
         """ # noqa: E501
 
         _param = self._list_projects_serialize(
-            account=account,
             x_api_version=x_api_version,
+            account=account,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -5115,8 +5115,8 @@ class ProjectsApi:
     @validate_call
     def list_projects_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         account: Optional[StrictStr] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5134,10 +5134,10 @@ class ProjectsApi:
 
         Lists projects visible to the current principal.
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param account:
         :type account: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -5161,8 +5161,8 @@ class ProjectsApi:
         """ # noqa: E501
 
         _param = self._list_projects_serialize(
-            account=account,
             x_api_version=x_api_version,
+            account=account,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -5188,8 +5188,8 @@ class ProjectsApi:
     @validate_call
     def list_projects_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         account: Optional[StrictStr] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5207,10 +5207,10 @@ class ProjectsApi:
 
         Lists projects visible to the current principal.
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param account:
         :type account: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -5234,8 +5234,8 @@ class ProjectsApi:
         """ # noqa: E501
 
         _param = self._list_projects_serialize(
-            account=account,
             x_api_version=x_api_version,
+            account=account,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -5256,8 +5256,8 @@ class ProjectsApi:
 
     def _list_projects_serialize(
         self,
-        account,
         x_api_version,
+        account,
         _request_auth,
         _content_type,
         _headers,
@@ -5328,8 +5328,8 @@ class ProjectsApi:
     def update_project(
         self,
         project_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_project_payload: UpdateProjectPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5349,10 +5349,10 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param update_project_payload: (required)
         :type update_project_payload: UpdateProjectPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -5377,8 +5377,8 @@ class ProjectsApi:
 
         _param = self._update_project_serialize(
             project_id=project_id,
-            update_project_payload=update_project_payload,
             x_api_version=x_api_version,
+            update_project_payload=update_project_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -5405,8 +5405,8 @@ class ProjectsApi:
     def update_project_with_http_info(
         self,
         project_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_project_payload: UpdateProjectPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5426,10 +5426,10 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param update_project_payload: (required)
         :type update_project_payload: UpdateProjectPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -5454,8 +5454,8 @@ class ProjectsApi:
 
         _param = self._update_project_serialize(
             project_id=project_id,
-            update_project_payload=update_project_payload,
             x_api_version=x_api_version,
+            update_project_payload=update_project_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -5482,8 +5482,8 @@ class ProjectsApi:
     def update_project_without_preload_content(
         self,
         project_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_project_payload: UpdateProjectPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5503,10 +5503,10 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param update_project_payload: (required)
         :type update_project_payload: UpdateProjectPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -5531,8 +5531,8 @@ class ProjectsApi:
 
         _param = self._update_project_serialize(
             project_id=project_id,
-            update_project_payload=update_project_payload,
             x_api_version=x_api_version,
+            update_project_payload=update_project_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -5554,8 +5554,8 @@ class ProjectsApi:
     def _update_project_serialize(
         self,
         project_id,
-        update_project_payload,
         x_api_version,
+        update_project_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -5639,8 +5639,8 @@ class ProjectsApi:
     def update_project_composite_app(
         self,
         project_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         composite_app_config_payload: CompositeAppConfigPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5660,10 +5660,10 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param composite_app_config_payload: (required)
         :type composite_app_config_payload: CompositeAppConfigPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -5688,8 +5688,8 @@ class ProjectsApi:
 
         _param = self._update_project_composite_app_serialize(
             project_id=project_id,
-            composite_app_config_payload=composite_app_config_payload,
             x_api_version=x_api_version,
+            composite_app_config_payload=composite_app_config_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -5717,8 +5717,8 @@ class ProjectsApi:
     def update_project_composite_app_with_http_info(
         self,
         project_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         composite_app_config_payload: CompositeAppConfigPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5738,10 +5738,10 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param composite_app_config_payload: (required)
         :type composite_app_config_payload: CompositeAppConfigPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -5766,8 +5766,8 @@ class ProjectsApi:
 
         _param = self._update_project_composite_app_serialize(
             project_id=project_id,
-            composite_app_config_payload=composite_app_config_payload,
             x_api_version=x_api_version,
+            composite_app_config_payload=composite_app_config_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -5795,8 +5795,8 @@ class ProjectsApi:
     def update_project_composite_app_without_preload_content(
         self,
         project_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         composite_app_config_payload: CompositeAppConfigPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5816,10 +5816,10 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param composite_app_config_payload: (required)
         :type composite_app_config_payload: CompositeAppConfigPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -5844,8 +5844,8 @@ class ProjectsApi:
 
         _param = self._update_project_composite_app_serialize(
             project_id=project_id,
-            composite_app_config_payload=composite_app_config_payload,
             x_api_version=x_api_version,
+            composite_app_config_payload=composite_app_config_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -5868,8 +5868,8 @@ class ProjectsApi:
     def _update_project_composite_app_serialize(
         self,
         project_id,
-        composite_app_config_payload,
         x_api_version,
+        composite_app_config_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -5953,8 +5953,8 @@ class ProjectsApi:
     def update_project_configuration(
         self,
         project_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_project_configuration_payload: UpdateProjectConfigurationPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5974,10 +5974,10 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param update_project_configuration_payload: (required)
         :type update_project_configuration_payload: UpdateProjectConfigurationPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -6002,8 +6002,8 @@ class ProjectsApi:
 
         _param = self._update_project_configuration_serialize(
             project_id=project_id,
-            update_project_configuration_payload=update_project_configuration_payload,
             x_api_version=x_api_version,
+            update_project_configuration_payload=update_project_configuration_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -6030,8 +6030,8 @@ class ProjectsApi:
     def update_project_configuration_with_http_info(
         self,
         project_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_project_configuration_payload: UpdateProjectConfigurationPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -6051,10 +6051,10 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param update_project_configuration_payload: (required)
         :type update_project_configuration_payload: UpdateProjectConfigurationPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -6079,8 +6079,8 @@ class ProjectsApi:
 
         _param = self._update_project_configuration_serialize(
             project_id=project_id,
-            update_project_configuration_payload=update_project_configuration_payload,
             x_api_version=x_api_version,
+            update_project_configuration_payload=update_project_configuration_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -6107,8 +6107,8 @@ class ProjectsApi:
     def update_project_configuration_without_preload_content(
         self,
         project_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_project_configuration_payload: UpdateProjectConfigurationPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -6128,10 +6128,10 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param update_project_configuration_payload: (required)
         :type update_project_configuration_payload: UpdateProjectConfigurationPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -6156,8 +6156,8 @@ class ProjectsApi:
 
         _param = self._update_project_configuration_serialize(
             project_id=project_id,
-            update_project_configuration_payload=update_project_configuration_payload,
             x_api_version=x_api_version,
+            update_project_configuration_payload=update_project_configuration_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -6179,8 +6179,8 @@ class ProjectsApi:
     def _update_project_configuration_serialize(
         self,
         project_id,
-        update_project_configuration_payload,
         x_api_version,
+        update_project_configuration_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -6265,8 +6265,8 @@ class ProjectsApi:
         self,
         project_id: StrictStr,
         integration_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         project_integration_config_request: ProjectIntegrationConfigRequest,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -6288,10 +6288,10 @@ class ProjectsApi:
         :type project_id: str
         :param integration_id: (required)
         :type integration_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param project_integration_config_request: (required)
         :type project_integration_config_request: ProjectIntegrationConfigRequest
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -6317,8 +6317,8 @@ class ProjectsApi:
         _param = self._update_project_integration_serialize(
             project_id=project_id,
             integration_id=integration_id,
-            project_integration_config_request=project_integration_config_request,
             x_api_version=x_api_version,
+            project_integration_config_request=project_integration_config_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -6346,8 +6346,8 @@ class ProjectsApi:
         self,
         project_id: StrictStr,
         integration_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         project_integration_config_request: ProjectIntegrationConfigRequest,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -6369,10 +6369,10 @@ class ProjectsApi:
         :type project_id: str
         :param integration_id: (required)
         :type integration_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param project_integration_config_request: (required)
         :type project_integration_config_request: ProjectIntegrationConfigRequest
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -6398,8 +6398,8 @@ class ProjectsApi:
         _param = self._update_project_integration_serialize(
             project_id=project_id,
             integration_id=integration_id,
-            project_integration_config_request=project_integration_config_request,
             x_api_version=x_api_version,
+            project_integration_config_request=project_integration_config_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -6427,8 +6427,8 @@ class ProjectsApi:
         self,
         project_id: StrictStr,
         integration_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         project_integration_config_request: ProjectIntegrationConfigRequest,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -6450,10 +6450,10 @@ class ProjectsApi:
         :type project_id: str
         :param integration_id: (required)
         :type integration_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param project_integration_config_request: (required)
         :type project_integration_config_request: ProjectIntegrationConfigRequest
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -6479,8 +6479,8 @@ class ProjectsApi:
         _param = self._update_project_integration_serialize(
             project_id=project_id,
             integration_id=integration_id,
-            project_integration_config_request=project_integration_config_request,
             x_api_version=x_api_version,
+            project_integration_config_request=project_integration_config_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -6503,8 +6503,8 @@ class ProjectsApi:
         self,
         project_id,
         integration_id,
-        project_integration_config_request,
         x_api_version,
+        project_integration_config_request,
         _request_auth,
         _content_type,
         _headers,
@@ -6590,8 +6590,8 @@ class ProjectsApi:
     def update_project_plugins(
         self,
         project_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         project_plugins_update_payload: ProjectPluginsUpdatePayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -6611,10 +6611,10 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param project_plugins_update_payload: (required)
         :type project_plugins_update_payload: ProjectPluginsUpdatePayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -6639,8 +6639,8 @@ class ProjectsApi:
 
         _param = self._update_project_plugins_serialize(
             project_id=project_id,
-            project_plugins_update_payload=project_plugins_update_payload,
             x_api_version=x_api_version,
+            project_plugins_update_payload=project_plugins_update_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -6667,8 +6667,8 @@ class ProjectsApi:
     def update_project_plugins_with_http_info(
         self,
         project_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         project_plugins_update_payload: ProjectPluginsUpdatePayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -6688,10 +6688,10 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param project_plugins_update_payload: (required)
         :type project_plugins_update_payload: ProjectPluginsUpdatePayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -6716,8 +6716,8 @@ class ProjectsApi:
 
         _param = self._update_project_plugins_serialize(
             project_id=project_id,
-            project_plugins_update_payload=project_plugins_update_payload,
             x_api_version=x_api_version,
+            project_plugins_update_payload=project_plugins_update_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -6744,8 +6744,8 @@ class ProjectsApi:
     def update_project_plugins_without_preload_content(
         self,
         project_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         project_plugins_update_payload: ProjectPluginsUpdatePayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -6765,10 +6765,10 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param project_plugins_update_payload: (required)
         :type project_plugins_update_payload: ProjectPluginsUpdatePayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -6793,8 +6793,8 @@ class ProjectsApi:
 
         _param = self._update_project_plugins_serialize(
             project_id=project_id,
-            project_plugins_update_payload=project_plugins_update_payload,
             x_api_version=x_api_version,
+            project_plugins_update_payload=project_plugins_update_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -6816,8 +6816,8 @@ class ProjectsApi:
     def _update_project_plugins_serialize(
         self,
         project_id,
-        project_plugins_update_payload,
         x_api_version,
+        project_plugins_update_payload,
         _request_auth,
         _content_type,
         _headers,

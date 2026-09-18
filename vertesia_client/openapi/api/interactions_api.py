@@ -15,7 +15,7 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import Field, StrictBool, StrictFloat, StrictInt, StrictStr
+from pydantic import Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, Dict, List, Optional, Union
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.async_execution_payload import AsyncExecutionPayload
@@ -71,8 +71,8 @@ class InteractionsApi:
     @validate_call
     def compute_interaction_facets(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         compute_interaction_facet_payload: ComputeInteractionFacetPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -90,10 +90,10 @@ class InteractionsApi:
 
         Computes aggregation buckets and counts for interaction filters such as tags, status, version, and prompt template.  **Required permissions:** `interaction:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param compute_interaction_facet_payload: (required)
         :type compute_interaction_facet_payload: ComputeInteractionFacetPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -117,8 +117,8 @@ class InteractionsApi:
         """ # noqa: E501
 
         _param = self._compute_interaction_facets_serialize(
-            compute_interaction_facet_payload=compute_interaction_facet_payload,
             x_api_version=x_api_version,
+            compute_interaction_facet_payload=compute_interaction_facet_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -144,8 +144,8 @@ class InteractionsApi:
     @validate_call
     def compute_interaction_facets_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         compute_interaction_facet_payload: ComputeInteractionFacetPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -163,10 +163,10 @@ class InteractionsApi:
 
         Computes aggregation buckets and counts for interaction filters such as tags, status, version, and prompt template.  **Required permissions:** `interaction:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param compute_interaction_facet_payload: (required)
         :type compute_interaction_facet_payload: ComputeInteractionFacetPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -190,8 +190,8 @@ class InteractionsApi:
         """ # noqa: E501
 
         _param = self._compute_interaction_facets_serialize(
-            compute_interaction_facet_payload=compute_interaction_facet_payload,
             x_api_version=x_api_version,
+            compute_interaction_facet_payload=compute_interaction_facet_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -217,8 +217,8 @@ class InteractionsApi:
     @validate_call
     def compute_interaction_facets_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         compute_interaction_facet_payload: ComputeInteractionFacetPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -236,10 +236,10 @@ class InteractionsApi:
 
         Computes aggregation buckets and counts for interaction filters such as tags, status, version, and prompt template.  **Required permissions:** `interaction:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param compute_interaction_facet_payload: (required)
         :type compute_interaction_facet_payload: ComputeInteractionFacetPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -263,8 +263,8 @@ class InteractionsApi:
         """ # noqa: E501
 
         _param = self._compute_interaction_facets_serialize(
-            compute_interaction_facet_payload=compute_interaction_facet_payload,
             x_api_version=x_api_version,
+            compute_interaction_facet_payload=compute_interaction_facet_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -285,8 +285,8 @@ class InteractionsApi:
 
     def _compute_interaction_facets_serialize(
         self,
-        compute_interaction_facet_payload,
         x_api_version,
+        compute_interaction_facet_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -367,8 +367,8 @@ class InteractionsApi:
     @validate_call
     def create_interaction(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         interaction_create_payload: InteractionCreatePayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -386,10 +386,10 @@ class InteractionsApi:
 
         Creates a draft interaction in the current project.  **Required permissions:** `interaction:write`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param interaction_create_payload: (required)
         :type interaction_create_payload: InteractionCreatePayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -413,8 +413,8 @@ class InteractionsApi:
         """ # noqa: E501
 
         _param = self._create_interaction_serialize(
-            interaction_create_payload=interaction_create_payload,
             x_api_version=x_api_version,
+            interaction_create_payload=interaction_create_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -440,8 +440,8 @@ class InteractionsApi:
     @validate_call
     def create_interaction_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         interaction_create_payload: InteractionCreatePayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -459,10 +459,10 @@ class InteractionsApi:
 
         Creates a draft interaction in the current project.  **Required permissions:** `interaction:write`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param interaction_create_payload: (required)
         :type interaction_create_payload: InteractionCreatePayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -486,8 +486,8 @@ class InteractionsApi:
         """ # noqa: E501
 
         _param = self._create_interaction_serialize(
-            interaction_create_payload=interaction_create_payload,
             x_api_version=x_api_version,
+            interaction_create_payload=interaction_create_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -513,8 +513,8 @@ class InteractionsApi:
     @validate_call
     def create_interaction_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         interaction_create_payload: InteractionCreatePayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -532,10 +532,10 @@ class InteractionsApi:
 
         Creates a draft interaction in the current project.  **Required permissions:** `interaction:write`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param interaction_create_payload: (required)
         :type interaction_create_payload: InteractionCreatePayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -559,8 +559,8 @@ class InteractionsApi:
         """ # noqa: E501
 
         _param = self._create_interaction_serialize(
-            interaction_create_payload=interaction_create_payload,
             x_api_version=x_api_version,
+            interaction_create_payload=interaction_create_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -581,8 +581,8 @@ class InteractionsApi:
 
     def _create_interaction_serialize(
         self,
-        interaction_create_payload,
         x_api_version,
+        interaction_create_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -664,7 +664,7 @@ class InteractionsApi:
     def delete_interaction(
         self,
         interaction_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -684,7 +684,7 @@ class InteractionsApi:
 
         :param interaction_id: (required)
         :type interaction_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -737,7 +737,7 @@ class InteractionsApi:
     def delete_interaction_with_http_info(
         self,
         interaction_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -757,7 +757,7 @@ class InteractionsApi:
 
         :param interaction_id: (required)
         :type interaction_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -810,7 +810,7 @@ class InteractionsApi:
     def delete_interaction_without_preload_content(
         self,
         interaction_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -830,7 +830,7 @@ class InteractionsApi:
 
         :param interaction_id: (required)
         :type interaction_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -947,8 +947,8 @@ class InteractionsApi:
     def execute_interaction(
         self,
         interaction_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         interaction_execution_payload: InteractionExecutionPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -968,10 +968,10 @@ class InteractionsApi:
 
         :param interaction_id: (required)
         :type interaction_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param interaction_execution_payload: (required)
         :type interaction_execution_payload: InteractionExecutionPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -996,8 +996,8 @@ class InteractionsApi:
 
         _param = self._execute_interaction_serialize(
             interaction_id=interaction_id,
-            interaction_execution_payload=interaction_execution_payload,
             x_api_version=x_api_version,
+            interaction_execution_payload=interaction_execution_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1024,8 +1024,8 @@ class InteractionsApi:
     def execute_interaction_with_http_info(
         self,
         interaction_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         interaction_execution_payload: InteractionExecutionPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1045,10 +1045,10 @@ class InteractionsApi:
 
         :param interaction_id: (required)
         :type interaction_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param interaction_execution_payload: (required)
         :type interaction_execution_payload: InteractionExecutionPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1073,8 +1073,8 @@ class InteractionsApi:
 
         _param = self._execute_interaction_serialize(
             interaction_id=interaction_id,
-            interaction_execution_payload=interaction_execution_payload,
             x_api_version=x_api_version,
+            interaction_execution_payload=interaction_execution_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1101,8 +1101,8 @@ class InteractionsApi:
     def execute_interaction_without_preload_content(
         self,
         interaction_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         interaction_execution_payload: InteractionExecutionPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1122,10 +1122,10 @@ class InteractionsApi:
 
         :param interaction_id: (required)
         :type interaction_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param interaction_execution_payload: (required)
         :type interaction_execution_payload: InteractionExecutionPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1150,8 +1150,8 @@ class InteractionsApi:
 
         _param = self._execute_interaction_serialize(
             interaction_id=interaction_id,
-            interaction_execution_payload=interaction_execution_payload,
             x_api_version=x_api_version,
+            interaction_execution_payload=interaction_execution_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1173,8 +1173,8 @@ class InteractionsApi:
     def _execute_interaction_serialize(
         self,
         interaction_id,
-        interaction_execution_payload,
         x_api_version,
+        interaction_execution_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -1257,8 +1257,8 @@ class InteractionsApi:
     @validate_call
     def execute_interaction_async(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         async_execution_payload: AsyncExecutionPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1276,10 +1276,10 @@ class InteractionsApi:
 
         Starts an asynchronous interaction or conversation execution and returns the workflow and run identifiers.  **Required permissions:** `interaction:execute`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param async_execution_payload: (required)
         :type async_execution_payload: AsyncExecutionPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1303,8 +1303,8 @@ class InteractionsApi:
         """ # noqa: E501
 
         _param = self._execute_interaction_async_serialize(
-            async_execution_payload=async_execution_payload,
             x_api_version=x_api_version,
+            async_execution_payload=async_execution_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1330,8 +1330,8 @@ class InteractionsApi:
     @validate_call
     def execute_interaction_async_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         async_execution_payload: AsyncExecutionPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1349,10 +1349,10 @@ class InteractionsApi:
 
         Starts an asynchronous interaction or conversation execution and returns the workflow and run identifiers.  **Required permissions:** `interaction:execute`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param async_execution_payload: (required)
         :type async_execution_payload: AsyncExecutionPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1376,8 +1376,8 @@ class InteractionsApi:
         """ # noqa: E501
 
         _param = self._execute_interaction_async_serialize(
-            async_execution_payload=async_execution_payload,
             x_api_version=x_api_version,
+            async_execution_payload=async_execution_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1403,8 +1403,8 @@ class InteractionsApi:
     @validate_call
     def execute_interaction_async_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         async_execution_payload: AsyncExecutionPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1422,10 +1422,10 @@ class InteractionsApi:
 
         Starts an asynchronous interaction or conversation execution and returns the workflow and run identifiers.  **Required permissions:** `interaction:execute`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param async_execution_payload: (required)
         :type async_execution_payload: AsyncExecutionPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1449,8 +1449,8 @@ class InteractionsApi:
         """ # noqa: E501
 
         _param = self._execute_interaction_async_serialize(
-            async_execution_payload=async_execution_payload,
             x_api_version=x_api_version,
+            async_execution_payload=async_execution_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1471,8 +1471,8 @@ class InteractionsApi:
 
     def _execute_interaction_async_serialize(
         self,
-        async_execution_payload,
         x_api_version,
+        async_execution_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -1554,10 +1554,10 @@ class InteractionsApi:
     def execute_interaction_by_endpoint(
         self,
         endpoint: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         interaction_execution_payload: InteractionExecutionPayload,
         tag: Optional[StrictStr] = None,
         x_interaction_tag: Optional[StrictStr] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1577,14 +1577,14 @@ class InteractionsApi:
 
         :param endpoint: (required)
         :type endpoint: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param interaction_execution_payload: (required)
         :type interaction_execution_payload: InteractionExecutionPayload
         :param tag:
         :type tag: str
         :param x_interaction_tag:
         :type x_interaction_tag: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1609,10 +1609,10 @@ class InteractionsApi:
 
         _param = self._execute_interaction_by_endpoint_serialize(
             endpoint=endpoint,
+            x_api_version=x_api_version,
             interaction_execution_payload=interaction_execution_payload,
             tag=tag,
             x_interaction_tag=x_interaction_tag,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1639,10 +1639,10 @@ class InteractionsApi:
     def execute_interaction_by_endpoint_with_http_info(
         self,
         endpoint: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         interaction_execution_payload: InteractionExecutionPayload,
         tag: Optional[StrictStr] = None,
         x_interaction_tag: Optional[StrictStr] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1662,14 +1662,14 @@ class InteractionsApi:
 
         :param endpoint: (required)
         :type endpoint: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param interaction_execution_payload: (required)
         :type interaction_execution_payload: InteractionExecutionPayload
         :param tag:
         :type tag: str
         :param x_interaction_tag:
         :type x_interaction_tag: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1694,10 +1694,10 @@ class InteractionsApi:
 
         _param = self._execute_interaction_by_endpoint_serialize(
             endpoint=endpoint,
+            x_api_version=x_api_version,
             interaction_execution_payload=interaction_execution_payload,
             tag=tag,
             x_interaction_tag=x_interaction_tag,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1724,10 +1724,10 @@ class InteractionsApi:
     def execute_interaction_by_endpoint_without_preload_content(
         self,
         endpoint: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         interaction_execution_payload: InteractionExecutionPayload,
         tag: Optional[StrictStr] = None,
         x_interaction_tag: Optional[StrictStr] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1747,14 +1747,14 @@ class InteractionsApi:
 
         :param endpoint: (required)
         :type endpoint: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param interaction_execution_payload: (required)
         :type interaction_execution_payload: InteractionExecutionPayload
         :param tag:
         :type tag: str
         :param x_interaction_tag:
         :type x_interaction_tag: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1779,10 +1779,10 @@ class InteractionsApi:
 
         _param = self._execute_interaction_by_endpoint_serialize(
             endpoint=endpoint,
+            x_api_version=x_api_version,
             interaction_execution_payload=interaction_execution_payload,
             tag=tag,
             x_interaction_tag=x_interaction_tag,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1804,10 +1804,10 @@ class InteractionsApi:
     def _execute_interaction_by_endpoint_serialize(
         self,
         endpoint,
+        x_api_version,
         interaction_execution_payload,
         tag,
         x_interaction_tag,
-        x_api_version,
         _request_auth,
         _content_type,
         _headers,
@@ -1896,8 +1896,8 @@ class InteractionsApi:
     @validate_call
     def execute_named_interaction(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         named_interaction_execution_payload: NamedInteractionExecutionPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1915,10 +1915,10 @@ class InteractionsApi:
 
         Executes an interaction selected by name, tag, or version and returns the interaction run result.  **Required permissions:** `interaction:execute`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param named_interaction_execution_payload: (required)
         :type named_interaction_execution_payload: NamedInteractionExecutionPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1942,8 +1942,8 @@ class InteractionsApi:
         """ # noqa: E501
 
         _param = self._execute_named_interaction_serialize(
-            named_interaction_execution_payload=named_interaction_execution_payload,
             x_api_version=x_api_version,
+            named_interaction_execution_payload=named_interaction_execution_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1969,8 +1969,8 @@ class InteractionsApi:
     @validate_call
     def execute_named_interaction_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         named_interaction_execution_payload: NamedInteractionExecutionPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1988,10 +1988,10 @@ class InteractionsApi:
 
         Executes an interaction selected by name, tag, or version and returns the interaction run result.  **Required permissions:** `interaction:execute`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param named_interaction_execution_payload: (required)
         :type named_interaction_execution_payload: NamedInteractionExecutionPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2015,8 +2015,8 @@ class InteractionsApi:
         """ # noqa: E501
 
         _param = self._execute_named_interaction_serialize(
-            named_interaction_execution_payload=named_interaction_execution_payload,
             x_api_version=x_api_version,
+            named_interaction_execution_payload=named_interaction_execution_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2042,8 +2042,8 @@ class InteractionsApi:
     @validate_call
     def execute_named_interaction_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         named_interaction_execution_payload: NamedInteractionExecutionPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2061,10 +2061,10 @@ class InteractionsApi:
 
         Executes an interaction selected by name, tag, or version and returns the interaction run result.  **Required permissions:** `interaction:execute`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param named_interaction_execution_payload: (required)
         :type named_interaction_execution_payload: NamedInteractionExecutionPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2088,8 +2088,8 @@ class InteractionsApi:
         """ # noqa: E501
 
         _param = self._execute_named_interaction_serialize(
-            named_interaction_execution_payload=named_interaction_execution_payload,
             x_api_version=x_api_version,
+            named_interaction_execution_payload=named_interaction_execution_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2110,8 +2110,8 @@ class InteractionsApi:
 
     def _execute_named_interaction_serialize(
         self,
-        named_interaction_execution_payload,
         x_api_version,
+        named_interaction_execution_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -2192,8 +2192,8 @@ class InteractionsApi:
     @validate_call
     def export_interactions(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         interactions_export_payload: InteractionsExportPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2211,10 +2211,10 @@ class InteractionsApi:
 
         Exports interactions by name, tags, and selected versions, including prompt input schemas.  **Required permissions:** `interaction:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param interactions_export_payload: (required)
         :type interactions_export_payload: InteractionsExportPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2238,8 +2238,8 @@ class InteractionsApi:
         """ # noqa: E501
 
         _param = self._export_interactions_serialize(
-            interactions_export_payload=interactions_export_payload,
             x_api_version=x_api_version,
+            interactions_export_payload=interactions_export_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2265,8 +2265,8 @@ class InteractionsApi:
     @validate_call
     def export_interactions_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         interactions_export_payload: InteractionsExportPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2284,10 +2284,10 @@ class InteractionsApi:
 
         Exports interactions by name, tags, and selected versions, including prompt input schemas.  **Required permissions:** `interaction:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param interactions_export_payload: (required)
         :type interactions_export_payload: InteractionsExportPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2311,8 +2311,8 @@ class InteractionsApi:
         """ # noqa: E501
 
         _param = self._export_interactions_serialize(
-            interactions_export_payload=interactions_export_payload,
             x_api_version=x_api_version,
+            interactions_export_payload=interactions_export_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2338,8 +2338,8 @@ class InteractionsApi:
     @validate_call
     def export_interactions_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         interactions_export_payload: InteractionsExportPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2357,10 +2357,10 @@ class InteractionsApi:
 
         Exports interactions by name, tags, and selected versions, including prompt input schemas.  **Required permissions:** `interaction:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param interactions_export_payload: (required)
         :type interactions_export_payload: InteractionsExportPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2384,8 +2384,8 @@ class InteractionsApi:
         """ # noqa: E501
 
         _param = self._export_interactions_serialize(
-            interactions_export_payload=interactions_export_payload,
             x_api_version=x_api_version,
+            interactions_export_payload=interactions_export_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2406,8 +2406,8 @@ class InteractionsApi:
 
     def _export_interactions_serialize(
         self,
-        interactions_export_payload,
         x_api_version,
+        interactions_export_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -2489,8 +2489,8 @@ class InteractionsApi:
     def fork_interaction(
         self,
         interaction_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         interaction_fork_payload: InteractionForkPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2510,10 +2510,10 @@ class InteractionsApi:
 
         :param interaction_id: (required)
         :type interaction_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param interaction_fork_payload: (required)
         :type interaction_fork_payload: InteractionForkPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2538,8 +2538,8 @@ class InteractionsApi:
 
         _param = self._fork_interaction_serialize(
             interaction_id=interaction_id,
-            interaction_fork_payload=interaction_fork_payload,
             x_api_version=x_api_version,
+            interaction_fork_payload=interaction_fork_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2566,8 +2566,8 @@ class InteractionsApi:
     def fork_interaction_with_http_info(
         self,
         interaction_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         interaction_fork_payload: InteractionForkPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2587,10 +2587,10 @@ class InteractionsApi:
 
         :param interaction_id: (required)
         :type interaction_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param interaction_fork_payload: (required)
         :type interaction_fork_payload: InteractionForkPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2615,8 +2615,8 @@ class InteractionsApi:
 
         _param = self._fork_interaction_serialize(
             interaction_id=interaction_id,
-            interaction_fork_payload=interaction_fork_payload,
             x_api_version=x_api_version,
+            interaction_fork_payload=interaction_fork_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2643,8 +2643,8 @@ class InteractionsApi:
     def fork_interaction_without_preload_content(
         self,
         interaction_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         interaction_fork_payload: InteractionForkPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2664,10 +2664,10 @@ class InteractionsApi:
 
         :param interaction_id: (required)
         :type interaction_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param interaction_fork_payload: (required)
         :type interaction_fork_payload: InteractionForkPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2692,8 +2692,8 @@ class InteractionsApi:
 
         _param = self._fork_interaction_serialize(
             interaction_id=interaction_id,
-            interaction_fork_payload=interaction_fork_payload,
             x_api_version=x_api_version,
+            interaction_fork_payload=interaction_fork_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2715,8 +2715,8 @@ class InteractionsApi:
     def _fork_interaction_serialize(
         self,
         interaction_id,
-        interaction_fork_payload,
         x_api_version,
+        interaction_fork_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -2800,8 +2800,8 @@ class InteractionsApi:
     def generate_interaction(
         self,
         interaction_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         generate_interaction_payload: GenerateInteractionPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2821,10 +2821,10 @@ class InteractionsApi:
 
         :param interaction_id: (required)
         :type interaction_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param generate_interaction_payload: (required)
         :type generate_interaction_payload: GenerateInteractionPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2849,8 +2849,8 @@ class InteractionsApi:
 
         _param = self._generate_interaction_serialize(
             interaction_id=interaction_id,
-            generate_interaction_payload=generate_interaction_payload,
             x_api_version=x_api_version,
+            generate_interaction_payload=generate_interaction_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2877,8 +2877,8 @@ class InteractionsApi:
     def generate_interaction_with_http_info(
         self,
         interaction_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         generate_interaction_payload: GenerateInteractionPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2898,10 +2898,10 @@ class InteractionsApi:
 
         :param interaction_id: (required)
         :type interaction_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param generate_interaction_payload: (required)
         :type generate_interaction_payload: GenerateInteractionPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2926,8 +2926,8 @@ class InteractionsApi:
 
         _param = self._generate_interaction_serialize(
             interaction_id=interaction_id,
-            generate_interaction_payload=generate_interaction_payload,
             x_api_version=x_api_version,
+            generate_interaction_payload=generate_interaction_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2954,8 +2954,8 @@ class InteractionsApi:
     def generate_interaction_without_preload_content(
         self,
         interaction_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         generate_interaction_payload: GenerateInteractionPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2975,10 +2975,10 @@ class InteractionsApi:
 
         :param interaction_id: (required)
         :type interaction_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param generate_interaction_payload: (required)
         :type generate_interaction_payload: GenerateInteractionPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3003,8 +3003,8 @@ class InteractionsApi:
 
         _param = self._generate_interaction_serialize(
             interaction_id=interaction_id,
-            generate_interaction_payload=generate_interaction_payload,
             x_api_version=x_api_version,
+            generate_interaction_payload=generate_interaction_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3026,8 +3026,8 @@ class InteractionsApi:
     def _generate_interaction_serialize(
         self,
         interaction_id,
-        generate_interaction_payload,
         x_api_version,
+        generate_interaction_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -3111,8 +3111,8 @@ class InteractionsApi:
     def generate_interaction_test_data(
         self,
         interaction_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         generate_test_data_payload: GenerateTestDataPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3132,10 +3132,10 @@ class InteractionsApi:
 
         :param interaction_id: (required)
         :type interaction_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param generate_test_data_payload: (required)
         :type generate_test_data_payload: GenerateTestDataPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3160,8 +3160,8 @@ class InteractionsApi:
 
         _param = self._generate_interaction_test_data_serialize(
             interaction_id=interaction_id,
-            generate_test_data_payload=generate_test_data_payload,
             x_api_version=x_api_version,
+            generate_test_data_payload=generate_test_data_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3188,8 +3188,8 @@ class InteractionsApi:
     def generate_interaction_test_data_with_http_info(
         self,
         interaction_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         generate_test_data_payload: GenerateTestDataPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3209,10 +3209,10 @@ class InteractionsApi:
 
         :param interaction_id: (required)
         :type interaction_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param generate_test_data_payload: (required)
         :type generate_test_data_payload: GenerateTestDataPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3237,8 +3237,8 @@ class InteractionsApi:
 
         _param = self._generate_interaction_test_data_serialize(
             interaction_id=interaction_id,
-            generate_test_data_payload=generate_test_data_payload,
             x_api_version=x_api_version,
+            generate_test_data_payload=generate_test_data_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3265,8 +3265,8 @@ class InteractionsApi:
     def generate_interaction_test_data_without_preload_content(
         self,
         interaction_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         generate_test_data_payload: GenerateTestDataPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3286,10 +3286,10 @@ class InteractionsApi:
 
         :param interaction_id: (required)
         :type interaction_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param generate_test_data_payload: (required)
         :type generate_test_data_payload: GenerateTestDataPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3314,8 +3314,8 @@ class InteractionsApi:
 
         _param = self._generate_interaction_test_data_serialize(
             interaction_id=interaction_id,
-            generate_test_data_payload=generate_test_data_payload,
             x_api_version=x_api_version,
+            generate_test_data_payload=generate_test_data_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3337,8 +3337,8 @@ class InteractionsApi:
     def _generate_interaction_test_data_serialize(
         self,
         interaction_id,
-        generate_test_data_payload,
         x_api_version,
+        generate_test_data_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -3422,7 +3422,7 @@ class InteractionsApi:
     def get_interaction(
         self,
         interaction_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3442,7 +3442,7 @@ class InteractionsApi:
 
         :param interaction_id: (required)
         :type interaction_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -3495,7 +3495,7 @@ class InteractionsApi:
     def get_interaction_with_http_info(
         self,
         interaction_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3515,7 +3515,7 @@ class InteractionsApi:
 
         :param interaction_id: (required)
         :type interaction_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -3568,7 +3568,7 @@ class InteractionsApi:
     def get_interaction_without_preload_content(
         self,
         interaction_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3588,7 +3588,7 @@ class InteractionsApi:
 
         :param interaction_id: (required)
         :type interaction_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -3704,8 +3704,8 @@ class InteractionsApi:
     @validate_call
     def improve_prompt(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         improve_prompt_payload: ImprovePromptPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3723,10 +3723,10 @@ class InteractionsApi:
 
         Uses a system interaction to suggest improvements for prompt segments supplied in the request.  **Required permissions:** `interaction:execute`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param improve_prompt_payload: (required)
         :type improve_prompt_payload: ImprovePromptPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3750,8 +3750,8 @@ class InteractionsApi:
         """ # noqa: E501
 
         _param = self._improve_prompt_serialize(
-            improve_prompt_payload=improve_prompt_payload,
             x_api_version=x_api_version,
+            improve_prompt_payload=improve_prompt_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3777,8 +3777,8 @@ class InteractionsApi:
     @validate_call
     def improve_prompt_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         improve_prompt_payload: ImprovePromptPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3796,10 +3796,10 @@ class InteractionsApi:
 
         Uses a system interaction to suggest improvements for prompt segments supplied in the request.  **Required permissions:** `interaction:execute`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param improve_prompt_payload: (required)
         :type improve_prompt_payload: ImprovePromptPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3823,8 +3823,8 @@ class InteractionsApi:
         """ # noqa: E501
 
         _param = self._improve_prompt_serialize(
-            improve_prompt_payload=improve_prompt_payload,
             x_api_version=x_api_version,
+            improve_prompt_payload=improve_prompt_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3850,8 +3850,8 @@ class InteractionsApi:
     @validate_call
     def improve_prompt_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         improve_prompt_payload: ImprovePromptPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3869,10 +3869,10 @@ class InteractionsApi:
 
         Uses a system interaction to suggest improvements for prompt segments supplied in the request.  **Required permissions:** `interaction:execute`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param improve_prompt_payload: (required)
         :type improve_prompt_payload: ImprovePromptPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3896,8 +3896,8 @@ class InteractionsApi:
         """ # noqa: E501
 
         _param = self._improve_prompt_serialize(
-            improve_prompt_payload=improve_prompt_payload,
             x_api_version=x_api_version,
+            improve_prompt_payload=improve_prompt_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3918,8 +3918,8 @@ class InteractionsApi:
 
     def _improve_prompt_serialize(
         self,
-        improve_prompt_payload,
         x_api_version,
+        improve_prompt_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -4000,8 +4000,8 @@ class InteractionsApi:
     @validate_call
     def list_all_app_interactions(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         tag: Optional[StrictStr] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4019,10 +4019,10 @@ class InteractionsApi:
 
         Lists in-code interactions available from apps assigned to the current principal.  **Required permissions:** `interaction:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param tag:
         :type tag: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4046,8 +4046,8 @@ class InteractionsApi:
         """ # noqa: E501
 
         _param = self._list_all_app_interactions_serialize(
-            tag=tag,
             x_api_version=x_api_version,
+            tag=tag,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4073,8 +4073,8 @@ class InteractionsApi:
     @validate_call
     def list_all_app_interactions_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         tag: Optional[StrictStr] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4092,10 +4092,10 @@ class InteractionsApi:
 
         Lists in-code interactions available from apps assigned to the current principal.  **Required permissions:** `interaction:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param tag:
         :type tag: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4119,8 +4119,8 @@ class InteractionsApi:
         """ # noqa: E501
 
         _param = self._list_all_app_interactions_serialize(
-            tag=tag,
             x_api_version=x_api_version,
+            tag=tag,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4146,8 +4146,8 @@ class InteractionsApi:
     @validate_call
     def list_all_app_interactions_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         tag: Optional[StrictStr] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4165,10 +4165,10 @@ class InteractionsApi:
 
         Lists in-code interactions available from apps assigned to the current principal.  **Required permissions:** `interaction:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param tag:
         :type tag: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4192,8 +4192,8 @@ class InteractionsApi:
         """ # noqa: E501
 
         _param = self._list_all_app_interactions_serialize(
-            tag=tag,
             x_api_version=x_api_version,
+            tag=tag,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4214,8 +4214,8 @@ class InteractionsApi:
 
     def _list_all_app_interactions_serialize(
         self,
-        tag,
         x_api_version,
+        tag,
         _request_auth,
         _content_type,
         _headers,
@@ -4286,8 +4286,8 @@ class InteractionsApi:
     def list_app_interactions(
         self,
         app_name: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         tag: Optional[StrictStr] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4307,10 +4307,10 @@ class InteractionsApi:
 
         :param app_name: (required)
         :type app_name: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param tag:
         :type tag: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4335,8 +4335,8 @@ class InteractionsApi:
 
         _param = self._list_app_interactions_serialize(
             app_name=app_name,
-            tag=tag,
             x_api_version=x_api_version,
+            tag=tag,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4363,8 +4363,8 @@ class InteractionsApi:
     def list_app_interactions_with_http_info(
         self,
         app_name: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         tag: Optional[StrictStr] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4384,10 +4384,10 @@ class InteractionsApi:
 
         :param app_name: (required)
         :type app_name: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param tag:
         :type tag: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4412,8 +4412,8 @@ class InteractionsApi:
 
         _param = self._list_app_interactions_serialize(
             app_name=app_name,
-            tag=tag,
             x_api_version=x_api_version,
+            tag=tag,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4440,8 +4440,8 @@ class InteractionsApi:
     def list_app_interactions_without_preload_content(
         self,
         app_name: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         tag: Optional[StrictStr] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4461,10 +4461,10 @@ class InteractionsApi:
 
         :param app_name: (required)
         :type app_name: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param tag:
         :type tag: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4489,8 +4489,8 @@ class InteractionsApi:
 
         _param = self._list_app_interactions_serialize(
             app_name=app_name,
-            tag=tag,
             x_api_version=x_api_version,
+            tag=tag,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4512,8 +4512,8 @@ class InteractionsApi:
     def _list_app_interactions_serialize(
         self,
         app_name,
-        tag,
         x_api_version,
+        tag,
         _request_auth,
         _content_type,
         _headers,
@@ -4585,8 +4585,8 @@ class InteractionsApi:
     @validate_call
     def list_interaction_endpoints(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         interaction_endpoint_query: InteractionEndpointQuery,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4604,10 +4604,10 @@ class InteractionsApi:
 
         Lists executable interaction endpoint definitions, optionally including parameter and result schemas.  **Required permissions:** `interaction:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param interaction_endpoint_query: (required)
         :type interaction_endpoint_query: InteractionEndpointQuery
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4631,8 +4631,8 @@ class InteractionsApi:
         """ # noqa: E501
 
         _param = self._list_interaction_endpoints_serialize(
-            interaction_endpoint_query=interaction_endpoint_query,
             x_api_version=x_api_version,
+            interaction_endpoint_query=interaction_endpoint_query,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4658,8 +4658,8 @@ class InteractionsApi:
     @validate_call
     def list_interaction_endpoints_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         interaction_endpoint_query: InteractionEndpointQuery,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4677,10 +4677,10 @@ class InteractionsApi:
 
         Lists executable interaction endpoint definitions, optionally including parameter and result schemas.  **Required permissions:** `interaction:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param interaction_endpoint_query: (required)
         :type interaction_endpoint_query: InteractionEndpointQuery
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4704,8 +4704,8 @@ class InteractionsApi:
         """ # noqa: E501
 
         _param = self._list_interaction_endpoints_serialize(
-            interaction_endpoint_query=interaction_endpoint_query,
             x_api_version=x_api_version,
+            interaction_endpoint_query=interaction_endpoint_query,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4731,8 +4731,8 @@ class InteractionsApi:
     @validate_call
     def list_interaction_endpoints_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         interaction_endpoint_query: InteractionEndpointQuery,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4750,10 +4750,10 @@ class InteractionsApi:
 
         Lists executable interaction endpoint definitions, optionally including parameter and result schemas.  **Required permissions:** `interaction:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param interaction_endpoint_query: (required)
         :type interaction_endpoint_query: InteractionEndpointQuery
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4777,8 +4777,8 @@ class InteractionsApi:
         """ # noqa: E501
 
         _param = self._list_interaction_endpoints_serialize(
-            interaction_endpoint_query=interaction_endpoint_query,
             x_api_version=x_api_version,
+            interaction_endpoint_query=interaction_endpoint_query,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4799,8 +4799,8 @@ class InteractionsApi:
 
     def _list_interaction_endpoints_serialize(
         self,
-        interaction_endpoint_query,
         x_api_version,
+        interaction_endpoint_query,
         _request_auth,
         _content_type,
         _headers,
@@ -4882,7 +4882,7 @@ class InteractionsApi:
     def list_interaction_forks(
         self,
         interaction_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4902,7 +4902,7 @@ class InteractionsApi:
 
         :param interaction_id: (required)
         :type interaction_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -4955,7 +4955,7 @@ class InteractionsApi:
     def list_interaction_forks_with_http_info(
         self,
         interaction_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4975,7 +4975,7 @@ class InteractionsApi:
 
         :param interaction_id: (required)
         :type interaction_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -5028,7 +5028,7 @@ class InteractionsApi:
     def list_interaction_forks_without_preload_content(
         self,
         interaction_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5048,7 +5048,7 @@ class InteractionsApi:
 
         :param interaction_id: (required)
         :type interaction_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -5164,7 +5164,7 @@ class InteractionsApi:
     @validate_call
     def list_interaction_names(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5182,7 +5182,7 @@ class InteractionsApi:
 
         Lists draft interaction names in the current project.  **Required permissions:** `interaction:read`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -5233,7 +5233,7 @@ class InteractionsApi:
     @validate_call
     def list_interaction_names_with_http_info(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5251,7 +5251,7 @@ class InteractionsApi:
 
         Lists draft interaction names in the current project.  **Required permissions:** `interaction:read`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -5302,7 +5302,7 @@ class InteractionsApi:
     @validate_call
     def list_interaction_names_without_preload_content(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5320,7 +5320,7 @@ class InteractionsApi:
 
         Lists draft interaction names in the current project.  **Required permissions:** `interaction:read`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -5432,6 +5432,7 @@ class InteractionsApi:
     @validate_call
     def list_interaction_tags(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         name: Optional[StrictStr] = None,
         status: Optional[List[StrictStr]] = None,
         limit: Optional[Union[StrictFloat, StrictInt]] = None,
@@ -5446,7 +5447,6 @@ class InteractionsApi:
         is_skill: Optional[StrictBool] = None,
         is_basic: Optional[StrictBool] = None,
         is_sub_agent: Optional[StrictBool] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5464,6 +5464,8 @@ class InteractionsApi:
 
         Aggregates tag usage across interactions matching the current query filters.  **Required permissions:** `interaction:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param name:
         :type name: str
         :param status:
@@ -5492,8 +5494,6 @@ class InteractionsApi:
         :type is_basic: bool
         :param is_sub_agent:
         :type is_sub_agent: bool
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -5517,6 +5517,7 @@ class InteractionsApi:
         """ # noqa: E501
 
         _param = self._list_interaction_tags_serialize(
+            x_api_version=x_api_version,
             name=name,
             status=status,
             limit=limit,
@@ -5531,7 +5532,6 @@ class InteractionsApi:
             is_skill=is_skill,
             is_basic=is_basic,
             is_sub_agent=is_sub_agent,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -5557,6 +5557,7 @@ class InteractionsApi:
     @validate_call
     def list_interaction_tags_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         name: Optional[StrictStr] = None,
         status: Optional[List[StrictStr]] = None,
         limit: Optional[Union[StrictFloat, StrictInt]] = None,
@@ -5571,7 +5572,6 @@ class InteractionsApi:
         is_skill: Optional[StrictBool] = None,
         is_basic: Optional[StrictBool] = None,
         is_sub_agent: Optional[StrictBool] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5589,6 +5589,8 @@ class InteractionsApi:
 
         Aggregates tag usage across interactions matching the current query filters.  **Required permissions:** `interaction:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param name:
         :type name: str
         :param status:
@@ -5617,8 +5619,6 @@ class InteractionsApi:
         :type is_basic: bool
         :param is_sub_agent:
         :type is_sub_agent: bool
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -5642,6 +5642,7 @@ class InteractionsApi:
         """ # noqa: E501
 
         _param = self._list_interaction_tags_serialize(
+            x_api_version=x_api_version,
             name=name,
             status=status,
             limit=limit,
@@ -5656,7 +5657,6 @@ class InteractionsApi:
             is_skill=is_skill,
             is_basic=is_basic,
             is_sub_agent=is_sub_agent,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -5682,6 +5682,7 @@ class InteractionsApi:
     @validate_call
     def list_interaction_tags_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         name: Optional[StrictStr] = None,
         status: Optional[List[StrictStr]] = None,
         limit: Optional[Union[StrictFloat, StrictInt]] = None,
@@ -5696,7 +5697,6 @@ class InteractionsApi:
         is_skill: Optional[StrictBool] = None,
         is_basic: Optional[StrictBool] = None,
         is_sub_agent: Optional[StrictBool] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5714,6 +5714,8 @@ class InteractionsApi:
 
         Aggregates tag usage across interactions matching the current query filters.  **Required permissions:** `interaction:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param name:
         :type name: str
         :param status:
@@ -5742,8 +5744,6 @@ class InteractionsApi:
         :type is_basic: bool
         :param is_sub_agent:
         :type is_sub_agent: bool
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -5767,6 +5767,7 @@ class InteractionsApi:
         """ # noqa: E501
 
         _param = self._list_interaction_tags_serialize(
+            x_api_version=x_api_version,
             name=name,
             status=status,
             limit=limit,
@@ -5781,7 +5782,6 @@ class InteractionsApi:
             is_skill=is_skill,
             is_basic=is_basic,
             is_sub_agent=is_sub_agent,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -5802,6 +5802,7 @@ class InteractionsApi:
 
     def _list_interaction_tags_serialize(
         self,
+        x_api_version,
         name,
         status,
         limit,
@@ -5816,7 +5817,6 @@ class InteractionsApi:
         is_skill,
         is_basic,
         is_sub_agent,
-        x_api_version,
         _request_auth,
         _content_type,
         _headers,
@@ -5941,7 +5941,7 @@ class InteractionsApi:
     def list_interaction_versions(
         self,
         interaction_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5961,7 +5961,7 @@ class InteractionsApi:
 
         :param interaction_id: (required)
         :type interaction_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -6014,7 +6014,7 @@ class InteractionsApi:
     def list_interaction_versions_with_http_info(
         self,
         interaction_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -6034,7 +6034,7 @@ class InteractionsApi:
 
         :param interaction_id: (required)
         :type interaction_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -6087,7 +6087,7 @@ class InteractionsApi:
     def list_interaction_versions_without_preload_content(
         self,
         interaction_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -6107,7 +6107,7 @@ class InteractionsApi:
 
         :param interaction_id: (required)
         :type interaction_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -6224,7 +6224,7 @@ class InteractionsApi:
     def list_interaction_versions_by_name(
         self,
         name: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -6244,7 +6244,7 @@ class InteractionsApi:
 
         :param name: (required)
         :type name: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -6297,7 +6297,7 @@ class InteractionsApi:
     def list_interaction_versions_by_name_with_http_info(
         self,
         name: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -6317,7 +6317,7 @@ class InteractionsApi:
 
         :param name: (required)
         :type name: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -6370,7 +6370,7 @@ class InteractionsApi:
     def list_interaction_versions_by_name_without_preload_content(
         self,
         name: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -6390,7 +6390,7 @@ class InteractionsApi:
 
         :param name: (required)
         :type name: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -6506,6 +6506,7 @@ class InteractionsApi:
     @validate_call
     def list_interactions(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         name: Optional[StrictStr] = None,
         status: Optional[List[StrictStr]] = None,
         limit: Optional[Union[StrictFloat, StrictInt]] = None,
@@ -6520,7 +6521,6 @@ class InteractionsApi:
         is_skill: Optional[StrictBool] = None,
         is_basic: Optional[StrictBool] = None,
         is_sub_agent: Optional[StrictBool] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -6538,6 +6538,8 @@ class InteractionsApi:
 
         Lists interactions in the current project with query-string filters for name, status, version, tags, prompt, model, environment, and agent-runner capability flags.  **Required permissions:** `interaction:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param name:
         :type name: str
         :param status:
@@ -6566,8 +6568,6 @@ class InteractionsApi:
         :type is_basic: bool
         :param is_sub_agent:
         :type is_sub_agent: bool
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -6591,6 +6591,7 @@ class InteractionsApi:
         """ # noqa: E501
 
         _param = self._list_interactions_serialize(
+            x_api_version=x_api_version,
             name=name,
             status=status,
             limit=limit,
@@ -6605,7 +6606,6 @@ class InteractionsApi:
             is_skill=is_skill,
             is_basic=is_basic,
             is_sub_agent=is_sub_agent,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -6631,6 +6631,7 @@ class InteractionsApi:
     @validate_call
     def list_interactions_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         name: Optional[StrictStr] = None,
         status: Optional[List[StrictStr]] = None,
         limit: Optional[Union[StrictFloat, StrictInt]] = None,
@@ -6645,7 +6646,6 @@ class InteractionsApi:
         is_skill: Optional[StrictBool] = None,
         is_basic: Optional[StrictBool] = None,
         is_sub_agent: Optional[StrictBool] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -6663,6 +6663,8 @@ class InteractionsApi:
 
         Lists interactions in the current project with query-string filters for name, status, version, tags, prompt, model, environment, and agent-runner capability flags.  **Required permissions:** `interaction:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param name:
         :type name: str
         :param status:
@@ -6691,8 +6693,6 @@ class InteractionsApi:
         :type is_basic: bool
         :param is_sub_agent:
         :type is_sub_agent: bool
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -6716,6 +6716,7 @@ class InteractionsApi:
         """ # noqa: E501
 
         _param = self._list_interactions_serialize(
+            x_api_version=x_api_version,
             name=name,
             status=status,
             limit=limit,
@@ -6730,7 +6731,6 @@ class InteractionsApi:
             is_skill=is_skill,
             is_basic=is_basic,
             is_sub_agent=is_sub_agent,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -6756,6 +6756,7 @@ class InteractionsApi:
     @validate_call
     def list_interactions_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         name: Optional[StrictStr] = None,
         status: Optional[List[StrictStr]] = None,
         limit: Optional[Union[StrictFloat, StrictInt]] = None,
@@ -6770,7 +6771,6 @@ class InteractionsApi:
         is_skill: Optional[StrictBool] = None,
         is_basic: Optional[StrictBool] = None,
         is_sub_agent: Optional[StrictBool] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -6788,6 +6788,8 @@ class InteractionsApi:
 
         Lists interactions in the current project with query-string filters for name, status, version, tags, prompt, model, environment, and agent-runner capability flags.  **Required permissions:** `interaction:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param name:
         :type name: str
         :param status:
@@ -6816,8 +6818,6 @@ class InteractionsApi:
         :type is_basic: bool
         :param is_sub_agent:
         :type is_sub_agent: bool
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -6841,6 +6841,7 @@ class InteractionsApi:
         """ # noqa: E501
 
         _param = self._list_interactions_serialize(
+            x_api_version=x_api_version,
             name=name,
             status=status,
             limit=limit,
@@ -6855,7 +6856,6 @@ class InteractionsApi:
             is_skill=is_skill,
             is_basic=is_basic,
             is_sub_agent=is_sub_agent,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -6876,6 +6876,7 @@ class InteractionsApi:
 
     def _list_interactions_serialize(
         self,
+        x_api_version,
         name,
         status,
         limit,
@@ -6890,7 +6891,6 @@ class InteractionsApi:
         is_skill,
         is_basic,
         is_sub_agent,
-        x_api_version,
         _request_auth,
         _content_type,
         _headers,
@@ -7014,10 +7014,10 @@ class InteractionsApi:
     @validate_call
     def list_stored_catalog_interactions(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         tag: Optional[StrictStr] = None,
         status: Optional[StrictStr] = None,
         published: Optional[StrictBool] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -7035,14 +7035,14 @@ class InteractionsApi:
 
         Lists stored project interactions in catalog format, optionally filtered by tag and status.  **Required permissions:** `interaction:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param tag:
         :type tag: str
         :param status:
         :type status: str
         :param published:
         :type published: bool
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -7066,10 +7066,10 @@ class InteractionsApi:
         """ # noqa: E501
 
         _param = self._list_stored_catalog_interactions_serialize(
+            x_api_version=x_api_version,
             tag=tag,
             status=status,
             published=published,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -7095,10 +7095,10 @@ class InteractionsApi:
     @validate_call
     def list_stored_catalog_interactions_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         tag: Optional[StrictStr] = None,
         status: Optional[StrictStr] = None,
         published: Optional[StrictBool] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -7116,14 +7116,14 @@ class InteractionsApi:
 
         Lists stored project interactions in catalog format, optionally filtered by tag and status.  **Required permissions:** `interaction:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param tag:
         :type tag: str
         :param status:
         :type status: str
         :param published:
         :type published: bool
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -7147,10 +7147,10 @@ class InteractionsApi:
         """ # noqa: E501
 
         _param = self._list_stored_catalog_interactions_serialize(
+            x_api_version=x_api_version,
             tag=tag,
             status=status,
             published=published,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -7176,10 +7176,10 @@ class InteractionsApi:
     @validate_call
     def list_stored_catalog_interactions_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         tag: Optional[StrictStr] = None,
         status: Optional[StrictStr] = None,
         published: Optional[StrictBool] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -7197,14 +7197,14 @@ class InteractionsApi:
 
         Lists stored project interactions in catalog format, optionally filtered by tag and status.  **Required permissions:** `interaction:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param tag:
         :type tag: str
         :param status:
         :type status: str
         :param published:
         :type published: bool
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -7228,10 +7228,10 @@ class InteractionsApi:
         """ # noqa: E501
 
         _param = self._list_stored_catalog_interactions_serialize(
+            x_api_version=x_api_version,
             tag=tag,
             status=status,
             published=published,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -7252,10 +7252,10 @@ class InteractionsApi:
 
     def _list_stored_catalog_interactions_serialize(
         self,
+        x_api_version,
         tag,
         status,
         published,
-        x_api_version,
         _request_auth,
         _content_type,
         _headers,
@@ -7333,8 +7333,8 @@ class InteractionsApi:
     @validate_call
     def list_system_interactions(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         tag: Optional[StrictStr] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -7352,10 +7352,10 @@ class InteractionsApi:
 
         Lists in-code system interactions, optionally filtered by tag.  **Required permissions:** `interaction:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param tag:
         :type tag: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -7379,8 +7379,8 @@ class InteractionsApi:
         """ # noqa: E501
 
         _param = self._list_system_interactions_serialize(
-            tag=tag,
             x_api_version=x_api_version,
+            tag=tag,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -7406,8 +7406,8 @@ class InteractionsApi:
     @validate_call
     def list_system_interactions_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         tag: Optional[StrictStr] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -7425,10 +7425,10 @@ class InteractionsApi:
 
         Lists in-code system interactions, optionally filtered by tag.  **Required permissions:** `interaction:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param tag:
         :type tag: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -7452,8 +7452,8 @@ class InteractionsApi:
         """ # noqa: E501
 
         _param = self._list_system_interactions_serialize(
-            tag=tag,
             x_api_version=x_api_version,
+            tag=tag,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -7479,8 +7479,8 @@ class InteractionsApi:
     @validate_call
     def list_system_interactions_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         tag: Optional[StrictStr] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -7498,10 +7498,10 @@ class InteractionsApi:
 
         Lists in-code system interactions, optionally filtered by tag.  **Required permissions:** `interaction:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param tag:
         :type tag: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -7525,8 +7525,8 @@ class InteractionsApi:
         """ # noqa: E501
 
         _param = self._list_system_interactions_serialize(
-            tag=tag,
             x_api_version=x_api_version,
+            tag=tag,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -7547,8 +7547,8 @@ class InteractionsApi:
 
     def _list_system_interactions_serialize(
         self,
-        tag,
         x_api_version,
+        tag,
         _request_auth,
         _content_type,
         _headers,
@@ -7619,8 +7619,8 @@ class InteractionsApi:
     def publish_interaction(
         self,
         interaction_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         interaction_publish_payload: InteractionPublishPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -7640,10 +7640,10 @@ class InteractionsApi:
 
         :param interaction_id: (required)
         :type interaction_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param interaction_publish_payload: (required)
         :type interaction_publish_payload: InteractionPublishPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -7668,8 +7668,8 @@ class InteractionsApi:
 
         _param = self._publish_interaction_serialize(
             interaction_id=interaction_id,
-            interaction_publish_payload=interaction_publish_payload,
             x_api_version=x_api_version,
+            interaction_publish_payload=interaction_publish_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -7697,8 +7697,8 @@ class InteractionsApi:
     def publish_interaction_with_http_info(
         self,
         interaction_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         interaction_publish_payload: InteractionPublishPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -7718,10 +7718,10 @@ class InteractionsApi:
 
         :param interaction_id: (required)
         :type interaction_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param interaction_publish_payload: (required)
         :type interaction_publish_payload: InteractionPublishPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -7746,8 +7746,8 @@ class InteractionsApi:
 
         _param = self._publish_interaction_serialize(
             interaction_id=interaction_id,
-            interaction_publish_payload=interaction_publish_payload,
             x_api_version=x_api_version,
+            interaction_publish_payload=interaction_publish_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -7775,8 +7775,8 @@ class InteractionsApi:
     def publish_interaction_without_preload_content(
         self,
         interaction_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         interaction_publish_payload: InteractionPublishPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -7796,10 +7796,10 @@ class InteractionsApi:
 
         :param interaction_id: (required)
         :type interaction_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param interaction_publish_payload: (required)
         :type interaction_publish_payload: InteractionPublishPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -7824,8 +7824,8 @@ class InteractionsApi:
 
         _param = self._publish_interaction_serialize(
             interaction_id=interaction_id,
-            interaction_publish_payload=interaction_publish_payload,
             x_api_version=x_api_version,
+            interaction_publish_payload=interaction_publish_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -7848,8 +7848,8 @@ class InteractionsApi:
     def _publish_interaction_serialize(
         self,
         interaction_id,
-        interaction_publish_payload,
         x_api_version,
+        interaction_publish_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -7932,8 +7932,8 @@ class InteractionsApi:
     @validate_call
     def request_interaction_rate_limit_slot(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         rate_limit_request_payload: RateLimitRequestPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -7951,10 +7951,10 @@ class InteractionsApi:
 
         Checks the current interaction rate limiter and returns the delay before the request should be executed.  **Required permissions:** `interaction:execute`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param rate_limit_request_payload: (required)
         :type rate_limit_request_payload: RateLimitRequestPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -7978,8 +7978,8 @@ class InteractionsApi:
         """ # noqa: E501
 
         _param = self._request_interaction_rate_limit_slot_serialize(
-            rate_limit_request_payload=rate_limit_request_payload,
             x_api_version=x_api_version,
+            rate_limit_request_payload=rate_limit_request_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -8005,8 +8005,8 @@ class InteractionsApi:
     @validate_call
     def request_interaction_rate_limit_slot_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         rate_limit_request_payload: RateLimitRequestPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -8024,10 +8024,10 @@ class InteractionsApi:
 
         Checks the current interaction rate limiter and returns the delay before the request should be executed.  **Required permissions:** `interaction:execute`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param rate_limit_request_payload: (required)
         :type rate_limit_request_payload: RateLimitRequestPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -8051,8 +8051,8 @@ class InteractionsApi:
         """ # noqa: E501
 
         _param = self._request_interaction_rate_limit_slot_serialize(
-            rate_limit_request_payload=rate_limit_request_payload,
             x_api_version=x_api_version,
+            rate_limit_request_payload=rate_limit_request_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -8078,8 +8078,8 @@ class InteractionsApi:
     @validate_call
     def request_interaction_rate_limit_slot_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         rate_limit_request_payload: RateLimitRequestPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -8097,10 +8097,10 @@ class InteractionsApi:
 
         Checks the current interaction rate limiter and returns the delay before the request should be executed.  **Required permissions:** `interaction:execute`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param rate_limit_request_payload: (required)
         :type rate_limit_request_payload: RateLimitRequestPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -8124,8 +8124,8 @@ class InteractionsApi:
         """ # noqa: E501
 
         _param = self._request_interaction_rate_limit_slot_serialize(
-            rate_limit_request_payload=rate_limit_request_payload,
             x_api_version=x_api_version,
+            rate_limit_request_payload=rate_limit_request_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -8146,8 +8146,8 @@ class InteractionsApi:
 
     def _request_interaction_rate_limit_slot_serialize(
         self,
-        rate_limit_request_payload,
         x_api_version,
+        rate_limit_request_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -8229,7 +8229,7 @@ class InteractionsApi:
     def resolve_catalog_interaction(
         self,
         interaction_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -8249,7 +8249,7 @@ class InteractionsApi:
 
         :param interaction_id: (required)
         :type interaction_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -8302,7 +8302,7 @@ class InteractionsApi:
     def resolve_catalog_interaction_with_http_info(
         self,
         interaction_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -8322,7 +8322,7 @@ class InteractionsApi:
 
         :param interaction_id: (required)
         :type interaction_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -8375,7 +8375,7 @@ class InteractionsApi:
     def resolve_catalog_interaction_without_preload_content(
         self,
         interaction_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -8395,7 +8395,7 @@ class InteractionsApi:
 
         :param interaction_id: (required)
         :type interaction_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -8512,11 +8512,11 @@ class InteractionsApi:
     def resolve_interaction(
         self,
         name_or_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         environment: Optional[StrictStr] = None,
         model: Optional[StrictStr] = None,
         has_image: Optional[StrictBool] = None,
         has_video: Optional[StrictBool] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -8536,6 +8536,8 @@ class InteractionsApi:
 
         :param name_or_id: (required)
         :type name_or_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param environment:
         :type environment: str
         :param model:
@@ -8544,8 +8546,6 @@ class InteractionsApi:
         :type has_image: bool
         :param has_video:
         :type has_video: bool
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -8570,11 +8570,11 @@ class InteractionsApi:
 
         _param = self._resolve_interaction_serialize(
             name_or_id=name_or_id,
+            x_api_version=x_api_version,
             environment=environment,
             model=model,
             has_image=has_image,
             has_video=has_video,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -8601,11 +8601,11 @@ class InteractionsApi:
     def resolve_interaction_with_http_info(
         self,
         name_or_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         environment: Optional[StrictStr] = None,
         model: Optional[StrictStr] = None,
         has_image: Optional[StrictBool] = None,
         has_video: Optional[StrictBool] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -8625,6 +8625,8 @@ class InteractionsApi:
 
         :param name_or_id: (required)
         :type name_or_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param environment:
         :type environment: str
         :param model:
@@ -8633,8 +8635,6 @@ class InteractionsApi:
         :type has_image: bool
         :param has_video:
         :type has_video: bool
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -8659,11 +8659,11 @@ class InteractionsApi:
 
         _param = self._resolve_interaction_serialize(
             name_or_id=name_or_id,
+            x_api_version=x_api_version,
             environment=environment,
             model=model,
             has_image=has_image,
             has_video=has_video,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -8690,11 +8690,11 @@ class InteractionsApi:
     def resolve_interaction_without_preload_content(
         self,
         name_or_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         environment: Optional[StrictStr] = None,
         model: Optional[StrictStr] = None,
         has_image: Optional[StrictBool] = None,
         has_video: Optional[StrictBool] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -8714,6 +8714,8 @@ class InteractionsApi:
 
         :param name_or_id: (required)
         :type name_or_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param environment:
         :type environment: str
         :param model:
@@ -8722,8 +8724,6 @@ class InteractionsApi:
         :type has_image: bool
         :param has_video:
         :type has_video: bool
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -8748,11 +8748,11 @@ class InteractionsApi:
 
         _param = self._resolve_interaction_serialize(
             name_or_id=name_or_id,
+            x_api_version=x_api_version,
             environment=environment,
             model=model,
             has_image=has_image,
             has_video=has_video,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -8774,11 +8774,11 @@ class InteractionsApi:
     def _resolve_interaction_serialize(
         self,
         name_or_id,
+        x_api_version,
         environment,
         model,
         has_image,
         has_video,
-        x_api_version,
         _request_auth,
         _content_type,
         _headers,
@@ -8863,8 +8863,8 @@ class InteractionsApi:
     def suggest_prompt_improvements_for_interaction(
         self,
         interaction_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         improve_prompt_payload_config: ImprovePromptPayloadConfig,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -8884,10 +8884,10 @@ class InteractionsApi:
 
         :param interaction_id: (required)
         :type interaction_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param improve_prompt_payload_config: (required)
         :type improve_prompt_payload_config: ImprovePromptPayloadConfig
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -8912,8 +8912,8 @@ class InteractionsApi:
 
         _param = self._suggest_prompt_improvements_for_interaction_serialize(
             interaction_id=interaction_id,
-            improve_prompt_payload_config=improve_prompt_payload_config,
             x_api_version=x_api_version,
+            improve_prompt_payload_config=improve_prompt_payload_config,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -8940,8 +8940,8 @@ class InteractionsApi:
     def suggest_prompt_improvements_for_interaction_with_http_info(
         self,
         interaction_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         improve_prompt_payload_config: ImprovePromptPayloadConfig,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -8961,10 +8961,10 @@ class InteractionsApi:
 
         :param interaction_id: (required)
         :type interaction_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param improve_prompt_payload_config: (required)
         :type improve_prompt_payload_config: ImprovePromptPayloadConfig
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -8989,8 +8989,8 @@ class InteractionsApi:
 
         _param = self._suggest_prompt_improvements_for_interaction_serialize(
             interaction_id=interaction_id,
-            improve_prompt_payload_config=improve_prompt_payload_config,
             x_api_version=x_api_version,
+            improve_prompt_payload_config=improve_prompt_payload_config,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -9017,8 +9017,8 @@ class InteractionsApi:
     def suggest_prompt_improvements_for_interaction_without_preload_content(
         self,
         interaction_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         improve_prompt_payload_config: ImprovePromptPayloadConfig,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -9038,10 +9038,10 @@ class InteractionsApi:
 
         :param interaction_id: (required)
         :type interaction_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param improve_prompt_payload_config: (required)
         :type improve_prompt_payload_config: ImprovePromptPayloadConfig
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -9066,8 +9066,8 @@ class InteractionsApi:
 
         _param = self._suggest_prompt_improvements_for_interaction_serialize(
             interaction_id=interaction_id,
-            improve_prompt_payload_config=improve_prompt_payload_config,
             x_api_version=x_api_version,
+            improve_prompt_payload_config=improve_prompt_payload_config,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -9089,8 +9089,8 @@ class InteractionsApi:
     def _suggest_prompt_improvements_for_interaction_serialize(
         self,
         interaction_id,
-        improve_prompt_payload_config,
         x_api_version,
+        improve_prompt_payload_config,
         _request_auth,
         _content_type,
         _headers,
@@ -9174,8 +9174,8 @@ class InteractionsApi:
     def update_interaction(
         self,
         interaction_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         interaction_update_payload: InteractionUpdatePayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -9195,10 +9195,10 @@ class InteractionsApi:
 
         :param interaction_id: (required)
         :type interaction_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param interaction_update_payload: (required)
         :type interaction_update_payload: InteractionUpdatePayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -9223,8 +9223,8 @@ class InteractionsApi:
 
         _param = self._update_interaction_serialize(
             interaction_id=interaction_id,
-            interaction_update_payload=interaction_update_payload,
             x_api_version=x_api_version,
+            interaction_update_payload=interaction_update_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -9252,8 +9252,8 @@ class InteractionsApi:
     def update_interaction_with_http_info(
         self,
         interaction_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         interaction_update_payload: InteractionUpdatePayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -9273,10 +9273,10 @@ class InteractionsApi:
 
         :param interaction_id: (required)
         :type interaction_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param interaction_update_payload: (required)
         :type interaction_update_payload: InteractionUpdatePayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -9301,8 +9301,8 @@ class InteractionsApi:
 
         _param = self._update_interaction_serialize(
             interaction_id=interaction_id,
-            interaction_update_payload=interaction_update_payload,
             x_api_version=x_api_version,
+            interaction_update_payload=interaction_update_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -9330,8 +9330,8 @@ class InteractionsApi:
     def update_interaction_without_preload_content(
         self,
         interaction_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         interaction_update_payload: InteractionUpdatePayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -9351,10 +9351,10 @@ class InteractionsApi:
 
         :param interaction_id: (required)
         :type interaction_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param interaction_update_payload: (required)
         :type interaction_update_payload: InteractionUpdatePayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -9379,8 +9379,8 @@ class InteractionsApi:
 
         _param = self._update_interaction_serialize(
             interaction_id=interaction_id,
-            interaction_update_payload=interaction_update_payload,
             x_api_version=x_api_version,
+            interaction_update_payload=interaction_update_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -9403,8 +9403,8 @@ class InteractionsApi:
     def _update_interaction_serialize(
         self,
         interaction_id,
-        interaction_update_payload,
         x_api_version,
+        interaction_update_payload,
         _request_auth,
         _content_type,
         _headers,

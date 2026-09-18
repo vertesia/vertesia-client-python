@@ -51,8 +51,8 @@ class EnvironmentsApi:
     @validate_call
     def create_environment(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         execution_environment_create_payload: ExecutionEnvironmentCreatePayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -70,10 +70,10 @@ class EnvironmentsApi:
 
         Creates an execution environment for a model provider. API keys are stored in the encrypted secret store and only a display hint is returned.  **Required permissions:** `environment:admin`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param execution_environment_create_payload: (required)
         :type execution_environment_create_payload: ExecutionEnvironmentCreatePayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -97,8 +97,8 @@ class EnvironmentsApi:
         """ # noqa: E501
 
         _param = self._create_environment_serialize(
-            execution_environment_create_payload=execution_environment_create_payload,
             x_api_version=x_api_version,
+            execution_environment_create_payload=execution_environment_create_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -124,8 +124,8 @@ class EnvironmentsApi:
     @validate_call
     def create_environment_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         execution_environment_create_payload: ExecutionEnvironmentCreatePayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -143,10 +143,10 @@ class EnvironmentsApi:
 
         Creates an execution environment for a model provider. API keys are stored in the encrypted secret store and only a display hint is returned.  **Required permissions:** `environment:admin`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param execution_environment_create_payload: (required)
         :type execution_environment_create_payload: ExecutionEnvironmentCreatePayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -170,8 +170,8 @@ class EnvironmentsApi:
         """ # noqa: E501
 
         _param = self._create_environment_serialize(
-            execution_environment_create_payload=execution_environment_create_payload,
             x_api_version=x_api_version,
+            execution_environment_create_payload=execution_environment_create_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -197,8 +197,8 @@ class EnvironmentsApi:
     @validate_call
     def create_environment_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         execution_environment_create_payload: ExecutionEnvironmentCreatePayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -216,10 +216,10 @@ class EnvironmentsApi:
 
         Creates an execution environment for a model provider. API keys are stored in the encrypted secret store and only a display hint is returned.  **Required permissions:** `environment:admin`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param execution_environment_create_payload: (required)
         :type execution_environment_create_payload: ExecutionEnvironmentCreatePayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -243,8 +243,8 @@ class EnvironmentsApi:
         """ # noqa: E501
 
         _param = self._create_environment_serialize(
-            execution_environment_create_payload=execution_environment_create_payload,
             x_api_version=x_api_version,
+            execution_environment_create_payload=execution_environment_create_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -265,8 +265,8 @@ class EnvironmentsApi:
 
     def _create_environment_serialize(
         self,
-        execution_environment_create_payload,
         x_api_version,
+        execution_environment_create_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -348,7 +348,7 @@ class EnvironmentsApi:
     def delete_environment(
         self,
         env_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -368,7 +368,7 @@ class EnvironmentsApi:
 
         :param env_id: (required)
         :type env_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -421,7 +421,7 @@ class EnvironmentsApi:
     def delete_environment_with_http_info(
         self,
         env_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -441,7 +441,7 @@ class EnvironmentsApi:
 
         :param env_id: (required)
         :type env_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -494,7 +494,7 @@ class EnvironmentsApi:
     def delete_environment_without_preload_content(
         self,
         env_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -514,7 +514,7 @@ class EnvironmentsApi:
 
         :param env_id: (required)
         :type env_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -632,7 +632,7 @@ class EnvironmentsApi:
         self,
         env_id: StrictStr,
         model_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -654,7 +654,7 @@ class EnvironmentsApi:
         :type env_id: str
         :param model_id: (required)
         :type model_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -709,7 +709,7 @@ class EnvironmentsApi:
         self,
         env_id: StrictStr,
         model_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -731,7 +731,7 @@ class EnvironmentsApi:
         :type env_id: str
         :param model_id: (required)
         :type model_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -786,7 +786,7 @@ class EnvironmentsApi:
         self,
         env_id: StrictStr,
         model_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -808,7 +808,7 @@ class EnvironmentsApi:
         :type env_id: str
         :param model_id: (required)
         :type model_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -929,8 +929,8 @@ class EnvironmentsApi:
     def enable_environment_model(
         self,
         env_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         enable_environment_model_payload: EnableEnvironmentModelPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -950,10 +950,10 @@ class EnvironmentsApi:
 
         :param env_id: (required)
         :type env_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param enable_environment_model_payload: (required)
         :type enable_environment_model_payload: EnableEnvironmentModelPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -978,8 +978,8 @@ class EnvironmentsApi:
 
         _param = self._enable_environment_model_serialize(
             env_id=env_id,
-            enable_environment_model_payload=enable_environment_model_payload,
             x_api_version=x_api_version,
+            enable_environment_model_payload=enable_environment_model_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1006,8 +1006,8 @@ class EnvironmentsApi:
     def enable_environment_model_with_http_info(
         self,
         env_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         enable_environment_model_payload: EnableEnvironmentModelPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1027,10 +1027,10 @@ class EnvironmentsApi:
 
         :param env_id: (required)
         :type env_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param enable_environment_model_payload: (required)
         :type enable_environment_model_payload: EnableEnvironmentModelPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1055,8 +1055,8 @@ class EnvironmentsApi:
 
         _param = self._enable_environment_model_serialize(
             env_id=env_id,
-            enable_environment_model_payload=enable_environment_model_payload,
             x_api_version=x_api_version,
+            enable_environment_model_payload=enable_environment_model_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1083,8 +1083,8 @@ class EnvironmentsApi:
     def enable_environment_model_without_preload_content(
         self,
         env_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         enable_environment_model_payload: EnableEnvironmentModelPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1104,10 +1104,10 @@ class EnvironmentsApi:
 
         :param env_id: (required)
         :type env_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param enable_environment_model_payload: (required)
         :type enable_environment_model_payload: EnableEnvironmentModelPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1132,8 +1132,8 @@ class EnvironmentsApi:
 
         _param = self._enable_environment_model_serialize(
             env_id=env_id,
-            enable_environment_model_payload=enable_environment_model_payload,
             x_api_version=x_api_version,
+            enable_environment_model_payload=enable_environment_model_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1155,8 +1155,8 @@ class EnvironmentsApi:
     def _enable_environment_model_serialize(
         self,
         env_id,
-        enable_environment_model_payload,
         x_api_version,
+        enable_environment_model_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -1240,8 +1240,8 @@ class EnvironmentsApi:
     def generate_embeddings(
         self,
         env_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         embeddings_api_request: EmbeddingsApiRequest,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1261,10 +1261,10 @@ class EnvironmentsApi:
 
         :param env_id: (required)
         :type env_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param embeddings_api_request: (required)
         :type embeddings_api_request: EmbeddingsApiRequest
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1289,8 +1289,8 @@ class EnvironmentsApi:
 
         _param = self._generate_embeddings_serialize(
             env_id=env_id,
-            embeddings_api_request=embeddings_api_request,
             x_api_version=x_api_version,
+            embeddings_api_request=embeddings_api_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1317,8 +1317,8 @@ class EnvironmentsApi:
     def generate_embeddings_with_http_info(
         self,
         env_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         embeddings_api_request: EmbeddingsApiRequest,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1338,10 +1338,10 @@ class EnvironmentsApi:
 
         :param env_id: (required)
         :type env_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param embeddings_api_request: (required)
         :type embeddings_api_request: EmbeddingsApiRequest
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1366,8 +1366,8 @@ class EnvironmentsApi:
 
         _param = self._generate_embeddings_serialize(
             env_id=env_id,
-            embeddings_api_request=embeddings_api_request,
             x_api_version=x_api_version,
+            embeddings_api_request=embeddings_api_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1394,8 +1394,8 @@ class EnvironmentsApi:
     def generate_embeddings_without_preload_content(
         self,
         env_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         embeddings_api_request: EmbeddingsApiRequest,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1415,10 +1415,10 @@ class EnvironmentsApi:
 
         :param env_id: (required)
         :type env_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param embeddings_api_request: (required)
         :type embeddings_api_request: EmbeddingsApiRequest
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1443,8 +1443,8 @@ class EnvironmentsApi:
 
         _param = self._generate_embeddings_serialize(
             env_id=env_id,
-            embeddings_api_request=embeddings_api_request,
             x_api_version=x_api_version,
+            embeddings_api_request=embeddings_api_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1466,8 +1466,8 @@ class EnvironmentsApi:
     def _generate_embeddings_serialize(
         self,
         env_id,
-        embeddings_api_request,
         x_api_version,
+        embeddings_api_request,
         _request_auth,
         _content_type,
         _headers,
@@ -1551,7 +1551,7 @@ class EnvironmentsApi:
     def get_environment(
         self,
         env_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1571,7 +1571,7 @@ class EnvironmentsApi:
 
         :param env_id: (required)
         :type env_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1624,7 +1624,7 @@ class EnvironmentsApi:
     def get_environment_with_http_info(
         self,
         env_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1644,7 +1644,7 @@ class EnvironmentsApi:
 
         :param env_id: (required)
         :type env_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1697,7 +1697,7 @@ class EnvironmentsApi:
     def get_environment_without_preload_content(
         self,
         env_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1717,7 +1717,7 @@ class EnvironmentsApi:
 
         :param env_id: (required)
         :type env_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1834,8 +1834,8 @@ class EnvironmentsApi:
     def get_environment_analytics(
         self,
         env_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         run_analytics_query: RunAnalyticsQuery,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1855,10 +1855,10 @@ class EnvironmentsApi:
 
         :param env_id: (required)
         :type env_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param run_analytics_query: (required)
         :type run_analytics_query: RunAnalyticsQuery
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1883,8 +1883,8 @@ class EnvironmentsApi:
 
         _param = self._get_environment_analytics_serialize(
             env_id=env_id,
-            run_analytics_query=run_analytics_query,
             x_api_version=x_api_version,
+            run_analytics_query=run_analytics_query,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1911,8 +1911,8 @@ class EnvironmentsApi:
     def get_environment_analytics_with_http_info(
         self,
         env_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         run_analytics_query: RunAnalyticsQuery,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1932,10 +1932,10 @@ class EnvironmentsApi:
 
         :param env_id: (required)
         :type env_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param run_analytics_query: (required)
         :type run_analytics_query: RunAnalyticsQuery
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1960,8 +1960,8 @@ class EnvironmentsApi:
 
         _param = self._get_environment_analytics_serialize(
             env_id=env_id,
-            run_analytics_query=run_analytics_query,
             x_api_version=x_api_version,
+            run_analytics_query=run_analytics_query,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1988,8 +1988,8 @@ class EnvironmentsApi:
     def get_environment_analytics_without_preload_content(
         self,
         env_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         run_analytics_query: RunAnalyticsQuery,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2009,10 +2009,10 @@ class EnvironmentsApi:
 
         :param env_id: (required)
         :type env_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param run_analytics_query: (required)
         :type run_analytics_query: RunAnalyticsQuery
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2037,8 +2037,8 @@ class EnvironmentsApi:
 
         _param = self._get_environment_analytics_serialize(
             env_id=env_id,
-            run_analytics_query=run_analytics_query,
             x_api_version=x_api_version,
+            run_analytics_query=run_analytics_query,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2060,8 +2060,8 @@ class EnvironmentsApi:
     def _get_environment_analytics_serialize(
         self,
         env_id,
-        run_analytics_query,
         x_api_version,
+        run_analytics_query,
         _request_auth,
         _content_type,
         _headers,
@@ -2145,11 +2145,11 @@ class EnvironmentsApi:
     def list_environment_models(
         self,
         env_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         text: Optional[StrictStr] = None,
         type: Optional[StrictStr] = None,
         tags: Optional[List[StrictStr]] = None,
         owner: Optional[StrictStr] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2169,6 +2169,8 @@ class EnvironmentsApi:
 
         :param env_id: (required)
         :type env_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param text:
         :type text: str
         :param type:
@@ -2177,8 +2179,6 @@ class EnvironmentsApi:
         :type tags: List[str]
         :param owner:
         :type owner: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2203,11 +2203,11 @@ class EnvironmentsApi:
 
         _param = self._list_environment_models_serialize(
             env_id=env_id,
+            x_api_version=x_api_version,
             text=text,
             type=type,
             tags=tags,
             owner=owner,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2234,11 +2234,11 @@ class EnvironmentsApi:
     def list_environment_models_with_http_info(
         self,
         env_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         text: Optional[StrictStr] = None,
         type: Optional[StrictStr] = None,
         tags: Optional[List[StrictStr]] = None,
         owner: Optional[StrictStr] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2258,6 +2258,8 @@ class EnvironmentsApi:
 
         :param env_id: (required)
         :type env_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param text:
         :type text: str
         :param type:
@@ -2266,8 +2268,6 @@ class EnvironmentsApi:
         :type tags: List[str]
         :param owner:
         :type owner: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2292,11 +2292,11 @@ class EnvironmentsApi:
 
         _param = self._list_environment_models_serialize(
             env_id=env_id,
+            x_api_version=x_api_version,
             text=text,
             type=type,
             tags=tags,
             owner=owner,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2323,11 +2323,11 @@ class EnvironmentsApi:
     def list_environment_models_without_preload_content(
         self,
         env_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         text: Optional[StrictStr] = None,
         type: Optional[StrictStr] = None,
         tags: Optional[List[StrictStr]] = None,
         owner: Optional[StrictStr] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2347,6 +2347,8 @@ class EnvironmentsApi:
 
         :param env_id: (required)
         :type env_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param text:
         :type text: str
         :param type:
@@ -2355,8 +2357,6 @@ class EnvironmentsApi:
         :type tags: List[str]
         :param owner:
         :type owner: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2381,11 +2381,11 @@ class EnvironmentsApi:
 
         _param = self._list_environment_models_serialize(
             env_id=env_id,
+            x_api_version=x_api_version,
             text=text,
             type=type,
             tags=tags,
             owner=owner,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2407,11 +2407,11 @@ class EnvironmentsApi:
     def _list_environment_models_serialize(
         self,
         env_id,
+        x_api_version,
         text,
         type,
         tags,
         owner,
-        x_api_version,
         _request_auth,
         _content_type,
         _headers,
@@ -2497,7 +2497,7 @@ class EnvironmentsApi:
     def list_environment_trainable_models(
         self,
         env_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2517,7 +2517,7 @@ class EnvironmentsApi:
 
         :param env_id: (required)
         :type env_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2570,7 +2570,7 @@ class EnvironmentsApi:
     def list_environment_trainable_models_with_http_info(
         self,
         env_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2590,7 +2590,7 @@ class EnvironmentsApi:
 
         :param env_id: (required)
         :type env_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2643,7 +2643,7 @@ class EnvironmentsApi:
     def list_environment_trainable_models_without_preload_content(
         self,
         env_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2663,7 +2663,7 @@ class EnvironmentsApi:
 
         :param env_id: (required)
         :type env_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2779,8 +2779,8 @@ class EnvironmentsApi:
     @validate_call
     def list_environments(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         all: Optional[StrictBool] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2798,10 +2798,10 @@ class EnvironmentsApi:
 
         Lists environments available to the current account. By default results are limited to environments allowed for the current project; `all=true` returns all account environments.  **Required permissions:** `account:member`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param all:
         :type all: bool
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2825,8 +2825,8 @@ class EnvironmentsApi:
         """ # noqa: E501
 
         _param = self._list_environments_serialize(
-            all=all,
             x_api_version=x_api_version,
+            all=all,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2852,8 +2852,8 @@ class EnvironmentsApi:
     @validate_call
     def list_environments_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         all: Optional[StrictBool] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2871,10 +2871,10 @@ class EnvironmentsApi:
 
         Lists environments available to the current account. By default results are limited to environments allowed for the current project; `all=true` returns all account environments.  **Required permissions:** `account:member`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param all:
         :type all: bool
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2898,8 +2898,8 @@ class EnvironmentsApi:
         """ # noqa: E501
 
         _param = self._list_environments_serialize(
-            all=all,
             x_api_version=x_api_version,
+            all=all,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2925,8 +2925,8 @@ class EnvironmentsApi:
     @validate_call
     def list_environments_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         all: Optional[StrictBool] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2944,10 +2944,10 @@ class EnvironmentsApi:
 
         Lists environments available to the current account. By default results are limited to environments allowed for the current project; `all=true` returns all account environments.  **Required permissions:** `account:member`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param all:
         :type all: bool
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2971,8 +2971,8 @@ class EnvironmentsApi:
         """ # noqa: E501
 
         _param = self._list_environments_serialize(
-            all=all,
             x_api_version=x_api_version,
+            all=all,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2993,8 +2993,8 @@ class EnvironmentsApi:
 
     def _list_environments_serialize(
         self,
-        all,
         x_api_version,
+        all,
         _request_auth,
         _content_type,
         _headers,
@@ -3065,8 +3065,8 @@ class EnvironmentsApi:
     def update_environment(
         self,
         env_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         execution_environment_update_payload: ExecutionEnvironmentUpdatePayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3086,10 +3086,10 @@ class EnvironmentsApi:
 
         :param env_id: (required)
         :type env_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param execution_environment_update_payload: (required)
         :type execution_environment_update_payload: ExecutionEnvironmentUpdatePayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3114,8 +3114,8 @@ class EnvironmentsApi:
 
         _param = self._update_environment_serialize(
             env_id=env_id,
-            execution_environment_update_payload=execution_environment_update_payload,
             x_api_version=x_api_version,
+            execution_environment_update_payload=execution_environment_update_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3142,8 +3142,8 @@ class EnvironmentsApi:
     def update_environment_with_http_info(
         self,
         env_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         execution_environment_update_payload: ExecutionEnvironmentUpdatePayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3163,10 +3163,10 @@ class EnvironmentsApi:
 
         :param env_id: (required)
         :type env_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param execution_environment_update_payload: (required)
         :type execution_environment_update_payload: ExecutionEnvironmentUpdatePayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3191,8 +3191,8 @@ class EnvironmentsApi:
 
         _param = self._update_environment_serialize(
             env_id=env_id,
-            execution_environment_update_payload=execution_environment_update_payload,
             x_api_version=x_api_version,
+            execution_environment_update_payload=execution_environment_update_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3219,8 +3219,8 @@ class EnvironmentsApi:
     def update_environment_without_preload_content(
         self,
         env_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         execution_environment_update_payload: ExecutionEnvironmentUpdatePayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3240,10 +3240,10 @@ class EnvironmentsApi:
 
         :param env_id: (required)
         :type env_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param execution_environment_update_payload: (required)
         :type execution_environment_update_payload: ExecutionEnvironmentUpdatePayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3268,8 +3268,8 @@ class EnvironmentsApi:
 
         _param = self._update_environment_serialize(
             env_id=env_id,
-            execution_environment_update_payload=execution_environment_update_payload,
             x_api_version=x_api_version,
+            execution_environment_update_payload=execution_environment_update_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3291,8 +3291,8 @@ class EnvironmentsApi:
     def _update_environment_serialize(
         self,
         env_id,
-        execution_environment_update_payload,
         x_api_version,
+        execution_environment_update_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -3376,8 +3376,8 @@ class EnvironmentsApi:
     def update_environment_config(
         self,
         env_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         execution_environment_config_update_payload: ExecutionEnvironmentConfigUpdatePayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3397,10 +3397,10 @@ class EnvironmentsApi:
 
         :param env_id: (required)
         :type env_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param execution_environment_config_update_payload: (required)
         :type execution_environment_config_update_payload: ExecutionEnvironmentConfigUpdatePayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3425,8 +3425,8 @@ class EnvironmentsApi:
 
         _param = self._update_environment_config_serialize(
             env_id=env_id,
-            execution_environment_config_update_payload=execution_environment_config_update_payload,
             x_api_version=x_api_version,
+            execution_environment_config_update_payload=execution_environment_config_update_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3453,8 +3453,8 @@ class EnvironmentsApi:
     def update_environment_config_with_http_info(
         self,
         env_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         execution_environment_config_update_payload: ExecutionEnvironmentConfigUpdatePayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3474,10 +3474,10 @@ class EnvironmentsApi:
 
         :param env_id: (required)
         :type env_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param execution_environment_config_update_payload: (required)
         :type execution_environment_config_update_payload: ExecutionEnvironmentConfigUpdatePayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3502,8 +3502,8 @@ class EnvironmentsApi:
 
         _param = self._update_environment_config_serialize(
             env_id=env_id,
-            execution_environment_config_update_payload=execution_environment_config_update_payload,
             x_api_version=x_api_version,
+            execution_environment_config_update_payload=execution_environment_config_update_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3530,8 +3530,8 @@ class EnvironmentsApi:
     def update_environment_config_without_preload_content(
         self,
         env_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         execution_environment_config_update_payload: ExecutionEnvironmentConfigUpdatePayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3551,10 +3551,10 @@ class EnvironmentsApi:
 
         :param env_id: (required)
         :type env_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param execution_environment_config_update_payload: (required)
         :type execution_environment_config_update_payload: ExecutionEnvironmentConfigUpdatePayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3579,8 +3579,8 @@ class EnvironmentsApi:
 
         _param = self._update_environment_config_serialize(
             env_id=env_id,
-            execution_environment_config_update_payload=execution_environment_config_update_payload,
             x_api_version=x_api_version,
+            execution_environment_config_update_payload=execution_environment_config_update_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3602,8 +3602,8 @@ class EnvironmentsApi:
     def _update_environment_config_serialize(
         self,
         env_id,
-        execution_environment_config_update_payload,
         x_api_version,
+        execution_environment_config_update_payload,
         _request_auth,
         _content_type,
         _headers,

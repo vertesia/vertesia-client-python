@@ -15,8 +15,8 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import Field, StrictStr
-from typing import List, Optional
+from pydantic import Field, StrictStr, field_validator
+from typing import List
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.mcp_o_auth_connect_response import McpOAuthConnectResponse
 from vertesia_client.openapi.models.mcp_o_auth_disconnect_response import McpOAuthDisconnectResponse
@@ -49,7 +49,7 @@ class RemoteMCPConnectionsApi:
         self,
         app_install_id: StrictStr,
         collection_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -71,7 +71,7 @@ class RemoteMCPConnectionsApi:
         :type app_install_id: str
         :param collection_id: (required)
         :type collection_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -126,7 +126,7 @@ class RemoteMCPConnectionsApi:
         self,
         app_install_id: StrictStr,
         collection_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -148,7 +148,7 @@ class RemoteMCPConnectionsApi:
         :type app_install_id: str
         :param collection_id: (required)
         :type collection_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -203,7 +203,7 @@ class RemoteMCPConnectionsApi:
         self,
         app_install_id: StrictStr,
         collection_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -225,7 +225,7 @@ class RemoteMCPConnectionsApi:
         :type app_install_id: str
         :param collection_id: (required)
         :type collection_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -347,7 +347,7 @@ class RemoteMCPConnectionsApi:
         self,
         app_install_id: StrictStr,
         collection_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -369,7 +369,7 @@ class RemoteMCPConnectionsApi:
         :type app_install_id: str
         :param collection_id: (required)
         :type collection_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -424,7 +424,7 @@ class RemoteMCPConnectionsApi:
         self,
         app_install_id: StrictStr,
         collection_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -446,7 +446,7 @@ class RemoteMCPConnectionsApi:
         :type app_install_id: str
         :param collection_id: (required)
         :type collection_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -501,7 +501,7 @@ class RemoteMCPConnectionsApi:
         self,
         app_install_id: StrictStr,
         collection_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -523,7 +523,7 @@ class RemoteMCPConnectionsApi:
         :type app_install_id: str
         :param collection_id: (required)
         :type collection_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -645,7 +645,7 @@ class RemoteMCPConnectionsApi:
         self,
         app_install_id: StrictStr,
         collection_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -667,7 +667,7 @@ class RemoteMCPConnectionsApi:
         :type app_install_id: str
         :param collection_id: (required)
         :type collection_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -722,7 +722,7 @@ class RemoteMCPConnectionsApi:
         self,
         app_install_id: StrictStr,
         collection_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -744,7 +744,7 @@ class RemoteMCPConnectionsApi:
         :type app_install_id: str
         :param collection_id: (required)
         :type collection_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -799,7 +799,7 @@ class RemoteMCPConnectionsApi:
         self,
         app_install_id: StrictStr,
         collection_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -821,7 +821,7 @@ class RemoteMCPConnectionsApi:
         :type app_install_id: str
         :param collection_id: (required)
         :type collection_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -943,7 +943,7 @@ class RemoteMCPConnectionsApi:
         self,
         app_install_id: StrictStr,
         collection_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -965,7 +965,7 @@ class RemoteMCPConnectionsApi:
         :type app_install_id: str
         :param collection_id: (required)
         :type collection_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1020,7 +1020,7 @@ class RemoteMCPConnectionsApi:
         self,
         app_install_id: StrictStr,
         collection_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1042,7 +1042,7 @@ class RemoteMCPConnectionsApi:
         :type app_install_id: str
         :param collection_id: (required)
         :type collection_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1097,7 +1097,7 @@ class RemoteMCPConnectionsApi:
         self,
         app_install_id: StrictStr,
         collection_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1119,7 +1119,7 @@ class RemoteMCPConnectionsApi:
         :type app_install_id: str
         :param collection_id: (required)
         :type collection_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1241,7 +1241,7 @@ class RemoteMCPConnectionsApi:
         self,
         app_install_id: StrictStr,
         collection_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1263,7 +1263,7 @@ class RemoteMCPConnectionsApi:
         :type app_install_id: str
         :param collection_id: (required)
         :type collection_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1318,7 +1318,7 @@ class RemoteMCPConnectionsApi:
         self,
         app_install_id: StrictStr,
         collection_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1340,7 +1340,7 @@ class RemoteMCPConnectionsApi:
         :type app_install_id: str
         :param collection_id: (required)
         :type collection_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1395,7 +1395,7 @@ class RemoteMCPConnectionsApi:
         self,
         app_install_id: StrictStr,
         collection_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1417,7 +1417,7 @@ class RemoteMCPConnectionsApi:
         :type app_install_id: str
         :param collection_id: (required)
         :type collection_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1537,8 +1537,8 @@ class RemoteMCPConnectionsApi:
     @validate_call
     def get_remote_mcp_connection_token(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         mcp_o_auth_token_request: McpOAuthTokenRequest,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1556,10 +1556,10 @@ class RemoteMCPConnectionsApi:
 
         Gets or refreshes an OAuth access token for a remote MCP collection using either an app-installation collection reference or a legacy MCP server URL.
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param mcp_o_auth_token_request: (required)
         :type mcp_o_auth_token_request: McpOAuthTokenRequest
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1583,8 +1583,8 @@ class RemoteMCPConnectionsApi:
         """ # noqa: E501
 
         _param = self._get_remote_mcp_connection_token_serialize(
-            mcp_o_auth_token_request=mcp_o_auth_token_request,
             x_api_version=x_api_version,
+            mcp_o_auth_token_request=mcp_o_auth_token_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1610,8 +1610,8 @@ class RemoteMCPConnectionsApi:
     @validate_call
     def get_remote_mcp_connection_token_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         mcp_o_auth_token_request: McpOAuthTokenRequest,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1629,10 +1629,10 @@ class RemoteMCPConnectionsApi:
 
         Gets or refreshes an OAuth access token for a remote MCP collection using either an app-installation collection reference or a legacy MCP server URL.
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param mcp_o_auth_token_request: (required)
         :type mcp_o_auth_token_request: McpOAuthTokenRequest
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1656,8 +1656,8 @@ class RemoteMCPConnectionsApi:
         """ # noqa: E501
 
         _param = self._get_remote_mcp_connection_token_serialize(
-            mcp_o_auth_token_request=mcp_o_auth_token_request,
             x_api_version=x_api_version,
+            mcp_o_auth_token_request=mcp_o_auth_token_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1683,8 +1683,8 @@ class RemoteMCPConnectionsApi:
     @validate_call
     def get_remote_mcp_connection_token_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         mcp_o_auth_token_request: McpOAuthTokenRequest,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1702,10 +1702,10 @@ class RemoteMCPConnectionsApi:
 
         Gets or refreshes an OAuth access token for a remote MCP collection using either an app-installation collection reference or a legacy MCP server URL.
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param mcp_o_auth_token_request: (required)
         :type mcp_o_auth_token_request: McpOAuthTokenRequest
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1729,8 +1729,8 @@ class RemoteMCPConnectionsApi:
         """ # noqa: E501
 
         _param = self._get_remote_mcp_connection_token_serialize(
-            mcp_o_auth_token_request=mcp_o_auth_token_request,
             x_api_version=x_api_version,
+            mcp_o_auth_token_request=mcp_o_auth_token_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1751,8 +1751,8 @@ class RemoteMCPConnectionsApi:
 
     def _get_remote_mcp_connection_token_serialize(
         self,
-        mcp_o_auth_token_request,
         x_api_version,
+        mcp_o_auth_token_request,
         _request_auth,
         _content_type,
         _headers,
@@ -1834,7 +1834,7 @@ class RemoteMCPConnectionsApi:
     def list_remote_mcp_connection_statuses(
         self,
         app_install_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1854,7 +1854,7 @@ class RemoteMCPConnectionsApi:
 
         :param app_install_id: (required)
         :type app_install_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1907,7 +1907,7 @@ class RemoteMCPConnectionsApi:
     def list_remote_mcp_connection_statuses_with_http_info(
         self,
         app_install_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1927,7 +1927,7 @@ class RemoteMCPConnectionsApi:
 
         :param app_install_id: (required)
         :type app_install_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1980,7 +1980,7 @@ class RemoteMCPConnectionsApi:
     def list_remote_mcp_connection_statuses_without_preload_content(
         self,
         app_install_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2000,7 +2000,7 @@ class RemoteMCPConnectionsApi:
 
         :param app_install_id: (required)
         :type app_install_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request

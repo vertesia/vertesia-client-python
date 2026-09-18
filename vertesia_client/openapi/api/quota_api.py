@@ -15,8 +15,7 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import Field, StrictStr
-from typing import Optional
+from pydantic import Field, field_validator
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.quota_standing_response import QuotaStandingResponse
 from vertesia_client.openapi.models.quota_tier_response import QuotaTierResponse
@@ -42,7 +41,7 @@ class QuotaApi:
     @validate_call
     def get_quota_standing(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -60,7 +59,7 @@ class QuotaApi:
 
         The calling tenant's quota standing: effective API rate limits and current usage, workflow-admission active slots, and the LLM limiter posture.  **Required permissions:** `account:member`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -111,7 +110,7 @@ class QuotaApi:
     @validate_call
     def get_quota_standing_with_http_info(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -129,7 +128,7 @@ class QuotaApi:
 
         The calling tenant's quota standing: effective API rate limits and current usage, workflow-admission active slots, and the LLM limiter posture.  **Required permissions:** `account:member`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -180,7 +179,7 @@ class QuotaApi:
     @validate_call
     def get_quota_standing_without_preload_content(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -198,7 +197,7 @@ class QuotaApi:
 
         The calling tenant's quota standing: effective API rate limits and current usage, workflow-admission active slots, and the LLM limiter posture.  **Required permissions:** `account:member`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -310,7 +309,7 @@ class QuotaApi:
     @validate_call
     def get_quota_tier(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -328,7 +327,7 @@ class QuotaApi:
 
         The calling account's effective quota tier: explicit account `quota_tier`, else its account_type-derived tier, else the deployment base tier when the account tier cannot be resolved. A lightweight lookup other services use to resolve a tenant tier without a direct account-store dependency.  **Required permissions:** `account:member`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -379,7 +378,7 @@ class QuotaApi:
     @validate_call
     def get_quota_tier_with_http_info(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -397,7 +396,7 @@ class QuotaApi:
 
         The calling account's effective quota tier: explicit account `quota_tier`, else its account_type-derived tier, else the deployment base tier when the account tier cannot be resolved. A lightweight lookup other services use to resolve a tenant tier without a direct account-store dependency.  **Required permissions:** `account:member`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -448,7 +447,7 @@ class QuotaApi:
     @validate_call
     def get_quota_tier_without_preload_content(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -466,7 +465,7 @@ class QuotaApi:
 
         The calling account's effective quota tier: explicit account `quota_tier`, else its account_type-derived tier, else the deployment base tier when the account tier cannot be resolved. A lightweight lookup other services use to resolve a tenant tier without a direct account-store dependency.  **Required permissions:** `account:member`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request

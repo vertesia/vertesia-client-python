@@ -54,7 +54,7 @@ class ProcessesApi:
         self,
         process_id: StrictStr,
         run_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -76,7 +76,7 @@ class ProcessesApi:
         :type process_id: str
         :param run_id: (required)
         :type run_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -131,7 +131,7 @@ class ProcessesApi:
         self,
         process_id: StrictStr,
         run_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -153,7 +153,7 @@ class ProcessesApi:
         :type process_id: str
         :param run_id: (required)
         :type run_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -208,7 +208,7 @@ class ProcessesApi:
         self,
         process_id: StrictStr,
         run_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -230,7 +230,7 @@ class ProcessesApi:
         :type process_id: str
         :param run_id: (required)
         :type run_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -351,7 +351,7 @@ class ProcessesApi:
     def cancel_process_test_run_by_id(
         self,
         run_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -371,7 +371,7 @@ class ProcessesApi:
 
         :param run_id: (required)
         :type run_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -424,7 +424,7 @@ class ProcessesApi:
     def cancel_process_test_run_by_id_with_http_info(
         self,
         run_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -444,7 +444,7 @@ class ProcessesApi:
 
         :param run_id: (required)
         :type run_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -497,7 +497,7 @@ class ProcessesApi:
     def cancel_process_test_run_by_id_without_preload_content(
         self,
         run_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -517,7 +517,7 @@ class ProcessesApi:
 
         :param run_id: (required)
         :type run_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -633,8 +633,8 @@ class ProcessesApi:
     @validate_call
     def create_process_definition(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_process_definition_payload: CreateProcessDefinitionPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -652,10 +652,10 @@ class ProcessesApi:
 
         Creates a new draft process definition after validating the referenced interactions and builtin tools. New definitions are always created as draft revisions, `status` and `version` are server-owned, and native process definitions must declare `format_version: 1`.  **Required permissions:** `workflow:admin`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param create_process_definition_payload: (required)
         :type create_process_definition_payload: CreateProcessDefinitionPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -679,8 +679,8 @@ class ProcessesApi:
         """ # noqa: E501
 
         _param = self._create_process_definition_serialize(
-            create_process_definition_payload=create_process_definition_payload,
             x_api_version=x_api_version,
+            create_process_definition_payload=create_process_definition_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -706,8 +706,8 @@ class ProcessesApi:
     @validate_call
     def create_process_definition_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_process_definition_payload: CreateProcessDefinitionPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -725,10 +725,10 @@ class ProcessesApi:
 
         Creates a new draft process definition after validating the referenced interactions and builtin tools. New definitions are always created as draft revisions, `status` and `version` are server-owned, and native process definitions must declare `format_version: 1`.  **Required permissions:** `workflow:admin`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param create_process_definition_payload: (required)
         :type create_process_definition_payload: CreateProcessDefinitionPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -752,8 +752,8 @@ class ProcessesApi:
         """ # noqa: E501
 
         _param = self._create_process_definition_serialize(
-            create_process_definition_payload=create_process_definition_payload,
             x_api_version=x_api_version,
+            create_process_definition_payload=create_process_definition_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -779,8 +779,8 @@ class ProcessesApi:
     @validate_call
     def create_process_definition_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_process_definition_payload: CreateProcessDefinitionPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -798,10 +798,10 @@ class ProcessesApi:
 
         Creates a new draft process definition after validating the referenced interactions and builtin tools. New definitions are always created as draft revisions, `status` and `version` are server-owned, and native process definitions must declare `format_version: 1`.  **Required permissions:** `workflow:admin`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param create_process_definition_payload: (required)
         :type create_process_definition_payload: CreateProcessDefinitionPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -825,8 +825,8 @@ class ProcessesApi:
         """ # noqa: E501
 
         _param = self._create_process_definition_serialize(
-            create_process_definition_payload=create_process_definition_payload,
             x_api_version=x_api_version,
+            create_process_definition_payload=create_process_definition_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -847,8 +847,8 @@ class ProcessesApi:
 
     def _create_process_definition_serialize(
         self,
-        create_process_definition_payload,
         x_api_version,
+        create_process_definition_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -930,8 +930,8 @@ class ProcessesApi:
     def create_process_test_suite(
         self,
         process_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_process_test_suite_payload: CreateProcessTestSuitePayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -951,10 +951,10 @@ class ProcessesApi:
 
         :param process_id: (required)
         :type process_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param create_process_test_suite_payload: (required)
         :type create_process_test_suite_payload: CreateProcessTestSuitePayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -979,8 +979,8 @@ class ProcessesApi:
 
         _param = self._create_process_test_suite_serialize(
             process_id=process_id,
-            create_process_test_suite_payload=create_process_test_suite_payload,
             x_api_version=x_api_version,
+            create_process_test_suite_payload=create_process_test_suite_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1007,8 +1007,8 @@ class ProcessesApi:
     def create_process_test_suite_with_http_info(
         self,
         process_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_process_test_suite_payload: CreateProcessTestSuitePayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1028,10 +1028,10 @@ class ProcessesApi:
 
         :param process_id: (required)
         :type process_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param create_process_test_suite_payload: (required)
         :type create_process_test_suite_payload: CreateProcessTestSuitePayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1056,8 +1056,8 @@ class ProcessesApi:
 
         _param = self._create_process_test_suite_serialize(
             process_id=process_id,
-            create_process_test_suite_payload=create_process_test_suite_payload,
             x_api_version=x_api_version,
+            create_process_test_suite_payload=create_process_test_suite_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1084,8 +1084,8 @@ class ProcessesApi:
     def create_process_test_suite_without_preload_content(
         self,
         process_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_process_test_suite_payload: CreateProcessTestSuitePayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1105,10 +1105,10 @@ class ProcessesApi:
 
         :param process_id: (required)
         :type process_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param create_process_test_suite_payload: (required)
         :type create_process_test_suite_payload: CreateProcessTestSuitePayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1133,8 +1133,8 @@ class ProcessesApi:
 
         _param = self._create_process_test_suite_serialize(
             process_id=process_id,
-            create_process_test_suite_payload=create_process_test_suite_payload,
             x_api_version=x_api_version,
+            create_process_test_suite_payload=create_process_test_suite_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1156,8 +1156,8 @@ class ProcessesApi:
     def _create_process_test_suite_serialize(
         self,
         process_id,
-        create_process_test_suite_payload,
         x_api_version,
+        create_process_test_suite_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -1241,7 +1241,7 @@ class ProcessesApi:
     def delete_process_definition(
         self,
         process_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1261,7 +1261,7 @@ class ProcessesApi:
 
         :param process_id: (required)
         :type process_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1314,7 +1314,7 @@ class ProcessesApi:
     def delete_process_definition_with_http_info(
         self,
         process_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1334,7 +1334,7 @@ class ProcessesApi:
 
         :param process_id: (required)
         :type process_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1387,7 +1387,7 @@ class ProcessesApi:
     def delete_process_definition_without_preload_content(
         self,
         process_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1407,7 +1407,7 @@ class ProcessesApi:
 
         :param process_id: (required)
         :type process_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1524,7 +1524,7 @@ class ProcessesApi:
     def delete_process_test_run(
         self,
         run_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1544,7 +1544,7 @@ class ProcessesApi:
 
         :param run_id: (required)
         :type run_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1597,7 +1597,7 @@ class ProcessesApi:
     def delete_process_test_run_with_http_info(
         self,
         run_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1617,7 +1617,7 @@ class ProcessesApi:
 
         :param run_id: (required)
         :type run_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1670,7 +1670,7 @@ class ProcessesApi:
     def delete_process_test_run_without_preload_content(
         self,
         run_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1690,7 +1690,7 @@ class ProcessesApi:
 
         :param run_id: (required)
         :type run_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1808,7 +1808,7 @@ class ProcessesApi:
         self,
         process_id: StrictStr,
         suite_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1830,7 +1830,7 @@ class ProcessesApi:
         :type process_id: str
         :param suite_id: (required)
         :type suite_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1885,7 +1885,7 @@ class ProcessesApi:
         self,
         process_id: StrictStr,
         suite_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1907,7 +1907,7 @@ class ProcessesApi:
         :type process_id: str
         :param suite_id: (required)
         :type suite_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1962,7 +1962,7 @@ class ProcessesApi:
         self,
         process_id: StrictStr,
         suite_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1984,7 +1984,7 @@ class ProcessesApi:
         :type process_id: str
         :param suite_id: (required)
         :type suite_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2105,7 +2105,7 @@ class ProcessesApi:
     def get_process_definition(
         self,
         process_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2125,7 +2125,7 @@ class ProcessesApi:
 
         :param process_id: (required)
         :type process_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2178,7 +2178,7 @@ class ProcessesApi:
     def get_process_definition_with_http_info(
         self,
         process_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2198,7 +2198,7 @@ class ProcessesApi:
 
         :param process_id: (required)
         :type process_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2251,7 +2251,7 @@ class ProcessesApi:
     def get_process_definition_without_preload_content(
         self,
         process_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2271,7 +2271,7 @@ class ProcessesApi:
 
         :param process_id: (required)
         :type process_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2389,7 +2389,7 @@ class ProcessesApi:
         self,
         process_id: StrictStr,
         run_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2411,7 +2411,7 @@ class ProcessesApi:
         :type process_id: str
         :param run_id: (required)
         :type run_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2466,7 +2466,7 @@ class ProcessesApi:
         self,
         process_id: StrictStr,
         run_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2488,7 +2488,7 @@ class ProcessesApi:
         :type process_id: str
         :param run_id: (required)
         :type run_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2543,7 +2543,7 @@ class ProcessesApi:
         self,
         process_id: StrictStr,
         run_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2565,7 +2565,7 @@ class ProcessesApi:
         :type process_id: str
         :param run_id: (required)
         :type run_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2686,7 +2686,7 @@ class ProcessesApi:
     def get_process_test_run_by_id(
         self,
         run_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2706,7 +2706,7 @@ class ProcessesApi:
 
         :param run_id: (required)
         :type run_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2759,7 +2759,7 @@ class ProcessesApi:
     def get_process_test_run_by_id_with_http_info(
         self,
         run_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2779,7 +2779,7 @@ class ProcessesApi:
 
         :param run_id: (required)
         :type run_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2832,7 +2832,7 @@ class ProcessesApi:
     def get_process_test_run_by_id_without_preload_content(
         self,
         run_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2852,7 +2852,7 @@ class ProcessesApi:
 
         :param run_id: (required)
         :type run_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2969,7 +2969,7 @@ class ProcessesApi:
     def list_process_definition_versions(
         self,
         process_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2989,7 +2989,7 @@ class ProcessesApi:
 
         :param process_id: (required)
         :type process_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -3042,7 +3042,7 @@ class ProcessesApi:
     def list_process_definition_versions_with_http_info(
         self,
         process_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3062,7 +3062,7 @@ class ProcessesApi:
 
         :param process_id: (required)
         :type process_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -3115,7 +3115,7 @@ class ProcessesApi:
     def list_process_definition_versions_without_preload_content(
         self,
         process_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3135,7 +3135,7 @@ class ProcessesApi:
 
         :param process_id: (required)
         :type process_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -3251,12 +3251,12 @@ class ProcessesApi:
     @validate_call
     def list_process_definitions(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         status: Optional[StrictStr] = None,
         process: Optional[StrictStr] = None,
         limit: Optional[Union[StrictFloat, StrictInt]] = None,
         offset: Optional[Union[StrictFloat, StrictInt]] = None,
         all_versions: Optional[StrictBool] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3274,6 +3274,8 @@ class ProcessesApi:
 
         Lists process definitions in the current project with optional status, process id, pagination, and revision filters. By default only the latest head revision for each process is returned; set `all_versions=true` to include every revision document.  **Required permissions:** Any of `workflow:read`, `workflow:run`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param status:
         :type status: str
         :param process:
@@ -3284,8 +3286,6 @@ class ProcessesApi:
         :type offset: float
         :param all_versions:
         :type all_versions: bool
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3309,12 +3309,12 @@ class ProcessesApi:
         """ # noqa: E501
 
         _param = self._list_process_definitions_serialize(
+            x_api_version=x_api_version,
             status=status,
             process=process,
             limit=limit,
             offset=offset,
             all_versions=all_versions,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3340,12 +3340,12 @@ class ProcessesApi:
     @validate_call
     def list_process_definitions_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         status: Optional[StrictStr] = None,
         process: Optional[StrictStr] = None,
         limit: Optional[Union[StrictFloat, StrictInt]] = None,
         offset: Optional[Union[StrictFloat, StrictInt]] = None,
         all_versions: Optional[StrictBool] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3363,6 +3363,8 @@ class ProcessesApi:
 
         Lists process definitions in the current project with optional status, process id, pagination, and revision filters. By default only the latest head revision for each process is returned; set `all_versions=true` to include every revision document.  **Required permissions:** Any of `workflow:read`, `workflow:run`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param status:
         :type status: str
         :param process:
@@ -3373,8 +3375,6 @@ class ProcessesApi:
         :type offset: float
         :param all_versions:
         :type all_versions: bool
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3398,12 +3398,12 @@ class ProcessesApi:
         """ # noqa: E501
 
         _param = self._list_process_definitions_serialize(
+            x_api_version=x_api_version,
             status=status,
             process=process,
             limit=limit,
             offset=offset,
             all_versions=all_versions,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3429,12 +3429,12 @@ class ProcessesApi:
     @validate_call
     def list_process_definitions_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         status: Optional[StrictStr] = None,
         process: Optional[StrictStr] = None,
         limit: Optional[Union[StrictFloat, StrictInt]] = None,
         offset: Optional[Union[StrictFloat, StrictInt]] = None,
         all_versions: Optional[StrictBool] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3452,6 +3452,8 @@ class ProcessesApi:
 
         Lists process definitions in the current project with optional status, process id, pagination, and revision filters. By default only the latest head revision for each process is returned; set `all_versions=true` to include every revision document.  **Required permissions:** Any of `workflow:read`, `workflow:run`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param status:
         :type status: str
         :param process:
@@ -3462,8 +3464,6 @@ class ProcessesApi:
         :type offset: float
         :param all_versions:
         :type all_versions: bool
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3487,12 +3487,12 @@ class ProcessesApi:
         """ # noqa: E501
 
         _param = self._list_process_definitions_serialize(
+            x_api_version=x_api_version,
             status=status,
             process=process,
             limit=limit,
             offset=offset,
             all_versions=all_versions,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3513,12 +3513,12 @@ class ProcessesApi:
 
     def _list_process_definitions_serialize(
         self,
+        x_api_version,
         status,
         process,
         limit,
         offset,
         all_versions,
-        x_api_version,
         _request_auth,
         _content_type,
         _headers,
@@ -3605,8 +3605,8 @@ class ProcessesApi:
     def list_process_test_runs(
         self,
         process_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         limit: Optional[Annotated[int, Field(le=100, strict=True, ge=1)]] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3626,10 +3626,10 @@ class ProcessesApi:
 
         :param process_id: (required)
         :type process_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param limit:
         :type limit: int
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3654,8 +3654,8 @@ class ProcessesApi:
 
         _param = self._list_process_test_runs_serialize(
             process_id=process_id,
-            limit=limit,
             x_api_version=x_api_version,
+            limit=limit,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3682,8 +3682,8 @@ class ProcessesApi:
     def list_process_test_runs_with_http_info(
         self,
         process_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         limit: Optional[Annotated[int, Field(le=100, strict=True, ge=1)]] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3703,10 +3703,10 @@ class ProcessesApi:
 
         :param process_id: (required)
         :type process_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param limit:
         :type limit: int
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3731,8 +3731,8 @@ class ProcessesApi:
 
         _param = self._list_process_test_runs_serialize(
             process_id=process_id,
-            limit=limit,
             x_api_version=x_api_version,
+            limit=limit,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3759,8 +3759,8 @@ class ProcessesApi:
     def list_process_test_runs_without_preload_content(
         self,
         process_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         limit: Optional[Annotated[int, Field(le=100, strict=True, ge=1)]] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3780,10 +3780,10 @@ class ProcessesApi:
 
         :param process_id: (required)
         :type process_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param limit:
         :type limit: int
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3808,8 +3808,8 @@ class ProcessesApi:
 
         _param = self._list_process_test_runs_serialize(
             process_id=process_id,
-            limit=limit,
             x_api_version=x_api_version,
+            limit=limit,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3831,8 +3831,8 @@ class ProcessesApi:
     def _list_process_test_runs_serialize(
         self,
         process_id,
-        limit,
         x_api_version,
+        limit,
         _request_auth,
         _content_type,
         _headers,
@@ -3905,7 +3905,7 @@ class ProcessesApi:
     def list_process_test_suites(
         self,
         process_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3925,7 +3925,7 @@ class ProcessesApi:
 
         :param process_id: (required)
         :type process_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -3978,7 +3978,7 @@ class ProcessesApi:
     def list_process_test_suites_with_http_info(
         self,
         process_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3998,7 +3998,7 @@ class ProcessesApi:
 
         :param process_id: (required)
         :type process_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -4051,7 +4051,7 @@ class ProcessesApi:
     def list_process_test_suites_without_preload_content(
         self,
         process_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4071,7 +4071,7 @@ class ProcessesApi:
 
         :param process_id: (required)
         :type process_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -4188,8 +4188,8 @@ class ProcessesApi:
     def publish_process_definition(
         self,
         process_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         publish_process_definition_payload: PublishProcessDefinitionPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4209,10 +4209,10 @@ class ProcessesApi:
 
         :param process_id: (required)
         :type process_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param publish_process_definition_payload: (required)
         :type publish_process_definition_payload: PublishProcessDefinitionPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4237,8 +4237,8 @@ class ProcessesApi:
 
         _param = self._publish_process_definition_serialize(
             process_id=process_id,
-            publish_process_definition_payload=publish_process_definition_payload,
             x_api_version=x_api_version,
+            publish_process_definition_payload=publish_process_definition_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4266,8 +4266,8 @@ class ProcessesApi:
     def publish_process_definition_with_http_info(
         self,
         process_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         publish_process_definition_payload: PublishProcessDefinitionPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4287,10 +4287,10 @@ class ProcessesApi:
 
         :param process_id: (required)
         :type process_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param publish_process_definition_payload: (required)
         :type publish_process_definition_payload: PublishProcessDefinitionPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4315,8 +4315,8 @@ class ProcessesApi:
 
         _param = self._publish_process_definition_serialize(
             process_id=process_id,
-            publish_process_definition_payload=publish_process_definition_payload,
             x_api_version=x_api_version,
+            publish_process_definition_payload=publish_process_definition_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4344,8 +4344,8 @@ class ProcessesApi:
     def publish_process_definition_without_preload_content(
         self,
         process_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         publish_process_definition_payload: PublishProcessDefinitionPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4365,10 +4365,10 @@ class ProcessesApi:
 
         :param process_id: (required)
         :type process_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param publish_process_definition_payload: (required)
         :type publish_process_definition_payload: PublishProcessDefinitionPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4393,8 +4393,8 @@ class ProcessesApi:
 
         _param = self._publish_process_definition_serialize(
             process_id=process_id,
-            publish_process_definition_payload=publish_process_definition_payload,
             x_api_version=x_api_version,
+            publish_process_definition_payload=publish_process_definition_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4417,8 +4417,8 @@ class ProcessesApi:
     def _publish_process_definition_serialize(
         self,
         process_id,
-        publish_process_definition_payload,
         x_api_version,
+        publish_process_definition_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -4502,8 +4502,8 @@ class ProcessesApi:
     def revert_process_definition(
         self,
         process_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         revert_process_definition_payload: RevertProcessDefinitionPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4523,10 +4523,10 @@ class ProcessesApi:
 
         :param process_id: (required)
         :type process_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param revert_process_definition_payload: (required)
         :type revert_process_definition_payload: RevertProcessDefinitionPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4551,8 +4551,8 @@ class ProcessesApi:
 
         _param = self._revert_process_definition_serialize(
             process_id=process_id,
-            revert_process_definition_payload=revert_process_definition_payload,
             x_api_version=x_api_version,
+            revert_process_definition_payload=revert_process_definition_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4580,8 +4580,8 @@ class ProcessesApi:
     def revert_process_definition_with_http_info(
         self,
         process_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         revert_process_definition_payload: RevertProcessDefinitionPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4601,10 +4601,10 @@ class ProcessesApi:
 
         :param process_id: (required)
         :type process_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param revert_process_definition_payload: (required)
         :type revert_process_definition_payload: RevertProcessDefinitionPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4629,8 +4629,8 @@ class ProcessesApi:
 
         _param = self._revert_process_definition_serialize(
             process_id=process_id,
-            revert_process_definition_payload=revert_process_definition_payload,
             x_api_version=x_api_version,
+            revert_process_definition_payload=revert_process_definition_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4658,8 +4658,8 @@ class ProcessesApi:
     def revert_process_definition_without_preload_content(
         self,
         process_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         revert_process_definition_payload: RevertProcessDefinitionPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4679,10 +4679,10 @@ class ProcessesApi:
 
         :param process_id: (required)
         :type process_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param revert_process_definition_payload: (required)
         :type revert_process_definition_payload: RevertProcessDefinitionPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4707,8 +4707,8 @@ class ProcessesApi:
 
         _param = self._revert_process_definition_serialize(
             process_id=process_id,
-            revert_process_definition_payload=revert_process_definition_payload,
             x_api_version=x_api_version,
+            revert_process_definition_payload=revert_process_definition_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4731,8 +4731,8 @@ class ProcessesApi:
     def _revert_process_definition_serialize(
         self,
         process_id,
-        revert_process_definition_payload,
         x_api_version,
+        revert_process_definition_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -4816,8 +4816,8 @@ class ProcessesApi:
     def start_process_test_run(
         self,
         process_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         start_process_test_run_payload: StartProcessTestRunPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4837,10 +4837,10 @@ class ProcessesApi:
 
         :param process_id: (required)
         :type process_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param start_process_test_run_payload: (required)
         :type start_process_test_run_payload: StartProcessTestRunPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4865,8 +4865,8 @@ class ProcessesApi:
 
         _param = self._start_process_test_run_serialize(
             process_id=process_id,
-            start_process_test_run_payload=start_process_test_run_payload,
             x_api_version=x_api_version,
+            start_process_test_run_payload=start_process_test_run_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4893,8 +4893,8 @@ class ProcessesApi:
     def start_process_test_run_with_http_info(
         self,
         process_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         start_process_test_run_payload: StartProcessTestRunPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4914,10 +4914,10 @@ class ProcessesApi:
 
         :param process_id: (required)
         :type process_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param start_process_test_run_payload: (required)
         :type start_process_test_run_payload: StartProcessTestRunPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4942,8 +4942,8 @@ class ProcessesApi:
 
         _param = self._start_process_test_run_serialize(
             process_id=process_id,
-            start_process_test_run_payload=start_process_test_run_payload,
             x_api_version=x_api_version,
+            start_process_test_run_payload=start_process_test_run_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4970,8 +4970,8 @@ class ProcessesApi:
     def start_process_test_run_without_preload_content(
         self,
         process_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         start_process_test_run_payload: StartProcessTestRunPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4991,10 +4991,10 @@ class ProcessesApi:
 
         :param process_id: (required)
         :type process_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param start_process_test_run_payload: (required)
         :type start_process_test_run_payload: StartProcessTestRunPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -5019,8 +5019,8 @@ class ProcessesApi:
 
         _param = self._start_process_test_run_serialize(
             process_id=process_id,
-            start_process_test_run_payload=start_process_test_run_payload,
             x_api_version=x_api_version,
+            start_process_test_run_payload=start_process_test_run_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -5042,8 +5042,8 @@ class ProcessesApi:
     def _start_process_test_run_serialize(
         self,
         process_id,
-        start_process_test_run_payload,
         x_api_version,
+        start_process_test_run_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -5126,8 +5126,8 @@ class ProcessesApi:
     @validate_call
     def submit_process_test_run(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         submit_process_test_run_payload: SubmitProcessTestRunPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5145,10 +5145,10 @@ class ProcessesApi:
 
         Starts deterministic test scenarios against an in-code process (`app:` or `sys:`) or an inline definition, with the scenarios supplied in the request instead of a stored suite. Use POST /processes/{processId}/test-runs for stored process definitions.  **Required permissions:** `workflow:run`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param submit_process_test_run_payload: (required)
         :type submit_process_test_run_payload: SubmitProcessTestRunPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -5172,8 +5172,8 @@ class ProcessesApi:
         """ # noqa: E501
 
         _param = self._submit_process_test_run_serialize(
-            submit_process_test_run_payload=submit_process_test_run_payload,
             x_api_version=x_api_version,
+            submit_process_test_run_payload=submit_process_test_run_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -5199,8 +5199,8 @@ class ProcessesApi:
     @validate_call
     def submit_process_test_run_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         submit_process_test_run_payload: SubmitProcessTestRunPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5218,10 +5218,10 @@ class ProcessesApi:
 
         Starts deterministic test scenarios against an in-code process (`app:` or `sys:`) or an inline definition, with the scenarios supplied in the request instead of a stored suite. Use POST /processes/{processId}/test-runs for stored process definitions.  **Required permissions:** `workflow:run`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param submit_process_test_run_payload: (required)
         :type submit_process_test_run_payload: SubmitProcessTestRunPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -5245,8 +5245,8 @@ class ProcessesApi:
         """ # noqa: E501
 
         _param = self._submit_process_test_run_serialize(
-            submit_process_test_run_payload=submit_process_test_run_payload,
             x_api_version=x_api_version,
+            submit_process_test_run_payload=submit_process_test_run_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -5272,8 +5272,8 @@ class ProcessesApi:
     @validate_call
     def submit_process_test_run_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         submit_process_test_run_payload: SubmitProcessTestRunPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5291,10 +5291,10 @@ class ProcessesApi:
 
         Starts deterministic test scenarios against an in-code process (`app:` or `sys:`) or an inline definition, with the scenarios supplied in the request instead of a stored suite. Use POST /processes/{processId}/test-runs for stored process definitions.  **Required permissions:** `workflow:run`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param submit_process_test_run_payload: (required)
         :type submit_process_test_run_payload: SubmitProcessTestRunPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -5318,8 +5318,8 @@ class ProcessesApi:
         """ # noqa: E501
 
         _param = self._submit_process_test_run_serialize(
-            submit_process_test_run_payload=submit_process_test_run_payload,
             x_api_version=x_api_version,
+            submit_process_test_run_payload=submit_process_test_run_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -5340,8 +5340,8 @@ class ProcessesApi:
 
     def _submit_process_test_run_serialize(
         self,
-        submit_process_test_run_payload,
         x_api_version,
+        submit_process_test_run_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -5423,8 +5423,8 @@ class ProcessesApi:
     def update_process_definition(
         self,
         process_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_process_definition_payload: UpdateProcessDefinitionPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5444,10 +5444,10 @@ class ProcessesApi:
 
         :param process_id: (required)
         :type process_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param update_process_definition_payload: (required)
         :type update_process_definition_payload: UpdateProcessDefinitionPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -5472,8 +5472,8 @@ class ProcessesApi:
 
         _param = self._update_process_definition_serialize(
             process_id=process_id,
-            update_process_definition_payload=update_process_definition_payload,
             x_api_version=x_api_version,
+            update_process_definition_payload=update_process_definition_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -5501,8 +5501,8 @@ class ProcessesApi:
     def update_process_definition_with_http_info(
         self,
         process_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_process_definition_payload: UpdateProcessDefinitionPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5522,10 +5522,10 @@ class ProcessesApi:
 
         :param process_id: (required)
         :type process_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param update_process_definition_payload: (required)
         :type update_process_definition_payload: UpdateProcessDefinitionPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -5550,8 +5550,8 @@ class ProcessesApi:
 
         _param = self._update_process_definition_serialize(
             process_id=process_id,
-            update_process_definition_payload=update_process_definition_payload,
             x_api_version=x_api_version,
+            update_process_definition_payload=update_process_definition_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -5579,8 +5579,8 @@ class ProcessesApi:
     def update_process_definition_without_preload_content(
         self,
         process_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_process_definition_payload: UpdateProcessDefinitionPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5600,10 +5600,10 @@ class ProcessesApi:
 
         :param process_id: (required)
         :type process_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param update_process_definition_payload: (required)
         :type update_process_definition_payload: UpdateProcessDefinitionPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -5628,8 +5628,8 @@ class ProcessesApi:
 
         _param = self._update_process_definition_serialize(
             process_id=process_id,
-            update_process_definition_payload=update_process_definition_payload,
             x_api_version=x_api_version,
+            update_process_definition_payload=update_process_definition_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -5652,8 +5652,8 @@ class ProcessesApi:
     def _update_process_definition_serialize(
         self,
         process_id,
-        update_process_definition_payload,
         x_api_version,
+        update_process_definition_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -5738,8 +5738,8 @@ class ProcessesApi:
         self,
         process_id: StrictStr,
         suite_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_process_test_suite_payload: UpdateProcessTestSuitePayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5761,10 +5761,10 @@ class ProcessesApi:
         :type process_id: str
         :param suite_id: (required)
         :type suite_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param update_process_test_suite_payload: (required)
         :type update_process_test_suite_payload: UpdateProcessTestSuitePayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -5790,8 +5790,8 @@ class ProcessesApi:
         _param = self._update_process_test_suite_serialize(
             process_id=process_id,
             suite_id=suite_id,
-            update_process_test_suite_payload=update_process_test_suite_payload,
             x_api_version=x_api_version,
+            update_process_test_suite_payload=update_process_test_suite_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -5819,8 +5819,8 @@ class ProcessesApi:
         self,
         process_id: StrictStr,
         suite_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_process_test_suite_payload: UpdateProcessTestSuitePayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5842,10 +5842,10 @@ class ProcessesApi:
         :type process_id: str
         :param suite_id: (required)
         :type suite_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param update_process_test_suite_payload: (required)
         :type update_process_test_suite_payload: UpdateProcessTestSuitePayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -5871,8 +5871,8 @@ class ProcessesApi:
         _param = self._update_process_test_suite_serialize(
             process_id=process_id,
             suite_id=suite_id,
-            update_process_test_suite_payload=update_process_test_suite_payload,
             x_api_version=x_api_version,
+            update_process_test_suite_payload=update_process_test_suite_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -5900,8 +5900,8 @@ class ProcessesApi:
         self,
         process_id: StrictStr,
         suite_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_process_test_suite_payload: UpdateProcessTestSuitePayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5923,10 +5923,10 @@ class ProcessesApi:
         :type process_id: str
         :param suite_id: (required)
         :type suite_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param update_process_test_suite_payload: (required)
         :type update_process_test_suite_payload: UpdateProcessTestSuitePayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -5952,8 +5952,8 @@ class ProcessesApi:
         _param = self._update_process_test_suite_serialize(
             process_id=process_id,
             suite_id=suite_id,
-            update_process_test_suite_payload=update_process_test_suite_payload,
             x_api_version=x_api_version,
+            update_process_test_suite_payload=update_process_test_suite_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -5976,8 +5976,8 @@ class ProcessesApi:
         self,
         process_id,
         suite_id,
-        update_process_test_suite_payload,
         x_api_version,
+        update_process_test_suite_payload,
         _request_auth,
         _content_type,
         _headers,

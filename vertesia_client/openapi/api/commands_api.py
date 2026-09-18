@@ -15,7 +15,7 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import Field, StrictStr
+from pydantic import Field, StrictStr, field_validator
 from typing import Optional
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.drift_analysis_status_response import DriftAnalysisStatusResponse
@@ -51,7 +51,7 @@ class CommandsApi:
     @validate_call
     def disable_index_queries(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -69,7 +69,7 @@ class CommandsApi:
 
         Deprecated no-op endpoint kept for backward compatibility. Queries are disabled automatically when indexing is disabled.  **Required permissions:** `project:settings_write`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -121,7 +121,7 @@ class CommandsApi:
     @validate_call
     def disable_index_queries_with_http_info(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -139,7 +139,7 @@ class CommandsApi:
 
         Deprecated no-op endpoint kept for backward compatibility. Queries are disabled automatically when indexing is disabled.  **Required permissions:** `project:settings_write`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -191,7 +191,7 @@ class CommandsApi:
     @validate_call
     def disable_index_queries_without_preload_content(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -209,7 +209,7 @@ class CommandsApi:
 
         Deprecated no-op endpoint kept for backward compatibility. Queries are disabled automatically when indexing is disabled.  **Required permissions:** `project:settings_write`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -323,7 +323,7 @@ class CommandsApi:
     def disable_project_embeddings(
         self,
         type: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -343,7 +343,7 @@ class CommandsApi:
 
         :param type: (required)
         :type type: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -396,7 +396,7 @@ class CommandsApi:
     def disable_project_embeddings_with_http_info(
         self,
         type: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -416,7 +416,7 @@ class CommandsApi:
 
         :param type: (required)
         :type type: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -469,7 +469,7 @@ class CommandsApi:
     def disable_project_embeddings_without_preload_content(
         self,
         type: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -489,7 +489,7 @@ class CommandsApi:
 
         :param type: (required)
         :type type: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -605,7 +605,7 @@ class CommandsApi:
     @validate_call
     def disable_project_indexing(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -623,7 +623,7 @@ class CommandsApi:
 
         Disables Elasticsearch-backed indexing for the current project.  **Required permissions:** `project:settings_write`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -674,7 +674,7 @@ class CommandsApi:
     @validate_call
     def disable_project_indexing_with_http_info(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -692,7 +692,7 @@ class CommandsApi:
 
         Disables Elasticsearch-backed indexing for the current project.  **Required permissions:** `project:settings_write`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -743,7 +743,7 @@ class CommandsApi:
     @validate_call
     def disable_project_indexing_without_preload_content(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -761,7 +761,7 @@ class CommandsApi:
 
         Disables Elasticsearch-backed indexing for the current project.  **Required permissions:** `project:settings_write`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -873,7 +873,7 @@ class CommandsApi:
     @validate_call
     def enable_index_queries(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -891,7 +891,7 @@ class CommandsApi:
 
         Deprecated no-op endpoint kept for backward compatibility. Queries are enabled automatically when indexing is enabled.  **Required permissions:** `project:settings_write`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -943,7 +943,7 @@ class CommandsApi:
     @validate_call
     def enable_index_queries_with_http_info(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -961,7 +961,7 @@ class CommandsApi:
 
         Deprecated no-op endpoint kept for backward compatibility. Queries are enabled automatically when indexing is enabled.  **Required permissions:** `project:settings_write`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1013,7 +1013,7 @@ class CommandsApi:
     @validate_call
     def enable_index_queries_without_preload_content(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1031,7 +1031,7 @@ class CommandsApi:
 
         Deprecated no-op endpoint kept for backward compatibility. Queries are enabled automatically when indexing is enabled.  **Required permissions:** `project:settings_write`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1145,8 +1145,8 @@ class CommandsApi:
     def enable_project_embeddings(
         self,
         type: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         project_configuration_embedding_enable_payload: ProjectConfigurationEmbeddingEnablePayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1166,10 +1166,10 @@ class CommandsApi:
 
         :param type: (required)
         :type type: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param project_configuration_embedding_enable_payload: (required)
         :type project_configuration_embedding_enable_payload: ProjectConfigurationEmbeddingEnablePayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1194,8 +1194,8 @@ class CommandsApi:
 
         _param = self._enable_project_embeddings_serialize(
             type=type,
-            project_configuration_embedding_enable_payload=project_configuration_embedding_enable_payload,
             x_api_version=x_api_version,
+            project_configuration_embedding_enable_payload=project_configuration_embedding_enable_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1222,8 +1222,8 @@ class CommandsApi:
     def enable_project_embeddings_with_http_info(
         self,
         type: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         project_configuration_embedding_enable_payload: ProjectConfigurationEmbeddingEnablePayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1243,10 +1243,10 @@ class CommandsApi:
 
         :param type: (required)
         :type type: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param project_configuration_embedding_enable_payload: (required)
         :type project_configuration_embedding_enable_payload: ProjectConfigurationEmbeddingEnablePayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1271,8 +1271,8 @@ class CommandsApi:
 
         _param = self._enable_project_embeddings_serialize(
             type=type,
-            project_configuration_embedding_enable_payload=project_configuration_embedding_enable_payload,
             x_api_version=x_api_version,
+            project_configuration_embedding_enable_payload=project_configuration_embedding_enable_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1299,8 +1299,8 @@ class CommandsApi:
     def enable_project_embeddings_without_preload_content(
         self,
         type: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         project_configuration_embedding_enable_payload: ProjectConfigurationEmbeddingEnablePayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1320,10 +1320,10 @@ class CommandsApi:
 
         :param type: (required)
         :type type: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param project_configuration_embedding_enable_payload: (required)
         :type project_configuration_embedding_enable_payload: ProjectConfigurationEmbeddingEnablePayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1348,8 +1348,8 @@ class CommandsApi:
 
         _param = self._enable_project_embeddings_serialize(
             type=type,
-            project_configuration_embedding_enable_payload=project_configuration_embedding_enable_payload,
             x_api_version=x_api_version,
+            project_configuration_embedding_enable_payload=project_configuration_embedding_enable_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1371,8 +1371,8 @@ class CommandsApi:
     def _enable_project_embeddings_serialize(
         self,
         type,
-        project_configuration_embedding_enable_payload,
         x_api_version,
+        project_configuration_embedding_enable_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -1455,7 +1455,7 @@ class CommandsApi:
     @validate_call
     def enable_project_indexing(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1473,7 +1473,7 @@ class CommandsApi:
 
         Enables Elasticsearch-backed indexing for the current project.  **Required permissions:** `project:settings_write`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1524,7 +1524,7 @@ class CommandsApi:
     @validate_call
     def enable_project_indexing_with_http_info(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1542,7 +1542,7 @@ class CommandsApi:
 
         Enables Elasticsearch-backed indexing for the current project.  **Required permissions:** `project:settings_write`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1593,7 +1593,7 @@ class CommandsApi:
     @validate_call
     def enable_project_indexing_without_preload_content(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1611,7 +1611,7 @@ class CommandsApi:
 
         Enables Elasticsearch-backed indexing for the current project.  **Required permissions:** `project:settings_write`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1724,7 +1724,7 @@ class CommandsApi:
     def get_embedding_command_status(
         self,
         type: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1744,7 +1744,7 @@ class CommandsApi:
 
         :param type: (required)
         :type type: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1797,7 +1797,7 @@ class CommandsApi:
     def get_embedding_command_status_with_http_info(
         self,
         type: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1817,7 +1817,7 @@ class CommandsApi:
 
         :param type: (required)
         :type type: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1870,7 +1870,7 @@ class CommandsApi:
     def get_embedding_command_status_without_preload_content(
         self,
         type: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1890,7 +1890,7 @@ class CommandsApi:
 
         :param type: (required)
         :type type: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2006,7 +2006,7 @@ class CommandsApi:
     @validate_call
     def get_index_drift_analysis(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2024,7 +2024,7 @@ class CommandsApi:
 
         Returns the latest drift-analysis workflow state, including progress or final results for the current project.  **Required permissions:** `content:admin`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2075,7 +2075,7 @@ class CommandsApi:
     @validate_call
     def get_index_drift_analysis_with_http_info(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2093,7 +2093,7 @@ class CommandsApi:
 
         Returns the latest drift-analysis workflow state, including progress or final results for the current project.  **Required permissions:** `content:admin`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2144,7 +2144,7 @@ class CommandsApi:
     @validate_call
     def get_index_drift_analysis_without_preload_content(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2162,7 +2162,7 @@ class CommandsApi:
 
         Returns the latest drift-analysis workflow state, including progress or final results for the current project.  **Required permissions:** `content:admin`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2274,7 +2274,7 @@ class CommandsApi:
     @validate_call
     def get_indexing_status(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2292,7 +2292,7 @@ class CommandsApi:
 
         Returns the current Elasticsearch indexing state, index statistics, and any in-progress reindex status for the current project.  **Required permissions:** `project:settings_write`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2343,7 +2343,7 @@ class CommandsApi:
     @validate_call
     def get_indexing_status_with_http_info(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2361,7 +2361,7 @@ class CommandsApi:
 
         Returns the current Elasticsearch indexing state, index statistics, and any in-progress reindex status for the current project.  **Required permissions:** `project:settings_write`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2412,7 +2412,7 @@ class CommandsApi:
     @validate_call
     def get_indexing_status_without_preload_content(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2430,7 +2430,7 @@ class CommandsApi:
 
         Returns the current Elasticsearch indexing state, index statistics, and any in-progress reindex status for the current project.  **Required permissions:** `project:settings_write`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2542,7 +2542,7 @@ class CommandsApi:
     @validate_call
     def list_zeno_migrations(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2560,7 +2560,7 @@ class CommandsApi:
 
         Lists the available synchronous content migrations that can be executed by an authenticated admin API key.
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2611,7 +2611,7 @@ class CommandsApi:
     @validate_call
     def list_zeno_migrations_with_http_info(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2629,7 +2629,7 @@ class CommandsApi:
 
         Lists the available synchronous content migrations that can be executed by an authenticated admin API key.
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2680,7 +2680,7 @@ class CommandsApi:
     @validate_call
     def list_zeno_migrations_without_preload_content(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2698,7 +2698,7 @@ class CommandsApi:
 
         Lists the available synchronous content migrations that can be executed by an authenticated admin API key.
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2811,7 +2811,7 @@ class CommandsApi:
     def recalculate_project_embeddings(
         self,
         type: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2831,7 +2831,7 @@ class CommandsApi:
 
         :param type: (required)
         :type type: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2884,7 +2884,7 @@ class CommandsApi:
     def recalculate_project_embeddings_with_http_info(
         self,
         type: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2904,7 +2904,7 @@ class CommandsApi:
 
         :param type: (required)
         :type type: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2957,7 +2957,7 @@ class CommandsApi:
     def recalculate_project_embeddings_without_preload_content(
         self,
         type: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2977,7 +2977,7 @@ class CommandsApi:
 
         :param type: (required)
         :type type: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -3093,7 +3093,7 @@ class CommandsApi:
     @validate_call
     def reindex_agent_runs(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         reindex_agent_runs_payload: Optional[ReindexAgentRunsPayload] = None,
         _request_timeout: Union[
             None,
@@ -3112,7 +3112,7 @@ class CommandsApi:
 
         Rebuilds the current project agent-run Elasticsearch index directly from MongoDB. By default this recreates the stable agent-runs index before indexing.  **Required permissions:** `content:admin`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param reindex_agent_runs_payload:
         :type reindex_agent_runs_payload: ReindexAgentRunsPayload
@@ -3166,7 +3166,7 @@ class CommandsApi:
     @validate_call
     def reindex_agent_runs_with_http_info(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         reindex_agent_runs_payload: Optional[ReindexAgentRunsPayload] = None,
         _request_timeout: Union[
             None,
@@ -3185,7 +3185,7 @@ class CommandsApi:
 
         Rebuilds the current project agent-run Elasticsearch index directly from MongoDB. By default this recreates the stable agent-runs index before indexing.  **Required permissions:** `content:admin`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param reindex_agent_runs_payload:
         :type reindex_agent_runs_payload: ReindexAgentRunsPayload
@@ -3239,7 +3239,7 @@ class CommandsApi:
     @validate_call
     def reindex_agent_runs_without_preload_content(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         reindex_agent_runs_payload: Optional[ReindexAgentRunsPayload] = None,
         _request_timeout: Union[
             None,
@@ -3258,7 +3258,7 @@ class CommandsApi:
 
         Rebuilds the current project agent-run Elasticsearch index directly from MongoDB. By default this recreates the stable agent-runs index before indexing.  **Required permissions:** `content:admin`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param reindex_agent_runs_payload:
         :type reindex_agent_runs_payload: ReindexAgentRunsPayload
@@ -3390,8 +3390,8 @@ class CommandsApi:
     def run_zeno_migration(
         self,
         name: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         run_migration_payload: RunMigrationPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3411,10 +3411,10 @@ class CommandsApi:
 
         :param name: (required)
         :type name: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param run_migration_payload: (required)
         :type run_migration_payload: RunMigrationPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3439,8 +3439,8 @@ class CommandsApi:
 
         _param = self._run_zeno_migration_serialize(
             name=name,
-            run_migration_payload=run_migration_payload,
             x_api_version=x_api_version,
+            run_migration_payload=run_migration_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3467,8 +3467,8 @@ class CommandsApi:
     def run_zeno_migration_with_http_info(
         self,
         name: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         run_migration_payload: RunMigrationPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3488,10 +3488,10 @@ class CommandsApi:
 
         :param name: (required)
         :type name: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param run_migration_payload: (required)
         :type run_migration_payload: RunMigrationPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3516,8 +3516,8 @@ class CommandsApi:
 
         _param = self._run_zeno_migration_serialize(
             name=name,
-            run_migration_payload=run_migration_payload,
             x_api_version=x_api_version,
+            run_migration_payload=run_migration_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3544,8 +3544,8 @@ class CommandsApi:
     def run_zeno_migration_without_preload_content(
         self,
         name: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         run_migration_payload: RunMigrationPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3565,10 +3565,10 @@ class CommandsApi:
 
         :param name: (required)
         :type name: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param run_migration_payload: (required)
         :type run_migration_payload: RunMigrationPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3593,8 +3593,8 @@ class CommandsApi:
 
         _param = self._run_zeno_migration_serialize(
             name=name,
-            run_migration_payload=run_migration_payload,
             x_api_version=x_api_version,
+            run_migration_payload=run_migration_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3616,8 +3616,8 @@ class CommandsApi:
     def _run_zeno_migration_serialize(
         self,
         name,
-        run_migration_payload,
         x_api_version,
+        run_migration_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -3700,7 +3700,7 @@ class CommandsApi:
     @validate_call
     def start_index_drift_analysis(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3718,7 +3718,7 @@ class CommandsApi:
 
         Starts a workflow that compares MongoDB content objects with Elasticsearch documents to detect missing or stale indexed content.  **Required permissions:** `content:admin`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -3769,7 +3769,7 @@ class CommandsApi:
     @validate_call
     def start_index_drift_analysis_with_http_info(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3787,7 +3787,7 @@ class CommandsApi:
 
         Starts a workflow that compares MongoDB content objects with Elasticsearch documents to detect missing or stale indexed content.  **Required permissions:** `content:admin`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -3838,7 +3838,7 @@ class CommandsApi:
     @validate_call
     def start_index_drift_analysis_without_preload_content(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3856,7 +3856,7 @@ class CommandsApi:
 
         Starts a workflow that compares MongoDB content objects with Elasticsearch documents to detect missing or stale indexed content.  **Required permissions:** `content:admin`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -3968,7 +3968,7 @@ class CommandsApi:
     @validate_call
     def start_project_reindex(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         start_project_reindex_payload: Optional[StartProjectReindexPayload] = None,
         _request_timeout: Union[
             None,
@@ -3987,7 +3987,7 @@ class CommandsApi:
 
         Starts a full project reindex workflow that rebuilds the Elasticsearch index from content objects.  **Required permissions:** `content:admin`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param start_project_reindex_payload:
         :type start_project_reindex_payload: StartProjectReindexPayload
@@ -4041,7 +4041,7 @@ class CommandsApi:
     @validate_call
     def start_project_reindex_with_http_info(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         start_project_reindex_payload: Optional[StartProjectReindexPayload] = None,
         _request_timeout: Union[
             None,
@@ -4060,7 +4060,7 @@ class CommandsApi:
 
         Starts a full project reindex workflow that rebuilds the Elasticsearch index from content objects.  **Required permissions:** `content:admin`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param start_project_reindex_payload:
         :type start_project_reindex_payload: StartProjectReindexPayload
@@ -4114,7 +4114,7 @@ class CommandsApi:
     @validate_call
     def start_project_reindex_without_preload_content(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         start_project_reindex_payload: Optional[StartProjectReindexPayload] = None,
         _request_timeout: Union[
             None,
@@ -4133,7 +4133,7 @@ class CommandsApi:
 
         Starts a full project reindex workflow that rebuilds the Elasticsearch index from content objects.  **Required permissions:** `content:admin`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param start_project_reindex_payload:
         :type start_project_reindex_payload: StartProjectReindexPayload

@@ -15,8 +15,7 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import Field, StrictStr
-from typing import Optional
+from pydantic import Field, StrictStr, field_validator
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.delete_by_id_result import DeleteByIdResult
 from vertesia_client.openapi.models.principal_identity import PrincipalIdentity
@@ -45,7 +44,7 @@ class UsersApi:
     def delete_user(
         self,
         user_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -65,7 +64,7 @@ class UsersApi:
 
         :param user_id: (required)
         :type user_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -118,7 +117,7 @@ class UsersApi:
     def delete_user_with_http_info(
         self,
         user_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -138,7 +137,7 @@ class UsersApi:
 
         :param user_id: (required)
         :type user_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -191,7 +190,7 @@ class UsersApi:
     def delete_user_without_preload_content(
         self,
         user_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -211,7 +210,7 @@ class UsersApi:
 
         :param user_id: (required)
         :type user_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -327,7 +326,7 @@ class UsersApi:
     @validate_call
     def get_current_user_identity(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -345,7 +344,7 @@ class UsersApi:
 
         Returns the current user id plus the merged ABAC principal context (clearance, compartments, email, tags, properties). Conceptually an OIDC-style userinfo / identity-token endpoint: takes no parameters, derives the subject from a user or OAuth access token, and rejects principals without an underlying user (API keys, service accounts) with 400. Use this client-side to preview how PrincipalSet rules will evaluate for the signed-in user.  **Required permissions:** `account:member`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -396,7 +395,7 @@ class UsersApi:
     @validate_call
     def get_current_user_identity_with_http_info(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -414,7 +413,7 @@ class UsersApi:
 
         Returns the current user id plus the merged ABAC principal context (clearance, compartments, email, tags, properties). Conceptually an OIDC-style userinfo / identity-token endpoint: takes no parameters, derives the subject from a user or OAuth access token, and rejects principals without an underlying user (API keys, service accounts) with 400. Use this client-side to preview how PrincipalSet rules will evaluate for the signed-in user.  **Required permissions:** `account:member`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -465,7 +464,7 @@ class UsersApi:
     @validate_call
     def get_current_user_identity_without_preload_content(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -483,7 +482,7 @@ class UsersApi:
 
         Returns the current user id plus the merged ABAC principal context (clearance, compartments, email, tags, properties). Conceptually an OIDC-style userinfo / identity-token endpoint: takes no parameters, derives the subject from a user or OAuth access token, and rejects principals without an underlying user (API keys, service accounts) with 400. Use this client-side to preview how PrincipalSet rules will evaluate for the signed-in user.  **Required permissions:** `account:member`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -596,7 +595,7 @@ class UsersApi:
     def get_user(
         self,
         user_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -616,7 +615,7 @@ class UsersApi:
 
         :param user_id: (required)
         :type user_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -669,7 +668,7 @@ class UsersApi:
     def get_user_with_http_info(
         self,
         user_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -689,7 +688,7 @@ class UsersApi:
 
         :param user_id: (required)
         :type user_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -742,7 +741,7 @@ class UsersApi:
     def get_user_without_preload_content(
         self,
         user_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -762,7 +761,7 @@ class UsersApi:
 
         :param user_id: (required)
         :type user_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -879,8 +878,8 @@ class UsersApi:
     def update_user(
         self,
         user_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_user_payload: UpdateUserPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -900,10 +899,10 @@ class UsersApi:
 
         :param user_id: (required)
         :type user_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param update_user_payload: (required)
         :type update_user_payload: UpdateUserPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -928,8 +927,8 @@ class UsersApi:
 
         _param = self._update_user_serialize(
             user_id=user_id,
-            update_user_payload=update_user_payload,
             x_api_version=x_api_version,
+            update_user_payload=update_user_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -956,8 +955,8 @@ class UsersApi:
     def update_user_with_http_info(
         self,
         user_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_user_payload: UpdateUserPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -977,10 +976,10 @@ class UsersApi:
 
         :param user_id: (required)
         :type user_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param update_user_payload: (required)
         :type update_user_payload: UpdateUserPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1005,8 +1004,8 @@ class UsersApi:
 
         _param = self._update_user_serialize(
             user_id=user_id,
-            update_user_payload=update_user_payload,
             x_api_version=x_api_version,
+            update_user_payload=update_user_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1033,8 +1032,8 @@ class UsersApi:
     def update_user_without_preload_content(
         self,
         user_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_user_payload: UpdateUserPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1054,10 +1053,10 @@ class UsersApi:
 
         :param user_id: (required)
         :type user_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param update_user_payload: (required)
         :type update_user_payload: UpdateUserPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1082,8 +1081,8 @@ class UsersApi:
 
         _param = self._update_user_serialize(
             user_id=user_id,
-            update_user_payload=update_user_payload,
             x_api_version=x_api_version,
+            update_user_payload=update_user_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1105,8 +1104,8 @@ class UsersApi:
     def _update_user_serialize(
         self,
         user_id,
-        update_user_payload,
         x_api_version,
+        update_user_payload,
         _request_auth,
         _content_type,
         _headers,

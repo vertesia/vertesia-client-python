@@ -15,8 +15,8 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import Field, StrictStr
-from typing import List, Optional
+from pydantic import Field, StrictStr, field_validator
+from typing import List
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.ace_create_payload import ACECreatePayload
 from vertesia_client.openapi.models.ace_update_payload import ACEUpdatePayload
@@ -44,8 +44,8 @@ class AccessControlEntriesApi:
     @validate_call
     def create_access_control_entry(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         ace_create_payload: ACECreatePayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -63,10 +63,10 @@ class AccessControlEntriesApi:
 
         Creates a new access control entry for an account, project, or application resource.  **Required permissions:** Any of `account:admin`, `account:membership:manage`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param ace_create_payload: (required)
         :type ace_create_payload: ACECreatePayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -90,8 +90,8 @@ class AccessControlEntriesApi:
         """ # noqa: E501
 
         _param = self._create_access_control_entry_serialize(
-            ace_create_payload=ace_create_payload,
             x_api_version=x_api_version,
+            ace_create_payload=ace_create_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -117,8 +117,8 @@ class AccessControlEntriesApi:
     @validate_call
     def create_access_control_entry_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         ace_create_payload: ACECreatePayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -136,10 +136,10 @@ class AccessControlEntriesApi:
 
         Creates a new access control entry for an account, project, or application resource.  **Required permissions:** Any of `account:admin`, `account:membership:manage`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param ace_create_payload: (required)
         :type ace_create_payload: ACECreatePayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -163,8 +163,8 @@ class AccessControlEntriesApi:
         """ # noqa: E501
 
         _param = self._create_access_control_entry_serialize(
-            ace_create_payload=ace_create_payload,
             x_api_version=x_api_version,
+            ace_create_payload=ace_create_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -190,8 +190,8 @@ class AccessControlEntriesApi:
     @validate_call
     def create_access_control_entry_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         ace_create_payload: ACECreatePayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -209,10 +209,10 @@ class AccessControlEntriesApi:
 
         Creates a new access control entry for an account, project, or application resource.  **Required permissions:** Any of `account:admin`, `account:membership:manage`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param ace_create_payload: (required)
         :type ace_create_payload: ACECreatePayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -236,8 +236,8 @@ class AccessControlEntriesApi:
         """ # noqa: E501
 
         _param = self._create_access_control_entry_serialize(
-            ace_create_payload=ace_create_payload,
             x_api_version=x_api_version,
+            ace_create_payload=ace_create_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -258,8 +258,8 @@ class AccessControlEntriesApi:
 
     def _create_access_control_entry_serialize(
         self,
-        ace_create_payload,
         x_api_version,
+        ace_create_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -341,7 +341,7 @@ class AccessControlEntriesApi:
     def delete_access_control_entry(
         self,
         ace_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -361,7 +361,7 @@ class AccessControlEntriesApi:
 
         :param ace_id: (required)
         :type ace_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -414,7 +414,7 @@ class AccessControlEntriesApi:
     def delete_access_control_entry_with_http_info(
         self,
         ace_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -434,7 +434,7 @@ class AccessControlEntriesApi:
 
         :param ace_id: (required)
         :type ace_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -487,7 +487,7 @@ class AccessControlEntriesApi:
     def delete_access_control_entry_without_preload_content(
         self,
         ace_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -507,7 +507,7 @@ class AccessControlEntriesApi:
 
         :param ace_id: (required)
         :type ace_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -624,7 +624,7 @@ class AccessControlEntriesApi:
     def get_access_control_entry(
         self,
         ace_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -644,7 +644,7 @@ class AccessControlEntriesApi:
 
         :param ace_id: (required)
         :type ace_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -697,7 +697,7 @@ class AccessControlEntriesApi:
     def get_access_control_entry_with_http_info(
         self,
         ace_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -717,7 +717,7 @@ class AccessControlEntriesApi:
 
         :param ace_id: (required)
         :type ace_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -770,7 +770,7 @@ class AccessControlEntriesApi:
     def get_access_control_entry_without_preload_content(
         self,
         ace_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -790,7 +790,7 @@ class AccessControlEntriesApi:
 
         :param ace_id: (required)
         :type ace_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -906,7 +906,7 @@ class AccessControlEntriesApi:
     @validate_call
     def list_access_control_entries(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -924,7 +924,7 @@ class AccessControlEntriesApi:
 
         Lists access control entries visible in the current account and project context.  **Required permissions:** Any of `account:read`, `account:membership:read`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -975,7 +975,7 @@ class AccessControlEntriesApi:
     @validate_call
     def list_access_control_entries_with_http_info(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -993,7 +993,7 @@ class AccessControlEntriesApi:
 
         Lists access control entries visible in the current account and project context.  **Required permissions:** Any of `account:read`, `account:membership:read`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1044,7 +1044,7 @@ class AccessControlEntriesApi:
     @validate_call
     def list_access_control_entries_without_preload_content(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1062,7 +1062,7 @@ class AccessControlEntriesApi:
 
         Lists access control entries visible in the current account and project context.  **Required permissions:** Any of `account:read`, `account:membership:read`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1174,7 +1174,7 @@ class AccessControlEntriesApi:
     @validate_call
     def list_project_access_control_entries(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1192,7 +1192,7 @@ class AccessControlEntriesApi:
 
         Lists all ACEs scoped to the current project, including regular project ACEs and dynamic (content_set/principal_set) ACEs.  **Required permissions:** `account:read`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1243,7 +1243,7 @@ class AccessControlEntriesApi:
     @validate_call
     def list_project_access_control_entries_with_http_info(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1261,7 +1261,7 @@ class AccessControlEntriesApi:
 
         Lists all ACEs scoped to the current project, including regular project ACEs and dynamic (content_set/principal_set) ACEs.  **Required permissions:** `account:read`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1312,7 +1312,7 @@ class AccessControlEntriesApi:
     @validate_call
     def list_project_access_control_entries_without_preload_content(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1330,7 +1330,7 @@ class AccessControlEntriesApi:
 
         Lists all ACEs scoped to the current project, including regular project ACEs and dynamic (content_set/principal_set) ACEs.  **Required permissions:** `account:read`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1443,8 +1443,8 @@ class AccessControlEntriesApi:
     def update_access_control_entry(
         self,
         ace_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         ace_update_payload: ACEUpdatePayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1464,10 +1464,10 @@ class AccessControlEntriesApi:
 
         :param ace_id: (required)
         :type ace_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param ace_update_payload: (required)
         :type ace_update_payload: ACEUpdatePayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1492,8 +1492,8 @@ class AccessControlEntriesApi:
 
         _param = self._update_access_control_entry_serialize(
             ace_id=ace_id,
-            ace_update_payload=ace_update_payload,
             x_api_version=x_api_version,
+            ace_update_payload=ace_update_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1520,8 +1520,8 @@ class AccessControlEntriesApi:
     def update_access_control_entry_with_http_info(
         self,
         ace_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         ace_update_payload: ACEUpdatePayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1541,10 +1541,10 @@ class AccessControlEntriesApi:
 
         :param ace_id: (required)
         :type ace_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param ace_update_payload: (required)
         :type ace_update_payload: ACEUpdatePayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1569,8 +1569,8 @@ class AccessControlEntriesApi:
 
         _param = self._update_access_control_entry_serialize(
             ace_id=ace_id,
-            ace_update_payload=ace_update_payload,
             x_api_version=x_api_version,
+            ace_update_payload=ace_update_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1597,8 +1597,8 @@ class AccessControlEntriesApi:
     def update_access_control_entry_without_preload_content(
         self,
         ace_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         ace_update_payload: ACEUpdatePayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1618,10 +1618,10 @@ class AccessControlEntriesApi:
 
         :param ace_id: (required)
         :type ace_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param ace_update_payload: (required)
         :type ace_update_payload: ACEUpdatePayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1646,8 +1646,8 @@ class AccessControlEntriesApi:
 
         _param = self._update_access_control_entry_serialize(
             ace_id=ace_id,
-            ace_update_payload=ace_update_payload,
             x_api_version=x_api_version,
+            ace_update_payload=ace_update_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1669,8 +1669,8 @@ class AccessControlEntriesApi:
     def _update_access_control_entry_serialize(
         self,
         ace_id,
-        ace_update_payload,
         x_api_version,
+        ace_update_payload,
         _request_auth,
         _content_type,
         _headers,

@@ -46,7 +46,7 @@ class TasksApi:
     def cancel_task(
         self,
         task_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -66,7 +66,7 @@ class TasksApi:
 
         :param task_id: (required)
         :type task_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -119,7 +119,7 @@ class TasksApi:
     def cancel_task_with_http_info(
         self,
         task_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -139,7 +139,7 @@ class TasksApi:
 
         :param task_id: (required)
         :type task_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -192,7 +192,7 @@ class TasksApi:
     def cancel_task_without_preload_content(
         self,
         task_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -212,7 +212,7 @@ class TasksApi:
 
         :param task_id: (required)
         :type task_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -329,8 +329,8 @@ class TasksApi:
     def complete_task(
         self,
         task_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         complete_task_payload: CompleteTaskPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -350,10 +350,10 @@ class TasksApi:
 
         :param task_id: (required)
         :type task_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param complete_task_payload: (required)
         :type complete_task_payload: CompleteTaskPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -378,8 +378,8 @@ class TasksApi:
 
         _param = self._complete_task_serialize(
             task_id=task_id,
-            complete_task_payload=complete_task_payload,
             x_api_version=x_api_version,
+            complete_task_payload=complete_task_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -406,8 +406,8 @@ class TasksApi:
     def complete_task_with_http_info(
         self,
         task_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         complete_task_payload: CompleteTaskPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -427,10 +427,10 @@ class TasksApi:
 
         :param task_id: (required)
         :type task_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param complete_task_payload: (required)
         :type complete_task_payload: CompleteTaskPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -455,8 +455,8 @@ class TasksApi:
 
         _param = self._complete_task_serialize(
             task_id=task_id,
-            complete_task_payload=complete_task_payload,
             x_api_version=x_api_version,
+            complete_task_payload=complete_task_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -483,8 +483,8 @@ class TasksApi:
     def complete_task_without_preload_content(
         self,
         task_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         complete_task_payload: CompleteTaskPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -504,10 +504,10 @@ class TasksApi:
 
         :param task_id: (required)
         :type task_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param complete_task_payload: (required)
         :type complete_task_payload: CompleteTaskPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -532,8 +532,8 @@ class TasksApi:
 
         _param = self._complete_task_serialize(
             task_id=task_id,
-            complete_task_payload=complete_task_payload,
             x_api_version=x_api_version,
+            complete_task_payload=complete_task_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -555,8 +555,8 @@ class TasksApi:
     def _complete_task_serialize(
         self,
         task_id,
-        complete_task_payload,
         x_api_version,
+        complete_task_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -639,8 +639,8 @@ class TasksApi:
     @validate_call
     def create_task(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_task_payload: CreateTaskPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -658,10 +658,10 @@ class TasksApi:
 
         Creates a durable human task for a process or agent run. Callers must have `workflow:run` or `task:manage`.
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param create_task_payload: (required)
         :type create_task_payload: CreateTaskPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -685,8 +685,8 @@ class TasksApi:
         """ # noqa: E501
 
         _param = self._create_task_serialize(
-            create_task_payload=create_task_payload,
             x_api_version=x_api_version,
+            create_task_payload=create_task_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -712,8 +712,8 @@ class TasksApi:
     @validate_call
     def create_task_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_task_payload: CreateTaskPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -731,10 +731,10 @@ class TasksApi:
 
         Creates a durable human task for a process or agent run. Callers must have `workflow:run` or `task:manage`.
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param create_task_payload: (required)
         :type create_task_payload: CreateTaskPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -758,8 +758,8 @@ class TasksApi:
         """ # noqa: E501
 
         _param = self._create_task_serialize(
-            create_task_payload=create_task_payload,
             x_api_version=x_api_version,
+            create_task_payload=create_task_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -785,8 +785,8 @@ class TasksApi:
     @validate_call
     def create_task_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_task_payload: CreateTaskPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -804,10 +804,10 @@ class TasksApi:
 
         Creates a durable human task for a process or agent run. Callers must have `workflow:run` or `task:manage`.
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param create_task_payload: (required)
         :type create_task_payload: CreateTaskPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -831,8 +831,8 @@ class TasksApi:
         """ # noqa: E501
 
         _param = self._create_task_serialize(
-            create_task_payload=create_task_payload,
             x_api_version=x_api_version,
+            create_task_payload=create_task_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -853,8 +853,8 @@ class TasksApi:
 
     def _create_task_serialize(
         self,
-        create_task_payload,
         x_api_version,
+        create_task_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -936,7 +936,7 @@ class TasksApi:
     def delete_task(
         self,
         task_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -956,7 +956,7 @@ class TasksApi:
 
         :param task_id: (required)
         :type task_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1009,7 +1009,7 @@ class TasksApi:
     def delete_task_with_http_info(
         self,
         task_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1029,7 +1029,7 @@ class TasksApi:
 
         :param task_id: (required)
         :type task_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1082,7 +1082,7 @@ class TasksApi:
     def delete_task_without_preload_content(
         self,
         task_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1102,7 +1102,7 @@ class TasksApi:
 
         :param task_id: (required)
         :type task_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1219,7 +1219,7 @@ class TasksApi:
     def get_task(
         self,
         task_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1239,7 +1239,7 @@ class TasksApi:
 
         :param task_id: (required)
         :type task_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1292,7 +1292,7 @@ class TasksApi:
     def get_task_with_http_info(
         self,
         task_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1312,7 +1312,7 @@ class TasksApi:
 
         :param task_id: (required)
         :type task_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1365,7 +1365,7 @@ class TasksApi:
     def get_task_without_preload_content(
         self,
         task_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1385,7 +1385,7 @@ class TasksApi:
 
         :param task_id: (required)
         :type task_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1501,13 +1501,13 @@ class TasksApi:
     @validate_call
     def list_tasks(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         status: Optional[List[StrictStr]] = None,
         assignee: Optional[StrictStr] = None,
         run_id: Optional[StrictStr] = None,
         source_type: Optional[StrictStr] = None,
         limit: Optional[Union[StrictFloat, StrictInt]] = None,
         offset: Optional[Union[StrictFloat, StrictInt]] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1525,6 +1525,8 @@ class TasksApi:
 
         Lists durable tasks visible to the current principal, with optional filters for status, assignee, run id, and source type.
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param status:
         :type status: List[str]
         :param assignee:
@@ -1537,8 +1539,6 @@ class TasksApi:
         :type limit: float
         :param offset:
         :type offset: float
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1562,13 +1562,13 @@ class TasksApi:
         """ # noqa: E501
 
         _param = self._list_tasks_serialize(
+            x_api_version=x_api_version,
             status=status,
             assignee=assignee,
             run_id=run_id,
             source_type=source_type,
             limit=limit,
             offset=offset,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1594,13 +1594,13 @@ class TasksApi:
     @validate_call
     def list_tasks_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         status: Optional[List[StrictStr]] = None,
         assignee: Optional[StrictStr] = None,
         run_id: Optional[StrictStr] = None,
         source_type: Optional[StrictStr] = None,
         limit: Optional[Union[StrictFloat, StrictInt]] = None,
         offset: Optional[Union[StrictFloat, StrictInt]] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1618,6 +1618,8 @@ class TasksApi:
 
         Lists durable tasks visible to the current principal, with optional filters for status, assignee, run id, and source type.
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param status:
         :type status: List[str]
         :param assignee:
@@ -1630,8 +1632,6 @@ class TasksApi:
         :type limit: float
         :param offset:
         :type offset: float
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1655,13 +1655,13 @@ class TasksApi:
         """ # noqa: E501
 
         _param = self._list_tasks_serialize(
+            x_api_version=x_api_version,
             status=status,
             assignee=assignee,
             run_id=run_id,
             source_type=source_type,
             limit=limit,
             offset=offset,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1687,13 +1687,13 @@ class TasksApi:
     @validate_call
     def list_tasks_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         status: Optional[List[StrictStr]] = None,
         assignee: Optional[StrictStr] = None,
         run_id: Optional[StrictStr] = None,
         source_type: Optional[StrictStr] = None,
         limit: Optional[Union[StrictFloat, StrictInt]] = None,
         offset: Optional[Union[StrictFloat, StrictInt]] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1711,6 +1711,8 @@ class TasksApi:
 
         Lists durable tasks visible to the current principal, with optional filters for status, assignee, run id, and source type.
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param status:
         :type status: List[str]
         :param assignee:
@@ -1723,8 +1725,6 @@ class TasksApi:
         :type limit: float
         :param offset:
         :type offset: float
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1748,13 +1748,13 @@ class TasksApi:
         """ # noqa: E501
 
         _param = self._list_tasks_serialize(
+            x_api_version=x_api_version,
             status=status,
             assignee=assignee,
             run_id=run_id,
             source_type=source_type,
             limit=limit,
             offset=offset,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1775,13 +1775,13 @@ class TasksApi:
 
     def _list_tasks_serialize(
         self,
+        x_api_version,
         status,
         assignee,
         run_id,
         source_type,
         limit,
         offset,
-        x_api_version,
         _request_auth,
         _content_type,
         _headers,
@@ -1873,8 +1873,8 @@ class TasksApi:
     def update_task(
         self,
         task_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_task_payload: UpdateTaskPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1894,10 +1894,10 @@ class TasksApi:
 
         :param task_id: (required)
         :type task_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param update_task_payload: (required)
         :type update_task_payload: UpdateTaskPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1922,8 +1922,8 @@ class TasksApi:
 
         _param = self._update_task_serialize(
             task_id=task_id,
-            update_task_payload=update_task_payload,
             x_api_version=x_api_version,
+            update_task_payload=update_task_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1950,8 +1950,8 @@ class TasksApi:
     def update_task_with_http_info(
         self,
         task_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_task_payload: UpdateTaskPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1971,10 +1971,10 @@ class TasksApi:
 
         :param task_id: (required)
         :type task_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param update_task_payload: (required)
         :type update_task_payload: UpdateTaskPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1999,8 +1999,8 @@ class TasksApi:
 
         _param = self._update_task_serialize(
             task_id=task_id,
-            update_task_payload=update_task_payload,
             x_api_version=x_api_version,
+            update_task_payload=update_task_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2027,8 +2027,8 @@ class TasksApi:
     def update_task_without_preload_content(
         self,
         task_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_task_payload: UpdateTaskPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2048,10 +2048,10 @@ class TasksApi:
 
         :param task_id: (required)
         :type task_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param update_task_payload: (required)
         :type update_task_payload: UpdateTaskPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2076,8 +2076,8 @@ class TasksApi:
 
         _param = self._update_task_serialize(
             task_id=task_id,
-            update_task_payload=update_task_payload,
             x_api_version=x_api_version,
+            update_task_payload=update_task_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2099,8 +2099,8 @@ class TasksApi:
     def _update_task_serialize(
         self,
         task_id,
-        update_task_payload,
         x_api_version,
+        update_task_payload,
         _request_auth,
         _content_type,
         _headers,

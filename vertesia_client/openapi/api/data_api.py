@@ -15,7 +15,7 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import Field, StrictBool, StrictFloat, StrictInt, StrictStr
+from pydantic import Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Dict, List, Optional, Union
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.alter_table_payload import AlterTablePayload
@@ -79,8 +79,8 @@ class DataApi:
     def archive_dashboards_bulk(
         self,
         store_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         request_body: Dict[str, List[StrictStr]],
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -100,10 +100,10 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param request_body: (required)
         :type request_body: Dict[str, List[str]]
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -128,8 +128,8 @@ class DataApi:
 
         _param = self._archive_dashboards_bulk_serialize(
             store_id=store_id,
-            request_body=request_body,
             x_api_version=x_api_version,
+            request_body=request_body,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -156,8 +156,8 @@ class DataApi:
     def archive_dashboards_bulk_with_http_info(
         self,
         store_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         request_body: Dict[str, List[StrictStr]],
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -177,10 +177,10 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param request_body: (required)
         :type request_body: Dict[str, List[str]]
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -205,8 +205,8 @@ class DataApi:
 
         _param = self._archive_dashboards_bulk_serialize(
             store_id=store_id,
-            request_body=request_body,
             x_api_version=x_api_version,
+            request_body=request_body,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -233,8 +233,8 @@ class DataApi:
     def archive_dashboards_bulk_without_preload_content(
         self,
         store_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         request_body: Dict[str, List[StrictStr]],
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -254,10 +254,10 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param request_body: (required)
         :type request_body: Dict[str, List[str]]
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -282,8 +282,8 @@ class DataApi:
 
         _param = self._archive_dashboards_bulk_serialize(
             store_id=store_id,
-            request_body=request_body,
             x_api_version=x_api_version,
+            request_body=request_body,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -305,8 +305,8 @@ class DataApi:
     def _archive_dashboards_bulk_serialize(
         self,
         store_id,
-        request_body,
         x_api_version,
+        request_body,
         _request_auth,
         _content_type,
         _headers,
@@ -390,8 +390,8 @@ class DataApi:
     def create_dashboard(
         self,
         store_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_dashboard_payload: CreateDashboardPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -411,10 +411,10 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param create_dashboard_payload: (required)
         :type create_dashboard_payload: CreateDashboardPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -439,8 +439,8 @@ class DataApi:
 
         _param = self._create_dashboard_serialize(
             store_id=store_id,
-            create_dashboard_payload=create_dashboard_payload,
             x_api_version=x_api_version,
+            create_dashboard_payload=create_dashboard_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -468,8 +468,8 @@ class DataApi:
     def create_dashboard_with_http_info(
         self,
         store_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_dashboard_payload: CreateDashboardPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -489,10 +489,10 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param create_dashboard_payload: (required)
         :type create_dashboard_payload: CreateDashboardPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -517,8 +517,8 @@ class DataApi:
 
         _param = self._create_dashboard_serialize(
             store_id=store_id,
-            create_dashboard_payload=create_dashboard_payload,
             x_api_version=x_api_version,
+            create_dashboard_payload=create_dashboard_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -546,8 +546,8 @@ class DataApi:
     def create_dashboard_without_preload_content(
         self,
         store_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_dashboard_payload: CreateDashboardPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -567,10 +567,10 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param create_dashboard_payload: (required)
         :type create_dashboard_payload: CreateDashboardPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -595,8 +595,8 @@ class DataApi:
 
         _param = self._create_dashboard_serialize(
             store_id=store_id,
-            create_dashboard_payload=create_dashboard_payload,
             x_api_version=x_api_version,
+            create_dashboard_payload=create_dashboard_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -619,8 +619,8 @@ class DataApi:
     def _create_dashboard_serialize(
         self,
         store_id,
-        create_dashboard_payload,
         x_api_version,
+        create_dashboard_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -705,8 +705,8 @@ class DataApi:
         self,
         store_id: StrictStr,
         dashboard_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_dashboard_snapshot_payload: CreateDashboardSnapshotPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -728,10 +728,10 @@ class DataApi:
         :type store_id: str
         :param dashboard_id: (required)
         :type dashboard_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param create_dashboard_snapshot_payload: (required)
         :type create_dashboard_snapshot_payload: CreateDashboardSnapshotPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -757,8 +757,8 @@ class DataApi:
         _param = self._create_dashboard_snapshot_serialize(
             store_id=store_id,
             dashboard_id=dashboard_id,
-            create_dashboard_snapshot_payload=create_dashboard_snapshot_payload,
             x_api_version=x_api_version,
+            create_dashboard_snapshot_payload=create_dashboard_snapshot_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -786,8 +786,8 @@ class DataApi:
         self,
         store_id: StrictStr,
         dashboard_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_dashboard_snapshot_payload: CreateDashboardSnapshotPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -809,10 +809,10 @@ class DataApi:
         :type store_id: str
         :param dashboard_id: (required)
         :type dashboard_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param create_dashboard_snapshot_payload: (required)
         :type create_dashboard_snapshot_payload: CreateDashboardSnapshotPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -838,8 +838,8 @@ class DataApi:
         _param = self._create_dashboard_snapshot_serialize(
             store_id=store_id,
             dashboard_id=dashboard_id,
-            create_dashboard_snapshot_payload=create_dashboard_snapshot_payload,
             x_api_version=x_api_version,
+            create_dashboard_snapshot_payload=create_dashboard_snapshot_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -867,8 +867,8 @@ class DataApi:
         self,
         store_id: StrictStr,
         dashboard_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_dashboard_snapshot_payload: CreateDashboardSnapshotPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -890,10 +890,10 @@ class DataApi:
         :type store_id: str
         :param dashboard_id: (required)
         :type dashboard_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param create_dashboard_snapshot_payload: (required)
         :type create_dashboard_snapshot_payload: CreateDashboardSnapshotPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -919,8 +919,8 @@ class DataApi:
         _param = self._create_dashboard_snapshot_serialize(
             store_id=store_id,
             dashboard_id=dashboard_id,
-            create_dashboard_snapshot_payload=create_dashboard_snapshot_payload,
             x_api_version=x_api_version,
+            create_dashboard_snapshot_payload=create_dashboard_snapshot_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -943,8 +943,8 @@ class DataApi:
         self,
         store_id,
         dashboard_id,
-        create_dashboard_snapshot_payload,
         x_api_version,
+        create_dashboard_snapshot_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -1029,8 +1029,8 @@ class DataApi:
     @validate_call
     def create_data_store(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_data_store_payload: CreateDataStorePayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1048,10 +1048,10 @@ class DataApi:
 
         Creates a new versioned data store in the current project.  **Required permissions:** `content:write`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param create_data_store_payload: (required)
         :type create_data_store_payload: CreateDataStorePayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1075,8 +1075,8 @@ class DataApi:
         """ # noqa: E501
 
         _param = self._create_data_store_serialize(
-            create_data_store_payload=create_data_store_payload,
             x_api_version=x_api_version,
+            create_data_store_payload=create_data_store_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1102,8 +1102,8 @@ class DataApi:
     @validate_call
     def create_data_store_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_data_store_payload: CreateDataStorePayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1121,10 +1121,10 @@ class DataApi:
 
         Creates a new versioned data store in the current project.  **Required permissions:** `content:write`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param create_data_store_payload: (required)
         :type create_data_store_payload: CreateDataStorePayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1148,8 +1148,8 @@ class DataApi:
         """ # noqa: E501
 
         _param = self._create_data_store_serialize(
-            create_data_store_payload=create_data_store_payload,
             x_api_version=x_api_version,
+            create_data_store_payload=create_data_store_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1175,8 +1175,8 @@ class DataApi:
     @validate_call
     def create_data_store_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_data_store_payload: CreateDataStorePayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1194,10 +1194,10 @@ class DataApi:
 
         Creates a new versioned data store in the current project.  **Required permissions:** `content:write`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param create_data_store_payload: (required)
         :type create_data_store_payload: CreateDataStorePayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1221,8 +1221,8 @@ class DataApi:
         """ # noqa: E501
 
         _param = self._create_data_store_serialize(
-            create_data_store_payload=create_data_store_payload,
             x_api_version=x_api_version,
+            create_data_store_payload=create_data_store_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1243,8 +1243,8 @@ class DataApi:
 
     def _create_data_store_serialize(
         self,
-        create_data_store_payload,
         x_api_version,
+        create_data_store_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -1326,7 +1326,7 @@ class DataApi:
     def create_data_store_download_url(
         self,
         store_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1346,7 +1346,7 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1399,7 +1399,7 @@ class DataApi:
     def create_data_store_download_url_with_http_info(
         self,
         store_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1419,7 +1419,7 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1472,7 +1472,7 @@ class DataApi:
     def create_data_store_download_url_without_preload_content(
         self,
         store_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1492,7 +1492,7 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1609,8 +1609,8 @@ class DataApi:
     def create_data_store_snapshot(
         self,
         store_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_snapshot_payload: CreateSnapshotPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1630,10 +1630,10 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param create_snapshot_payload: (required)
         :type create_snapshot_payload: CreateSnapshotPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1658,8 +1658,8 @@ class DataApi:
 
         _param = self._create_data_store_snapshot_serialize(
             store_id=store_id,
-            create_snapshot_payload=create_snapshot_payload,
             x_api_version=x_api_version,
+            create_snapshot_payload=create_snapshot_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1686,8 +1686,8 @@ class DataApi:
     def create_data_store_snapshot_with_http_info(
         self,
         store_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_snapshot_payload: CreateSnapshotPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1707,10 +1707,10 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param create_snapshot_payload: (required)
         :type create_snapshot_payload: CreateSnapshotPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1735,8 +1735,8 @@ class DataApi:
 
         _param = self._create_data_store_snapshot_serialize(
             store_id=store_id,
-            create_snapshot_payload=create_snapshot_payload,
             x_api_version=x_api_version,
+            create_snapshot_payload=create_snapshot_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1763,8 +1763,8 @@ class DataApi:
     def create_data_store_snapshot_without_preload_content(
         self,
         store_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_snapshot_payload: CreateSnapshotPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1784,10 +1784,10 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param create_snapshot_payload: (required)
         :type create_snapshot_payload: CreateSnapshotPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1812,8 +1812,8 @@ class DataApi:
 
         _param = self._create_data_store_snapshot_serialize(
             store_id=store_id,
-            create_snapshot_payload=create_snapshot_payload,
             x_api_version=x_api_version,
+            create_snapshot_payload=create_snapshot_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1835,8 +1835,8 @@ class DataApi:
     def _create_data_store_snapshot_serialize(
         self,
         store_id,
-        create_snapshot_payload,
         x_api_version,
+        create_snapshot_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -1920,8 +1920,8 @@ class DataApi:
     def create_data_store_tables(
         self,
         store_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_tables_payload: CreateTablesPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1941,10 +1941,10 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param create_tables_payload: (required)
         :type create_tables_payload: CreateTablesPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1969,8 +1969,8 @@ class DataApi:
 
         _param = self._create_data_store_tables_serialize(
             store_id=store_id,
-            create_tables_payload=create_tables_payload,
             x_api_version=x_api_version,
+            create_tables_payload=create_tables_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1997,8 +1997,8 @@ class DataApi:
     def create_data_store_tables_with_http_info(
         self,
         store_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_tables_payload: CreateTablesPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2018,10 +2018,10 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param create_tables_payload: (required)
         :type create_tables_payload: CreateTablesPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2046,8 +2046,8 @@ class DataApi:
 
         _param = self._create_data_store_tables_serialize(
             store_id=store_id,
-            create_tables_payload=create_tables_payload,
             x_api_version=x_api_version,
+            create_tables_payload=create_tables_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2074,8 +2074,8 @@ class DataApi:
     def create_data_store_tables_without_preload_content(
         self,
         store_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_tables_payload: CreateTablesPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2095,10 +2095,10 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param create_tables_payload: (required)
         :type create_tables_payload: CreateTablesPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2123,8 +2123,8 @@ class DataApi:
 
         _param = self._create_data_store_tables_serialize(
             store_id=store_id,
-            create_tables_payload=create_tables_payload,
             x_api_version=x_api_version,
+            create_tables_payload=create_tables_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2146,8 +2146,8 @@ class DataApi:
     def _create_data_store_tables_serialize(
         self,
         store_id,
-        create_tables_payload,
         x_api_version,
+        create_tables_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -2232,7 +2232,7 @@ class DataApi:
         self,
         store_id: StrictStr,
         dashboard_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2254,7 +2254,7 @@ class DataApi:
         :type store_id: str
         :param dashboard_id: (required)
         :type dashboard_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2309,7 +2309,7 @@ class DataApi:
         self,
         store_id: StrictStr,
         dashboard_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2331,7 +2331,7 @@ class DataApi:
         :type store_id: str
         :param dashboard_id: (required)
         :type dashboard_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2386,7 +2386,7 @@ class DataApi:
         self,
         store_id: StrictStr,
         dashboard_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2408,7 +2408,7 @@ class DataApi:
         :type store_id: str
         :param dashboard_id: (required)
         :type dashboard_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2529,8 +2529,8 @@ class DataApi:
     def delete_dashboards_bulk(
         self,
         store_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         request_body: Dict[str, List[StrictStr]],
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2550,10 +2550,10 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param request_body: (required)
         :type request_body: Dict[str, List[str]]
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2578,8 +2578,8 @@ class DataApi:
 
         _param = self._delete_dashboards_bulk_serialize(
             store_id=store_id,
-            request_body=request_body,
             x_api_version=x_api_version,
+            request_body=request_body,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2606,8 +2606,8 @@ class DataApi:
     def delete_dashboards_bulk_with_http_info(
         self,
         store_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         request_body: Dict[str, List[StrictStr]],
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2627,10 +2627,10 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param request_body: (required)
         :type request_body: Dict[str, List[str]]
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2655,8 +2655,8 @@ class DataApi:
 
         _param = self._delete_dashboards_bulk_serialize(
             store_id=store_id,
-            request_body=request_body,
             x_api_version=x_api_version,
+            request_body=request_body,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2683,8 +2683,8 @@ class DataApi:
     def delete_dashboards_bulk_without_preload_content(
         self,
         store_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         request_body: Dict[str, List[StrictStr]],
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2704,10 +2704,10 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param request_body: (required)
         :type request_body: Dict[str, List[str]]
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2732,8 +2732,8 @@ class DataApi:
 
         _param = self._delete_dashboards_bulk_serialize(
             store_id=store_id,
-            request_body=request_body,
             x_api_version=x_api_version,
+            request_body=request_body,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2755,8 +2755,8 @@ class DataApi:
     def _delete_dashboards_bulk_serialize(
         self,
         store_id,
-        request_body,
         x_api_version,
+        request_body,
         _request_auth,
         _content_type,
         _headers,
@@ -2840,7 +2840,7 @@ class DataApi:
     def delete_data_store(
         self,
         store_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2860,7 +2860,7 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2913,7 +2913,7 @@ class DataApi:
     def delete_data_store_with_http_info(
         self,
         store_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2933,7 +2933,7 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2986,7 +2986,7 @@ class DataApi:
     def delete_data_store_without_preload_content(
         self,
         store_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3006,7 +3006,7 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -3124,7 +3124,7 @@ class DataApi:
         self,
         store_id: StrictStr,
         table_name: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3146,7 +3146,7 @@ class DataApi:
         :type store_id: str
         :param table_name: (required)
         :type table_name: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -3201,7 +3201,7 @@ class DataApi:
         self,
         store_id: StrictStr,
         table_name: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3223,7 +3223,7 @@ class DataApi:
         :type store_id: str
         :param table_name: (required)
         :type table_name: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -3278,7 +3278,7 @@ class DataApi:
         self,
         store_id: StrictStr,
         table_name: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3300,7 +3300,7 @@ class DataApi:
         :type store_id: str
         :param table_name: (required)
         :type table_name: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -3422,7 +3422,7 @@ class DataApi:
         self,
         store_id: StrictStr,
         dashboard_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3444,7 +3444,7 @@ class DataApi:
         :type store_id: str
         :param dashboard_id: (required)
         :type dashboard_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -3499,7 +3499,7 @@ class DataApi:
         self,
         store_id: StrictStr,
         dashboard_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3521,7 +3521,7 @@ class DataApi:
         :type store_id: str
         :param dashboard_id: (required)
         :type dashboard_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -3576,7 +3576,7 @@ class DataApi:
         self,
         store_id: StrictStr,
         dashboard_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3598,7 +3598,7 @@ class DataApi:
         :type store_id: str
         :param dashboard_id: (required)
         :type dashboard_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -3721,7 +3721,7 @@ class DataApi:
         store_id: StrictStr,
         dashboard_id: StrictStr,
         version_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3745,7 +3745,7 @@ class DataApi:
         :type dashboard_id: str
         :param version_id: (required)
         :type version_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -3802,7 +3802,7 @@ class DataApi:
         store_id: StrictStr,
         dashboard_id: StrictStr,
         version_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3826,7 +3826,7 @@ class DataApi:
         :type dashboard_id: str
         :param version_id: (required)
         :type version_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -3883,7 +3883,7 @@ class DataApi:
         store_id: StrictStr,
         dashboard_id: StrictStr,
         version_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3907,7 +3907,7 @@ class DataApi:
         :type dashboard_id: str
         :param version_id: (required)
         :type version_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -4032,7 +4032,7 @@ class DataApi:
     def get_data_store(
         self,
         store_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4052,7 +4052,7 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -4105,7 +4105,7 @@ class DataApi:
     def get_data_store_with_http_info(
         self,
         store_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4125,7 +4125,7 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -4178,7 +4178,7 @@ class DataApi:
     def get_data_store_without_preload_content(
         self,
         store_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4198,7 +4198,7 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -4316,7 +4316,7 @@ class DataApi:
         self,
         store_id: StrictStr,
         import_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4338,7 +4338,7 @@ class DataApi:
         :type store_id: str
         :param import_id: (required)
         :type import_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -4393,7 +4393,7 @@ class DataApi:
         self,
         store_id: StrictStr,
         import_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4415,7 +4415,7 @@ class DataApi:
         :type store_id: str
         :param import_id: (required)
         :type import_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -4470,7 +4470,7 @@ class DataApi:
         self,
         store_id: StrictStr,
         import_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4492,7 +4492,7 @@ class DataApi:
         :type store_id: str
         :param import_id: (required)
         :type import_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -4613,7 +4613,7 @@ class DataApi:
     def get_data_store_schema(
         self,
         store_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4633,7 +4633,7 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -4686,7 +4686,7 @@ class DataApi:
     def get_data_store_schema_with_http_info(
         self,
         store_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4706,7 +4706,7 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -4759,7 +4759,7 @@ class DataApi:
     def get_data_store_schema_without_preload_content(
         self,
         store_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4779,7 +4779,7 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -4897,8 +4897,8 @@ class DataApi:
         self,
         store_id: StrictStr,
         table_name: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         sample: Optional[StrictBool] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4920,10 +4920,10 @@ class DataApi:
         :type store_id: str
         :param table_name: (required)
         :type table_name: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param sample:
         :type sample: bool
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4949,8 +4949,8 @@ class DataApi:
         _param = self._get_data_store_table_serialize(
             store_id=store_id,
             table_name=table_name,
-            sample=sample,
             x_api_version=x_api_version,
+            sample=sample,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4978,8 +4978,8 @@ class DataApi:
         self,
         store_id: StrictStr,
         table_name: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         sample: Optional[StrictBool] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5001,10 +5001,10 @@ class DataApi:
         :type store_id: str
         :param table_name: (required)
         :type table_name: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param sample:
         :type sample: bool
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -5030,8 +5030,8 @@ class DataApi:
         _param = self._get_data_store_table_serialize(
             store_id=store_id,
             table_name=table_name,
-            sample=sample,
             x_api_version=x_api_version,
+            sample=sample,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -5059,8 +5059,8 @@ class DataApi:
         self,
         store_id: StrictStr,
         table_name: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         sample: Optional[StrictBool] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5082,10 +5082,10 @@ class DataApi:
         :type store_id: str
         :param table_name: (required)
         :type table_name: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param sample:
         :type sample: bool
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -5111,8 +5111,8 @@ class DataApi:
         _param = self._get_data_store_table_serialize(
             store_id=store_id,
             table_name=table_name,
-            sample=sample,
             x_api_version=x_api_version,
+            sample=sample,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -5135,8 +5135,8 @@ class DataApi:
         self,
         store_id,
         table_name,
-        sample,
         x_api_version,
+        sample,
         _request_auth,
         _content_type,
         _headers,
@@ -5211,8 +5211,8 @@ class DataApi:
     def import_data_store_data(
         self,
         store_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         import_data_payload: ImportDataPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5232,10 +5232,10 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param import_data_payload: (required)
         :type import_data_payload: ImportDataPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -5260,8 +5260,8 @@ class DataApi:
 
         _param = self._import_data_store_data_serialize(
             store_id=store_id,
-            import_data_payload=import_data_payload,
             x_api_version=x_api_version,
+            import_data_payload=import_data_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -5289,8 +5289,8 @@ class DataApi:
     def import_data_store_data_with_http_info(
         self,
         store_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         import_data_payload: ImportDataPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5310,10 +5310,10 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param import_data_payload: (required)
         :type import_data_payload: ImportDataPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -5338,8 +5338,8 @@ class DataApi:
 
         _param = self._import_data_store_data_serialize(
             store_id=store_id,
-            import_data_payload=import_data_payload,
             x_api_version=x_api_version,
+            import_data_payload=import_data_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -5367,8 +5367,8 @@ class DataApi:
     def import_data_store_data_without_preload_content(
         self,
         store_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         import_data_payload: ImportDataPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5388,10 +5388,10 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param import_data_payload: (required)
         :type import_data_payload: ImportDataPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -5416,8 +5416,8 @@ class DataApi:
 
         _param = self._import_data_store_data_serialize(
             store_id=store_id,
-            import_data_payload=import_data_payload,
             x_api_version=x_api_version,
+            import_data_payload=import_data_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -5440,8 +5440,8 @@ class DataApi:
     def _import_data_store_data_serialize(
         self,
         store_id,
-        import_data_payload,
         x_api_version,
+        import_data_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -5526,7 +5526,7 @@ class DataApi:
         self,
         store_id: StrictStr,
         dashboard_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5548,7 +5548,7 @@ class DataApi:
         :type store_id: str
         :param dashboard_id: (required)
         :type dashboard_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -5603,7 +5603,7 @@ class DataApi:
         self,
         store_id: StrictStr,
         dashboard_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5625,7 +5625,7 @@ class DataApi:
         :type store_id: str
         :param dashboard_id: (required)
         :type dashboard_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -5680,7 +5680,7 @@ class DataApi:
         self,
         store_id: StrictStr,
         dashboard_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5702,7 +5702,7 @@ class DataApi:
         :type store_id: str
         :param dashboard_id: (required)
         :type dashboard_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -5823,7 +5823,7 @@ class DataApi:
     def list_dashboards(
         self,
         store_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5843,7 +5843,7 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -5896,7 +5896,7 @@ class DataApi:
     def list_dashboards_with_http_info(
         self,
         store_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5916,7 +5916,7 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -5969,7 +5969,7 @@ class DataApi:
     def list_dashboards_without_preload_content(
         self,
         store_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5989,7 +5989,7 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -6106,7 +6106,7 @@ class DataApi:
     def list_data_store_schema_history(
         self,
         store_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -6126,7 +6126,7 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -6179,7 +6179,7 @@ class DataApi:
     def list_data_store_schema_history_with_http_info(
         self,
         store_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -6199,7 +6199,7 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -6252,7 +6252,7 @@ class DataApi:
     def list_data_store_schema_history_without_preload_content(
         self,
         store_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -6272,7 +6272,7 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -6389,7 +6389,7 @@ class DataApi:
     def list_data_store_tables(
         self,
         store_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -6409,7 +6409,7 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -6462,7 +6462,7 @@ class DataApi:
     def list_data_store_tables_with_http_info(
         self,
         store_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -6482,7 +6482,7 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -6535,7 +6535,7 @@ class DataApi:
     def list_data_store_tables_without_preload_content(
         self,
         store_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -6555,7 +6555,7 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -6672,9 +6672,9 @@ class DataApi:
     def list_data_store_versions(
         self,
         store_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         limit: Optional[Union[StrictFloat, StrictInt]] = None,
         snapshots_only: Optional[StrictBool] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -6694,12 +6694,12 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param limit:
         :type limit: float
         :param snapshots_only:
         :type snapshots_only: bool
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -6724,9 +6724,9 @@ class DataApi:
 
         _param = self._list_data_store_versions_serialize(
             store_id=store_id,
+            x_api_version=x_api_version,
             limit=limit,
             snapshots_only=snapshots_only,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -6753,9 +6753,9 @@ class DataApi:
     def list_data_store_versions_with_http_info(
         self,
         store_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         limit: Optional[Union[StrictFloat, StrictInt]] = None,
         snapshots_only: Optional[StrictBool] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -6775,12 +6775,12 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param limit:
         :type limit: float
         :param snapshots_only:
         :type snapshots_only: bool
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -6805,9 +6805,9 @@ class DataApi:
 
         _param = self._list_data_store_versions_serialize(
             store_id=store_id,
+            x_api_version=x_api_version,
             limit=limit,
             snapshots_only=snapshots_only,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -6834,9 +6834,9 @@ class DataApi:
     def list_data_store_versions_without_preload_content(
         self,
         store_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         limit: Optional[Union[StrictFloat, StrictInt]] = None,
         snapshots_only: Optional[StrictBool] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -6856,12 +6856,12 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param limit:
         :type limit: float
         :param snapshots_only:
         :type snapshots_only: bool
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -6886,9 +6886,9 @@ class DataApi:
 
         _param = self._list_data_store_versions_serialize(
             store_id=store_id,
+            x_api_version=x_api_version,
             limit=limit,
             snapshots_only=snapshots_only,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -6910,9 +6910,9 @@ class DataApi:
     def _list_data_store_versions_serialize(
         self,
         store_id,
+        x_api_version,
         limit,
         snapshots_only,
-        x_api_version,
         _request_auth,
         _content_type,
         _headers,
@@ -6988,7 +6988,7 @@ class DataApi:
     @validate_call
     def list_data_stores(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -7006,7 +7006,7 @@ class DataApi:
 
         Lists active data stores in the current project.  **Required permissions:** `content:read`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -7057,7 +7057,7 @@ class DataApi:
     @validate_call
     def list_data_stores_with_http_info(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -7075,7 +7075,7 @@ class DataApi:
 
         Lists active data stores in the current project.  **Required permissions:** `content:read`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -7126,7 +7126,7 @@ class DataApi:
     @validate_call
     def list_data_stores_without_preload_content(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -7144,7 +7144,7 @@ class DataApi:
 
         Lists active data stores in the current project.  **Required permissions:** `content:read`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -7257,8 +7257,8 @@ class DataApi:
     def mutate_data_store_rows(
         self,
         store_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         data_store_mutate_rows_payload: DataStoreMutateRowsPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -7278,10 +7278,10 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param data_store_mutate_rows_payload: (required)
         :type data_store_mutate_rows_payload: DataStoreMutateRowsPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -7306,8 +7306,8 @@ class DataApi:
 
         _param = self._mutate_data_store_rows_serialize(
             store_id=store_id,
-            data_store_mutate_rows_payload=data_store_mutate_rows_payload,
             x_api_version=x_api_version,
+            data_store_mutate_rows_payload=data_store_mutate_rows_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -7334,8 +7334,8 @@ class DataApi:
     def mutate_data_store_rows_with_http_info(
         self,
         store_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         data_store_mutate_rows_payload: DataStoreMutateRowsPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -7355,10 +7355,10 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param data_store_mutate_rows_payload: (required)
         :type data_store_mutate_rows_payload: DataStoreMutateRowsPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -7383,8 +7383,8 @@ class DataApi:
 
         _param = self._mutate_data_store_rows_serialize(
             store_id=store_id,
-            data_store_mutate_rows_payload=data_store_mutate_rows_payload,
             x_api_version=x_api_version,
+            data_store_mutate_rows_payload=data_store_mutate_rows_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -7411,8 +7411,8 @@ class DataApi:
     def mutate_data_store_rows_without_preload_content(
         self,
         store_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         data_store_mutate_rows_payload: DataStoreMutateRowsPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -7432,10 +7432,10 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param data_store_mutate_rows_payload: (required)
         :type data_store_mutate_rows_payload: DataStoreMutateRowsPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -7460,8 +7460,8 @@ class DataApi:
 
         _param = self._mutate_data_store_rows_serialize(
             store_id=store_id,
-            data_store_mutate_rows_payload=data_store_mutate_rows_payload,
             x_api_version=x_api_version,
+            data_store_mutate_rows_payload=data_store_mutate_rows_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -7483,8 +7483,8 @@ class DataApi:
     def _mutate_data_store_rows_serialize(
         self,
         store_id,
-        data_store_mutate_rows_payload,
         x_api_version,
+        data_store_mutate_rows_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -7570,8 +7570,8 @@ class DataApi:
         store_id: StrictStr,
         dashboard_id: StrictStr,
         version_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         promote_dashboard_version_payload: PromoteDashboardVersionPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -7595,10 +7595,10 @@ class DataApi:
         :type dashboard_id: str
         :param version_id: (required)
         :type version_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param promote_dashboard_version_payload: (required)
         :type promote_dashboard_version_payload: PromoteDashboardVersionPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -7625,8 +7625,8 @@ class DataApi:
             store_id=store_id,
             dashboard_id=dashboard_id,
             version_id=version_id,
-            promote_dashboard_version_payload=promote_dashboard_version_payload,
             x_api_version=x_api_version,
+            promote_dashboard_version_payload=promote_dashboard_version_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -7655,8 +7655,8 @@ class DataApi:
         store_id: StrictStr,
         dashboard_id: StrictStr,
         version_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         promote_dashboard_version_payload: PromoteDashboardVersionPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -7680,10 +7680,10 @@ class DataApi:
         :type dashboard_id: str
         :param version_id: (required)
         :type version_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param promote_dashboard_version_payload: (required)
         :type promote_dashboard_version_payload: PromoteDashboardVersionPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -7710,8 +7710,8 @@ class DataApi:
             store_id=store_id,
             dashboard_id=dashboard_id,
             version_id=version_id,
-            promote_dashboard_version_payload=promote_dashboard_version_payload,
             x_api_version=x_api_version,
+            promote_dashboard_version_payload=promote_dashboard_version_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -7740,8 +7740,8 @@ class DataApi:
         store_id: StrictStr,
         dashboard_id: StrictStr,
         version_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         promote_dashboard_version_payload: PromoteDashboardVersionPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -7765,10 +7765,10 @@ class DataApi:
         :type dashboard_id: str
         :param version_id: (required)
         :type version_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param promote_dashboard_version_payload: (required)
         :type promote_dashboard_version_payload: PromoteDashboardVersionPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -7795,8 +7795,8 @@ class DataApi:
             store_id=store_id,
             dashboard_id=dashboard_id,
             version_id=version_id,
-            promote_dashboard_version_payload=promote_dashboard_version_payload,
             x_api_version=x_api_version,
+            promote_dashboard_version_payload=promote_dashboard_version_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -7820,8 +7820,8 @@ class DataApi:
         store_id,
         dashboard_id,
         version_id,
-        promote_dashboard_version_payload,
         x_api_version,
+        promote_dashboard_version_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -7909,8 +7909,8 @@ class DataApi:
     def query_data_store(
         self,
         store_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         query_payload: QueryPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -7930,10 +7930,10 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param query_payload: (required)
         :type query_payload: QueryPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -7958,8 +7958,8 @@ class DataApi:
 
         _param = self._query_data_store_serialize(
             store_id=store_id,
-            query_payload=query_payload,
             x_api_version=x_api_version,
+            query_payload=query_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -7986,8 +7986,8 @@ class DataApi:
     def query_data_store_with_http_info(
         self,
         store_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         query_payload: QueryPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -8007,10 +8007,10 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param query_payload: (required)
         :type query_payload: QueryPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -8035,8 +8035,8 @@ class DataApi:
 
         _param = self._query_data_store_serialize(
             store_id=store_id,
-            query_payload=query_payload,
             x_api_version=x_api_version,
+            query_payload=query_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -8063,8 +8063,8 @@ class DataApi:
     def query_data_store_without_preload_content(
         self,
         store_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         query_payload: QueryPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -8084,10 +8084,10 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param query_payload: (required)
         :type query_payload: QueryPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -8112,8 +8112,8 @@ class DataApi:
 
         _param = self._query_data_store_serialize(
             store_id=store_id,
-            query_payload=query_payload,
             x_api_version=x_api_version,
+            query_payload=query_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -8135,8 +8135,8 @@ class DataApi:
     def _query_data_store_serialize(
         self,
         store_id,
-        query_payload,
         x_api_version,
+        query_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -8220,8 +8220,8 @@ class DataApi:
     def query_data_store_batch(
         self,
         store_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         batch_query_payload: BatchQueryPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -8241,10 +8241,10 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param batch_query_payload: (required)
         :type batch_query_payload: BatchQueryPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -8269,8 +8269,8 @@ class DataApi:
 
         _param = self._query_data_store_batch_serialize(
             store_id=store_id,
-            batch_query_payload=batch_query_payload,
             x_api_version=x_api_version,
+            batch_query_payload=batch_query_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -8297,8 +8297,8 @@ class DataApi:
     def query_data_store_batch_with_http_info(
         self,
         store_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         batch_query_payload: BatchQueryPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -8318,10 +8318,10 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param batch_query_payload: (required)
         :type batch_query_payload: BatchQueryPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -8346,8 +8346,8 @@ class DataApi:
 
         _param = self._query_data_store_batch_serialize(
             store_id=store_id,
-            batch_query_payload=batch_query_payload,
             x_api_version=x_api_version,
+            batch_query_payload=batch_query_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -8374,8 +8374,8 @@ class DataApi:
     def query_data_store_batch_without_preload_content(
         self,
         store_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         batch_query_payload: BatchQueryPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -8395,10 +8395,10 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param batch_query_payload: (required)
         :type batch_query_payload: BatchQueryPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -8423,8 +8423,8 @@ class DataApi:
 
         _param = self._query_data_store_batch_serialize(
             store_id=store_id,
-            batch_query_payload=batch_query_payload,
             x_api_version=x_api_version,
+            batch_query_payload=batch_query_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -8446,8 +8446,8 @@ class DataApi:
     def _query_data_store_batch_serialize(
         self,
         store_id,
-        batch_query_payload,
         x_api_version,
+        batch_query_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -8532,8 +8532,8 @@ class DataApi:
         self,
         store_id: StrictStr,
         version_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         query_payload: QueryPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -8555,10 +8555,10 @@ class DataApi:
         :type store_id: str
         :param version_id: (required)
         :type version_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param query_payload: (required)
         :type query_payload: QueryPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -8584,8 +8584,8 @@ class DataApi:
         _param = self._query_data_store_version_serialize(
             store_id=store_id,
             version_id=version_id,
-            query_payload=query_payload,
             x_api_version=x_api_version,
+            query_payload=query_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -8613,8 +8613,8 @@ class DataApi:
         self,
         store_id: StrictStr,
         version_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         query_payload: QueryPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -8636,10 +8636,10 @@ class DataApi:
         :type store_id: str
         :param version_id: (required)
         :type version_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param query_payload: (required)
         :type query_payload: QueryPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -8665,8 +8665,8 @@ class DataApi:
         _param = self._query_data_store_version_serialize(
             store_id=store_id,
             version_id=version_id,
-            query_payload=query_payload,
             x_api_version=x_api_version,
+            query_payload=query_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -8694,8 +8694,8 @@ class DataApi:
         self,
         store_id: StrictStr,
         version_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         query_payload: QueryPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -8717,10 +8717,10 @@ class DataApi:
         :type store_id: str
         :param version_id: (required)
         :type version_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param query_payload: (required)
         :type query_payload: QueryPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -8746,8 +8746,8 @@ class DataApi:
         _param = self._query_data_store_version_serialize(
             store_id=store_id,
             version_id=version_id,
-            query_payload=query_payload,
             x_api_version=x_api_version,
+            query_payload=query_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -8770,8 +8770,8 @@ class DataApi:
         self,
         store_id,
         version_id,
-        query_payload,
         x_api_version,
+        query_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -8858,7 +8858,7 @@ class DataApi:
         self,
         store_id: StrictStr,
         version_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -8880,7 +8880,7 @@ class DataApi:
         :type store_id: str
         :param version_id: (required)
         :type version_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -8935,7 +8935,7 @@ class DataApi:
         self,
         store_id: StrictStr,
         version_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -8957,7 +8957,7 @@ class DataApi:
         :type store_id: str
         :param version_id: (required)
         :type version_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -9012,7 +9012,7 @@ class DataApi:
         self,
         store_id: StrictStr,
         version_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -9034,7 +9034,7 @@ class DataApi:
         :type store_id: str
         :param version_id: (required)
         :type version_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -9156,8 +9156,8 @@ class DataApi:
         self,
         store_id: StrictStr,
         dashboard_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         dashboard_versioning_payload: DashboardVersioningPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -9179,10 +9179,10 @@ class DataApi:
         :type store_id: str
         :param dashboard_id: (required)
         :type dashboard_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param dashboard_versioning_payload: (required)
         :type dashboard_versioning_payload: DashboardVersioningPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -9208,8 +9208,8 @@ class DataApi:
         _param = self._set_dashboard_versioning_serialize(
             store_id=store_id,
             dashboard_id=dashboard_id,
-            dashboard_versioning_payload=dashboard_versioning_payload,
             x_api_version=x_api_version,
+            dashboard_versioning_payload=dashboard_versioning_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -9237,8 +9237,8 @@ class DataApi:
         self,
         store_id: StrictStr,
         dashboard_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         dashboard_versioning_payload: DashboardVersioningPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -9260,10 +9260,10 @@ class DataApi:
         :type store_id: str
         :param dashboard_id: (required)
         :type dashboard_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param dashboard_versioning_payload: (required)
         :type dashboard_versioning_payload: DashboardVersioningPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -9289,8 +9289,8 @@ class DataApi:
         _param = self._set_dashboard_versioning_serialize(
             store_id=store_id,
             dashboard_id=dashboard_id,
-            dashboard_versioning_payload=dashboard_versioning_payload,
             x_api_version=x_api_version,
+            dashboard_versioning_payload=dashboard_versioning_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -9318,8 +9318,8 @@ class DataApi:
         self,
         store_id: StrictStr,
         dashboard_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         dashboard_versioning_payload: DashboardVersioningPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -9341,10 +9341,10 @@ class DataApi:
         :type store_id: str
         :param dashboard_id: (required)
         :type dashboard_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param dashboard_versioning_payload: (required)
         :type dashboard_versioning_payload: DashboardVersioningPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -9370,8 +9370,8 @@ class DataApi:
         _param = self._set_dashboard_versioning_serialize(
             store_id=store_id,
             dashboard_id=dashboard_id,
-            dashboard_versioning_payload=dashboard_versioning_payload,
             x_api_version=x_api_version,
+            dashboard_versioning_payload=dashboard_versioning_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -9394,8 +9394,8 @@ class DataApi:
         self,
         store_id,
         dashboard_id,
-        dashboard_versioning_payload,
         x_api_version,
+        dashboard_versioning_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -9482,8 +9482,8 @@ class DataApi:
         self,
         store_id: StrictStr,
         dashboard_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_dashboard_payload: UpdateDashboardPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -9505,10 +9505,10 @@ class DataApi:
         :type store_id: str
         :param dashboard_id: (required)
         :type dashboard_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param update_dashboard_payload: (required)
         :type update_dashboard_payload: UpdateDashboardPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -9534,8 +9534,8 @@ class DataApi:
         _param = self._update_dashboard_serialize(
             store_id=store_id,
             dashboard_id=dashboard_id,
-            update_dashboard_payload=update_dashboard_payload,
             x_api_version=x_api_version,
+            update_dashboard_payload=update_dashboard_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -9564,8 +9564,8 @@ class DataApi:
         self,
         store_id: StrictStr,
         dashboard_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_dashboard_payload: UpdateDashboardPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -9587,10 +9587,10 @@ class DataApi:
         :type store_id: str
         :param dashboard_id: (required)
         :type dashboard_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param update_dashboard_payload: (required)
         :type update_dashboard_payload: UpdateDashboardPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -9616,8 +9616,8 @@ class DataApi:
         _param = self._update_dashboard_serialize(
             store_id=store_id,
             dashboard_id=dashboard_id,
-            update_dashboard_payload=update_dashboard_payload,
             x_api_version=x_api_version,
+            update_dashboard_payload=update_dashboard_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -9646,8 +9646,8 @@ class DataApi:
         self,
         store_id: StrictStr,
         dashboard_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_dashboard_payload: UpdateDashboardPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -9669,10 +9669,10 @@ class DataApi:
         :type store_id: str
         :param dashboard_id: (required)
         :type dashboard_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param update_dashboard_payload: (required)
         :type update_dashboard_payload: UpdateDashboardPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -9698,8 +9698,8 @@ class DataApi:
         _param = self._update_dashboard_serialize(
             store_id=store_id,
             dashboard_id=dashboard_id,
-            update_dashboard_payload=update_dashboard_payload,
             x_api_version=x_api_version,
+            update_dashboard_payload=update_dashboard_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -9723,8 +9723,8 @@ class DataApi:
         self,
         store_id,
         dashboard_id,
-        update_dashboard_payload,
         x_api_version,
+        update_dashboard_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -9810,8 +9810,8 @@ class DataApi:
     def update_data_store_schema(
         self,
         store_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_schema_payload: UpdateSchemaPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -9831,10 +9831,10 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param update_schema_payload: (required)
         :type update_schema_payload: UpdateSchemaPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -9859,8 +9859,8 @@ class DataApi:
 
         _param = self._update_data_store_schema_serialize(
             store_id=store_id,
-            update_schema_payload=update_schema_payload,
             x_api_version=x_api_version,
+            update_schema_payload=update_schema_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -9887,8 +9887,8 @@ class DataApi:
     def update_data_store_schema_with_http_info(
         self,
         store_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_schema_payload: UpdateSchemaPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -9908,10 +9908,10 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param update_schema_payload: (required)
         :type update_schema_payload: UpdateSchemaPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -9936,8 +9936,8 @@ class DataApi:
 
         _param = self._update_data_store_schema_serialize(
             store_id=store_id,
-            update_schema_payload=update_schema_payload,
             x_api_version=x_api_version,
+            update_schema_payload=update_schema_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -9964,8 +9964,8 @@ class DataApi:
     def update_data_store_schema_without_preload_content(
         self,
         store_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_schema_payload: UpdateSchemaPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -9985,10 +9985,10 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param update_schema_payload: (required)
         :type update_schema_payload: UpdateSchemaPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -10013,8 +10013,8 @@ class DataApi:
 
         _param = self._update_data_store_schema_serialize(
             store_id=store_id,
-            update_schema_payload=update_schema_payload,
             x_api_version=x_api_version,
+            update_schema_payload=update_schema_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -10036,8 +10036,8 @@ class DataApi:
     def _update_data_store_schema_serialize(
         self,
         store_id,
-        update_schema_payload,
         x_api_version,
+        update_schema_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -10122,8 +10122,8 @@ class DataApi:
         self,
         store_id: StrictStr,
         table_name: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         alter_table_payload: AlterTablePayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -10145,10 +10145,10 @@ class DataApi:
         :type store_id: str
         :param table_name: (required)
         :type table_name: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param alter_table_payload: (required)
         :type alter_table_payload: AlterTablePayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -10174,8 +10174,8 @@ class DataApi:
         _param = self._update_data_store_table_serialize(
             store_id=store_id,
             table_name=table_name,
-            alter_table_payload=alter_table_payload,
             x_api_version=x_api_version,
+            alter_table_payload=alter_table_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -10203,8 +10203,8 @@ class DataApi:
         self,
         store_id: StrictStr,
         table_name: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         alter_table_payload: AlterTablePayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -10226,10 +10226,10 @@ class DataApi:
         :type store_id: str
         :param table_name: (required)
         :type table_name: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param alter_table_payload: (required)
         :type alter_table_payload: AlterTablePayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -10255,8 +10255,8 @@ class DataApi:
         _param = self._update_data_store_table_serialize(
             store_id=store_id,
             table_name=table_name,
-            alter_table_payload=alter_table_payload,
             x_api_version=x_api_version,
+            alter_table_payload=alter_table_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -10284,8 +10284,8 @@ class DataApi:
         self,
         store_id: StrictStr,
         table_name: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         alter_table_payload: AlterTablePayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -10307,10 +10307,10 @@ class DataApi:
         :type store_id: str
         :param table_name: (required)
         :type table_name: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param alter_table_payload: (required)
         :type alter_table_payload: AlterTablePayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -10336,8 +10336,8 @@ class DataApi:
         _param = self._update_data_store_table_serialize(
             store_id=store_id,
             table_name=table_name,
-            alter_table_payload=alter_table_payload,
             x_api_version=x_api_version,
+            alter_table_payload=alter_table_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -10360,8 +10360,8 @@ class DataApi:
         self,
         store_id,
         table_name,
-        alter_table_payload,
         x_api_version,
+        alter_table_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -10447,8 +10447,8 @@ class DataApi:
     def validate_data_store_queries(
         self,
         store_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         query_validation_payload: QueryValidationPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -10468,10 +10468,10 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param query_validation_payload: (required)
         :type query_validation_payload: QueryValidationPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -10496,8 +10496,8 @@ class DataApi:
 
         _param = self._validate_data_store_queries_serialize(
             store_id=store_id,
-            query_validation_payload=query_validation_payload,
             x_api_version=x_api_version,
+            query_validation_payload=query_validation_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -10524,8 +10524,8 @@ class DataApi:
     def validate_data_store_queries_with_http_info(
         self,
         store_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         query_validation_payload: QueryValidationPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -10545,10 +10545,10 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param query_validation_payload: (required)
         :type query_validation_payload: QueryValidationPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -10573,8 +10573,8 @@ class DataApi:
 
         _param = self._validate_data_store_queries_serialize(
             store_id=store_id,
-            query_validation_payload=query_validation_payload,
             x_api_version=x_api_version,
+            query_validation_payload=query_validation_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -10601,8 +10601,8 @@ class DataApi:
     def validate_data_store_queries_without_preload_content(
         self,
         store_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         query_validation_payload: QueryValidationPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -10622,10 +10622,10 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param query_validation_payload: (required)
         :type query_validation_payload: QueryValidationPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -10650,8 +10650,8 @@ class DataApi:
 
         _param = self._validate_data_store_queries_serialize(
             store_id=store_id,
-            query_validation_payload=query_validation_payload,
             x_api_version=x_api_version,
+            query_validation_payload=query_validation_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -10673,8 +10673,8 @@ class DataApi:
     def _validate_data_store_queries_serialize(
         self,
         store_id,
-        query_validation_payload,
         x_api_version,
+        query_validation_payload,
         _request_auth,
         _content_type,
         _headers,

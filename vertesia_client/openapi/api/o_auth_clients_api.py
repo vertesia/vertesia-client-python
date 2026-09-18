@@ -15,8 +15,8 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import Field, StrictStr
-from typing import List, Optional
+from pydantic import Field, StrictStr, field_validator
+from typing import List
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.create_o_auth_client_payload import CreateOAuthClientPayload
 from vertesia_client.openapi.models.o_auth_client import OAuthClient
@@ -46,8 +46,8 @@ class OAuthClientsApi:
     @validate_call
     def create_o_auth_client(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_o_auth_client_payload: CreateOAuthClientPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -65,10 +65,10 @@ class OAuthClientsApi:
 
         Creates a new OAuth client and returns the generated client secret for confidential clients.  **Required permissions:** `account:admin`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param create_o_auth_client_payload: (required)
         :type create_o_auth_client_payload: CreateOAuthClientPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -92,8 +92,8 @@ class OAuthClientsApi:
         """ # noqa: E501
 
         _param = self._create_o_auth_client_serialize(
-            create_o_auth_client_payload=create_o_auth_client_payload,
             x_api_version=x_api_version,
+            create_o_auth_client_payload=create_o_auth_client_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -119,8 +119,8 @@ class OAuthClientsApi:
     @validate_call
     def create_o_auth_client_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_o_auth_client_payload: CreateOAuthClientPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -138,10 +138,10 @@ class OAuthClientsApi:
 
         Creates a new OAuth client and returns the generated client secret for confidential clients.  **Required permissions:** `account:admin`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param create_o_auth_client_payload: (required)
         :type create_o_auth_client_payload: CreateOAuthClientPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -165,8 +165,8 @@ class OAuthClientsApi:
         """ # noqa: E501
 
         _param = self._create_o_auth_client_serialize(
-            create_o_auth_client_payload=create_o_auth_client_payload,
             x_api_version=x_api_version,
+            create_o_auth_client_payload=create_o_auth_client_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -192,8 +192,8 @@ class OAuthClientsApi:
     @validate_call
     def create_o_auth_client_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_o_auth_client_payload: CreateOAuthClientPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -211,10 +211,10 @@ class OAuthClientsApi:
 
         Creates a new OAuth client and returns the generated client secret for confidential clients.  **Required permissions:** `account:admin`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param create_o_auth_client_payload: (required)
         :type create_o_auth_client_payload: CreateOAuthClientPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -238,8 +238,8 @@ class OAuthClientsApi:
         """ # noqa: E501
 
         _param = self._create_o_auth_client_serialize(
-            create_o_auth_client_payload=create_o_auth_client_payload,
             x_api_version=x_api_version,
+            create_o_auth_client_payload=create_o_auth_client_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -260,8 +260,8 @@ class OAuthClientsApi:
 
     def _create_o_auth_client_serialize(
         self,
-        create_o_auth_client_payload,
         x_api_version,
+        create_o_auth_client_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -343,7 +343,7 @@ class OAuthClientsApi:
     def delete_o_auth_client(
         self,
         client_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -363,7 +363,7 @@ class OAuthClientsApi:
 
         :param client_id: (required)
         :type client_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -416,7 +416,7 @@ class OAuthClientsApi:
     def delete_o_auth_client_with_http_info(
         self,
         client_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -436,7 +436,7 @@ class OAuthClientsApi:
 
         :param client_id: (required)
         :type client_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -489,7 +489,7 @@ class OAuthClientsApi:
     def delete_o_auth_client_without_preload_content(
         self,
         client_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -509,7 +509,7 @@ class OAuthClientsApi:
 
         :param client_id: (required)
         :type client_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -626,7 +626,7 @@ class OAuthClientsApi:
     def get_o_auth_client(
         self,
         client_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -646,7 +646,7 @@ class OAuthClientsApi:
 
         :param client_id: (required)
         :type client_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -699,7 +699,7 @@ class OAuthClientsApi:
     def get_o_auth_client_with_http_info(
         self,
         client_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -719,7 +719,7 @@ class OAuthClientsApi:
 
         :param client_id: (required)
         :type client_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -772,7 +772,7 @@ class OAuthClientsApi:
     def get_o_auth_client_without_preload_content(
         self,
         client_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -792,7 +792,7 @@ class OAuthClientsApi:
 
         :param client_id: (required)
         :type client_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -908,7 +908,7 @@ class OAuthClientsApi:
     @validate_call
     def get_o_auth_client_scope_metadata(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -926,7 +926,7 @@ class OAuthClientsApi:
 
         Returns the OAuth scopes supported by the Vertesia OAuth server for client configuration.  **Required permissions:** `account:admin`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -977,7 +977,7 @@ class OAuthClientsApi:
     @validate_call
     def get_o_auth_client_scope_metadata_with_http_info(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -995,7 +995,7 @@ class OAuthClientsApi:
 
         Returns the OAuth scopes supported by the Vertesia OAuth server for client configuration.  **Required permissions:** `account:admin`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1046,7 +1046,7 @@ class OAuthClientsApi:
     @validate_call
     def get_o_auth_client_scope_metadata_without_preload_content(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1064,7 +1064,7 @@ class OAuthClientsApi:
 
         Returns the OAuth scopes supported by the Vertesia OAuth server for client configuration.  **Required permissions:** `account:admin`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1176,7 +1176,7 @@ class OAuthClientsApi:
     @validate_call
     def list_o_auth_clients(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1194,7 +1194,7 @@ class OAuthClientsApi:
 
         Lists OAuth clients registered with the Vertesia OAuth server.  **Required permissions:** `account:admin`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1245,7 +1245,7 @@ class OAuthClientsApi:
     @validate_call
     def list_o_auth_clients_with_http_info(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1263,7 +1263,7 @@ class OAuthClientsApi:
 
         Lists OAuth clients registered with the Vertesia OAuth server.  **Required permissions:** `account:admin`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1314,7 +1314,7 @@ class OAuthClientsApi:
     @validate_call
     def list_o_auth_clients_without_preload_content(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1332,7 +1332,7 @@ class OAuthClientsApi:
 
         Lists OAuth clients registered with the Vertesia OAuth server.  **Required permissions:** `account:admin`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1445,8 +1445,8 @@ class OAuthClientsApi:
     def update_o_auth_client(
         self,
         client_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_o_auth_client_payload: UpdateOAuthClientPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1466,10 +1466,10 @@ class OAuthClientsApi:
 
         :param client_id: (required)
         :type client_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param update_o_auth_client_payload: (required)
         :type update_o_auth_client_payload: UpdateOAuthClientPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1494,8 +1494,8 @@ class OAuthClientsApi:
 
         _param = self._update_o_auth_client_serialize(
             client_id=client_id,
-            update_o_auth_client_payload=update_o_auth_client_payload,
             x_api_version=x_api_version,
+            update_o_auth_client_payload=update_o_auth_client_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1522,8 +1522,8 @@ class OAuthClientsApi:
     def update_o_auth_client_with_http_info(
         self,
         client_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_o_auth_client_payload: UpdateOAuthClientPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1543,10 +1543,10 @@ class OAuthClientsApi:
 
         :param client_id: (required)
         :type client_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param update_o_auth_client_payload: (required)
         :type update_o_auth_client_payload: UpdateOAuthClientPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1571,8 +1571,8 @@ class OAuthClientsApi:
 
         _param = self._update_o_auth_client_serialize(
             client_id=client_id,
-            update_o_auth_client_payload=update_o_auth_client_payload,
             x_api_version=x_api_version,
+            update_o_auth_client_payload=update_o_auth_client_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1599,8 +1599,8 @@ class OAuthClientsApi:
     def update_o_auth_client_without_preload_content(
         self,
         client_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_o_auth_client_payload: UpdateOAuthClientPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1620,10 +1620,10 @@ class OAuthClientsApi:
 
         :param client_id: (required)
         :type client_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param update_o_auth_client_payload: (required)
         :type update_o_auth_client_payload: UpdateOAuthClientPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1648,8 +1648,8 @@ class OAuthClientsApi:
 
         _param = self._update_o_auth_client_serialize(
             client_id=client_id,
-            update_o_auth_client_payload=update_o_auth_client_payload,
             x_api_version=x_api_version,
+            update_o_auth_client_payload=update_o_auth_client_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1671,8 +1671,8 @@ class OAuthClientsApi:
     def _update_o_auth_client_serialize(
         self,
         client_id,
-        update_o_auth_client_payload,
         x_api_version,
+        update_o_auth_client_payload,
         _request_auth,
         _content_type,
         _headers,

@@ -15,7 +15,7 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import Field, StrictFloat, StrictInt, StrictStr
+from pydantic import Field, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Dict, List, Optional, Union
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.collection import Collection
@@ -58,8 +58,8 @@ class CollectionsApi:
     def compute_collection_members_facets(
         self,
         collection_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         compute_object_facet_payload: ComputeObjectFacetPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -79,10 +79,10 @@ class CollectionsApi:
 
         :param collection_id: (required)
         :type collection_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param compute_object_facet_payload: (required)
         :type compute_object_facet_payload: ComputeObjectFacetPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -107,8 +107,8 @@ class CollectionsApi:
 
         _param = self._compute_collection_members_facets_serialize(
             collection_id=collection_id,
-            compute_object_facet_payload=compute_object_facet_payload,
             x_api_version=x_api_version,
+            compute_object_facet_payload=compute_object_facet_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -135,8 +135,8 @@ class CollectionsApi:
     def compute_collection_members_facets_with_http_info(
         self,
         collection_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         compute_object_facet_payload: ComputeObjectFacetPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -156,10 +156,10 @@ class CollectionsApi:
 
         :param collection_id: (required)
         :type collection_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param compute_object_facet_payload: (required)
         :type compute_object_facet_payload: ComputeObjectFacetPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -184,8 +184,8 @@ class CollectionsApi:
 
         _param = self._compute_collection_members_facets_serialize(
             collection_id=collection_id,
-            compute_object_facet_payload=compute_object_facet_payload,
             x_api_version=x_api_version,
+            compute_object_facet_payload=compute_object_facet_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -212,8 +212,8 @@ class CollectionsApi:
     def compute_collection_members_facets_without_preload_content(
         self,
         collection_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         compute_object_facet_payload: ComputeObjectFacetPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -233,10 +233,10 @@ class CollectionsApi:
 
         :param collection_id: (required)
         :type collection_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param compute_object_facet_payload: (required)
         :type compute_object_facet_payload: ComputeObjectFacetPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -261,8 +261,8 @@ class CollectionsApi:
 
         _param = self._compute_collection_members_facets_serialize(
             collection_id=collection_id,
-            compute_object_facet_payload=compute_object_facet_payload,
             x_api_version=x_api_version,
+            compute_object_facet_payload=compute_object_facet_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -284,8 +284,8 @@ class CollectionsApi:
     def _compute_collection_members_facets_serialize(
         self,
         collection_id,
-        compute_object_facet_payload,
         x_api_version,
+        compute_object_facet_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -368,8 +368,8 @@ class CollectionsApi:
     @validate_call
     def compute_collections_facets(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         compute_collection_facet_payload: ComputeCollectionFacetPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -387,10 +387,10 @@ class CollectionsApi:
 
         Computes aggregation buckets and counts for collection filters such as type, status, dynamic mode, and name.  **Required permissions:** `content:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param compute_collection_facet_payload: (required)
         :type compute_collection_facet_payload: ComputeCollectionFacetPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -414,8 +414,8 @@ class CollectionsApi:
         """ # noqa: E501
 
         _param = self._compute_collections_facets_serialize(
-            compute_collection_facet_payload=compute_collection_facet_payload,
             x_api_version=x_api_version,
+            compute_collection_facet_payload=compute_collection_facet_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -441,8 +441,8 @@ class CollectionsApi:
     @validate_call
     def compute_collections_facets_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         compute_collection_facet_payload: ComputeCollectionFacetPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -460,10 +460,10 @@ class CollectionsApi:
 
         Computes aggregation buckets and counts for collection filters such as type, status, dynamic mode, and name.  **Required permissions:** `content:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param compute_collection_facet_payload: (required)
         :type compute_collection_facet_payload: ComputeCollectionFacetPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -487,8 +487,8 @@ class CollectionsApi:
         """ # noqa: E501
 
         _param = self._compute_collections_facets_serialize(
-            compute_collection_facet_payload=compute_collection_facet_payload,
             x_api_version=x_api_version,
+            compute_collection_facet_payload=compute_collection_facet_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -514,8 +514,8 @@ class CollectionsApi:
     @validate_call
     def compute_collections_facets_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         compute_collection_facet_payload: ComputeCollectionFacetPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -533,10 +533,10 @@ class CollectionsApi:
 
         Computes aggregation buckets and counts for collection filters such as type, status, dynamic mode, and name.  **Required permissions:** `content:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param compute_collection_facet_payload: (required)
         :type compute_collection_facet_payload: ComputeCollectionFacetPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -560,8 +560,8 @@ class CollectionsApi:
         """ # noqa: E501
 
         _param = self._compute_collections_facets_serialize(
-            compute_collection_facet_payload=compute_collection_facet_payload,
             x_api_version=x_api_version,
+            compute_collection_facet_payload=compute_collection_facet_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -582,8 +582,8 @@ class CollectionsApi:
 
     def _compute_collections_facets_serialize(
         self,
-        compute_collection_facet_payload,
         x_api_version,
+        compute_collection_facet_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -664,8 +664,8 @@ class CollectionsApi:
     @validate_call
     def create_collection(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_collection_payload: CreateCollectionPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -683,10 +683,10 @@ class CollectionsApi:
 
         Creates a collection with static or dynamic membership, optional type restrictions, and layout configuration.  **Required permissions:** `content:write`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param create_collection_payload: (required)
         :type create_collection_payload: CreateCollectionPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -710,8 +710,8 @@ class CollectionsApi:
         """ # noqa: E501
 
         _param = self._create_collection_serialize(
-            create_collection_payload=create_collection_payload,
             x_api_version=x_api_version,
+            create_collection_payload=create_collection_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -737,8 +737,8 @@ class CollectionsApi:
     @validate_call
     def create_collection_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_collection_payload: CreateCollectionPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -756,10 +756,10 @@ class CollectionsApi:
 
         Creates a collection with static or dynamic membership, optional type restrictions, and layout configuration.  **Required permissions:** `content:write`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param create_collection_payload: (required)
         :type create_collection_payload: CreateCollectionPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -783,8 +783,8 @@ class CollectionsApi:
         """ # noqa: E501
 
         _param = self._create_collection_serialize(
-            create_collection_payload=create_collection_payload,
             x_api_version=x_api_version,
+            create_collection_payload=create_collection_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -810,8 +810,8 @@ class CollectionsApi:
     @validate_call
     def create_collection_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_collection_payload: CreateCollectionPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -829,10 +829,10 @@ class CollectionsApi:
 
         Creates a collection with static or dynamic membership, optional type restrictions, and layout configuration.  **Required permissions:** `content:write`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param create_collection_payload: (required)
         :type create_collection_payload: CreateCollectionPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -856,8 +856,8 @@ class CollectionsApi:
         """ # noqa: E501
 
         _param = self._create_collection_serialize(
-            create_collection_payload=create_collection_payload,
             x_api_version=x_api_version,
+            create_collection_payload=create_collection_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -878,8 +878,8 @@ class CollectionsApi:
 
     def _create_collection_serialize(
         self,
-        create_collection_payload,
         x_api_version,
+        create_collection_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -961,7 +961,7 @@ class CollectionsApi:
     def delete_collection(
         self,
         collection_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -981,7 +981,7 @@ class CollectionsApi:
 
         :param collection_id: (required)
         :type collection_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1034,7 +1034,7 @@ class CollectionsApi:
     def delete_collection_with_http_info(
         self,
         collection_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1054,7 +1054,7 @@ class CollectionsApi:
 
         :param collection_id: (required)
         :type collection_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1107,7 +1107,7 @@ class CollectionsApi:
     def delete_collection_without_preload_content(
         self,
         collection_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1127,7 +1127,7 @@ class CollectionsApi:
 
         :param collection_id: (required)
         :type collection_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1244,7 +1244,7 @@ class CollectionsApi:
     def get_collection(
         self,
         collection_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1264,7 +1264,7 @@ class CollectionsApi:
 
         :param collection_id: (required)
         :type collection_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1317,7 +1317,7 @@ class CollectionsApi:
     def get_collection_with_http_info(
         self,
         collection_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1337,7 +1337,7 @@ class CollectionsApi:
 
         :param collection_id: (required)
         :type collection_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1390,7 +1390,7 @@ class CollectionsApi:
     def get_collection_without_preload_content(
         self,
         collection_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1410,7 +1410,7 @@ class CollectionsApi:
 
         :param collection_id: (required)
         :type collection_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1527,11 +1527,11 @@ class CollectionsApi:
     def list_collection_members(
         self,
         collection_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         status: Optional[StrictStr] = None,
         type: Optional[StrictStr] = None,
         limit: Optional[Union[StrictFloat, StrictInt]] = None,
         offset: Optional[Union[StrictFloat, StrictInt]] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1551,6 +1551,8 @@ class CollectionsApi:
 
         :param collection_id: (required)
         :type collection_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param status:
         :type status: str
         :param type:
@@ -1559,8 +1561,6 @@ class CollectionsApi:
         :type limit: float
         :param offset:
         :type offset: float
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1585,11 +1585,11 @@ class CollectionsApi:
 
         _param = self._list_collection_members_serialize(
             collection_id=collection_id,
+            x_api_version=x_api_version,
             status=status,
             type=type,
             limit=limit,
             offset=offset,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1616,11 +1616,11 @@ class CollectionsApi:
     def list_collection_members_with_http_info(
         self,
         collection_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         status: Optional[StrictStr] = None,
         type: Optional[StrictStr] = None,
         limit: Optional[Union[StrictFloat, StrictInt]] = None,
         offset: Optional[Union[StrictFloat, StrictInt]] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1640,6 +1640,8 @@ class CollectionsApi:
 
         :param collection_id: (required)
         :type collection_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param status:
         :type status: str
         :param type:
@@ -1648,8 +1650,6 @@ class CollectionsApi:
         :type limit: float
         :param offset:
         :type offset: float
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1674,11 +1674,11 @@ class CollectionsApi:
 
         _param = self._list_collection_members_serialize(
             collection_id=collection_id,
+            x_api_version=x_api_version,
             status=status,
             type=type,
             limit=limit,
             offset=offset,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1705,11 +1705,11 @@ class CollectionsApi:
     def list_collection_members_without_preload_content(
         self,
         collection_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         status: Optional[StrictStr] = None,
         type: Optional[StrictStr] = None,
         limit: Optional[Union[StrictFloat, StrictInt]] = None,
         offset: Optional[Union[StrictFloat, StrictInt]] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1729,6 +1729,8 @@ class CollectionsApi:
 
         :param collection_id: (required)
         :type collection_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param status:
         :type status: str
         :param type:
@@ -1737,8 +1739,6 @@ class CollectionsApi:
         :type limit: float
         :param offset:
         :type offset: float
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1763,11 +1763,11 @@ class CollectionsApi:
 
         _param = self._list_collection_members_serialize(
             collection_id=collection_id,
+            x_api_version=x_api_version,
             status=status,
             type=type,
             limit=limit,
             offset=offset,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1789,11 +1789,11 @@ class CollectionsApi:
     def _list_collection_members_serialize(
         self,
         collection_id,
+        x_api_version,
         status,
         type,
         limit,
         offset,
-        x_api_version,
         _request_auth,
         _content_type,
         _headers,
@@ -1878,7 +1878,7 @@ class CollectionsApi:
     def propagate_collection_permissions(
         self,
         collection_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1898,7 +1898,7 @@ class CollectionsApi:
 
         :param collection_id: (required)
         :type collection_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1951,7 +1951,7 @@ class CollectionsApi:
     def propagate_collection_permissions_with_http_info(
         self,
         collection_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1971,7 +1971,7 @@ class CollectionsApi:
 
         :param collection_id: (required)
         :type collection_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2024,7 +2024,7 @@ class CollectionsApi:
     def propagate_collection_permissions_without_preload_content(
         self,
         collection_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2044,7 +2044,7 @@ class CollectionsApi:
 
         :param collection_id: (required)
         :type collection_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2161,7 +2161,7 @@ class CollectionsApi:
     def propagate_collection_shared_properties(
         self,
         collection_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2181,7 +2181,7 @@ class CollectionsApi:
 
         :param collection_id: (required)
         :type collection_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2234,7 +2234,7 @@ class CollectionsApi:
     def propagate_collection_shared_properties_with_http_info(
         self,
         collection_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2254,7 +2254,7 @@ class CollectionsApi:
 
         :param collection_id: (required)
         :type collection_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2307,7 +2307,7 @@ class CollectionsApi:
     def propagate_collection_shared_properties_without_preload_content(
         self,
         collection_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2327,7 +2327,7 @@ class CollectionsApi:
 
         :param collection_id: (required)
         :type collection_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2444,8 +2444,8 @@ class CollectionsApi:
     def search_collection_children(
         self,
         collection_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         complex_collection_search_query: ComplexCollectionSearchQuery,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2465,10 +2465,10 @@ class CollectionsApi:
 
         :param collection_id: (required)
         :type collection_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param complex_collection_search_query: (required)
         :type complex_collection_search_query: ComplexCollectionSearchQuery
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2493,8 +2493,8 @@ class CollectionsApi:
 
         _param = self._search_collection_children_serialize(
             collection_id=collection_id,
-            complex_collection_search_query=complex_collection_search_query,
             x_api_version=x_api_version,
+            complex_collection_search_query=complex_collection_search_query,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2521,8 +2521,8 @@ class CollectionsApi:
     def search_collection_children_with_http_info(
         self,
         collection_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         complex_collection_search_query: ComplexCollectionSearchQuery,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2542,10 +2542,10 @@ class CollectionsApi:
 
         :param collection_id: (required)
         :type collection_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param complex_collection_search_query: (required)
         :type complex_collection_search_query: ComplexCollectionSearchQuery
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2570,8 +2570,8 @@ class CollectionsApi:
 
         _param = self._search_collection_children_serialize(
             collection_id=collection_id,
-            complex_collection_search_query=complex_collection_search_query,
             x_api_version=x_api_version,
+            complex_collection_search_query=complex_collection_search_query,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2598,8 +2598,8 @@ class CollectionsApi:
     def search_collection_children_without_preload_content(
         self,
         collection_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         complex_collection_search_query: ComplexCollectionSearchQuery,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2619,10 +2619,10 @@ class CollectionsApi:
 
         :param collection_id: (required)
         :type collection_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param complex_collection_search_query: (required)
         :type complex_collection_search_query: ComplexCollectionSearchQuery
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2647,8 +2647,8 @@ class CollectionsApi:
 
         _param = self._search_collection_children_serialize(
             collection_id=collection_id,
-            complex_collection_search_query=complex_collection_search_query,
             x_api_version=x_api_version,
+            complex_collection_search_query=complex_collection_search_query,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2670,8 +2670,8 @@ class CollectionsApi:
     def _search_collection_children_serialize(
         self,
         collection_id,
-        complex_collection_search_query,
         x_api_version,
+        complex_collection_search_query,
         _request_auth,
         _content_type,
         _headers,
@@ -2755,8 +2755,8 @@ class CollectionsApi:
     def search_collection_members(
         self,
         collection_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         complex_search_payload: ComplexSearchPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2776,10 +2776,10 @@ class CollectionsApi:
 
         :param collection_id: (required)
         :type collection_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param complex_search_payload: (required)
         :type complex_search_payload: ComplexSearchPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2804,8 +2804,8 @@ class CollectionsApi:
 
         _param = self._search_collection_members_serialize(
             collection_id=collection_id,
-            complex_search_payload=complex_search_payload,
             x_api_version=x_api_version,
+            complex_search_payload=complex_search_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2832,8 +2832,8 @@ class CollectionsApi:
     def search_collection_members_with_http_info(
         self,
         collection_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         complex_search_payload: ComplexSearchPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2853,10 +2853,10 @@ class CollectionsApi:
 
         :param collection_id: (required)
         :type collection_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param complex_search_payload: (required)
         :type complex_search_payload: ComplexSearchPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2881,8 +2881,8 @@ class CollectionsApi:
 
         _param = self._search_collection_members_serialize(
             collection_id=collection_id,
-            complex_search_payload=complex_search_payload,
             x_api_version=x_api_version,
+            complex_search_payload=complex_search_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2909,8 +2909,8 @@ class CollectionsApi:
     def search_collection_members_without_preload_content(
         self,
         collection_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         complex_search_payload: ComplexSearchPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2930,10 +2930,10 @@ class CollectionsApi:
 
         :param collection_id: (required)
         :type collection_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param complex_search_payload: (required)
         :type complex_search_payload: ComplexSearchPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2958,8 +2958,8 @@ class CollectionsApi:
 
         _param = self._search_collection_members_serialize(
             collection_id=collection_id,
-            complex_search_payload=complex_search_payload,
             x_api_version=x_api_version,
+            complex_search_payload=complex_search_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2981,8 +2981,8 @@ class CollectionsApi:
     def _search_collection_members_serialize(
         self,
         collection_id,
-        complex_search_payload,
         x_api_version,
+        complex_search_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -3065,8 +3065,8 @@ class CollectionsApi:
     @validate_call
     def search_collections(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         complex_collection_search_query: ComplexCollectionSearchQuery,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3084,10 +3084,10 @@ class CollectionsApi:
 
         Runs structured search across collections with filtering, full-text, facets, and pagination.  **Required permissions:** `content:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param complex_collection_search_query: (required)
         :type complex_collection_search_query: ComplexCollectionSearchQuery
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3111,8 +3111,8 @@ class CollectionsApi:
         """ # noqa: E501
 
         _param = self._search_collections_serialize(
-            complex_collection_search_query=complex_collection_search_query,
             x_api_version=x_api_version,
+            complex_collection_search_query=complex_collection_search_query,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3138,8 +3138,8 @@ class CollectionsApi:
     @validate_call
     def search_collections_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         complex_collection_search_query: ComplexCollectionSearchQuery,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3157,10 +3157,10 @@ class CollectionsApi:
 
         Runs structured search across collections with filtering, full-text, facets, and pagination.  **Required permissions:** `content:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param complex_collection_search_query: (required)
         :type complex_collection_search_query: ComplexCollectionSearchQuery
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3184,8 +3184,8 @@ class CollectionsApi:
         """ # noqa: E501
 
         _param = self._search_collections_serialize(
-            complex_collection_search_query=complex_collection_search_query,
             x_api_version=x_api_version,
+            complex_collection_search_query=complex_collection_search_query,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3211,8 +3211,8 @@ class CollectionsApi:
     @validate_call
     def search_collections_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         complex_collection_search_query: ComplexCollectionSearchQuery,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3230,10 +3230,10 @@ class CollectionsApi:
 
         Runs structured search across collections with filtering, full-text, facets, and pagination.  **Required permissions:** `content:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param complex_collection_search_query: (required)
         :type complex_collection_search_query: ComplexCollectionSearchQuery
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3257,8 +3257,8 @@ class CollectionsApi:
         """ # noqa: E501
 
         _param = self._search_collections_serialize(
-            complex_collection_search_query=complex_collection_search_query,
             x_api_version=x_api_version,
+            complex_collection_search_query=complex_collection_search_query,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3279,8 +3279,8 @@ class CollectionsApi:
 
     def _search_collections_serialize(
         self,
-        complex_collection_search_query,
         x_api_version,
+        complex_collection_search_query,
         _request_auth,
         _content_type,
         _headers,
@@ -3362,8 +3362,8 @@ class CollectionsApi:
     def update_collection(
         self,
         collection_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_collection_payload: UpdateCollectionPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3383,10 +3383,10 @@ class CollectionsApi:
 
         :param collection_id: (required)
         :type collection_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param update_collection_payload: (required)
         :type update_collection_payload: UpdateCollectionPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3411,8 +3411,8 @@ class CollectionsApi:
 
         _param = self._update_collection_serialize(
             collection_id=collection_id,
-            update_collection_payload=update_collection_payload,
             x_api_version=x_api_version,
+            update_collection_payload=update_collection_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3439,8 +3439,8 @@ class CollectionsApi:
     def update_collection_with_http_info(
         self,
         collection_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_collection_payload: UpdateCollectionPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3460,10 +3460,10 @@ class CollectionsApi:
 
         :param collection_id: (required)
         :type collection_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param update_collection_payload: (required)
         :type update_collection_payload: UpdateCollectionPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3488,8 +3488,8 @@ class CollectionsApi:
 
         _param = self._update_collection_serialize(
             collection_id=collection_id,
-            update_collection_payload=update_collection_payload,
             x_api_version=x_api_version,
+            update_collection_payload=update_collection_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3516,8 +3516,8 @@ class CollectionsApi:
     def update_collection_without_preload_content(
         self,
         collection_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_collection_payload: UpdateCollectionPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3537,10 +3537,10 @@ class CollectionsApi:
 
         :param collection_id: (required)
         :type collection_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param update_collection_payload: (required)
         :type update_collection_payload: UpdateCollectionPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3565,8 +3565,8 @@ class CollectionsApi:
 
         _param = self._update_collection_serialize(
             collection_id=collection_id,
-            update_collection_payload=update_collection_payload,
             x_api_version=x_api_version,
+            update_collection_payload=update_collection_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3588,8 +3588,8 @@ class CollectionsApi:
     def _update_collection_serialize(
         self,
         collection_id,
-        update_collection_payload,
         x_api_version,
+        update_collection_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -3673,8 +3673,8 @@ class CollectionsApi:
     def update_collection_children(
         self,
         collection_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         collection_children_update_payload: CollectionChildrenUpdatePayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3694,10 +3694,10 @@ class CollectionsApi:
 
         :param collection_id: (required)
         :type collection_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param collection_children_update_payload: (required)
         :type collection_children_update_payload: CollectionChildrenUpdatePayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3722,8 +3722,8 @@ class CollectionsApi:
 
         _param = self._update_collection_children_serialize(
             collection_id=collection_id,
-            collection_children_update_payload=collection_children_update_payload,
             x_api_version=x_api_version,
+            collection_children_update_payload=collection_children_update_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3750,8 +3750,8 @@ class CollectionsApi:
     def update_collection_children_with_http_info(
         self,
         collection_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         collection_children_update_payload: CollectionChildrenUpdatePayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3771,10 +3771,10 @@ class CollectionsApi:
 
         :param collection_id: (required)
         :type collection_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param collection_children_update_payload: (required)
         :type collection_children_update_payload: CollectionChildrenUpdatePayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3799,8 +3799,8 @@ class CollectionsApi:
 
         _param = self._update_collection_children_serialize(
             collection_id=collection_id,
-            collection_children_update_payload=collection_children_update_payload,
             x_api_version=x_api_version,
+            collection_children_update_payload=collection_children_update_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3827,8 +3827,8 @@ class CollectionsApi:
     def update_collection_children_without_preload_content(
         self,
         collection_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         collection_children_update_payload: CollectionChildrenUpdatePayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3848,10 +3848,10 @@ class CollectionsApi:
 
         :param collection_id: (required)
         :type collection_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param collection_children_update_payload: (required)
         :type collection_children_update_payload: CollectionChildrenUpdatePayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3876,8 +3876,8 @@ class CollectionsApi:
 
         _param = self._update_collection_children_serialize(
             collection_id=collection_id,
-            collection_children_update_payload=collection_children_update_payload,
             x_api_version=x_api_version,
+            collection_children_update_payload=collection_children_update_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3899,8 +3899,8 @@ class CollectionsApi:
     def _update_collection_children_serialize(
         self,
         collection_id,
-        collection_children_update_payload,
         x_api_version,
+        collection_children_update_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -3984,8 +3984,8 @@ class CollectionsApi:
     def update_collection_members(
         self,
         collection_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         collection_members_update_payload: CollectionMembersUpdatePayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4005,10 +4005,10 @@ class CollectionsApi:
 
         :param collection_id: (required)
         :type collection_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param collection_members_update_payload: (required)
         :type collection_members_update_payload: CollectionMembersUpdatePayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4033,8 +4033,8 @@ class CollectionsApi:
 
         _param = self._update_collection_members_serialize(
             collection_id=collection_id,
-            collection_members_update_payload=collection_members_update_payload,
             x_api_version=x_api_version,
+            collection_members_update_payload=collection_members_update_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4061,8 +4061,8 @@ class CollectionsApi:
     def update_collection_members_with_http_info(
         self,
         collection_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         collection_members_update_payload: CollectionMembersUpdatePayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4082,10 +4082,10 @@ class CollectionsApi:
 
         :param collection_id: (required)
         :type collection_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param collection_members_update_payload: (required)
         :type collection_members_update_payload: CollectionMembersUpdatePayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4110,8 +4110,8 @@ class CollectionsApi:
 
         _param = self._update_collection_members_serialize(
             collection_id=collection_id,
-            collection_members_update_payload=collection_members_update_payload,
             x_api_version=x_api_version,
+            collection_members_update_payload=collection_members_update_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4138,8 +4138,8 @@ class CollectionsApi:
     def update_collection_members_without_preload_content(
         self,
         collection_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         collection_members_update_payload: CollectionMembersUpdatePayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4159,10 +4159,10 @@ class CollectionsApi:
 
         :param collection_id: (required)
         :type collection_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param collection_members_update_payload: (required)
         :type collection_members_update_payload: CollectionMembersUpdatePayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4187,8 +4187,8 @@ class CollectionsApi:
 
         _param = self._update_collection_members_serialize(
             collection_id=collection_id,
-            collection_members_update_payload=collection_members_update_payload,
             x_api_version=x_api_version,
+            collection_members_update_payload=collection_members_update_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4210,8 +4210,8 @@ class CollectionsApi:
     def _update_collection_members_serialize(
         self,
         collection_id,
-        collection_members_update_payload,
         x_api_version,
+        collection_members_update_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -4295,8 +4295,8 @@ class CollectionsApi:
     def update_collection_permissions(
         self,
         collection_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         request_body: Dict[str, List[StrictStr]],
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4316,10 +4316,10 @@ class CollectionsApi:
 
         :param collection_id: (required)
         :type collection_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param request_body: (required)
         :type request_body: Dict[str, List[str]]
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4344,8 +4344,8 @@ class CollectionsApi:
 
         _param = self._update_collection_permissions_serialize(
             collection_id=collection_id,
-            request_body=request_body,
             x_api_version=x_api_version,
+            request_body=request_body,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4372,8 +4372,8 @@ class CollectionsApi:
     def update_collection_permissions_with_http_info(
         self,
         collection_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         request_body: Dict[str, List[StrictStr]],
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4393,10 +4393,10 @@ class CollectionsApi:
 
         :param collection_id: (required)
         :type collection_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param request_body: (required)
         :type request_body: Dict[str, List[str]]
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4421,8 +4421,8 @@ class CollectionsApi:
 
         _param = self._update_collection_permissions_serialize(
             collection_id=collection_id,
-            request_body=request_body,
             x_api_version=x_api_version,
+            request_body=request_body,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4449,8 +4449,8 @@ class CollectionsApi:
     def update_collection_permissions_without_preload_content(
         self,
         collection_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         request_body: Dict[str, List[StrictStr]],
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4470,10 +4470,10 @@ class CollectionsApi:
 
         :param collection_id: (required)
         :type collection_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param request_body: (required)
         :type request_body: Dict[str, List[str]]
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4498,8 +4498,8 @@ class CollectionsApi:
 
         _param = self._update_collection_permissions_serialize(
             collection_id=collection_id,
-            request_body=request_body,
             x_api_version=x_api_version,
+            request_body=request_body,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4521,8 +4521,8 @@ class CollectionsApi:
     def _update_collection_permissions_serialize(
         self,
         collection_id,
-        request_body,
         x_api_version,
+        request_body,
         _request_auth,
         _content_type,
         _headers,

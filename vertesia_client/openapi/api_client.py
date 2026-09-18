@@ -180,7 +180,9 @@ class ApiClient:
 
         # header parameters
         header_params = header_params or {}
-        header_params.update(self.default_headers)
+        for name, value in self.default_headers.items():
+            if not any(key.lower() == name.lower() for key in header_params):
+                header_params[name] = value
         if self.cookie:
             header_params['Cookie'] = self.cookie
         if header_params:

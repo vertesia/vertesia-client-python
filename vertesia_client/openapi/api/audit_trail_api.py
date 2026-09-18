@@ -15,7 +15,7 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import Field, StrictBool, StrictFloat, StrictInt, StrictStr
+from pydantic import Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import List, Optional, Union
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.audit_action import AuditAction
@@ -44,8 +44,8 @@ class AuditTrailApi:
     @validate_call
     def aggregate_audit_trail_events(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         audit_aggregation_query: AuditAggregationQuery,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -63,10 +63,10 @@ class AuditTrailApi:
 
         Runs a bounded aggregation over audit events. Account and project scope are enforced from the authenticated request context.  **Required permissions:** Any of `project:admin`, `account:admin`, `audit:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param audit_aggregation_query: (required)
         :type audit_aggregation_query: AuditAggregationQuery
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -90,8 +90,8 @@ class AuditTrailApi:
         """ # noqa: E501
 
         _param = self._aggregate_audit_trail_events_serialize(
-            audit_aggregation_query=audit_aggregation_query,
             x_api_version=x_api_version,
+            audit_aggregation_query=audit_aggregation_query,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -117,8 +117,8 @@ class AuditTrailApi:
     @validate_call
     def aggregate_audit_trail_events_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         audit_aggregation_query: AuditAggregationQuery,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -136,10 +136,10 @@ class AuditTrailApi:
 
         Runs a bounded aggregation over audit events. Account and project scope are enforced from the authenticated request context.  **Required permissions:** Any of `project:admin`, `account:admin`, `audit:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param audit_aggregation_query: (required)
         :type audit_aggregation_query: AuditAggregationQuery
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -163,8 +163,8 @@ class AuditTrailApi:
         """ # noqa: E501
 
         _param = self._aggregate_audit_trail_events_serialize(
-            audit_aggregation_query=audit_aggregation_query,
             x_api_version=x_api_version,
+            audit_aggregation_query=audit_aggregation_query,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -190,8 +190,8 @@ class AuditTrailApi:
     @validate_call
     def aggregate_audit_trail_events_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         audit_aggregation_query: AuditAggregationQuery,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -209,10 +209,10 @@ class AuditTrailApi:
 
         Runs a bounded aggregation over audit events. Account and project scope are enforced from the authenticated request context.  **Required permissions:** Any of `project:admin`, `account:admin`, `audit:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param audit_aggregation_query: (required)
         :type audit_aggregation_query: AuditAggregationQuery
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -236,8 +236,8 @@ class AuditTrailApi:
         """ # noqa: E501
 
         _param = self._aggregate_audit_trail_events_serialize(
-            audit_aggregation_query=audit_aggregation_query,
             x_api_version=x_api_version,
+            audit_aggregation_query=audit_aggregation_query,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -258,8 +258,8 @@ class AuditTrailApi:
 
     def _aggregate_audit_trail_events_serialize(
         self,
-        audit_aggregation_query,
         x_api_version,
+        audit_aggregation_query,
         _request_auth,
         _content_type,
         _headers,
@@ -340,6 +340,7 @@ class AuditTrailApi:
     @validate_call
     def list_audit_trail_events(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         actions: Annotated[Optional[List[AuditAction]], Field(description="Filter by action types")] = None,
         resource_types: Annotated[Optional[List[StrictStr]], Field(description="Filter by resource types")] = None,
         resource_id: Annotated[Optional[StrictStr], Field(description="Filter by resource ID")] = None,
@@ -352,7 +353,6 @@ class AuditTrailApi:
         to: Annotated[Optional[StrictStr], Field(description="End time (ISO string)")] = None,
         limit: Annotated[Optional[Union[StrictFloat, StrictInt]], Field(description="Pagination: number of items to return (default 50, max 200)")] = None,
         offset: Annotated[Optional[Union[StrictFloat, StrictInt]], Field(description="Pagination: offset")] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -370,6 +370,8 @@ class AuditTrailApi:
 
         Lists audit trail events with optional filtering by project, resource, principal, action, and time range.  **Required permissions:** Any of `project:admin`, `account:admin`, `audit:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param actions: Filter by action types
         :type actions: List[AuditAction]
         :param resource_types: Filter by resource types
@@ -394,8 +396,6 @@ class AuditTrailApi:
         :type limit: float
         :param offset: Pagination: offset
         :type offset: float
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -419,6 +419,7 @@ class AuditTrailApi:
         """ # noqa: E501
 
         _param = self._list_audit_trail_events_serialize(
+            x_api_version=x_api_version,
             actions=actions,
             resource_types=resource_types,
             resource_id=resource_id,
@@ -431,7 +432,6 @@ class AuditTrailApi:
             to=to,
             limit=limit,
             offset=offset,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -457,6 +457,7 @@ class AuditTrailApi:
     @validate_call
     def list_audit_trail_events_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         actions: Annotated[Optional[List[AuditAction]], Field(description="Filter by action types")] = None,
         resource_types: Annotated[Optional[List[StrictStr]], Field(description="Filter by resource types")] = None,
         resource_id: Annotated[Optional[StrictStr], Field(description="Filter by resource ID")] = None,
@@ -469,7 +470,6 @@ class AuditTrailApi:
         to: Annotated[Optional[StrictStr], Field(description="End time (ISO string)")] = None,
         limit: Annotated[Optional[Union[StrictFloat, StrictInt]], Field(description="Pagination: number of items to return (default 50, max 200)")] = None,
         offset: Annotated[Optional[Union[StrictFloat, StrictInt]], Field(description="Pagination: offset")] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -487,6 +487,8 @@ class AuditTrailApi:
 
         Lists audit trail events with optional filtering by project, resource, principal, action, and time range.  **Required permissions:** Any of `project:admin`, `account:admin`, `audit:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param actions: Filter by action types
         :type actions: List[AuditAction]
         :param resource_types: Filter by resource types
@@ -511,8 +513,6 @@ class AuditTrailApi:
         :type limit: float
         :param offset: Pagination: offset
         :type offset: float
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -536,6 +536,7 @@ class AuditTrailApi:
         """ # noqa: E501
 
         _param = self._list_audit_trail_events_serialize(
+            x_api_version=x_api_version,
             actions=actions,
             resource_types=resource_types,
             resource_id=resource_id,
@@ -548,7 +549,6 @@ class AuditTrailApi:
             to=to,
             limit=limit,
             offset=offset,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -574,6 +574,7 @@ class AuditTrailApi:
     @validate_call
     def list_audit_trail_events_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         actions: Annotated[Optional[List[AuditAction]], Field(description="Filter by action types")] = None,
         resource_types: Annotated[Optional[List[StrictStr]], Field(description="Filter by resource types")] = None,
         resource_id: Annotated[Optional[StrictStr], Field(description="Filter by resource ID")] = None,
@@ -586,7 +587,6 @@ class AuditTrailApi:
         to: Annotated[Optional[StrictStr], Field(description="End time (ISO string)")] = None,
         limit: Annotated[Optional[Union[StrictFloat, StrictInt]], Field(description="Pagination: number of items to return (default 50, max 200)")] = None,
         offset: Annotated[Optional[Union[StrictFloat, StrictInt]], Field(description="Pagination: offset")] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -604,6 +604,8 @@ class AuditTrailApi:
 
         Lists audit trail events with optional filtering by project, resource, principal, action, and time range.  **Required permissions:** Any of `project:admin`, `account:admin`, `audit:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param actions: Filter by action types
         :type actions: List[AuditAction]
         :param resource_types: Filter by resource types
@@ -628,8 +630,6 @@ class AuditTrailApi:
         :type limit: float
         :param offset: Pagination: offset
         :type offset: float
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -653,6 +653,7 @@ class AuditTrailApi:
         """ # noqa: E501
 
         _param = self._list_audit_trail_events_serialize(
+            x_api_version=x_api_version,
             actions=actions,
             resource_types=resource_types,
             resource_id=resource_id,
@@ -665,7 +666,6 @@ class AuditTrailApi:
             to=to,
             limit=limit,
             offset=offset,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -686,6 +686,7 @@ class AuditTrailApi:
 
     def _list_audit_trail_events_serialize(
         self,
+        x_api_version,
         actions,
         resource_types,
         resource_id,
@@ -698,7 +699,6 @@ class AuditTrailApi:
         to,
         limit,
         offset,
-        x_api_version,
         _request_auth,
         _content_type,
         _headers,

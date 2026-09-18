@@ -15,8 +15,7 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import Field, StrictStr
-from typing import Optional
+from pydantic import Field, field_validator
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.content_query_payload import ContentQueryPayload
 from vertesia_client.openapi.models.content_query_result import ContentQueryResult
@@ -42,8 +41,8 @@ class ContentQueryApi:
     @validate_call
     def execute_content_query(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         content_query_payload: ContentQueryPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -61,10 +60,10 @@ class ContentQueryApi:
 
         Execute a query against the project's Elasticsearch index  Security filtering is automatically applied based on the authenticated user's principals. For SQL/ES|QL, a WHERE clause is injected. For DSL, a filter clause is added.  **Required permissions:** `content:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param content_query_payload: (required)
         :type content_query_payload: ContentQueryPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -88,8 +87,8 @@ class ContentQueryApi:
         """ # noqa: E501
 
         _param = self._execute_content_query_serialize(
-            content_query_payload=content_query_payload,
             x_api_version=x_api_version,
+            content_query_payload=content_query_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -115,8 +114,8 @@ class ContentQueryApi:
     @validate_call
     def execute_content_query_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         content_query_payload: ContentQueryPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -134,10 +133,10 @@ class ContentQueryApi:
 
         Execute a query against the project's Elasticsearch index  Security filtering is automatically applied based on the authenticated user's principals. For SQL/ES|QL, a WHERE clause is injected. For DSL, a filter clause is added.  **Required permissions:** `content:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param content_query_payload: (required)
         :type content_query_payload: ContentQueryPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -161,8 +160,8 @@ class ContentQueryApi:
         """ # noqa: E501
 
         _param = self._execute_content_query_serialize(
-            content_query_payload=content_query_payload,
             x_api_version=x_api_version,
+            content_query_payload=content_query_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -188,8 +187,8 @@ class ContentQueryApi:
     @validate_call
     def execute_content_query_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         content_query_payload: ContentQueryPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -207,10 +206,10 @@ class ContentQueryApi:
 
         Execute a query against the project's Elasticsearch index  Security filtering is automatically applied based on the authenticated user's principals. For SQL/ES|QL, a WHERE clause is injected. For DSL, a filter clause is added.  **Required permissions:** `content:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param content_query_payload: (required)
         :type content_query_payload: ContentQueryPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -234,8 +233,8 @@ class ContentQueryApi:
         """ # noqa: E501
 
         _param = self._execute_content_query_serialize(
-            content_query_payload=content_query_payload,
             x_api_version=x_api_version,
+            content_query_payload=content_query_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -256,8 +255,8 @@ class ContentQueryApi:
 
     def _execute_content_query_serialize(
         self,
-        content_query_payload,
         x_api_version,
+        content_query_payload,
         _request_auth,
         _content_type,
         _headers,

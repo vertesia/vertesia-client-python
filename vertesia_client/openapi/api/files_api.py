@@ -15,7 +15,7 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import Field, StrictBool, StrictStr
+from pydantic import Field, StrictBool, StrictStr, field_validator
 from typing import Optional
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.bulk_upload_urls_payload import BulkUploadUrlsPayload
@@ -53,8 +53,8 @@ class FilesApi:
     @validate_call
     def copy_project_file(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         copy_file_payload: CopyFilePayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -72,10 +72,10 @@ class FilesApi:
 
         Copies a file to a new destination within the same project bucket.  **Required permissions:** `content:write`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param copy_file_payload: (required)
         :type copy_file_payload: CopyFilePayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -99,8 +99,8 @@ class FilesApi:
         """ # noqa: E501
 
         _param = self._copy_project_file_serialize(
-            copy_file_payload=copy_file_payload,
             x_api_version=x_api_version,
+            copy_file_payload=copy_file_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -126,8 +126,8 @@ class FilesApi:
     @validate_call
     def copy_project_file_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         copy_file_payload: CopyFilePayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -145,10 +145,10 @@ class FilesApi:
 
         Copies a file to a new destination within the same project bucket.  **Required permissions:** `content:write`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param copy_file_payload: (required)
         :type copy_file_payload: CopyFilePayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -172,8 +172,8 @@ class FilesApi:
         """ # noqa: E501
 
         _param = self._copy_project_file_serialize(
-            copy_file_payload=copy_file_payload,
             x_api_version=x_api_version,
+            copy_file_payload=copy_file_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -199,8 +199,8 @@ class FilesApi:
     @validate_call
     def copy_project_file_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         copy_file_payload: CopyFilePayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -218,10 +218,10 @@ class FilesApi:
 
         Copies a file to a new destination within the same project bucket.  **Required permissions:** `content:write`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param copy_file_payload: (required)
         :type copy_file_payload: CopyFilePayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -245,8 +245,8 @@ class FilesApi:
         """ # noqa: E501
 
         _param = self._copy_project_file_serialize(
-            copy_file_payload=copy_file_payload,
             x_api_version=x_api_version,
+            copy_file_payload=copy_file_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -267,8 +267,8 @@ class FilesApi:
 
     def _copy_project_file_serialize(
         self,
-        copy_file_payload,
         x_api_version,
+        copy_file_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -350,8 +350,8 @@ class FilesApi:
     def delete_project_file(
         self,
         path: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         prefix: Optional[StrictBool] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -371,10 +371,10 @@ class FilesApi:
 
         :param path: (required)
         :type path: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param prefix:
         :type prefix: bool
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -399,8 +399,8 @@ class FilesApi:
 
         _param = self._delete_project_file_serialize(
             path=path,
-            prefix=prefix,
             x_api_version=x_api_version,
+            prefix=prefix,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -427,8 +427,8 @@ class FilesApi:
     def delete_project_file_with_http_info(
         self,
         path: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         prefix: Optional[StrictBool] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -448,10 +448,10 @@ class FilesApi:
 
         :param path: (required)
         :type path: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param prefix:
         :type prefix: bool
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -476,8 +476,8 @@ class FilesApi:
 
         _param = self._delete_project_file_serialize(
             path=path,
-            prefix=prefix,
             x_api_version=x_api_version,
+            prefix=prefix,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -504,8 +504,8 @@ class FilesApi:
     def delete_project_file_without_preload_content(
         self,
         path: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         prefix: Optional[StrictBool] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -525,10 +525,10 @@ class FilesApi:
 
         :param path: (required)
         :type path: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param prefix:
         :type prefix: bool
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -553,8 +553,8 @@ class FilesApi:
 
         _param = self._delete_project_file_serialize(
             path=path,
-            prefix=prefix,
             x_api_version=x_api_version,
+            prefix=prefix,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -576,8 +576,8 @@ class FilesApi:
     def _delete_project_file_serialize(
         self,
         path,
-        prefix,
         x_api_version,
+        prefix,
         _request_auth,
         _content_type,
         _headers,
@@ -649,7 +649,7 @@ class FilesApi:
     @validate_call
     def ensure_project_file_bucket(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -667,7 +667,7 @@ class FilesApi:
 
         Creates the project-scoped storage bucket when needed and returns its URI.  **Required permissions:** `content:write`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -718,7 +718,7 @@ class FilesApi:
     @validate_call
     def ensure_project_file_bucket_with_http_info(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -736,7 +736,7 @@ class FilesApi:
 
         Creates the project-scoped storage bucket when needed and returns its URI.  **Required permissions:** `content:write`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -787,7 +787,7 @@ class FilesApi:
     @validate_call
     def ensure_project_file_bucket_without_preload_content(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -805,7 +805,7 @@ class FilesApi:
 
         Creates the project-scoped storage bucket when needed and returns its URI.  **Required permissions:** `content:write`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -917,8 +917,8 @@ class FilesApi:
     @validate_call
     def get_bulk_file_upload_urls(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         bulk_upload_urls_payload: BulkUploadUrlsPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -936,10 +936,10 @@ class FilesApi:
 
         Generates signed upload URLs for a batch of files in a single request.  **Required permissions:** `content:write`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param bulk_upload_urls_payload: (required)
         :type bulk_upload_urls_payload: BulkUploadUrlsPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -963,8 +963,8 @@ class FilesApi:
         """ # noqa: E501
 
         _param = self._get_bulk_file_upload_urls_serialize(
-            bulk_upload_urls_payload=bulk_upload_urls_payload,
             x_api_version=x_api_version,
+            bulk_upload_urls_payload=bulk_upload_urls_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -990,8 +990,8 @@ class FilesApi:
     @validate_call
     def get_bulk_file_upload_urls_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         bulk_upload_urls_payload: BulkUploadUrlsPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1009,10 +1009,10 @@ class FilesApi:
 
         Generates signed upload URLs for a batch of files in a single request.  **Required permissions:** `content:write`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param bulk_upload_urls_payload: (required)
         :type bulk_upload_urls_payload: BulkUploadUrlsPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1036,8 +1036,8 @@ class FilesApi:
         """ # noqa: E501
 
         _param = self._get_bulk_file_upload_urls_serialize(
-            bulk_upload_urls_payload=bulk_upload_urls_payload,
             x_api_version=x_api_version,
+            bulk_upload_urls_payload=bulk_upload_urls_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1063,8 +1063,8 @@ class FilesApi:
     @validate_call
     def get_bulk_file_upload_urls_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         bulk_upload_urls_payload: BulkUploadUrlsPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1082,10 +1082,10 @@ class FilesApi:
 
         Generates signed upload URLs for a batch of files in a single request.  **Required permissions:** `content:write`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param bulk_upload_urls_payload: (required)
         :type bulk_upload_urls_payload: BulkUploadUrlsPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1109,8 +1109,8 @@ class FilesApi:
         """ # noqa: E501
 
         _param = self._get_bulk_file_upload_urls_serialize(
-            bulk_upload_urls_payload=bulk_upload_urls_payload,
             x_api_version=x_api_version,
+            bulk_upload_urls_payload=bulk_upload_urls_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1131,8 +1131,8 @@ class FilesApi:
 
     def _get_bulk_file_upload_urls_serialize(
         self,
-        bulk_upload_urls_payload,
         x_api_version,
+        bulk_upload_urls_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -1213,8 +1213,8 @@ class FilesApi:
     @validate_call
     def get_file_download_url(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         get_file_url_payload: GetFileUrlPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1232,10 +1232,10 @@ class FilesApi:
 
         Generates a signed download URL for a file by relative path or fully qualified storage URI.  **Required permissions:** `content:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param get_file_url_payload: (required)
         :type get_file_url_payload: GetFileUrlPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1259,8 +1259,8 @@ class FilesApi:
         """ # noqa: E501
 
         _param = self._get_file_download_url_serialize(
-            get_file_url_payload=get_file_url_payload,
             x_api_version=x_api_version,
+            get_file_url_payload=get_file_url_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1286,8 +1286,8 @@ class FilesApi:
     @validate_call
     def get_file_download_url_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         get_file_url_payload: GetFileUrlPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1305,10 +1305,10 @@ class FilesApi:
 
         Generates a signed download URL for a file by relative path or fully qualified storage URI.  **Required permissions:** `content:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param get_file_url_payload: (required)
         :type get_file_url_payload: GetFileUrlPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1332,8 +1332,8 @@ class FilesApi:
         """ # noqa: E501
 
         _param = self._get_file_download_url_serialize(
-            get_file_url_payload=get_file_url_payload,
             x_api_version=x_api_version,
+            get_file_url_payload=get_file_url_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1359,8 +1359,8 @@ class FilesApi:
     @validate_call
     def get_file_download_url_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         get_file_url_payload: GetFileUrlPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1378,10 +1378,10 @@ class FilesApi:
 
         Generates a signed download URL for a file by relative path or fully qualified storage URI.  **Required permissions:** `content:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param get_file_url_payload: (required)
         :type get_file_url_payload: GetFileUrlPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1405,8 +1405,8 @@ class FilesApi:
         """ # noqa: E501
 
         _param = self._get_file_download_url_serialize(
-            get_file_url_payload=get_file_url_payload,
             x_api_version=x_api_version,
+            get_file_url_payload=get_file_url_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1427,8 +1427,8 @@ class FilesApi:
 
     def _get_file_download_url_serialize(
         self,
-        get_file_url_payload,
         x_api_version,
+        get_file_url_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -1510,7 +1510,7 @@ class FilesApi:
     def get_file_metadata(
         self,
         file: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1530,7 +1530,7 @@ class FilesApi:
 
         :param file: (required)
         :type file: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1584,7 +1584,7 @@ class FilesApi:
     def get_file_metadata_with_http_info(
         self,
         file: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1604,7 +1604,7 @@ class FilesApi:
 
         :param file: (required)
         :type file: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1658,7 +1658,7 @@ class FilesApi:
     def get_file_metadata_without_preload_content(
         self,
         file: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1678,7 +1678,7 @@ class FilesApi:
 
         :param file: (required)
         :type file: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1797,8 +1797,8 @@ class FilesApi:
     @validate_call
     def get_file_upload_url(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         get_upload_url_payload: GetUploadUrlPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1816,10 +1816,10 @@ class FilesApi:
 
         Generates a signed upload URL for a single file in the project bucket.  **Required permissions:** `content:write`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param get_upload_url_payload: (required)
         :type get_upload_url_payload: GetUploadUrlPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1843,8 +1843,8 @@ class FilesApi:
         """ # noqa: E501
 
         _param = self._get_file_upload_url_serialize(
-            get_upload_url_payload=get_upload_url_payload,
             x_api_version=x_api_version,
+            get_upload_url_payload=get_upload_url_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1870,8 +1870,8 @@ class FilesApi:
     @validate_call
     def get_file_upload_url_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         get_upload_url_payload: GetUploadUrlPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1889,10 +1889,10 @@ class FilesApi:
 
         Generates a signed upload URL for a single file in the project bucket.  **Required permissions:** `content:write`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param get_upload_url_payload: (required)
         :type get_upload_url_payload: GetUploadUrlPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1916,8 +1916,8 @@ class FilesApi:
         """ # noqa: E501
 
         _param = self._get_file_upload_url_serialize(
-            get_upload_url_payload=get_upload_url_payload,
             x_api_version=x_api_version,
+            get_upload_url_payload=get_upload_url_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1943,8 +1943,8 @@ class FilesApi:
     @validate_call
     def get_file_upload_url_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         get_upload_url_payload: GetUploadUrlPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1962,10 +1962,10 @@ class FilesApi:
 
         Generates a signed upload URL for a single file in the project bucket.  **Required permissions:** `content:write`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param get_upload_url_payload: (required)
         :type get_upload_url_payload: GetUploadUrlPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1989,8 +1989,8 @@ class FilesApi:
         """ # noqa: E501
 
         _param = self._get_file_upload_url_serialize(
-            get_upload_url_payload=get_upload_url_payload,
             x_api_version=x_api_version,
+            get_upload_url_payload=get_upload_url_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2011,8 +2011,8 @@ class FilesApi:
 
     def _get_file_upload_url_serialize(
         self,
-        get_upload_url_payload,
         x_api_version,
+        get_upload_url_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -2094,7 +2094,7 @@ class FilesApi:
     def list_project_files(
         self,
         prefix: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2114,7 +2114,7 @@ class FilesApi:
 
         :param prefix: (required)
         :type prefix: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2167,7 +2167,7 @@ class FilesApi:
     def list_project_files_with_http_info(
         self,
         prefix: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2187,7 +2187,7 @@ class FilesApi:
 
         :param prefix: (required)
         :type prefix: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2240,7 +2240,7 @@ class FilesApi:
     def list_project_files_without_preload_content(
         self,
         prefix: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2260,7 +2260,7 @@ class FilesApi:
 
         :param prefix: (required)
         :type prefix: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2378,8 +2378,8 @@ class FilesApi:
     @validate_call
     def set_file_metadata(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         set_file_metadata_payload: SetFileMetadataPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2397,10 +2397,10 @@ class FilesApi:
 
         Applies custom metadata key-value pairs to a file in project storage.  **Required permissions:** `content:write`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param set_file_metadata_payload: (required)
         :type set_file_metadata_payload: SetFileMetadataPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2424,8 +2424,8 @@ class FilesApi:
         """ # noqa: E501
 
         _param = self._set_file_metadata_serialize(
-            set_file_metadata_payload=set_file_metadata_payload,
             x_api_version=x_api_version,
+            set_file_metadata_payload=set_file_metadata_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2451,8 +2451,8 @@ class FilesApi:
     @validate_call
     def set_file_metadata_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         set_file_metadata_payload: SetFileMetadataPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2470,10 +2470,10 @@ class FilesApi:
 
         Applies custom metadata key-value pairs to a file in project storage.  **Required permissions:** `content:write`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param set_file_metadata_payload: (required)
         :type set_file_metadata_payload: SetFileMetadataPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2497,8 +2497,8 @@ class FilesApi:
         """ # noqa: E501
 
         _param = self._set_file_metadata_serialize(
-            set_file_metadata_payload=set_file_metadata_payload,
             x_api_version=x_api_version,
+            set_file_metadata_payload=set_file_metadata_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2524,8 +2524,8 @@ class FilesApi:
     @validate_call
     def set_file_metadata_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         set_file_metadata_payload: SetFileMetadataPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2543,10 +2543,10 @@ class FilesApi:
 
         Applies custom metadata key-value pairs to a file in project storage.  **Required permissions:** `content:write`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param set_file_metadata_payload: (required)
         :type set_file_metadata_payload: SetFileMetadataPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2570,8 +2570,8 @@ class FilesApi:
         """ # noqa: E501
 
         _param = self._set_file_metadata_serialize(
-            set_file_metadata_payload=set_file_metadata_payload,
             x_api_version=x_api_version,
+            set_file_metadata_payload=set_file_metadata_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2592,8 +2592,8 @@ class FilesApi:
 
     def _set_file_metadata_serialize(
         self,
-        set_file_metadata_payload,
         x_api_version,
+        set_file_metadata_payload,
         _request_auth,
         _content_type,
         _headers,

@@ -44,8 +44,8 @@ class OAuthGrantsApi:
     @validate_call
     def bulk_revoke_o_auth_grants(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         bulk_revoke_o_auth_grants_payload: BulkRevokeOAuthGrantsPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -63,10 +63,10 @@ class OAuthGrantsApi:
 
         Revokes multiple OAuth grants selected by explicit grant IDs or by account, project, user, client, resource, and status filters.  **Required permissions:** Any of `account:member`, `project:admin`, `account:admin`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param bulk_revoke_o_auth_grants_payload: (required)
         :type bulk_revoke_o_auth_grants_payload: BulkRevokeOAuthGrantsPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -90,8 +90,8 @@ class OAuthGrantsApi:
         """ # noqa: E501
 
         _param = self._bulk_revoke_o_auth_grants_serialize(
-            bulk_revoke_o_auth_grants_payload=bulk_revoke_o_auth_grants_payload,
             x_api_version=x_api_version,
+            bulk_revoke_o_auth_grants_payload=bulk_revoke_o_auth_grants_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -117,8 +117,8 @@ class OAuthGrantsApi:
     @validate_call
     def bulk_revoke_o_auth_grants_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         bulk_revoke_o_auth_grants_payload: BulkRevokeOAuthGrantsPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -136,10 +136,10 @@ class OAuthGrantsApi:
 
         Revokes multiple OAuth grants selected by explicit grant IDs or by account, project, user, client, resource, and status filters.  **Required permissions:** Any of `account:member`, `project:admin`, `account:admin`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param bulk_revoke_o_auth_grants_payload: (required)
         :type bulk_revoke_o_auth_grants_payload: BulkRevokeOAuthGrantsPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -163,8 +163,8 @@ class OAuthGrantsApi:
         """ # noqa: E501
 
         _param = self._bulk_revoke_o_auth_grants_serialize(
-            bulk_revoke_o_auth_grants_payload=bulk_revoke_o_auth_grants_payload,
             x_api_version=x_api_version,
+            bulk_revoke_o_auth_grants_payload=bulk_revoke_o_auth_grants_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -190,8 +190,8 @@ class OAuthGrantsApi:
     @validate_call
     def bulk_revoke_o_auth_grants_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         bulk_revoke_o_auth_grants_payload: BulkRevokeOAuthGrantsPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -209,10 +209,10 @@ class OAuthGrantsApi:
 
         Revokes multiple OAuth grants selected by explicit grant IDs or by account, project, user, client, resource, and status filters.  **Required permissions:** Any of `account:member`, `project:admin`, `account:admin`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param bulk_revoke_o_auth_grants_payload: (required)
         :type bulk_revoke_o_auth_grants_payload: BulkRevokeOAuthGrantsPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -236,8 +236,8 @@ class OAuthGrantsApi:
         """ # noqa: E501
 
         _param = self._bulk_revoke_o_auth_grants_serialize(
-            bulk_revoke_o_auth_grants_payload=bulk_revoke_o_auth_grants_payload,
             x_api_version=x_api_version,
+            bulk_revoke_o_auth_grants_payload=bulk_revoke_o_auth_grants_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -258,8 +258,8 @@ class OAuthGrantsApi:
 
     def _bulk_revoke_o_auth_grants_serialize(
         self,
-        bulk_revoke_o_auth_grants_payload,
         x_api_version,
+        bulk_revoke_o_auth_grants_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -341,7 +341,7 @@ class OAuthGrantsApi:
     def get_o_auth_grant(
         self,
         grant_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -361,7 +361,7 @@ class OAuthGrantsApi:
 
         :param grant_id: (required)
         :type grant_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -414,7 +414,7 @@ class OAuthGrantsApi:
     def get_o_auth_grant_with_http_info(
         self,
         grant_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -434,7 +434,7 @@ class OAuthGrantsApi:
 
         :param grant_id: (required)
         :type grant_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -487,7 +487,7 @@ class OAuthGrantsApi:
     def get_o_auth_grant_without_preload_content(
         self,
         grant_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -507,7 +507,7 @@ class OAuthGrantsApi:
 
         :param grant_id: (required)
         :type grant_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -623,6 +623,7 @@ class OAuthGrantsApi:
     @validate_call
     def list_o_auth_grants(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         account_id: Optional[StrictStr] = None,
         project_id: Optional[StrictStr] = None,
         user_id: Optional[StrictStr] = None,
@@ -633,7 +634,6 @@ class OAuthGrantsApi:
         offset: Optional[Union[StrictFloat, StrictInt]] = None,
         sort_by: Optional[StrictStr] = None,
         sort_order: Optional[StrictStr] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -651,6 +651,8 @@ class OAuthGrantsApi:
 
         Lists active, revoked, or expired OAuth grants visible to the current user, project admin, or account admin.  **Required permissions:** Any of `account:member`, `project:admin`, `account:admin`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param account_id:
         :type account_id: str
         :param project_id:
@@ -671,8 +673,6 @@ class OAuthGrantsApi:
         :type sort_by: str
         :param sort_order:
         :type sort_order: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -696,6 +696,7 @@ class OAuthGrantsApi:
         """ # noqa: E501
 
         _param = self._list_o_auth_grants_serialize(
+            x_api_version=x_api_version,
             account_id=account_id,
             project_id=project_id,
             user_id=user_id,
@@ -706,7 +707,6 @@ class OAuthGrantsApi:
             offset=offset,
             sort_by=sort_by,
             sort_order=sort_order,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -732,6 +732,7 @@ class OAuthGrantsApi:
     @validate_call
     def list_o_auth_grants_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         account_id: Optional[StrictStr] = None,
         project_id: Optional[StrictStr] = None,
         user_id: Optional[StrictStr] = None,
@@ -742,7 +743,6 @@ class OAuthGrantsApi:
         offset: Optional[Union[StrictFloat, StrictInt]] = None,
         sort_by: Optional[StrictStr] = None,
         sort_order: Optional[StrictStr] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -760,6 +760,8 @@ class OAuthGrantsApi:
 
         Lists active, revoked, or expired OAuth grants visible to the current user, project admin, or account admin.  **Required permissions:** Any of `account:member`, `project:admin`, `account:admin`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param account_id:
         :type account_id: str
         :param project_id:
@@ -780,8 +782,6 @@ class OAuthGrantsApi:
         :type sort_by: str
         :param sort_order:
         :type sort_order: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -805,6 +805,7 @@ class OAuthGrantsApi:
         """ # noqa: E501
 
         _param = self._list_o_auth_grants_serialize(
+            x_api_version=x_api_version,
             account_id=account_id,
             project_id=project_id,
             user_id=user_id,
@@ -815,7 +816,6 @@ class OAuthGrantsApi:
             offset=offset,
             sort_by=sort_by,
             sort_order=sort_order,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -841,6 +841,7 @@ class OAuthGrantsApi:
     @validate_call
     def list_o_auth_grants_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         account_id: Optional[StrictStr] = None,
         project_id: Optional[StrictStr] = None,
         user_id: Optional[StrictStr] = None,
@@ -851,7 +852,6 @@ class OAuthGrantsApi:
         offset: Optional[Union[StrictFloat, StrictInt]] = None,
         sort_by: Optional[StrictStr] = None,
         sort_order: Optional[StrictStr] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -869,6 +869,8 @@ class OAuthGrantsApi:
 
         Lists active, revoked, or expired OAuth grants visible to the current user, project admin, or account admin.  **Required permissions:** Any of `account:member`, `project:admin`, `account:admin`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param account_id:
         :type account_id: str
         :param project_id:
@@ -889,8 +891,6 @@ class OAuthGrantsApi:
         :type sort_by: str
         :param sort_order:
         :type sort_order: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -914,6 +914,7 @@ class OAuthGrantsApi:
         """ # noqa: E501
 
         _param = self._list_o_auth_grants_serialize(
+            x_api_version=x_api_version,
             account_id=account_id,
             project_id=project_id,
             user_id=user_id,
@@ -924,7 +925,6 @@ class OAuthGrantsApi:
             offset=offset,
             sort_by=sort_by,
             sort_order=sort_order,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -945,6 +945,7 @@ class OAuthGrantsApi:
 
     def _list_o_auth_grants_serialize(
         self,
+        x_api_version,
         account_id,
         project_id,
         user_id,
@@ -955,7 +956,6 @@ class OAuthGrantsApi:
         offset,
         sort_by,
         sort_order,
-        x_api_version,
         _request_auth,
         _content_type,
         _headers,
@@ -1062,8 +1062,8 @@ class OAuthGrantsApi:
     def revoke_o_auth_grant(
         self,
         grant_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         include_consent: Optional[StrictBool] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1083,10 +1083,10 @@ class OAuthGrantsApi:
 
         :param grant_id: (required)
         :type grant_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param include_consent:
         :type include_consent: bool
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1111,8 +1111,8 @@ class OAuthGrantsApi:
 
         _param = self._revoke_o_auth_grant_serialize(
             grant_id=grant_id,
-            include_consent=include_consent,
             x_api_version=x_api_version,
+            include_consent=include_consent,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1139,8 +1139,8 @@ class OAuthGrantsApi:
     def revoke_o_auth_grant_with_http_info(
         self,
         grant_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         include_consent: Optional[StrictBool] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1160,10 +1160,10 @@ class OAuthGrantsApi:
 
         :param grant_id: (required)
         :type grant_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param include_consent:
         :type include_consent: bool
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1188,8 +1188,8 @@ class OAuthGrantsApi:
 
         _param = self._revoke_o_auth_grant_serialize(
             grant_id=grant_id,
-            include_consent=include_consent,
             x_api_version=x_api_version,
+            include_consent=include_consent,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1216,8 +1216,8 @@ class OAuthGrantsApi:
     def revoke_o_auth_grant_without_preload_content(
         self,
         grant_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         include_consent: Optional[StrictBool] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1237,10 +1237,10 @@ class OAuthGrantsApi:
 
         :param grant_id: (required)
         :type grant_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param include_consent:
         :type include_consent: bool
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1265,8 +1265,8 @@ class OAuthGrantsApi:
 
         _param = self._revoke_o_auth_grant_serialize(
             grant_id=grant_id,
-            include_consent=include_consent,
             x_api_version=x_api_version,
+            include_consent=include_consent,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1288,8 +1288,8 @@ class OAuthGrantsApi:
     def _revoke_o_auth_grant_serialize(
         self,
         grant_id,
-        include_consent,
         x_api_version,
+        include_consent,
         _request_auth,
         _content_type,
         _headers,

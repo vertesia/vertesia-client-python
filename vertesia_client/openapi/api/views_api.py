@@ -15,7 +15,7 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import Field, StrictFloat, StrictInt, StrictStr
+from pydantic import Field, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import List, Optional, Union
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.create_view_experience_request import CreateViewExperienceRequest
@@ -47,8 +47,8 @@ class ViewsApi:
     @validate_call
     def create_view(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_view_experience_request: CreateViewExperienceRequest,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -66,10 +66,10 @@ class ViewsApi:
 
         Creates a View Experience with a project-unique immutable public slug ID.  **Required permissions:** `interaction:write`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param create_view_experience_request: (required)
         :type create_view_experience_request: CreateViewExperienceRequest
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -93,8 +93,8 @@ class ViewsApi:
         """ # noqa: E501
 
         _param = self._create_view_serialize(
-            create_view_experience_request=create_view_experience_request,
             x_api_version=x_api_version,
+            create_view_experience_request=create_view_experience_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -120,8 +120,8 @@ class ViewsApi:
     @validate_call
     def create_view_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_view_experience_request: CreateViewExperienceRequest,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -139,10 +139,10 @@ class ViewsApi:
 
         Creates a View Experience with a project-unique immutable public slug ID.  **Required permissions:** `interaction:write`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param create_view_experience_request: (required)
         :type create_view_experience_request: CreateViewExperienceRequest
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -166,8 +166,8 @@ class ViewsApi:
         """ # noqa: E501
 
         _param = self._create_view_serialize(
-            create_view_experience_request=create_view_experience_request,
             x_api_version=x_api_version,
+            create_view_experience_request=create_view_experience_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -193,8 +193,8 @@ class ViewsApi:
     @validate_call
     def create_view_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_view_experience_request: CreateViewExperienceRequest,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -212,10 +212,10 @@ class ViewsApi:
 
         Creates a View Experience with a project-unique immutable public slug ID.  **Required permissions:** `interaction:write`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param create_view_experience_request: (required)
         :type create_view_experience_request: CreateViewExperienceRequest
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -239,8 +239,8 @@ class ViewsApi:
         """ # noqa: E501
 
         _param = self._create_view_serialize(
-            create_view_experience_request=create_view_experience_request,
             x_api_version=x_api_version,
+            create_view_experience_request=create_view_experience_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -261,8 +261,8 @@ class ViewsApi:
 
     def _create_view_serialize(
         self,
-        create_view_experience_request,
         x_api_version,
+        create_view_experience_request,
         _request_auth,
         _content_type,
         _headers,
@@ -344,7 +344,7 @@ class ViewsApi:
     def delete_view(
         self,
         view_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -364,7 +364,7 @@ class ViewsApi:
 
         :param view_id: (required)
         :type view_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -417,7 +417,7 @@ class ViewsApi:
     def delete_view_with_http_info(
         self,
         view_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -437,7 +437,7 @@ class ViewsApi:
 
         :param view_id: (required)
         :type view_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -490,7 +490,7 @@ class ViewsApi:
     def delete_view_without_preload_content(
         self,
         view_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -510,7 +510,7 @@ class ViewsApi:
 
         :param view_id: (required)
         :type view_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -627,8 +627,8 @@ class ViewsApi:
     def execute_view(
         self,
         view_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         execute_view_request: ExecuteViewRequest,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -648,10 +648,10 @@ class ViewsApi:
 
         :param view_id: (required)
         :type view_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param execute_view_request: (required)
         :type execute_view_request: ExecuteViewRequest
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -676,8 +676,8 @@ class ViewsApi:
 
         _param = self._execute_view_serialize(
             view_id=view_id,
-            execute_view_request=execute_view_request,
             x_api_version=x_api_version,
+            execute_view_request=execute_view_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -704,8 +704,8 @@ class ViewsApi:
     def execute_view_with_http_info(
         self,
         view_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         execute_view_request: ExecuteViewRequest,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -725,10 +725,10 @@ class ViewsApi:
 
         :param view_id: (required)
         :type view_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param execute_view_request: (required)
         :type execute_view_request: ExecuteViewRequest
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -753,8 +753,8 @@ class ViewsApi:
 
         _param = self._execute_view_serialize(
             view_id=view_id,
-            execute_view_request=execute_view_request,
             x_api_version=x_api_version,
+            execute_view_request=execute_view_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -781,8 +781,8 @@ class ViewsApi:
     def execute_view_without_preload_content(
         self,
         view_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         execute_view_request: ExecuteViewRequest,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -802,10 +802,10 @@ class ViewsApi:
 
         :param view_id: (required)
         :type view_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param execute_view_request: (required)
         :type execute_view_request: ExecuteViewRequest
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -830,8 +830,8 @@ class ViewsApi:
 
         _param = self._execute_view_serialize(
             view_id=view_id,
-            execute_view_request=execute_view_request,
             x_api_version=x_api_version,
+            execute_view_request=execute_view_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -853,8 +853,8 @@ class ViewsApi:
     def _execute_view_serialize(
         self,
         view_id,
-        execute_view_request,
         x_api_version,
+        execute_view_request,
         _request_auth,
         _content_type,
         _headers,
@@ -938,7 +938,7 @@ class ViewsApi:
     def get_view(
         self,
         view_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -958,7 +958,7 @@ class ViewsApi:
 
         :param view_id: (required)
         :type view_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1011,7 +1011,7 @@ class ViewsApi:
     def get_view_with_http_info(
         self,
         view_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1031,7 +1031,7 @@ class ViewsApi:
 
         :param view_id: (required)
         :type view_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1084,7 +1084,7 @@ class ViewsApi:
     def get_view_without_preload_content(
         self,
         view_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1104,7 +1104,7 @@ class ViewsApi:
 
         :param view_id: (required)
         :type view_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1220,9 +1220,9 @@ class ViewsApi:
     @validate_call
     def list_views(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         limit: Annotated[Optional[Union[StrictFloat, StrictInt]], Field(description="Page size. Clamped to 1..100; anything unparseable falls back to 50.")] = None,
         offset: Annotated[Optional[Union[StrictFloat, StrictInt]], Field(description="Number of Views to skip. Negative values are clamped to 0.")] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1240,12 +1240,12 @@ class ViewsApi:
 
         Lists View Experiences in the current project, most recently updated first.  **Required permissions:** `interaction:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param limit: Page size. Clamped to 1..100; anything unparseable falls back to 50.
         :type limit: float
         :param offset: Number of Views to skip. Negative values are clamped to 0.
         :type offset: float
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1269,9 +1269,9 @@ class ViewsApi:
         """ # noqa: E501
 
         _param = self._list_views_serialize(
+            x_api_version=x_api_version,
             limit=limit,
             offset=offset,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1297,9 +1297,9 @@ class ViewsApi:
     @validate_call
     def list_views_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         limit: Annotated[Optional[Union[StrictFloat, StrictInt]], Field(description="Page size. Clamped to 1..100; anything unparseable falls back to 50.")] = None,
         offset: Annotated[Optional[Union[StrictFloat, StrictInt]], Field(description="Number of Views to skip. Negative values are clamped to 0.")] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1317,12 +1317,12 @@ class ViewsApi:
 
         Lists View Experiences in the current project, most recently updated first.  **Required permissions:** `interaction:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param limit: Page size. Clamped to 1..100; anything unparseable falls back to 50.
         :type limit: float
         :param offset: Number of Views to skip. Negative values are clamped to 0.
         :type offset: float
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1346,9 +1346,9 @@ class ViewsApi:
         """ # noqa: E501
 
         _param = self._list_views_serialize(
+            x_api_version=x_api_version,
             limit=limit,
             offset=offset,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1374,9 +1374,9 @@ class ViewsApi:
     @validate_call
     def list_views_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         limit: Annotated[Optional[Union[StrictFloat, StrictInt]], Field(description="Page size. Clamped to 1..100; anything unparseable falls back to 50.")] = None,
         offset: Annotated[Optional[Union[StrictFloat, StrictInt]], Field(description="Number of Views to skip. Negative values are clamped to 0.")] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1394,12 +1394,12 @@ class ViewsApi:
 
         Lists View Experiences in the current project, most recently updated first.  **Required permissions:** `interaction:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param limit: Page size. Clamped to 1..100; anything unparseable falls back to 50.
         :type limit: float
         :param offset: Number of Views to skip. Negative values are clamped to 0.
         :type offset: float
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1423,9 +1423,9 @@ class ViewsApi:
         """ # noqa: E501
 
         _param = self._list_views_serialize(
+            x_api_version=x_api_version,
             limit=limit,
             offset=offset,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1446,9 +1446,9 @@ class ViewsApi:
 
     def _list_views_serialize(
         self,
+        x_api_version,
         limit,
         offset,
-        x_api_version,
         _request_auth,
         _content_type,
         _headers,
@@ -1522,8 +1522,8 @@ class ViewsApi:
     @validate_call
     def preview_view(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         preview_view_experience_request: PreviewViewExperienceRequest,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1541,10 +1541,10 @@ class ViewsApi:
 
         Validates an inline (unsaved) View configuration and executes it against content without persisting it, returning normalized results, navigation counts, and any agentic query, presentation, and reranking diagnostics. Agentic stages additionally require interaction execute permission.  **Required permissions:** `content:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param preview_view_experience_request: (required)
         :type preview_view_experience_request: PreviewViewExperienceRequest
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1568,8 +1568,8 @@ class ViewsApi:
         """ # noqa: E501
 
         _param = self._preview_view_serialize(
-            preview_view_experience_request=preview_view_experience_request,
             x_api_version=x_api_version,
+            preview_view_experience_request=preview_view_experience_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1595,8 +1595,8 @@ class ViewsApi:
     @validate_call
     def preview_view_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         preview_view_experience_request: PreviewViewExperienceRequest,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1614,10 +1614,10 @@ class ViewsApi:
 
         Validates an inline (unsaved) View configuration and executes it against content without persisting it, returning normalized results, navigation counts, and any agentic query, presentation, and reranking diagnostics. Agentic stages additionally require interaction execute permission.  **Required permissions:** `content:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param preview_view_experience_request: (required)
         :type preview_view_experience_request: PreviewViewExperienceRequest
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1641,8 +1641,8 @@ class ViewsApi:
         """ # noqa: E501
 
         _param = self._preview_view_serialize(
-            preview_view_experience_request=preview_view_experience_request,
             x_api_version=x_api_version,
+            preview_view_experience_request=preview_view_experience_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1668,8 +1668,8 @@ class ViewsApi:
     @validate_call
     def preview_view_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         preview_view_experience_request: PreviewViewExperienceRequest,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1687,10 +1687,10 @@ class ViewsApi:
 
         Validates an inline (unsaved) View configuration and executes it against content without persisting it, returning normalized results, navigation counts, and any agentic query, presentation, and reranking diagnostics. Agentic stages additionally require interaction execute permission.  **Required permissions:** `content:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param preview_view_experience_request: (required)
         :type preview_view_experience_request: PreviewViewExperienceRequest
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1714,8 +1714,8 @@ class ViewsApi:
         """ # noqa: E501
 
         _param = self._preview_view_serialize(
-            preview_view_experience_request=preview_view_experience_request,
             x_api_version=x_api_version,
+            preview_view_experience_request=preview_view_experience_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1736,8 +1736,8 @@ class ViewsApi:
 
     def _preview_view_serialize(
         self,
-        preview_view_experience_request,
         x_api_version,
+        preview_view_experience_request,
         _request_auth,
         _content_type,
         _headers,
@@ -1819,8 +1819,8 @@ class ViewsApi:
     def update_view(
         self,
         view_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_view_experience_request: UpdateViewExperienceRequest,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1840,10 +1840,10 @@ class ViewsApi:
 
         :param view_id: (required)
         :type view_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param update_view_experience_request: (required)
         :type update_view_experience_request: UpdateViewExperienceRequest
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1868,8 +1868,8 @@ class ViewsApi:
 
         _param = self._update_view_serialize(
             view_id=view_id,
-            update_view_experience_request=update_view_experience_request,
             x_api_version=x_api_version,
+            update_view_experience_request=update_view_experience_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1896,8 +1896,8 @@ class ViewsApi:
     def update_view_with_http_info(
         self,
         view_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_view_experience_request: UpdateViewExperienceRequest,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1917,10 +1917,10 @@ class ViewsApi:
 
         :param view_id: (required)
         :type view_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param update_view_experience_request: (required)
         :type update_view_experience_request: UpdateViewExperienceRequest
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1945,8 +1945,8 @@ class ViewsApi:
 
         _param = self._update_view_serialize(
             view_id=view_id,
-            update_view_experience_request=update_view_experience_request,
             x_api_version=x_api_version,
+            update_view_experience_request=update_view_experience_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1973,8 +1973,8 @@ class ViewsApi:
     def update_view_without_preload_content(
         self,
         view_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_view_experience_request: UpdateViewExperienceRequest,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1994,10 +1994,10 @@ class ViewsApi:
 
         :param view_id: (required)
         :type view_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param update_view_experience_request: (required)
         :type update_view_experience_request: UpdateViewExperienceRequest
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2022,8 +2022,8 @@ class ViewsApi:
 
         _param = self._update_view_serialize(
             view_id=view_id,
-            update_view_experience_request=update_view_experience_request,
             x_api_version=x_api_version,
+            update_view_experience_request=update_view_experience_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2045,8 +2045,8 @@ class ViewsApi:
     def _update_view_serialize(
         self,
         view_id,
-        update_view_experience_request,
         x_api_version,
+        update_view_experience_request,
         _request_auth,
         _content_type,
         _headers,

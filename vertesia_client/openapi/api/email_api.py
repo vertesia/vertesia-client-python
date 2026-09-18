@@ -15,8 +15,7 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import Field, StrictStr
-from typing import Optional
+from pydantic import Field, StrictStr, field_validator
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.create_email_route_request import CreateEmailRouteRequest
 from vertesia_client.openapi.models.create_email_route_response import CreateEmailRouteResponse
@@ -49,8 +48,8 @@ class EmailApi:
     @validate_call
     def create_email_route(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_email_route_request: CreateEmailRouteRequest,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -68,10 +67,10 @@ class EmailApi:
 
         Create a new email route without sending an email. Useful for external services that want to handle email sending themselves but need reply routing back to Vertesia workflows.  Returns the route key to use in reply-to addresses: r+{route_key}@{email_domain}  **Required permissions:** `workflow:run`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param create_email_route_request: (required)
         :type create_email_route_request: CreateEmailRouteRequest
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -95,8 +94,8 @@ class EmailApi:
         """ # noqa: E501
 
         _param = self._create_email_route_serialize(
-            create_email_route_request=create_email_route_request,
             x_api_version=x_api_version,
+            create_email_route_request=create_email_route_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -122,8 +121,8 @@ class EmailApi:
     @validate_call
     def create_email_route_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_email_route_request: CreateEmailRouteRequest,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -141,10 +140,10 @@ class EmailApi:
 
         Create a new email route without sending an email. Useful for external services that want to handle email sending themselves but need reply routing back to Vertesia workflows.  Returns the route key to use in reply-to addresses: r+{route_key}@{email_domain}  **Required permissions:** `workflow:run`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param create_email_route_request: (required)
         :type create_email_route_request: CreateEmailRouteRequest
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -168,8 +167,8 @@ class EmailApi:
         """ # noqa: E501
 
         _param = self._create_email_route_serialize(
-            create_email_route_request=create_email_route_request,
             x_api_version=x_api_version,
+            create_email_route_request=create_email_route_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -195,8 +194,8 @@ class EmailApi:
     @validate_call
     def create_email_route_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_email_route_request: CreateEmailRouteRequest,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -214,10 +213,10 @@ class EmailApi:
 
         Create a new email route without sending an email. Useful for external services that want to handle email sending themselves but need reply routing back to Vertesia workflows.  Returns the route key to use in reply-to addresses: r+{route_key}@{email_domain}  **Required permissions:** `workflow:run`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param create_email_route_request: (required)
         :type create_email_route_request: CreateEmailRouteRequest
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -241,8 +240,8 @@ class EmailApi:
         """ # noqa: E501
 
         _param = self._create_email_route_serialize(
-            create_email_route_request=create_email_route_request,
             x_api_version=x_api_version,
+            create_email_route_request=create_email_route_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -263,8 +262,8 @@ class EmailApi:
 
     def _create_email_route_serialize(
         self,
-        create_email_route_request,
         x_api_version,
+        create_email_route_request,
         _request_auth,
         _content_type,
         _headers,
@@ -346,8 +345,8 @@ class EmailApi:
     def forward_email_to_workflow(
         self,
         key: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         forward_email_request: ForwardEmailRequest,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -367,10 +366,10 @@ class EmailApi:
 
         :param key: (required)
         :type key: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param forward_email_request: (required)
         :type forward_email_request: ForwardEmailRequest
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -395,8 +394,8 @@ class EmailApi:
 
         _param = self._forward_email_to_workflow_serialize(
             key=key,
-            forward_email_request=forward_email_request,
             x_api_version=x_api_version,
+            forward_email_request=forward_email_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -423,8 +422,8 @@ class EmailApi:
     def forward_email_to_workflow_with_http_info(
         self,
         key: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         forward_email_request: ForwardEmailRequest,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -444,10 +443,10 @@ class EmailApi:
 
         :param key: (required)
         :type key: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param forward_email_request: (required)
         :type forward_email_request: ForwardEmailRequest
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -472,8 +471,8 @@ class EmailApi:
 
         _param = self._forward_email_to_workflow_serialize(
             key=key,
-            forward_email_request=forward_email_request,
             x_api_version=x_api_version,
+            forward_email_request=forward_email_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -500,8 +499,8 @@ class EmailApi:
     def forward_email_to_workflow_without_preload_content(
         self,
         key: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         forward_email_request: ForwardEmailRequest,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -521,10 +520,10 @@ class EmailApi:
 
         :param key: (required)
         :type key: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param forward_email_request: (required)
         :type forward_email_request: ForwardEmailRequest
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -549,8 +548,8 @@ class EmailApi:
 
         _param = self._forward_email_to_workflow_serialize(
             key=key,
-            forward_email_request=forward_email_request,
             x_api_version=x_api_version,
+            forward_email_request=forward_email_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -572,8 +571,8 @@ class EmailApi:
     def _forward_email_to_workflow_serialize(
         self,
         key,
-        forward_email_request,
         x_api_version,
+        forward_email_request,
         _request_auth,
         _content_type,
         _headers,
@@ -657,7 +656,7 @@ class EmailApi:
     def get_email_route(
         self,
         key: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -677,7 +676,7 @@ class EmailApi:
 
         :param key: (required)
         :type key: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -730,7 +729,7 @@ class EmailApi:
     def get_email_route_with_http_info(
         self,
         key: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -750,7 +749,7 @@ class EmailApi:
 
         :param key: (required)
         :type key: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -803,7 +802,7 @@ class EmailApi:
     def get_email_route_without_preload_content(
         self,
         key: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -823,7 +822,7 @@ class EmailApi:
 
         :param key: (required)
         :type key: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -939,8 +938,8 @@ class EmailApi:
     @validate_call
     def send_agent_email(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         send_email_request: SendEmailRequest,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -958,10 +957,10 @@ class EmailApi:
 
         Send an email from an agent/workflow. Creates a route key if not provided, sends via Resend, and returns routing info. Resend configuration is fetched from the project's integration settings.  **Required permissions:** `workflow:run`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param send_email_request: (required)
         :type send_email_request: SendEmailRequest
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -985,8 +984,8 @@ class EmailApi:
         """ # noqa: E501
 
         _param = self._send_agent_email_serialize(
-            send_email_request=send_email_request,
             x_api_version=x_api_version,
+            send_email_request=send_email_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1012,8 +1011,8 @@ class EmailApi:
     @validate_call
     def send_agent_email_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         send_email_request: SendEmailRequest,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1031,10 +1030,10 @@ class EmailApi:
 
         Send an email from an agent/workflow. Creates a route key if not provided, sends via Resend, and returns routing info. Resend configuration is fetched from the project's integration settings.  **Required permissions:** `workflow:run`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param send_email_request: (required)
         :type send_email_request: SendEmailRequest
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1058,8 +1057,8 @@ class EmailApi:
         """ # noqa: E501
 
         _param = self._send_agent_email_serialize(
-            send_email_request=send_email_request,
             x_api_version=x_api_version,
+            send_email_request=send_email_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1085,8 +1084,8 @@ class EmailApi:
     @validate_call
     def send_agent_email_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         send_email_request: SendEmailRequest,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1104,10 +1103,10 @@ class EmailApi:
 
         Send an email from an agent/workflow. Creates a route key if not provided, sends via Resend, and returns routing info. Resend configuration is fetched from the project's integration settings.  **Required permissions:** `workflow:run`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param send_email_request: (required)
         :type send_email_request: SendEmailRequest
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1131,8 +1130,8 @@ class EmailApi:
         """ # noqa: E501
 
         _param = self._send_agent_email_serialize(
-            send_email_request=send_email_request,
             x_api_version=x_api_version,
+            send_email_request=send_email_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1153,8 +1152,8 @@ class EmailApi:
 
     def _send_agent_email_serialize(
         self,
-        send_email_request,
         x_api_version,
+        send_email_request,
         _request_auth,
         _content_type,
         _headers,
@@ -1236,8 +1235,8 @@ class EmailApi:
     def update_email_route(
         self,
         key: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_email_route_request: UpdateEmailRouteRequest,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1257,10 +1256,10 @@ class EmailApi:
 
         :param key: (required)
         :type key: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param update_email_route_request: (required)
         :type update_email_route_request: UpdateEmailRouteRequest
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1285,8 +1284,8 @@ class EmailApi:
 
         _param = self._update_email_route_serialize(
             key=key,
-            update_email_route_request=update_email_route_request,
             x_api_version=x_api_version,
+            update_email_route_request=update_email_route_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1313,8 +1312,8 @@ class EmailApi:
     def update_email_route_with_http_info(
         self,
         key: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_email_route_request: UpdateEmailRouteRequest,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1334,10 +1333,10 @@ class EmailApi:
 
         :param key: (required)
         :type key: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param update_email_route_request: (required)
         :type update_email_route_request: UpdateEmailRouteRequest
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1362,8 +1361,8 @@ class EmailApi:
 
         _param = self._update_email_route_serialize(
             key=key,
-            update_email_route_request=update_email_route_request,
             x_api_version=x_api_version,
+            update_email_route_request=update_email_route_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1390,8 +1389,8 @@ class EmailApi:
     def update_email_route_without_preload_content(
         self,
         key: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_email_route_request: UpdateEmailRouteRequest,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1411,10 +1410,10 @@ class EmailApi:
 
         :param key: (required)
         :type key: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param update_email_route_request: (required)
         :type update_email_route_request: UpdateEmailRouteRequest
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1439,8 +1438,8 @@ class EmailApi:
 
         _param = self._update_email_route_serialize(
             key=key,
-            update_email_route_request=update_email_route_request,
             x_api_version=x_api_version,
+            update_email_route_request=update_email_route_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1462,8 +1461,8 @@ class EmailApi:
     def _update_email_route_serialize(
         self,
         key,
-        update_email_route_request,
         x_api_version,
+        update_email_route_request,
         _request_auth,
         _content_type,
         _headers,

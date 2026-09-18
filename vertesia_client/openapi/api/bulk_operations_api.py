@@ -15,8 +15,7 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import Field, StrictStr
-from typing import Optional
+from pydantic import Field, field_validator
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.bulk_operation_payload import BulkOperationPayload
 from vertesia_client.openapi.models.bulk_operation_response import BulkOperationResponse
@@ -42,8 +41,8 @@ class BulkOperationsApi:
     @validate_call
     def run_bulk_content_operation(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         bulk_operation_payload: BulkOperationPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -61,10 +60,10 @@ class BulkOperationsApi:
 
         Runs a bulk create, update, delete, or change-type operation across multiple content objects.  **Required permissions:** `content:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param bulk_operation_payload: (required)
         :type bulk_operation_payload: BulkOperationPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -88,8 +87,8 @@ class BulkOperationsApi:
         """ # noqa: E501
 
         _param = self._run_bulk_content_operation_serialize(
-            bulk_operation_payload=bulk_operation_payload,
             x_api_version=x_api_version,
+            bulk_operation_payload=bulk_operation_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -115,8 +114,8 @@ class BulkOperationsApi:
     @validate_call
     def run_bulk_content_operation_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         bulk_operation_payload: BulkOperationPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -134,10 +133,10 @@ class BulkOperationsApi:
 
         Runs a bulk create, update, delete, or change-type operation across multiple content objects.  **Required permissions:** `content:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param bulk_operation_payload: (required)
         :type bulk_operation_payload: BulkOperationPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -161,8 +160,8 @@ class BulkOperationsApi:
         """ # noqa: E501
 
         _param = self._run_bulk_content_operation_serialize(
-            bulk_operation_payload=bulk_operation_payload,
             x_api_version=x_api_version,
+            bulk_operation_payload=bulk_operation_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -188,8 +187,8 @@ class BulkOperationsApi:
     @validate_call
     def run_bulk_content_operation_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         bulk_operation_payload: BulkOperationPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -207,10 +206,10 @@ class BulkOperationsApi:
 
         Runs a bulk create, update, delete, or change-type operation across multiple content objects.  **Required permissions:** `content:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param bulk_operation_payload: (required)
         :type bulk_operation_payload: BulkOperationPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -234,8 +233,8 @@ class BulkOperationsApi:
         """ # noqa: E501
 
         _param = self._run_bulk_content_operation_serialize(
-            bulk_operation_payload=bulk_operation_payload,
             x_api_version=x_api_version,
+            bulk_operation_payload=bulk_operation_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -256,8 +255,8 @@ class BulkOperationsApi:
 
     def _run_bulk_content_operation_serialize(
         self,
-        bulk_operation_payload,
         x_api_version,
+        bulk_operation_payload,
         _request_auth,
         _content_type,
         _headers,

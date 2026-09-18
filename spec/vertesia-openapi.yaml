@@ -28861,11 +28861,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /projects/{projectId}:
@@ -29023,11 +29025,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /projects/{projectId}/configuration:
@@ -29091,11 +29095,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /projects/{projectId}/integrations/{integrationId}:
@@ -29216,11 +29222,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /projects/{projectId}/integrations:
@@ -29274,11 +29282,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /projects/{projectId}/plugins:
@@ -29389,11 +29399,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /projects/{projectId}/tools:
@@ -29447,11 +29459,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /projects/{projectId}/tools/{toolName}:
@@ -29510,11 +29524,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /projects/{projectId}/app-types:
@@ -29573,11 +29589,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /projects/{projectId}/app-types/{typeId}:
@@ -29636,11 +29654,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /projects/{projectId}/app-templates:
@@ -29699,11 +29719,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /projects/{projectId}/app-templates/{templateId}:
@@ -29762,11 +29784,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /projects/{projectId}/app-processes:
@@ -29825,11 +29849,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /projects/{projectId}/app-processes/{processId}:
@@ -29888,11 +29914,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /projects/{projectId}/app-views:
@@ -29952,11 +29980,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /projects/{projectId}/app-views/{viewId}:
@@ -30015,11 +30045,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /projects/{projectId}/composite-app:
@@ -30132,11 +30164,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /environments:
@@ -30252,11 +30286,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /environments/{envId}:
@@ -30424,11 +30460,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /environments/{envId}/config:
@@ -30495,11 +30533,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /environments/{envId}/models:
@@ -30602,11 +30642,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /environments/{envId}/models/enabled:
@@ -30673,11 +30715,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /environments/{envId}/models/enabled/{modelId}:
@@ -30743,11 +30787,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /environments/{envId}/trainable-models:
@@ -30807,11 +30853,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /environments/{envId}/embeddings:
@@ -30877,11 +30925,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /environments/{envId}/analytics:
@@ -30947,11 +30997,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /interactions/catalog/sys:
@@ -31009,11 +31061,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /interactions/catalog/apps/{appName}:
@@ -31078,11 +31132,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /interactions/catalog/apps:
@@ -31142,11 +31198,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /interactions/catalog/stored:
@@ -31216,11 +31274,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /interactions/catalog/resolve/{interactionId}:
@@ -31278,11 +31338,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /interactions:
@@ -31468,11 +31530,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /interactions/tags:
@@ -31605,11 +31669,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /interactions/endpoints:
@@ -31670,11 +31736,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /interactions/versions/{name}:
@@ -31732,11 +31800,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /interactions/resolve/{nameOrId}:
@@ -31817,11 +31887,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /interactions/facets:
@@ -31882,11 +31954,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /interactions/names:
@@ -31939,11 +32013,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /interactions/export:
@@ -32004,11 +32080,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /interactions/improve:
@@ -32069,11 +32147,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /interactions/{interactionId}:
@@ -32248,11 +32328,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /interactions/{interactionId}/versions:
@@ -32312,11 +32394,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /interactions/{interactionId}/forks:
@@ -32374,11 +32458,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /interactions/{interactionId}/publish:
@@ -32446,11 +32532,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /interactions/{interactionId}/fork:
@@ -32516,11 +32604,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /interactions/{interactionId}/generate-interaction:
@@ -32586,11 +32676,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /interactions/{interactionId}/generate-test-data:
@@ -32656,11 +32748,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /interactions/{interactionId}/suggest-prompt-improvements:
@@ -32726,11 +32820,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /interactions/{interactionId}/execute:
@@ -32797,11 +32893,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /prompts:
@@ -32971,11 +33069,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /prompts/facets:
@@ -33036,11 +33136,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /prompts/{ptId}:
@@ -33207,11 +33309,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /prompts/{ptId}/versions:
@@ -33271,11 +33375,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /prompts/{ptId}/interactions:
@@ -33335,11 +33441,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /prompts/{ptId}/fork:
@@ -33405,11 +33513,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /prompts/{ptId}/forks:
@@ -33463,11 +33573,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /prompts/{ptId}/render:
@@ -33533,11 +33645,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /runs:
@@ -33846,11 +33960,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /runs/search:
@@ -33936,11 +34052,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /runs/{runId}:
@@ -34201,11 +34319,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /runs/{runId}/stream:
@@ -34217,7 +34337,9 @@ paths:
       description: >-
         Opens a Server-Sent Events stream for an existing run. The stream is
         authenticated with the `access_token` query parameter and emits
-        execution chunks and completion events as the run progresses.
+        execution chunks and completion events as the run progresses. No
+        x-api-version header is required because native EventSource cannot send
+        custom headers.
 
 
         **Required permissions:** `run:read`
@@ -34282,16 +34404,6 @@ paths:
         file: ../../apps/studio-server/src/api/runs.ts
         className: InteractionRunResource
         methodName: stream
-    parameters:
-      - name: x-api-version
-        in: header
-        required: false
-        schema:
-          type: string
-          example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
-          current stable API shape.
-        x-vertesia-global-header: true
   /quota/standing:
     get:
       operationId: GetQuotaStanding
@@ -34345,11 +34457,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /quota/tier:
@@ -34407,11 +34521,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /account:
@@ -34519,11 +34635,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /account/projects:
@@ -34577,11 +34695,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /account/invites:
@@ -34686,11 +34806,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /account/invites/project:
@@ -34743,11 +34865,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /account/invites/account:
@@ -34800,11 +34924,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /account/invites/{tokenId}:
@@ -34913,11 +35039,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /account/onboarding:
@@ -34970,11 +35098,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /account/members:
@@ -35028,11 +35158,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /account/stripe-billing-status:
@@ -35089,11 +35221,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /account/apikeys:
@@ -35184,11 +35318,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /account/apikeys/{keyId}:
@@ -35333,11 +35469,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /apikeys:
@@ -35454,11 +35592,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /apikeys/{keyId}:
@@ -35631,11 +35771,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /apikeys/{keyId}/token:
@@ -35693,11 +35835,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /audit-trail:
@@ -35851,11 +35995,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /audit-trail/aggregate:
@@ -35919,11 +36065,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /execute:
@@ -35984,11 +36132,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /execute/async:
@@ -36049,11 +36199,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /execute/{endpoint}:
@@ -36129,11 +36281,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /execute/rate-limit/request:
@@ -36194,11 +36348,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /iam/delegation-grants:
@@ -36297,11 +36453,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /iam/delegation-grants/me:
@@ -36349,11 +36507,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /iam/delegation-grants/{grantId}:
@@ -36408,11 +36568,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /iam/delegation-grants/{grantId}/revoke:
@@ -36465,11 +36627,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /iam/aces/project:
@@ -36524,11 +36688,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /iam/aces:
@@ -36641,11 +36807,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /iam/aces/{aceId}:
@@ -36820,11 +36988,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /iam/roles:
@@ -36874,11 +37044,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /iam/roles/system:
@@ -36930,11 +37102,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /iam/groups:
@@ -37075,11 +37249,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /iam/groups/sync-members:
@@ -37133,11 +37309,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /iam/groups/{groupId}:
@@ -37202,11 +37380,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
     get:
@@ -37317,11 +37497,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /iam/groups/{groupId}/members/{userId}:
@@ -37442,11 +37624,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /iam/users/identity:
@@ -37506,11 +37690,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /iam/users/{userId}:
@@ -37685,11 +37871,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /apps/{id}/repo/tree:
@@ -37751,11 +37939,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /apps/{id}/repo/file:
@@ -37816,11 +38006,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /apps/{id}/repo/documents:
@@ -37881,11 +38073,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /apps/{id}/repo/commits:
@@ -37946,11 +38140,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /apps/{id}/repo/refs:
@@ -38011,11 +38207,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /apps/{id}/development-tasks:
@@ -38075,11 +38273,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /apps/{id}/development-tasks/{taskId}:
@@ -38144,11 +38344,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /apps/{id}/development-tasks/{taskId}/runs:
@@ -38220,11 +38422,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /apps/{id}/repo/branches:
@@ -38284,11 +38488,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /apps/{id}/collections/{collectionId}/api-key:
@@ -38477,11 +38683,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /apps/{id}/package:
@@ -38571,11 +38779,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /apps/versions:
@@ -38680,11 +38890,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /apps/versions/{id}:
@@ -38790,11 +39002,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /apps/versions/{id}/promote:
@@ -38849,11 +39063,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /apps/versions/{id}/rebuild:
@@ -38913,11 +39129,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /apps/scaffolds:
@@ -38979,11 +39197,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /apps/scaffolds/{workflowId}/{runId}/progress:
@@ -39046,11 +39266,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /apps/{id}/builds:
@@ -39117,11 +39339,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /apps/{id}/builds/{workflowId}/{runId}/progress:
@@ -39189,11 +39413,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /apps:
@@ -39312,11 +39538,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /apps/{id}:
@@ -39436,11 +39664,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /apps/install:
@@ -39501,11 +39731,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /apps/install/{installId}:
@@ -39565,11 +39797,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /apps/installations/name/{name}:
@@ -39623,11 +39857,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /apps/installations/projects:
@@ -39691,11 +39927,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /apps/installations/{installId}/tools:
@@ -39753,11 +39991,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /apps/installations/{installId}/package:
@@ -39846,11 +40086,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /apps/{id}/inspect:
@@ -39912,11 +40154,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /apps/installations:
@@ -39989,11 +40233,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /apps/installations/all:
@@ -40048,11 +40294,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /apps/installations/refs:
@@ -40101,11 +40349,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /apps/installations/projects/{appName}:
@@ -40159,11 +40409,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /apps/installations/settings/{app_id}:
@@ -40227,11 +40479,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /apps/installations/{installId}/tool-allowlist:
@@ -40295,11 +40549,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /apps/validate-url:
@@ -40354,11 +40610,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /remote-mcp-connections/metadata/{app_install_id}/{collection_id}:
@@ -40418,11 +40676,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /remote-mcp-connections/authorize/{app_install_id}/{collection_id}:
@@ -40483,11 +40743,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /remote-mcp-connections/status/{app_install_id}:
@@ -40542,11 +40804,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /remote-mcp-connections/status/{app_install_id}/{collection_id}:
@@ -40606,11 +40870,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /remote-mcp-connections/connect/{app_install_id}/{collection_id}:
@@ -40670,11 +40936,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /remote-mcp-connections/token:
@@ -40731,11 +40999,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /remote-mcp-connections/disconnect/{app_install_id}/{collection_id}:
@@ -40795,11 +41065,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /oauth-clients:
@@ -40906,11 +41178,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /oauth-clients/scope-metadata:
@@ -40965,11 +41239,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /oauth-clients/{client_id}:
@@ -41135,11 +41411,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /oauth-grants:
@@ -41265,11 +41543,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /oauth-grants/{grant_id}:
@@ -41392,11 +41672,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /oauth-grants/revoke:
@@ -41460,11 +41742,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /oauth-providers:
@@ -41569,11 +41853,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /oauth-providers/{id}:
@@ -41741,11 +42027,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /oauth-providers/{id}/authorize:
@@ -41799,11 +42087,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /oauth-providers/exchange:
@@ -41859,11 +42149,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /oauth-providers/{id}/status:
@@ -41918,11 +42210,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /oauth-providers/{id}/connect:
@@ -41982,11 +42276,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /oauth-providers/{id}/token:
@@ -42040,11 +42336,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /oauth-providers/{id}/disconnect:
@@ -42098,11 +42396,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /secrets:
@@ -42242,11 +42542,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /secrets/{secretId}:
@@ -42459,11 +42761,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /secrets/{secretId}/actions/fill-browser:
@@ -42534,11 +42838,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /tools:
@@ -42671,11 +42977,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /tools/{toolName}:
@@ -42740,11 +43048,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /tools/validate:
@@ -42805,11 +43115,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /views:
@@ -42933,11 +43245,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /views/{viewId}:
@@ -43105,11 +43419,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /operations:
@@ -43170,11 +43486,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /agents:
@@ -43490,11 +43808,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /agents/search:
@@ -43688,11 +44008,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /agents/{agentRunId}:
@@ -43804,11 +44126,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /agents/{agentRunId}/restart:
@@ -43874,11 +44198,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /agents/{agentRunId}/fork:
@@ -43938,11 +44264,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /agents/{agentRunId}/signal/{signalName}:
@@ -44011,11 +44339,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /agents/{agentRunId}/query/{queryName}:
@@ -44079,11 +44409,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /agents/{agentRunId}/updates:
@@ -44206,11 +44538,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /agents/{agentRunId}/stream:
@@ -44278,16 +44612,6 @@ paths:
         file: ../../apps/zeno-server/src/api/agents.ts
         className: AgentsResource
         methodName: stream
-    parameters:
-      - name: x-api-version
-        in: header
-        required: false
-        schema:
-          type: string
-          example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
-          current stable API shape.
-        x-vertesia-global-header: true
   /agents/{agentRunId}/artifacts:
     get:
       operationId: ListAgentRunArtifacts
@@ -44355,11 +44679,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /agents/{agentRunId}/artifact-content/{path}:
@@ -44491,11 +44817,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /agents/{agentRunId}/artifacts/{path}:
@@ -44642,11 +44970,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /agents/{agentRunId}/details:
@@ -44727,11 +45057,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /agents/{agentRunId}/children:
@@ -44792,11 +45124,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /agents/{agentRunId}/context:
@@ -44857,11 +45191,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /agents/{agentRunId}/history:
@@ -44922,11 +45258,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /agents/{agentRunId}/advance:
@@ -44994,11 +45332,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /agents/{agentRunId}/retry-node:
@@ -45064,11 +45404,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /agents/{agentRunId}/answer-task:
@@ -45130,11 +45472,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /agents/{agentRunId}/children/{childWorkflowId}/details:
@@ -45220,11 +45564,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /agents/{agentRunId}/details/stream:
@@ -45282,16 +45628,6 @@ paths:
         file: ../../apps/zeno-server/src/api/agents.ts
         className: AgentsResource
         methodName: streamRunDetails
-    parameters:
-      - name: x-api-version
-        in: header
-        required: false
-        schema:
-          type: string
-          example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
-          current stable API shape.
-        x-vertesia-global-header: true
   /agents/{agentRunId}/feedback:
     post:
       operationId: RecordAgentRunFeedback
@@ -45359,11 +45695,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /cost/analytics:
@@ -45424,11 +45762,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /cost/model-prices:
@@ -45501,11 +45841,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /cost/run-price:
@@ -45566,11 +45908,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /cost/export:
@@ -45669,11 +46013,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /embeddings/{type}/status:
@@ -45733,11 +46079,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /embeddings/{type}/enable:
@@ -45803,11 +46151,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /embeddings/{type}/disable:
@@ -45867,11 +46217,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /embeddings/{type}/recalculate:
@@ -45931,11 +46283,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /indexing/status:
@@ -45990,11 +46344,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /indexing/enable-indexing:
@@ -46047,11 +46403,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /indexing/disable-indexing:
@@ -46104,11 +46462,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /indexing/enable-queries:
@@ -46164,11 +46524,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /indexing/disable-queries:
@@ -46224,11 +46586,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /indexing/reindex:
@@ -46289,11 +46653,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /indexing/agent-runs/reindex:
@@ -46355,11 +46721,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /indexing/analyze-drift:
@@ -46414,11 +46782,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /indexing/drift-analysis:
@@ -46473,11 +46843,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /query:
@@ -46545,11 +46917,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /processes:
@@ -46693,11 +47067,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /processes/{processId}/versions:
@@ -46758,11 +47134,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /processes/{processId}/test-suites:
@@ -46877,11 +47255,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /processes/{processId}/test-suites/{suiteId}:
@@ -47000,11 +47380,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /processes/{processId}/test-runs:
@@ -47126,11 +47508,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /processes/{processId}/test-runs/{runId}:
@@ -47191,11 +47575,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /processes/{processId}/test-runs/{runId}/cancel:
@@ -47255,11 +47641,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /processes/{processId}:
@@ -47433,11 +47821,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /processes/{processId}/publish:
@@ -47506,11 +47896,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /processes/{processId}/revert:
@@ -47580,11 +47972,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /process-test-runs:
@@ -47647,11 +48041,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /process-test-runs/{runId}:
@@ -47769,11 +48165,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /process-test-runs/{runId}/cancel:
@@ -47828,11 +48226,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /tasks:
@@ -47975,11 +48375,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /tasks/{taskId}:
@@ -48143,11 +48545,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /tasks/{taskId}/complete:
@@ -48210,11 +48614,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /tasks/{taskId}/cancel:
@@ -48272,11 +48678,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /objects/upload-url:
@@ -48335,11 +48743,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /objects/download-url:
@@ -48399,11 +48809,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /objects/facets:
@@ -48462,11 +48874,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /objects/export/bulk:
@@ -48527,11 +48941,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /objects/export/bulk/artifacts:
@@ -48586,11 +49002,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /objects/export/bulk/artifacts/{exportId}:
@@ -48650,11 +49068,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /objects/export/bulk/artifacts/{exportId}/{role}/download-url:
@@ -48719,11 +49139,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /objects/export/bulk/{workflowId}/{runId}:
@@ -48783,11 +49205,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /objects:
@@ -48872,11 +49296,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /objects/search:
@@ -48937,11 +49363,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /objects/count:
@@ -49000,11 +49428,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /objects/export:
@@ -49065,11 +49495,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /objects/{objectId}:
@@ -49295,11 +49727,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /objects/{objectId}/text:
@@ -49357,11 +49791,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /objects/{objectId}/content-source:
@@ -49421,11 +49857,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /objects/{objectId}/renditions/{format}:
@@ -49523,11 +49961,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /objects/{objectId}/workflow-runs:
@@ -49585,11 +50025,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /objects/{objectId}/embeddings/{type}:
@@ -49658,11 +50100,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /objects/{objectId}/revisions:
@@ -49720,11 +50164,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /objects/{objectId}/collections:
@@ -49784,11 +50230,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /objects/{objectId}/analyze:
@@ -49854,11 +50302,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /objects/{objectId}/analyze/status:
@@ -49918,11 +50368,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /objects/{objectId}/analyze/grounded:
@@ -49988,11 +50440,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /objects/{objectId}/analyze/grounded/assistant:
@@ -50060,11 +50514,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /objects/{objectId}/analyze/grounded/result:
@@ -50124,11 +50580,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /types/catalog:
@@ -50208,11 +50666,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /types/catalog/sys:
@@ -50290,11 +50750,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /types/catalog/apps:
@@ -50372,11 +50834,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /types/catalog/stored:
@@ -50454,11 +50918,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /types/catalog/resolve/{typeId}:
@@ -50518,11 +50984,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /types:
@@ -50659,11 +51127,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /types/name/{name}:
@@ -50721,11 +51191,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /types/{typeId}:
@@ -50897,11 +51369,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /workflows/rules:
@@ -51009,11 +51483,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /workflows/definitions:
@@ -51121,11 +51597,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /workflows/runs:
@@ -51187,11 +51665,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /workflows/runs/{workflowId}/{runId}/updates:
@@ -51260,11 +51740,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /workflows/runs/{workflowId}/{runId}/stream:
@@ -51335,16 +51817,6 @@ paths:
         file: ../../apps/zeno-server/src/api/workflows.ts
         className: WorkflowsResource
         methodName: streamRunUpdates
-    parameters:
-      - name: x-api-version
-        in: header
-        required: false
-        schema:
-          type: string
-          example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
-          current stable API shape.
-        x-vertesia-global-header: true
   /workflows/runs/{runId}/updates:
     post:
       operationId: PostWorkflowRunUpdate
@@ -51406,11 +51878,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /workflows/runs/{workflowId}/{runId}:
@@ -51495,11 +51969,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /workflows/runs/{workflowId}/{runId}/signal/{signalName}:
@@ -51573,11 +52049,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /workflows/runs/{workflowId}/{runId}/query/{queryName}:
@@ -51646,11 +52124,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /workflows/runs/{workflowId}/{runId}/actions/{action}:
@@ -51718,11 +52198,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /workflows/execute/{workflowName}:
@@ -51788,11 +52270,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /workflows/rules/{ruleId}:
@@ -51961,11 +52445,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /workflows/rules/{ruleId}/execute:
@@ -52031,11 +52517,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /workflows/rules/{ruleId}/runs:
@@ -52094,11 +52582,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /workflows/definitions/{workflowId}:
@@ -52267,11 +52757,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /files/metadata:
@@ -52385,11 +52877,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /files/bucket:
@@ -52444,11 +52938,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /files/upload-url:
@@ -52507,11 +53003,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /files/bulk-upload-urls:
@@ -52570,11 +53068,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /files/list:
@@ -52632,11 +53132,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /files/download-url:
@@ -52698,11 +53200,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /files/copy:
@@ -52761,11 +53265,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /files/{path}:
@@ -52825,11 +53331,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /email/send:
@@ -52894,11 +53402,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /email/routes:
@@ -52967,11 +53477,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /email/routes/{key}:
@@ -53087,11 +53599,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /email/routes/{key}/forward:
@@ -53159,11 +53673,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /events/stream:
@@ -53301,16 +53817,6 @@ paths:
         file: ../../apps/zeno-server/src/api/events.ts
         className: EventsResource
         methodName: streamDeliveries
-    parameters:
-      - name: x-api-version
-        in: header
-        required: false
-        schema:
-          type: string
-          example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
-          current stable API shape.
-        x-vertesia-global-header: true
   /events/deliveries/search:
     post:
       operationId: SearchEventDeliveries
@@ -53369,11 +53875,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /events/deliveries/queue-summary:
@@ -53434,11 +53942,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /events/deliveries/cancel:
@@ -53500,11 +54010,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /events/subscriptions:
@@ -53611,11 +54123,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /events/subscriptions/{subscriptionId}:
@@ -53787,11 +54301,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /events/channels:
@@ -53895,11 +54411,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /events/channels/{channelId}:
@@ -54062,11 +54580,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /pending-asks:
@@ -54173,11 +54693,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /pending-asks/{askId}/resolve:
@@ -54241,11 +54763,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /pending-asks/{askId}:
@@ -54304,11 +54828,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /commands/migrations:
@@ -54358,11 +54884,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /commands/migrations/{name}:
@@ -54424,11 +54952,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /collections/search:
@@ -54489,11 +55019,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /collections/facets:
@@ -54554,11 +55086,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /collections:
@@ -54619,11 +55153,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /collections/{collectionId}:
@@ -54788,11 +55324,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /collections/{collectionId}/members:
@@ -54927,11 +55465,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /collections/{collectionId}/facets:
@@ -54995,11 +55535,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /collections/{collectionId}/search:
@@ -55065,11 +55607,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /collections/{collectionId}/permissions:
@@ -55134,11 +55678,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /collections/{collectionId}/propagate-shared-props:
@@ -55199,11 +55745,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /collections/{collectionId}/propagate-permissions:
@@ -55262,11 +55810,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /collections/{collectionId}/children/search:
@@ -55330,11 +55880,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /collections/{collectionId}/children:
@@ -55398,11 +55950,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /data:
@@ -55507,11 +56061,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /data/{storeId}:
@@ -55620,11 +56176,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /data/{storeId}/schema:
@@ -55743,11 +56301,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /data/{storeId}/schema/history:
@@ -55805,11 +56365,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /data/{storeId}/tables:
@@ -55924,11 +56486,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /data/{storeId}/tables/{tableName}:
@@ -56114,11 +56678,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /data/{storeId}/import:
@@ -56191,11 +56757,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /data/{storeId}/import/{importId}:
@@ -56258,11 +56826,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /data/{storeId}/versions:
@@ -56387,11 +56957,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /data/{storeId}/versions/{versionId}/rollback:
@@ -56454,11 +57026,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /data/{storeId}/versions/{versionId}/query:
@@ -56527,11 +57101,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /data/{storeId}/download:
@@ -56591,11 +57167,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /data/{storeId}/query:
@@ -56659,11 +57237,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /data/{storeId}/mutate:
@@ -56729,11 +57309,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /data/{storeId}/query/validate:
@@ -56797,11 +57379,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /data/{storeId}/query/batch:
@@ -56865,11 +57449,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /data/{storeId}/dashboards:
@@ -56988,11 +57574,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /data/{storeId}/dashboards/{dashboardId}:
@@ -57175,11 +57763,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /data/{storeId}/dashboards/bulk/archive:
@@ -57243,11 +57833,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /data/{storeId}/dashboards/bulk/delete:
@@ -57311,11 +57903,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /data/{storeId}/dashboards/{dashboardId}/versions:
@@ -57440,11 +58034,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /data/{storeId}/dashboards/{dashboardId}/versions/{versionId}:
@@ -57512,11 +58108,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /data/{storeId}/dashboards/{dashboardId}/versions/{versionId}/promote:
@@ -57590,11 +58188,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /data/{storeId}/dashboards/{dashboardId}/versioning:
@@ -57663,11 +58263,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /rendering/jobs:
@@ -57728,11 +58330,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /rendering/jobs/status:
@@ -57797,11 +58401,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /view-executions/{viewId}/execute:
@@ -57869,11 +58475,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /view-executions/preview:
@@ -57937,11 +58545,13 @@ paths:
     parameters:
       - name: x-api-version
         in: header
-        required: false
+        required: true
         schema:
           type: string
+          minLength: 1
+          pattern: \S
           example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
+        description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
   /token/issue:

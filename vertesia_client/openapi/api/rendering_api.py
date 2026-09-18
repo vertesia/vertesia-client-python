@@ -15,8 +15,7 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import Field, StrictStr
-from typing import Optional
+from pydantic import Field, StrictStr, field_validator
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.render_markdown_payload import RenderMarkdownPayload
 from vertesia_client.openapi.models.render_markdown_start_response import RenderMarkdownStartResponse
@@ -43,8 +42,8 @@ class RenderingApi:
     @validate_call
     def create_rendering_job(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         render_markdown_payload: RenderMarkdownPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -62,10 +61,10 @@ class RenderingApi:
 
         Starts an asynchronous markdown rendering workflow for PDF or DOCX output.  **Required permissions:** `content:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param render_markdown_payload: (required)
         :type render_markdown_payload: RenderMarkdownPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -89,8 +88,8 @@ class RenderingApi:
         """ # noqa: E501
 
         _param = self._create_rendering_job_serialize(
-            render_markdown_payload=render_markdown_payload,
             x_api_version=x_api_version,
+            render_markdown_payload=render_markdown_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -116,8 +115,8 @@ class RenderingApi:
     @validate_call
     def create_rendering_job_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         render_markdown_payload: RenderMarkdownPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -135,10 +134,10 @@ class RenderingApi:
 
         Starts an asynchronous markdown rendering workflow for PDF or DOCX output.  **Required permissions:** `content:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param render_markdown_payload: (required)
         :type render_markdown_payload: RenderMarkdownPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -162,8 +161,8 @@ class RenderingApi:
         """ # noqa: E501
 
         _param = self._create_rendering_job_serialize(
-            render_markdown_payload=render_markdown_payload,
             x_api_version=x_api_version,
+            render_markdown_payload=render_markdown_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -189,8 +188,8 @@ class RenderingApi:
     @validate_call
     def create_rendering_job_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         render_markdown_payload: RenderMarkdownPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -208,10 +207,10 @@ class RenderingApi:
 
         Starts an asynchronous markdown rendering workflow for PDF or DOCX output.  **Required permissions:** `content:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param render_markdown_payload: (required)
         :type render_markdown_payload: RenderMarkdownPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -235,8 +234,8 @@ class RenderingApi:
         """ # noqa: E501
 
         _param = self._create_rendering_job_serialize(
-            render_markdown_payload=render_markdown_payload,
             x_api_version=x_api_version,
+            render_markdown_payload=render_markdown_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -257,8 +256,8 @@ class RenderingApi:
 
     def _create_rendering_job_serialize(
         self,
-        render_markdown_payload,
         x_api_version,
+        render_markdown_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -341,7 +340,7 @@ class RenderingApi:
         self,
         workflow_id: StrictStr,
         workflow_run_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -363,7 +362,7 @@ class RenderingApi:
         :type workflow_id: str
         :param workflow_run_id: (required)
         :type workflow_run_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -418,7 +417,7 @@ class RenderingApi:
         self,
         workflow_id: StrictStr,
         workflow_run_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -440,7 +439,7 @@ class RenderingApi:
         :type workflow_id: str
         :param workflow_run_id: (required)
         :type workflow_run_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -495,7 +494,7 @@ class RenderingApi:
         self,
         workflow_id: StrictStr,
         workflow_run_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -517,7 +516,7 @@ class RenderingApi:
         :type workflow_id: str
         :param workflow_run_id: (required)
         :type workflow_run_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request

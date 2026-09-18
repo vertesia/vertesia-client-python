@@ -45,12 +45,12 @@ class CostsApi:
     @validate_call
     def export_cost_data(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         var_from: Annotated[Optional[StrictStr], Field(description="Start time (ISO string or epoch ms)")] = None,
         to: Annotated[Optional[StrictStr], Field(description="End time (ISO string or epoch ms)")] = None,
         scope: Annotated[Optional[StrictStr], Field(description="Scope: 'project' (default, current project) or 'org' (all projects in account)")] = None,
         project_id: Annotated[Optional[StrictStr], Field(description="Filter by project ID (optional, for org scope)")] = None,
         workflow_id: Annotated[Optional[StrictStr], Field(description="Filter by workflow / agent run ID")] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -68,6 +68,8 @@ class CostsApi:
 
         Exports raw billable audit events as CSV for the selected time range and scope.  **Required permissions:** `billing:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param var_from: Start time (ISO string or epoch ms)
         :type var_from: GetModelPricesFromParameter
         :param to: End time (ISO string or epoch ms)
@@ -78,8 +80,6 @@ class CostsApi:
         :type project_id: str
         :param workflow_id: Filter by workflow / agent run ID
         :type workflow_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -103,12 +103,12 @@ class CostsApi:
         """ # noqa: E501
 
         _param = self._export_cost_data_serialize(
+            x_api_version=x_api_version,
             var_from=var_from,
             to=to,
             scope=scope,
             project_id=project_id,
             workflow_id=workflow_id,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -134,12 +134,12 @@ class CostsApi:
     @validate_call
     def export_cost_data_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         var_from: Annotated[Optional[StrictStr], Field(description="Start time (ISO string or epoch ms)")] = None,
         to: Annotated[Optional[StrictStr], Field(description="End time (ISO string or epoch ms)")] = None,
         scope: Annotated[Optional[StrictStr], Field(description="Scope: 'project' (default, current project) or 'org' (all projects in account)")] = None,
         project_id: Annotated[Optional[StrictStr], Field(description="Filter by project ID (optional, for org scope)")] = None,
         workflow_id: Annotated[Optional[StrictStr], Field(description="Filter by workflow / agent run ID")] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -157,6 +157,8 @@ class CostsApi:
 
         Exports raw billable audit events as CSV for the selected time range and scope.  **Required permissions:** `billing:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param var_from: Start time (ISO string or epoch ms)
         :type var_from: GetModelPricesFromParameter
         :param to: End time (ISO string or epoch ms)
@@ -167,8 +169,6 @@ class CostsApi:
         :type project_id: str
         :param workflow_id: Filter by workflow / agent run ID
         :type workflow_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -192,12 +192,12 @@ class CostsApi:
         """ # noqa: E501
 
         _param = self._export_cost_data_serialize(
+            x_api_version=x_api_version,
             var_from=var_from,
             to=to,
             scope=scope,
             project_id=project_id,
             workflow_id=workflow_id,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -223,12 +223,12 @@ class CostsApi:
     @validate_call
     def export_cost_data_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         var_from: Annotated[Optional[StrictStr], Field(description="Start time (ISO string or epoch ms)")] = None,
         to: Annotated[Optional[StrictStr], Field(description="End time (ISO string or epoch ms)")] = None,
         scope: Annotated[Optional[StrictStr], Field(description="Scope: 'project' (default, current project) or 'org' (all projects in account)")] = None,
         project_id: Annotated[Optional[StrictStr], Field(description="Filter by project ID (optional, for org scope)")] = None,
         workflow_id: Annotated[Optional[StrictStr], Field(description="Filter by workflow / agent run ID")] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -246,6 +246,8 @@ class CostsApi:
 
         Exports raw billable audit events as CSV for the selected time range and scope.  **Required permissions:** `billing:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param var_from: Start time (ISO string or epoch ms)
         :type var_from: GetModelPricesFromParameter
         :param to: End time (ISO string or epoch ms)
@@ -256,8 +258,6 @@ class CostsApi:
         :type project_id: str
         :param workflow_id: Filter by workflow / agent run ID
         :type workflow_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -281,12 +281,12 @@ class CostsApi:
         """ # noqa: E501
 
         _param = self._export_cost_data_serialize(
+            x_api_version=x_api_version,
             var_from=var_from,
             to=to,
             scope=scope,
             project_id=project_id,
             workflow_id=workflow_id,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -307,12 +307,12 @@ class CostsApi:
 
     def _export_cost_data_serialize(
         self,
+        x_api_version,
         var_from,
         to,
         scope,
         project_id,
         workflow_id,
-        x_api_version,
         _request_auth,
         _content_type,
         _headers,
@@ -399,8 +399,8 @@ class CostsApi:
     @validate_call
     def get_cost_analytics(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         cost_analytics_query: CostAnalyticsQuery,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -418,10 +418,10 @@ class CostsApi:
 
         Computes aggregated cost analytics for the current project or, in org scope, across the account.  **Required permissions:** `billing:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param cost_analytics_query: (required)
         :type cost_analytics_query: CostAnalyticsQuery
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -445,8 +445,8 @@ class CostsApi:
         """ # noqa: E501
 
         _param = self._get_cost_analytics_serialize(
-            cost_analytics_query=cost_analytics_query,
             x_api_version=x_api_version,
+            cost_analytics_query=cost_analytics_query,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -472,8 +472,8 @@ class CostsApi:
     @validate_call
     def get_cost_analytics_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         cost_analytics_query: CostAnalyticsQuery,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -491,10 +491,10 @@ class CostsApi:
 
         Computes aggregated cost analytics for the current project or, in org scope, across the account.  **Required permissions:** `billing:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param cost_analytics_query: (required)
         :type cost_analytics_query: CostAnalyticsQuery
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -518,8 +518,8 @@ class CostsApi:
         """ # noqa: E501
 
         _param = self._get_cost_analytics_serialize(
-            cost_analytics_query=cost_analytics_query,
             x_api_version=x_api_version,
+            cost_analytics_query=cost_analytics_query,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -545,8 +545,8 @@ class CostsApi:
     @validate_call
     def get_cost_analytics_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         cost_analytics_query: CostAnalyticsQuery,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -564,10 +564,10 @@ class CostsApi:
 
         Computes aggregated cost analytics for the current project or, in org scope, across the account.  **Required permissions:** `billing:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param cost_analytics_query: (required)
         :type cost_analytics_query: CostAnalyticsQuery
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -591,8 +591,8 @@ class CostsApi:
         """ # noqa: E501
 
         _param = self._get_cost_analytics_serialize(
-            cost_analytics_query=cost_analytics_query,
             x_api_version=x_api_version,
+            cost_analytics_query=cost_analytics_query,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -613,8 +613,8 @@ class CostsApi:
 
     def _get_cost_analytics_serialize(
         self,
-        cost_analytics_query,
         x_api_version,
+        cost_analytics_query,
         _request_auth,
         _content_type,
         _headers,
@@ -695,9 +695,9 @@ class CostsApi:
     @validate_call
     def get_model_prices(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         var_from: Annotated[Optional[StrictStr], Field(description="Start time (ISO string or epoch ms)")] = None,
         to: Annotated[Optional[StrictStr], Field(description="End time (ISO string or epoch ms)")] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -715,12 +715,12 @@ class CostsApi:
 
         Lists model pricing for a selected time range, including list prices and the effective pricing window used for billing.  **Required permissions:** `billing:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param var_from: Start time (ISO string or epoch ms)
         :type var_from: GetModelPricesFromParameter
         :param to: End time (ISO string or epoch ms)
         :type to: GetModelPricesToParameter
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -744,9 +744,9 @@ class CostsApi:
         """ # noqa: E501
 
         _param = self._get_model_prices_serialize(
+            x_api_version=x_api_version,
             var_from=var_from,
             to=to,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -772,9 +772,9 @@ class CostsApi:
     @validate_call
     def get_model_prices_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         var_from: Annotated[Optional[StrictStr], Field(description="Start time (ISO string or epoch ms)")] = None,
         to: Annotated[Optional[StrictStr], Field(description="End time (ISO string or epoch ms)")] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -792,12 +792,12 @@ class CostsApi:
 
         Lists model pricing for a selected time range, including list prices and the effective pricing window used for billing.  **Required permissions:** `billing:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param var_from: Start time (ISO string or epoch ms)
         :type var_from: GetModelPricesFromParameter
         :param to: End time (ISO string or epoch ms)
         :type to: GetModelPricesToParameter
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -821,9 +821,9 @@ class CostsApi:
         """ # noqa: E501
 
         _param = self._get_model_prices_serialize(
+            x_api_version=x_api_version,
             var_from=var_from,
             to=to,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -849,9 +849,9 @@ class CostsApi:
     @validate_call
     def get_model_prices_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         var_from: Annotated[Optional[StrictStr], Field(description="Start time (ISO string or epoch ms)")] = None,
         to: Annotated[Optional[StrictStr], Field(description="End time (ISO string or epoch ms)")] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -869,12 +869,12 @@ class CostsApi:
 
         Lists model pricing for a selected time range, including list prices and the effective pricing window used for billing.  **Required permissions:** `billing:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param var_from: Start time (ISO string or epoch ms)
         :type var_from: GetModelPricesFromParameter
         :param to: End time (ISO string or epoch ms)
         :type to: GetModelPricesToParameter
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -898,9 +898,9 @@ class CostsApi:
         """ # noqa: E501
 
         _param = self._get_model_prices_serialize(
+            x_api_version=x_api_version,
             var_from=var_from,
             to=to,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -921,9 +921,9 @@ class CostsApi:
 
     def _get_model_prices_serialize(
         self,
+        x_api_version,
         var_from,
         to,
-        x_api_version,
         _request_auth,
         _content_type,
         _headers,
@@ -997,8 +997,8 @@ class CostsApi:
     @validate_call
     def get_run_price(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         cost_run_price_query: CostRunPriceQuery,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1016,10 +1016,10 @@ class CostsApi:
 
         Computes the billed cost for a single interaction run or agent run from audit metering rows.  **Required permissions:** `billing:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param cost_run_price_query: (required)
         :type cost_run_price_query: CostRunPriceQuery
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1043,8 +1043,8 @@ class CostsApi:
         """ # noqa: E501
 
         _param = self._get_run_price_serialize(
-            cost_run_price_query=cost_run_price_query,
             x_api_version=x_api_version,
+            cost_run_price_query=cost_run_price_query,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1070,8 +1070,8 @@ class CostsApi:
     @validate_call
     def get_run_price_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         cost_run_price_query: CostRunPriceQuery,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1089,10 +1089,10 @@ class CostsApi:
 
         Computes the billed cost for a single interaction run or agent run from audit metering rows.  **Required permissions:** `billing:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param cost_run_price_query: (required)
         :type cost_run_price_query: CostRunPriceQuery
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1116,8 +1116,8 @@ class CostsApi:
         """ # noqa: E501
 
         _param = self._get_run_price_serialize(
-            cost_run_price_query=cost_run_price_query,
             x_api_version=x_api_version,
+            cost_run_price_query=cost_run_price_query,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1143,8 +1143,8 @@ class CostsApi:
     @validate_call
     def get_run_price_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         cost_run_price_query: CostRunPriceQuery,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1162,10 +1162,10 @@ class CostsApi:
 
         Computes the billed cost for a single interaction run or agent run from audit metering rows.  **Required permissions:** `billing:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param cost_run_price_query: (required)
         :type cost_run_price_query: CostRunPriceQuery
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1189,8 +1189,8 @@ class CostsApi:
         """ # noqa: E501
 
         _param = self._get_run_price_serialize(
-            cost_run_price_query=cost_run_price_query,
             x_api_version=x_api_version,
+            cost_run_price_query=cost_run_price_query,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1211,8 +1211,8 @@ class CostsApi:
 
     def _get_run_price_serialize(
         self,
-        cost_run_price_query,
         x_api_version,
+        cost_run_price_query,
         _request_auth,
         _content_type,
         _headers,

@@ -46,8 +46,8 @@ class EventsApi:
     @validate_call
     def cancel_event_delivery_intents(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         cancel_event_delivery_intents_payload: CancelEventDeliveryIntentsPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -65,10 +65,10 @@ class EventsApi:
 
         Cancels matching pending and retrying delivery intents for the current project and deployment environment through a server-side watermark. Active deliveries and later events are not changed.  **Required permissions:** `workflow:run`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param cancel_event_delivery_intents_payload: (required)
         :type cancel_event_delivery_intents_payload: CancelEventDeliveryIntentsPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -92,8 +92,8 @@ class EventsApi:
         """ # noqa: E501
 
         _param = self._cancel_event_delivery_intents_serialize(
-            cancel_event_delivery_intents_payload=cancel_event_delivery_intents_payload,
             x_api_version=x_api_version,
+            cancel_event_delivery_intents_payload=cancel_event_delivery_intents_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -119,8 +119,8 @@ class EventsApi:
     @validate_call
     def cancel_event_delivery_intents_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         cancel_event_delivery_intents_payload: CancelEventDeliveryIntentsPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -138,10 +138,10 @@ class EventsApi:
 
         Cancels matching pending and retrying delivery intents for the current project and deployment environment through a server-side watermark. Active deliveries and later events are not changed.  **Required permissions:** `workflow:run`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param cancel_event_delivery_intents_payload: (required)
         :type cancel_event_delivery_intents_payload: CancelEventDeliveryIntentsPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -165,8 +165,8 @@ class EventsApi:
         """ # noqa: E501
 
         _param = self._cancel_event_delivery_intents_serialize(
-            cancel_event_delivery_intents_payload=cancel_event_delivery_intents_payload,
             x_api_version=x_api_version,
+            cancel_event_delivery_intents_payload=cancel_event_delivery_intents_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -192,8 +192,8 @@ class EventsApi:
     @validate_call
     def cancel_event_delivery_intents_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         cancel_event_delivery_intents_payload: CancelEventDeliveryIntentsPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -211,10 +211,10 @@ class EventsApi:
 
         Cancels matching pending and retrying delivery intents for the current project and deployment environment through a server-side watermark. Active deliveries and later events are not changed.  **Required permissions:** `workflow:run`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param cancel_event_delivery_intents_payload: (required)
         :type cancel_event_delivery_intents_payload: CancelEventDeliveryIntentsPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -238,8 +238,8 @@ class EventsApi:
         """ # noqa: E501
 
         _param = self._cancel_event_delivery_intents_serialize(
-            cancel_event_delivery_intents_payload=cancel_event_delivery_intents_payload,
             x_api_version=x_api_version,
+            cancel_event_delivery_intents_payload=cancel_event_delivery_intents_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -260,8 +260,8 @@ class EventsApi:
 
     def _cancel_event_delivery_intents_serialize(
         self,
-        cancel_event_delivery_intents_payload,
         x_api_version,
+        cancel_event_delivery_intents_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -342,8 +342,8 @@ class EventsApi:
     @validate_call
     def get_event_delivery_queue_summary(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         event_delivery_queue_summary_payload: EventDeliveryQueueSummaryPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -361,10 +361,10 @@ class EventsApi:
 
         Summarizes outbox routing backlog and non-succeeded delivery intents for the current project, grouped by subscription and delivery target type.  **Required permissions:** `workflow:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param event_delivery_queue_summary_payload: (required)
         :type event_delivery_queue_summary_payload: EventDeliveryQueueSummaryPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -388,8 +388,8 @@ class EventsApi:
         """ # noqa: E501
 
         _param = self._get_event_delivery_queue_summary_serialize(
-            event_delivery_queue_summary_payload=event_delivery_queue_summary_payload,
             x_api_version=x_api_version,
+            event_delivery_queue_summary_payload=event_delivery_queue_summary_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -415,8 +415,8 @@ class EventsApi:
     @validate_call
     def get_event_delivery_queue_summary_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         event_delivery_queue_summary_payload: EventDeliveryQueueSummaryPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -434,10 +434,10 @@ class EventsApi:
 
         Summarizes outbox routing backlog and non-succeeded delivery intents for the current project, grouped by subscription and delivery target type.  **Required permissions:** `workflow:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param event_delivery_queue_summary_payload: (required)
         :type event_delivery_queue_summary_payload: EventDeliveryQueueSummaryPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -461,8 +461,8 @@ class EventsApi:
         """ # noqa: E501
 
         _param = self._get_event_delivery_queue_summary_serialize(
-            event_delivery_queue_summary_payload=event_delivery_queue_summary_payload,
             x_api_version=x_api_version,
+            event_delivery_queue_summary_payload=event_delivery_queue_summary_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -488,8 +488,8 @@ class EventsApi:
     @validate_call
     def get_event_delivery_queue_summary_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         event_delivery_queue_summary_payload: EventDeliveryQueueSummaryPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -507,10 +507,10 @@ class EventsApi:
 
         Summarizes outbox routing backlog and non-succeeded delivery intents for the current project, grouped by subscription and delivery target type.  **Required permissions:** `workflow:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param event_delivery_queue_summary_payload: (required)
         :type event_delivery_queue_summary_payload: EventDeliveryQueueSummaryPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -534,8 +534,8 @@ class EventsApi:
         """ # noqa: E501
 
         _param = self._get_event_delivery_queue_summary_serialize(
-            event_delivery_queue_summary_payload=event_delivery_queue_summary_payload,
             x_api_version=x_api_version,
+            event_delivery_queue_summary_payload=event_delivery_queue_summary_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -556,8 +556,8 @@ class EventsApi:
 
     def _get_event_delivery_queue_summary_serialize(
         self,
-        event_delivery_queue_summary_payload,
         x_api_version,
+        event_delivery_queue_summary_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -638,8 +638,8 @@ class EventsApi:
     @validate_call
     def search_event_deliveries(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         list_event_deliveries_payload: ListEventDeliveriesPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -657,10 +657,10 @@ class EventsApi:
 
         Lists recent event outbox rows with their materialized delivery intents for the current project.  **Required permissions:** `workflow:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param list_event_deliveries_payload: (required)
         :type list_event_deliveries_payload: ListEventDeliveriesPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -684,8 +684,8 @@ class EventsApi:
         """ # noqa: E501
 
         _param = self._search_event_deliveries_serialize(
-            list_event_deliveries_payload=list_event_deliveries_payload,
             x_api_version=x_api_version,
+            list_event_deliveries_payload=list_event_deliveries_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -711,8 +711,8 @@ class EventsApi:
     @validate_call
     def search_event_deliveries_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         list_event_deliveries_payload: ListEventDeliveriesPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -730,10 +730,10 @@ class EventsApi:
 
         Lists recent event outbox rows with their materialized delivery intents for the current project.  **Required permissions:** `workflow:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param list_event_deliveries_payload: (required)
         :type list_event_deliveries_payload: ListEventDeliveriesPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -757,8 +757,8 @@ class EventsApi:
         """ # noqa: E501
 
         _param = self._search_event_deliveries_serialize(
-            list_event_deliveries_payload=list_event_deliveries_payload,
             x_api_version=x_api_version,
+            list_event_deliveries_payload=list_event_deliveries_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -784,8 +784,8 @@ class EventsApi:
     @validate_call
     def search_event_deliveries_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         list_event_deliveries_payload: ListEventDeliveriesPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -803,10 +803,10 @@ class EventsApi:
 
         Lists recent event outbox rows with their materialized delivery intents for the current project.  **Required permissions:** `workflow:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param list_event_deliveries_payload: (required)
         :type list_event_deliveries_payload: ListEventDeliveriesPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -830,8 +830,8 @@ class EventsApi:
         """ # noqa: E501
 
         _param = self._search_event_deliveries_serialize(
-            list_event_deliveries_payload=list_event_deliveries_payload,
             x_api_version=x_api_version,
+            list_event_deliveries_payload=list_event_deliveries_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -852,8 +852,8 @@ class EventsApi:
 
     def _search_event_deliveries_serialize(
         self,
-        list_event_deliveries_payload,
         x_api_version,
+        list_event_deliveries_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -945,7 +945,6 @@ class EventsApi:
         since_created_at: Optional[StrictStr] = None,
         include_event: Optional[StrictBool] = None,
         poll_interval_ms: Optional[Union[StrictFloat, StrictInt]] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -985,8 +984,6 @@ class EventsApi:
         :type include_event: bool
         :param poll_interval_ms:
         :type poll_interval_ms: float
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1021,7 +1018,6 @@ class EventsApi:
             since_created_at=since_created_at,
             include_event=include_event,
             poll_interval_ms=poll_interval_ms,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1058,7 +1054,6 @@ class EventsApi:
         since_created_at: Optional[StrictStr] = None,
         include_event: Optional[StrictBool] = None,
         poll_interval_ms: Optional[Union[StrictFloat, StrictInt]] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1098,8 +1093,6 @@ class EventsApi:
         :type include_event: bool
         :param poll_interval_ms:
         :type poll_interval_ms: float
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1134,7 +1127,6 @@ class EventsApi:
             since_created_at=since_created_at,
             include_event=include_event,
             poll_interval_ms=poll_interval_ms,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1171,7 +1163,6 @@ class EventsApi:
         since_created_at: Optional[StrictStr] = None,
         include_event: Optional[StrictBool] = None,
         poll_interval_ms: Optional[Union[StrictFloat, StrictInt]] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1211,8 +1202,6 @@ class EventsApi:
         :type include_event: bool
         :param poll_interval_ms:
         :type poll_interval_ms: float
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1247,7 +1236,6 @@ class EventsApi:
             since_created_at=since_created_at,
             include_event=include_event,
             poll_interval_ms=poll_interval_ms,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1279,7 +1267,6 @@ class EventsApi:
         since_created_at,
         include_event,
         poll_interval_ms,
-        x_api_version,
         _request_auth,
         _content_type,
         _headers,
@@ -1351,8 +1338,6 @@ class EventsApi:
             _query_params.append(('poll_interval_ms', poll_interval_ms))
             
         # process the header parameters
-        if x_api_version is not None:
-            _header_params['x-api-version'] = x_api_version
         # process the form parameters
         # process the body parameter
 

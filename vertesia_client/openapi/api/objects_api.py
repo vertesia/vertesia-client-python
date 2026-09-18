@@ -76,8 +76,8 @@ class ObjectsApi:
     def analyze_object_document(
         self,
         object_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         document_prep_options: DocumentPrepOptions,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -97,10 +97,10 @@ class ObjectsApi:
 
         :param object_id: (required)
         :type object_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param document_prep_options: (required)
         :type document_prep_options: DocumentPrepOptions
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -125,8 +125,8 @@ class ObjectsApi:
 
         _param = self._analyze_object_document_serialize(
             object_id=object_id,
-            document_prep_options=document_prep_options,
             x_api_version=x_api_version,
+            document_prep_options=document_prep_options,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -153,8 +153,8 @@ class ObjectsApi:
     def analyze_object_document_with_http_info(
         self,
         object_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         document_prep_options: DocumentPrepOptions,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -174,10 +174,10 @@ class ObjectsApi:
 
         :param object_id: (required)
         :type object_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param document_prep_options: (required)
         :type document_prep_options: DocumentPrepOptions
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -202,8 +202,8 @@ class ObjectsApi:
 
         _param = self._analyze_object_document_serialize(
             object_id=object_id,
-            document_prep_options=document_prep_options,
             x_api_version=x_api_version,
+            document_prep_options=document_prep_options,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -230,8 +230,8 @@ class ObjectsApi:
     def analyze_object_document_without_preload_content(
         self,
         object_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         document_prep_options: DocumentPrepOptions,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -251,10 +251,10 @@ class ObjectsApi:
 
         :param object_id: (required)
         :type object_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param document_prep_options: (required)
         :type document_prep_options: DocumentPrepOptions
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -279,8 +279,8 @@ class ObjectsApi:
 
         _param = self._analyze_object_document_serialize(
             object_id=object_id,
-            document_prep_options=document_prep_options,
             x_api_version=x_api_version,
+            document_prep_options=document_prep_options,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -302,8 +302,8 @@ class ObjectsApi:
     def _analyze_object_document_serialize(
         self,
         object_id,
-        document_prep_options,
         x_api_version,
+        document_prep_options,
         _request_auth,
         _content_type,
         _headers,
@@ -386,8 +386,8 @@ class ObjectsApi:
     @validate_call
     def compute_objects_facets(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         compute_object_facet_payload: ComputeObjectFacetPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -405,10 +405,10 @@ class ObjectsApi:
 
         Computes aggregation buckets and counts for object filters.  **Required permissions:** `content:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param compute_object_facet_payload: (required)
         :type compute_object_facet_payload: ComputeObjectFacetPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -432,8 +432,8 @@ class ObjectsApi:
         """ # noqa: E501
 
         _param = self._compute_objects_facets_serialize(
-            compute_object_facet_payload=compute_object_facet_payload,
             x_api_version=x_api_version,
+            compute_object_facet_payload=compute_object_facet_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -459,8 +459,8 @@ class ObjectsApi:
     @validate_call
     def compute_objects_facets_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         compute_object_facet_payload: ComputeObjectFacetPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -478,10 +478,10 @@ class ObjectsApi:
 
         Computes aggregation buckets and counts for object filters.  **Required permissions:** `content:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param compute_object_facet_payload: (required)
         :type compute_object_facet_payload: ComputeObjectFacetPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -505,8 +505,8 @@ class ObjectsApi:
         """ # noqa: E501
 
         _param = self._compute_objects_facets_serialize(
-            compute_object_facet_payload=compute_object_facet_payload,
             x_api_version=x_api_version,
+            compute_object_facet_payload=compute_object_facet_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -532,8 +532,8 @@ class ObjectsApi:
     @validate_call
     def compute_objects_facets_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         compute_object_facet_payload: ComputeObjectFacetPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -551,10 +551,10 @@ class ObjectsApi:
 
         Computes aggregation buckets and counts for object filters.  **Required permissions:** `content:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param compute_object_facet_payload: (required)
         :type compute_object_facet_payload: ComputeObjectFacetPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -578,8 +578,8 @@ class ObjectsApi:
         """ # noqa: E501
 
         _param = self._compute_objects_facets_serialize(
-            compute_object_facet_payload=compute_object_facet_payload,
             x_api_version=x_api_version,
+            compute_object_facet_payload=compute_object_facet_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -600,8 +600,8 @@ class ObjectsApi:
 
     def _compute_objects_facets_serialize(
         self,
-        compute_object_facet_payload,
         x_api_version,
+        compute_object_facet_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -682,8 +682,8 @@ class ObjectsApi:
     @validate_call
     def count_objects(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         find_payload: FindPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -701,10 +701,10 @@ class ObjectsApi:
 
         Counts content objects matching the supplied filter query.  **Required permissions:** `content:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param find_payload: (required)
         :type find_payload: FindPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -728,8 +728,8 @@ class ObjectsApi:
         """ # noqa: E501
 
         _param = self._count_objects_serialize(
-            find_payload=find_payload,
             x_api_version=x_api_version,
+            find_payload=find_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -755,8 +755,8 @@ class ObjectsApi:
     @validate_call
     def count_objects_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         find_payload: FindPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -774,10 +774,10 @@ class ObjectsApi:
 
         Counts content objects matching the supplied filter query.  **Required permissions:** `content:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param find_payload: (required)
         :type find_payload: FindPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -801,8 +801,8 @@ class ObjectsApi:
         """ # noqa: E501
 
         _param = self._count_objects_serialize(
-            find_payload=find_payload,
             x_api_version=x_api_version,
+            find_payload=find_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -828,8 +828,8 @@ class ObjectsApi:
     @validate_call
     def count_objects_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         find_payload: FindPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -847,10 +847,10 @@ class ObjectsApi:
 
         Counts content objects matching the supplied filter query.  **Required permissions:** `content:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param find_payload: (required)
         :type find_payload: FindPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -874,8 +874,8 @@ class ObjectsApi:
         """ # noqa: E501
 
         _param = self._count_objects_serialize(
-            find_payload=find_payload,
             x_api_version=x_api_version,
+            find_payload=find_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -896,8 +896,8 @@ class ObjectsApi:
 
     def _count_objects_serialize(
         self,
-        find_payload,
         x_api_version,
+        find_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -978,12 +978,12 @@ class ObjectsApi:
     @validate_call
     def create_object(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_content_object_payload: CreateContentObjectPayload,
         collection_id: Optional[StrictStr] = None,
         processing_priority: Optional[StrictStr] = None,
         x_collection_id: Optional[StrictStr] = None,
         x_processing_priority: Optional[ContentObjectProcessingPriority] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1001,6 +1001,8 @@ class ObjectsApi:
 
         Creates a content object, optionally attaches it to a collection, indexes it, and starts matching workflows.  **Required permissions:** `content:write`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param create_content_object_payload: (required)
         :type create_content_object_payload: CreateContentObjectPayload
         :param collection_id:
@@ -1011,8 +1013,6 @@ class ObjectsApi:
         :type x_collection_id: str
         :param x_processing_priority:
         :type x_processing_priority: ContentObjectProcessingPriority
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1036,12 +1036,12 @@ class ObjectsApi:
         """ # noqa: E501
 
         _param = self._create_object_serialize(
+            x_api_version=x_api_version,
             create_content_object_payload=create_content_object_payload,
             collection_id=collection_id,
             processing_priority=processing_priority,
             x_collection_id=x_collection_id,
             x_processing_priority=x_processing_priority,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1067,12 +1067,12 @@ class ObjectsApi:
     @validate_call
     def create_object_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_content_object_payload: CreateContentObjectPayload,
         collection_id: Optional[StrictStr] = None,
         processing_priority: Optional[StrictStr] = None,
         x_collection_id: Optional[StrictStr] = None,
         x_processing_priority: Optional[ContentObjectProcessingPriority] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1090,6 +1090,8 @@ class ObjectsApi:
 
         Creates a content object, optionally attaches it to a collection, indexes it, and starts matching workflows.  **Required permissions:** `content:write`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param create_content_object_payload: (required)
         :type create_content_object_payload: CreateContentObjectPayload
         :param collection_id:
@@ -1100,8 +1102,6 @@ class ObjectsApi:
         :type x_collection_id: str
         :param x_processing_priority:
         :type x_processing_priority: ContentObjectProcessingPriority
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1125,12 +1125,12 @@ class ObjectsApi:
         """ # noqa: E501
 
         _param = self._create_object_serialize(
+            x_api_version=x_api_version,
             create_content_object_payload=create_content_object_payload,
             collection_id=collection_id,
             processing_priority=processing_priority,
             x_collection_id=x_collection_id,
             x_processing_priority=x_processing_priority,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1156,12 +1156,12 @@ class ObjectsApi:
     @validate_call
     def create_object_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_content_object_payload: CreateContentObjectPayload,
         collection_id: Optional[StrictStr] = None,
         processing_priority: Optional[StrictStr] = None,
         x_collection_id: Optional[StrictStr] = None,
         x_processing_priority: Optional[ContentObjectProcessingPriority] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1179,6 +1179,8 @@ class ObjectsApi:
 
         Creates a content object, optionally attaches it to a collection, indexes it, and starts matching workflows.  **Required permissions:** `content:write`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param create_content_object_payload: (required)
         :type create_content_object_payload: CreateContentObjectPayload
         :param collection_id:
@@ -1189,8 +1191,6 @@ class ObjectsApi:
         :type x_collection_id: str
         :param x_processing_priority:
         :type x_processing_priority: ContentObjectProcessingPriority
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1214,12 +1214,12 @@ class ObjectsApi:
         """ # noqa: E501
 
         _param = self._create_object_serialize(
+            x_api_version=x_api_version,
             create_content_object_payload=create_content_object_payload,
             collection_id=collection_id,
             processing_priority=processing_priority,
             x_collection_id=x_collection_id,
             x_processing_priority=x_processing_priority,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1240,12 +1240,12 @@ class ObjectsApi:
 
     def _create_object_serialize(
         self,
+        x_api_version,
         create_content_object_payload,
         collection_id,
         processing_priority,
         x_collection_id,
         x_processing_priority,
-        x_api_version,
         _request_auth,
         _content_type,
         _headers,
@@ -1338,8 +1338,8 @@ class ObjectsApi:
     @validate_call
     def create_object_download_url(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         get_file_url_payload: GetFileUrlPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1357,10 +1357,10 @@ class ObjectsApi:
 
         Creates a signed download URL for a stored file.  **Required permissions:** `content:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param get_file_url_payload: (required)
         :type get_file_url_payload: GetFileUrlPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1384,8 +1384,8 @@ class ObjectsApi:
         """ # noqa: E501
 
         _param = self._create_object_download_url_serialize(
-            get_file_url_payload=get_file_url_payload,
             x_api_version=x_api_version,
+            get_file_url_payload=get_file_url_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1411,8 +1411,8 @@ class ObjectsApi:
     @validate_call
     def create_object_download_url_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         get_file_url_payload: GetFileUrlPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1430,10 +1430,10 @@ class ObjectsApi:
 
         Creates a signed download URL for a stored file.  **Required permissions:** `content:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param get_file_url_payload: (required)
         :type get_file_url_payload: GetFileUrlPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1457,8 +1457,8 @@ class ObjectsApi:
         """ # noqa: E501
 
         _param = self._create_object_download_url_serialize(
-            get_file_url_payload=get_file_url_payload,
             x_api_version=x_api_version,
+            get_file_url_payload=get_file_url_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1484,8 +1484,8 @@ class ObjectsApi:
     @validate_call
     def create_object_download_url_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         get_file_url_payload: GetFileUrlPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1503,10 +1503,10 @@ class ObjectsApi:
 
         Creates a signed download URL for a stored file.  **Required permissions:** `content:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param get_file_url_payload: (required)
         :type get_file_url_payload: GetFileUrlPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1530,8 +1530,8 @@ class ObjectsApi:
         """ # noqa: E501
 
         _param = self._create_object_download_url_serialize(
-            get_file_url_payload=get_file_url_payload,
             x_api_version=x_api_version,
+            get_file_url_payload=get_file_url_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1552,8 +1552,8 @@ class ObjectsApi:
 
     def _create_object_download_url_serialize(
         self,
-        get_file_url_payload,
         x_api_version,
+        get_file_url_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -1634,8 +1634,8 @@ class ObjectsApi:
     @validate_call
     def create_object_upload_url(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         get_upload_url_payload: GetUploadUrlPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1653,10 +1653,10 @@ class ObjectsApi:
 
         Deprecated convenience endpoint for creating a signed upload URL.  **Required permissions:** `content:write`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param get_upload_url_payload: (required)
         :type get_upload_url_payload: GetUploadUrlPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1680,8 +1680,8 @@ class ObjectsApi:
         """ # noqa: E501
 
         _param = self._create_object_upload_url_serialize(
-            get_upload_url_payload=get_upload_url_payload,
             x_api_version=x_api_version,
+            get_upload_url_payload=get_upload_url_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1707,8 +1707,8 @@ class ObjectsApi:
     @validate_call
     def create_object_upload_url_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         get_upload_url_payload: GetUploadUrlPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1726,10 +1726,10 @@ class ObjectsApi:
 
         Deprecated convenience endpoint for creating a signed upload URL.  **Required permissions:** `content:write`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param get_upload_url_payload: (required)
         :type get_upload_url_payload: GetUploadUrlPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1753,8 +1753,8 @@ class ObjectsApi:
         """ # noqa: E501
 
         _param = self._create_object_upload_url_serialize(
-            get_upload_url_payload=get_upload_url_payload,
             x_api_version=x_api_version,
+            get_upload_url_payload=get_upload_url_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1780,8 +1780,8 @@ class ObjectsApi:
     @validate_call
     def create_object_upload_url_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         get_upload_url_payload: GetUploadUrlPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1799,10 +1799,10 @@ class ObjectsApi:
 
         Deprecated convenience endpoint for creating a signed upload URL.  **Required permissions:** `content:write`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param get_upload_url_payload: (required)
         :type get_upload_url_payload: GetUploadUrlPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1826,8 +1826,8 @@ class ObjectsApi:
         """ # noqa: E501
 
         _param = self._create_object_upload_url_serialize(
-            get_upload_url_payload=get_upload_url_payload,
             x_api_version=x_api_version,
+            get_upload_url_payload=get_upload_url_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1848,8 +1848,8 @@ class ObjectsApi:
 
     def _create_object_upload_url_serialize(
         self,
-        get_upload_url_payload,
         x_api_version,
+        get_upload_url_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -1931,7 +1931,7 @@ class ObjectsApi:
     def delete_content_object_export(
         self,
         export_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1951,7 +1951,7 @@ class ObjectsApi:
 
         :param export_id: (required)
         :type export_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2004,7 +2004,7 @@ class ObjectsApi:
     def delete_content_object_export_with_http_info(
         self,
         export_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2024,7 +2024,7 @@ class ObjectsApi:
 
         :param export_id: (required)
         :type export_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2077,7 +2077,7 @@ class ObjectsApi:
     def delete_content_object_export_without_preload_content(
         self,
         export_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2097,7 +2097,7 @@ class ObjectsApi:
 
         :param export_id: (required)
         :type export_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2214,7 +2214,7 @@ class ObjectsApi:
     def delete_object(
         self,
         object_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2234,7 +2234,7 @@ class ObjectsApi:
 
         :param object_id: (required)
         :type object_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2287,7 +2287,7 @@ class ObjectsApi:
     def delete_object_with_http_info(
         self,
         object_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2307,7 +2307,7 @@ class ObjectsApi:
 
         :param object_id: (required)
         :type object_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2360,7 +2360,7 @@ class ObjectsApi:
     def delete_object_without_preload_content(
         self,
         object_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2380,7 +2380,7 @@ class ObjectsApi:
 
         :param object_id: (required)
         :type object_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2496,8 +2496,8 @@ class ObjectsApi:
     @validate_call
     def export_object_properties(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         export_properties_payload: ExportPropertiesPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2515,10 +2515,10 @@ class ObjectsApi:
 
         Exports object properties as CSV or JSON for specific object IDs or a matching object query.  **Required permissions:** `content:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param export_properties_payload: (required)
         :type export_properties_payload: ExportPropertiesPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2542,8 +2542,8 @@ class ObjectsApi:
         """ # noqa: E501
 
         _param = self._export_object_properties_serialize(
-            export_properties_payload=export_properties_payload,
             x_api_version=x_api_version,
+            export_properties_payload=export_properties_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2569,8 +2569,8 @@ class ObjectsApi:
     @validate_call
     def export_object_properties_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         export_properties_payload: ExportPropertiesPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2588,10 +2588,10 @@ class ObjectsApi:
 
         Exports object properties as CSV or JSON for specific object IDs or a matching object query.  **Required permissions:** `content:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param export_properties_payload: (required)
         :type export_properties_payload: ExportPropertiesPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2615,8 +2615,8 @@ class ObjectsApi:
         """ # noqa: E501
 
         _param = self._export_object_properties_serialize(
-            export_properties_payload=export_properties_payload,
             x_api_version=x_api_version,
+            export_properties_payload=export_properties_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2642,8 +2642,8 @@ class ObjectsApi:
     @validate_call
     def export_object_properties_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         export_properties_payload: ExportPropertiesPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2661,10 +2661,10 @@ class ObjectsApi:
 
         Exports object properties as CSV or JSON for specific object IDs or a matching object query.  **Required permissions:** `content:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param export_properties_payload: (required)
         :type export_properties_payload: ExportPropertiesPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2688,8 +2688,8 @@ class ObjectsApi:
         """ # noqa: E501
 
         _param = self._export_object_properties_serialize(
-            export_properties_payload=export_properties_payload,
             x_api_version=x_api_version,
+            export_properties_payload=export_properties_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2710,8 +2710,8 @@ class ObjectsApi:
 
     def _export_object_properties_serialize(
         self,
-        export_properties_payload,
         x_api_version,
+        export_properties_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -2794,7 +2794,7 @@ class ObjectsApi:
         self,
         export_id: StrictStr,
         role: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2816,7 +2816,7 @@ class ObjectsApi:
         :type export_id: str
         :param role: (required)
         :type role: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2871,7 +2871,7 @@ class ObjectsApi:
         self,
         export_id: StrictStr,
         role: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2893,7 +2893,7 @@ class ObjectsApi:
         :type export_id: str
         :param role: (required)
         :type role: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2948,7 +2948,7 @@ class ObjectsApi:
         self,
         export_id: StrictStr,
         role: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2970,7 +2970,7 @@ class ObjectsApi:
         :type export_id: str
         :param role: (required)
         :type role: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -3092,7 +3092,7 @@ class ObjectsApi:
         self,
         workflow_id: StrictStr,
         run_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3114,7 +3114,7 @@ class ObjectsApi:
         :type workflow_id: str
         :param run_id: (required)
         :type run_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -3169,7 +3169,7 @@ class ObjectsApi:
         self,
         workflow_id: StrictStr,
         run_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3191,7 +3191,7 @@ class ObjectsApi:
         :type workflow_id: str
         :param run_id: (required)
         :type run_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -3246,7 +3246,7 @@ class ObjectsApi:
         self,
         workflow_id: StrictStr,
         run_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3268,7 +3268,7 @@ class ObjectsApi:
         :type workflow_id: str
         :param run_id: (required)
         :type run_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -3389,7 +3389,7 @@ class ObjectsApi:
     def get_object(
         self,
         object_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3409,7 +3409,7 @@ class ObjectsApi:
 
         :param object_id: (required)
         :type object_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -3462,7 +3462,7 @@ class ObjectsApi:
     def get_object_with_http_info(
         self,
         object_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3482,7 +3482,7 @@ class ObjectsApi:
 
         :param object_id: (required)
         :type object_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -3535,7 +3535,7 @@ class ObjectsApi:
     def get_object_without_preload_content(
         self,
         object_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3555,7 +3555,7 @@ class ObjectsApi:
 
         :param object_id: (required)
         :type object_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -3672,7 +3672,7 @@ class ObjectsApi:
     def get_object_content_source(
         self,
         object_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3692,7 +3692,7 @@ class ObjectsApi:
 
         :param object_id: (required)
         :type object_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -3745,7 +3745,7 @@ class ObjectsApi:
     def get_object_content_source_with_http_info(
         self,
         object_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3765,7 +3765,7 @@ class ObjectsApi:
 
         :param object_id: (required)
         :type object_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -3818,7 +3818,7 @@ class ObjectsApi:
     def get_object_content_source_without_preload_content(
         self,
         object_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3838,7 +3838,7 @@ class ObjectsApi:
 
         :param object_id: (required)
         :type object_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -3955,7 +3955,7 @@ class ObjectsApi:
     def get_object_document_analysis_status(
         self,
         object_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3975,7 +3975,7 @@ class ObjectsApi:
 
         :param object_id: (required)
         :type object_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -4028,7 +4028,7 @@ class ObjectsApi:
     def get_object_document_analysis_status_with_http_info(
         self,
         object_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4048,7 +4048,7 @@ class ObjectsApi:
 
         :param object_id: (required)
         :type object_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -4101,7 +4101,7 @@ class ObjectsApi:
     def get_object_document_analysis_status_without_preload_content(
         self,
         object_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4121,7 +4121,7 @@ class ObjectsApi:
 
         :param object_id: (required)
         :type object_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -4238,7 +4238,7 @@ class ObjectsApi:
     def get_object_document_grounded_extraction_result(
         self,
         object_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4258,7 +4258,7 @@ class ObjectsApi:
 
         :param object_id: (required)
         :type object_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -4311,7 +4311,7 @@ class ObjectsApi:
     def get_object_document_grounded_extraction_result_with_http_info(
         self,
         object_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4331,7 +4331,7 @@ class ObjectsApi:
 
         :param object_id: (required)
         :type object_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -4384,7 +4384,7 @@ class ObjectsApi:
     def get_object_document_grounded_extraction_result_without_preload_content(
         self,
         object_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4404,7 +4404,7 @@ class ObjectsApi:
 
         :param object_id: (required)
         :type object_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -4522,11 +4522,11 @@ class ObjectsApi:
         self,
         object_id: StrictStr,
         format: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         block_on_generation: Optional[StrictBool] = None,
         generate_if_missing: Optional[StrictBool] = None,
         max_hw: Optional[Union[StrictFloat, StrictInt]] = None,
         sign_url: Optional[StrictBool] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4548,6 +4548,8 @@ class ObjectsApi:
         :type object_id: str
         :param format: (required)
         :type format: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param block_on_generation:
         :type block_on_generation: bool
         :param generate_if_missing:
@@ -4556,8 +4558,6 @@ class ObjectsApi:
         :type max_hw: float
         :param sign_url:
         :type sign_url: bool
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4583,11 +4583,11 @@ class ObjectsApi:
         _param = self._get_object_rendition_serialize(
             object_id=object_id,
             format=format,
+            x_api_version=x_api_version,
             block_on_generation=block_on_generation,
             generate_if_missing=generate_if_missing,
             max_hw=max_hw,
             sign_url=sign_url,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4617,11 +4617,11 @@ class ObjectsApi:
         self,
         object_id: StrictStr,
         format: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         block_on_generation: Optional[StrictBool] = None,
         generate_if_missing: Optional[StrictBool] = None,
         max_hw: Optional[Union[StrictFloat, StrictInt]] = None,
         sign_url: Optional[StrictBool] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4643,6 +4643,8 @@ class ObjectsApi:
         :type object_id: str
         :param format: (required)
         :type format: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param block_on_generation:
         :type block_on_generation: bool
         :param generate_if_missing:
@@ -4651,8 +4653,6 @@ class ObjectsApi:
         :type max_hw: float
         :param sign_url:
         :type sign_url: bool
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4678,11 +4678,11 @@ class ObjectsApi:
         _param = self._get_object_rendition_serialize(
             object_id=object_id,
             format=format,
+            x_api_version=x_api_version,
             block_on_generation=block_on_generation,
             generate_if_missing=generate_if_missing,
             max_hw=max_hw,
             sign_url=sign_url,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4712,11 +4712,11 @@ class ObjectsApi:
         self,
         object_id: StrictStr,
         format: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         block_on_generation: Optional[StrictBool] = None,
         generate_if_missing: Optional[StrictBool] = None,
         max_hw: Optional[Union[StrictFloat, StrictInt]] = None,
         sign_url: Optional[StrictBool] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4738,6 +4738,8 @@ class ObjectsApi:
         :type object_id: str
         :param format: (required)
         :type format: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param block_on_generation:
         :type block_on_generation: bool
         :param generate_if_missing:
@@ -4746,8 +4748,6 @@ class ObjectsApi:
         :type max_hw: float
         :param sign_url:
         :type sign_url: bool
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4773,11 +4773,11 @@ class ObjectsApi:
         _param = self._get_object_rendition_serialize(
             object_id=object_id,
             format=format,
+            x_api_version=x_api_version,
             block_on_generation=block_on_generation,
             generate_if_missing=generate_if_missing,
             max_hw=max_hw,
             sign_url=sign_url,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4802,11 +4802,11 @@ class ObjectsApi:
         self,
         object_id,
         format,
+        x_api_version,
         block_on_generation,
         generate_if_missing,
         max_hw,
         sign_url,
-        x_api_version,
         _request_auth,
         _content_type,
         _headers,
@@ -4893,7 +4893,7 @@ class ObjectsApi:
     def get_object_text(
         self,
         object_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4913,7 +4913,7 @@ class ObjectsApi:
 
         :param object_id: (required)
         :type object_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -4966,7 +4966,7 @@ class ObjectsApi:
     def get_object_text_with_http_info(
         self,
         object_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4986,7 +4986,7 @@ class ObjectsApi:
 
         :param object_id: (required)
         :type object_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -5039,7 +5039,7 @@ class ObjectsApi:
     def get_object_text_without_preload_content(
         self,
         object_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5059,7 +5059,7 @@ class ObjectsApi:
 
         :param object_id: (required)
         :type object_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -5175,7 +5175,7 @@ class ObjectsApi:
     @validate_call
     def list_content_object_exports(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5193,7 +5193,7 @@ class ObjectsApi:
 
         Lists semi-transient content object export artifacts in the project bucket.  **Required permissions:** `content:superadmin`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -5244,7 +5244,7 @@ class ObjectsApi:
     @validate_call
     def list_content_object_exports_with_http_info(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5262,7 +5262,7 @@ class ObjectsApi:
 
         Lists semi-transient content object export artifacts in the project bucket.  **Required permissions:** `content:superadmin`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -5313,7 +5313,7 @@ class ObjectsApi:
     @validate_call
     def list_content_object_exports_without_preload_content(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5331,7 +5331,7 @@ class ObjectsApi:
 
         Lists semi-transient content object export artifacts in the project bucket.  **Required permissions:** `content:superadmin`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -5444,7 +5444,7 @@ class ObjectsApi:
     def list_object_collections(
         self,
         object_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5464,7 +5464,7 @@ class ObjectsApi:
 
         :param object_id: (required)
         :type object_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -5517,7 +5517,7 @@ class ObjectsApi:
     def list_object_collections_with_http_info(
         self,
         object_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5537,7 +5537,7 @@ class ObjectsApi:
 
         :param object_id: (required)
         :type object_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -5590,7 +5590,7 @@ class ObjectsApi:
     def list_object_collections_without_preload_content(
         self,
         object_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5610,7 +5610,7 @@ class ObjectsApi:
 
         :param object_id: (required)
         :type object_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -5727,7 +5727,7 @@ class ObjectsApi:
     def list_object_revisions(
         self,
         object_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5747,7 +5747,7 @@ class ObjectsApi:
 
         :param object_id: (required)
         :type object_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -5800,7 +5800,7 @@ class ObjectsApi:
     def list_object_revisions_with_http_info(
         self,
         object_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5820,7 +5820,7 @@ class ObjectsApi:
 
         :param object_id: (required)
         :type object_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -5873,7 +5873,7 @@ class ObjectsApi:
     def list_object_revisions_without_preload_content(
         self,
         object_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5893,7 +5893,7 @@ class ObjectsApi:
 
         :param object_id: (required)
         :type object_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -6010,7 +6010,7 @@ class ObjectsApi:
     def list_object_workflow_runs(
         self,
         object_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -6030,7 +6030,7 @@ class ObjectsApi:
 
         :param object_id: (required)
         :type object_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -6083,7 +6083,7 @@ class ObjectsApi:
     def list_object_workflow_runs_with_http_info(
         self,
         object_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -6103,7 +6103,7 @@ class ObjectsApi:
 
         :param object_id: (required)
         :type object_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -6156,7 +6156,7 @@ class ObjectsApi:
     def list_object_workflow_runs_without_preload_content(
         self,
         object_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -6176,7 +6176,7 @@ class ObjectsApi:
 
         :param object_id: (required)
         :type object_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -6292,8 +6292,8 @@ class ObjectsApi:
     @validate_call
     def search_objects(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         complex_search_payload: ComplexSearchPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -6311,10 +6311,10 @@ class ObjectsApi:
 
         Runs structured search across content objects with full-text, vector, metadata, and facet support.  **Required permissions:** `content:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param complex_search_payload: (required)
         :type complex_search_payload: ComplexSearchPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -6338,8 +6338,8 @@ class ObjectsApi:
         """ # noqa: E501
 
         _param = self._search_objects_serialize(
-            complex_search_payload=complex_search_payload,
             x_api_version=x_api_version,
+            complex_search_payload=complex_search_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -6365,8 +6365,8 @@ class ObjectsApi:
     @validate_call
     def search_objects_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         complex_search_payload: ComplexSearchPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -6384,10 +6384,10 @@ class ObjectsApi:
 
         Runs structured search across content objects with full-text, vector, metadata, and facet support.  **Required permissions:** `content:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param complex_search_payload: (required)
         :type complex_search_payload: ComplexSearchPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -6411,8 +6411,8 @@ class ObjectsApi:
         """ # noqa: E501
 
         _param = self._search_objects_serialize(
-            complex_search_payload=complex_search_payload,
             x_api_version=x_api_version,
+            complex_search_payload=complex_search_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -6438,8 +6438,8 @@ class ObjectsApi:
     @validate_call
     def search_objects_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         complex_search_payload: ComplexSearchPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -6457,10 +6457,10 @@ class ObjectsApi:
 
         Runs structured search across content objects with full-text, vector, metadata, and facet support.  **Required permissions:** `content:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param complex_search_payload: (required)
         :type complex_search_payload: ComplexSearchPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -6484,8 +6484,8 @@ class ObjectsApi:
         """ # noqa: E501
 
         _param = self._search_objects_serialize(
-            complex_search_payload=complex_search_payload,
             x_api_version=x_api_version,
+            complex_search_payload=complex_search_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -6506,8 +6506,8 @@ class ObjectsApi:
 
     def _search_objects_serialize(
         self,
-        complex_search_payload,
         x_api_version,
+        complex_search_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -6590,8 +6590,8 @@ class ObjectsApi:
         self,
         object_id: StrictStr,
         type: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         embedding: Embedding,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -6613,10 +6613,10 @@ class ObjectsApi:
         :type object_id: str
         :param type: (required)
         :type type: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param embedding: (required)
         :type embedding: Embedding
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -6642,8 +6642,8 @@ class ObjectsApi:
         _param = self._set_object_embeddings_serialize(
             object_id=object_id,
             type=type,
-            embedding=embedding,
             x_api_version=x_api_version,
+            embedding=embedding,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -6671,8 +6671,8 @@ class ObjectsApi:
         self,
         object_id: StrictStr,
         type: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         embedding: Embedding,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -6694,10 +6694,10 @@ class ObjectsApi:
         :type object_id: str
         :param type: (required)
         :type type: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param embedding: (required)
         :type embedding: Embedding
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -6723,8 +6723,8 @@ class ObjectsApi:
         _param = self._set_object_embeddings_serialize(
             object_id=object_id,
             type=type,
-            embedding=embedding,
             x_api_version=x_api_version,
+            embedding=embedding,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -6752,8 +6752,8 @@ class ObjectsApi:
         self,
         object_id: StrictStr,
         type: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         embedding: Embedding,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -6775,10 +6775,10 @@ class ObjectsApi:
         :type object_id: str
         :param type: (required)
         :type type: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param embedding: (required)
         :type embedding: Embedding
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -6804,8 +6804,8 @@ class ObjectsApi:
         _param = self._set_object_embeddings_serialize(
             object_id=object_id,
             type=type,
-            embedding=embedding,
             x_api_version=x_api_version,
+            embedding=embedding,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -6828,8 +6828,8 @@ class ObjectsApi:
         self,
         object_id,
         type,
-        embedding,
         x_api_version,
+        embedding,
         _request_auth,
         _content_type,
         _headers,
@@ -6914,8 +6914,8 @@ class ObjectsApi:
     @validate_call
     def start_content_objects_export(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         start_content_object_export_request: StartContentObjectExportRequest,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -6933,10 +6933,10 @@ class ObjectsApi:
 
         Starts a Temporal workflow that asks zeno-bulk to write a JSONL or JSONL.GZ export into the project bucket.  **Required permissions:** `content:superadmin`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param start_content_object_export_request: (required)
         :type start_content_object_export_request: StartContentObjectExportRequest
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -6960,8 +6960,8 @@ class ObjectsApi:
         """ # noqa: E501
 
         _param = self._start_content_objects_export_serialize(
-            start_content_object_export_request=start_content_object_export_request,
             x_api_version=x_api_version,
+            start_content_object_export_request=start_content_object_export_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -6987,8 +6987,8 @@ class ObjectsApi:
     @validate_call
     def start_content_objects_export_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         start_content_object_export_request: StartContentObjectExportRequest,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -7006,10 +7006,10 @@ class ObjectsApi:
 
         Starts a Temporal workflow that asks zeno-bulk to write a JSONL or JSONL.GZ export into the project bucket.  **Required permissions:** `content:superadmin`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param start_content_object_export_request: (required)
         :type start_content_object_export_request: StartContentObjectExportRequest
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -7033,8 +7033,8 @@ class ObjectsApi:
         """ # noqa: E501
 
         _param = self._start_content_objects_export_serialize(
-            start_content_object_export_request=start_content_object_export_request,
             x_api_version=x_api_version,
+            start_content_object_export_request=start_content_object_export_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -7060,8 +7060,8 @@ class ObjectsApi:
     @validate_call
     def start_content_objects_export_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         start_content_object_export_request: StartContentObjectExportRequest,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -7079,10 +7079,10 @@ class ObjectsApi:
 
         Starts a Temporal workflow that asks zeno-bulk to write a JSONL or JSONL.GZ export into the project bucket.  **Required permissions:** `content:superadmin`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param start_content_object_export_request: (required)
         :type start_content_object_export_request: StartContentObjectExportRequest
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -7106,8 +7106,8 @@ class ObjectsApi:
         """ # noqa: E501
 
         _param = self._start_content_objects_export_serialize(
-            start_content_object_export_request=start_content_object_export_request,
             x_api_version=x_api_version,
+            start_content_object_export_request=start_content_object_export_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -7128,8 +7128,8 @@ class ObjectsApi:
 
     def _start_content_objects_export_serialize(
         self,
-        start_content_object_export_request,
         x_api_version,
+        start_content_object_export_request,
         _request_auth,
         _content_type,
         _headers,
@@ -7211,7 +7211,7 @@ class ObjectsApi:
     def start_object_document_grounded_extraction(
         self,
         object_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         grounded_extraction_request: Optional[GroundedExtractionRequest] = None,
         _request_timeout: Union[
             None,
@@ -7232,7 +7232,7 @@ class ObjectsApi:
 
         :param object_id: (required)
         :type object_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param grounded_extraction_request:
         :type grounded_extraction_request: GroundedExtractionRequest
@@ -7288,7 +7288,7 @@ class ObjectsApi:
     def start_object_document_grounded_extraction_with_http_info(
         self,
         object_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         grounded_extraction_request: Optional[GroundedExtractionRequest] = None,
         _request_timeout: Union[
             None,
@@ -7309,7 +7309,7 @@ class ObjectsApi:
 
         :param object_id: (required)
         :type object_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param grounded_extraction_request:
         :type grounded_extraction_request: GroundedExtractionRequest
@@ -7365,7 +7365,7 @@ class ObjectsApi:
     def start_object_document_grounded_extraction_without_preload_content(
         self,
         object_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         grounded_extraction_request: Optional[GroundedExtractionRequest] = None,
         _request_timeout: Union[
             None,
@@ -7386,7 +7386,7 @@ class ObjectsApi:
 
         :param object_id: (required)
         :type object_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param grounded_extraction_request:
         :type grounded_extraction_request: GroundedExtractionRequest
@@ -7522,7 +7522,7 @@ class ObjectsApi:
     def start_object_grounded_extraction_assistant(
         self,
         object_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         grounded_extraction_request: Optional[GroundedExtractionRequest] = None,
         _request_timeout: Union[
             None,
@@ -7543,7 +7543,7 @@ class ObjectsApi:
 
         :param object_id: (required)
         :type object_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param grounded_extraction_request:
         :type grounded_extraction_request: GroundedExtractionRequest
@@ -7599,7 +7599,7 @@ class ObjectsApi:
     def start_object_grounded_extraction_assistant_with_http_info(
         self,
         object_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         grounded_extraction_request: Optional[GroundedExtractionRequest] = None,
         _request_timeout: Union[
             None,
@@ -7620,7 +7620,7 @@ class ObjectsApi:
 
         :param object_id: (required)
         :type object_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param grounded_extraction_request:
         :type grounded_extraction_request: GroundedExtractionRequest
@@ -7676,7 +7676,7 @@ class ObjectsApi:
     def start_object_grounded_extraction_assistant_without_preload_content(
         self,
         object_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         grounded_extraction_request: Optional[GroundedExtractionRequest] = None,
         _request_timeout: Union[
             None,
@@ -7697,7 +7697,7 @@ class ObjectsApi:
 
         :param object_id: (required)
         :type object_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param grounded_extraction_request:
         :type grounded_extraction_request: GroundedExtractionRequest
@@ -7833,6 +7833,7 @@ class ObjectsApi:
     def update_object(
         self,
         object_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_content_object_payload: UpdateContentObjectPayload,
         create_revision: Optional[StrictBool] = None,
         revision_label: Optional[StrictStr] = None,
@@ -7842,7 +7843,6 @@ class ObjectsApi:
         x_revision_label: Optional[StrictStr] = None,
         x_processing_priority: Optional[ContentObjectProcessingPriority] = None,
         x_suppress_workflows: Annotated[Optional[StrictBool], Field(description="Deprecated: Events are now always emitted. This suppresses the Temporal-backed delivery targets (workflow, agent, and process) — webhook deliveries still fire.")] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -7862,6 +7862,8 @@ class ObjectsApi:
 
         :param object_id: (required)
         :type object_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param update_content_object_payload: (required)
         :type update_content_object_payload: UpdateContentObjectPayload
         :param create_revision:
@@ -7880,8 +7882,6 @@ class ObjectsApi:
         :type x_processing_priority: ContentObjectProcessingPriority
         :param x_suppress_workflows: Deprecated: Events are now always emitted. This suppresses the Temporal-backed delivery targets (workflow, agent, and process) — webhook deliveries still fire.
         :type x_suppress_workflows: bool
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -7906,6 +7906,7 @@ class ObjectsApi:
 
         _param = self._update_object_serialize(
             object_id=object_id,
+            x_api_version=x_api_version,
             update_content_object_payload=update_content_object_payload,
             create_revision=create_revision,
             revision_label=revision_label,
@@ -7915,7 +7916,6 @@ class ObjectsApi:
             x_revision_label=x_revision_label,
             x_processing_priority=x_processing_priority,
             x_suppress_workflows=x_suppress_workflows,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -7942,6 +7942,7 @@ class ObjectsApi:
     def update_object_with_http_info(
         self,
         object_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_content_object_payload: UpdateContentObjectPayload,
         create_revision: Optional[StrictBool] = None,
         revision_label: Optional[StrictStr] = None,
@@ -7951,7 +7952,6 @@ class ObjectsApi:
         x_revision_label: Optional[StrictStr] = None,
         x_processing_priority: Optional[ContentObjectProcessingPriority] = None,
         x_suppress_workflows: Annotated[Optional[StrictBool], Field(description="Deprecated: Events are now always emitted. This suppresses the Temporal-backed delivery targets (workflow, agent, and process) — webhook deliveries still fire.")] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -7971,6 +7971,8 @@ class ObjectsApi:
 
         :param object_id: (required)
         :type object_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param update_content_object_payload: (required)
         :type update_content_object_payload: UpdateContentObjectPayload
         :param create_revision:
@@ -7989,8 +7991,6 @@ class ObjectsApi:
         :type x_processing_priority: ContentObjectProcessingPriority
         :param x_suppress_workflows: Deprecated: Events are now always emitted. This suppresses the Temporal-backed delivery targets (workflow, agent, and process) — webhook deliveries still fire.
         :type x_suppress_workflows: bool
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -8015,6 +8015,7 @@ class ObjectsApi:
 
         _param = self._update_object_serialize(
             object_id=object_id,
+            x_api_version=x_api_version,
             update_content_object_payload=update_content_object_payload,
             create_revision=create_revision,
             revision_label=revision_label,
@@ -8024,7 +8025,6 @@ class ObjectsApi:
             x_revision_label=x_revision_label,
             x_processing_priority=x_processing_priority,
             x_suppress_workflows=x_suppress_workflows,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -8051,6 +8051,7 @@ class ObjectsApi:
     def update_object_without_preload_content(
         self,
         object_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_content_object_payload: UpdateContentObjectPayload,
         create_revision: Optional[StrictBool] = None,
         revision_label: Optional[StrictStr] = None,
@@ -8060,7 +8061,6 @@ class ObjectsApi:
         x_revision_label: Optional[StrictStr] = None,
         x_processing_priority: Optional[ContentObjectProcessingPriority] = None,
         x_suppress_workflows: Annotated[Optional[StrictBool], Field(description="Deprecated: Events are now always emitted. This suppresses the Temporal-backed delivery targets (workflow, agent, and process) — webhook deliveries still fire.")] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -8080,6 +8080,8 @@ class ObjectsApi:
 
         :param object_id: (required)
         :type object_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param update_content_object_payload: (required)
         :type update_content_object_payload: UpdateContentObjectPayload
         :param create_revision:
@@ -8098,8 +8100,6 @@ class ObjectsApi:
         :type x_processing_priority: ContentObjectProcessingPriority
         :param x_suppress_workflows: Deprecated: Events are now always emitted. This suppresses the Temporal-backed delivery targets (workflow, agent, and process) — webhook deliveries still fire.
         :type x_suppress_workflows: bool
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -8124,6 +8124,7 @@ class ObjectsApi:
 
         _param = self._update_object_serialize(
             object_id=object_id,
+            x_api_version=x_api_version,
             update_content_object_payload=update_content_object_payload,
             create_revision=create_revision,
             revision_label=revision_label,
@@ -8133,7 +8134,6 @@ class ObjectsApi:
             x_revision_label=x_revision_label,
             x_processing_priority=x_processing_priority,
             x_suppress_workflows=x_suppress_workflows,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -8155,6 +8155,7 @@ class ObjectsApi:
     def _update_object_serialize(
         self,
         object_id,
+        x_api_version,
         update_content_object_payload,
         create_revision,
         revision_label,
@@ -8164,7 +8165,6 @@ class ObjectsApi:
         x_revision_label,
         x_processing_priority,
         x_suppress_workflows,
-        x_api_version,
         _request_auth,
         _content_type,
         _headers,

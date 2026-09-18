@@ -15,8 +15,7 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import Field, StrictStr
-from typing import Optional
+from pydantic import Field, StrictStr, field_validator
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.list_pending_asks_response import ListPendingAsksResponse
 from vertesia_client.openapi.models.pending_ask_data import PendingAskData
@@ -47,7 +46,7 @@ class PendingAsksApi:
     def get_pending_ask(
         self,
         ask_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -67,7 +66,7 @@ class PendingAsksApi:
 
         :param ask_id: (required)
         :type ask_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -120,7 +119,7 @@ class PendingAsksApi:
     def get_pending_ask_with_http_info(
         self,
         ask_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -140,7 +139,7 @@ class PendingAsksApi:
 
         :param ask_id: (required)
         :type ask_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -193,7 +192,7 @@ class PendingAsksApi:
     def get_pending_ask_without_preload_content(
         self,
         ask_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -213,7 +212,7 @@ class PendingAsksApi:
 
         :param ask_id: (required)
         :type ask_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -329,7 +328,7 @@ class PendingAsksApi:
     @validate_call
     def list_pending_asks(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -347,7 +346,7 @@ class PendingAsksApi:
 
         List all pending asks for the current project.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -398,7 +397,7 @@ class PendingAsksApi:
     @validate_call
     def list_pending_asks_with_http_info(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -416,7 +415,7 @@ class PendingAsksApi:
 
         List all pending asks for the current project.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -467,7 +466,7 @@ class PendingAsksApi:
     @validate_call
     def list_pending_asks_without_preload_content(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -485,7 +484,7 @@ class PendingAsksApi:
 
         List all pending asks for the current project.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -597,8 +596,8 @@ class PendingAsksApi:
     @validate_call
     def register_pending_ask(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         register_pending_ask_request: RegisterPendingAskRequest,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -616,10 +615,10 @@ class PendingAsksApi:
 
         Register a new pending ask. Called when an agent calls ask_user.  **Required permissions:** `workflow:run`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param register_pending_ask_request: (required)
         :type register_pending_ask_request: RegisterPendingAskRequest
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -643,8 +642,8 @@ class PendingAsksApi:
         """ # noqa: E501
 
         _param = self._register_pending_ask_serialize(
-            register_pending_ask_request=register_pending_ask_request,
             x_api_version=x_api_version,
+            register_pending_ask_request=register_pending_ask_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -670,8 +669,8 @@ class PendingAsksApi:
     @validate_call
     def register_pending_ask_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         register_pending_ask_request: RegisterPendingAskRequest,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -689,10 +688,10 @@ class PendingAsksApi:
 
         Register a new pending ask. Called when an agent calls ask_user.  **Required permissions:** `workflow:run`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param register_pending_ask_request: (required)
         :type register_pending_ask_request: RegisterPendingAskRequest
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -716,8 +715,8 @@ class PendingAsksApi:
         """ # noqa: E501
 
         _param = self._register_pending_ask_serialize(
-            register_pending_ask_request=register_pending_ask_request,
             x_api_version=x_api_version,
+            register_pending_ask_request=register_pending_ask_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -743,8 +742,8 @@ class PendingAsksApi:
     @validate_call
     def register_pending_ask_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         register_pending_ask_request: RegisterPendingAskRequest,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -762,10 +761,10 @@ class PendingAsksApi:
 
         Register a new pending ask. Called when an agent calls ask_user.  **Required permissions:** `workflow:run`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param register_pending_ask_request: (required)
         :type register_pending_ask_request: RegisterPendingAskRequest
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -789,8 +788,8 @@ class PendingAsksApi:
         """ # noqa: E501
 
         _param = self._register_pending_ask_serialize(
-            register_pending_ask_request=register_pending_ask_request,
             x_api_version=x_api_version,
+            register_pending_ask_request=register_pending_ask_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -811,8 +810,8 @@ class PendingAsksApi:
 
     def _register_pending_ask_serialize(
         self,
-        register_pending_ask_request,
         x_api_version,
+        register_pending_ask_request,
         _request_auth,
         _content_type,
         _headers,
@@ -894,8 +893,8 @@ class PendingAsksApi:
     def resolve_pending_ask(
         self,
         ask_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         resolve_pending_ask_request: ResolvePendingAskRequest,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -915,10 +914,10 @@ class PendingAsksApi:
 
         :param ask_id: (required)
         :type ask_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param resolve_pending_ask_request: (required)
         :type resolve_pending_ask_request: ResolvePendingAskRequest
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -943,8 +942,8 @@ class PendingAsksApi:
 
         _param = self._resolve_pending_ask_serialize(
             ask_id=ask_id,
-            resolve_pending_ask_request=resolve_pending_ask_request,
             x_api_version=x_api_version,
+            resolve_pending_ask_request=resolve_pending_ask_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -971,8 +970,8 @@ class PendingAsksApi:
     def resolve_pending_ask_with_http_info(
         self,
         ask_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         resolve_pending_ask_request: ResolvePendingAskRequest,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -992,10 +991,10 @@ class PendingAsksApi:
 
         :param ask_id: (required)
         :type ask_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param resolve_pending_ask_request: (required)
         :type resolve_pending_ask_request: ResolvePendingAskRequest
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1020,8 +1019,8 @@ class PendingAsksApi:
 
         _param = self._resolve_pending_ask_serialize(
             ask_id=ask_id,
-            resolve_pending_ask_request=resolve_pending_ask_request,
             x_api_version=x_api_version,
+            resolve_pending_ask_request=resolve_pending_ask_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1048,8 +1047,8 @@ class PendingAsksApi:
     def resolve_pending_ask_without_preload_content(
         self,
         ask_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         resolve_pending_ask_request: ResolvePendingAskRequest,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1069,10 +1068,10 @@ class PendingAsksApi:
 
         :param ask_id: (required)
         :type ask_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param resolve_pending_ask_request: (required)
         :type resolve_pending_ask_request: ResolvePendingAskRequest
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1097,8 +1096,8 @@ class PendingAsksApi:
 
         _param = self._resolve_pending_ask_serialize(
             ask_id=ask_id,
-            resolve_pending_ask_request=resolve_pending_ask_request,
             x_api_version=x_api_version,
+            resolve_pending_ask_request=resolve_pending_ask_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1120,8 +1119,8 @@ class PendingAsksApi:
     def _resolve_pending_ask_serialize(
         self,
         ask_id,
-        resolve_pending_ask_request,
         x_api_version,
+        resolve_pending_ask_request,
         _request_auth,
         _content_type,
         _headers,

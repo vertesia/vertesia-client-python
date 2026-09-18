@@ -53,7 +53,7 @@ class WorkflowRunsApi:
         workflow_id: StrictStr,
         run_id: StrictStr,
         action: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -77,7 +77,7 @@ class WorkflowRunsApi:
         :type run_id: str
         :param action: (required)
         :type action: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -134,7 +134,7 @@ class WorkflowRunsApi:
         workflow_id: StrictStr,
         run_id: StrictStr,
         action: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -158,7 +158,7 @@ class WorkflowRunsApi:
         :type run_id: str
         :param action: (required)
         :type action: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -215,7 +215,7 @@ class WorkflowRunsApi:
         workflow_id: StrictStr,
         run_id: StrictStr,
         action: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -239,7 +239,7 @@ class WorkflowRunsApi:
         :type run_id: str
         :param action: (required)
         :type action: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -364,8 +364,8 @@ class WorkflowRunsApi:
     def execute_workflow(
         self,
         workflow_name: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         execute_workflow_payload: ExecuteWorkflowPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -385,10 +385,10 @@ class WorkflowRunsApi:
 
         :param workflow_name: (required)
         :type workflow_name: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param execute_workflow_payload: (required)
         :type execute_workflow_payload: ExecuteWorkflowPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -413,8 +413,8 @@ class WorkflowRunsApi:
 
         _param = self._execute_workflow_serialize(
             workflow_name=workflow_name,
-            execute_workflow_payload=execute_workflow_payload,
             x_api_version=x_api_version,
+            execute_workflow_payload=execute_workflow_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -441,8 +441,8 @@ class WorkflowRunsApi:
     def execute_workflow_with_http_info(
         self,
         workflow_name: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         execute_workflow_payload: ExecuteWorkflowPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -462,10 +462,10 @@ class WorkflowRunsApi:
 
         :param workflow_name: (required)
         :type workflow_name: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param execute_workflow_payload: (required)
         :type execute_workflow_payload: ExecuteWorkflowPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -490,8 +490,8 @@ class WorkflowRunsApi:
 
         _param = self._execute_workflow_serialize(
             workflow_name=workflow_name,
-            execute_workflow_payload=execute_workflow_payload,
             x_api_version=x_api_version,
+            execute_workflow_payload=execute_workflow_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -518,8 +518,8 @@ class WorkflowRunsApi:
     def execute_workflow_without_preload_content(
         self,
         workflow_name: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         execute_workflow_payload: ExecuteWorkflowPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -539,10 +539,10 @@ class WorkflowRunsApi:
 
         :param workflow_name: (required)
         :type workflow_name: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param execute_workflow_payload: (required)
         :type execute_workflow_payload: ExecuteWorkflowPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -567,8 +567,8 @@ class WorkflowRunsApi:
 
         _param = self._execute_workflow_serialize(
             workflow_name=workflow_name,
-            execute_workflow_payload=execute_workflow_payload,
             x_api_version=x_api_version,
+            execute_workflow_payload=execute_workflow_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -590,8 +590,8 @@ class WorkflowRunsApi:
     def _execute_workflow_serialize(
         self,
         workflow_name,
-        execute_workflow_payload,
         x_api_version,
+        execute_workflow_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -675,8 +675,8 @@ class WorkflowRunsApi:
     def execute_workflow_rule(
         self,
         rule_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         execute_workflow_payload: ExecuteWorkflowPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -696,10 +696,10 @@ class WorkflowRunsApi:
 
         :param rule_id: (required)
         :type rule_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param execute_workflow_payload: (required)
         :type execute_workflow_payload: ExecuteWorkflowPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -724,8 +724,8 @@ class WorkflowRunsApi:
 
         _param = self._execute_workflow_rule_serialize(
             rule_id=rule_id,
-            execute_workflow_payload=execute_workflow_payload,
             x_api_version=x_api_version,
+            execute_workflow_payload=execute_workflow_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -752,8 +752,8 @@ class WorkflowRunsApi:
     def execute_workflow_rule_with_http_info(
         self,
         rule_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         execute_workflow_payload: ExecuteWorkflowPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -773,10 +773,10 @@ class WorkflowRunsApi:
 
         :param rule_id: (required)
         :type rule_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param execute_workflow_payload: (required)
         :type execute_workflow_payload: ExecuteWorkflowPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -801,8 +801,8 @@ class WorkflowRunsApi:
 
         _param = self._execute_workflow_rule_serialize(
             rule_id=rule_id,
-            execute_workflow_payload=execute_workflow_payload,
             x_api_version=x_api_version,
+            execute_workflow_payload=execute_workflow_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -829,8 +829,8 @@ class WorkflowRunsApi:
     def execute_workflow_rule_without_preload_content(
         self,
         rule_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         execute_workflow_payload: ExecuteWorkflowPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -850,10 +850,10 @@ class WorkflowRunsApi:
 
         :param rule_id: (required)
         :type rule_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param execute_workflow_payload: (required)
         :type execute_workflow_payload: ExecuteWorkflowPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -878,8 +878,8 @@ class WorkflowRunsApi:
 
         _param = self._execute_workflow_rule_serialize(
             rule_id=rule_id,
-            execute_workflow_payload=execute_workflow_payload,
             x_api_version=x_api_version,
+            execute_workflow_payload=execute_workflow_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -901,8 +901,8 @@ class WorkflowRunsApi:
     def _execute_workflow_rule_serialize(
         self,
         rule_id,
-        execute_workflow_payload,
         x_api_version,
+        execute_workflow_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -987,10 +987,10 @@ class WorkflowRunsApi:
         self,
         workflow_id: StrictStr,
         run_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         include_history: Optional[StrictBool] = None,
         history_format: Optional[StrictStr] = None,
         hydrate_payloads: Optional[StrictBool] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1012,14 +1012,14 @@ class WorkflowRunsApi:
         :type workflow_id: str
         :param run_id: (required)
         :type run_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param include_history:
         :type include_history: bool
         :param history_format:
         :type history_format: str
         :param hydrate_payloads:
         :type hydrate_payloads: bool
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1045,10 +1045,10 @@ class WorkflowRunsApi:
         _param = self._get_workflow_run_serialize(
             workflow_id=workflow_id,
             run_id=run_id,
+            x_api_version=x_api_version,
             include_history=include_history,
             history_format=history_format,
             hydrate_payloads=hydrate_payloads,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1076,10 +1076,10 @@ class WorkflowRunsApi:
         self,
         workflow_id: StrictStr,
         run_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         include_history: Optional[StrictBool] = None,
         history_format: Optional[StrictStr] = None,
         hydrate_payloads: Optional[StrictBool] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1101,14 +1101,14 @@ class WorkflowRunsApi:
         :type workflow_id: str
         :param run_id: (required)
         :type run_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param include_history:
         :type include_history: bool
         :param history_format:
         :type history_format: str
         :param hydrate_payloads:
         :type hydrate_payloads: bool
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1134,10 +1134,10 @@ class WorkflowRunsApi:
         _param = self._get_workflow_run_serialize(
             workflow_id=workflow_id,
             run_id=run_id,
+            x_api_version=x_api_version,
             include_history=include_history,
             history_format=history_format,
             hydrate_payloads=hydrate_payloads,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1165,10 +1165,10 @@ class WorkflowRunsApi:
         self,
         workflow_id: StrictStr,
         run_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         include_history: Optional[StrictBool] = None,
         history_format: Optional[StrictStr] = None,
         hydrate_payloads: Optional[StrictBool] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1190,14 +1190,14 @@ class WorkflowRunsApi:
         :type workflow_id: str
         :param run_id: (required)
         :type run_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param include_history:
         :type include_history: bool
         :param history_format:
         :type history_format: str
         :param hydrate_payloads:
         :type hydrate_payloads: bool
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1223,10 +1223,10 @@ class WorkflowRunsApi:
         _param = self._get_workflow_run_serialize(
             workflow_id=workflow_id,
             run_id=run_id,
+            x_api_version=x_api_version,
             include_history=include_history,
             history_format=history_format,
             hydrate_payloads=hydrate_payloads,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1249,10 +1249,10 @@ class WorkflowRunsApi:
         self,
         workflow_id,
         run_id,
+        x_api_version,
         include_history,
         history_format,
         hydrate_payloads,
-        x_api_version,
         _request_auth,
         _content_type,
         _headers,
@@ -1336,8 +1336,8 @@ class WorkflowRunsApi:
         self,
         workflow_id: StrictStr,
         run_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         since: Optional[Union[StrictFloat, StrictInt]] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1359,10 +1359,10 @@ class WorkflowRunsApi:
         :type workflow_id: str
         :param run_id: (required)
         :type run_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param since:
         :type since: float
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1388,8 +1388,8 @@ class WorkflowRunsApi:
         _param = self._get_workflow_run_updates_serialize(
             workflow_id=workflow_id,
             run_id=run_id,
-            since=since,
             x_api_version=x_api_version,
+            since=since,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1417,8 +1417,8 @@ class WorkflowRunsApi:
         self,
         workflow_id: StrictStr,
         run_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         since: Optional[Union[StrictFloat, StrictInt]] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1440,10 +1440,10 @@ class WorkflowRunsApi:
         :type workflow_id: str
         :param run_id: (required)
         :type run_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param since:
         :type since: float
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1469,8 +1469,8 @@ class WorkflowRunsApi:
         _param = self._get_workflow_run_updates_serialize(
             workflow_id=workflow_id,
             run_id=run_id,
-            since=since,
             x_api_version=x_api_version,
+            since=since,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1498,8 +1498,8 @@ class WorkflowRunsApi:
         self,
         workflow_id: StrictStr,
         run_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         since: Optional[Union[StrictFloat, StrictInt]] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1521,10 +1521,10 @@ class WorkflowRunsApi:
         :type workflow_id: str
         :param run_id: (required)
         :type run_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param since:
         :type since: float
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1550,8 +1550,8 @@ class WorkflowRunsApi:
         _param = self._get_workflow_run_updates_serialize(
             workflow_id=workflow_id,
             run_id=run_id,
-            since=since,
             x_api_version=x_api_version,
+            since=since,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1574,8 +1574,8 @@ class WorkflowRunsApi:
         self,
         workflow_id,
         run_id,
-        since,
         x_api_version,
+        since,
         _request_auth,
         _content_type,
         _headers,
@@ -1650,7 +1650,7 @@ class WorkflowRunsApi:
     def list_workflow_rule_runs(
         self,
         rule_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1670,7 +1670,7 @@ class WorkflowRunsApi:
 
         :param rule_id: (required)
         :type rule_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1723,7 +1723,7 @@ class WorkflowRunsApi:
     def list_workflow_rule_runs_with_http_info(
         self,
         rule_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1743,7 +1743,7 @@ class WorkflowRunsApi:
 
         :param rule_id: (required)
         :type rule_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1796,7 +1796,7 @@ class WorkflowRunsApi:
     def list_workflow_rule_runs_without_preload_content(
         self,
         rule_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1816,7 +1816,7 @@ class WorkflowRunsApi:
 
         :param rule_id: (required)
         :type rule_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1932,8 +1932,8 @@ class WorkflowRunsApi:
     @validate_call
     def list_workflow_runs(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         list_workflow_runs_payload: ListWorkflowRunsPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1951,10 +1951,10 @@ class WorkflowRunsApi:
 
         Lists workflow runs with filtering, pagination, and optional rule scoping.  **Required permissions:** Any of `workflow:read`, `workflow:admin`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param list_workflow_runs_payload: (required)
         :type list_workflow_runs_payload: ListWorkflowRunsPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1978,8 +1978,8 @@ class WorkflowRunsApi:
         """ # noqa: E501
 
         _param = self._list_workflow_runs_serialize(
-            list_workflow_runs_payload=list_workflow_runs_payload,
             x_api_version=x_api_version,
+            list_workflow_runs_payload=list_workflow_runs_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2005,8 +2005,8 @@ class WorkflowRunsApi:
     @validate_call
     def list_workflow_runs_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         list_workflow_runs_payload: ListWorkflowRunsPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2024,10 +2024,10 @@ class WorkflowRunsApi:
 
         Lists workflow runs with filtering, pagination, and optional rule scoping.  **Required permissions:** Any of `workflow:read`, `workflow:admin`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param list_workflow_runs_payload: (required)
         :type list_workflow_runs_payload: ListWorkflowRunsPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2051,8 +2051,8 @@ class WorkflowRunsApi:
         """ # noqa: E501
 
         _param = self._list_workflow_runs_serialize(
-            list_workflow_runs_payload=list_workflow_runs_payload,
             x_api_version=x_api_version,
+            list_workflow_runs_payload=list_workflow_runs_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2078,8 +2078,8 @@ class WorkflowRunsApi:
     @validate_call
     def list_workflow_runs_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         list_workflow_runs_payload: ListWorkflowRunsPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2097,10 +2097,10 @@ class WorkflowRunsApi:
 
         Lists workflow runs with filtering, pagination, and optional rule scoping.  **Required permissions:** Any of `workflow:read`, `workflow:admin`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param list_workflow_runs_payload: (required)
         :type list_workflow_runs_payload: ListWorkflowRunsPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2124,8 +2124,8 @@ class WorkflowRunsApi:
         """ # noqa: E501
 
         _param = self._list_workflow_runs_serialize(
-            list_workflow_runs_payload=list_workflow_runs_payload,
             x_api_version=x_api_version,
+            list_workflow_runs_payload=list_workflow_runs_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2146,8 +2146,8 @@ class WorkflowRunsApi:
 
     def _list_workflow_runs_serialize(
         self,
-        list_workflow_runs_payload,
         x_api_version,
+        list_workflow_runs_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -2229,8 +2229,8 @@ class WorkflowRunsApi:
     def post_workflow_run_update(
         self,
         run_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         post_agent_run_update_payload: PostAgentRunUpdatePayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2250,10 +2250,10 @@ class WorkflowRunsApi:
 
         :param run_id: (required)
         :type run_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param post_agent_run_update_payload: (required)
         :type post_agent_run_update_payload: PostAgentRunUpdatePayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2278,8 +2278,8 @@ class WorkflowRunsApi:
 
         _param = self._post_workflow_run_update_serialize(
             run_id=run_id,
-            post_agent_run_update_payload=post_agent_run_update_payload,
             x_api_version=x_api_version,
+            post_agent_run_update_payload=post_agent_run_update_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2306,8 +2306,8 @@ class WorkflowRunsApi:
     def post_workflow_run_update_with_http_info(
         self,
         run_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         post_agent_run_update_payload: PostAgentRunUpdatePayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2327,10 +2327,10 @@ class WorkflowRunsApi:
 
         :param run_id: (required)
         :type run_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param post_agent_run_update_payload: (required)
         :type post_agent_run_update_payload: PostAgentRunUpdatePayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2355,8 +2355,8 @@ class WorkflowRunsApi:
 
         _param = self._post_workflow_run_update_serialize(
             run_id=run_id,
-            post_agent_run_update_payload=post_agent_run_update_payload,
             x_api_version=x_api_version,
+            post_agent_run_update_payload=post_agent_run_update_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2383,8 +2383,8 @@ class WorkflowRunsApi:
     def post_workflow_run_update_without_preload_content(
         self,
         run_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         post_agent_run_update_payload: PostAgentRunUpdatePayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2404,10 +2404,10 @@ class WorkflowRunsApi:
 
         :param run_id: (required)
         :type run_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param post_agent_run_update_payload: (required)
         :type post_agent_run_update_payload: PostAgentRunUpdatePayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2432,8 +2432,8 @@ class WorkflowRunsApi:
 
         _param = self._post_workflow_run_update_serialize(
             run_id=run_id,
-            post_agent_run_update_payload=post_agent_run_update_payload,
             x_api_version=x_api_version,
+            post_agent_run_update_payload=post_agent_run_update_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2455,8 +2455,8 @@ class WorkflowRunsApi:
     def _post_workflow_run_update_serialize(
         self,
         run_id,
-        post_agent_run_update_payload,
         x_api_version,
+        post_agent_run_update_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -2542,7 +2542,7 @@ class WorkflowRunsApi:
         workflow_id: StrictStr,
         run_id: StrictStr,
         query_name: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2566,7 +2566,7 @@ class WorkflowRunsApi:
         :type run_id: str
         :param query_name: (required)
         :type query_name: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2623,7 +2623,7 @@ class WorkflowRunsApi:
         workflow_id: StrictStr,
         run_id: StrictStr,
         query_name: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2647,7 +2647,7 @@ class WorkflowRunsApi:
         :type run_id: str
         :param query_name: (required)
         :type query_name: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2704,7 +2704,7 @@ class WorkflowRunsApi:
         workflow_id: StrictStr,
         run_id: StrictStr,
         query_name: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2728,7 +2728,7 @@ class WorkflowRunsApi:
         :type run_id: str
         :param query_name: (required)
         :type query_name: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2855,8 +2855,8 @@ class WorkflowRunsApi:
         workflow_id: StrictStr,
         run_id: StrictStr,
         signal_name: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         request_body: Dict[str, Any],
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2880,10 +2880,10 @@ class WorkflowRunsApi:
         :type run_id: str
         :param signal_name: (required)
         :type signal_name: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param request_body: (required)
         :type request_body: Dict[str, object]
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2910,8 +2910,8 @@ class WorkflowRunsApi:
             workflow_id=workflow_id,
             run_id=run_id,
             signal_name=signal_name,
-            request_body=request_body,
             x_api_version=x_api_version,
+            request_body=request_body,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2940,8 +2940,8 @@ class WorkflowRunsApi:
         workflow_id: StrictStr,
         run_id: StrictStr,
         signal_name: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         request_body: Dict[str, Any],
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2965,10 +2965,10 @@ class WorkflowRunsApi:
         :type run_id: str
         :param signal_name: (required)
         :type signal_name: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param request_body: (required)
         :type request_body: Dict[str, object]
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2995,8 +2995,8 @@ class WorkflowRunsApi:
             workflow_id=workflow_id,
             run_id=run_id,
             signal_name=signal_name,
-            request_body=request_body,
             x_api_version=x_api_version,
+            request_body=request_body,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3025,8 +3025,8 @@ class WorkflowRunsApi:
         workflow_id: StrictStr,
         run_id: StrictStr,
         signal_name: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         request_body: Dict[str, Any],
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3050,10 +3050,10 @@ class WorkflowRunsApi:
         :type run_id: str
         :param signal_name: (required)
         :type signal_name: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param request_body: (required)
         :type request_body: Dict[str, object]
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3080,8 +3080,8 @@ class WorkflowRunsApi:
             workflow_id=workflow_id,
             run_id=run_id,
             signal_name=signal_name,
-            request_body=request_body,
             x_api_version=x_api_version,
+            request_body=request_body,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3105,8 +3105,8 @@ class WorkflowRunsApi:
         workflow_id,
         run_id,
         signal_name,
-        request_body,
         x_api_version,
+        request_body,
         _request_auth,
         _content_type,
         _headers,
@@ -3197,7 +3197,6 @@ class WorkflowRunsApi:
         run_id: StrictStr,
         since: Optional[Union[StrictFloat, StrictInt]] = None,
         skip_history: Optional[StrictBool] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3223,8 +3222,6 @@ class WorkflowRunsApi:
         :type since: float
         :param skip_history:
         :type skip_history: bool
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3252,7 +3249,6 @@ class WorkflowRunsApi:
             run_id=run_id,
             since=since,
             skip_history=skip_history,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3282,7 +3278,6 @@ class WorkflowRunsApi:
         run_id: StrictStr,
         since: Optional[Union[StrictFloat, StrictInt]] = None,
         skip_history: Optional[StrictBool] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3308,8 +3303,6 @@ class WorkflowRunsApi:
         :type since: float
         :param skip_history:
         :type skip_history: bool
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3337,7 +3330,6 @@ class WorkflowRunsApi:
             run_id=run_id,
             since=since,
             skip_history=skip_history,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3367,7 +3359,6 @@ class WorkflowRunsApi:
         run_id: StrictStr,
         since: Optional[Union[StrictFloat, StrictInt]] = None,
         skip_history: Optional[StrictBool] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3393,8 +3384,6 @@ class WorkflowRunsApi:
         :type since: float
         :param skip_history:
         :type skip_history: bool
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3422,7 +3411,6 @@ class WorkflowRunsApi:
             run_id=run_id,
             since=since,
             skip_history=skip_history,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3447,7 +3435,6 @@ class WorkflowRunsApi:
         run_id,
         since,
         skip_history,
-        x_api_version,
         _request_auth,
         _content_type,
         _headers,
@@ -3483,8 +3470,6 @@ class WorkflowRunsApi:
             _query_params.append(('skipHistory', skip_history))
             
         # process the header parameters
-        if x_api_version is not None:
-            _header_params['x-api-version'] = x_api_version
         # process the form parameters
         # process the body parameter
 

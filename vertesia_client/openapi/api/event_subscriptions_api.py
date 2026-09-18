@@ -15,8 +15,8 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import Field, StrictStr
-from typing import List, Optional
+from pydantic import Field, StrictStr, field_validator
+from typing import List
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.create_event_subscription_payload import CreateEventSubscriptionPayload
 from vertesia_client.openapi.models.delete_count_result import DeleteCountResult
@@ -45,8 +45,8 @@ class EventSubscriptionsApi:
     @validate_call
     def create_event_subscription(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_event_subscription_payload: CreateEventSubscriptionPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -64,10 +64,10 @@ class EventSubscriptionsApi:
 
         Creates a workflow, webhook, agent, or process event subscription for the current account or project.  **Required permissions:** `workflow:admin`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param create_event_subscription_payload: (required)
         :type create_event_subscription_payload: CreateEventSubscriptionPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -91,8 +91,8 @@ class EventSubscriptionsApi:
         """ # noqa: E501
 
         _param = self._create_event_subscription_serialize(
-            create_event_subscription_payload=create_event_subscription_payload,
             x_api_version=x_api_version,
+            create_event_subscription_payload=create_event_subscription_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -118,8 +118,8 @@ class EventSubscriptionsApi:
     @validate_call
     def create_event_subscription_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_event_subscription_payload: CreateEventSubscriptionPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -137,10 +137,10 @@ class EventSubscriptionsApi:
 
         Creates a workflow, webhook, agent, or process event subscription for the current account or project.  **Required permissions:** `workflow:admin`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param create_event_subscription_payload: (required)
         :type create_event_subscription_payload: CreateEventSubscriptionPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -164,8 +164,8 @@ class EventSubscriptionsApi:
         """ # noqa: E501
 
         _param = self._create_event_subscription_serialize(
-            create_event_subscription_payload=create_event_subscription_payload,
             x_api_version=x_api_version,
+            create_event_subscription_payload=create_event_subscription_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -191,8 +191,8 @@ class EventSubscriptionsApi:
     @validate_call
     def create_event_subscription_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_event_subscription_payload: CreateEventSubscriptionPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -210,10 +210,10 @@ class EventSubscriptionsApi:
 
         Creates a workflow, webhook, agent, or process event subscription for the current account or project.  **Required permissions:** `workflow:admin`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param create_event_subscription_payload: (required)
         :type create_event_subscription_payload: CreateEventSubscriptionPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -237,8 +237,8 @@ class EventSubscriptionsApi:
         """ # noqa: E501
 
         _param = self._create_event_subscription_serialize(
-            create_event_subscription_payload=create_event_subscription_payload,
             x_api_version=x_api_version,
+            create_event_subscription_payload=create_event_subscription_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -259,8 +259,8 @@ class EventSubscriptionsApi:
 
     def _create_event_subscription_serialize(
         self,
-        create_event_subscription_payload,
         x_api_version,
+        create_event_subscription_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -342,7 +342,7 @@ class EventSubscriptionsApi:
     def delete_event_subscription(
         self,
         subscription_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -362,7 +362,7 @@ class EventSubscriptionsApi:
 
         :param subscription_id: (required)
         :type subscription_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -415,7 +415,7 @@ class EventSubscriptionsApi:
     def delete_event_subscription_with_http_info(
         self,
         subscription_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -435,7 +435,7 @@ class EventSubscriptionsApi:
 
         :param subscription_id: (required)
         :type subscription_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -488,7 +488,7 @@ class EventSubscriptionsApi:
     def delete_event_subscription_without_preload_content(
         self,
         subscription_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -508,7 +508,7 @@ class EventSubscriptionsApi:
 
         :param subscription_id: (required)
         :type subscription_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -625,7 +625,7 @@ class EventSubscriptionsApi:
     def get_event_subscription(
         self,
         subscription_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -645,7 +645,7 @@ class EventSubscriptionsApi:
 
         :param subscription_id: (required)
         :type subscription_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -698,7 +698,7 @@ class EventSubscriptionsApi:
     def get_event_subscription_with_http_info(
         self,
         subscription_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -718,7 +718,7 @@ class EventSubscriptionsApi:
 
         :param subscription_id: (required)
         :type subscription_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -771,7 +771,7 @@ class EventSubscriptionsApi:
     def get_event_subscription_without_preload_content(
         self,
         subscription_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -791,7 +791,7 @@ class EventSubscriptionsApi:
 
         :param subscription_id: (required)
         :type subscription_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -907,7 +907,7 @@ class EventSubscriptionsApi:
     @validate_call
     def list_event_subscriptions(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -925,7 +925,7 @@ class EventSubscriptionsApi:
 
         Lists event subscriptions visible to the current project.  **Required permissions:** `workflow:read`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -976,7 +976,7 @@ class EventSubscriptionsApi:
     @validate_call
     def list_event_subscriptions_with_http_info(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -994,7 +994,7 @@ class EventSubscriptionsApi:
 
         Lists event subscriptions visible to the current project.  **Required permissions:** `workflow:read`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1045,7 +1045,7 @@ class EventSubscriptionsApi:
     @validate_call
     def list_event_subscriptions_without_preload_content(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1063,7 +1063,7 @@ class EventSubscriptionsApi:
 
         Lists event subscriptions visible to the current project.  **Required permissions:** `workflow:read`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1176,8 +1176,8 @@ class EventSubscriptionsApi:
     def update_event_subscription(
         self,
         subscription_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_event_subscription_payload: UpdateEventSubscriptionPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1197,10 +1197,10 @@ class EventSubscriptionsApi:
 
         :param subscription_id: (required)
         :type subscription_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param update_event_subscription_payload: (required)
         :type update_event_subscription_payload: UpdateEventSubscriptionPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1225,8 +1225,8 @@ class EventSubscriptionsApi:
 
         _param = self._update_event_subscription_serialize(
             subscription_id=subscription_id,
-            update_event_subscription_payload=update_event_subscription_payload,
             x_api_version=x_api_version,
+            update_event_subscription_payload=update_event_subscription_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1253,8 +1253,8 @@ class EventSubscriptionsApi:
     def update_event_subscription_with_http_info(
         self,
         subscription_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_event_subscription_payload: UpdateEventSubscriptionPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1274,10 +1274,10 @@ class EventSubscriptionsApi:
 
         :param subscription_id: (required)
         :type subscription_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param update_event_subscription_payload: (required)
         :type update_event_subscription_payload: UpdateEventSubscriptionPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1302,8 +1302,8 @@ class EventSubscriptionsApi:
 
         _param = self._update_event_subscription_serialize(
             subscription_id=subscription_id,
-            update_event_subscription_payload=update_event_subscription_payload,
             x_api_version=x_api_version,
+            update_event_subscription_payload=update_event_subscription_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1330,8 +1330,8 @@ class EventSubscriptionsApi:
     def update_event_subscription_without_preload_content(
         self,
         subscription_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_event_subscription_payload: UpdateEventSubscriptionPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1351,10 +1351,10 @@ class EventSubscriptionsApi:
 
         :param subscription_id: (required)
         :type subscription_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param update_event_subscription_payload: (required)
         :type update_event_subscription_payload: UpdateEventSubscriptionPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1379,8 +1379,8 @@ class EventSubscriptionsApi:
 
         _param = self._update_event_subscription_serialize(
             subscription_id=subscription_id,
-            update_event_subscription_payload=update_event_subscription_payload,
             x_api_version=x_api_version,
+            update_event_subscription_payload=update_event_subscription_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1402,8 +1402,8 @@ class EventSubscriptionsApi:
     def _update_event_subscription_serialize(
         self,
         subscription_id,
-        update_event_subscription_payload,
         x_api_version,
+        update_event_subscription_payload,
         _request_auth,
         _content_type,
         _headers,

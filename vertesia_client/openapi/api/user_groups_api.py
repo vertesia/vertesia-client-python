@@ -15,7 +15,7 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import Field, StrictFloat, StrictInt, StrictStr
+from pydantic import Field, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import List, Optional, Union
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.create_user_group_payload import CreateUserGroupPayload
@@ -46,7 +46,7 @@ class UserGroupsApi:
         self,
         group_id: StrictStr,
         user_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -68,7 +68,7 @@ class UserGroupsApi:
         :type group_id: str
         :param user_id: (required)
         :type user_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -123,7 +123,7 @@ class UserGroupsApi:
         self,
         group_id: StrictStr,
         user_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -145,7 +145,7 @@ class UserGroupsApi:
         :type group_id: str
         :param user_id: (required)
         :type user_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -200,7 +200,7 @@ class UserGroupsApi:
         self,
         group_id: StrictStr,
         user_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -222,7 +222,7 @@ class UserGroupsApi:
         :type group_id: str
         :param user_id: (required)
         :type user_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -342,8 +342,8 @@ class UserGroupsApi:
     @validate_call
     def create_user_group(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_user_group_payload: CreateUserGroupPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -361,10 +361,10 @@ class UserGroupsApi:
 
         Creates a new user group in the current account. Pass `allowed_projects` to restrict the group to specific projects (empty/absent = org-wide).  **Required permissions:** Any of `account:admin`, `account:group:manage`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param create_user_group_payload: (required)
         :type create_user_group_payload: CreateUserGroupPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -388,8 +388,8 @@ class UserGroupsApi:
         """ # noqa: E501
 
         _param = self._create_user_group_serialize(
-            create_user_group_payload=create_user_group_payload,
             x_api_version=x_api_version,
+            create_user_group_payload=create_user_group_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -415,8 +415,8 @@ class UserGroupsApi:
     @validate_call
     def create_user_group_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_user_group_payload: CreateUserGroupPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -434,10 +434,10 @@ class UserGroupsApi:
 
         Creates a new user group in the current account. Pass `allowed_projects` to restrict the group to specific projects (empty/absent = org-wide).  **Required permissions:** Any of `account:admin`, `account:group:manage`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param create_user_group_payload: (required)
         :type create_user_group_payload: CreateUserGroupPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -461,8 +461,8 @@ class UserGroupsApi:
         """ # noqa: E501
 
         _param = self._create_user_group_serialize(
-            create_user_group_payload=create_user_group_payload,
             x_api_version=x_api_version,
+            create_user_group_payload=create_user_group_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -488,8 +488,8 @@ class UserGroupsApi:
     @validate_call
     def create_user_group_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_user_group_payload: CreateUserGroupPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -507,10 +507,10 @@ class UserGroupsApi:
 
         Creates a new user group in the current account. Pass `allowed_projects` to restrict the group to specific projects (empty/absent = org-wide).  **Required permissions:** Any of `account:admin`, `account:group:manage`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param create_user_group_payload: (required)
         :type create_user_group_payload: CreateUserGroupPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -534,8 +534,8 @@ class UserGroupsApi:
         """ # noqa: E501
 
         _param = self._create_user_group_serialize(
-            create_user_group_payload=create_user_group_payload,
             x_api_version=x_api_version,
+            create_user_group_payload=create_user_group_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -556,8 +556,8 @@ class UserGroupsApi:
 
     def _create_user_group_serialize(
         self,
-        create_user_group_payload,
         x_api_version,
+        create_user_group_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -639,7 +639,7 @@ class UserGroupsApi:
     def get_user_group(
         self,
         group_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -659,7 +659,7 @@ class UserGroupsApi:
 
         :param group_id: (required)
         :type group_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -712,7 +712,7 @@ class UserGroupsApi:
     def get_user_group_with_http_info(
         self,
         group_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -732,7 +732,7 @@ class UserGroupsApi:
 
         :param group_id: (required)
         :type group_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -785,7 +785,7 @@ class UserGroupsApi:
     def get_user_group_without_preload_content(
         self,
         group_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -805,7 +805,7 @@ class UserGroupsApi:
 
         :param group_id: (required)
         :type group_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -922,7 +922,7 @@ class UserGroupsApi:
     def list_user_group_members(
         self,
         group_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -942,7 +942,7 @@ class UserGroupsApi:
 
         :param group_id: (required)
         :type group_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -995,7 +995,7 @@ class UserGroupsApi:
     def list_user_group_members_with_http_info(
         self,
         group_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1015,7 +1015,7 @@ class UserGroupsApi:
 
         :param group_id: (required)
         :type group_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1068,7 +1068,7 @@ class UserGroupsApi:
     def list_user_group_members_without_preload_content(
         self,
         group_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1088,7 +1088,7 @@ class UserGroupsApi:
 
         :param group_id: (required)
         :type group_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1204,12 +1204,12 @@ class UserGroupsApi:
     @validate_call
     def list_user_groups(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         search: Optional[StrictStr] = None,
         tags: Optional[List[StrictStr]] = None,
         limit: Optional[Union[StrictFloat, StrictInt]] = None,
         offset: Optional[Union[StrictFloat, StrictInt]] = None,
         project: Optional[StrictStr] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1227,6 +1227,8 @@ class UserGroupsApi:
 
         Lists user groups in the current account. Pass `project` to return only groups usable in that project (org-wide groups plus groups restricted to it).  **Required permissions:** Any of `account:read`, `account:group:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param search:
         :type search: str
         :param tags:
@@ -1237,8 +1239,6 @@ class UserGroupsApi:
         :type offset: float
         :param project:
         :type project: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1262,12 +1262,12 @@ class UserGroupsApi:
         """ # noqa: E501
 
         _param = self._list_user_groups_serialize(
+            x_api_version=x_api_version,
             search=search,
             tags=tags,
             limit=limit,
             offset=offset,
             project=project,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1293,12 +1293,12 @@ class UserGroupsApi:
     @validate_call
     def list_user_groups_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         search: Optional[StrictStr] = None,
         tags: Optional[List[StrictStr]] = None,
         limit: Optional[Union[StrictFloat, StrictInt]] = None,
         offset: Optional[Union[StrictFloat, StrictInt]] = None,
         project: Optional[StrictStr] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1316,6 +1316,8 @@ class UserGroupsApi:
 
         Lists user groups in the current account. Pass `project` to return only groups usable in that project (org-wide groups plus groups restricted to it).  **Required permissions:** Any of `account:read`, `account:group:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param search:
         :type search: str
         :param tags:
@@ -1326,8 +1328,6 @@ class UserGroupsApi:
         :type offset: float
         :param project:
         :type project: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1351,12 +1351,12 @@ class UserGroupsApi:
         """ # noqa: E501
 
         _param = self._list_user_groups_serialize(
+            x_api_version=x_api_version,
             search=search,
             tags=tags,
             limit=limit,
             offset=offset,
             project=project,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1382,12 +1382,12 @@ class UserGroupsApi:
     @validate_call
     def list_user_groups_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         search: Optional[StrictStr] = None,
         tags: Optional[List[StrictStr]] = None,
         limit: Optional[Union[StrictFloat, StrictInt]] = None,
         offset: Optional[Union[StrictFloat, StrictInt]] = None,
         project: Optional[StrictStr] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1405,6 +1405,8 @@ class UserGroupsApi:
 
         Lists user groups in the current account. Pass `project` to return only groups usable in that project (org-wide groups plus groups restricted to it).  **Required permissions:** Any of `account:read`, `account:group:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param search:
         :type search: str
         :param tags:
@@ -1415,8 +1417,6 @@ class UserGroupsApi:
         :type offset: float
         :param project:
         :type project: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1440,12 +1440,12 @@ class UserGroupsApi:
         """ # noqa: E501
 
         _param = self._list_user_groups_serialize(
+            x_api_version=x_api_version,
             search=search,
             tags=tags,
             limit=limit,
             offset=offset,
             project=project,
-            x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1466,12 +1466,12 @@ class UserGroupsApi:
 
     def _list_user_groups_serialize(
         self,
+        x_api_version,
         search,
         tags,
         limit,
         offset,
         project,
-        x_api_version,
         _request_auth,
         _content_type,
         _headers,
@@ -1560,7 +1560,7 @@ class UserGroupsApi:
         self,
         group_id: StrictStr,
         user_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1582,7 +1582,7 @@ class UserGroupsApi:
         :type group_id: str
         :param user_id: (required)
         :type user_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1637,7 +1637,7 @@ class UserGroupsApi:
         self,
         group_id: StrictStr,
         user_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1659,7 +1659,7 @@ class UserGroupsApi:
         :type group_id: str
         :param user_id: (required)
         :type user_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1714,7 +1714,7 @@ class UserGroupsApi:
         self,
         group_id: StrictStr,
         user_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1736,7 +1736,7 @@ class UserGroupsApi:
         :type group_id: str
         :param user_id: (required)
         :type user_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1856,7 +1856,7 @@ class UserGroupsApi:
     @validate_call
     def sync_members_user_group(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1874,7 +1874,7 @@ class UserGroupsApi:
 
         Synchronizes the built-in members group with current account membership.  **Required permissions:** Any of `account:admin`, `account:group:manage`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1925,7 +1925,7 @@ class UserGroupsApi:
     @validate_call
     def sync_members_user_group_with_http_info(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1943,7 +1943,7 @@ class UserGroupsApi:
 
         Synchronizes the built-in members group with current account membership.  **Required permissions:** Any of `account:admin`, `account:group:manage`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1994,7 +1994,7 @@ class UserGroupsApi:
     @validate_call
     def sync_members_user_group_without_preload_content(
         self,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2012,7 +2012,7 @@ class UserGroupsApi:
 
         Synchronizes the built-in members group with current account membership.  **Required permissions:** Any of `account:admin`, `account:group:manage`
 
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2125,8 +2125,8 @@ class UserGroupsApi:
     def update_user_group(
         self,
         group_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_user_group_payload: UpdateUserGroupPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2146,10 +2146,10 @@ class UserGroupsApi:
 
         :param group_id: (required)
         :type group_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param update_user_group_payload: (required)
         :type update_user_group_payload: UpdateUserGroupPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2174,8 +2174,8 @@ class UserGroupsApi:
 
         _param = self._update_user_group_serialize(
             group_id=group_id,
-            update_user_group_payload=update_user_group_payload,
             x_api_version=x_api_version,
+            update_user_group_payload=update_user_group_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2202,8 +2202,8 @@ class UserGroupsApi:
     def update_user_group_with_http_info(
         self,
         group_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_user_group_payload: UpdateUserGroupPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2223,10 +2223,10 @@ class UserGroupsApi:
 
         :param group_id: (required)
         :type group_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param update_user_group_payload: (required)
         :type update_user_group_payload: UpdateUserGroupPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2251,8 +2251,8 @@ class UserGroupsApi:
 
         _param = self._update_user_group_serialize(
             group_id=group_id,
-            update_user_group_payload=update_user_group_payload,
             x_api_version=x_api_version,
+            update_user_group_payload=update_user_group_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2279,8 +2279,8 @@ class UserGroupsApi:
     def update_user_group_without_preload_content(
         self,
         group_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_user_group_payload: UpdateUserGroupPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2300,10 +2300,10 @@ class UserGroupsApi:
 
         :param group_id: (required)
         :type group_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param update_user_group_payload: (required)
         :type update_user_group_payload: UpdateUserGroupPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2328,8 +2328,8 @@ class UserGroupsApi:
 
         _param = self._update_user_group_serialize(
             group_id=group_id,
-            update_user_group_payload=update_user_group_payload,
             x_api_version=x_api_version,
+            update_user_group_payload=update_user_group_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2351,8 +2351,8 @@ class UserGroupsApi:
     def _update_user_group_serialize(
         self,
         group_id,
-        update_user_group_payload,
         x_api_version,
+        update_user_group_payload,
         _request_auth,
         _content_type,
         _headers,

@@ -47,8 +47,8 @@ class APIKeysApi:
     @validate_call
     def create_api_key(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_api_key_payload: CreateApiKeyPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -66,10 +66,10 @@ class APIKeysApi:
 
         Creates a new API key and returns the raw key value once at creation time.  **Required permissions:** `api_key:create`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param create_api_key_payload: (required)
         :type create_api_key_payload: CreateApiKeyPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -93,8 +93,8 @@ class APIKeysApi:
         """ # noqa: E501
 
         _param = self._create_api_key_serialize(
-            create_api_key_payload=create_api_key_payload,
             x_api_version=x_api_version,
+            create_api_key_payload=create_api_key_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -120,8 +120,8 @@ class APIKeysApi:
     @validate_call
     def create_api_key_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_api_key_payload: CreateApiKeyPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -139,10 +139,10 @@ class APIKeysApi:
 
         Creates a new API key and returns the raw key value once at creation time.  **Required permissions:** `api_key:create`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param create_api_key_payload: (required)
         :type create_api_key_payload: CreateApiKeyPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -166,8 +166,8 @@ class APIKeysApi:
         """ # noqa: E501
 
         _param = self._create_api_key_serialize(
-            create_api_key_payload=create_api_key_payload,
             x_api_version=x_api_version,
+            create_api_key_payload=create_api_key_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -193,8 +193,8 @@ class APIKeysApi:
     @validate_call
     def create_api_key_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_api_key_payload: CreateApiKeyPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -212,10 +212,10 @@ class APIKeysApi:
 
         Creates a new API key and returns the raw key value once at creation time.  **Required permissions:** `api_key:create`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param create_api_key_payload: (required)
         :type create_api_key_payload: CreateApiKeyPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -239,8 +239,8 @@ class APIKeysApi:
         """ # noqa: E501
 
         _param = self._create_api_key_serialize(
-            create_api_key_payload=create_api_key_payload,
             x_api_version=x_api_version,
+            create_api_key_payload=create_api_key_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -261,8 +261,8 @@ class APIKeysApi:
 
     def _create_api_key_serialize(
         self,
-        create_api_key_payload,
         x_api_version,
+        create_api_key_payload,
         _request_auth,
         _content_type,
         _headers,
@@ -344,7 +344,7 @@ class APIKeysApi:
     def delete_api_key(
         self,
         key_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -364,7 +364,7 @@ class APIKeysApi:
 
         :param key_id: (required)
         :type key_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -417,7 +417,7 @@ class APIKeysApi:
     def delete_api_key_with_http_info(
         self,
         key_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -437,7 +437,7 @@ class APIKeysApi:
 
         :param key_id: (required)
         :type key_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -490,7 +490,7 @@ class APIKeysApi:
     def delete_api_key_without_preload_content(
         self,
         key_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -510,7 +510,7 @@ class APIKeysApi:
 
         :param key_id: (required)
         :type key_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -627,8 +627,8 @@ class APIKeysApi:
     def get_api_key(
         self,
         key_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         with_value: Optional[StrictBool] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -648,10 +648,10 @@ class APIKeysApi:
 
         :param key_id: (required)
         :type key_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param with_value:
         :type with_value: bool
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -676,8 +676,8 @@ class APIKeysApi:
 
         _param = self._get_api_key_serialize(
             key_id=key_id,
-            with_value=with_value,
             x_api_version=x_api_version,
+            with_value=with_value,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -704,8 +704,8 @@ class APIKeysApi:
     def get_api_key_with_http_info(
         self,
         key_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         with_value: Optional[StrictBool] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -725,10 +725,10 @@ class APIKeysApi:
 
         :param key_id: (required)
         :type key_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param with_value:
         :type with_value: bool
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -753,8 +753,8 @@ class APIKeysApi:
 
         _param = self._get_api_key_serialize(
             key_id=key_id,
-            with_value=with_value,
             x_api_version=x_api_version,
+            with_value=with_value,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -781,8 +781,8 @@ class APIKeysApi:
     def get_api_key_without_preload_content(
         self,
         key_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         with_value: Optional[StrictBool] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -802,10 +802,10 @@ class APIKeysApi:
 
         :param key_id: (required)
         :type key_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param with_value:
         :type with_value: bool
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -830,8 +830,8 @@ class APIKeysApi:
 
         _param = self._get_api_key_serialize(
             key_id=key_id,
-            with_value=with_value,
             x_api_version=x_api_version,
+            with_value=with_value,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -853,8 +853,8 @@ class APIKeysApi:
     def _get_api_key_serialize(
         self,
         key_id,
-        with_value,
         x_api_version,
+        with_value,
         _request_auth,
         _content_type,
         _headers,
@@ -927,7 +927,7 @@ class APIKeysApi:
     def get_api_key_token(
         self,
         key_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -947,7 +947,7 @@ class APIKeysApi:
 
         :param key_id: (required)
         :type key_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1000,7 +1000,7 @@ class APIKeysApi:
     def get_api_key_token_with_http_info(
         self,
         key_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1020,7 +1020,7 @@ class APIKeysApi:
 
         :param key_id: (required)
         :type key_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1073,7 +1073,7 @@ class APIKeysApi:
     def get_api_key_token_without_preload_content(
         self,
         key_id: StrictStr,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1093,7 +1093,7 @@ class APIKeysApi:
 
         :param key_id: (required)
         :type key_id: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1209,8 +1209,8 @@ class APIKeysApi:
     @validate_call
     def list_api_keys(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         level: Optional[StrictStr] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1228,10 +1228,10 @@ class APIKeysApi:
 
         Lists API keys for the current project or, for account administrators, across accessible projects in the account.  **Required permissions:** `api_key:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param level:
         :type level: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1255,8 +1255,8 @@ class APIKeysApi:
         """ # noqa: E501
 
         _param = self._list_api_keys_serialize(
-            level=level,
             x_api_version=x_api_version,
+            level=level,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1282,8 +1282,8 @@ class APIKeysApi:
     @validate_call
     def list_api_keys_with_http_info(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         level: Optional[StrictStr] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1301,10 +1301,10 @@ class APIKeysApi:
 
         Lists API keys for the current project or, for account administrators, across accessible projects in the account.  **Required permissions:** `api_key:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param level:
         :type level: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1328,8 +1328,8 @@ class APIKeysApi:
         """ # noqa: E501
 
         _param = self._list_api_keys_serialize(
-            level=level,
             x_api_version=x_api_version,
+            level=level,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1355,8 +1355,8 @@ class APIKeysApi:
     @validate_call
     def list_api_keys_without_preload_content(
         self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         level: Optional[StrictStr] = None,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1374,10 +1374,10 @@ class APIKeysApi:
 
         Lists API keys for the current project or, for account administrators, across accessible projects in the account.  **Required permissions:** `api_key:read`
 
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param level:
         :type level: str
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1401,8 +1401,8 @@ class APIKeysApi:
         """ # noqa: E501
 
         _param = self._list_api_keys_serialize(
-            level=level,
             x_api_version=x_api_version,
+            level=level,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1423,8 +1423,8 @@ class APIKeysApi:
 
     def _list_api_keys_serialize(
         self,
-        level,
         x_api_version,
+        level,
         _request_auth,
         _content_type,
         _headers,
@@ -1495,8 +1495,8 @@ class APIKeysApi:
     def update_api_key(
         self,
         key_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_api_key_payload: UpdateApiKeyPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1516,10 +1516,10 @@ class APIKeysApi:
 
         :param key_id: (required)
         :type key_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param update_api_key_payload: (required)
         :type update_api_key_payload: UpdateApiKeyPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1544,8 +1544,8 @@ class APIKeysApi:
 
         _param = self._update_api_key_serialize(
             key_id=key_id,
-            update_api_key_payload=update_api_key_payload,
             x_api_version=x_api_version,
+            update_api_key_payload=update_api_key_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1572,8 +1572,8 @@ class APIKeysApi:
     def update_api_key_with_http_info(
         self,
         key_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_api_key_payload: UpdateApiKeyPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1593,10 +1593,10 @@ class APIKeysApi:
 
         :param key_id: (required)
         :type key_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param update_api_key_payload: (required)
         :type update_api_key_payload: UpdateApiKeyPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1621,8 +1621,8 @@ class APIKeysApi:
 
         _param = self._update_api_key_serialize(
             key_id=key_id,
-            update_api_key_payload=update_api_key_payload,
             x_api_version=x_api_version,
+            update_api_key_payload=update_api_key_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1649,8 +1649,8 @@ class APIKeysApi:
     def update_api_key_without_preload_content(
         self,
         key_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_api_key_payload: UpdateApiKeyPayload,
-        x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1670,10 +1670,10 @@ class APIKeysApi:
 
         :param key_id: (required)
         :type key_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
         :param update_api_key_payload: (required)
         :type update_api_key_payload: UpdateApiKeyPayload
-        :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
-        :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1698,8 +1698,8 @@ class APIKeysApi:
 
         _param = self._update_api_key_serialize(
             key_id=key_id,
-            update_api_key_payload=update_api_key_payload,
             x_api_version=x_api_version,
+            update_api_key_payload=update_api_key_payload,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1721,8 +1721,8 @@ class APIKeysApi:
     def _update_api_key_serialize(
         self,
         key_id,
-        update_api_key_payload,
         x_api_version,
+        update_api_key_payload,
         _request_auth,
         _content_type,
         _headers,
