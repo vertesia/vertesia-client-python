@@ -29,7 +29,7 @@ class ImagenOptions(BaseModel):
     """
     ImagenOptions
     """ # noqa: E501
-    option_id: StrictStr = Field(alias="_option_id")
+    option_id: Optional[StrictStr] = Field(default=None, alias="_option_id")
     number_of_images: Optional[Union[StrictFloat, StrictInt]] = None
     seed: Optional[Union[StrictFloat, StrictInt]] = None
     person_generation: Optional[StrictStr] = None
@@ -53,6 +53,9 @@ class ImagenOptions(BaseModel):
     @field_validator('option_id')
     def option_id_validate_enum(cls, value):
         """Validates the enum"""
+        if value is None:
+            return value
+
         return value
 
     @field_validator('person_generation')

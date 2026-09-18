@@ -85,6 +85,7 @@ from vertesia_client.openapi.models.alter_table_operation_one_of3 import AlterTa
 from vertesia_client.openapi.models.alter_table_payload import AlterTablePayload
 from vertesia_client.openapi.models.analytics_axis import AnalyticsAxis
 from vertesia_client.openapi.models.answer_process_task_payload import AnswerProcessTaskPayload
+from vertesia_client.openapi.models.anthropic_claude_options import AnthropicClaudeOptions
 from vertesia_client.openapi.models.api_key import ApiKey
 from vertesia_client.openapi.models.api_key_read_response import ApiKeyReadResponse
 from vertesia_client.openapi.models.api_key_token_request import ApiKeyTokenRequest

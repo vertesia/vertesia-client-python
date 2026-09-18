@@ -28,7 +28,7 @@ class XAIGrokImageOptions(BaseModel):
     """
     XAIGrokImageOptions
     """ # noqa: E501
-    option_id: StrictStr = Field(alias="_option_id")
+    option_id: Optional[StrictStr] = Field(default=None, alias="_option_id")
     aspect_ratio: Optional[StrictStr] = None
     resolution: Optional[StrictStr] = None
     quality: Optional[StrictStr] = None
@@ -39,6 +39,9 @@ class XAIGrokImageOptions(BaseModel):
     @field_validator('option_id')
     def option_id_validate_enum(cls, value):
         """Validates the enum"""
+        if value is None:
+            return value
+
         return value
 
     @field_validator('aspect_ratio')

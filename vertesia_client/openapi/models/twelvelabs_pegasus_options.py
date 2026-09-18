@@ -28,7 +28,7 @@ class TwelvelabsPegasusOptions(BaseModel):
     """
     TwelvelabsPegasusOptions
     """ # noqa: E501
-    option_id: StrictStr = Field(alias="_option_id")
+    option_id: Optional[StrictStr] = Field(default=None, alias="_option_id")
     temperature: Optional[Union[StrictFloat, StrictInt]] = None
     max_tokens: Optional[Union[StrictFloat, StrictInt]] = None
     service_tier: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="Provider-defined processing tier. Unknown non-empty values are preserved for forward compatibility.")
@@ -37,6 +37,9 @@ class TwelvelabsPegasusOptions(BaseModel):
     @field_validator('option_id')
     def option_id_validate_enum(cls, value):
         """Validates the enum"""
+        if value is None:
+            return value
+
         return value
 
     model_config = ConfigDict(

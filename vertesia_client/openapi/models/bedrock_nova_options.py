@@ -28,18 +28,22 @@ class BedrockNovaOptions(BaseModel):
     """
     BedrockNovaOptions
     """ # noqa: E501
-    option_id: StrictStr = Field(alias="_option_id")
+    option_id: Optional[StrictStr] = Field(default=None, alias="_option_id")
     max_tokens: Optional[Union[StrictFloat, StrictInt]] = None
     temperature: Optional[Union[StrictFloat, StrictInt]] = None
     top_p: Optional[Union[StrictFloat, StrictInt]] = None
+    top_k: Optional[Union[StrictFloat, StrictInt]] = None
     stop_sequence: Optional[List[StrictStr]] = None
     include_thoughts: Optional[StrictBool] = None
     service_tier: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="Provider-defined processing tier. Unknown non-empty values are preserved for forward compatibility.")
-    __properties: ClassVar[List[str]] = ["_option_id", "max_tokens", "temperature", "top_p", "stop_sequence", "include_thoughts", "service_tier"]
+    __properties: ClassVar[List[str]] = ["_option_id", "max_tokens", "temperature", "top_p", "top_k", "stop_sequence", "include_thoughts", "service_tier"]
 
     @field_validator('option_id')
     def option_id_validate_enum(cls, value):
         """Validates the enum"""
+        if value is None:
+            return value
+
         return value
 
     model_config = ConfigDict(
@@ -97,6 +101,7 @@ class BedrockNovaOptions(BaseModel):
             "max_tokens": obj.get("max_tokens"),
             "temperature": obj.get("temperature"),
             "top_p": obj.get("top_p"),
+            "top_k": obj.get("top_k"),
             "stop_sequence": obj.get("stop_sequence"),
             "include_thoughts": obj.get("include_thoughts"),
             "service_tier": obj.get("service_tier")

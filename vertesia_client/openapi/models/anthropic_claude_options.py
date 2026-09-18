@@ -19,29 +19,45 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
-from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class BedrockCohereCommandOptions(BaseModel):
+class AnthropicClaudeOptions(BaseModel):
     """
-    BedrockCohereCommandOptions
+    AnthropicClaudeOptions
     """ # noqa: E501
     option_id: Optional[StrictStr] = Field(default=None, alias="_option_id")
     max_tokens: Optional[Union[StrictFloat, StrictInt]] = None
     temperature: Optional[Union[StrictFloat, StrictInt]] = None
     top_p: Optional[Union[StrictFloat, StrictInt]] = None
     top_k: Optional[Union[StrictFloat, StrictInt]] = None
-    presence_penalty: Optional[Union[StrictFloat, StrictInt]] = None
-    frequency_penalty: Optional[Union[StrictFloat, StrictInt]] = None
     stop_sequence: Optional[List[StrictStr]] = None
+    effort: Optional[StrictStr] = None
+    thinking_budget_tokens: Optional[Union[StrictFloat, StrictInt]] = None
     include_thoughts: Optional[StrictBool] = None
-    service_tier: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="Provider-defined processing tier. Unknown non-empty values are preserved for forward compatibility.")
-    __properties: ClassVar[List[str]] = ["_option_id", "max_tokens", "temperature", "top_p", "top_k", "presence_penalty", "frequency_penalty", "stop_sequence", "include_thoughts", "service_tier"]
+    cache_enabled: Optional[StrictBool] = None
+    cache_ttl: Optional[StrictStr] = None
+    __properties: ClassVar[List[str]] = ["_option_id", "max_tokens", "temperature", "top_p", "top_k", "stop_sequence", "effort", "thinking_budget_tokens", "include_thoughts", "cache_enabled", "cache_ttl"]
 
     @field_validator('option_id')
     def option_id_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        return value
+
+    @field_validator('effort')
+    def effort_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        return value
+
+    @field_validator('cache_ttl')
+    def cache_ttl_validate_enum(cls, value):
         """Validates the enum"""
         if value is None:
             return value
@@ -66,7 +82,7 @@ class BedrockCohereCommandOptions(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of BedrockCohereCommandOptions from a JSON string"""
+        """Create an instance of AnthropicClaudeOptions from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -91,7 +107,7 @@ class BedrockCohereCommandOptions(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of BedrockCohereCommandOptions from a dict"""
+        """Create an instance of AnthropicClaudeOptions from a dict"""
         if obj is None:
             return None
 
@@ -104,11 +120,12 @@ class BedrockCohereCommandOptions(BaseModel):
             "temperature": obj.get("temperature"),
             "top_p": obj.get("top_p"),
             "top_k": obj.get("top_k"),
-            "presence_penalty": obj.get("presence_penalty"),
-            "frequency_penalty": obj.get("frequency_penalty"),
             "stop_sequence": obj.get("stop_sequence"),
+            "effort": obj.get("effort"),
+            "thinking_budget_tokens": obj.get("thinking_budget_tokens"),
             "include_thoughts": obj.get("include_thoughts"),
-            "service_tier": obj.get("service_tier")
+            "cache_enabled": obj.get("cache_enabled"),
+            "cache_ttl": obj.get("cache_ttl")
         })
         return _obj
 

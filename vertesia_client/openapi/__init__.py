@@ -144,6 +144,7 @@ __all__ = [
     "AlterTablePayload",
     "AnalyticsAxis",
     "AnswerProcessTaskPayload",
+    "AnthropicClaudeOptions",
     "ApiKey",
     "ApiKeyReadResponse",
     "ApiKeyTokenRequest",
@@ -1315,6 +1316,7 @@ from vertesia_client.openapi.models.alter_table_operation_one_of3 import AlterTa
 from vertesia_client.openapi.models.alter_table_payload import AlterTablePayload as AlterTablePayload
 from vertesia_client.openapi.models.analytics_axis import AnalyticsAxis as AnalyticsAxis
 from vertesia_client.openapi.models.answer_process_task_payload import AnswerProcessTaskPayload as AnswerProcessTaskPayload
+from vertesia_client.openapi.models.anthropic_claude_options import AnthropicClaudeOptions as AnthropicClaudeOptions
 from vertesia_client.openapi.models.api_key import ApiKey as ApiKey
 from vertesia_client.openapi.models.api_key_read_response import ApiKeyReadResponse as ApiKeyReadResponse
 from vertesia_client.openapi.models.api_key_token_request import ApiKeyTokenRequest as ApiKeyTokenRequest

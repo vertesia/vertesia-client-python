@@ -27,7 +27,7 @@ class NovaCanvasOptions(BaseModel):
     """
     NovaCanvasOptions
     """ # noqa: E501
-    option_id: StrictStr = Field(alias="_option_id")
+    option_id: Optional[StrictStr] = Field(default=None, alias="_option_id")
     task_type: StrictStr = Field(alias="taskType")
     width: Optional[Union[StrictFloat, StrictInt]] = None
     height: Optional[Union[StrictFloat, StrictInt]] = None
@@ -45,6 +45,9 @@ class NovaCanvasOptions(BaseModel):
     @field_validator('option_id')
     def option_id_validate_enum(cls, value):
         """Validates the enum"""
+        if value is None:
+            return value
+
         return value
 
     @field_validator('task_type')

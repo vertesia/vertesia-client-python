@@ -41,7 +41,7 @@ class OpenRouterTextOptions(BaseModel):
     image_detail: Optional[StrictStr] = None
     include_thoughts: Optional[StrictBool] = None
     service_tier: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="Provider-defined processing tier. Unknown non-empty values are preserved for forward compatibility.")
-    option_id: StrictStr = Field(alias="_option_id")
+    option_id: Optional[StrictStr] = Field(default=None, alias="_option_id")
     provider_sort: Optional[StrictStr] = None
     provider_order: Optional[List[StrictStr]] = None
     provider_only: Optional[List[StrictStr]] = None
@@ -72,6 +72,9 @@ class OpenRouterTextOptions(BaseModel):
     @field_validator('option_id')
     def option_id_validate_enum(cls, value):
         """Validates the enum"""
+        if value is None:
+            return value
+
         return value
 
     @field_validator('provider_sort')
