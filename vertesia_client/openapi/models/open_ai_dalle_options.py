@@ -27,7 +27,7 @@ class OpenAiDalleOptions(BaseModel):
     """
     OpenAiDalleOptions
     """ # noqa: E501
-    option_id: StrictStr = Field(alias="_option_id")
+    option_id: Optional[StrictStr] = Field(default=None, alias="_option_id")
     size: Optional[StrictStr] = None
     image_quality: Optional[StrictStr] = None
     style: Optional[StrictStr] = None
@@ -38,6 +38,9 @@ class OpenAiDalleOptions(BaseModel):
     @field_validator('option_id')
     def option_id_validate_enum(cls, value):
         """Validates the enum"""
+        if value is None:
+            return value
+
         return value
 
     @field_validator('size')

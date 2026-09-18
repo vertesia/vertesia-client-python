@@ -1763,6 +1763,44 @@ components:
         - task_id
         - result
       additionalProperties: false
+    AnthropicClaudeOptions:
+      type: object
+      properties:
+        _option_id:
+          type: string
+          const: anthropic-claude
+        max_tokens:
+          type: number
+        temperature:
+          type: number
+        top_p:
+          type: number
+        top_k:
+          type: number
+        stop_sequence:
+          type: array
+          items:
+            type: string
+        effort:
+          type: string
+          enum:
+            - low
+            - medium
+            - high
+            - xhigh
+            - max
+        thinking_budget_tokens:
+          type: number
+        include_thoughts:
+          type: boolean
+        cache_enabled:
+          type: boolean
+        cache_ttl:
+          type: string
+          enum:
+            - 5m
+            - 1h
+      additionalProperties: false
     ApiKey:
       type: object
       properties:
@@ -4882,8 +4920,6 @@ components:
             - auto
         include_thoughts:
           type: boolean
-      required:
-        - _option_id
       additionalProperties: false
     BatchQueryPayload:
       type: object
@@ -4960,6 +4996,10 @@ components:
           type: number
         top_p:
           type: number
+        presence_penalty:
+          type: number
+        frequency_penalty:
+          type: number
         stop_sequence:
           type: array
           items:
@@ -4971,8 +5011,6 @@ components:
           minLength: 1
           description: Provider-defined processing tier. Unknown non-empty values are
             preserved for forward compatibility.
-      required:
-        - _option_id
       additionalProperties: false
     BedrockClaudeOptions:
       type: object
@@ -5016,8 +5054,6 @@ components:
           minLength: 1
           description: Provider-defined processing tier. Unknown non-empty values are
             preserved for forward compatibility.
-      required:
-        - _option_id
       additionalProperties: false
     BedrockCohereCommandOptions:
       type: object
@@ -5031,6 +5067,12 @@ components:
           type: number
         top_p:
           type: number
+        top_k:
+          type: number
+        presence_penalty:
+          type: number
+        frequency_penalty:
+          type: number
         stop_sequence:
           type: array
           items:
@@ -5042,8 +5084,6 @@ components:
           minLength: 1
           description: Provider-defined processing tier. Unknown non-empty values are
             preserved for forward compatibility.
-      required:
-        - _option_id
       additionalProperties: false
     BedrockConverseOptions:
       type: object
@@ -5068,8 +5108,6 @@ components:
           minLength: 1
           description: Provider-defined processing tier. Unknown non-empty values are
             preserved for forward compatibility.
-      required:
-        - _option_id
       additionalProperties: false
     BedrockGptOssOptions:
       type: object
@@ -5102,8 +5140,6 @@ components:
           minLength: 1
           description: Provider-defined processing tier. Unknown non-empty values are
             preserved for forward compatibility.
-      required:
-        - _option_id
       additionalProperties: false
     BedrockMantleChatCompletionsOptions:
       type: object
@@ -5135,8 +5171,6 @@ components:
             - high
         include_thoughts:
           type: boolean
-      required:
-        - _option_id
       additionalProperties: false
     BedrockMantleClaudeOptions:
       type: object
@@ -5175,8 +5209,6 @@ components:
           enum:
             - 5m
             - 1h
-      required:
-        - _option_id
       additionalProperties: false
     BedrockMantleResponsesOptions:
       type: object
@@ -5198,6 +5230,7 @@ components:
             - medium
             - high
             - xhigh
+            - max
         reasoning_effort:
           type: string
           enum:
@@ -5206,6 +5239,7 @@ components:
             - medium
             - high
             - xhigh
+            - max
         verbosity:
           type: string
           enum:
@@ -5220,8 +5254,6 @@ components:
             - auto
         include_thoughts:
           type: boolean
-      required:
-        - _option_id
       additionalProperties: false
     BedrockMistralOptions:
       type: object
@@ -5235,6 +5267,8 @@ components:
           type: number
         top_p:
           type: number
+        top_k:
+          type: number
         stop_sequence:
           type: array
           items:
@@ -5246,8 +5280,6 @@ components:
           minLength: 1
           description: Provider-defined processing tier. Unknown non-empty values are
             preserved for forward compatibility.
-      required:
-        - _option_id
       additionalProperties: false
     BedrockNovaOptions:
       type: object
@@ -5261,6 +5293,8 @@ components:
           type: number
         top_p:
           type: number
+        top_k:
+          type: number
         stop_sequence:
           type: array
           items:
@@ -5272,8 +5306,6 @@ components:
           minLength: 1
           description: Provider-defined processing tier. Unknown non-empty values are
             preserved for forward compatibility.
-      required:
-        - _option_id
       additionalProperties: false
     BedrockPalmyraOptions:
       type: object
@@ -5304,8 +5336,6 @@ components:
           minLength: 1
           description: Provider-defined processing tier. Unknown non-empty values are
             preserved for forward compatibility.
-      required:
-        - _option_id
       additionalProperties: false
     BillingMethod:
       type: string
@@ -14259,7 +14289,6 @@ components:
             - raw
             - hidden
       required:
-        - _option_id
         - reasoning_format
       additionalProperties: false
     GroundedAssistantResponse:
@@ -14579,6 +14608,7 @@ components:
             - dont_allow
             - allow_adults
             - allow_all
+            - allow_adult
         safety_setting:
           type: string
           enum:
@@ -14634,8 +14664,6 @@ components:
             - SUBJECT_TYPE_ANIMAL
             - SUBJECT_TYPE_PRODUCT
             - SUBJECT_TYPE_DEFAULT
-      required:
-        - _option_id
       additionalProperties: false
     ImagenTaskType:
       type: string
@@ -16921,8 +16949,6 @@ components:
           const: reasoning
         include_thoughts:
           type: boolean
-      required:
-        - _option_id
       additionalProperties: false
     Modalities:
       type: string
@@ -16954,7 +16980,7 @@ components:
       additionalProperties: false
       description: Environment and model pair for a default configuration.
     ModelOptions:
-      oneOf:
+      anyOf:
         - $ref: "#/components/schemas/TextFallbackOptions"
         - $ref: "#/components/schemas/AzureFoundryChatOptions"
         - $ref: "#/components/schemas/ImagenOptions"
@@ -16982,39 +17008,8 @@ components:
         - $ref: "#/components/schemas/XAIGrokImageOptions"
         - $ref: "#/components/schemas/GroqOptions"
         - $ref: "#/components/schemas/MistralTextOptions"
-      discriminator:
-        propertyName: _option_id
-        mapping:
-          text-fallback: "#/components/schemas/TextFallbackOptions"
-          azure-foundry-chat: "#/components/schemas/AzureFoundryChatOptions"
-          vertexai-imagen: "#/components/schemas/ImagenOptions"
-          vertexai-claude: "#/components/schemas/VertexAIClaudeOptions"
-          vertexai-gemini: "#/components/schemas/VertexAIGeminiOptions"
-          vertexai-gemini-omni-video: "#/components/schemas/VertexAIGeminiOmniVideoOptions"
-          vertexai-grok: "#/components/schemas/VertexAIGrokOptions"
-          bedrock-nova-canvas: "#/components/schemas/NovaCanvasOptions"
-          bedrock-converse: "#/components/schemas/BedrockConverseOptions"
-          bedrock-nova: "#/components/schemas/BedrockNovaOptions"
-          bedrock-mistral: "#/components/schemas/BedrockMistralOptions"
-          bedrock-ai21: "#/components/schemas/BedrockAI21Options"
-          bedrock-cohere-command: "#/components/schemas/BedrockCohereCommandOptions"
-          bedrock-claude: "#/components/schemas/BedrockClaudeOptions"
-          bedrock-palmyra: "#/components/schemas/BedrockPalmyraOptions"
-          bedrock-gpt-oss: "#/components/schemas/BedrockGptOssOptions"
-          bedrock-twelvelabs-pegasus: "#/components/schemas/TwelvelabsPegasusOptions"
-          bedrock-mantle-responses: "#/components/schemas/BedrockMantleResponsesOptions"
-          bedrock-mantle-chat-completions: "#/components/schemas/BedrockMantleChatCompletionsOptions"
-          bedrock-mantle-claude: "#/components/schemas/BedrockMantleClaudeOptions"
-          openai-thinking: "#/components/schemas/OpenAiThinkingOptions"
-          openai-text: "#/components/schemas/OpenAiTextOptions"
-          openai-dalle: "#/components/schemas/OpenAiDalleOptions"
-          openai-gpt-image: "#/components/schemas/OpenAiGptImageOptions"
-          xai-grok-image: "#/components/schemas/XAIGrokImageOptions"
-          groq-deepseek-thinking: "#/components/schemas/GroqOptions"
-          mistral-text: "#/components/schemas/MistralTextOptions"
+        - $ref: "#/components/schemas/AnthropicClaudeOptions"
       type: object
-      required:
-        - _option_id
     ModelPriceComparison:
       type: object
       properties:
@@ -17406,7 +17401,6 @@ components:
             - DEFAULT
             - PRECISE
       required:
-        - _option_id
         - taskType
       additionalProperties: false
     NumberValueMap:
@@ -17974,8 +17968,6 @@ components:
             - b64_json
         n:
           type: number
-      required:
-        - _option_id
       additionalProperties: false
     OpenAiGptImageOptions:
       type: object
@@ -18009,8 +18001,6 @@ components:
             - png
             - webp
             - jpeg
-      required:
-        - _option_id
       additionalProperties: false
     OpenAiTextOptions:
       type: object
@@ -18054,8 +18044,6 @@ components:
           additionalProperties: true
           description: Additional provider-specific fields merged into the
             OpenAI-compatible request body.
-      required:
-        - _option_id
       additionalProperties: false
     OpenAiThinkingOptions:
       type: object
@@ -18091,8 +18079,6 @@ components:
           additionalProperties: true
           description: Additional provider-specific fields merged into the
             OpenAI-compatible request body.
-      required:
-        - _option_id
       additionalProperties: false
     ParallelCollectDefinition:
       type: object
@@ -23138,8 +23124,6 @@ components:
             type: string
         include_thoughts:
           type: boolean
-      required:
-        - _option_id
       additionalProperties: false
     TextResult:
       type: object
@@ -23608,8 +23592,6 @@ components:
           minLength: 1
           description: Provider-defined processing tier. Unknown non-empty values are
             preserved for forward compatibility.
-      required:
-        - _option_id
       additionalProperties: false
     UpdateAccountPayload:
       type: object
@@ -25283,8 +25265,6 @@ components:
           enum:
             - 5m
             - 1h
-      required:
-        - _option_id
       additionalProperties: false
     VertexAIGeminiOmniVideoOptions:
       type: object
@@ -25316,8 +25296,6 @@ components:
             - 720p
             - 1080p
             - 4k
-      required:
-        - _option_id
       additionalProperties: false
     VertexAIGeminiOptions:
       type: object
@@ -25402,8 +25380,6 @@ components:
             - image/jpeg
         output_compression_quality:
           type: number
-      required:
-        - _option_id
       additionalProperties: false
     VertexAIGrokOptions:
       type: object
@@ -25421,8 +25397,6 @@ components:
           type: array
           items:
             type: string
-      required:
-        - _option_id
       additionalProperties: false
     VideoResult:
       type: object
@@ -27831,8 +27805,6 @@ components:
           type: integer
           minimum: 1
           maximum: 10
-      required:
-        - _option_id
       additionalProperties: false
     dynamicScalingTypes:
       type: string

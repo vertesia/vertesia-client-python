@@ -23,9 +23,9 @@ from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class BedrockMantleClaudeOptions(BaseModel):
+class AnthropicClaudeOptions(BaseModel):
     """
-    BedrockMantleClaudeOptions
+    AnthropicClaudeOptions
     """ # noqa: E501
     option_id: Optional[StrictStr] = Field(default=None, alias="_option_id")
     max_tokens: Optional[Union[StrictFloat, StrictInt]] = None
@@ -82,7 +82,7 @@ class BedrockMantleClaudeOptions(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of BedrockMantleClaudeOptions from a JSON string"""
+        """Create an instance of AnthropicClaudeOptions from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -107,7 +107,7 @@ class BedrockMantleClaudeOptions(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of BedrockMantleClaudeOptions from a dict"""
+        """Create an instance of AnthropicClaudeOptions from a dict"""
         if obj is None:
             return None
 

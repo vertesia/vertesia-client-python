@@ -29,7 +29,7 @@ class OpenAiThinkingOptions(BaseModel):
     """
     OpenAiThinkingOptions
     """ # noqa: E501
-    option_id: StrictStr = Field(alias="_option_id")
+    option_id: Optional[StrictStr] = Field(default=None, alias="_option_id")
     max_tokens: Optional[Union[StrictFloat, StrictInt]] = None
     stop_sequence: Optional[List[StrictStr]] = None
     effort: Optional[ReasoningEffort] = None
@@ -44,6 +44,9 @@ class OpenAiThinkingOptions(BaseModel):
     @field_validator('option_id')
     def option_id_validate_enum(cls, value):
         """Validates the enum"""
+        if value is None:
+            return value
+
         return value
 
     @field_validator('image_detail')

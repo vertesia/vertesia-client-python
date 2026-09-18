@@ -28,7 +28,7 @@ class BedrockConverseOptions(BaseModel):
     """
     BedrockConverseOptions
     """ # noqa: E501
-    option_id: StrictStr = Field(alias="_option_id")
+    option_id: Optional[StrictStr] = Field(default=None, alias="_option_id")
     max_tokens: Optional[Union[StrictFloat, StrictInt]] = None
     temperature: Optional[Union[StrictFloat, StrictInt]] = None
     top_p: Optional[Union[StrictFloat, StrictInt]] = None
@@ -40,6 +40,9 @@ class BedrockConverseOptions(BaseModel):
     @field_validator('option_id')
     def option_id_validate_enum(cls, value):
         """Validates the enum"""
+        if value is None:
+            return value
+
         return value
 
     model_config = ConfigDict(

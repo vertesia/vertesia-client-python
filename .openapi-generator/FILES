@@ -106,6 +106,7 @@ vertesia_client/openapi/models/alter_table_operation_one_of3.py
 vertesia_client/openapi/models/alter_table_payload.py
 vertesia_client/openapi/models/analytics_axis.py
 vertesia_client/openapi/models/answer_process_task_payload.py
+vertesia_client/openapi/models/anthropic_claude_options.py
 vertesia_client/openapi/models/api_key.py
 vertesia_client/openapi/models/api_key_read_response.py
 vertesia_client/openapi/models/api_key_token_request.py
