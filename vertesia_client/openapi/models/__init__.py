@@ -413,6 +413,7 @@ from vertesia_client.openapi.models.elasticsearch_backend import ElasticsearchBa
 from vertesia_client.openapi.models.email_channel import EmailChannel
 from vertesia_client.openapi.models.email_route_response import EmailRouteResponse
 from vertesia_client.openapi.models.embedding import Embedding
+from vertesia_client.openapi.models.embedding_batch_run_summary import EmbeddingBatchRunSummary
 from vertesia_client.openapi.models.embedding_output import EmbeddingOutput
 from vertesia_client.openapi.models.embedding_result_item import EmbeddingResultItem
 from vertesia_client.openapi.models.embedding_task_type import EmbeddingTaskType

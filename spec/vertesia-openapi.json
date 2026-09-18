@@ -14943,6 +14943,71 @@
         ],
         "additionalProperties": false
       },
+      "EmbeddingBatchRunSummary": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "preparing",
+              "submitted",
+              "running",
+              "applying",
+              "completed",
+              "completed_with_errors",
+              "cancelled",
+              "stale",
+              "failed"
+            ]
+          },
+          "model": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "completed_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "applied": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "skipped": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "failed": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "stale": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "id",
+          "state",
+          "model",
+          "created_at",
+          "applied",
+          "skipped",
+          "failed",
+          "stale"
+        ],
+        "additionalProperties": false,
+        "description": "Latest batch run for this embedding type, without provider payloads or input content."
+      },
       "EmbeddingMap": {
         "type": "object",
         "additionalProperties": {
@@ -15252,6 +15317,9 @@
           },
           "embeddingRunsInProgress": {
             "type": "number"
+          },
+          "latestBatchRun": {
+            "$ref": "#/components/schemas/EmbeddingBatchRunSummary"
           },
           "totalIndexableObjects": {
             "type": "number"
@@ -17365,6 +17433,9 @@
         "type": "object",
         "properties": {
           "bucket": {
+            "type": "string"
+          },
+          "location": {
             "type": "string"
           }
         },
@@ -59590,7 +59661,7 @@
           "Commands"
         ],
         "summary": "Recalculate embeddings",
-        "description": "Queues recalculation workflows for objects that are missing or have stale embeddings for the selected embedding type.\n\n**Required permissions:** `project:admin`",
+        "description": "Queues recalculation for missing or outdated embeddings, or all eligible objects with force=true. Uses batch inference when supported unless mode=sync is specified. Token limits still apply and existing renditions are reused.\n\n**Required permissions:** `project:admin`",
         "security": [
           {
             "bearerAuth": []
@@ -59607,6 +59678,27 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "mode",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "const": "sync",
+              "description": "Force synchronous per-object recalculation. When omitted, batch inference is used when supported."
+            },
+            "description": "Force synchronous per-object recalculation. When omitted, batch inference is used when supported."
+          },
+          {
+            "name": "force",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Recalculate all eligible objects, including current embeddings. Token limits still apply; existing renditions are reused."
+            },
+            "description": "Recalculate all eligible objects, including current embeddings. Token limits still apply; existing renditions are reused."
           }
         ],
         "responses": {

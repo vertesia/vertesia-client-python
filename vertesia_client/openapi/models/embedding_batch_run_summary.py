@@ -17,19 +17,33 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr
+from datetime import datetime
+from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, Optional
+from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class FileBucketResponse(BaseModel):
+class EmbeddingBatchRunSummary(BaseModel):
     """
-    FileBucketResponse
+    Latest batch run for this embedding type, without provider payloads or input content.
     """ # noqa: E501
-    bucket: StrictStr
-    location: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["bucket", "location"]
+    id: StrictStr
+    state: StrictStr
+    model: StrictStr
+    created_at: datetime
+    completed_at: Optional[datetime] = None
+    applied: Annotated[int, Field(le=9007199254740991, strict=True, ge=0)]
+    skipped: Annotated[int, Field(le=9007199254740991, strict=True, ge=0)]
+    failed: Annotated[int, Field(le=9007199254740991, strict=True, ge=0)]
+    stale: Annotated[int, Field(le=9007199254740991, strict=True, ge=0)]
+    __properties: ClassVar[List[str]] = ["id", "state", "model", "created_at", "completed_at", "applied", "skipped", "failed", "stale"]
+
+    @field_validator('state')
+    def state_validate_enum(cls, value):
+        """Validates the enum"""
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -49,7 +63,7 @@ class FileBucketResponse(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of FileBucketResponse from a JSON string"""
+        """Create an instance of EmbeddingBatchRunSummary from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -74,7 +88,7 @@ class FileBucketResponse(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of FileBucketResponse from a dict"""
+        """Create an instance of EmbeddingBatchRunSummary from a dict"""
         if obj is None:
             return None
 
@@ -82,8 +96,15 @@ class FileBucketResponse(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "bucket": obj.get("bucket"),
-            "location": obj.get("location")
+            "id": obj.get("id"),
+            "state": obj.get("state"),
+            "model": obj.get("model"),
+            "created_at": obj.get("created_at"),
+            "completed_at": obj.get("completed_at"),
+            "applied": obj.get("applied"),
+            "skipped": obj.get("skipped"),
+            "failed": obj.get("failed"),
+            "stale": obj.get("stale")
         })
         return _obj
 

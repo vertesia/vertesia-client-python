@@ -448,6 +448,7 @@ vertesia_client/openapi/models/elasticsearch_backend.py
 vertesia_client/openapi/models/email_channel.py
 vertesia_client/openapi/models/email_route_response.py
 vertesia_client/openapi/models/embedding.py
+vertesia_client/openapi/models/embedding_batch_run_summary.py
 vertesia_client/openapi/models/embedding_output.py
 vertesia_client/openapi/models/embedding_result_item.py
 vertesia_client/openapi/models/embedding_task_type.py

@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from vertesia_client.openapi.models.embedding_batch_run_summary import EmbeddingBatchRunSummary
 from vertesia_client.openapi.models.embeddings_status_response_vector_index import EmbeddingsStatusResponseVectorIndex
 from typing import Optional, Set
 from typing_extensions import Self
@@ -30,12 +31,13 @@ class EmbeddingsStatusResponse(BaseModel):
     """ # noqa: E501
     status: StrictStr
     embedding_runs_in_progress: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, alias="embeddingRunsInProgress")
+    latest_batch_run: Optional[EmbeddingBatchRunSummary] = Field(default=None, alias="latestBatchRun")
     total_indexable_objects: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, alias="totalIndexableObjects")
     embeddings_models: Optional[List[StrictStr]] = Field(default=None, alias="embeddingsModels")
     objects_with_embeddings: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, alias="objectsWithEmbeddings")
     vector_index: EmbeddingsStatusResponseVectorIndex = Field(alias="vectorIndex")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["status", "embeddingRunsInProgress", "totalIndexableObjects", "embeddingsModels", "objectsWithEmbeddings", "vectorIndex"]
+    __properties: ClassVar[List[str]] = ["status", "embeddingRunsInProgress", "latestBatchRun", "totalIndexableObjects", "embeddingsModels", "objectsWithEmbeddings", "vectorIndex"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -78,6 +80,9 @@ class EmbeddingsStatusResponse(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of latest_batch_run
+        if self.latest_batch_run:
+            _dict['latestBatchRun'] = self.latest_batch_run.to_dict()
         # override the default output from pydantic by calling `to_dict()` of vector_index
         if self.vector_index:
             _dict['vectorIndex'] = self.vector_index.to_dict()
@@ -100,6 +105,7 @@ class EmbeddingsStatusResponse(BaseModel):
         _obj = cls.model_validate({
             "status": obj.get("status"),
             "embeddingRunsInProgress": obj.get("embeddingRunsInProgress"),
+            "latestBatchRun": EmbeddingBatchRunSummary.from_dict(obj["latestBatchRun"]) if obj.get("latestBatchRun") is not None else None,
             "totalIndexableObjects": obj.get("totalIndexableObjects"),
             "embeddingsModels": obj.get("embeddingsModels"),
             "objectsWithEmbeddings": obj.get("objectsWithEmbeddings"),

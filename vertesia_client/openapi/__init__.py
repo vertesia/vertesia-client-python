@@ -470,6 +470,7 @@ __all__ = [
     "EmailChannel",
     "EmailRouteResponse",
     "Embedding",
+    "EmbeddingBatchRunSummary",
     "EmbeddingOutput",
     "EmbeddingResultItem",
     "EmbeddingTaskType",
@@ -1609,6 +1610,7 @@ from vertesia_client.openapi.models.elasticsearch_backend import ElasticsearchBa
 from vertesia_client.openapi.models.email_channel import EmailChannel as EmailChannel
 from vertesia_client.openapi.models.email_route_response import EmailRouteResponse as EmailRouteResponse
 from vertesia_client.openapi.models.embedding import Embedding as Embedding
+from vertesia_client.openapi.models.embedding_batch_run_summary import EmbeddingBatchRunSummary as EmbeddingBatchRunSummary
 from vertesia_client.openapi.models.embedding_output import EmbeddingOutput as EmbeddingOutput
 from vertesia_client.openapi.models.embedding_result_item import EmbeddingResultItem as EmbeddingResultItem
 from vertesia_client.openapi.models.embedding_task_type import EmbeddingTaskType as EmbeddingTaskType
