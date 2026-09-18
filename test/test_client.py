@@ -4,9 +4,13 @@ import threading
 import time
 import unittest
 from http.server import BaseHTTPRequestHandler, HTTPServer
+from types import SimpleNamespace
 
+from pydantic import StrictStr, ValidationError, validate_call
+
+from scripts.patch_forward_compat_enums import patch_client_headers
 from vertesia_client import Client, ClientOptions, VertesiaClientError
-from vertesia_client.client import DEFAULT_API_VERSION
+from vertesia_client.client import DEFAULT_API_VERSION, _bind_api_version
 from vertesia_client.openapi.models.complex_search_payload import ComplexSearchPayload
 
 
@@ -277,6 +281,51 @@ class ClientTest(unittest.TestCase):
     def test_options_dataclass(self):
         client = Client(ClientOptions(region="us1", token="token"))
         self.assertEqual(client.studio_url, "https://api.us1.vertesia.io/api/v1")
+
+
+class APIVersionBindingTest(unittest.TestCase):
+    def test_required_version_is_bound_before_validation_and_preserves_payload(self):
+        class API:
+            api_client = SimpleNamespace(default_headers={"x-api-version": "20260918"})
+
+            @validate_call
+            def request(self, x_api_version: StrictStr, payload: StrictStr):
+                return x_api_version, payload
+
+        api = _bind_api_version(API())
+        self.assertEqual(api.request("payload"), ("20260918", "payload"))
+        self.assertEqual(api.request(payload="body", x_api_version="20260101"), ("20260101", "body"))
+        with self.assertRaises(ValidationError):
+            api.request("payload", x_api_version=123)
+        with self.assertRaises(ValidationError):
+            api.request()
+
+    def test_methods_without_version_remain_unchanged(self):
+        class API:
+            def request(self, payload):
+                return payload
+
+        api = API()
+        original = api.request
+        _bind_api_version(api)
+        self.assertEqual(api.request, original)
+        self.assertEqual(api.request("payload"), "payload")
+
+
+class HeaderDefaultsPatchTest(unittest.TestCase):
+    def test_explicit_headers_win_case_insensitively_and_patch_is_idempotent(self):
+        source = "        header_params.update(self.default_headers)"
+        patched = patch_client_headers(source)
+        self.assertEqual(patch_client_headers(patched), patched)
+        headers = {"X-Api-Version": "20260101"}
+        namespace = {
+            "self": SimpleNamespace(default_headers={"x-api-version": "20260918", "User-Agent": "client"}),
+            "header_params": headers,
+        }
+        import textwrap
+
+        exec(textwrap.dedent(patched), namespace)
+        self.assertEqual(headers, {"X-Api-Version": "20260101", "User-Agent": "client"})
 
 
 if __name__ == "__main__":

@@ -164,3 +164,7 @@ fields do not break older clients. Unknown enum values are accepted for forward
 compatibility as well: standalone generated enum classes preserve the raw
 unknown value, and inline enum validators do not reject values that already
 match the underlying JSON type.
+
+### Generated API version headers
+
+The high-level client supplies required generated `x_api_version` arguments from its configured API version before validation, including calls with positional payloads. A per-call `x_api_version` keyword overrides that default. Raw generated clients still require the declared arguments.

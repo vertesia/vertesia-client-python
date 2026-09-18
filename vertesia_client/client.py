@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import base64
+import inspect
 import json
 import threading
 import time
@@ -8,6 +9,7 @@ import urllib.error
 import urllib.parse
 import urllib.request
 from dataclasses import dataclass
+from functools import wraps
 from typing import Any
 
 from vertesia_client.openapi.api.access_control_entries_api import AccessControlEntriesApi
@@ -174,6 +176,31 @@ class _TokenSourceConfiguration(Configuration):
         }
 
 
+def _bind_api_version(api: Any) -> Any:
+    """Supply generated version arguments before validation, preserving facade positional arguments."""
+    for name, method in inspect.getmembers(api, inspect.ismethod):
+        if name.startswith("_"):
+            continue
+        signature = inspect.signature(method)
+        if "x_api_version" not in signature.parameters:
+            continue
+        facade_signature = signature.replace(
+            parameters=[p for p in signature.parameters.values() if p.name != "x_api_version"]
+        )
+
+        def bind(method: Any, signature: inspect.Signature) -> Any:
+            @wraps(method)
+            def call(*args: Any, **kwargs: Any) -> Any:
+                version = kwargs.pop("x_api_version", api.api_client.default_headers.get("x-api-version"))
+                arguments = signature.bind_partial(*args, **kwargs).arguments
+                return method(**arguments, x_api_version=version)
+
+            return call
+
+        setattr(api, name, bind(method, facade_signature))
+    return api
+
+
 class GeneratedAPIGroup:
     """Convenience container for generated API classes bound to one base URL."""
 
@@ -215,6 +242,10 @@ class GeneratedAPIGroup:
         self.workflow_rules = WorkflowRulesApi(self.api_client)
         self.workflow_runs = WorkflowRunsApi(self.api_client)
 
+        for api in vars(self).values():
+            if api is not self.api_client:
+                _bind_api_version(api)
+
 
 class Client:
     """High-level Vertesia client facade over the generated OpenAPI client."""
@@ -235,7 +266,9 @@ class Client:
 
         self.studio = GeneratedAPIGroup(endpoints.studio_url, token_source, api_version)
         self.store = GeneratedAPIGroup(endpoints.store_url, token_source, api_version)
-        self.token_service = TokenServiceApi(_new_api_client(endpoints.token_server_url, token_source, api_version))
+        self.token_service = _bind_api_version(
+            TokenServiceApi(_new_api_client(endpoints.token_server_url, token_source, api_version))
+        )
 
         self.access_control_entries = self.studio.access_control_entries
         self.accounts = self.studio.accounts

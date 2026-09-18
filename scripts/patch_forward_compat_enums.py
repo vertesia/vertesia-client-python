@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Patch generated Python enum handling for forward-compatible responses."""
+"""Patch generated Python enum handling and per-request header precedence."""
 
 from __future__ import annotations
 
@@ -40,7 +40,18 @@ def patch_inline_enum_validators(text: str) -> str:
     return INLINE_ENUM_VALIDATOR_RE.sub(r"\n\g<indent>return value", text)
 
 
+def patch_client_headers(text: str) -> str:
+    return text.replace(
+        "        header_params.update(self.default_headers)",
+        "        for name, value in self.default_headers.items():\n"
+        "            if not any(key.lower() == name.lower() for key in header_params):\n"
+        "                header_params[name] = value",
+    )
+
+
 def main() -> None:
+    client = ROOT / "vertesia_client" / "openapi" / "api_client.py"
+    client.write_text(patch_client_headers(client.read_text()))
     changed = 0
     for path in sorted(MODELS_DIR.glob("*.py")):
         original = path.read_text()
