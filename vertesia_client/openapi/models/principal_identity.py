@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing import Optional, Set
 from typing_extensions import Self
@@ -25,16 +25,22 @@ from pydantic_core import to_jsonable_python
 
 class PrincipalIdentity(BaseModel):
     """
-    Response shape of the `/iam/users/identity` endpoint: the current principal's  {@link  PrincipalContext }  plus its id. Distinct from `PrincipalContext` itself because the id is identity metadata, not a merged BLP field — adding it to `PrincipalContext` would unintentionally expose `$principal.id` to PrincipalSet rule evaluation.
+    Response shape of the `/iam/users/identity` endpoint: the current principal's full ABAC context — its `kind` (always `user` here), `id`, and the merged BLP attributes a rule can reference through `$principal.*`.
     """ # noqa: E501
+    kind: StrictStr
+    id: StrictStr
     clearance: Union[StrictFloat, StrictInt]
     compartments: List[StrictStr]
     email: Optional[StrictStr] = None
     tags: List[StrictStr]
     properties: Optional[Dict[str, Any]]
-    id: StrictStr
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["clearance", "compartments", "email", "tags", "properties", "id"]
+    __properties: ClassVar[List[str]] = ["kind", "id", "clearance", "compartments", "email", "tags", "properties"]
+
+    @field_validator('kind')
+    def kind_validate_enum(cls, value):
+        """Validates the enum"""
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -99,12 +105,13 @@ class PrincipalIdentity(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "kind": obj.get("kind"),
+            "id": obj.get("id"),
             "clearance": obj.get("clearance"),
             "compartments": obj.get("compartments"),
             "email": obj.get("email"),
             "tags": obj.get("tags"),
-            "properties": obj.get("properties"),
-            "id": obj.get("id")
+            "properties": obj.get("properties")
         })
         # store additional fields in additional_properties
         for _key in obj.keys():
