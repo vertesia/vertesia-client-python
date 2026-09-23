@@ -22,6 +22,7 @@ from typing import Any, ClassVar, Dict, List, Optional, Union
 from vertesia_client.openapi.models.collection_status import CollectionStatus
 from vertesia_client.openapi.models.column_layout import ColumnLayout
 from vertesia_client.openapi.models.content_object_type_ref import ContentObjectTypeRef
+from vertesia_client.openapi.models.content_object_user_permissions import ContentObjectUserPermissions
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -51,8 +52,9 @@ class Collection(BaseModel):
     sensitivity: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="BLP sensitivity level — propagated to member documents (max across collections)")
     compartments: Optional[List[StrictStr]] = Field(default=None, description="Compartments — propagated to member documents (union across collections)")
     shared_properties: Optional[List[StrictStr]] = Field(default=None, description="List of property names from the collection's properties that should be shared with (injected into) member objects. These properties will be propagated to all members of this collection and merged as arrays.")
+    user_permissions: Optional[ContentObjectUserPermissions] = Field(default=None, description="Computed per-request permissions for the current user on this collection. Not stored — computed on the fly from the collection's security field (same semantics as a content object's user_permissions).")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["id", "name", "description", "tags", "updated_by", "created_by", "created_at", "updated_at", "dynamic", "status", "type", "skip_head_sync", "parents", "table_layout", "allowed_types", "properties", "query", "security", "sensitivity", "compartments", "shared_properties"]
+    __properties: ClassVar[List[str]] = ["id", "name", "description", "tags", "updated_by", "created_by", "created_at", "updated_at", "dynamic", "status", "type", "skip_head_sync", "parents", "table_layout", "allowed_types", "properties", "query", "security", "sensitivity", "compartments", "shared_properties", "user_permissions"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -105,6 +107,9 @@ class Collection(BaseModel):
                 if _item_table_layout:
                     _items.append(_item_table_layout.to_dict())
             _dict['table_layout'] = _items
+        # override the default output from pydantic by calling `to_dict()` of user_permissions
+        if self.user_permissions:
+            _dict['user_permissions'] = self.user_permissions.to_dict()
         # puts key-value pairs in additional_properties in the top level
         if self.additional_properties is not None:
             for _key, _value in self.additional_properties.items():
@@ -157,7 +162,8 @@ class Collection(BaseModel):
             "security": obj.get("security"),
             "sensitivity": obj.get("sensitivity"),
             "compartments": obj.get("compartments"),
-            "shared_properties": obj.get("shared_properties")
+            "shared_properties": obj.get("shared_properties"),
+            "user_permissions": ContentObjectUserPermissions.from_dict(obj["user_permissions"]) if obj.get("user_permissions") is not None else None
         })
         # store additional fields in additional_properties
         for _key in obj.keys():

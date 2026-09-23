@@ -6555,6 +6555,12 @@ components:
             be shared with (injected into) member objects. These properties will
             be propagated to all members of this collection and merged as
             arrays.
+        user_permissions:
+          $ref: "#/components/schemas/ContentObjectUserPermissions"
+          description: Computed per-request permissions for the current user on this
+            collection. Not stored — computed on the fly from the collection's
+            security field (same semantics as a content object's
+            user_permissions).
       required:
         - id
         - name
@@ -50325,16 +50331,11 @@ paths:
       tags:
         - Objects
       summary: Update a content object
-      description: >-
-        Updates a content object, optionally creating a new revision and
+      description: Updates a content object, optionally creating a new revision and
         triggering downstream indexing and processing workflows.
-
-
-        **Required permissions:** `content:write`
       security:
         - bearerAuth: []
-        - OAuth2:
-            - content:write
+        - OAuth2: []
       parameters:
         - name: objectId
           in: path
@@ -50422,8 +50423,7 @@ paths:
                 error: Bad Request
                 status: 400
                 message: Request validation failed.
-      x-vertesia-permissions:
-        - content:write
+      x-vertesia-permissions: []
       x-vertesia-source:
         file: ../../apps/zeno-server/src/api/objects.ts
         className: ContentObjectResource
@@ -50439,16 +50439,11 @@ paths:
       tags:
         - Objects
       summary: Delete a content object
-      description: >-
-        Deletes a content object. Deleting a head revision deletes the whole
-        revision set visible to the caller.
-
-
-        **Required permissions:** `content:delete`
+      description: Deletes a content object. Deleting a head revision deletes the
+        whole revision set visible to the caller.
       security:
         - bearerAuth: []
-        - OAuth2:
-            - content:delete
+        - OAuth2: []
       parameters:
         - name: objectId
           in: path
@@ -50482,8 +50477,7 @@ paths:
                 error: Bad Request
                 status: 400
                 message: Request validation failed.
-      x-vertesia-permissions:
-        - content:delete
+      x-vertesia-permissions: []
       x-vertesia-source:
         file: ../../apps/zeno-server/src/api/objects.ts
         className: ContentObjectResource
@@ -50808,14 +50802,10 @@ paths:
       tags:
         - Objects
       summary: Set content object embeddings
-      description: |-
-        Stores embeddings for a specific embedding type on a content object.
-
-        **Required permissions:** `content:write`
+      description: Stores embeddings for a specific embedding type on a content object.
       security:
         - bearerAuth: []
-        - OAuth2:
-            - content:write
+        - OAuth2: []
       parameters:
         - name: objectId
           in: path
@@ -50854,8 +50844,7 @@ paths:
                 error: Bad Request
                 status: 400
                 message: Request validation failed.
-      x-vertesia-permissions:
-        - content:write
+      x-vertesia-permissions: []
       x-vertesia-source:
         file: ../../apps/zeno-server/src/api/objects.ts
         className: ContentObjectResource
@@ -56083,16 +56072,11 @@ paths:
       tags:
         - Collections
       summary: Update a collection
-      description: >-
-        Updates a collection, including shared properties and content type
+      description: Updates a collection, including shared properties and content type
         settings.
-
-
-        **Required permissions:** `content:write`
       security:
         - bearerAuth: []
-        - OAuth2:
-            - content:write
+        - OAuth2: []
       parameters:
         - name: collectionId
           in: path
@@ -56126,8 +56110,7 @@ paths:
                 error: Bad Request
                 status: 400
                 message: Request validation failed.
-      x-vertesia-permissions:
-        - content:write
+      x-vertesia-permissions: []
       x-vertesia-source:
         file: ../../apps/zeno-server/src/api/collections.ts
         className: CollectionResource
@@ -56143,14 +56126,10 @@ paths:
       tags:
         - Collections
       summary: Delete a collection
-      description: |-
-        Deletes a collection after verifying delete permission.
-
-        **Required permissions:** `content:delete`
+      description: Deletes a collection after verifying delete permission.
       security:
         - bearerAuth: []
-        - OAuth2:
-            - content:delete
+        - OAuth2: []
       parameters:
         - name: collectionId
           in: path
@@ -56184,8 +56163,7 @@ paths:
                 error: Bad Request
                 status: 400
                 message: Request validation failed.
-      x-vertesia-permissions:
-        - content:delete
+      x-vertesia-permissions: []
       x-vertesia-source:
         file: ../../apps/zeno-server/src/api/collections.ts
         className: CollectionResource
@@ -56280,14 +56258,10 @@ paths:
       tags:
         - Collections
       summary: Update collection members
-      description: |-
-        Adds or removes content objects from a static collection.
-
-        **Required permissions:** `content:write`
+      description: Adds or removes content objects from a static collection.
       security:
         - bearerAuth: []
-        - OAuth2:
-            - content:write
+        - OAuth2: []
       parameters:
         - name: collectionId
           in: path
@@ -56321,8 +56295,7 @@ paths:
                 error: Bad Request
                 status: 400
                 message: Request validation failed.
-      x-vertesia-permissions:
-        - content:write
+      x-vertesia-permissions: []
       x-vertesia-source:
         file: ../../apps/zeno-server/src/api/collections.ts
         className: CollectionResource
@@ -56778,14 +56751,10 @@ paths:
       tags:
         - Collections
       summary: Update child collections
-      description: |-
-        Adds or removes child collections from a parent collection.
-
-        **Required permissions:** `content:write`
+      description: Adds or removes child collections from a parent collection.
       security:
         - bearerAuth: []
-        - OAuth2:
-            - content:write
+        - OAuth2: []
       parameters:
         - name: collectionId
           in: path
@@ -56819,8 +56788,7 @@ paths:
                 error: Bad Request
                 status: 400
                 message: Request validation failed.
-      x-vertesia-permissions:
-        - content:write
+      x-vertesia-permissions: []
       x-vertesia-source:
         file: ../../apps/zeno-server/src/api/collections.ts
         className: CollectionResource

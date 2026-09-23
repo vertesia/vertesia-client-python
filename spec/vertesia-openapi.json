@@ -8146,6 +8146,10 @@
               "type": "string"
             },
             "description": "List of property names from the collection's properties that should be shared with (injected into) member objects. These properties will be propagated to all members of this collection and merged as arrays."
+          },
+          "user_permissions": {
+            "$ref": "#/components/schemas/ContentObjectUserPermissions",
+            "description": "Computed per-request permissions for the current user on this collection. Not stored — computed on the fly from the collection's security field (same semantics as a content object's user_permissions)."
           }
         },
         "required": [
@@ -68269,15 +68273,13 @@
           "Objects"
         ],
         "summary": "Update a content object",
-        "description": "Updates a content object, optionally creating a new revision and triggering downstream indexing and processing workflows.\n\n**Required permissions:** `content:write`",
+        "description": "Updates a content object, optionally creating a new revision and triggering downstream indexing and processing workflows.",
         "security": [
           {
             "bearerAuth": []
           },
           {
-            "OAuth2": [
-              "content:write"
-            ]
+            "OAuth2": []
           }
         ],
         "parameters": [
@@ -68405,9 +68407,7 @@
             }
           }
         },
-        "x-vertesia-permissions": [
-          "content:write"
-        ],
+        "x-vertesia-permissions": [],
         "x-vertesia-source": {
           "file": "../../apps/zeno-server/src/api/objects.ts",
           "className": "ContentObjectResource",
@@ -68430,15 +68430,13 @@
           "Objects"
         ],
         "summary": "Delete a content object",
-        "description": "Deletes a content object. Deleting a head revision deletes the whole revision set visible to the caller.\n\n**Required permissions:** `content:delete`",
+        "description": "Deletes a content object. Deleting a head revision deletes the whole revision set visible to the caller.",
         "security": [
           {
             "bearerAuth": []
           },
           {
-            "OAuth2": [
-              "content:delete"
-            ]
+            "OAuth2": []
           }
         ],
         "parameters": [
@@ -68493,9 +68491,7 @@
             }
           }
         },
-        "x-vertesia-permissions": [
-          "content:delete"
-        ],
+        "x-vertesia-permissions": [],
         "x-vertesia-source": {
           "file": "../../apps/zeno-server/src/api/objects.ts",
           "className": "ContentObjectResource",
@@ -68965,15 +68961,13 @@
           "Objects"
         ],
         "summary": "Set content object embeddings",
-        "description": "Stores embeddings for a specific embedding type on a content object.\n\n**Required permissions:** `content:write`",
+        "description": "Stores embeddings for a specific embedding type on a content object.",
         "security": [
           {
             "bearerAuth": []
           },
           {
-            "OAuth2": [
-              "content:write"
-            ]
+            "OAuth2": []
           }
         ],
         "parameters": [
@@ -69036,9 +69030,7 @@
             }
           }
         },
-        "x-vertesia-permissions": [
-          "content:write"
-        ],
+        "x-vertesia-permissions": [],
         "x-vertesia-source": {
           "file": "../../apps/zeno-server/src/api/objects.ts",
           "className": "ContentObjectResource",
@@ -76646,15 +76638,13 @@
           "Collections"
         ],
         "summary": "Update a collection",
-        "description": "Updates a collection, including shared properties and content type settings.\n\n**Required permissions:** `content:write`",
+        "description": "Updates a collection, including shared properties and content type settings.",
         "security": [
           {
             "bearerAuth": []
           },
           {
-            "OAuth2": [
-              "content:write"
-            ]
+            "OAuth2": []
           }
         ],
         "parameters": [
@@ -76709,9 +76699,7 @@
             }
           }
         },
-        "x-vertesia-permissions": [
-          "content:write"
-        ],
+        "x-vertesia-permissions": [],
         "x-vertesia-source": {
           "file": "../../apps/zeno-server/src/api/collections.ts",
           "className": "CollectionResource",
@@ -76734,15 +76722,13 @@
           "Collections"
         ],
         "summary": "Delete a collection",
-        "description": "Deletes a collection after verifying delete permission.\n\n**Required permissions:** `content:delete`",
+        "description": "Deletes a collection after verifying delete permission.",
         "security": [
           {
             "bearerAuth": []
           },
           {
-            "OAuth2": [
-              "content:delete"
-            ]
+            "OAuth2": []
           }
         ],
         "parameters": [
@@ -76797,9 +76783,7 @@
             }
           }
         },
-        "x-vertesia-permissions": [
-          "content:delete"
-        ],
+        "x-vertesia-permissions": [],
         "x-vertesia-source": {
           "file": "../../apps/zeno-server/src/api/collections.ts",
           "className": "CollectionResource",
@@ -76939,15 +76923,13 @@
           "Collections"
         ],
         "summary": "Update collection members",
-        "description": "Adds or removes content objects from a static collection.\n\n**Required permissions:** `content:write`",
+        "description": "Adds or removes content objects from a static collection.",
         "security": [
           {
             "bearerAuth": []
           },
           {
-            "OAuth2": [
-              "content:write"
-            ]
+            "OAuth2": []
           }
         ],
         "parameters": [
@@ -77002,9 +76984,7 @@
             }
           }
         },
-        "x-vertesia-permissions": [
-          "content:write"
-        ],
+        "x-vertesia-permissions": [],
         "x-vertesia-source": {
           "file": "../../apps/zeno-server/src/api/collections.ts",
           "className": "CollectionResource",
@@ -77672,15 +77652,13 @@
           "Collections"
         ],
         "summary": "Update child collections",
-        "description": "Adds or removes child collections from a parent collection.\n\n**Required permissions:** `content:write`",
+        "description": "Adds or removes child collections from a parent collection.",
         "security": [
           {
             "bearerAuth": []
           },
           {
-            "OAuth2": [
-              "content:write"
-            ]
+            "OAuth2": []
           }
         ],
         "parameters": [
@@ -77735,9 +77713,7 @@
             }
           }
         },
-        "x-vertesia-permissions": [
-          "content:write"
-        ],
+        "x-vertesia-permissions": [],
         "x-vertesia-source": {
           "file": "../../apps/zeno-server/src/api/collections.ts",
           "className": "CollectionResource",
