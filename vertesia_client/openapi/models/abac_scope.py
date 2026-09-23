@@ -28,6 +28,7 @@ class AbacScope(str, Enum):
     """
     DOCUMENT = 'document'
     COLLECTION = 'collection'
+    AGENT_RUN = 'agent_run'
     TASK = 'task'
 
     @classmethod

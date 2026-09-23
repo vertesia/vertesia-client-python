@@ -30,7 +30,7 @@ class AceConditions(BaseModel):
     """ # noqa: E501
     principal_props: Optional[Dict[str, Any]] = Field(default=None, description="Property conditions matched against user/group properties at token time (PrincipalSet).")
     resource_props: Optional[Dict[str, Any]] = Field(default=None, description="Property conditions matched against object properties at query time (ResourceSet).")
-    scope: Optional[AbacScope] = Field(default=None, description="Kind of object the `resource_props` matches. Used to disambiguate which partition's roles apply (e.g. content roles vs task roles) and to form the JWT `content_security` key prefix (`{scope}:{verb}`). Absent → `'document'` (default; emits bare `read`/`write`/`delete` keys for backward compatibility).")
+    scope: Optional[AbacScope] = Field(default=None, description="Kind of object the `resource_props` matches. Used to disambiguate which partition's roles apply (e.g. content roles vs agent-run roles) and to form the JWT `content_security` key prefix (`{scope}:{verb}`). Absent → `'document'` (default; emits bare `read`/`write`/`delete` keys for backward compatibility).")
     __properties: ClassVar[List[str]] = ["principal_props", "resource_props", "scope"]
 
     model_config = ConfigDict(

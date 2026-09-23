@@ -20,7 +20,7 @@ from typing_extensions import Self
 
 class RoleDomain(str, Enum):
     """
-    Logical grouping of roles by the service area that owns them. One domain may declare roles applicable to multiple scopes (e.g. the `content` domain owns roles applicable to both `document` and `collection` scopes). The `system` domain owns the built-in foundational roles (currently exposed as `SystemRoles`) — registered first so domain partitions cannot shadow them.
+    Logical grouping of roles by the service area that owns them. One domain may declare roles applicable to multiple scopes (e.g. the `content` domain owns roles applicable to both `document` and `collection` scopes, while `agent_runs` owns the `agent_run` scope). The `system` domain owns the built-in foundational roles (currently exposed as `SystemRoles`) — registered first so domain partitions cannot shadow them.
     """
 
     """
@@ -28,6 +28,7 @@ class RoleDomain(str, Enum):
     """
     SYSTEM = 'system'
     CONTENT = 'content'
+    AGENT_RUNS = 'agent_runs'
     TASKS = 'tasks'
 
     @classmethod
