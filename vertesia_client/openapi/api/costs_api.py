@@ -374,8 +374,7 @@ class CostsApi:
 
         # authentication setting
         _auth_settings: List[str] = [
-            'bearerAuth', 
-            'OpenID'
+            'bearerAuth'
         ]
 
         return self.api_client.param_serialize(
@@ -670,8 +669,7 @@ class CostsApi:
 
         # authentication setting
         _auth_settings: List[str] = [
-            'bearerAuth', 
-            'OpenID'
+            'bearerAuth'
         ]
 
         return self.api_client.param_serialize(
@@ -972,8 +970,7 @@ class CostsApi:
 
         # authentication setting
         _auth_settings: List[str] = [
-            'bearerAuth', 
-            'OpenID'
+            'bearerAuth'
         ]
 
         return self.api_client.param_serialize(
@@ -1268,8 +1265,7 @@ class CostsApi:
 
         # authentication setting
         _auth_settings: List[str] = [
-            'bearerAuth', 
-            'OpenID'
+            'bearerAuth'
         ]
 
         return self.api_client.param_serialize(

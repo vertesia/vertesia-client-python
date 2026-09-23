@@ -112,6 +112,7 @@ AuthSettings = TypedDict(
     "AuthSettings",
     {
         "bearerAuth": BearerAuthSetting,
+        "OAuth2": OAuth2AuthSetting,
     },
     total=False,
 )
@@ -518,6 +519,13 @@ class Configuration:
         if self.access_token is not None:
             auth['bearerAuth'] = {
                 'type': 'bearer',
+                'in': 'header',
+                'key': 'Authorization',
+                'value': 'Bearer ' + self.access_token
+            }
+        if self.access_token is not None:
+            auth['OAuth2'] = {
+                'type': 'oauth2',
                 'in': 'header',
                 'key': 'Authorization',
                 'value': 'Bearer ' + self.access_token

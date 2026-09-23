@@ -35,9 +35,50 @@ components:
     bearerAuth:
       type: http
       scheme: bearer
-    OpenID:
-      type: openIdConnect
-      openIdConnectUrl: https://api.us1.vertesia.io/.well-known/openid-configuration
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://cloud.us1.vertesia.io/oauth/authorize
+          tokenUrl: https://sts.vertesia.io/oauth/token
+          x-scalar-security-query:
+            resource: https://api.us1.vertesia.io/api/v1
+          x-scalar-security-body:
+            resource: https://api.us1.vertesia.io/api/v1
+          scopes:
+            openid: ""
+            profile: ""
+            offline_access: ""
+            interaction:read: ""
+            interaction:write: ""
+            interaction:delete: ""
+            interaction:execute: ""
+            run:read: ""
+            run:write: ""
+            environment:admin: ""
+            app:manage: ""
+            project:admin: ""
+            project:integration_read: ""
+            project:settings_write: ""
+            api_key:read: ""
+            account:read: ""
+            account:write: ""
+            account:admin: ""
+            audit:read: ""
+            account:member: ""
+            content:read: ""
+            content:read_all: ""
+            content:write: ""
+            content:delete: ""
+            content:admin: ""
+            content:superadmin: ""
+            workflow:read: ""
+            workflow:run: ""
+            workflow:admin: ""
+            workflow:superadmin: ""
+            agent_run:read: ""
+            task:read: ""
+            task:manage: ""
   schemas:
     ACECreatePayload:
       type: object
@@ -27832,7 +27873,7 @@ paths:
       description: Lists projects visible to the current principal.
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2: []
       parameters:
         - name: account
           in: query
@@ -27884,7 +27925,8 @@ paths:
         **Required permissions:** `account:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:admin
       parameters: []
       responses:
         "200":
@@ -27944,7 +27986,7 @@ paths:
       description: Retrieves a project by ID.
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2: []
       parameters:
         - name: projectId
           in: path
@@ -27994,7 +28036,8 @@ paths:
         **Required permissions:** `project:settings_write`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - project:settings_write
       parameters:
         - name: projectId
           in: path
@@ -28048,7 +28091,7 @@ paths:
       description: Deletes a project.
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2: []
       parameters:
         - name: projectId
           in: path
@@ -28109,7 +28152,8 @@ paths:
         **Required permissions:** `project:settings_write`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - project:settings_write
       parameters:
         - name: projectId
           in: path
@@ -28174,7 +28218,7 @@ paths:
       description: Retrieves configuration for a project integration.
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2: []
       parameters:
         - name: projectId
           in: path
@@ -28229,7 +28273,8 @@ paths:
         **Required permissions:** `project:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - project:admin
       parameters:
         - name: projectId
           in: path
@@ -28299,7 +28344,7 @@ paths:
       description: Lists integrations available for the project.
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2: []
       parameters:
         - name: projectId
           in: path
@@ -28360,7 +28405,8 @@ paths:
         **Required permissions:** `project:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - project:admin
       parameters:
         - name: projectId
           in: path
@@ -28414,7 +28460,7 @@ paths:
       description: Lists plugins enabled for the project.
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2: []
       parameters:
         - name: projectId
           in: path
@@ -28472,7 +28518,7 @@ paths:
       description: Lists tools available in the project.
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2: []
       parameters:
         - name: projectId
           in: path
@@ -28530,7 +28576,7 @@ paths:
       description: Retrieves a project tool by name.
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2: []
       parameters:
         - name: projectId
           in: path
@@ -28593,7 +28639,7 @@ paths:
       description: Lists content types contributed by installed apps in the project.
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2: []
       parameters:
         - name: projectId
           in: path
@@ -28656,7 +28702,7 @@ paths:
       description: Retrieves a content type contributed by an installed app.
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2: []
       parameters:
         - name: projectId
           in: path
@@ -28719,7 +28765,7 @@ paths:
       description: Lists rendering templates contributed by installed apps in the project.
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2: []
       parameters:
         - name: projectId
           in: path
@@ -28782,7 +28828,7 @@ paths:
       description: Retrieves a rendering template contributed by an installed app.
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2: []
       parameters:
         - name: projectId
           in: path
@@ -28845,7 +28891,7 @@ paths:
       description: Lists process definitions contributed by installed apps in the project.
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2: []
       parameters:
         - name: projectId
           in: path
@@ -28908,7 +28954,7 @@ paths:
       description: Retrieves a process definition contributed by an installed app.
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2: []
       parameters:
         - name: projectId
           in: path
@@ -28972,7 +29018,7 @@ paths:
         the project.
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2: []
       parameters:
         - name: projectId
           in: path
@@ -29035,7 +29081,7 @@ paths:
       description: Retrieves a View Experience definition contributed by an installed app.
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2: []
       parameters:
         - name: projectId
           in: path
@@ -29098,7 +29144,7 @@ paths:
       description: Retrieves the composite app configuration for the project.
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2: []
       parameters:
         - name: projectId
           in: path
@@ -29148,7 +29194,8 @@ paths:
         **Required permissions:** `account:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:admin
       parameters:
         - name: projectId
           in: path
@@ -29221,7 +29268,8 @@ paths:
         **Required permissions:** `account:member`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:member
       parameters:
         - name: all
           in: query
@@ -29275,7 +29323,8 @@ paths:
         **Required permissions:** `environment:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - environment:admin
       parameters: []
       responses:
         "200":
@@ -29340,7 +29389,8 @@ paths:
         **Required permissions:** `environment:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - environment:admin
       parameters:
         - name: envId
           in: path
@@ -29389,7 +29439,7 @@ paths:
         never returned in raw form.
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2: []
       parameters:
         - name: envId
           in: path
@@ -29442,7 +29492,8 @@ paths:
         **Required permissions:** `environment:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - environment:admin
       parameters:
         - name: envId
           in: path
@@ -29513,7 +29564,8 @@ paths:
         **Required permissions:** `environment:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - environment:admin
       parameters:
         - name: envId
           in: path
@@ -29583,7 +29635,8 @@ paths:
         **Required permissions:** `account:member`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:member
       parameters:
         - name: envId
           in: path
@@ -29691,7 +29744,8 @@ paths:
         **Required permissions:** `environment:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - environment:admin
       parameters:
         - name: envId
           in: path
@@ -29762,7 +29816,8 @@ paths:
         **Required permissions:** `environment:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - environment:admin
       parameters:
         - name: envId
           in: path
@@ -29831,7 +29886,8 @@ paths:
         **Required permissions:** `account:member`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:member
       parameters:
         - name: envId
           in: path
@@ -29895,7 +29951,8 @@ paths:
         **Required permissions:** `interaction:execute`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - interaction:execute
       parameters:
         - name: envId
           in: path
@@ -29965,7 +30022,8 @@ paths:
         **Required permissions:** `environment:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - environment:admin
       parameters:
         - name: envId
           in: path
@@ -30033,7 +30091,8 @@ paths:
         **Required permissions:** `interaction:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - interaction:read
       parameters:
         - name: tag
           in: query
@@ -30097,7 +30156,8 @@ paths:
         **Required permissions:** `interaction:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - interaction:read
       parameters:
         - name: appName
           in: path
@@ -30166,7 +30226,8 @@ paths:
         **Required permissions:** `interaction:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - interaction:read
       parameters:
         - name: tag
           in: query
@@ -30230,7 +30291,8 @@ paths:
         **Required permissions:** `interaction:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - interaction:read
       parameters:
         - name: tag
           in: query
@@ -30302,7 +30364,8 @@ paths:
         **Required permissions:** `interaction:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - interaction:read
       parameters:
         - name: interactionId
           in: path
@@ -30367,7 +30430,8 @@ paths:
         **Required permissions:** `interaction:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - interaction:read
       parameters:
         - name: name
           in: query
@@ -30491,7 +30555,8 @@ paths:
         **Required permissions:** `interaction:write`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - interaction:write
       parameters: []
       responses:
         "200":
@@ -30556,7 +30621,8 @@ paths:
         **Required permissions:** `interaction:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - interaction:read
       parameters:
         - name: name
           in: query
@@ -30693,7 +30759,8 @@ paths:
         **Required permissions:** `interaction:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - interaction:read
       parameters: []
       responses:
         "200":
@@ -30756,7 +30823,8 @@ paths:
         **Required permissions:** `interaction:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - interaction:read
       parameters:
         - name: name
           in: path
@@ -30821,7 +30889,8 @@ paths:
         **Required permissions:** `interaction:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - interaction:read
       parameters:
         - name: nameOrId
           in: path
@@ -30905,7 +30974,8 @@ paths:
         **Required permissions:** `interaction:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - interaction:read
       parameters: []
       responses:
         "200":
@@ -30968,7 +31038,8 @@ paths:
         **Required permissions:** `interaction:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - interaction:read
       parameters: []
       responses:
         "200":
@@ -31027,7 +31098,8 @@ paths:
         **Required permissions:** `interaction:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - interaction:read
       parameters: []
       responses:
         "200":
@@ -31092,7 +31164,8 @@ paths:
         **Required permissions:** `interaction:execute`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - interaction:execute
       parameters: []
       responses:
         "200":
@@ -31157,7 +31230,8 @@ paths:
         **Required permissions:** `interaction:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - interaction:read
       parameters:
         - name: interactionId
           in: path
@@ -31210,7 +31284,8 @@ paths:
         **Required permissions:** `interaction:write`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - interaction:write
       parameters:
         - name: interactionId
           in: path
@@ -31272,7 +31347,8 @@ paths:
         **Required permissions:** `interaction:write`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - interaction:write
       parameters:
         - name: interactionId
           in: path
@@ -31336,7 +31412,8 @@ paths:
         **Required permissions:** `interaction:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - interaction:read
       parameters:
         - name: interactionId
           in: path
@@ -31398,7 +31475,8 @@ paths:
         **Required permissions:** `interaction:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - interaction:read
       parameters:
         - name: interactionId
           in: path
@@ -31462,7 +31540,8 @@ paths:
         **Required permissions:** `interaction:write`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - interaction:write
       parameters:
         - name: interactionId
           in: path
@@ -31534,7 +31613,8 @@ paths:
         **Required permissions:** `interaction:write`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - interaction:write
       parameters:
         - name: interactionId
           in: path
@@ -31604,7 +31684,8 @@ paths:
         **Required permissions:** `interaction:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - interaction:read
       parameters:
         - name: interactionId
           in: path
@@ -31674,7 +31755,8 @@ paths:
         **Required permissions:** `interaction:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - interaction:read
       parameters:
         - name: interactionId
           in: path
@@ -31744,7 +31826,8 @@ paths:
         **Required permissions:** `interaction:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - interaction:read
       parameters:
         - name: interactionId
           in: path
@@ -31815,7 +31898,8 @@ paths:
         **Required permissions:** `interaction:execute`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - interaction:execute
       parameters:
         - name: interactionId
           in: path
@@ -31885,7 +31969,8 @@ paths:
         **Required permissions:** `interaction:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - interaction:read
       parameters:
         - name: name
           in: query
@@ -31994,7 +32079,8 @@ paths:
         **Required permissions:** `interaction:write`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - interaction:write
       parameters: []
       responses:
         "200":
@@ -32059,7 +32145,8 @@ paths:
         **Required permissions:** `interaction:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - interaction:read
       parameters: []
       responses:
         "200":
@@ -32120,7 +32207,7 @@ paths:
         type, status, and version metadata.
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2: []
       parameters:
         - name: ptId
           in: path
@@ -32172,7 +32259,8 @@ paths:
         **Required permissions:** `interaction:write`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - interaction:write
       parameters:
         - name: ptId
           in: path
@@ -32231,7 +32319,8 @@ paths:
         **Required permissions:** `interaction:write`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - interaction:write
       parameters:
         - name: ptId
           in: path
@@ -32295,7 +32384,8 @@ paths:
         **Required permissions:** `interaction:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - interaction:read
       parameters:
         - name: ptId
           in: path
@@ -32359,7 +32449,8 @@ paths:
         **Required permissions:** `interaction:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - interaction:read
       parameters:
         - name: ptId
           in: path
@@ -32423,7 +32514,8 @@ paths:
         **Required permissions:** `interaction:write`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - interaction:write
       parameters:
         - name: ptId
           in: path
@@ -32488,7 +32580,7 @@ paths:
       description: Lists draft prompt templates forked from the selected prompt template.
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2: []
       parameters:
         - name: ptId
           in: path
@@ -32551,7 +32643,8 @@ paths:
         **Required permissions:** `interaction:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - interaction:read
       parameters:
         - name: ptId
           in: path
@@ -32623,7 +32716,8 @@ paths:
         **Required permissions:** `interaction:execute`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - interaction:execute
       parameters: []
       responses:
         "200":
@@ -32733,7 +32827,8 @@ paths:
         **Required permissions:** `run:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - run:read
       parameters:
         - name: limit
           in: query
@@ -32936,7 +33031,8 @@ paths:
         **Required permissions:** `run:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - run:read
       parameters: []
       responses:
         "200":
@@ -33025,7 +33121,8 @@ paths:
         **Required permissions:** `run:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - run:read
       parameters:
         - name: runId
           in: path
@@ -33136,7 +33233,8 @@ paths:
         **Required permissions:** `run:write`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - run:write
       parameters:
         - name: runId
           in: path
@@ -33212,7 +33310,8 @@ paths:
         **Required permissions:** `run:write`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - run:write
       parameters:
         - name: runId
           in: path
@@ -33290,7 +33389,8 @@ paths:
         **Required permissions:** `run:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - run:read
       parameters:
         - name: runId
           in: path
@@ -33374,7 +33474,8 @@ paths:
         **Required permissions:** `account:member`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:member
       parameters: []
       responses:
         "200":
@@ -33436,7 +33537,8 @@ paths:
         **Required permissions:** `account:member`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:member
       parameters: []
       responses:
         "200":
@@ -33493,7 +33595,8 @@ paths:
         **Required permissions:** `account:member`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:member
       parameters: []
       responses:
         "200":
@@ -33541,7 +33644,8 @@ paths:
         **Required permissions:** `account:write`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:write
       parameters: []
       responses:
         "200":
@@ -33604,7 +33708,8 @@ paths:
         **Required permissions:** `account:member`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:member
       parameters: []
       responses:
         "200":
@@ -33661,7 +33766,8 @@ paths:
         **Required permissions:** `account:member`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:member
       parameters: []
       responses:
         "200":
@@ -33707,7 +33813,8 @@ paths:
         **Required permissions:** `project:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - project:admin
       parameters: []
       responses:
         "200":
@@ -33770,7 +33877,8 @@ paths:
         **Required permissions:** `project:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - project:admin
       parameters: []
       responses:
         "200":
@@ -33827,7 +33935,8 @@ paths:
         **Required permissions:** `account:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:admin
       parameters: []
       responses:
         "200":
@@ -33884,7 +33993,8 @@ paths:
         **Required permissions:** `account:member`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:member
       parameters:
         - name: tokenId
           in: path
@@ -33935,7 +34045,8 @@ paths:
         **Required permissions:** `account:member`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:member
       parameters:
         - name: tokenId
           in: path
@@ -33997,7 +34108,8 @@ paths:
         **Required permissions:** `account:member`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:member
       parameters: []
       responses:
         "200":
@@ -34054,7 +34166,8 @@ paths:
         **Required permissions:** `account:member`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:member
       parameters: []
       responses:
         "200":
@@ -34113,7 +34226,6 @@ paths:
         **Required permissions:** `account:billing`
       security:
         - bearerAuth: []
-        - OpenID: []
       parameters: []
       responses:
         "200":
@@ -34172,7 +34284,6 @@ paths:
         **Required permissions:** `api_key:create`
       security:
         - bearerAuth: []
-        - OpenID: []
       parameters: []
       responses:
         "200":
@@ -34226,7 +34337,8 @@ paths:
         **Required permissions:** `api_key:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - api_key:read
       parameters:
         - name: level
           in: query
@@ -34291,7 +34403,6 @@ paths:
         **Required permissions:** `api_key:delete`
       security:
         - bearerAuth: []
-        - OpenID: []
       parameters:
         - name: keyId
           in: path
@@ -34342,7 +34453,6 @@ paths:
         **Required permissions:** `api_key:update`
       security:
         - bearerAuth: []
-        - OpenID: []
       parameters:
         - name: keyId
           in: path
@@ -34401,7 +34511,8 @@ paths:
         **Required permissions:** `api_key:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - api_key:read
       parameters:
         - name: keyId
           in: path
@@ -34468,7 +34579,6 @@ paths:
         **Required permissions:** `api_key:secret_read`
       security:
         - bearerAuth: []
-        - OpenID: []
       parameters:
         - name: keyId
           in: path
@@ -34533,7 +34643,12 @@ paths:
         `audit:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - project:admin
+        - OAuth2:
+            - account:admin
+        - OAuth2:
+            - audit:read
       parameters:
         - name: actions
           in: query
@@ -34691,7 +34806,12 @@ paths:
         `audit:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - project:admin
+        - OAuth2:
+            - account:admin
+        - OAuth2:
+            - audit:read
       parameters: []
       responses:
         "200":
@@ -34758,7 +34878,8 @@ paths:
         **Required permissions:** `interaction:execute`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - interaction:execute
       parameters: []
       responses:
         "200":
@@ -34823,7 +34944,8 @@ paths:
         **Required permissions:** `interaction:execute`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - interaction:execute
       parameters: []
       responses:
         "200":
@@ -34888,7 +35010,8 @@ paths:
         **Required permissions:** `interaction:execute`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - interaction:execute
       parameters:
         - name: endpoint
           in: path
@@ -34968,7 +35091,8 @@ paths:
         **Required permissions:** `interaction:execute`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - interaction:execute
       parameters: []
       responses:
         "200":
@@ -35033,7 +35157,8 @@ paths:
         **Required permissions:** `account:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:read
       parameters: []
       responses:
         "200":
@@ -35092,7 +35217,8 @@ paths:
         **Required permissions:** `account:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:read
       parameters: []
       responses:
         "200":
@@ -35140,7 +35266,8 @@ paths:
         **Required permissions:** `account:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:admin
       parameters: []
       responses:
         "200":
@@ -35203,7 +35330,8 @@ paths:
         **Required permissions:** `account:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:read
       parameters:
         - name: aceId
           in: path
@@ -35254,7 +35382,8 @@ paths:
         **Required permissions:** `account:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:admin
       parameters:
         - name: aceId
           in: path
@@ -35311,7 +35440,8 @@ paths:
         **Required permissions:** `account:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:admin
       parameters:
         - name: aceId
           in: path
@@ -35371,7 +35501,7 @@ paths:
         …) and the permissions each role grants.
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2: []
       parameters: []
       responses:
         "200":
@@ -35427,7 +35557,7 @@ paths:
         `content_security` claim at the data layer.
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2: []
       parameters: []
       responses:
         "200":
@@ -35486,7 +35616,8 @@ paths:
         **Required permissions:** `account:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:read
       parameters:
         - name: search
           in: query
@@ -35563,7 +35694,8 @@ paths:
         **Required permissions:** `account:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:admin
       parameters: []
       responses:
         "200":
@@ -35626,7 +35758,8 @@ paths:
         **Required permissions:** `account:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:admin
       parameters: []
       responses:
         "200":
@@ -35683,7 +35816,8 @@ paths:
         **Required permissions:** `account:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:admin
       parameters:
         - name: groupId
           in: path
@@ -35750,7 +35884,8 @@ paths:
         **Required permissions:** `account:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:read
       parameters:
         - name: groupId
           in: path
@@ -35802,7 +35937,8 @@ paths:
         **Required permissions:** `account:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:read
       parameters:
         - name: groupId
           in: path
@@ -35864,7 +36000,8 @@ paths:
         **Required permissions:** `account:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:admin
       parameters:
         - name: groupId
           in: path
@@ -35920,7 +36057,8 @@ paths:
         **Required permissions:** `account:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:admin
       parameters:
         - name: groupId
           in: path
@@ -35994,7 +36132,8 @@ paths:
         **Required permissions:** `account:member`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:member
       parameters: []
       responses:
         "200":
@@ -36053,7 +36192,8 @@ paths:
         **Required permissions:** `account:member`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:member
       parameters:
         - name: userId
           in: path
@@ -36107,7 +36247,8 @@ paths:
         **Required permissions:** `account:member`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:member
       parameters:
         - name: userId
           in: path
@@ -36166,7 +36307,8 @@ paths:
         **Required permissions:** `account:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:admin
       parameters:
         - name: userId
           in: path
@@ -36232,7 +36374,8 @@ paths:
         **Required permissions:** `account:member`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:member
       parameters:
         - name: id
           in: path
@@ -36297,7 +36440,8 @@ paths:
         **Required permissions:** `account:member`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:member
       parameters:
         - name: id
           in: path
@@ -36362,7 +36506,8 @@ paths:
         **Required permissions:** `app:manage`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - app:manage
       parameters:
         - name: id
           in: path
@@ -36427,7 +36572,8 @@ paths:
         **Required permissions:** `account:member`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:member
       parameters:
         - name: id
           in: path
@@ -36492,7 +36638,8 @@ paths:
         **Required permissions:** `account:member`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:member
       parameters:
         - name: id
           in: path
@@ -36556,7 +36703,8 @@ paths:
         **Required permissions:** `account:member`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:member
       parameters:
         - name: id
           in: path
@@ -36620,7 +36768,8 @@ paths:
         **Required permissions:** `account:member`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:member
       parameters:
         - name: id
           in: path
@@ -36690,7 +36839,8 @@ paths:
         **Required permissions:** `app:manage`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - app:manage
       parameters:
         - name: id
           in: path
@@ -36765,7 +36915,8 @@ paths:
         **Required permissions:** `app:manage`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - app:manage
       parameters:
         - name: id
           in: path
@@ -36831,7 +36982,8 @@ paths:
         **Required permissions:** `app:manage`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - app:manage
       parameters:
         - name: id
           in: path
@@ -36895,7 +37047,8 @@ paths:
         **Required permissions:** `app:manage`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - app:manage
       parameters:
         - name: id
           in: path
@@ -36953,7 +37106,8 @@ paths:
         **Required permissions:** `app:manage`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - app:manage
       parameters:
         - name: id
           in: path
@@ -37024,7 +37178,8 @@ paths:
         **Required permissions:** `account:member`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:member
       parameters:
         - name: id
           in: path
@@ -37114,7 +37269,8 @@ paths:
         **Required permissions:** `account:member`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:member
       parameters: []
       responses:
         "200":
@@ -37160,7 +37316,8 @@ paths:
         **Required permissions:** `app:manage`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - app:manage
       parameters: []
       responses:
         "200":
@@ -37220,7 +37377,8 @@ paths:
       description: "**Required permissions:** `account:member`"
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:member
       parameters:
         - name: id
           in: path
@@ -37271,7 +37429,8 @@ paths:
         **Required permissions:** `app:manage`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - app:manage
       parameters:
         - name: id
           in: path
@@ -37330,7 +37489,8 @@ paths:
       description: "**Required permissions:** `app:manage`"
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - app:manage
       parameters:
         - name: id
           in: path
@@ -37394,7 +37554,8 @@ paths:
         **Required permissions:** `app:manage`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - app:manage
       parameters:
         - name: id
           in: path
@@ -37459,7 +37620,8 @@ paths:
         **Required permissions:** `app:manage`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - app:manage
       parameters: []
       responses:
         "200":
@@ -37522,7 +37684,8 @@ paths:
         **Required permissions:** `app:manage`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - app:manage
       parameters:
         - name: workflowId
           in: path
@@ -37592,7 +37755,8 @@ paths:
         **Required permissions:** `app:manage`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - app:manage
       parameters:
         - name: id
           in: path
@@ -37660,7 +37824,8 @@ paths:
         **Required permissions:** `app:manage`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - app:manage
       parameters:
         - name: id
           in: path
@@ -37732,7 +37897,8 @@ paths:
         **Required permissions:** `app:manage`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - app:manage
       parameters: []
       responses:
         "200":
@@ -37782,7 +37948,7 @@ paths:
         narrow the listing to apps that belong to the current project.
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2: []
       parameters:
         - name: scope
           in: query
@@ -37855,7 +38021,8 @@ paths:
         **Required permissions:** `app:manage`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - app:manage
       parameters:
         - name: id
           in: path
@@ -37917,7 +38084,8 @@ paths:
         **Required permissions:** `app:manage`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - app:manage
       parameters:
         - name: id
           in: path
@@ -37981,7 +38149,8 @@ paths:
         **Required permissions:** `app:manage`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - app:manage
       parameters: []
       responses:
         "200":
@@ -38046,7 +38215,8 @@ paths:
         **Required permissions:** `project:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - project:admin
       parameters:
         - name: installId
           in: path
@@ -38105,7 +38275,7 @@ paths:
       description: Retrieves the current project installation for a given app name.
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2: []
       parameters:
         - name: name
           in: path
@@ -38164,7 +38334,7 @@ paths:
         the current principal.
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2: []
       parameters:
         - name: name
           in: query
@@ -38234,7 +38404,8 @@ paths:
         **Required permissions:** `account:member`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:member
       parameters:
         - name: installId
           in: path
@@ -38299,7 +38470,8 @@ paths:
         **Required permissions:** `account:member`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:member
       parameters:
         - name: installId
           in: path
@@ -38393,7 +38565,8 @@ paths:
         **Required permissions:** `app:manage`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - app:manage
       parameters:
         - name: id
           in: path
@@ -38453,7 +38626,7 @@ paths:
         the current principal.
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2: []
       parameters:
         - name: kind
           in: query
@@ -38534,7 +38707,8 @@ paths:
         **Required permissions:** `project:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - project:admin
       parameters: []
       responses:
         "200":
@@ -38588,7 +38762,7 @@ paths:
       description: Lists app installation references visible to the current principal.
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2: []
       parameters: []
       responses:
         "200":
@@ -38641,7 +38815,7 @@ paths:
       description: Retrieves project access information for an installed app.
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2: []
       parameters:
         - name: appName
           in: path
@@ -38702,7 +38876,8 @@ paths:
         **Required permissions:** `project:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - project:admin
       parameters:
         - name: app_id
           in: path
@@ -38770,7 +38945,8 @@ paths:
         **Required permissions:** `project:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - project:admin
       parameters:
         - name: installId
           in: path
@@ -38835,7 +39011,7 @@ paths:
       description: Validates an app endpoint URL against SSRF and environment rules.
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2: []
       parameters: []
       responses:
         "200":
@@ -38895,7 +39071,7 @@ paths:
         MCP collection installed through an app.
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2: []
       parameters:
         - name: app_install_id
           in: path
@@ -38959,7 +39135,7 @@ paths:
         returns the authorization URL or immediate connected status.
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2: []
       parameters:
         - name: app_install_id
           in: path
@@ -39024,7 +39200,7 @@ paths:
         collections in an installed app.
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2: []
       parameters:
         - name: app_install_id
           in: path
@@ -39083,7 +39259,7 @@ paths:
         collection.
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2: []
       parameters:
         - name: app_install_id
           in: path
@@ -39147,7 +39323,7 @@ paths:
         collection linked to a client-credentials OAuth provider.
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2: []
       parameters:
         - name: app_install_id
           in: path
@@ -39212,7 +39388,7 @@ paths:
         server URL.
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2: []
       parameters: []
       responses:
         "200":
@@ -39272,7 +39448,7 @@ paths:
         disconnects the current authentication state.
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2: []
       parameters:
         - name: app_install_id
           in: path
@@ -39338,7 +39514,8 @@ paths:
         **Required permissions:** `account:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:admin
       parameters: []
       responses:
         "200":
@@ -39386,7 +39563,8 @@ paths:
         **Required permissions:** `account:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:admin
       parameters: []
       responses:
         "200":
@@ -39451,7 +39629,8 @@ paths:
         **Required permissions:** `account:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:admin
       parameters: []
       responses:
         "200":
@@ -39508,7 +39687,8 @@ paths:
         **Required permissions:** `account:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:admin
       parameters:
         - name: client_id
           in: path
@@ -39559,7 +39739,8 @@ paths:
         **Required permissions:** `account:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:admin
       parameters:
         - name: client_id
           in: path
@@ -39616,7 +39797,8 @@ paths:
         **Required permissions:** `account:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:admin
       parameters:
         - name: client_id
           in: path
@@ -39681,7 +39863,12 @@ paths:
         `account:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:member
+        - OAuth2:
+            - project:admin
+        - OAuth2:
+            - account:admin
       parameters:
         - name: account_id
           in: query
@@ -39810,7 +39997,12 @@ paths:
         `account:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:member
+        - OAuth2:
+            - project:admin
+        - OAuth2:
+            - account:admin
       parameters:
         - name: grant_id
           in: path
@@ -39866,7 +40058,12 @@ paths:
         `account:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:member
+        - OAuth2:
+            - project:admin
+        - OAuth2:
+            - account:admin
       parameters:
         - name: grant_id
           in: path
@@ -39938,7 +40135,12 @@ paths:
         `account:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:member
+        - OAuth2:
+            - project:admin
+        - OAuth2:
+            - account:admin
       parameters: []
       responses:
         "200":
@@ -40003,7 +40205,8 @@ paths:
         **Required permissions:** `project:settings_write`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - project:settings_write
       parameters: []
       responses:
         "200":
@@ -40049,7 +40252,8 @@ paths:
         **Required permissions:** `project:settings_write`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - project:settings_write
       parameters: []
       responses:
         "200":
@@ -40114,7 +40318,8 @@ paths:
         **Required permissions:** `project:settings_write`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - project:settings_write
       parameters:
         - name: id
           in: path
@@ -40165,7 +40370,8 @@ paths:
         **Required permissions:** `project:settings_write`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - project:settings_write
       parameters:
         - name: id
           in: path
@@ -40222,7 +40428,8 @@ paths:
         **Required permissions:** `project:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - project:admin
       parameters:
         - name: id
           in: path
@@ -40281,7 +40488,7 @@ paths:
       description: Starts the OAuth 2.0 authorization flow for the current user.
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2: []
       parameters:
         - name: id
           in: path
@@ -40340,7 +40547,7 @@ paths:
         for the current user.
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2: []
       parameters: []
       responses:
         "200":
@@ -40400,7 +40607,7 @@ paths:
         project or user context.
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2: []
       parameters:
         - name: id
           in: path
@@ -40463,7 +40670,8 @@ paths:
         **Required permissions:** `project:settings_write`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - project:settings_write
       parameters:
         - name: id
           in: path
@@ -40522,7 +40730,7 @@ paths:
       description: Returns an access token for the configured OAuth provider.
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2: []
       parameters:
         - name: id
           in: path
@@ -40580,7 +40788,7 @@ paths:
       description: Revokes and deletes stored tokens for an OAuth provider.
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2: []
       parameters:
         - name: id
           in: path
@@ -40639,7 +40847,7 @@ paths:
         website_credential secrets. Secret values are never returned.
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2: []
       parameters:
         - name: project_id
           in: query
@@ -40713,7 +40921,8 @@ paths:
         **Required permissions:** `project:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - project:admin
       parameters:
         - name: project_id
           in: query
@@ -40782,7 +40991,7 @@ paths:
       description: Retrieves one project-scoped secret. Secret values are never returned.
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2: []
       parameters:
         - name: secretId
           in: path
@@ -40849,7 +41058,8 @@ paths:
         **Required permissions:** `project:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - project:admin
       parameters:
         - name: secretId
           in: path
@@ -40923,7 +41133,8 @@ paths:
         **Required permissions:** `project:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - project:admin
       parameters:
         - name: secretId
           in: path
@@ -41001,7 +41212,7 @@ paths:
         Secret values are never returned.
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2: []
       parameters:
         - name: secretId
           in: path
@@ -41079,7 +41290,8 @@ paths:
         **Required permissions:** `account:member`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:member
       parameters:
         - name: context
           in: query
@@ -41211,7 +41423,8 @@ paths:
       description: "**Required permissions:** `account:member`"
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:member
       parameters:
         - name: toolName
           in: path
@@ -41285,7 +41498,8 @@ paths:
         **Required permissions:** `account:member`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - account:member
       parameters: []
       responses:
         "200":
@@ -41350,7 +41564,8 @@ paths:
         **Required permissions:** `interaction:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - interaction:read
       parameters:
         - name: limit
           in: query
@@ -41413,7 +41628,8 @@ paths:
         **Required permissions:** `interaction:write`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - interaction:write
       parameters: []
       responses:
         "201":
@@ -41476,7 +41692,8 @@ paths:
         **Required permissions:** `interaction:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - interaction:read
       parameters:
         - name: viewId
           in: path
@@ -41529,7 +41746,8 @@ paths:
         **Required permissions:** `interaction:write`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - interaction:write
       parameters:
         - name: viewId
           in: path
@@ -41586,7 +41804,8 @@ paths:
         **Required permissions:** `interaction:write`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - interaction:write
       parameters:
         - name: viewId
           in: path
@@ -41650,7 +41869,8 @@ paths:
         **Required permissions:** `content:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:read
       parameters: []
       responses:
         "200":
@@ -41717,7 +41937,8 @@ paths:
         **Required permissions:** `workflow:run`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:run
       parameters: []
       responses:
         "200":
@@ -41771,7 +41992,10 @@ paths:
         **Required permissions:** Any of `agent_run:read`, `workflow:run`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - agent_run:read
+        - OAuth2:
+            - workflow:run
       parameters:
         - name: id
           in: query
@@ -41974,7 +42198,10 @@ paths:
         **Required permissions:** Any of `agent_run:read`, `workflow:run`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - agent_run:read
+        - OAuth2:
+            - workflow:run
       parameters:
         - name: query
           in: query
@@ -42169,7 +42396,10 @@ paths:
         **Required permissions:** Any of `agent_run:read`, `workflow:run`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - agent_run:read
+        - OAuth2:
+            - workflow:run
       parameters:
         - name: agentRunId
           in: path
@@ -42223,7 +42453,8 @@ paths:
         **Required permissions:** `workflow:run`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:run
       parameters:
         - name: agentRunId
           in: path
@@ -42287,7 +42518,8 @@ paths:
         **Required permissions:** `workflow:run`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:run
       parameters:
         - name: agentRunId
           in: path
@@ -42357,7 +42589,8 @@ paths:
         **Required permissions:** `workflow:run`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:run
       parameters:
         - name: agentRunId
           in: path
@@ -42419,7 +42652,8 @@ paths:
         **Required permissions:** `workflow:run`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:run
       parameters:
         - name: agentRunId
           in: path
@@ -42492,7 +42726,10 @@ paths:
         **Required permissions:** Any of `agent_run:read`, `workflow:run`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - agent_run:read
+        - OAuth2:
+            - workflow:run
       parameters:
         - name: agentRunId
           in: path
@@ -42562,7 +42799,10 @@ paths:
         **Required permissions:** Any of `agent_run:read`, `workflow:run`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - agent_run:read
+        - OAuth2:
+            - workflow:run
       parameters:
         - name: agentRunId
           in: path
@@ -42619,7 +42859,8 @@ paths:
         **Required permissions:** `workflow:run`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:run
       parameters:
         - name: agentRunId
           in: path
@@ -42689,7 +42930,10 @@ paths:
         **Required permissions:** Any of `agent_run:read`, `workflow:run`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - agent_run:read
+        - OAuth2:
+            - workflow:run
       parameters:
         - name: agentRunId
           in: path
@@ -42764,7 +43008,10 @@ paths:
         **Required permissions:** Any of `agent_run:read`, `workflow:run`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - agent_run:read
+        - OAuth2:
+            - workflow:run
       parameters:
         - name: agentRunId
           in: path
@@ -42838,7 +43085,10 @@ paths:
         **Required permissions:** Any of `agent_run:read`, `workflow:run`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - agent_run:read
+        - OAuth2:
+            - workflow:run
       parameters:
         - name: agentRunId
           in: path
@@ -42899,7 +43149,8 @@ paths:
         **Required permissions:** `workflow:run`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:run
       parameters:
         - name: agentRunId
           in: path
@@ -42974,7 +43225,10 @@ paths:
         **Required permissions:** Any of `agent_run:read`, `workflow:run`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - agent_run:read
+        - OAuth2:
+            - workflow:run
       parameters:
         - name: agentRunId
           in: path
@@ -43051,7 +43305,8 @@ paths:
         **Required permissions:** `workflow:run`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:run
       parameters:
         - name: agentRunId
           in: path
@@ -43125,7 +43380,10 @@ paths:
         **Required permissions:** Any of `agent_run:read`, `workflow:run`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - agent_run:read
+        - OAuth2:
+            - workflow:run
       parameters:
         - name: agentRunId
           in: path
@@ -43200,7 +43458,10 @@ paths:
         **Required permissions:** Any of `agent_run:read`, `workflow:run`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - agent_run:read
+        - OAuth2:
+            - workflow:run
       parameters:
         - name: agentRunId
           in: path
@@ -43265,7 +43526,10 @@ paths:
         **Required permissions:** Any of `agent_run:read`, `workflow:run`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - agent_run:read
+        - OAuth2:
+            - workflow:run
       parameters:
         - name: agentRunId
           in: path
@@ -43330,7 +43594,10 @@ paths:
         **Required permissions:** Any of `agent_run:read`, `workflow:run`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - agent_run:read
+        - OAuth2:
+            - workflow:run
       parameters:
         - name: agentRunId
           in: path
@@ -43397,7 +43664,8 @@ paths:
         **Required permissions:** `workflow:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:admin
       parameters:
         - name: agentRunId
           in: path
@@ -43467,7 +43735,8 @@ paths:
         **Required permissions:** `workflow:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:admin
       parameters:
         - name: agentRunId
           in: path
@@ -43534,7 +43803,7 @@ paths:
         be the task assignee or have `task:manage`.
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2: []
       parameters:
         - name: agentRunId
           in: path
@@ -43603,7 +43872,10 @@ paths:
         **Required permissions:** Any of `agent_run:read`, `workflow:run`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - agent_run:read
+        - OAuth2:
+            - workflow:run
       parameters:
         - name: agentRunId
           in: path
@@ -43673,7 +43945,10 @@ paths:
         **Required permissions:** Any of `agent_run:read`, `workflow:run`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - agent_run:read
+        - OAuth2:
+            - workflow:run
       parameters:
         - name: agentRunId
           in: path
@@ -43738,7 +44013,6 @@ paths:
         **Required permissions:** `billing:read`
       security:
         - bearerAuth: []
-        - OpenID: []
       parameters: []
       responses:
         "200":
@@ -43803,7 +44077,6 @@ paths:
         **Required permissions:** `billing:read`
       security:
         - bearerAuth: []
-        - OpenID: []
       parameters:
         - name: from
           in: query
@@ -43880,7 +44153,6 @@ paths:
         **Required permissions:** `billing:read`
       security:
         - bearerAuth: []
-        - OpenID: []
       parameters: []
       responses:
         "200":
@@ -43945,7 +44217,6 @@ paths:
         **Required permissions:** `billing:read`
       security:
         - bearerAuth: []
-        - OpenID: []
       parameters:
         - name: from
           in: query
@@ -44048,7 +44319,8 @@ paths:
         **Required permissions:** `project:settings_write`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - project:settings_write
       parameters:
         - name: type
           in: path
@@ -44112,7 +44384,8 @@ paths:
         **Required permissions:** `project:settings_write`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - project:settings_write
       parameters:
         - name: type
           in: path
@@ -44182,7 +44455,8 @@ paths:
         **Required permissions:** `project:settings_write`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - project:settings_write
       parameters:
         - name: type
           in: path
@@ -44248,7 +44522,8 @@ paths:
         **Required permissions:** `project:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - project:admin
       parameters:
         - name: type
           in: path
@@ -44331,7 +44606,8 @@ paths:
         **Required permissions:** `project:settings_write`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - project:settings_write
       parameters: []
       responses:
         "200":
@@ -44388,7 +44664,8 @@ paths:
         **Required permissions:** `project:settings_write`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - project:settings_write
       parameters: []
       responses:
         "200":
@@ -44445,7 +44722,8 @@ paths:
         **Required permissions:** `project:settings_write`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - project:settings_write
       parameters: []
       responses:
         "200":
@@ -44505,7 +44783,8 @@ paths:
       deprecated: true
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - project:settings_write
       parameters: []
       responses:
         "200":
@@ -44565,7 +44844,8 @@ paths:
       deprecated: true
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - project:settings_write
       parameters: []
       responses:
         "200":
@@ -44624,7 +44904,8 @@ paths:
         **Required permissions:** `content:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:admin
       parameters: []
       responses:
         "200":
@@ -44690,7 +44971,8 @@ paths:
         **Required permissions:** `content:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:admin
       parameters: []
       responses:
         "200":
@@ -44755,7 +45037,8 @@ paths:
         **Required permissions:** `content:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:admin
       parameters: []
       responses:
         "200":
@@ -44814,7 +45097,8 @@ paths:
         **Required permissions:** `content:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:admin
       parameters: []
       responses:
         "200":
@@ -44880,7 +45164,8 @@ paths:
         **Required permissions:** `content:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:read
       parameters: []
       responses:
         "200":
@@ -44947,7 +45232,10 @@ paths:
         **Required permissions:** Any of `workflow:read`, `workflow:run`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:read
+        - OAuth2:
+            - workflow:run
       parameters:
         - name: status
           in: query
@@ -45028,7 +45316,8 @@ paths:
         **Required permissions:** `workflow:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:admin
       parameters: []
       responses:
         "201":
@@ -45093,7 +45382,10 @@ paths:
         **Required permissions:** Any of `workflow:read`, `workflow:run`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:read
+        - OAuth2:
+            - workflow:run
       parameters:
         - name: processId
           in: path
@@ -45158,7 +45450,10 @@ paths:
         **Required permissions:** Any of `workflow:read`, `workflow:run`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:read
+        - OAuth2:
+            - workflow:run
       parameters:
         - name: processId
           in: path
@@ -45207,7 +45502,8 @@ paths:
       description: "**Required permissions:** `workflow:admin`"
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:admin
       parameters:
         - name: processId
           in: path
@@ -45272,7 +45568,8 @@ paths:
       description: "**Required permissions:** `workflow:admin`"
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:admin
       parameters:
         - name: processId
           in: path
@@ -45331,7 +45628,8 @@ paths:
       description: "**Required permissions:** `workflow:admin`"
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:admin
       parameters:
         - name: processId
           in: path
@@ -45400,7 +45698,8 @@ paths:
         **Required permissions:** `workflow:run`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:run
       parameters:
         - name: processId
           in: path
@@ -45454,7 +45753,10 @@ paths:
       description: "**Required permissions:** Any of `workflow:read`, `workflow:run`"
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:read
+        - OAuth2:
+            - workflow:run
       parameters:
         - name: processId
           in: path
@@ -45521,7 +45823,10 @@ paths:
       description: "**Required permissions:** Any of `workflow:read`, `workflow:run`"
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:read
+        - OAuth2:
+            - workflow:run
       parameters:
         - name: processId
           in: path
@@ -45586,7 +45891,8 @@ paths:
       description: "**Required permissions:** `workflow:run`"
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:run
       parameters:
         - name: processId
           in: path
@@ -45653,7 +45959,10 @@ paths:
         **Required permissions:** Any of `workflow:read`, `workflow:run`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:read
+        - OAuth2:
+            - workflow:run
       parameters:
         - name: processId
           in: path
@@ -45710,7 +46019,8 @@ paths:
         **Required permissions:** `workflow:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:admin
       parameters:
         - name: processId
           in: path
@@ -45769,7 +46079,8 @@ paths:
         **Required permissions:** `workflow:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:admin
       parameters:
         - name: processId
           in: path
@@ -45834,7 +46145,8 @@ paths:
         **Required permissions:** `workflow:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:admin
       parameters:
         - name: processId
           in: path
@@ -45908,7 +46220,8 @@ paths:
         **Required permissions:** `workflow:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:admin
       parameters:
         - name: processId
           in: path
@@ -45982,7 +46295,8 @@ paths:
         **Required permissions:** `workflow:run`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:run
       parameters: []
       responses:
         "201":
@@ -46049,7 +46363,10 @@ paths:
         **Required permissions:** Any of `workflow:read`, `workflow:run`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:read
+        - OAuth2:
+            - workflow:run
       parameters:
         - name: runId
           in: path
@@ -46105,7 +46422,8 @@ paths:
         **Required permissions:** `workflow:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:admin
       parameters:
         - name: runId
           in: path
@@ -46164,7 +46482,8 @@ paths:
       description: "**Required permissions:** `workflow:run`"
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:run
       parameters:
         - name: runId
           in: path
@@ -46224,7 +46543,7 @@ paths:
         filters for status, assignee, run id, and source type.
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2: []
       parameters:
         - name: status
           in: query
@@ -46311,7 +46630,7 @@ paths:
         must have `workflow:run` or `task:manage`.
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2: []
       parameters: []
       responses:
         "201":
@@ -46370,7 +46689,7 @@ paths:
       description: Retrieves a single durable task by id.
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2: []
       parameters:
         - name: taskId
           in: path
@@ -46422,7 +46741,8 @@ paths:
         **Required permissions:** `task:manage`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - task:manage
       parameters:
         - name: taskId
           in: path
@@ -46479,7 +46799,8 @@ paths:
         **Required permissions:** `task:manage`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - task:manage
       parameters:
         - name: taskId
           in: path
@@ -46541,7 +46862,7 @@ paths:
         instead of this endpoint.
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2: []
       parameters:
         - name: taskId
           in: path
@@ -46608,7 +46929,8 @@ paths:
         **Required permissions:** `task:manage`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - task:manage
       parameters:
         - name: taskId
           in: path
@@ -46670,7 +46992,8 @@ paths:
         **Required permissions:** `content:write`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:write
       parameters: []
       responses:
         "200":
@@ -46733,7 +47056,8 @@ paths:
         **Required permissions:** `content:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:read
       parameters: []
       responses:
         "200":
@@ -46797,7 +47121,8 @@ paths:
         **Required permissions:** `content:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:read
       parameters: []
       responses:
         "200":
@@ -46862,7 +47187,8 @@ paths:
         **Required permissions:** `content:superadmin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:superadmin
       parameters: []
       responses:
         "200":
@@ -46927,7 +47253,8 @@ paths:
         **Required permissions:** `content:superadmin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:superadmin
       parameters: []
       responses:
         "200":
@@ -46986,7 +47313,8 @@ paths:
         **Required permissions:** `content:superadmin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:superadmin
       parameters:
         - name: exportId
           in: path
@@ -47050,7 +47378,8 @@ paths:
         **Required permissions:** `content:superadmin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:superadmin
       parameters:
         - name: exportId
           in: path
@@ -47114,7 +47443,8 @@ paths:
       description: "**Required permissions:** `content:superadmin`"
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:superadmin
       parameters:
         - name: workflowId
           in: path
@@ -47183,7 +47513,8 @@ paths:
         **Required permissions:** `content:write`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:write
       parameters:
         - name: collection_id
           in: query
@@ -47272,7 +47603,8 @@ paths:
         **Required permissions:** `content:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:read
       parameters: []
       responses:
         "200":
@@ -47335,7 +47667,8 @@ paths:
         **Required permissions:** `content:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:read
       parameters: []
       responses:
         "200":
@@ -47400,7 +47733,8 @@ paths:
         **Required permissions:** `content:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:read
       parameters: []
       responses:
         "200":
@@ -47465,7 +47799,8 @@ paths:
         **Required permissions:** `content:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:read
       parameters:
         - name: objectId
           in: path
@@ -47518,7 +47853,8 @@ paths:
         **Required permissions:** `content:write`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:write
       parameters:
         - name: objectId
           in: path
@@ -47631,7 +47967,8 @@ paths:
         **Required permissions:** `content:delete`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:delete
       parameters:
         - name: objectId
           in: path
@@ -47693,7 +48030,8 @@ paths:
         **Required permissions:** `content:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:read
       parameters:
         - name: objectId
           in: path
@@ -47757,7 +48095,8 @@ paths:
         **Required permissions:** `content:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:read
       parameters:
         - name: objectId
           in: path
@@ -47821,7 +48160,8 @@ paths:
         **Required permissions:** `content:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:read
       parameters:
         - name: objectId
           in: path
@@ -47921,7 +48261,8 @@ paths:
         **Required permissions:** `content:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:read
       parameters:
         - name: objectId
           in: path
@@ -47983,7 +48324,8 @@ paths:
         **Required permissions:** `content:write`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:write
       parameters:
         - name: objectId
           in: path
@@ -48056,7 +48398,8 @@ paths:
         **Required permissions:** `content:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:read
       parameters:
         - name: objectId
           in: path
@@ -48120,7 +48463,8 @@ paths:
         **Required permissions:** `content:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:read
       parameters:
         - name: objectId
           in: path
@@ -48184,7 +48528,8 @@ paths:
         **Required permissions:** `content:write`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:write
       parameters:
         - name: objectId
           in: path
@@ -48254,7 +48599,8 @@ paths:
         **Required permissions:** `content:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:read
       parameters:
         - name: objectId
           in: path
@@ -48318,7 +48664,8 @@ paths:
         **Required permissions:** `content:write`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:write
       parameters:
         - name: objectId
           in: path
@@ -48390,7 +48737,8 @@ paths:
         **Required permissions:** `content:write`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:write
       parameters:
         - name: objectId
           in: path
@@ -48460,7 +48808,8 @@ paths:
         **Required permissions:** `content:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:read
       parameters:
         - name: objectId
           in: path
@@ -48524,7 +48873,8 @@ paths:
         **Required permissions:** `content:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:read
       parameters:
         - name: tag
           in: query
@@ -48606,7 +48956,8 @@ paths:
         **Required permissions:** `content:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:read
       parameters:
         - name: tag
           in: query
@@ -48688,7 +49039,8 @@ paths:
         **Required permissions:** `content:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:read
       parameters:
         - name: tag
           in: query
@@ -48770,7 +49122,8 @@ paths:
         **Required permissions:** `content:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:read
       parameters:
         - name: tag
           in: query
@@ -48854,7 +49207,8 @@ paths:
         **Required permissions:** `content:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:read
       parameters:
         - name: typeId
           in: path
@@ -48918,7 +49272,8 @@ paths:
         **Required permissions:** `content:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:read
       parameters:
         - name: name
           in: query
@@ -48994,7 +49349,8 @@ paths:
         **Required permissions:** `content:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:admin
       parameters: []
       responses:
         "200":
@@ -49057,7 +49413,8 @@ paths:
         **Required permissions:** `content:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:read
       parameters:
         - name: name
           in: path
@@ -49121,7 +49478,8 @@ paths:
         **Required permissions:** `content:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:read
       parameters:
         - name: typeId
           in: path
@@ -49174,7 +49532,8 @@ paths:
         **Required permissions:** `content:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:admin
       parameters:
         - name: typeId
           in: path
@@ -49233,7 +49592,8 @@ paths:
         **Required permissions:** `content:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:admin
       parameters:
         - name: typeId
           in: path
@@ -49295,7 +49655,10 @@ paths:
         **Required permissions:** Any of `workflow:read`, `workflow:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:read
+        - OAuth2:
+            - workflow:admin
       parameters: []
       responses:
         "200":
@@ -49344,7 +49707,8 @@ paths:
         **Required permissions:** `workflow:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:admin
       parameters: []
       responses:
         "200":
@@ -49407,7 +49771,10 @@ paths:
         **Required permissions:** Any of `workflow:read`, `workflow:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:read
+        - OAuth2:
+            - workflow:admin
       parameters: []
       responses:
         "200":
@@ -49456,7 +49823,8 @@ paths:
         **Required permissions:** `workflow:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:admin
       parameters: []
       responses:
         "200":
@@ -49521,7 +49889,10 @@ paths:
         **Required permissions:** Any of `workflow:read`, `workflow:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:read
+        - OAuth2:
+            - workflow:admin
       parameters: []
       responses:
         "200":
@@ -49585,7 +49956,10 @@ paths:
         **Required permissions:** Any of `workflow:read`, `workflow:run`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:read
+        - OAuth2:
+            - workflow:run
       parameters:
         - name: workflowId
           in: path
@@ -49658,7 +50032,10 @@ paths:
         **Required permissions:** Any of `workflow:read`, `workflow:run`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:read
+        - OAuth2:
+            - workflow:run
       parameters:
         - name: workflowId
           in: path
@@ -49736,7 +50113,8 @@ paths:
         **Required permissions:** `workflow:run`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:run
       parameters:
         - name: runId
           in: path
@@ -49806,7 +50184,10 @@ paths:
         **Required permissions:** Any of `workflow:read`, `workflow:run`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:read
+        - OAuth2:
+            - workflow:run
       parameters:
         - name: workflowId
           in: path
@@ -49893,7 +50274,8 @@ paths:
         **Required permissions:** `workflow:run`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:run
       parameters:
         - name: workflowId
           in: path
@@ -49971,7 +50353,10 @@ paths:
         **Required permissions:** Any of `workflow:read`, `workflow:run`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:read
+        - OAuth2:
+            - workflow:run
       parameters:
         - name: workflowId
           in: path
@@ -50044,7 +50429,8 @@ paths:
         **Required permissions:** `workflow:run`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:run
       parameters:
         - name: workflowId
           in: path
@@ -50118,7 +50504,8 @@ paths:
         **Required permissions:** `workflow:run`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:run
       parameters:
         - name: workflowName
           in: path
@@ -50186,7 +50573,8 @@ paths:
         **Required permissions:** `workflow:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:admin
       parameters:
         - name: ruleId
           in: path
@@ -50245,7 +50633,10 @@ paths:
         **Required permissions:** Any of `workflow:read`, `workflow:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:read
+        - OAuth2:
+            - workflow:admin
       parameters:
         - name: ruleId
           in: path
@@ -50297,7 +50688,8 @@ paths:
         **Required permissions:** `workflow:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:admin
       parameters:
         - name: ruleId
           in: path
@@ -50361,7 +50753,8 @@ paths:
         **Required permissions:** `workflow:run`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:run
       parameters:
         - name: ruleId
           in: path
@@ -50429,7 +50822,10 @@ paths:
         **Required permissions:** Any of `workflow:read`, `workflow:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:read
+        - OAuth2:
+            - workflow:admin
       parameters:
         - name: ruleId
           in: path
@@ -50492,7 +50888,10 @@ paths:
         **Required permissions:** Any of `workflow:read`, `workflow:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:read
+        - OAuth2:
+            - workflow:admin
       parameters:
         - name: workflowId
           in: path
@@ -50544,7 +50943,8 @@ paths:
         **Required permissions:** `workflow:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:admin
       parameters:
         - name: workflowId
           in: path
@@ -50603,7 +51003,8 @@ paths:
         **Required permissions:** `workflow:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:admin
       parameters:
         - name: workflowId
           in: path
@@ -50667,7 +51068,8 @@ paths:
         **Required permissions:** `content:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:read
       parameters:
         - name: file
           in: query
@@ -50720,7 +51122,8 @@ paths:
         **Required permissions:** `content:write`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:write
       parameters: []
       responses:
         "200":
@@ -50785,7 +51188,8 @@ paths:
         **Required permissions:** `content:write`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:write
       parameters: []
       responses:
         "200":
@@ -50842,7 +51246,8 @@ paths:
         **Required permissions:** `content:write`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:write
       parameters: []
       responses:
         "200":
@@ -50905,7 +51310,8 @@ paths:
         **Required permissions:** `content:write`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:write
       parameters: []
       responses:
         "200":
@@ -50968,7 +51374,8 @@ paths:
         **Required permissions:** `content:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:read
       parameters:
         - name: prefix
           in: query
@@ -51032,7 +51439,8 @@ paths:
         **Required permissions:** `content:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:read
       parameters: []
       responses:
         "200":
@@ -51096,7 +51504,8 @@ paths:
         **Required permissions:** `content:write`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:write
       parameters: []
       responses:
         "200":
@@ -51157,7 +51566,7 @@ paths:
         provided relative project path prefix.
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2: []
       parameters:
         - name: path
           in: path
@@ -51229,7 +51638,8 @@ paths:
         **Required permissions:** `workflow:run`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:run
       parameters: []
       responses:
         "200":
@@ -51302,7 +51712,8 @@ paths:
         **Required permissions:** `workflow:run`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:run
       parameters: []
       responses:
         "200":
@@ -51365,7 +51776,10 @@ paths:
         **Required permissions:** Any of `agent_run:read`, `workflow:run`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - agent_run:read
+        - OAuth2:
+            - workflow:run
       parameters:
         - name: key
           in: path
@@ -51417,7 +51831,8 @@ paths:
         **Required permissions:** `workflow:run`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:run
       parameters:
         - name: key
           in: path
@@ -51489,7 +51904,8 @@ paths:
         **Required permissions:** `workflow:run`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:run
       parameters:
         - name: key
           in: path
@@ -51560,7 +51976,8 @@ paths:
         **Required permissions:** `workflow:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:read
       parameters:
         - name: limit
           in: query
@@ -51704,7 +52121,8 @@ paths:
         **Required permissions:** `workflow:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:read
       parameters: []
       responses:
         "200":
@@ -51769,7 +52187,8 @@ paths:
         **Required permissions:** `workflow:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:read
       parameters: []
       responses:
         "200":
@@ -51835,7 +52254,8 @@ paths:
         **Required permissions:** `workflow:run`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:run
       parameters: []
       responses:
         "200":
@@ -51898,7 +52318,8 @@ paths:
         **Required permissions:** `workflow:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:read
       parameters: []
       responses:
         "200":
@@ -51946,7 +52367,8 @@ paths:
         **Required permissions:** `workflow:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:admin
       parameters: []
       responses:
         "200":
@@ -52009,7 +52431,8 @@ paths:
         **Required permissions:** `workflow:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:read
       parameters:
         - name: subscriptionId
           in: path
@@ -52062,7 +52485,8 @@ paths:
         **Required permissions:** `workflow:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:admin
       parameters:
         - name: subscriptionId
           in: path
@@ -52123,7 +52547,8 @@ paths:
         **Required permissions:** `workflow:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:admin
       parameters:
         - name: subscriptionId
           in: path
@@ -52182,7 +52607,8 @@ paths:
       description: "**Required permissions:** `workflow:read`"
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:read
       parameters: []
       responses:
         "200":
@@ -52230,7 +52656,8 @@ paths:
         **Required permissions:** `workflow:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:admin
       parameters: []
       responses:
         "200":
@@ -52290,7 +52717,8 @@ paths:
       description: "**Required permissions:** `workflow:read`"
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:read
       parameters:
         - name: channelId
           in: path
@@ -52344,7 +52772,8 @@ paths:
         **Required permissions:** `workflow:admin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:admin
       parameters:
         - name: channelId
           in: path
@@ -52398,7 +52827,8 @@ paths:
       description: "**Required permissions:** `workflow:admin`"
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:admin
       parameters:
         - name: channelId
           in: path
@@ -52461,7 +52891,8 @@ paths:
         **Required permissions:** `workflow:run`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:run
       parameters: []
       responses:
         "200":
@@ -52513,7 +52944,10 @@ paths:
         **Required permissions:** Any of `agent_run:read`, `workflow:run`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - agent_run:read
+        - OAuth2:
+            - workflow:run
       parameters: []
       responses:
         "200":
@@ -52571,7 +53005,8 @@ paths:
         **Required permissions:** `workflow:run`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - workflow:run
       parameters:
         - name: askId
           in: path
@@ -52639,7 +53074,10 @@ paths:
         **Required permissions:** Any of `agent_run:read`, `workflow:run`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - agent_run:read
+        - OAuth2:
+            - workflow:run
       parameters:
         - name: askId
           in: path
@@ -52700,7 +53138,7 @@ paths:
         executed by an authenticated admin API key.
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2: []
       parameters: []
       responses:
         "200":
@@ -52755,7 +53193,6 @@ paths:
         and its shape is the migration's own.
       security:
         - bearerAuth: []
-        - OpenID: []
       parameters:
         - name: name
           in: path
@@ -52824,7 +53261,8 @@ paths:
         **Required permissions:** `content:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:read
       parameters: []
       responses:
         "200":
@@ -52889,7 +53327,8 @@ paths:
         **Required permissions:** `content:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:read
       parameters: []
       responses:
         "200":
@@ -52954,7 +53393,8 @@ paths:
         **Required permissions:** `content:write`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:write
       parameters: []
       responses:
         "200":
@@ -53015,7 +53455,7 @@ paths:
         when present.
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2: []
       parameters:
         - name: collectionId
           in: path
@@ -53067,7 +53507,8 @@ paths:
         **Required permissions:** `content:write`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:write
       parameters:
         - name: collectionId
           in: path
@@ -53124,7 +53565,8 @@ paths:
         **Required permissions:** `content:delete`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:delete
       parameters:
         - name: collectionId
           in: path
@@ -53186,7 +53628,8 @@ paths:
         **Required permissions:** `content:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:read
       parameters:
         - name: collectionId
           in: path
@@ -53257,7 +53700,8 @@ paths:
         **Required permissions:** `content:write`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:write
       parameters:
         - name: collectionId
           in: path
@@ -53325,7 +53769,8 @@ paths:
         **Required permissions:** `content:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:read
       parameters:
         - name: collectionId
           in: path
@@ -53395,7 +53840,8 @@ paths:
         **Required permissions:** `content:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:read
       parameters:
         - name: collectionId
           in: path
@@ -53463,7 +53909,10 @@ paths:
         **Required permissions:** Any of `content:admin`, `content:superadmin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:admin
+        - OAuth2:
+            - content:superadmin
       parameters:
         - name: collectionId
           in: path
@@ -53534,7 +53983,10 @@ paths:
         **Required permissions:** Any of `content:admin`, `content:superadmin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:admin
+        - OAuth2:
+            - content:superadmin
       parameters:
         - name: collectionId
           in: path
@@ -53597,7 +54049,10 @@ paths:
         **Required permissions:** Any of `content:admin`, `content:superadmin`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:admin
+        - OAuth2:
+            - content:superadmin
       parameters:
         - name: collectionId
           in: path
@@ -53660,7 +54115,8 @@ paths:
         **Required permissions:** `content:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:read
       parameters:
         - name: collectionId
           in: path
@@ -53728,7 +54184,8 @@ paths:
         **Required permissions:** `content:write`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:write
       parameters:
         - name: collectionId
           in: path
@@ -53796,7 +54253,8 @@ paths:
         **Required permissions:** `content:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:read
       parameters: []
       responses:
         "200":
@@ -53842,7 +54300,8 @@ paths:
         **Required permissions:** `content:write`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:write
       parameters: []
       responses:
         "201":
@@ -53905,7 +54364,8 @@ paths:
         **Required permissions:** `content:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:read
       parameters:
         - name: storeId
           in: path
@@ -53956,7 +54416,8 @@ paths:
         **Required permissions:** `content:delete`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:delete
       parameters:
         - name: storeId
           in: path
@@ -54020,7 +54481,8 @@ paths:
         **Required permissions:** `content:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:read
       parameters:
         - name: storeId
           in: path
@@ -54073,7 +54535,8 @@ paths:
         **Required permissions:** `content:write`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:write
       parameters:
         - name: storeId
           in: path
@@ -54141,7 +54604,8 @@ paths:
         **Required permissions:** `content:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:read
       parameters:
         - name: storeId
           in: path
@@ -54203,7 +54667,8 @@ paths:
         **Required permissions:** `content:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:read
       parameters:
         - name: storeId
           in: path
@@ -54254,7 +54719,8 @@ paths:
         **Required permissions:** `content:write`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:write
       parameters:
         - name: storeId
           in: path
@@ -54322,7 +54788,8 @@ paths:
         **Required permissions:** `content:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:read
       parameters:
         - name: storeId
           in: path
@@ -54383,7 +54850,8 @@ paths:
         **Required permissions:** `content:write`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:write
       parameters:
         - name: storeId
           in: path
@@ -54445,7 +54913,8 @@ paths:
         **Required permissions:** `content:delete`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:delete
       parameters:
         - name: storeId
           in: path
@@ -54515,7 +54984,8 @@ paths:
         **Required permissions:** `content:write`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:write
       parameters:
         - name: storeId
           in: path
@@ -54589,7 +55059,8 @@ paths:
         **Required permissions:** `content:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:read
       parameters:
         - name: storeId
           in: path
@@ -54656,7 +55127,8 @@ paths:
         **Required permissions:** `content:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:read
       parameters:
         - name: storeId
           in: path
@@ -54717,7 +55189,8 @@ paths:
         **Required permissions:** `content:write`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:write
       parameters:
         - name: storeId
           in: path
@@ -54785,7 +55258,8 @@ paths:
         **Required permissions:** `content:write`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:write
       parameters:
         - name: storeId
           in: path
@@ -54852,7 +55326,8 @@ paths:
         **Required permissions:** `content:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:read
       parameters:
         - name: storeId
           in: path
@@ -54927,7 +55402,8 @@ paths:
         **Required permissions:** `content:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:read
       parameters:
         - name: storeId
           in: path
@@ -54989,7 +55465,8 @@ paths:
         **Required permissions:** `content:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:read
       parameters:
         - name: storeId
           in: path
@@ -55059,7 +55536,8 @@ paths:
         **Required permissions:** `content:write`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:write
       parameters:
         - name: storeId
           in: path
@@ -55127,7 +55605,8 @@ paths:
         **Required permissions:** `content:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:read
       parameters:
         - name: storeId
           in: path
@@ -55195,7 +55674,8 @@ paths:
         **Required permissions:** `content:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:read
       parameters:
         - name: storeId
           in: path
@@ -55265,7 +55745,8 @@ paths:
         **Required permissions:** `content:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:read
       parameters:
         - name: storeId
           in: path
@@ -55316,7 +55797,8 @@ paths:
         **Required permissions:** `content:write`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:write
       parameters:
         - name: storeId
           in: path
@@ -55386,7 +55868,8 @@ paths:
         **Required permissions:** `content:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:read
       parameters:
         - name: storeId
           in: path
@@ -55442,7 +55925,8 @@ paths:
         **Required permissions:** `content:write`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:write
       parameters:
         - name: storeId
           in: path
@@ -55506,7 +55990,8 @@ paths:
         **Required permissions:** `content:delete`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:delete
       parameters:
         - name: storeId
           in: path
@@ -55573,7 +56058,8 @@ paths:
         **Required permissions:** `content:delete`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:delete
       parameters:
         - name: storeId
           in: path
@@ -55641,7 +56127,8 @@ paths:
         **Required permissions:** `content:delete`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:delete
       parameters:
         - name: storeId
           in: path
@@ -55709,7 +56196,8 @@ paths:
         **Required permissions:** `content:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:read
       parameters:
         - name: storeId
           in: path
@@ -55765,7 +56253,8 @@ paths:
         **Required permissions:** `content:write`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:write
       parameters:
         - name: storeId
           in: path
@@ -55838,7 +56327,8 @@ paths:
         **Required permissions:** `content:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:read
       parameters:
         - name: storeId
           in: path
@@ -55910,7 +56400,8 @@ paths:
         **Required permissions:** `content:write`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:write
       parameters:
         - name: storeId
           in: path
@@ -55988,7 +56479,8 @@ paths:
         **Required permissions:** `content:write`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:write
       parameters:
         - name: storeId
           in: path
@@ -56063,7 +56555,8 @@ paths:
         **Required permissions:** `content:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:read
       parameters: []
       responses:
         "200":
@@ -56128,7 +56621,8 @@ paths:
         **Required permissions:** `content:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:read
       parameters:
         - name: workflow_id
           in: query
@@ -56199,7 +56693,8 @@ paths:
         **Required permissions:** `content:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:read
       parameters:
         - name: viewId
           in: path
@@ -56271,7 +56766,8 @@ paths:
         **Required permissions:** `content:read`
       security:
         - bearerAuth: []
-        - OpenID: []
+        - OAuth2:
+            - content:read
       parameters: []
       responses:
         "200":
@@ -56334,7 +56830,6 @@ paths:
         the Authorization header is used as the token source.
       security:
         - bearerAuth: []
-        - OpenID: []
       parameters: []
       responses:
         "200":
