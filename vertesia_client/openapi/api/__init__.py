@@ -23,6 +23,7 @@ from vertesia_client.openapi.api.events_api import EventsApi
 from vertesia_client.openapi.api.files_api import FilesApi
 from vertesia_client.openapi.api.interaction_runs_api import InteractionRunsApi
 from vertesia_client.openapi.api.interactions_api import InteractionsApi
+from vertesia_client.openapi.api.o_auth_api import OAuthApi
 from vertesia_client.openapi.api.o_auth_clients_api import OAuthClientsApi
 from vertesia_client.openapi.api.o_auth_grants_api import OAuthGrantsApi
 from vertesia_client.openapi.api.o_auth_providers_api import OAuthProvidersApi

@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Vertesia API",
-    "version": "1.6.0-dev.20260918.061604Z",
+    "version": "1.6.0-dev.20260923.085325Z",
     "x-api-version": "20260803",
     "description": "The Vertesia API provides project-scoped access to interaction execution and content workflows. Use it to run interactions, inspect execution history, stream run progress, replay previous executions, and search content objects and collections. Authenticate requests with a bearer token, or use the official `@vertesia/client` package for typed access from Node.js applications.",
     "contact": {
@@ -3685,6 +3685,29 @@
           "manifest": {
             "type": "string"
           },
+          "oauth_approval": {
+            "type": "object",
+            "properties": {
+              "scopes": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "approved_by": {
+                "type": "string"
+              },
+              "approved_at": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "scopes",
+              "approved_by",
+              "approved_at"
+            ],
+            "additionalProperties": false
+          },
           "settings": {
             "type": "object",
             "additionalProperties": true
@@ -3744,6 +3767,29 @@
           },
           "project": {
             "type": "string"
+          },
+          "oauth_approval": {
+            "type": "object",
+            "properties": {
+              "scopes": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "approved_by": {
+                "type": "string"
+              },
+              "approved_at": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "scopes",
+              "approved_by",
+              "approved_at"
+            ],
+            "additionalProperties": false
           },
           "settings": {
             "type": "object",
@@ -3918,6 +3964,29 @@
           "project": {
             "type": "string"
           },
+          "oauth_approval": {
+            "type": "object",
+            "properties": {
+              "scopes": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "approved_by": {
+                "type": "string"
+              },
+              "approved_at": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "scopes",
+              "approved_by",
+              "approved_at"
+            ],
+            "additionalProperties": false
+          },
           "settings": {
             "type": "object",
             "additionalProperties": true
@@ -3982,6 +4051,12 @@
       "AppManifest": {
         "type": "object",
         "properties": {
+          "oauth_scopes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
           "edit_revision": {
             "type": "integer",
             "minimum": 1,
@@ -4141,6 +4216,12 @@
       "AppManifestData": {
         "type": "object",
         "properties": {
+          "oauth_scopes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
           "name": {
             "type": "string",
             "description": "The name of the app, used as the id in the system. Must be in kebab case (e.g. my-app)."
@@ -4312,6 +4393,13 @@
       "AppPackage": {
         "type": "object",
         "properties": {
+          "oauth_scopes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "OAuth scopes requested by the app. Users must consent to project permissions."
+          },
           "ui": {
             "$ref": "#/components/schemas/AppUIConfig",
             "description": "The UI configuration of the app"
@@ -4748,6 +4836,53 @@
           "completed",
           "failed"
         ]
+      },
+      "AppSessionTokenRequest": {
+        "type": "object",
+        "properties": {
+          "app_name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "scopes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "ttl_seconds": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 900
+          }
+        },
+        "required": [
+          "app_name"
+        ],
+        "additionalProperties": false
+      },
+      "AppSessionTokenResponse": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string"
+          },
+          "token_type": {
+            "type": "string",
+            "const": "Bearer"
+          },
+          "expires_in": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "token",
+          "token_type",
+          "expires_in"
+        ],
+        "additionalProperties": false
       },
       "AppSourceConfig": {
         "type": "object",
@@ -23653,6 +23788,54 @@
           "urn:ietf:params:oauth:grant-type:device_code"
         ]
       },
+      "OAuthLoginDecisionResponse": {
+        "type": "object",
+        "properties": {
+          "redirect_url": {
+            "type": "string"
+          },
+          "consent_url": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "OAuthLoginPayload": {
+        "type": "object",
+        "properties": {
+          "id_token": {
+            "type": "string",
+            "minLength": 1
+          },
+          "account_id": {
+            "type": "string"
+          },
+          "project_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id_token"
+        ],
+        "additionalProperties": false
+      },
+      "OAuthLoginUserNotFoundResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "const": "user_not_found"
+          },
+          "ensure_user_url": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "error",
+          "ensure_user_url"
+        ],
+        "additionalProperties": false
+      },
       "OAuthMetadataResponse": {
         "type": "object",
         "properties": {
@@ -26535,6 +26718,25 @@
           "main_language": {
             "type": "string",
             "description": "Primary language for full-text search analysis. ISO 639-1 code (e.g., 'en', 'fr', 'ja', 'de'). Determines which Elasticsearch analyzer is used for the text field. Defaults to 'en' (English/standard analyzer).\n\nChanging this value requires a full reindex to take effect."
+          },
+          "oauth_clients": {
+            "type": "object",
+            "properties": {
+              "external_clients": {
+                "type": "string",
+                "enum": [
+                  "allow_all",
+                  "allowlist"
+                ]
+              },
+              "allowed_origins": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "additionalProperties": false
           },
           "browser_use": {
             "$ref": "#/components/schemas/BrowserUseProjectConfiguration",
@@ -30303,6 +30505,13 @@
               "$ref": "#/components/schemas/AppScaffoldModule"
             }
           },
+          "oauth_scopes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "App permissions declared in generated source. Defaults to sign-in only."
+          },
           "appgen_package_spec": {
             "type": "string",
             "pattern": "^(?:latest|dev|dev-[0-9]+\\.[0-9]+|snapshot-[0-9a-f]{7}|[0-9]+\\.[0-9]+\\.[0-9]+(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?)$",
@@ -31978,6 +32187,24 @@
         },
         "additionalProperties": false
       },
+      "UpdateAppInstallationOAuthApprovalPayload": {
+        "type": "object",
+        "properties": {
+          "approved_scopes": {
+            "maxItems": 200,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "required": [
+          "approved_scopes"
+        ],
+        "additionalProperties": false,
+        "description": "Approve OAuth scopes for this project installation. An empty list revokes project approval."
+      },
       "UpdateAppInstallationToolAllowlistPayload": {
         "type": "object",
         "properties": {
@@ -31999,6 +32226,12 @@
       "UpdateAppPayload": {
         "type": "object",
         "properties": {
+          "oauth_scopes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
           "name": {
             "type": "string",
             "description": "The name of the app, used as the id in the system. Must be in kebab case (e.g. my-app)."
@@ -32936,6 +33169,25 @@
           "main_language": {
             "type": "string",
             "description": "Primary language for full-text search analysis. ISO 639-1 code (e.g., 'en', 'fr', 'ja', 'de'). Determines which Elasticsearch analyzer is used for the text field. Defaults to 'en' (English/standard analyzer).\n\nChanging this value requires a full reindex to take effect."
+          },
+          "oauth_clients": {
+            "type": "object",
+            "properties": {
+              "external_clients": {
+                "type": "string",
+                "enum": [
+                  "allow_all",
+                  "allowlist"
+                ]
+              },
+              "allowed_origins": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "additionalProperties": false
           },
           "browser_use": {
             "$ref": "#/components/schemas/BrowserUseProjectConfiguration",
@@ -54579,6 +54831,111 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/AppInstallationPayload"
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "x-api-version",
+          "in": "header",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S",
+            "example": "20260803"
+          },
+          "description": "Required Vertesia API version header. Use `20260803` for the current stable API shape.",
+          "x-vertesia-global-header": true
+        }
+      ]
+    },
+    "/apps/installations/{installId}/oauth-approval": {
+      "put": {
+        "operationId": "UpdateAppInstallationOAuthApproval",
+        "tags": [
+          "Apps"
+        ],
+        "summary": "Approve or revoke OAuth permissions for an app installation",
+        "description": "**Required permissions:** `project:admin`",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OAuth2": [
+              "project:admin"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "installId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The updated installation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AppInstallationWithManifest"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [
+          "project:admin"
+        ],
+        "x-vertesia-source": {
+          "file": "../../apps/studio-server/src/api/apps.ts",
+          "className": "AppsResource",
+          "methodName": "updateOAuthApproval"
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAppInstallationOAuthApprovalPayload"
               }
             }
           }
@@ -81280,6 +81637,194 @@
           "x-vertesia-global-header": true
         }
       ]
+    },
+    "/oauth/requests/{request_id}/login": {
+      "post": {
+        "operationId": "LoginOAuthAuthorizationRequest",
+        "tags": [
+          "OAuth"
+        ],
+        "summary": "Complete a login through an authorized authentication broker",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OAuth2": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "request_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The validated authorization or consent destination.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthLoginDecisionResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The user must be provisioned before retrying login.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthLoginUserNotFoundResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [],
+        "x-vertesia-source": {
+          "file": "../../apps/token-server/src/api/oauth.ts",
+          "className": "OAuthResource",
+          "methodName": "loginAuthorizationRequest"
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OAuthLoginPayload"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/token/app-session": {
+      "post": {
+        "operationId": "MintAppSessionToken",
+        "tags": [
+          "Token Service"
+        ],
+        "summary": "Mint a scoped iframe app session",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OAuth2": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "A short-lived app-scoped token without a refresh token.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AppSessionTokenResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [],
+        "x-vertesia-source": {
+          "file": "../../apps/token-server/src/api/token.ts",
+          "className": "TokensResource",
+          "methodName": "appSession"
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AppSessionTokenRequest"
+              }
+            }
+          }
+        },
+        "servers": [
+          {
+            "url": "https://sts.{region}.vertesia.io",
+            "description": "Vertesia STS",
+            "variables": {
+              "region": {
+                "default": "us1",
+                "enum": [
+                  "us1",
+                  "eu1",
+                  "jp1"
+                ],
+                "description": "Regional STS host label. `us1` is the global endpoint."
+              }
+            }
+          }
+        ]
+      }
     },
     "/token/issue": {
       "post": {
