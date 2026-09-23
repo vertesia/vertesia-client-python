@@ -2230,7 +2230,7 @@ class ObjectsApi:
     ) -> DeleteContentObjectResult:
         """Delete a content object
 
-        Deletes a content object. Deleting a head revision deletes the whole revision set visible to the caller.  **Required permissions:** `content:delete`
+        Deletes a content object. Deleting a head revision deletes the whole revision set visible to the caller.
 
         :param object_id: (required)
         :type object_id: str
@@ -2303,7 +2303,7 @@ class ObjectsApi:
     ) -> ApiResponse[DeleteContentObjectResult]:
         """Delete a content object
 
-        Deletes a content object. Deleting a head revision deletes the whole revision set visible to the caller.  **Required permissions:** `content:delete`
+        Deletes a content object. Deleting a head revision deletes the whole revision set visible to the caller.
 
         :param object_id: (required)
         :type object_id: str
@@ -2376,7 +2376,7 @@ class ObjectsApi:
     ) -> RESTResponseType:
         """Delete a content object
 
-        Deletes a content object. Deleting a head revision deletes the whole revision set visible to the caller.  **Required permissions:** `content:delete`
+        Deletes a content object. Deleting a head revision deletes the whole revision set visible to the caller.
 
         :param object_id: (required)
         :type object_id: str
@@ -6607,7 +6607,7 @@ class ObjectsApi:
     ) -> SetObjectEmbeddingsResponse:
         """Set content object embeddings
 
-        Stores embeddings for a specific embedding type on a content object.  **Required permissions:** `content:write`
+        Stores embeddings for a specific embedding type on a content object.
 
         :param object_id: (required)
         :type object_id: str
@@ -6688,7 +6688,7 @@ class ObjectsApi:
     ) -> ApiResponse[SetObjectEmbeddingsResponse]:
         """Set content object embeddings
 
-        Stores embeddings for a specific embedding type on a content object.  **Required permissions:** `content:write`
+        Stores embeddings for a specific embedding type on a content object.
 
         :param object_id: (required)
         :type object_id: str
@@ -6769,7 +6769,7 @@ class ObjectsApi:
     ) -> RESTResponseType:
         """Set content object embeddings
 
-        Stores embeddings for a specific embedding type on a content object.  **Required permissions:** `content:write`
+        Stores embeddings for a specific embedding type on a content object.
 
         :param object_id: (required)
         :type object_id: str
@@ -7858,7 +7858,7 @@ class ObjectsApi:
     ) -> ContentObjectApiResponse:
         """Update a content object
 
-        Updates a content object, optionally creating a new revision and triggering downstream indexing and processing workflows.  **Required permissions:** `content:write`
+        Updates a content object, optionally creating a new revision and triggering downstream indexing and processing workflows.
 
         :param object_id: (required)
         :type object_id: str
@@ -7967,7 +7967,7 @@ class ObjectsApi:
     ) -> ApiResponse[ContentObjectApiResponse]:
         """Update a content object
 
-        Updates a content object, optionally creating a new revision and triggering downstream indexing and processing workflows.  **Required permissions:** `content:write`
+        Updates a content object, optionally creating a new revision and triggering downstream indexing and processing workflows.
 
         :param object_id: (required)
         :type object_id: str
@@ -8076,7 +8076,7 @@ class ObjectsApi:
     ) -> RESTResponseType:
         """Update a content object
 
-        Updates a content object, optionally creating a new revision and triggering downstream indexing and processing workflows.  **Required permissions:** `content:write`
+        Updates a content object, optionally creating a new revision and triggering downstream indexing and processing workflows.
 
         :param object_id: (required)
         :type object_id: str

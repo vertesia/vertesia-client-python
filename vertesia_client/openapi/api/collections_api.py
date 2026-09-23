@@ -977,7 +977,7 @@ class CollectionsApi:
     ) -> DeleteCountResult:
         """Delete a collection
 
-        Deletes a collection after verifying delete permission.  **Required permissions:** `content:delete`
+        Deletes a collection after verifying delete permission.
 
         :param collection_id: (required)
         :type collection_id: str
@@ -1050,7 +1050,7 @@ class CollectionsApi:
     ) -> ApiResponse[DeleteCountResult]:
         """Delete a collection
 
-        Deletes a collection after verifying delete permission.  **Required permissions:** `content:delete`
+        Deletes a collection after verifying delete permission.
 
         :param collection_id: (required)
         :type collection_id: str
@@ -1123,7 +1123,7 @@ class CollectionsApi:
     ) -> RESTResponseType:
         """Delete a collection
 
-        Deletes a collection after verifying delete permission.  **Required permissions:** `content:delete`
+        Deletes a collection after verifying delete permission.
 
         :param collection_id: (required)
         :type collection_id: str
@@ -3379,7 +3379,7 @@ class CollectionsApi:
     ) -> Collection:
         """Update a collection
 
-        Updates a collection, including shared properties and content type settings.  **Required permissions:** `content:write`
+        Updates a collection, including shared properties and content type settings.
 
         :param collection_id: (required)
         :type collection_id: str
@@ -3456,7 +3456,7 @@ class CollectionsApi:
     ) -> ApiResponse[Collection]:
         """Update a collection
 
-        Updates a collection, including shared properties and content type settings.  **Required permissions:** `content:write`
+        Updates a collection, including shared properties and content type settings.
 
         :param collection_id: (required)
         :type collection_id: str
@@ -3533,7 +3533,7 @@ class CollectionsApi:
     ) -> RESTResponseType:
         """Update a collection
 
-        Updates a collection, including shared properties and content type settings.  **Required permissions:** `content:write`
+        Updates a collection, including shared properties and content type settings.
 
         :param collection_id: (required)
         :type collection_id: str
@@ -3690,7 +3690,7 @@ class CollectionsApi:
     ) -> CollectionChildrenUpdateResult:
         """Update child collections
 
-        Adds or removes child collections from a parent collection.  **Required permissions:** `content:write`
+        Adds or removes child collections from a parent collection.
 
         :param collection_id: (required)
         :type collection_id: str
@@ -3767,7 +3767,7 @@ class CollectionsApi:
     ) -> ApiResponse[CollectionChildrenUpdateResult]:
         """Update child collections
 
-        Adds or removes child collections from a parent collection.  **Required permissions:** `content:write`
+        Adds or removes child collections from a parent collection.
 
         :param collection_id: (required)
         :type collection_id: str
@@ -3844,7 +3844,7 @@ class CollectionsApi:
     ) -> RESTResponseType:
         """Update child collections
 
-        Adds or removes child collections from a parent collection.  **Required permissions:** `content:write`
+        Adds or removes child collections from a parent collection.
 
         :param collection_id: (required)
         :type collection_id: str
@@ -4001,7 +4001,7 @@ class CollectionsApi:
     ) -> CollectionMembersUpdateResult:
         """Update collection members
 
-        Adds or removes content objects from a static collection.  **Required permissions:** `content:write`
+        Adds or removes content objects from a static collection.
 
         :param collection_id: (required)
         :type collection_id: str
@@ -4078,7 +4078,7 @@ class CollectionsApi:
     ) -> ApiResponse[CollectionMembersUpdateResult]:
         """Update collection members
 
-        Adds or removes content objects from a static collection.  **Required permissions:** `content:write`
+        Adds or removes content objects from a static collection.
 
         :param collection_id: (required)
         :type collection_id: str
@@ -4155,7 +4155,7 @@ class CollectionsApi:
     ) -> RESTResponseType:
         """Update collection members
 
-        Adds or removes content objects from a static collection.  **Required permissions:** `content:write`
+        Adds or removes content objects from a static collection.
 
         :param collection_id: (required)
         :type collection_id: str
