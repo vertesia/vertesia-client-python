@@ -27,10 +27,11 @@ class InteractionForkPayload(BaseModel):
     """
     InteractionForkPayload
     """ # noqa: E501
+    new_name: Optional[StrictStr] = Field(default=None, alias="newName")
     keep_tags: Optional[StrictBool] = Field(default=None, alias="keepTags")
     fork_prompts: Optional[StrictBool] = Field(default=None, alias="forkPrompts")
     target_project: Optional[StrictStr] = Field(default=None, alias="targetProject")
-    __properties: ClassVar[List[str]] = ["keepTags", "forkPrompts", "targetProject"]
+    __properties: ClassVar[List[str]] = ["newName", "keepTags", "forkPrompts", "targetProject"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -83,6 +84,7 @@ class InteractionForkPayload(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "newName": obj.get("newName"),
             "keepTags": obj.get("keepTags"),
             "forkPrompts": obj.get("forkPrompts"),
             "targetProject": obj.get("targetProject")

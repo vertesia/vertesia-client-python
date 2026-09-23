@@ -15834,6 +15834,8 @@ components:
     InteractionForkPayload:
       type: object
       properties:
+        newName:
+          type: string
         keepTags:
           type: boolean
         forkPrompts:
@@ -20393,6 +20395,8 @@ components:
     PromptTemplateForkPayload:
       type: object
       properties:
+        newName:
+          type: string
         keepTags:
           type: boolean
         targetProject:
