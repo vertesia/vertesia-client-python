@@ -216,6 +216,7 @@ __all__ = [
     "AsyncExecutionPayload",
     "AsyncExecutionResult",
     "AsyncInteractionExecutionPayload",
+    "AudioResult",
     "AuditAction",
     "AuditAggregationDetailField",
     "AuditAggregationDetailFilter",
@@ -745,10 +746,13 @@ __all__ = [
     "OAuthTokenEndpointAuthMethod",
     "ObjectSearchResponse",
     "OnboardingProgress",
+    "OpenAiAudioOptions",
     "OpenAiDalleOptions",
     "OpenAiGptImageOptions",
+    "OpenAiSpeechOptions",
     "OpenAiTextOptions",
     "OpenAiThinkingOptions",
+    "OpenAiTranscriptionOptions",
     "OpenRouterTextOptions",
     "ParallelCollectDefinition",
     "ParallelCollectField",
@@ -1388,6 +1392,7 @@ from vertesia_client.openapi.models.async_conversation_execution_payload_result_
 from vertesia_client.openapi.models.async_execution_payload import AsyncExecutionPayload as AsyncExecutionPayload
 from vertesia_client.openapi.models.async_execution_result import AsyncExecutionResult as AsyncExecutionResult
 from vertesia_client.openapi.models.async_interaction_execution_payload import AsyncInteractionExecutionPayload as AsyncInteractionExecutionPayload
+from vertesia_client.openapi.models.audio_result import AudioResult as AudioResult
 from vertesia_client.openapi.models.audit_action import AuditAction as AuditAction
 from vertesia_client.openapi.models.audit_aggregation_detail_field import AuditAggregationDetailField as AuditAggregationDetailField
 from vertesia_client.openapi.models.audit_aggregation_detail_filter import AuditAggregationDetailFilter as AuditAggregationDetailFilter
@@ -1917,10 +1922,13 @@ from vertesia_client.openapi.models.o_auth_response_type import OAuthResponseTyp
 from vertesia_client.openapi.models.o_auth_token_endpoint_auth_method import OAuthTokenEndpointAuthMethod as OAuthTokenEndpointAuthMethod
 from vertesia_client.openapi.models.object_search_response import ObjectSearchResponse as ObjectSearchResponse
 from vertesia_client.openapi.models.onboarding_progress import OnboardingProgress as OnboardingProgress
+from vertesia_client.openapi.models.open_ai_audio_options import OpenAiAudioOptions as OpenAiAudioOptions
 from vertesia_client.openapi.models.open_ai_dalle_options import OpenAiDalleOptions as OpenAiDalleOptions
 from vertesia_client.openapi.models.open_ai_gpt_image_options import OpenAiGptImageOptions as OpenAiGptImageOptions
+from vertesia_client.openapi.models.open_ai_speech_options import OpenAiSpeechOptions as OpenAiSpeechOptions
 from vertesia_client.openapi.models.open_ai_text_options import OpenAiTextOptions as OpenAiTextOptions
 from vertesia_client.openapi.models.open_ai_thinking_options import OpenAiThinkingOptions as OpenAiThinkingOptions
+from vertesia_client.openapi.models.open_ai_transcription_options import OpenAiTranscriptionOptions as OpenAiTranscriptionOptions
 from vertesia_client.openapi.models.open_router_text_options import OpenRouterTextOptions as OpenRouterTextOptions
 from vertesia_client.openapi.models.parallel_collect_definition import ParallelCollectDefinition as ParallelCollectDefinition
 from vertesia_client.openapi.models.parallel_collect_field import ParallelCollectField as ParallelCollectField

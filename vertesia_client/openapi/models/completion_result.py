@@ -17,6 +17,7 @@ import json
 import pprint
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, ValidationError, field_validator
 from typing import Any, List, Optional
+from vertesia_client.openapi.models.audio_result import AudioResult
 from vertesia_client.openapi.models.image_result import ImageResult
 from vertesia_client.openapi.models.json_result import JsonResult
 from vertesia_client.openapi.models.text_result import TextResult
@@ -26,7 +27,7 @@ from pydantic import StrictStr, Field
 from typing import Union, List, Set, Optional, Dict
 from typing_extensions import Literal, Self
 
-COMPLETIONRESULT_ONE_OF_SCHEMAS = ["ImageResult", "JsonResult", "TextResult", "ThoughtsResult", "VideoResult"]
+COMPLETIONRESULT_ONE_OF_SCHEMAS = ["AudioResult", "ImageResult", "JsonResult", "TextResult", "ThoughtsResult", "VideoResult"]
 
 class CompletionResult(BaseModel):
     """
@@ -42,8 +43,10 @@ class CompletionResult(BaseModel):
     oneof_schema_4_validator: Optional[ImageResult] = None
     # data type: VideoResult
     oneof_schema_5_validator: Optional[VideoResult] = None
-    actual_instance: Optional[Union[ImageResult, JsonResult, TextResult, ThoughtsResult, VideoResult]] = None
-    one_of_schemas: Set[str] = { "ImageResult", "JsonResult", "TextResult", "ThoughtsResult", "VideoResult" }
+    # data type: AudioResult
+    oneof_schema_6_validator: Optional[AudioResult] = None
+    actual_instance: Optional[Union[AudioResult, ImageResult, JsonResult, TextResult, ThoughtsResult, VideoResult]] = None
+    one_of_schemas: Set[str] = { "AudioResult", "ImageResult", "JsonResult", "TextResult", "ThoughtsResult", "VideoResult" }
 
     model_config = ConfigDict(
         validate_assignment=True,
@@ -94,12 +97,17 @@ class CompletionResult(BaseModel):
             error_messages.append(f"Error! Input type `{type(v)}` is not `VideoResult`")
         else:
             match += 1
+        # validate data type: AudioResult
+        if not isinstance(v, AudioResult):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `AudioResult`")
+        else:
+            match += 1
         if match > 1:
             # more than 1 match
-            raise ValueError("Multiple matches found when setting `actual_instance` in CompletionResult with oneOf schemas: ImageResult, JsonResult, TextResult, ThoughtsResult, VideoResult. Details: " + ", ".join(error_messages))
+            raise ValueError("Multiple matches found when setting `actual_instance` in CompletionResult with oneOf schemas: AudioResult, ImageResult, JsonResult, TextResult, ThoughtsResult, VideoResult. Details: " + ", ".join(error_messages))
         elif match == 0:
             # no match
-            raise ValueError("No match found when setting `actual_instance` in CompletionResult with oneOf schemas: ImageResult, JsonResult, TextResult, ThoughtsResult, VideoResult. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when setting `actual_instance` in CompletionResult with oneOf schemas: AudioResult, ImageResult, JsonResult, TextResult, ThoughtsResult, VideoResult. Details: " + ", ".join(error_messages))
         else:
             return v
 
@@ -144,13 +152,19 @@ class CompletionResult(BaseModel):
             match += 1
         except (ValidationError, ValueError) as e:
             error_messages.append(str(e))
+        # deserialize data into AudioResult
+        try:
+            instance.actual_instance = AudioResult.from_json(json_str)
+            match += 1
+        except (ValidationError, ValueError) as e:
+            error_messages.append(str(e))
 
         if match > 1:
             # more than 1 match
-            raise ValueError("Multiple matches found when deserializing the JSON string into CompletionResult with oneOf schemas: ImageResult, JsonResult, TextResult, ThoughtsResult, VideoResult. Details: " + ", ".join(error_messages))
+            raise ValueError("Multiple matches found when deserializing the JSON string into CompletionResult with oneOf schemas: AudioResult, ImageResult, JsonResult, TextResult, ThoughtsResult, VideoResult. Details: " + ", ".join(error_messages))
         elif match == 0:
             # no match
-            raise ValueError("No match found when deserializing the JSON string into CompletionResult with oneOf schemas: ImageResult, JsonResult, TextResult, ThoughtsResult, VideoResult. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when deserializing the JSON string into CompletionResult with oneOf schemas: AudioResult, ImageResult, JsonResult, TextResult, ThoughtsResult, VideoResult. Details: " + ", ".join(error_messages))
         else:
             return instance
 
@@ -164,7 +178,7 @@ class CompletionResult(BaseModel):
         else:
             return json.dumps(self.actual_instance)
 
-    def to_dict(self) -> Optional[Union[Dict[str, Any], ImageResult, JsonResult, TextResult, ThoughtsResult, VideoResult]]:
+    def to_dict(self) -> Optional[Union[Dict[str, Any], AudioResult, ImageResult, JsonResult, TextResult, ThoughtsResult, VideoResult]]:
         """Returns the dict representation of the actual instance"""
         if self.actual_instance is None:
             return None

@@ -44,13 +44,19 @@ class VertexAIGeminiOptions(BaseModel):
     thinking_level: Optional[ThinkingLevel] = None
     service_tier: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="Provider-defined processing tier. Unknown non-empty values are preserved for forward compatibility.")
     flex: Optional[StrictBool] = Field(default=None, description="Deprecated: Use service_tier=\"flex\" instead.")
+    speech_voice: Optional[StrictStr] = None
+    speech_language: Optional[StrictStr] = None
+    transcription_language_codes: Optional[List[StrictStr]] = None
+    transcription_diarization: Optional[StrictBool] = None
+    transcription_word_timestamps: Optional[StrictBool] = None
+    transcription_vocabulary: Optional[List[StrictStr]] = None
     image_aspect_ratio: Optional[StrictStr] = None
     image_size: Optional[StrictStr] = None
     person_generation: Optional[StrictStr] = None
     prominent_people: Optional[StrictStr] = None
     output_mime_type: Optional[StrictStr] = None
     output_compression_quality: Optional[Union[StrictFloat, StrictInt]] = None
-    __properties: ClassVar[List[str]] = ["_option_id", "max_tokens", "temperature", "top_p", "top_k", "stop_sequence", "presence_penalty", "frequency_penalty", "seed", "effort", "include_thoughts", "thinking_budget_tokens", "thinking_level", "service_tier", "flex", "image_aspect_ratio", "image_size", "person_generation", "prominent_people", "output_mime_type", "output_compression_quality"]
+    __properties: ClassVar[List[str]] = ["_option_id", "max_tokens", "temperature", "top_p", "top_k", "stop_sequence", "presence_penalty", "frequency_penalty", "seed", "effort", "include_thoughts", "thinking_budget_tokens", "thinking_level", "service_tier", "flex", "speech_voice", "speech_language", "transcription_language_codes", "transcription_diarization", "transcription_word_timestamps", "transcription_vocabulary", "image_aspect_ratio", "image_size", "person_generation", "prominent_people", "output_mime_type", "output_compression_quality"]
 
     @field_validator('option_id')
     def option_id_validate_enum(cls, value):
@@ -174,6 +180,12 @@ class VertexAIGeminiOptions(BaseModel):
             "thinking_level": obj.get("thinking_level"),
             "service_tier": obj.get("service_tier"),
             "flex": obj.get("flex"),
+            "speech_voice": obj.get("speech_voice"),
+            "speech_language": obj.get("speech_language"),
+            "transcription_language_codes": obj.get("transcription_language_codes"),
+            "transcription_diarization": obj.get("transcription_diarization"),
+            "transcription_word_timestamps": obj.get("transcription_word_timestamps"),
+            "transcription_vocabulary": obj.get("transcription_vocabulary"),
             "image_aspect_ratio": obj.get("image_aspect_ratio"),
             "image_size": obj.get("image_size"),
             "person_generation": obj.get("person_generation"),

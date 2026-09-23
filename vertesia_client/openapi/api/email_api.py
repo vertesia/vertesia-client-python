@@ -319,8 +319,8 @@ class EmailApi:
 
         # authentication setting
         _auth_settings: List[str] = [
-            'bearerAuth', 
-            'OpenID'
+            'OAuth2', 
+            'bearerAuth'
         ]
 
         return self.api_client.param_serialize(
@@ -630,8 +630,8 @@ class EmailApi:
 
         # authentication setting
         _auth_settings: List[str] = [
-            'bearerAuth', 
-            'OpenID'
+            'OAuth2', 
+            'bearerAuth'
         ]
 
         return self.api_client.param_serialize(
@@ -913,8 +913,8 @@ class EmailApi:
 
         # authentication setting
         _auth_settings: List[str] = [
-            'bearerAuth', 
-            'OpenID'
+            'OAuth2', 
+            'bearerAuth'
         ]
 
         return self.api_client.param_serialize(
@@ -1209,8 +1209,8 @@ class EmailApi:
 
         # authentication setting
         _auth_settings: List[str] = [
-            'bearerAuth', 
-            'OpenID'
+            'OAuth2', 
+            'bearerAuth'
         ]
 
         return self.api_client.param_serialize(
@@ -1520,8 +1520,8 @@ class EmailApi:
 
         # authentication setting
         _auth_settings: List[str] = [
-            'bearerAuth', 
-            'OpenID'
+            'OAuth2', 
+            'bearerAuth'
         ]
 
         return self.api_client.param_serialize(

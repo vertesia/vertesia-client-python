@@ -44,9 +44,55 @@
         "type": "http",
         "scheme": "bearer"
       },
-      "OpenID": {
-        "type": "openIdConnect",
-        "openIdConnectUrl": "https://api.us1.vertesia.io/.well-known/openid-configuration"
+      "OAuth2": {
+        "type": "oauth2",
+        "flows": {
+          "authorizationCode": {
+            "authorizationUrl": "https://cloud.us1.vertesia.io/oauth/authorize",
+            "tokenUrl": "https://sts.vertesia.io/oauth/token",
+            "x-scalar-security-query": {
+              "resource": "https://api.us1.vertesia.io/api/v1"
+            },
+            "x-scalar-security-body": {
+              "resource": "https://api.us1.vertesia.io/api/v1"
+            },
+            "scopes": {
+              "openid": "",
+              "profile": "",
+              "offline_access": "",
+              "interaction:read": "",
+              "interaction:write": "",
+              "interaction:delete": "",
+              "interaction:execute": "",
+              "run:read": "",
+              "run:write": "",
+              "environment:admin": "",
+              "app:manage": "",
+              "project:admin": "",
+              "project:integration_read": "",
+              "project:settings_write": "",
+              "api_key:read": "",
+              "account:read": "",
+              "account:write": "",
+              "account:admin": "",
+              "audit:read": "",
+              "account:member": "",
+              "content:read": "",
+              "content:read_all": "",
+              "content:write": "",
+              "content:delete": "",
+              "content:admin": "",
+              "content:superadmin": "",
+              "workflow:read": "",
+              "workflow:run": "",
+              "workflow:admin": "",
+              "workflow:superadmin": "",
+              "agent_run:read": "",
+              "task:read": "",
+              "task:manage": ""
+            }
+          }
+        }
       }
     },
     "schemas": {
@@ -5616,6 +5662,55 @@
           "type"
         ]
       },
+      "AudioResult": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "const": "audio"
+          },
+          "value": {
+            "type": "string",
+            "pattern": "^(?:gs|s3):\\/\\/[^/]+\\/.+|^artifact:.+"
+          },
+          "mime_type": {
+            "type": "string",
+            "format": "starts_with",
+            "pattern": "^audio\\/.*"
+          },
+          "container": {
+            "type": "string"
+          },
+          "codec": {
+            "type": "string"
+          },
+          "sample_rate": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          },
+          "channels": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          },
+          "sample_encoding": {
+            "type": "string"
+          },
+          "byte_order": {
+            "type": "string",
+            "enum": [
+              "little",
+              "big"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "value",
+          "mime_type"
+        ]
+      },
       "AuditAction": {
         "anyOf": [
           {
@@ -8162,6 +8257,9 @@
           },
           {
             "$ref": "#/components/schemas/VideoResult"
+          },
+          {
+            "$ref": "#/components/schemas/AudioResult"
           }
         ],
         "discriminator": {
@@ -8171,7 +8269,8 @@
             "thoughts": "#/components/schemas/ThoughtsResult",
             "json": "#/components/schemas/JsonResult",
             "image": "#/components/schemas/ImageResult",
-            "video": "#/components/schemas/VideoResult"
+            "video": "#/components/schemas/VideoResult",
+            "audio": "#/components/schemas/AudioResult"
           }
         },
         "type": "object",
@@ -22513,6 +22612,15 @@
             "$ref": "#/components/schemas/OpenAiGptImageOptions"
           },
           {
+            "$ref": "#/components/schemas/OpenAiTranscriptionOptions"
+          },
+          {
+            "$ref": "#/components/schemas/OpenAiSpeechOptions"
+          },
+          {
+            "$ref": "#/components/schemas/OpenAiAudioOptions"
+          },
+          {
             "$ref": "#/components/schemas/XAIGrokImageOptions"
           },
           {
@@ -23794,6 +23902,30 @@
         ],
         "additionalProperties": false
       },
+      "OpenAiAudioOptions": {
+        "type": "object",
+        "properties": {
+          "_option_id": {
+            "type": "string",
+            "const": "openai-audio"
+          },
+          "voice": {
+            "type": "string",
+            "minLength": 1
+          },
+          "response_format": {
+            "type": "string",
+            "enum": [
+              "wav",
+              "mp3",
+              "flac",
+              "opus",
+              "pcm16"
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
       "OpenAiDalleOptions": {
         "type": "object",
         "properties": {
@@ -23878,6 +24010,39 @@
               "webp",
               "jpeg"
             ]
+          }
+        },
+        "additionalProperties": false
+      },
+      "OpenAiSpeechOptions": {
+        "type": "object",
+        "properties": {
+          "_option_id": {
+            "type": "string",
+            "const": "openai-speech"
+          },
+          "voice": {
+            "type": "string",
+            "minLength": 1
+          },
+          "response_format": {
+            "type": "string",
+            "enum": [
+              "mp3",
+              "wav",
+              "opus",
+              "aac",
+              "flac",
+              "pcm"
+            ]
+          },
+          "speed": {
+            "type": "number",
+            "minimum": 0.25,
+            "maximum": 4
+          },
+          "instructions": {
+            "type": "string"
           }
         },
         "additionalProperties": false
@@ -24000,6 +24165,19 @@
             "type": "object",
             "additionalProperties": true,
             "description": "Additional provider-specific fields merged into the OpenAI-compatible request body."
+          }
+        },
+        "additionalProperties": false
+      },
+      "OpenAiTranscriptionOptions": {
+        "type": "object",
+        "properties": {
+          "_option_id": {
+            "type": "string",
+            "const": "openai-transcription"
+          },
+          "language": {
+            "type": "string"
           }
         },
         "additionalProperties": false
@@ -33976,6 +34154,30 @@
             "x-deprecated-message": "Use service_tier=\"flex\" instead.",
             "description": "Deprecated: Use service_tier=\"flex\" instead."
           },
+          "speech_voice": {
+            "type": "string"
+          },
+          "speech_language": {
+            "type": "string"
+          },
+          "transcription_language_codes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "transcription_diarization": {
+            "type": "boolean"
+          },
+          "transcription_word_timestamps": {
+            "type": "boolean"
+          },
+          "transcription_vocabulary": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
           "image_aspect_ratio": {
             "type": "string",
             "enum": [
@@ -37439,7 +37641,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [
@@ -37513,7 +37715,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:admin"
+            ]
           }
         ],
         "parameters": [],
@@ -37607,7 +37811,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [
@@ -37681,7 +37885,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "project:settings_write"
+            ]
           }
         ],
         "parameters": [
@@ -37767,7 +37973,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [
@@ -37858,7 +38064,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "project:settings_write"
+            ]
           }
         ],
         "parameters": [
@@ -37961,7 +38169,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [
@@ -38043,7 +38251,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "project:admin"
+            ]
           }
         ],
         "parameters": [
@@ -38154,7 +38364,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [
@@ -38245,7 +38455,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "project:admin"
+            ]
           }
         ],
         "parameters": [
@@ -38331,7 +38543,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [
@@ -38422,7 +38634,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [
@@ -38513,7 +38725,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [
@@ -38612,7 +38824,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [
@@ -38711,7 +38923,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [
@@ -38810,7 +39022,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [
@@ -38909,7 +39121,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [
@@ -39008,7 +39220,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [
@@ -39107,7 +39319,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [
@@ -39206,7 +39418,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [
@@ -39305,7 +39517,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [
@@ -39404,7 +39616,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [
@@ -39478,7 +39690,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:admin"
+            ]
           }
         ],
         "parameters": [
@@ -39584,7 +39798,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:member"
+            ]
           }
         ],
         "parameters": [
@@ -39660,7 +39876,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "environment:admin"
+            ]
           }
         ],
         "parameters": [],
@@ -39754,7 +39972,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "environment:admin"
+            ]
           }
         ],
         "parameters": [
@@ -39830,7 +40050,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [
@@ -39904,7 +40124,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "environment:admin"
+            ]
           }
         ],
         "parameters": [
@@ -40007,7 +40229,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "environment:admin"
+            ]
           }
         ],
         "parameters": [
@@ -40110,7 +40334,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:member"
+            ]
           }
         ],
         "parameters": [
@@ -40260,7 +40486,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "environment:admin"
+            ]
           }
         ],
         "parameters": [
@@ -40363,7 +40591,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "environment:admin"
+            ]
           }
         ],
         "parameters": [
@@ -40464,7 +40694,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:member"
+            ]
           }
         ],
         "parameters": [
@@ -40557,7 +40789,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "interaction:execute"
+            ]
           }
         ],
         "parameters": [
@@ -40660,7 +40894,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "environment:admin"
+            ]
           }
         ],
         "parameters": [
@@ -40763,7 +40999,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "interaction:read"
+            ]
           }
         ],
         "parameters": [
@@ -40856,7 +41094,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "interaction:read"
+            ]
           }
         ],
         "parameters": [
@@ -40957,7 +41197,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "interaction:read"
+            ]
           }
         ],
         "parameters": [
@@ -41050,7 +41292,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "interaction:read"
+            ]
           }
         ],
         "parameters": [
@@ -41159,7 +41403,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "interaction:read"
+            ]
           }
         ],
         "parameters": [
@@ -41252,7 +41498,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "interaction:read"
+            ]
           }
         ],
         "parameters": [
@@ -41442,7 +41690,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "interaction:write"
+            ]
           }
         ],
         "parameters": [],
@@ -41536,7 +41786,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "interaction:read"
+            ]
           }
         ],
         "parameters": [
@@ -41743,7 +41995,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "interaction:read"
+            ]
           }
         ],
         "parameters": [],
@@ -41837,7 +42091,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "interaction:read"
+            ]
           }
         ],
         "parameters": [
@@ -41930,7 +42186,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "interaction:read"
+            ]
           }
         ],
         "parameters": [
@@ -42055,7 +42313,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "interaction:read"
+            ]
           }
         ],
         "parameters": [],
@@ -42149,7 +42409,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "interaction:read"
+            ]
           }
         ],
         "parameters": [],
@@ -42233,7 +42495,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "interaction:read"
+            ]
           }
         ],
         "parameters": [],
@@ -42327,7 +42591,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "interaction:execute"
+            ]
           }
         ],
         "parameters": [],
@@ -42421,7 +42687,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "interaction:read"
+            ]
           }
         ],
         "parameters": [
@@ -42497,7 +42765,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "interaction:write"
+            ]
           }
         ],
         "parameters": [
@@ -42586,7 +42856,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "interaction:write"
+            ]
           }
         ],
         "parameters": [
@@ -42679,7 +42951,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "interaction:read"
+            ]
           }
         ],
         "parameters": [
@@ -42772,7 +43046,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "interaction:read"
+            ]
           }
         ],
         "parameters": [
@@ -42865,7 +43141,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "interaction:write"
+            ]
           }
         ],
         "parameters": [
@@ -42971,7 +43249,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "interaction:write"
+            ]
           }
         ],
         "parameters": [
@@ -43074,7 +43354,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "interaction:read"
+            ]
           }
         ],
         "parameters": [
@@ -43177,7 +43459,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "interaction:read"
+            ]
           }
         ],
         "parameters": [
@@ -43280,7 +43564,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "interaction:read"
+            ]
           }
         ],
         "parameters": [
@@ -43383,7 +43669,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "interaction:execute"
+            ]
           }
         ],
         "parameters": [
@@ -43486,7 +43774,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "interaction:read"
+            ]
           }
         ],
         "parameters": [
@@ -43634,7 +43924,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "interaction:write"
+            ]
           }
         ],
         "parameters": [],
@@ -43728,7 +44020,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "interaction:read"
+            ]
           }
         ],
         "parameters": [],
@@ -43822,7 +44116,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [
@@ -43896,7 +44190,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "interaction:write"
+            ]
           }
         ],
         "parameters": [
@@ -43985,7 +44281,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "interaction:write"
+            ]
           }
         ],
         "parameters": [
@@ -44078,7 +44376,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "interaction:read"
+            ]
           }
         ],
         "parameters": [
@@ -44171,7 +44471,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "interaction:read"
+            ]
           }
         ],
         "parameters": [
@@ -44264,7 +44566,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "interaction:write"
+            ]
           }
         ],
         "parameters": [
@@ -44367,7 +44671,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [
@@ -44458,7 +44762,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "interaction:read"
+            ]
           }
         ],
         "parameters": [
@@ -44561,7 +44867,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "interaction:execute"
+            ]
           }
         ],
         "parameters": [],
@@ -44673,7 +44981,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "run:read"
+            ]
           }
         ],
         "parameters": [
@@ -44925,7 +45235,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "run:read"
+            ]
           }
         ],
         "parameters": [],
@@ -45026,7 +45338,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "run:read"
+            ]
           }
         ],
         "parameters": [
@@ -45150,7 +45464,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "run:write"
+            ]
           }
         ],
         "parameters": [
@@ -45243,7 +45559,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "run:write"
+            ]
           }
         ],
         "parameters": [
@@ -45343,7 +45661,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "run:read"
+            ]
           }
         ],
         "parameters": [
@@ -45428,7 +45748,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:member"
+            ]
           }
         ],
         "parameters": [],
@@ -45512,7 +45834,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:member"
+            ]
           }
         ],
         "parameters": [],
@@ -45596,7 +45920,14 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:member"
+            ]
+          },
+          {
+            "OAuth2": [
+              "account:read"
+            ]
           }
         ],
         "parameters": [],
@@ -45664,7 +45995,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:write"
+            ]
           }
         ],
         "parameters": [],
@@ -45758,7 +46091,14 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:member"
+            ]
+          },
+          {
+            "OAuth2": [
+              "account:read"
+            ]
           }
         ],
         "parameters": [],
@@ -45843,7 +46183,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:member"
+            ]
           }
         ],
         "parameters": [],
@@ -45910,7 +46252,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "project:admin"
+            ]
           }
         ],
         "parameters": [],
@@ -46004,7 +46348,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "project:admin"
+            ]
           }
         ],
         "parameters": [],
@@ -46088,7 +46434,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:admin"
+            ]
           }
         ],
         "parameters": [],
@@ -46172,7 +46520,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:member"
+            ]
           }
         ],
         "parameters": [
@@ -46248,7 +46598,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:member"
+            ]
           }
         ],
         "parameters": [
@@ -46341,7 +46693,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:member"
+            ]
           }
         ],
         "parameters": [],
@@ -46425,7 +46779,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:member"
+            ]
           }
         ],
         "parameters": [],
@@ -46508,9 +46864,6 @@
         "security": [
           {
             "bearerAuth": []
-          },
-          {
-            "OpenID": []
           }
         ],
         "parameters": [],
@@ -46591,7 +46944,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [],
@@ -46662,7 +47015,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [],
@@ -46740,7 +47093,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [
@@ -46810,7 +47163,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [
@@ -46890,7 +47243,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [
@@ -46979,9 +47332,6 @@
         "security": [
           {
             "bearerAuth": []
-          },
-          {
-            "OpenID": []
           }
         ],
         "parameters": [],
@@ -47058,7 +47408,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "api_key:read"
+            ]
           }
         ],
         "parameters": [
@@ -47153,9 +47505,6 @@
         "security": [
           {
             "bearerAuth": []
-          },
-          {
-            "OpenID": []
           }
         ],
         "parameters": [
@@ -47229,9 +47578,6 @@
         "security": [
           {
             "bearerAuth": []
-          },
-          {
-            "OpenID": []
           }
         ],
         "parameters": [
@@ -47317,7 +47663,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "api_key:read"
+            ]
           }
         ],
         "parameters": [
@@ -47416,9 +47764,6 @@
         "security": [
           {
             "bearerAuth": []
-          },
-          {
-            "OpenID": []
           }
         ],
         "parameters": [
@@ -47511,7 +47856,19 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "project:admin"
+            ]
+          },
+          {
+            "OAuth2": [
+              "account:admin"
+            ]
+          },
+          {
+            "OAuth2": [
+              "audit:read"
+            ]
           }
         ],
         "parameters": [
@@ -47728,7 +48085,19 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "project:admin"
+            ]
+          },
+          {
+            "OAuth2": [
+              "account:admin"
+            ]
+          },
+          {
+            "OAuth2": [
+              "audit:read"
+            ]
           }
         ],
         "parameters": [],
@@ -47824,7 +48193,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "interaction:execute"
+            ]
           }
         ],
         "parameters": [],
@@ -47918,7 +48289,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "interaction:execute"
+            ]
           }
         ],
         "parameters": [],
@@ -48012,7 +48385,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "interaction:execute"
+            ]
           }
         ],
         "parameters": [
@@ -48131,7 +48506,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "interaction:execute"
+            ]
           }
         ],
         "parameters": [],
@@ -48223,9 +48600,6 @@
         "security": [
           {
             "bearerAuth": []
-          },
-          {
-            "OpenID": []
           }
         ],
         "parameters": [],
@@ -48302,7 +48676,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:read"
+            ]
           }
         ],
         "parameters": [],
@@ -48385,7 +48761,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [],
@@ -48467,7 +48843,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:read"
+            ]
           }
         ],
         "parameters": [
@@ -48559,7 +48937,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [
@@ -48650,7 +49028,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:read"
+            ]
           }
         ],
         "parameters": [],
@@ -48734,7 +49114,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:read"
+            ]
           }
         ],
         "parameters": [],
@@ -48802,7 +49184,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:admin"
+            ]
           }
         ],
         "parameters": [],
@@ -48897,7 +49281,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:read"
+            ]
           }
         ],
         "parameters": [
@@ -48974,7 +49360,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:admin"
+            ]
           }
         ],
         "parameters": [
@@ -49061,7 +49449,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:admin"
+            ]
           }
         ],
         "parameters": [
@@ -49155,7 +49545,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [],
@@ -49237,7 +49627,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [],
@@ -49319,7 +49709,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:read"
+            ]
           }
         ],
         "parameters": [
@@ -49433,7 +49825,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:admin"
+            ]
           }
         ],
         "parameters": [],
@@ -49528,7 +49922,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:admin"
+            ]
           }
         ],
         "parameters": [],
@@ -49613,7 +50009,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:admin"
+            ]
           }
         ],
         "parameters": [
@@ -49715,7 +50113,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:read"
+            ]
           }
         ],
         "parameters": [
@@ -49794,7 +50194,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:read"
+            ]
           }
         ],
         "parameters": [
@@ -49888,7 +50290,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:admin"
+            ]
           }
         ],
         "parameters": [
@@ -49973,7 +50377,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:admin"
+            ]
           }
         ],
         "parameters": [
@@ -50075,7 +50481,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:member"
+            ]
           }
         ],
         "parameters": [],
@@ -50159,7 +50567,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:member"
+            ]
           }
         ],
         "parameters": [
@@ -50236,7 +50646,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:member"
+            ]
           }
         ],
         "parameters": [
@@ -50323,7 +50735,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:admin"
+            ]
           }
         ],
         "parameters": [
@@ -50416,7 +50830,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:member"
+            ]
           }
         ],
         "parameters": [
@@ -50509,7 +50925,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:member"
+            ]
           }
         ],
         "parameters": [
@@ -50602,7 +51020,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "app:manage"
+            ]
           }
         ],
         "parameters": [
@@ -50695,7 +51115,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:member"
+            ]
           }
         ],
         "parameters": [
@@ -50788,7 +51210,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:member"
+            ]
           }
         ],
         "parameters": [
@@ -50881,7 +51305,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:member"
+            ]
           }
         ],
         "parameters": [
@@ -50974,7 +51400,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:member"
+            ]
           }
         ],
         "parameters": [
@@ -51075,7 +51503,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "app:manage"
+            ]
           }
         ],
         "parameters": [
@@ -51186,7 +51616,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "app:manage"
+            ]
           }
         ],
         "parameters": [
@@ -51279,7 +51711,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "app:manage"
+            ]
           }
         ],
         "parameters": [
@@ -51373,7 +51807,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "app:manage"
+            ]
           }
         ],
         "parameters": [
@@ -51457,7 +51893,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "app:manage"
+            ]
           }
         ],
         "parameters": [
@@ -51558,7 +51996,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:member"
+            ]
           }
         ],
         "parameters": [
@@ -51682,7 +52122,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:member"
+            ]
           }
         ],
         "parameters": [],
@@ -51749,7 +52191,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "app:manage"
+            ]
           }
         ],
         "parameters": [],
@@ -51843,7 +52287,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:member"
+            ]
           }
         ],
         "parameters": [
@@ -51919,7 +52365,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "app:manage"
+            ]
           }
         ],
         "parameters": [
@@ -52012,7 +52460,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "app:manage"
+            ]
           }
         ],
         "parameters": [
@@ -52105,7 +52555,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "app:manage"
+            ]
           }
         ],
         "parameters": [
@@ -52198,7 +52650,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "app:manage"
+            ]
           }
         ],
         "parameters": [],
@@ -52292,7 +52746,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "app:manage"
+            ]
           }
         ],
         "parameters": [
@@ -52393,7 +52849,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "app:manage"
+            ]
           }
         ],
         "parameters": [
@@ -52496,7 +52954,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "app:manage"
+            ]
           }
         ],
         "parameters": [
@@ -52605,7 +53065,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "app:manage"
+            ]
           }
         ],
         "parameters": [],
@@ -52682,7 +53144,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [
@@ -52780,7 +53242,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "app:manage"
+            ]
           }
         ],
         "parameters": [
@@ -52869,7 +53333,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "app:manage"
+            ]
           }
         ],
         "parameters": [
@@ -52962,7 +53428,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "app:manage"
+            ]
           }
         ],
         "parameters": [],
@@ -53056,7 +53524,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "project:admin"
+            ]
           }
         ],
         "parameters": [
@@ -53149,7 +53619,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [
@@ -53240,7 +53710,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [
@@ -53343,7 +53813,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:member"
+            ]
           }
         ],
         "parameters": [
@@ -53436,7 +53908,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:member"
+            ]
           }
         ],
         "parameters": [
@@ -53560,7 +54034,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "app:manage"
+            ]
           }
         ],
         "parameters": [
@@ -53653,7 +54129,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [
@@ -53767,7 +54243,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "project:admin"
+            ]
           }
         ],
         "parameters": [],
@@ -53851,7 +54329,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [],
@@ -53933,7 +54411,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [
@@ -54024,7 +54502,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "project:admin"
+            ]
           }
         ],
         "parameters": [
@@ -54127,7 +54607,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "project:admin"
+            ]
           }
         ],
         "parameters": [
@@ -54230,7 +54712,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [],
@@ -54322,7 +54804,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [
@@ -54421,7 +54903,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [
@@ -54520,7 +55002,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [
@@ -54611,7 +55093,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [
@@ -54710,7 +55192,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [
@@ -54809,7 +55291,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [],
@@ -54901,7 +55383,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [
@@ -55000,7 +55482,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:admin"
+            ]
           }
         ],
         "parameters": [],
@@ -55067,7 +55551,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:admin"
+            ]
           }
         ],
         "parameters": [],
@@ -55161,7 +55647,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:admin"
+            ]
           }
         ],
         "parameters": [],
@@ -55245,7 +55733,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:admin"
+            ]
           }
         ],
         "parameters": [
@@ -55321,7 +55811,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:admin"
+            ]
           }
         ],
         "parameters": [
@@ -55407,7 +55899,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:admin"
+            ]
           }
         ],
         "parameters": [
@@ -55500,7 +55994,19 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:member"
+            ]
+          },
+          {
+            "OAuth2": [
+              "project:admin"
+            ]
+          },
+          {
+            "OAuth2": [
+              "account:admin"
+            ]
           }
         ],
         "parameters": [
@@ -55688,7 +56194,19 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:member"
+            ]
+          },
+          {
+            "OAuth2": [
+              "project:admin"
+            ]
+          },
+          {
+            "OAuth2": [
+              "account:admin"
+            ]
           }
         ],
         "parameters": [
@@ -55766,7 +56284,19 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:member"
+            ]
+          },
+          {
+            "OAuth2": [
+              "project:admin"
+            ]
+          },
+          {
+            "OAuth2": [
+              "account:admin"
+            ]
           }
         ],
         "parameters": [
@@ -55869,7 +56399,19 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:member"
+            ]
+          },
+          {
+            "OAuth2": [
+              "project:admin"
+            ]
+          },
+          {
+            "OAuth2": [
+              "account:admin"
+            ]
           }
         ],
         "parameters": [],
@@ -55965,7 +56507,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "project:settings_write"
+            ]
           }
         ],
         "parameters": [],
@@ -56032,7 +56576,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "project:settings_write"
+            ]
           }
         ],
         "parameters": [],
@@ -56126,7 +56672,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "project:settings_write"
+            ]
           }
         ],
         "parameters": [
@@ -56202,7 +56750,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "project:settings_write"
+            ]
           }
         ],
         "parameters": [
@@ -56288,7 +56838,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "project:admin"
+            ]
           }
         ],
         "parameters": [
@@ -56381,7 +56933,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [
@@ -56472,7 +57024,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [],
@@ -56564,7 +57116,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [
@@ -56655,7 +57207,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "project:settings_write"
+            ]
           }
         ],
         "parameters": [
@@ -56748,7 +57302,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [
@@ -56839,7 +57393,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [
@@ -56930,7 +57484,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [
@@ -57034,7 +57588,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "project:admin"
+            ]
           }
         ],
         "parameters": [
@@ -57139,7 +57695,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [
@@ -57235,7 +57791,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "project:admin"
+            ]
           }
         ],
         "parameters": [
@@ -57343,7 +57901,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "project:admin"
+            ]
           }
         ],
         "parameters": [
@@ -57458,7 +58018,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [
@@ -57569,7 +58129,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:member"
+            ]
           }
         ],
         "parameters": [
@@ -57710,7 +58272,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:member"
+            ]
           }
         ],
         "parameters": [
@@ -57817,7 +58381,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "account:member"
+            ]
           }
         ],
         "parameters": [],
@@ -57911,7 +58477,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "interaction:read"
+            ]
           }
         ],
         "parameters": [
@@ -57999,7 +58567,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "interaction:write"
+            ]
           }
         ],
         "parameters": [],
@@ -58093,7 +58663,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "interaction:read"
+            ]
           }
         ],
         "parameters": [
@@ -58169,7 +58741,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "interaction:write"
+            ]
           }
         ],
         "parameters": [
@@ -58255,7 +58829,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "interaction:write"
+            ]
           }
         ],
         "parameters": [
@@ -58348,7 +58924,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:read"
+            ]
           }
         ],
         "parameters": [],
@@ -58442,7 +59020,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:run"
+            ]
           }
         ],
         "parameters": [],
@@ -58519,7 +59099,14 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "agent_run:read"
+            ]
+          },
+          {
+            "OAuth2": [
+              "workflow:run"
+            ]
           }
         ],
         "parameters": [
@@ -58877,7 +59464,14 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "agent_run:read"
+            ]
+          },
+          {
+            "OAuth2": [
+              "workflow:run"
+            ]
           }
         ],
         "parameters": [
@@ -59134,7 +59728,14 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "agent_run:read"
+            ]
+          },
+          {
+            "OAuth2": [
+              "workflow:run"
+            ]
           }
         ],
         "parameters": [
@@ -59211,7 +59812,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:run"
+            ]
           }
         ],
         "parameters": [
@@ -59304,7 +59907,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:run"
+            ]
           }
         ],
         "parameters": [
@@ -59407,7 +60012,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:run"
+            ]
           }
         ],
         "parameters": [
@@ -59500,7 +60107,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:run"
+            ]
           }
         ],
         "parameters": [
@@ -59611,7 +60220,14 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "agent_run:read"
+            ]
+          },
+          {
+            "OAuth2": [
+              "workflow:run"
+            ]
           }
         ],
         "parameters": [
@@ -59713,7 +60329,14 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "agent_run:read"
+            ]
+          },
+          {
+            "OAuth2": [
+              "workflow:run"
+            ]
           }
         ],
         "parameters": [
@@ -59798,7 +60421,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:run"
+            ]
           }
         ],
         "parameters": [
@@ -59901,7 +60526,14 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "agent_run:read"
+            ]
+          },
+          {
+            "OAuth2": [
+              "workflow:run"
+            ]
           }
         ],
         "parameters": [
@@ -59996,7 +60628,14 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "agent_run:read"
+            ]
+          },
+          {
+            "OAuth2": [
+              "workflow:run"
+            ]
           }
         ],
         "parameters": [
@@ -60103,7 +60742,14 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "agent_run:read"
+            ]
+          },
+          {
+            "OAuth2": [
+              "workflow:run"
+            ]
           }
         ],
         "parameters": [
@@ -60191,7 +60837,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:run"
+            ]
           }
         ],
         "parameters": [
@@ -60302,7 +60950,14 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "agent_run:read"
+            ]
+          },
+          {
+            "OAuth2": [
+              "workflow:run"
+            ]
           }
         ],
         "parameters": [
@@ -60415,7 +61070,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:run"
+            ]
           }
         ],
         "parameters": [
@@ -60524,7 +61181,14 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "agent_run:read"
+            ]
+          },
+          {
+            "OAuth2": [
+              "workflow:run"
+            ]
           }
         ],
         "parameters": [
@@ -60645,7 +61309,14 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "agent_run:read"
+            ]
+          },
+          {
+            "OAuth2": [
+              "workflow:run"
+            ]
           }
         ],
         "parameters": [
@@ -60739,7 +61410,14 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "agent_run:read"
+            ]
+          },
+          {
+            "OAuth2": [
+              "workflow:run"
+            ]
           }
         ],
         "parameters": [
@@ -60833,7 +61511,14 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "agent_run:read"
+            ]
+          },
+          {
+            "OAuth2": [
+              "workflow:run"
+            ]
           }
         ],
         "parameters": [
@@ -60927,7 +61612,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:admin"
+            ]
           }
         ],
         "parameters": [
@@ -61030,7 +61717,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:admin"
+            ]
           }
         ],
         "parameters": [
@@ -61133,7 +61822,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [
@@ -61234,7 +61923,14 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "agent_run:read"
+            ]
+          },
+          {
+            "OAuth2": [
+              "workflow:run"
+            ]
           }
         ],
         "parameters": [
@@ -61363,7 +62059,14 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "agent_run:read"
+            ]
+          },
+          {
+            "OAuth2": [
+              "workflow:run"
+            ]
           }
         ],
         "parameters": [
@@ -61442,7 +62145,14 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "agent_run:read"
+            ]
+          },
+          {
+            "OAuth2": [
+              "workflow:run"
+            ]
           }
         ],
         "parameters": [
@@ -61544,9 +62254,6 @@
         "security": [
           {
             "bearerAuth": []
-          },
-          {
-            "OpenID": []
           }
         ],
         "parameters": [],
@@ -61638,9 +62345,6 @@
         "security": [
           {
             "bearerAuth": []
-          },
-          {
-            "OpenID": []
           }
         ],
         "parameters": [
@@ -61749,9 +62453,6 @@
         "security": [
           {
             "bearerAuth": []
-          },
-          {
-            "OpenID": []
           }
         ],
         "parameters": [],
@@ -61843,9 +62544,6 @@
         "security": [
           {
             "bearerAuth": []
-          },
-          {
-            "OpenID": []
           }
         ],
         "parameters": [
@@ -61990,7 +62688,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "project:settings_write"
+            ]
           }
         ],
         "parameters": [
@@ -62083,7 +62783,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "project:settings_write"
+            ]
           }
         ],
         "parameters": [
@@ -62186,7 +62888,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "project:settings_write"
+            ]
           }
         ],
         "parameters": [
@@ -62279,7 +62983,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "project:admin"
+            ]
           }
         ],
         "parameters": [
@@ -62393,7 +63099,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "project:settings_write"
+            ]
           }
         ],
         "parameters": [],
@@ -62477,7 +63185,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "project:settings_write"
+            ]
           }
         ],
         "parameters": [],
@@ -62561,7 +63271,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "project:settings_write"
+            ]
           }
         ],
         "parameters": [],
@@ -62646,7 +63358,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "project:settings_write"
+            ]
           }
         ],
         "parameters": [],
@@ -62731,7 +63445,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "project:settings_write"
+            ]
           }
         ],
         "parameters": [],
@@ -62815,7 +63531,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:admin"
+            ]
           }
         ],
         "parameters": [],
@@ -62909,7 +63627,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:admin"
+            ]
           }
         ],
         "parameters": [],
@@ -63003,7 +63723,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:admin"
+            ]
           }
         ],
         "parameters": [],
@@ -63087,7 +63809,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:admin"
+            ]
           }
         ],
         "parameters": [],
@@ -63171,7 +63895,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:read"
+            ]
           }
         ],
         "parameters": [],
@@ -63265,7 +63991,14 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:read"
+            ]
+          },
+          {
+            "OAuth2": [
+              "workflow:run"
+            ]
           }
         ],
         "parameters": [
@@ -63380,7 +64113,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:admin"
+            ]
           }
         ],
         "parameters": [],
@@ -63474,7 +64209,14 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:read"
+            ]
+          },
+          {
+            "OAuth2": [
+              "workflow:run"
+            ]
           }
         ],
         "parameters": [
@@ -63568,7 +64310,14 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:read"
+            ]
+          },
+          {
+            "OAuth2": [
+              "workflow:run"
+            ]
           }
         ],
         "parameters": [
@@ -63645,7 +64394,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:admin"
+            ]
           }
         ],
         "parameters": [
@@ -63748,7 +64499,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:admin"
+            ]
           }
         ],
         "parameters": [
@@ -63842,7 +64595,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:admin"
+            ]
           }
         ],
         "parameters": [
@@ -63943,7 +64698,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:run"
+            ]
           }
         ],
         "parameters": [
@@ -64029,7 +64786,14 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:read"
+            ]
+          },
+          {
+            "OAuth2": [
+              "workflow:run"
+            ]
           }
         ],
         "parameters": [
@@ -64133,7 +64897,14 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:read"
+            ]
+          },
+          {
+            "OAuth2": [
+              "workflow:run"
+            ]
           }
         ],
         "parameters": [
@@ -64235,7 +65006,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:run"
+            ]
           }
         ],
         "parameters": [
@@ -64336,7 +65109,14 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:read"
+            ]
+          },
+          {
+            "OAuth2": [
+              "workflow:run"
+            ]
           }
         ],
         "parameters": [
@@ -64413,7 +65193,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:admin"
+            ]
           }
         ],
         "parameters": [
@@ -64502,7 +65284,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:admin"
+            ]
           }
         ],
         "parameters": [
@@ -64595,7 +65379,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:admin"
+            ]
           }
         ],
         "parameters": [
@@ -64701,7 +65487,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:admin"
+            ]
           }
         ],
         "parameters": [
@@ -64807,7 +65595,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:run"
+            ]
           }
         ],
         "parameters": [],
@@ -64901,7 +65691,14 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:read"
+            ]
+          },
+          {
+            "OAuth2": [
+              "workflow:run"
+            ]
           }
         ],
         "parameters": [
@@ -64978,7 +65775,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:admin"
+            ]
           }
         ],
         "parameters": [
@@ -65071,7 +65870,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:run"
+            ]
           }
         ],
         "parameters": [
@@ -65164,7 +65965,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [
@@ -65294,7 +66095,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [],
@@ -65386,7 +66187,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [
@@ -65460,7 +66261,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "task:manage"
+            ]
           }
         ],
         "parameters": [
@@ -65546,7 +66349,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "task:manage"
+            ]
           }
         ],
         "parameters": [
@@ -65639,7 +66444,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [
@@ -65740,7 +66545,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "task:manage"
+            ]
           }
         ],
         "parameters": [
@@ -65833,7 +66640,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:write"
+            ]
           }
         ],
         "parameters": [],
@@ -65927,7 +66736,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:read"
+            ]
           }
         ],
         "parameters": [],
@@ -66022,7 +66833,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:read"
+            ]
           }
         ],
         "parameters": [],
@@ -66116,7 +66929,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:superadmin"
+            ]
           }
         ],
         "parameters": [],
@@ -66210,7 +67025,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:superadmin"
+            ]
           }
         ],
         "parameters": [],
@@ -66294,7 +67111,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:superadmin"
+            ]
           }
         ],
         "parameters": [
@@ -66387,7 +67206,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:superadmin"
+            ]
           }
         ],
         "parameters": [
@@ -66488,7 +67309,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:superadmin"
+            ]
           }
         ],
         "parameters": [
@@ -66589,7 +67412,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:write"
+            ]
           }
         ],
         "parameters": [
@@ -66721,7 +67546,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:read"
+            ]
           }
         ],
         "parameters": [],
@@ -66815,7 +67642,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:read"
+            ]
           }
         ],
         "parameters": [],
@@ -66909,7 +67738,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:read"
+            ]
           }
         ],
         "parameters": [],
@@ -67003,7 +67834,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:read"
+            ]
           }
         ],
         "parameters": [
@@ -67079,7 +67912,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:write"
+            ]
           }
         ],
         "parameters": [
@@ -67238,7 +68073,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:delete"
+            ]
           }
         ],
         "parameters": [
@@ -67331,7 +68168,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:read"
+            ]
           }
         ],
         "parameters": [
@@ -67424,7 +68263,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:read"
+            ]
           }
         ],
         "parameters": [
@@ -67517,7 +68358,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:read"
+            ]
           }
         ],
         "parameters": [
@@ -67670,7 +68513,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:read"
+            ]
           }
         ],
         "parameters": [
@@ -67763,7 +68608,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:write"
+            ]
           }
         ],
         "parameters": [
@@ -67874,7 +68721,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:read"
+            ]
           }
         ],
         "parameters": [
@@ -67967,7 +68816,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:read"
+            ]
           }
         ],
         "parameters": [
@@ -68060,7 +68911,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:write"
+            ]
           }
         ],
         "parameters": [
@@ -68163,7 +69016,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:read"
+            ]
           }
         ],
         "parameters": [
@@ -68256,7 +69111,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:write"
+            ]
           }
         ],
         "parameters": [
@@ -68359,7 +69216,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:write"
+            ]
           }
         ],
         "parameters": [
@@ -68462,7 +69321,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:read"
+            ]
           }
         ],
         "parameters": [
@@ -68555,7 +69416,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:read"
+            ]
           }
         ],
         "parameters": [
@@ -68680,7 +69543,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:read"
+            ]
           }
         ],
         "parameters": [
@@ -68805,7 +69670,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:read"
+            ]
           }
         ],
         "parameters": [
@@ -68930,7 +69797,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:read"
+            ]
           }
         ],
         "parameters": [
@@ -69055,7 +69924,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:read"
+            ]
           }
         ],
         "parameters": [
@@ -69148,7 +70019,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:read"
+            ]
           }
         ],
         "parameters": [
@@ -69264,7 +70137,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:admin"
+            ]
           }
         ],
         "parameters": [],
@@ -69358,7 +70233,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:read"
+            ]
           }
         ],
         "parameters": [
@@ -69451,7 +70328,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:read"
+            ]
           }
         ],
         "parameters": [
@@ -69527,7 +70406,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:admin"
+            ]
           }
         ],
         "parameters": [
@@ -69616,7 +70497,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:admin"
+            ]
           }
         ],
         "parameters": [
@@ -69709,7 +70592,14 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:read"
+            ]
+          },
+          {
+            "OAuth2": [
+              "workflow:admin"
+            ]
           }
         ],
         "parameters": [],
@@ -69777,7 +70667,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:admin"
+            ]
           }
         ],
         "parameters": [],
@@ -69871,7 +70763,14 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:read"
+            ]
+          },
+          {
+            "OAuth2": [
+              "workflow:admin"
+            ]
           }
         ],
         "parameters": [],
@@ -69939,7 +70838,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:admin"
+            ]
           }
         ],
         "parameters": [],
@@ -70033,7 +70934,14 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:read"
+            ]
+          },
+          {
+            "OAuth2": [
+              "workflow:admin"
+            ]
           }
         ],
         "parameters": [],
@@ -70128,7 +71036,14 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:read"
+            ]
+          },
+          {
+            "OAuth2": [
+              "workflow:run"
+            ]
           }
         ],
         "parameters": [
@@ -70238,7 +71153,14 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:read"
+            ]
+          },
+          {
+            "OAuth2": [
+              "workflow:run"
+            ]
           }
         ],
         "parameters": [
@@ -70341,7 +71263,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:run"
+            ]
           }
         ],
         "parameters": [
@@ -70444,7 +71368,14 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:read"
+            ]
+          },
+          {
+            "OAuth2": [
+              "workflow:run"
+            ]
           }
         ],
         "parameters": [
@@ -70575,7 +71506,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:run"
+            ]
           }
         ],
         "parameters": [
@@ -70694,7 +71627,14 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:read"
+            ]
+          },
+          {
+            "OAuth2": [
+              "workflow:run"
+            ]
           }
         ],
         "parameters": [
@@ -70804,7 +71744,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:run"
+            ]
           }
         ],
         "parameters": [
@@ -70913,7 +71855,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:run"
+            ]
           }
         ],
         "parameters": [
@@ -71016,7 +71960,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:admin"
+            ]
           }
         ],
         "parameters": [
@@ -71105,7 +72051,14 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:read"
+            ]
+          },
+          {
+            "OAuth2": [
+              "workflow:admin"
+            ]
           }
         ],
         "parameters": [
@@ -71182,7 +72135,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:admin"
+            ]
           }
         ],
         "parameters": [
@@ -71275,7 +72230,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:run"
+            ]
           }
         ],
         "parameters": [
@@ -71378,7 +72335,14 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:read"
+            ]
+          },
+          {
+            "OAuth2": [
+              "workflow:admin"
+            ]
           }
         ],
         "parameters": [
@@ -71472,7 +72436,14 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:read"
+            ]
+          },
+          {
+            "OAuth2": [
+              "workflow:admin"
+            ]
           }
         ],
         "parameters": [
@@ -71549,7 +72520,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:admin"
+            ]
           }
         ],
         "parameters": [
@@ -71638,7 +72611,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:admin"
+            ]
           }
         ],
         "parameters": [
@@ -71731,7 +72706,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:read"
+            ]
           }
         ],
         "parameters": [
@@ -71810,7 +72787,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:write"
+            ]
           }
         ],
         "parameters": [],
@@ -71904,7 +72883,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:write"
+            ]
           }
         ],
         "parameters": [],
@@ -71988,7 +72969,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:write"
+            ]
           }
         ],
         "parameters": [],
@@ -72082,7 +73065,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:write"
+            ]
           }
         ],
         "parameters": [],
@@ -72176,7 +73161,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:read"
+            ]
           }
         ],
         "parameters": [
@@ -72269,7 +73256,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:read"
+            ]
           }
         ],
         "parameters": [],
@@ -72364,7 +73353,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:write"
+            ]
           }
         ],
         "parameters": [],
@@ -72458,7 +73449,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [
@@ -72557,7 +73548,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:run"
+            ]
           }
         ],
         "parameters": [],
@@ -72651,7 +73644,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:run"
+            ]
           }
         ],
         "parameters": [],
@@ -72745,7 +73740,14 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "agent_run:read"
+            ]
+          },
+          {
+            "OAuth2": [
+              "workflow:run"
+            ]
           }
         ],
         "parameters": [
@@ -72822,7 +73824,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:run"
+            ]
           }
         ],
         "parameters": [
@@ -72925,7 +73929,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:run"
+            ]
           }
         ],
         "parameters": [
@@ -73028,7 +74034,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:read"
+            ]
           }
         ],
         "parameters": [
@@ -73222,7 +74230,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:read"
+            ]
           }
         ],
         "parameters": [],
@@ -73316,7 +74326,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:read"
+            ]
           }
         ],
         "parameters": [],
@@ -73410,7 +74422,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:run"
+            ]
           }
         ],
         "parameters": [],
@@ -73504,7 +74518,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:read"
+            ]
           }
         ],
         "parameters": [],
@@ -73571,7 +74587,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:admin"
+            ]
           }
         ],
         "parameters": [],
@@ -73665,7 +74683,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:read"
+            ]
           }
         ],
         "parameters": [
@@ -73741,7 +74761,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:admin"
+            ]
           }
         ],
         "parameters": [
@@ -73827,7 +74849,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:admin"
+            ]
           }
         ],
         "parameters": [
@@ -73920,7 +74944,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:read"
+            ]
           }
         ],
         "parameters": [],
@@ -73987,7 +75013,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:admin"
+            ]
           }
         ],
         "parameters": [],
@@ -74081,7 +75109,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:read"
+            ]
           }
         ],
         "parameters": [
@@ -74157,7 +75187,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:admin"
+            ]
           }
         ],
         "parameters": [
@@ -74243,7 +75275,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:admin"
+            ]
           }
         ],
         "parameters": [
@@ -74336,7 +75370,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:run"
+            ]
           }
         ],
         "parameters": [],
@@ -74413,7 +75449,14 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "agent_run:read"
+            ]
+          },
+          {
+            "OAuth2": [
+              "workflow:run"
+            ]
           }
         ],
         "parameters": [],
@@ -74498,7 +75541,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "workflow:run"
+            ]
           }
         ],
         "parameters": [
@@ -74601,7 +75646,14 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "agent_run:read"
+            ]
+          },
+          {
+            "OAuth2": [
+              "workflow:run"
+            ]
           }
         ],
         "parameters": [
@@ -74695,7 +75747,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [],
@@ -74775,9 +75827,6 @@
         "security": [
           {
             "bearerAuth": []
-          },
-          {
-            "OpenID": []
           }
         ],
         "parameters": [
@@ -74878,7 +75927,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:read"
+            ]
           }
         ],
         "parameters": [],
@@ -74972,7 +76023,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:read"
+            ]
           }
         ],
         "parameters": [],
@@ -75066,7 +76119,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:write"
+            ]
           }
         ],
         "parameters": [],
@@ -75160,7 +76215,7 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": []
           }
         ],
         "parameters": [
@@ -75234,7 +76289,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:write"
+            ]
           }
         ],
         "parameters": [
@@ -75320,7 +76377,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:delete"
+            ]
           }
         ],
         "parameters": [
@@ -75413,7 +76472,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:read"
+            ]
           }
         ],
         "parameters": [
@@ -75521,7 +76582,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:write"
+            ]
           }
         ],
         "parameters": [
@@ -75624,7 +76687,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:read"
+            ]
           }
         ],
         "parameters": [
@@ -75727,7 +76792,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:read"
+            ]
           }
         ],
         "parameters": [
@@ -75830,7 +76897,14 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:admin"
+            ]
+          },
+          {
+            "OAuth2": [
+              "content:superadmin"
+            ]
           }
         ],
         "parameters": [
@@ -75934,7 +77008,14 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:admin"
+            ]
+          },
+          {
+            "OAuth2": [
+              "content:superadmin"
+            ]
           }
         ],
         "parameters": [
@@ -76028,7 +77109,14 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:admin"
+            ]
+          },
+          {
+            "OAuth2": [
+              "content:superadmin"
+            ]
           }
         ],
         "parameters": [
@@ -76122,7 +77210,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:read"
+            ]
           }
         ],
         "parameters": [
@@ -76225,7 +77315,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:write"
+            ]
           }
         ],
         "parameters": [
@@ -76328,7 +77420,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:read"
+            ]
           }
         ],
         "parameters": [],
@@ -76395,7 +77489,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:write"
+            ]
           }
         ],
         "parameters": [],
@@ -76489,7 +77585,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:read"
+            ]
           }
         ],
         "parameters": [
@@ -76565,7 +77663,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:delete"
+            ]
           }
         ],
         "parameters": [
@@ -76658,7 +77758,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:read"
+            ]
           }
         ],
         "parameters": [
@@ -76734,7 +77836,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:write"
+            ]
           }
         ],
         "parameters": [
@@ -76837,7 +77941,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:read"
+            ]
           }
         ],
         "parameters": [
@@ -76930,7 +78036,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:read"
+            ]
           }
         ],
         "parameters": [
@@ -77006,7 +78114,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:write"
+            ]
           }
         ],
         "parameters": [
@@ -77109,7 +78219,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:read"
+            ]
           }
         ],
         "parameters": [
@@ -77201,7 +78313,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:write"
+            ]
           }
         ],
         "parameters": [
@@ -77295,7 +78409,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:delete"
+            ]
           }
         ],
         "parameters": [
@@ -77396,7 +78512,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:write"
+            ]
           }
         ],
         "parameters": [
@@ -77509,7 +78627,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:read"
+            ]
           }
         ],
         "parameters": [
@@ -77610,7 +78730,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:read"
+            ]
           }
         ],
         "parameters": [
@@ -77702,7 +78824,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:write"
+            ]
           }
         ],
         "parameters": [
@@ -77805,7 +78929,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:write"
+            ]
           }
         ],
         "parameters": [
@@ -77906,7 +79032,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:read"
+            ]
           }
         ],
         "parameters": [
@@ -78017,7 +79145,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:read"
+            ]
           }
         ],
         "parameters": [
@@ -78110,7 +79240,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:read"
+            ]
           }
         ],
         "parameters": [
@@ -78213,7 +79345,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:write"
+            ]
           }
         ],
         "parameters": [
@@ -78316,7 +79450,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:read"
+            ]
           }
         ],
         "parameters": [
@@ -78419,7 +79555,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:read"
+            ]
           }
         ],
         "parameters": [
@@ -78522,7 +79660,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:read"
+            ]
           }
         ],
         "parameters": [
@@ -78598,7 +79738,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:write"
+            ]
           }
         ],
         "parameters": [
@@ -78704,7 +79846,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:read"
+            ]
           }
         ],
         "parameters": [
@@ -78788,7 +79932,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:write"
+            ]
           }
         ],
         "parameters": [
@@ -78885,7 +80031,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:delete"
+            ]
           }
         ],
         "parameters": [
@@ -78986,7 +80134,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:delete"
+            ]
           }
         ],
         "parameters": [
@@ -79089,7 +80239,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:delete"
+            ]
           }
         ],
         "parameters": [
@@ -79192,7 +80344,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:read"
+            ]
           }
         ],
         "parameters": [
@@ -79276,7 +80430,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:write"
+            ]
           }
         ],
         "parameters": [
@@ -79387,7 +80543,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:read"
+            ]
           }
         ],
         "parameters": [
@@ -79496,7 +80654,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:write"
+            ]
           }
         ],
         "parameters": [
@@ -79615,7 +80775,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:write"
+            ]
           }
         ],
         "parameters": [
@@ -79726,7 +80888,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:read"
+            ]
           }
         ],
         "parameters": [],
@@ -79820,7 +80984,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:read"
+            ]
           }
         ],
         "parameters": [
@@ -79921,7 +81087,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:read"
+            ]
           }
         ],
         "parameters": [
@@ -80024,7 +81192,9 @@
             "bearerAuth": []
           },
           {
-            "OpenID": []
+            "OAuth2": [
+              "content:read"
+            ]
           }
         ],
         "parameters": [],
@@ -80116,9 +81286,6 @@
         "security": [
           {
             "bearerAuth": []
-          },
-          {
-            "OpenID": []
           }
         ],
         "parameters": [],

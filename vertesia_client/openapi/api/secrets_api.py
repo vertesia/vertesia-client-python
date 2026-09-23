@@ -335,8 +335,8 @@ class SecretsApi:
 
         # authentication setting
         _auth_settings: List[str] = [
-            'bearerAuth', 
-            'OpenID'
+            'OAuth2', 
+            'bearerAuth'
         ]
 
         return self.api_client.param_serialize(
@@ -652,8 +652,8 @@ class SecretsApi:
 
         # authentication setting
         _auth_settings: List[str] = [
-            'bearerAuth', 
-            'OpenID'
+            'OAuth2', 
+            'bearerAuth'
         ]
 
         return self.api_client.param_serialize(
@@ -980,8 +980,8 @@ class SecretsApi:
 
         # authentication setting
         _auth_settings: List[str] = [
-            'bearerAuth', 
-            'OpenID'
+            'OAuth2', 
+            'bearerAuth'
         ]
 
         return self.api_client.param_serialize(
@@ -1297,8 +1297,8 @@ class SecretsApi:
 
         # authentication setting
         _auth_settings: List[str] = [
-            'bearerAuth', 
-            'OpenID'
+            'OAuth2', 
+            'bearerAuth'
         ]
 
         return self.api_client.param_serialize(
@@ -1633,8 +1633,8 @@ class SecretsApi:
 
         # authentication setting
         _auth_settings: List[str] = [
-            'bearerAuth', 
-            'OpenID'
+            'OAuth2', 
+            'bearerAuth'
         ]
 
         return self.api_client.param_serialize(
@@ -1978,8 +1978,8 @@ class SecretsApi:
 
         # authentication setting
         _auth_settings: List[str] = [
-            'bearerAuth', 
-            'OpenID'
+            'OAuth2', 
+            'bearerAuth'
         ]
 
         return self.api_client.param_serialize(
