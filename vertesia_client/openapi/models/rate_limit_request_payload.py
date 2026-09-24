@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, Optional
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.prompt_modalities import PromptModalities
 from typing import Optional, Set
 from typing_extensions import Self
@@ -30,11 +31,26 @@ class RateLimitRequestPayload(BaseModel):
     """ # noqa: E501
     interaction: StrictStr
     environment_id: Optional[StrictStr] = None
+    inference_profile: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="MongoDB ObjectId of the inference profile.")
+    inherit_model_config: Optional[StrictBool] = None
     model_id: Optional[StrictStr] = None
     workflow_run_id: Optional[StrictStr] = Field(default=None, description="Deprecated: Use rate_limit_id for admission/completion correlation.")
     rate_limit_id: Optional[StrictStr] = Field(default=None, description="Stable per-execution admission identifier. Preferred over the legacy workflow_run_id.")
     modalities: Optional[PromptModalities] = None
-    __properties: ClassVar[List[str]] = ["interaction", "environment_id", "model_id", "workflow_run_id", "rate_limit_id", "modalities"]
+    __properties: ClassVar[List[str]] = ["interaction", "environment_id", "inference_profile", "inherit_model_config", "model_id", "workflow_run_id", "rate_limit_id", "modalities"]
+
+    @field_validator('inference_profile')
+    def inference_profile_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if value is None:
+            return value
+
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"^[a-fA-F0-9]{24}$", value):
+            raise ValueError(r"must validate the regular expression /^[a-fA-F0-9]{24}$/")
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -78,6 +94,11 @@ class RateLimitRequestPayload(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of modalities
         if self.modalities:
             _dict['modalities'] = self.modalities.to_dict()
+        # set to None if inference_profile (nullable) is None
+        # and model_fields_set contains the field
+        if self.inference_profile is None and "inference_profile" in self.model_fields_set:
+            _dict['inference_profile'] = None
+
         return _dict
 
     @classmethod
@@ -92,6 +113,8 @@ class RateLimitRequestPayload(BaseModel):
         _obj = cls.model_validate({
             "interaction": obj.get("interaction"),
             "environment_id": obj.get("environment_id"),
+            "inference_profile": obj.get("inference_profile"),
+            "inherit_model_config": obj.get("inherit_model_config"),
             "model_id": obj.get("model_id"),
             "workflow_run_id": obj.get("workflow_run_id"),
             "rate_limit_id": obj.get("rate_limit_id"),

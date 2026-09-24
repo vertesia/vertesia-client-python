@@ -18,7 +18,7 @@ import re  # noqa: F401
 import json
 
 from datetime import datetime
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.agent_runner_options import AgentRunnerOptions
@@ -52,6 +52,7 @@ class Interaction(BaseModel):
     environment: Optional[InteractionEnvironment] = None
     model: Optional[StrictStr] = None
     model_options: Optional[ModelOptions] = None
+    inference_profile: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="MongoDB ObjectId of the inference profile.")
     store_media_results: Optional[StrictBool] = None
     restriction: Optional[RunDataStorageLevel] = None
     output_modality: Optional[Modalities] = Field(default=None, description="Deprecated: This is deprecated. Use CompletionResult.type information instead.")
@@ -68,7 +69,20 @@ class Interaction(BaseModel):
     updated_by: StrictStr
     created_at: datetime
     updated_at: datetime
-    __properties: ClassVar[List[str]] = ["id", "edit_revision", "name", "endpoint", "description", "project", "tags", "agent_runner_options", "result_schema", "environment", "model", "model_options", "store_media_results", "restriction", "output_modality", "status", "parent", "visibility", "version", "test_data", "interaction_schema", "cache_policy", "prompts", "last_published_at", "created_by", "updated_by", "created_at", "updated_at"]
+    __properties: ClassVar[List[str]] = ["id", "edit_revision", "name", "endpoint", "description", "project", "tags", "agent_runner_options", "result_schema", "environment", "model", "model_options", "inference_profile", "store_media_results", "restriction", "output_modality", "status", "parent", "visibility", "version", "test_data", "interaction_schema", "cache_policy", "prompts", "last_published_at", "created_by", "updated_by", "created_at", "updated_at"]
+
+    @field_validator('inference_profile')
+    def inference_profile_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if value is None:
+            return value
+
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"^[a-fA-F0-9]{24}$", value):
+            raise ValueError(r"must validate the regular expression /^[a-fA-F0-9]{24}$/")
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -137,6 +151,11 @@ class Interaction(BaseModel):
                 if _item_prompts:
                     _items.append(_item_prompts.to_dict())
             _dict['prompts'] = _items
+        # set to None if inference_profile (nullable) is None
+        # and model_fields_set contains the field
+        if self.inference_profile is None and "inference_profile" in self.model_fields_set:
+            _dict['inference_profile'] = None
+
         return _dict
 
     @classmethod
@@ -161,6 +180,7 @@ class Interaction(BaseModel):
             "environment": InteractionEnvironment.from_dict(obj["environment"]) if obj.get("environment") is not None else None,
             "model": obj.get("model"),
             "model_options": ModelOptions.from_dict(obj["model_options"]) if obj.get("model_options") is not None else None,
+            "inference_profile": obj.get("inference_profile"),
             "store_media_results": obj.get("store_media_results"),
             "restriction": obj.get("restriction"),
             "output_modality": obj.get("output_modality"),

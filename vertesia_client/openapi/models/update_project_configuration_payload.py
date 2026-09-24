@@ -24,6 +24,7 @@ from vertesia_client.openapi.models.browser_use_project_configuration import Bro
 from vertesia_client.openapi.models.project_configuration_embeddings import ProjectConfigurationEmbeddings
 from vertesia_client.openapi.models.project_configuration_oauth_clients import ProjectConfigurationOauthClients
 from vertesia_client.openapi.models.project_indexing_configuration import ProjectIndexingConfiguration
+from vertesia_client.openapi.models.project_inference_profiles import ProjectInferenceProfiles
 from vertesia_client.openapi.models.project_intake_configuration import ProjectIntakeConfiguration
 from vertesia_client.openapi.models.project_model_defaults import ProjectModelDefaults
 from vertesia_client.openapi.models.resource_visibility import ResourceVisibility
@@ -38,7 +39,8 @@ class UpdateProjectConfigurationPayload(BaseModel):
     default_environment: Optional[StrictStr] = None
     default_model: Optional[StrictStr] = None
     human_context: Optional[StrictStr] = None
-    defaults: Optional[ProjectModelDefaults] = None
+    defaults: Optional[ProjectModelDefaults] = Field(default=None, description="Legacy model defaults, replaced by inference profile assignments after migration.")
+    inference: Optional[ProjectInferenceProfiles] = None
     default_visibility: Optional[ResourceVisibility] = None
     sync_content_properties: Optional[StrictBool] = None
     embeddings: Optional[ProjectConfigurationEmbeddings] = None
@@ -53,7 +55,7 @@ class UpdateProjectConfigurationPayload(BaseModel):
     browser_use: Optional[BrowserUseProjectConfiguration] = Field(default=None, description="Project defaults and caps for browser_use agent workstreams.")
     pdf_template_object_id: Optional[StrictStr] = Field(default=None, description="Object ID of a content object containing a custom LaTeX template (.latex file) to use as the branded PDF template. When set, \"Export as Branded PDF\" uses this template instead of the built-in Vertesia default template. `null` clears it.")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["default_environment", "default_model", "human_context", "defaults", "default_visibility", "sync_content_properties", "embeddings", "datacenter", "storage_bucket", "agent_streaming_enabled", "agent", "indexing", "intake", "main_language", "oauth_clients", "browser_use", "pdf_template_object_id"]
+    __properties: ClassVar[List[str]] = ["default_environment", "default_model", "human_context", "defaults", "inference", "default_visibility", "sync_content_properties", "embeddings", "datacenter", "storage_bucket", "agent_streaming_enabled", "agent", "indexing", "intake", "main_language", "oauth_clients", "browser_use", "pdf_template_object_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -99,6 +101,9 @@ class UpdateProjectConfigurationPayload(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of defaults
         if self.defaults:
             _dict['defaults'] = self.defaults.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of inference
+        if self.inference:
+            _dict['inference'] = self.inference.to_dict()
         # override the default output from pydantic by calling `to_dict()` of embeddings
         if self.embeddings:
             _dict['embeddings'] = self.embeddings.to_dict()
@@ -143,6 +148,7 @@ class UpdateProjectConfigurationPayload(BaseModel):
             "default_model": obj.get("default_model"),
             "human_context": obj.get("human_context"),
             "defaults": ProjectModelDefaults.from_dict(obj["defaults"]) if obj.get("defaults") is not None else None,
+            "inference": ProjectInferenceProfiles.from_dict(obj["inference"]) if obj.get("inference") is not None else None,
             "default_visibility": obj.get("default_visibility"),
             "sync_content_properties": obj.get("sync_content_properties"),
             "embeddings": ProjectConfigurationEmbeddings.from_dict(obj["embeddings"]) if obj.get("embeddings") is not None else None,

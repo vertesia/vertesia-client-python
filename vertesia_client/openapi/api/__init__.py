@@ -21,6 +21,7 @@ from vertesia_client.openapi.api.event_ingest_channels_api import EventIngestCha
 from vertesia_client.openapi.api.event_subscriptions_api import EventSubscriptionsApi
 from vertesia_client.openapi.api.events_api import EventsApi
 from vertesia_client.openapi.api.files_api import FilesApi
+from vertesia_client.openapi.api.inference_profiles_api import InferenceProfilesApi
 from vertesia_client.openapi.api.interaction_runs_api import InteractionRunsApi
 from vertesia_client.openapi.api.interactions_api import InteractionsApi
 from vertesia_client.openapi.api.o_auth_api import OAuthApi

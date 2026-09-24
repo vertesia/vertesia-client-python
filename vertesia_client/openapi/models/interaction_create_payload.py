@@ -18,8 +18,9 @@ import re  # noqa: F401
 import json
 
 from datetime import datetime
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.agent_runner_options import AgentRunnerOptions
 from vertesia_client.openapi.models.cache_policy import CachePolicy
 from vertesia_client.openapi.models.interaction_environment import InteractionEnvironment
@@ -51,12 +52,26 @@ class InteractionCreatePayload(BaseModel):
     environment: Optional[InteractionEnvironment] = None
     model: Optional[StrictStr] = None
     model_options: Optional[ModelOptions] = None
+    inference_profile: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="MongoDB ObjectId of the inference profile.")
     store_media_results: Optional[StrictBool] = None
     restriction: Optional[RunDataStorageLevel] = None
     output_modality: Optional[Modalities] = Field(default=None, description="Deprecated: This is deprecated. Use CompletionResult.type information instead.")
     visibility: Optional[InteractionVisibility] = None
     tags: Optional[List[StrictStr]] = None
-    __properties: ClassVar[List[str]] = ["status", "test_data", "interaction_schema", "cache_policy", "prompts", "last_published_at", "name", "description", "agent_runner_options", "result_schema", "environment", "model", "model_options", "store_media_results", "restriction", "output_modality", "visibility", "tags"]
+    __properties: ClassVar[List[str]] = ["status", "test_data", "interaction_schema", "cache_policy", "prompts", "last_published_at", "name", "description", "agent_runner_options", "result_schema", "environment", "model", "model_options", "inference_profile", "store_media_results", "restriction", "output_modality", "visibility", "tags"]
+
+    @field_validator('inference_profile')
+    def inference_profile_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if value is None:
+            return value
+
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"^[a-fA-F0-9]{24}$", value):
+            raise ValueError(r"must validate the regular expression /^[a-fA-F0-9]{24}$/")
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -122,6 +137,11 @@ class InteractionCreatePayload(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of model_options
         if self.model_options:
             _dict['model_options'] = self.model_options.to_dict()
+        # set to None if inference_profile (nullable) is None
+        # and model_fields_set contains the field
+        if self.inference_profile is None and "inference_profile" in self.model_fields_set:
+            _dict['inference_profile'] = None
+
         return _dict
 
     @classmethod
@@ -147,6 +167,7 @@ class InteractionCreatePayload(BaseModel):
             "environment": InteractionEnvironment.from_dict(obj["environment"]) if obj.get("environment") is not None else None,
             "model": obj.get("model"),
             "model_options": ModelOptions.from_dict(obj["model_options"]) if obj.get("model_options") is not None else None,
+            "inference_profile": obj.get("inference_profile"),
             "store_media_results": obj.get("store_media_results"),
             "restriction": obj.get("restriction"),
             "output_modality": obj.get("output_modality"),

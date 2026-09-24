@@ -17,26 +17,52 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, Optional
-from vertesia_client.openapi.models.inference_profile_snapshot import InferenceProfileSnapshot
-from vertesia_client.openapi.models.model_options import ModelOptions
-from vertesia_client.openapi.models.model_source import ModelSource
-from vertesia_client.openapi.models.resolved_environment_info import ResolvedEnvironmentInfo
+from typing_extensions import Annotated
+from vertesia_client.openapi.models.inference_profile import InferenceProfile
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class ResolvedRuntimeConfig(BaseModel):
+class InferenceProfileSnapshot(BaseModel):
     """
-    Resolved runtime configuration for an interaction
+    The selected profile and content revision at execution creation. Effective overrides are recorded in the execution config.
     """ # noqa: E501
-    environment: ResolvedEnvironmentInfo
-    model: Optional[StrictStr] = None
-    model_source: ModelSource
-    inference_profile: Optional[InferenceProfileSnapshot] = None
-    model_options: Optional[ModelOptions] = None
-    __properties: ClassVar[List[str]] = ["environment", "model", "model_source", "inference_profile", "model_options"]
+    id: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="MongoDB ObjectId of the inference profile.")
+    name: Annotated[str, Field(min_length=1, strict=True, max_length=80)] = Field(description="Editable display name, independent of the stable profile ID.")
+    revision: StrictStr
+    source: StrictStr
+    profile: InferenceProfile
+    __properties: ClassVar[List[str]] = ["id", "name", "revision", "source", "profile"]
+
+    @field_validator('id')
+    def id_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if value is None:
+            return value
+
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"^[a-fA-F0-9]{24}$", value):
+            raise ValueError(r"must validate the regular expression /^[a-fA-F0-9]{24}$/")
+        return value
+
+    @field_validator('name')
+    def name_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"\S", value):
+            raise ValueError(r"must validate the regular expression /\S/")
+        return value
+
+    @field_validator('source')
+    def source_validate_enum(cls, value):
+        """Validates the enum"""
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -56,7 +82,7 @@ class ResolvedRuntimeConfig(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of ResolvedRuntimeConfig from a JSON string"""
+        """Create an instance of InferenceProfileSnapshot from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -77,20 +103,14 @@ class ResolvedRuntimeConfig(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of environment
-        if self.environment:
-            _dict['environment'] = self.environment.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of inference_profile
-        if self.inference_profile:
-            _dict['inference_profile'] = self.inference_profile.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of model_options
-        if self.model_options:
-            _dict['model_options'] = self.model_options.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of profile
+        if self.profile:
+            _dict['profile'] = self.profile.to_dict()
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of ResolvedRuntimeConfig from a dict"""
+        """Create an instance of InferenceProfileSnapshot from a dict"""
         if obj is None:
             return None
 
@@ -98,11 +118,11 @@ class ResolvedRuntimeConfig(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "environment": ResolvedEnvironmentInfo.from_dict(obj["environment"]) if obj.get("environment") is not None else None,
-            "model": obj.get("model"),
-            "model_source": obj.get("model_source"),
-            "inference_profile": InferenceProfileSnapshot.from_dict(obj["inference_profile"]) if obj.get("inference_profile") is not None else None,
-            "model_options": ModelOptions.from_dict(obj["model_options"]) if obj.get("model_options") is not None else None
+            "id": obj.get("id"),
+            "name": obj.get("name"),
+            "revision": obj.get("revision"),
+            "source": obj.get("source"),
+            "profile": InferenceProfile.from_dict(obj["profile"]) if obj.get("profile") is not None else None
         })
         return _obj
 

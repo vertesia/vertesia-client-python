@@ -9904,6 +9904,28 @@ components:
         - target
         - run_as_role
       additionalProperties: false
+    CreateInferenceProfilePayload:
+      type: object
+      properties:
+        name:
+          $ref: "#/components/schemas/InferenceProfileName"
+        description:
+          type: string
+          maxLength: 1000
+        environment:
+          type: string
+          pattern: ^[a-fA-F0-9]{24}$
+        model:
+          type: string
+          minLength: 1
+        model_options:
+          $ref: "#/components/schemas/ModelOptions"
+      required:
+        - name
+        - environment
+      additionalProperties: false
+      description: Create a profile in the current project. The server assigns its
+        MongoDB ID.
     CreateOAuthClientPayload:
       type: object
       properties:
@@ -14178,6 +14200,8 @@ components:
           $ref: "#/components/schemas/ProjectRef"
         config:
           $ref: "#/components/schemas/InteractionExecutionConfiguration"
+        inference_profile:
+          $ref: "#/components/schemas/InferenceProfileSnapshot"
         error:
           $ref: "#/components/schemas/InteractionExecutionError"
         source:
@@ -14302,6 +14326,8 @@ components:
           $ref: "#/components/schemas/ProjectRef"
         config:
           $ref: "#/components/schemas/InteractionExecutionConfiguration"
+        inference_profile:
+          $ref: "#/components/schemas/InferenceProfileSnapshot"
         error:
           $ref: "#/components/schemas/InteractionExecutionError"
         source:
@@ -15957,6 +15983,149 @@ components:
         - reindex_in_progress
       additionalProperties: false
       description: Response from indexing status endpoint
+    InferenceProfile:
+      type: object
+      properties:
+        name:
+          $ref: "#/components/schemas/InferenceProfileName"
+          description: Editable display name.
+        description:
+          type: string
+          maxLength: 1000
+        environment:
+          type: string
+          pattern: ^[a-fA-F0-9]{24}$
+        model:
+          type: string
+          minLength: 1
+        model_options:
+          $ref: "#/components/schemas/ModelOptions"
+      required:
+        - environment
+      additionalProperties: false
+      description: A reusable environment, model and inference parameter preset.
+        Credentials remain in the environment.
+    InferenceProfileId:
+      type: string
+      pattern: ^[a-fA-F0-9]{24}$
+      description: MongoDB ObjectId of the inference profile.
+    InferenceProfileName:
+      type: string
+      minLength: 1
+      maxLength: 80
+      pattern: \S
+      description: Editable display name, independent of the stable profile ID.
+    InferenceProfileRecord:
+      type: object
+      properties:
+        name:
+          $ref: "#/components/schemas/InferenceProfileName"
+        description:
+          type: string
+          maxLength: 1000
+        environment:
+          type: string
+          pattern: ^[a-fA-F0-9]{24}$
+        model:
+          type: string
+          minLength: 1
+        model_options:
+          $ref: "#/components/schemas/ModelOptions"
+        id:
+          type: string
+          pattern: ^[a-fA-F0-9]{24}$
+        project:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
+        updated_at:
+          type: string
+          format: date-time
+          pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
+      required:
+        - name
+        - environment
+        - id
+        - project
+        - created_at
+        - updated_at
+      additionalProperties: false
+      description: A project-scoped inference profile stored as a MongoDB document.
+    InferenceProfileRecordArray:
+      type: array
+      items:
+        $ref: "#/components/schemas/InferenceProfileRecord"
+    InferenceProfileSnapshot:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/InferenceProfileId"
+        name:
+          $ref: "#/components/schemas/InferenceProfileName"
+        revision:
+          type: string
+        source:
+          type: string
+          enum:
+            - request
+            - binding
+            - interaction
+            - project
+        profile:
+          $ref: "#/components/schemas/InferenceProfile"
+      required:
+        - name
+        - revision
+        - source
+        - profile
+      additionalProperties: false
+      description: The selected profile and content revision at execution creation.
+        Effective overrides are recorded in the execution config.
+    InferenceProfileUsage:
+      type: object
+      properties:
+        interactions:
+          type: array
+          items:
+            $ref: "#/components/schemas/InferenceProfileUsageEntry"
+        total:
+          type: integer
+          minimum: 0
+          maximum: 9007199254740991
+        defaults:
+          type: array
+          items:
+            type: string
+          description: Project default slots directly referencing this profile.
+      required:
+        - interactions
+        - total
+        - defaults
+      description: Persisted direct assignments; runtime overrides and inherited usage
+        are not enumerated.
+    InferenceProfileUsageEntry:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        kind:
+          type: string
+          enum:
+            - stored
+            - system
+            - app
+        version:
+          type: number
+        status:
+          type: string
+      required:
+        - id
+        - name
+        - kind
     InheritedPropertyMetadata:
       type: object
       properties:
@@ -16098,6 +16267,10 @@ components:
           type: string
         model_options:
           $ref: "#/components/schemas/ModelOptions"
+        inference_profile:
+          anyOf:
+            - $ref: "#/components/schemas/InferenceProfileId"
+            - type: "null"
         store_media_results:
           type: boolean
         restriction:
@@ -16157,6 +16330,46 @@ components:
         - created_at
         - updated_at
       additionalProperties: false
+    InteractionConfigurationRecord:
+      type: object
+      properties:
+        inference_profile:
+          anyOf:
+            - $ref: "#/components/schemas/InferenceProfileId"
+            - type: "null"
+        id:
+          type: string
+          pattern: ^[a-fA-F0-9]{24}$
+        project:
+          type: string
+        interaction:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
+        updated_at:
+          type: string
+          format: date-time
+          pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
+      required:
+        - inference_profile
+        - id
+        - project
+        - interaction
+        - created_at
+        - updated_at
+      additionalProperties: false
+    InteractionConfigurationResult:
+      type: object
+      properties:
+        configuration:
+          anyOf:
+            - $ref: "#/components/schemas/InteractionConfigurationRecord"
+            - type: "null"
+      required:
+        - configuration
+      additionalProperties: false
     InteractionCreatePayload:
       type: object
       properties:
@@ -16195,6 +16408,10 @@ components:
           type: string
         model_options:
           $ref: "#/components/schemas/ModelOptions"
+        inference_profile:
+          anyOf:
+            - $ref: "#/components/schemas/InferenceProfileId"
+            - type: "null"
         store_media_results:
           type: boolean
         restriction:
@@ -16314,6 +16531,15 @@ components:
       properties:
         id:
           type: string
+        inference_profile:
+          anyOf:
+            - $ref: "#/components/schemas/InferenceProfileId"
+            - type: "null"
+          description: Select a project inference profile. Null bypasses profile defaults.
+        inherit_model_config:
+          type: boolean
+          description: "Treat supplied model settings as inherited fallback: an applicable
+            profile replaces them."
         environment:
           type: string
         model:
@@ -16484,6 +16710,8 @@ components:
           format: date-time
         config:
           $ref: "#/components/schemas/InteractionExecutionConfiguration"
+        inference_profile:
+          $ref: "#/components/schemas/InferenceProfileSnapshot"
         error:
           $ref: "#/components/schemas/InteractionExecutionError"
         source:
@@ -16896,6 +17124,10 @@ components:
           type: string
         model_options:
           $ref: "#/components/schemas/ModelOptions"
+        inference_profile:
+          anyOf:
+            - $ref: "#/components/schemas/InferenceProfileId"
+            - type: "null"
         store_media_results:
           type: boolean
         restriction:
@@ -19897,6 +20129,12 @@ components:
     ProcessRunConfig:
       type: object
       properties:
+        inference_profile:
+          anyOf:
+            - $ref: "#/components/schemas/InferenceProfileId"
+            - type: "null"
+          description: Run-level inference profile ID for process LLM nodes and the
+            supervisor. Explicit model settings retain precedence.
         environment:
           type: string
           description: Execution environment id used by Process LLM nodes and the
@@ -20696,7 +20934,12 @@ components:
         human_context:
           type: string
         defaults:
+          deprecated: true
           $ref: "#/components/schemas/ProjectModelDefaults"
+          description: Legacy model defaults, replaced by inference profile assignments
+            after migration.
+        inference:
+          $ref: "#/components/schemas/ProjectInferenceProfiles"
         default_visibility:
           $ref: "#/components/schemas/ResourceVisibility"
         sync_content_properties:
@@ -20824,6 +21067,36 @@ components:
             mapped dynamically from their JSON values. Changing this value
             requires a full reindex.
       additionalProperties: false
+    ProjectInferenceProfiles:
+      type: object
+      properties:
+        default_profile:
+          $ref: "#/components/schemas/InferenceProfileId"
+        modality:
+          type: object
+          properties:
+            image:
+              $ref: "#/components/schemas/InferenceProfileId"
+            video:
+              $ref: "#/components/schemas/InferenceProfileId"
+          additionalProperties: false
+        system:
+          type: object
+          properties:
+            content_type:
+              $ref: "#/components/schemas/InferenceProfileId"
+            intake:
+              $ref: "#/components/schemas/InferenceProfileId"
+            analysis:
+              $ref: "#/components/schemas/InferenceProfileId"
+            agent:
+              $ref: "#/components/schemas/InferenceProfileId"
+            non_applicable:
+              $ref: "#/components/schemas/InferenceProfileId"
+          additionalProperties: false
+      additionalProperties: false
+      description: Project defaults reference profile MongoDB IDs. Profile definitions
+        are managed through the inference profiles API.
     ProjectIntakeConfiguration:
       type: object
       properties:
@@ -21967,6 +22240,12 @@ components:
           type: string
         environment_id:
           type: string
+        inference_profile:
+          anyOf:
+            - $ref: "#/components/schemas/InferenceProfileId"
+            - type: "null"
+        inherit_model_config:
+          type: boolean
         model_id:
           type: string
         workflow_run_id:
@@ -22537,6 +22816,10 @@ components:
           $ref: "#/components/schemas/AgentRunnerOptions"
         model_options:
           $ref: "#/components/schemas/ModelOptions"
+        inference_profile:
+          anyOf:
+            - $ref: "#/components/schemas/InferenceProfileId"
+            - type: "null"
         prompts:
           type: array
           items:
@@ -22625,6 +22908,10 @@ components:
           type: string
         model_source:
           $ref: "#/components/schemas/ModelSource"
+        inference_profile:
+          $ref: "#/components/schemas/InferenceProfileSnapshot"
+        model_options:
+          $ref: "#/components/schemas/ModelOptions"
       required:
         - environment
         - model_source
@@ -25567,6 +25854,37 @@ components:
         interaction:
           $ref: "#/components/schemas/InteractionRef"
       additionalProperties: false
+    UpdateInferenceProfilePayload:
+      type: object
+      properties:
+        name:
+          $ref: "#/components/schemas/InferenceProfileName"
+        description:
+          type: string
+          maxLength: 1000
+        environment:
+          type: string
+          pattern: ^[a-fA-F0-9]{24}$
+        model:
+          type: string
+          minLength: 1
+        model_options:
+          $ref: "#/components/schemas/ModelOptions"
+      required:
+        - name
+        - environment
+      additionalProperties: false
+      description: Replace editable profile fields, preserving its ID and references.
+    UpdateInteractionConfigurationPayload:
+      type: object
+      properties:
+        inference_profile:
+          anyOf:
+            - $ref: "#/components/schemas/InferenceProfileId"
+            - type: "null"
+      required:
+        - inference_profile
+      additionalProperties: false
     UpdateOAuthClientPayload:
       type: object
       properties:
@@ -25698,7 +26016,12 @@ components:
         human_context:
           type: string
         defaults:
+          deprecated: true
           $ref: "#/components/schemas/ProjectModelDefaults"
+          description: Legacy model defaults, replaced by inference profile assignments
+            after migration.
+        inference:
+          $ref: "#/components/schemas/ProjectInferenceProfiles"
         default_visibility:
           $ref: "#/components/schemas/ResourceVisibility"
         sync_content_properties:
@@ -26783,6 +27106,15 @@ components:
       properties:
         id:
           type: string
+        inference_profile:
+          anyOf:
+            - $ref: "#/components/schemas/InferenceProfileId"
+            - type: "null"
+          description: Select a project inference profile. Null bypasses profile defaults.
+        inherit_model_config:
+          type: boolean
+          description: "Treat supplied model settings as inherited fallback: an applicable
+            profile replaces them."
         environment:
           type: string
         model:
@@ -30559,6 +30891,528 @@ paths:
         description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
+  /interaction-configurations/{interactionId}:
+    get:
+      operationId: GetInteractionConfiguration
+      tags:
+        - Interactions
+      summary: Get saved code interaction configuration
+      security:
+        - bearerAuth: []
+        - OAuth2: []
+      parameters:
+        - name: interactionId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The project-scoped configuration, or null.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InteractionConfigurationResult"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions: []
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/interaction-configurations.ts
+        className: InteractionConfigurationsResource
+        methodName: retrieve
+    put:
+      operationId: UpdateInteractionConfiguration
+      tags:
+        - Interactions
+      summary: Create or update code interaction configuration
+      description: "**Required permissions:** `project:settings_write`"
+      security:
+        - bearerAuth: []
+        - OAuth2:
+            - project:settings_write
+      parameters:
+        - name: interactionId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The saved configuration.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InteractionConfigurationResult"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - project:settings_write
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/interaction-configurations.ts
+        className: InteractionConfigurationsResource
+        methodName: update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateInteractionConfigurationPayload"
+    delete:
+      operationId: DeleteInteractionConfiguration
+      tags:
+        - Interactions
+      summary: Remove code interaction configuration
+      description: "**Required permissions:** `project:settings_write`"
+      security:
+        - bearerAuth: []
+        - OAuth2:
+            - project:settings_write
+      parameters:
+        - name: interactionId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: No configuration remains.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InteractionConfigurationResult"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - project:settings_write
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/interaction-configurations.ts
+        className: InteractionConfigurationsResource
+        methodName: remove
+    parameters:
+      - name: x-api-version
+        in: header
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          pattern: \S
+          example: "20260803"
+        description: Required Vertesia API version header. Use `20260803` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /inference-profiles:
+    get:
+      operationId: ListInferenceProfiles
+      tags:
+        - Inference Profiles
+      summary: List inference profiles
+      security:
+        - bearerAuth: []
+        - OAuth2: []
+      parameters: []
+      responses:
+        "200":
+          description: Profiles in the current project.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InferenceProfileRecordArray"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions: []
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/inference-profiles.ts
+        className: InferenceProfilesResource
+        methodName: list
+    post:
+      operationId: CreateInferenceProfile
+      tags:
+        - Inference Profiles
+      summary: Create an inference profile
+      description: "**Required permissions:** `project:settings_write`"
+      security:
+        - bearerAuth: []
+        - OAuth2:
+            - project:settings_write
+      parameters: []
+      responses:
+        "200":
+          description: The created profile.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InferenceProfileRecord"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - project:settings_write
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/inference-profiles.ts
+        className: InferenceProfilesResource
+        methodName: create
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateInferenceProfilePayload"
+    parameters:
+      - name: x-api-version
+        in: header
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          pattern: \S
+          example: "20260803"
+        description: Required Vertesia API version header. Use `20260803` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /inference-profiles/{profileId}:
+    get:
+      operationId: GetInferenceProfile
+      tags:
+        - Inference Profiles
+      summary: Retrieve an inference profile
+      security:
+        - bearerAuth: []
+        - OAuth2: []
+      parameters:
+        - name: profileId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The requested profile.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InferenceProfileRecord"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions: []
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/inference-profiles.ts
+        className: InferenceProfilesResource
+        methodName: retrieve
+    put:
+      operationId: UpdateInferenceProfile
+      tags:
+        - Inference Profiles
+      summary: Update an inference profile
+      description: "**Required permissions:** `project:settings_write`"
+      security:
+        - bearerAuth: []
+        - OAuth2:
+            - project:settings_write
+      parameters:
+        - name: profileId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The updated profile, retaining its ID.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InferenceProfileRecord"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - project:settings_write
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/inference-profiles.ts
+        className: InferenceProfilesResource
+        methodName: update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateInferenceProfilePayload"
+    delete:
+      operationId: DeleteInferenceProfile
+      tags:
+        - Inference Profiles
+      summary: Delete an inference profile
+      description: "**Required permissions:** `project:settings_write`"
+      security:
+        - bearerAuth: []
+        - OAuth2:
+            - project:settings_write
+      parameters:
+        - name: profileId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The deleted profile ID.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteByIdResult"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - project:settings_write
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/inference-profiles.ts
+        className: InferenceProfilesResource
+        methodName: remove
+    parameters:
+      - name: x-api-version
+        in: header
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          pattern: \S
+          example: "20260803"
+        description: Required Vertesia API version header. Use `20260803` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /inference-profiles/{profileId}/usage:
+    get:
+      operationId: GetInferenceProfileUsage
+      tags:
+        - Inference Profiles
+      summary: List direct interaction assignments and project default slots for a
+        profile
+      description: "**Required permissions:** `interaction:read`"
+      security:
+        - bearerAuth: []
+        - OAuth2:
+            - interaction:read
+      parameters:
+        - name: profileId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: search
+          in: query
+          required: false
+          schema:
+            type: string
+            maxLength: 200
+        - name: kind
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - stored
+              - system
+              - app
+        - name: offset
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+            maximum: 9007199254740991
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+      responses:
+        "200":
+          description: Paginated profile usage in the current project.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InferenceProfileUsage"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - interaction:read
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/inference-profiles.ts
+        className: InferenceProfilesResource
+        methodName: usage
+    parameters:
+      - name: x-api-version
+        in: header
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          pattern: \S
+          example: "20260803"
+        description: Required Vertesia API version header. Use `20260803` for the
+          current stable API shape.
+        x-vertesia-global-header: true
   /environments:
     get:
       operationId: ListEnvironments
@@ -32249,6 +33103,16 @@ paths:
           required: false
           schema:
             type: string
+        - name: inference_profile
+          in: query
+          required: false
+          schema:
+            $ref: "#/components/schemas/InferenceProfileId"
+        - name: inherit_model_config
+          in: query
+          required: false
+          schema:
+            type: boolean
         - name: hasImage
           in: query
           required: false

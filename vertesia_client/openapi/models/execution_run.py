@@ -28,6 +28,7 @@ from vertesia_client.openapi.models.execution_run_interaction import ExecutionRu
 from vertesia_client.openapi.models.execution_run_status import ExecutionRunStatus
 from vertesia_client.openapi.models.execution_run_workflow import ExecutionRunWorkflow
 from vertesia_client.openapi.models.execution_token_usage import ExecutionTokenUsage
+from vertesia_client.openapi.models.inference_profile_snapshot import InferenceProfileSnapshot
 from vertesia_client.openapi.models.interaction_execution_configuration import InteractionExecutionConfiguration
 from vertesia_client.openapi.models.interaction_execution_error import InteractionExecutionError
 from vertesia_client.openapi.models.json_schema import JSONSchema
@@ -66,6 +67,7 @@ class ExecutionRun(BaseModel):
     account: AccountRef
     project: ProjectRef
     config: InteractionExecutionConfiguration
+    inference_profile: Optional[InferenceProfileSnapshot] = None
     error: Optional[InteractionExecutionError] = None
     source: RunSource
     output_modality: Optional[Modalities] = Field(default=None, description="Deprecated: This is deprecated. Use CompletionResult.type information instead.")
@@ -73,7 +75,7 @@ class ExecutionRun(BaseModel):
     updated_by: StrictStr
     workflow: Optional[ExecutionRunWorkflow] = Field(default=None, description="The Vertesia Workflow related to this Interaction Run.  This is only set when the interaction is executed as part of a workflow.")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["id", "parent", "evaluation", "result", "parameters", "tags", "interaction", "environment", "modelId", "result_schema", "ttl", "status", "finish_reason", "prompt", "token_use", "prompt_cache_diagnostics", "chunks", "execution_time", "created_at", "updated_at", "account", "project", "config", "error", "source", "output_modality", "created_by", "updated_by", "workflow"]
+    __properties: ClassVar[List[str]] = ["id", "parent", "evaluation", "result", "parameters", "tags", "interaction", "environment", "modelId", "result_schema", "ttl", "status", "finish_reason", "prompt", "token_use", "prompt_cache_diagnostics", "chunks", "execution_time", "created_at", "updated_at", "account", "project", "config", "inference_profile", "error", "source", "output_modality", "created_by", "updated_by", "workflow"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -157,6 +159,9 @@ class ExecutionRun(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of config
         if self.config:
             _dict['config'] = self.config.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of inference_profile
+        if self.inference_profile:
+            _dict['inference_profile'] = self.inference_profile.to_dict()
         # override the default output from pydantic by calling `to_dict()` of error
         if self.error:
             _dict['error'] = self.error.to_dict()
@@ -216,6 +221,7 @@ class ExecutionRun(BaseModel):
             "account": AccountRef.from_dict(obj["account"]) if obj.get("account") is not None else None,
             "project": ProjectRef.from_dict(obj["project"]) if obj.get("project") is not None else None,
             "config": InteractionExecutionConfiguration.from_dict(obj["config"]) if obj.get("config") is not None else None,
+            "inference_profile": InferenceProfileSnapshot.from_dict(obj["inference_profile"]) if obj.get("inference_profile") is not None else None,
             "error": InteractionExecutionError.from_dict(obj["error"]) if obj.get("error") is not None else None,
             "source": RunSource.from_dict(obj["source"]) if obj.get("source") is not None else None,
             "output_modality": obj.get("output_modality"),

@@ -38,6 +38,7 @@ __all__ = [
     "EventSubscriptionsApi",
     "EventsApi",
     "FilesApi",
+    "InferenceProfilesApi",
     "InteractionRunsApi",
     "InteractionsApi",
     "OAuthApi",
@@ -394,6 +395,7 @@ __all__ = [
     "CreateEmailRouteResponse",
     "CreateEventIngestChannelPayload",
     "CreateEventSubscriptionPayload",
+    "CreateInferenceProfilePayload",
     "CreateOAuthClientPayload",
     "CreateOAuthProviderPayload",
     "CreateProcessDefinitionPayload",
@@ -630,6 +632,11 @@ __all__ = [
     "IndexingStatusResponse",
     "IndexingStatusResponseIndex",
     "IndexingStatusResponseReindexProgress",
+    "InferenceProfile",
+    "InferenceProfileRecord",
+    "InferenceProfileSnapshot",
+    "InferenceProfileUsage",
+    "InferenceProfileUsageEntry",
     "InheritedPropertyMetadata",
     "InitialToolCall",
     "IntakePageScope",
@@ -637,6 +644,8 @@ __all__ = [
     "IntakeVisionProfileSettingsMap",
     "IntakeVisionProfileSettingsUpdate",
     "Interaction",
+    "InteractionConfigurationRecord",
+    "InteractionConfigurationResult",
     "InteractionCreatePayload",
     "InteractionEndpoint",
     "InteractionEndpointQuery",
@@ -837,6 +846,9 @@ __all__ = [
     "ProjectConfigurationEmbeddings",
     "ProjectConfigurationOauthClients",
     "ProjectIndexingConfiguration",
+    "ProjectInferenceProfiles",
+    "ProjectInferenceProfilesModality",
+    "ProjectInferenceProfilesSystem",
     "ProjectIntakeConfiguration",
     "ProjectIntakeSniffConfiguration",
     "ProjectIntegrationConfigRequest",
@@ -1055,6 +1067,8 @@ __all__ = [
     "UpdateEventIngestChannelPayload",
     "UpdateEventSubscriptionPayload",
     "UpdateExecutionRunPayload",
+    "UpdateInferenceProfilePayload",
+    "UpdateInteractionConfigurationPayload",
     "UpdateOAuthClientPayload",
     "UpdateOAuthProviderPayload",
     "UpdateProcessDefinitionPayload",
@@ -1219,6 +1233,7 @@ from vertesia_client.openapi.api.event_ingest_channels_api import EventIngestCha
 from vertesia_client.openapi.api.event_subscriptions_api import EventSubscriptionsApi as EventSubscriptionsApi
 from vertesia_client.openapi.api.events_api import EventsApi as EventsApi
 from vertesia_client.openapi.api.files_api import FilesApi as FilesApi
+from vertesia_client.openapi.api.inference_profiles_api import InferenceProfilesApi as InferenceProfilesApi
 from vertesia_client.openapi.api.interaction_runs_api import InteractionRunsApi as InteractionRunsApi
 from vertesia_client.openapi.api.interactions_api import InteractionsApi as InteractionsApi
 from vertesia_client.openapi.api.o_auth_api import OAuthApi as OAuthApi
@@ -1579,6 +1594,7 @@ from vertesia_client.openapi.models.create_email_route_request import CreateEmai
 from vertesia_client.openapi.models.create_email_route_response import CreateEmailRouteResponse as CreateEmailRouteResponse
 from vertesia_client.openapi.models.create_event_ingest_channel_payload import CreateEventIngestChannelPayload as CreateEventIngestChannelPayload
 from vertesia_client.openapi.models.create_event_subscription_payload import CreateEventSubscriptionPayload as CreateEventSubscriptionPayload
+from vertesia_client.openapi.models.create_inference_profile_payload import CreateInferenceProfilePayload as CreateInferenceProfilePayload
 from vertesia_client.openapi.models.create_o_auth_client_payload import CreateOAuthClientPayload as CreateOAuthClientPayload
 from vertesia_client.openapi.models.create_o_auth_provider_payload import CreateOAuthProviderPayload as CreateOAuthProviderPayload
 from vertesia_client.openapi.models.create_process_definition_payload import CreateProcessDefinitionPayload as CreateProcessDefinitionPayload
@@ -1815,6 +1831,11 @@ from vertesia_client.openapi.models.in_code_view_definition import InCodeViewDef
 from vertesia_client.openapi.models.indexing_status_response import IndexingStatusResponse as IndexingStatusResponse
 from vertesia_client.openapi.models.indexing_status_response_index import IndexingStatusResponseIndex as IndexingStatusResponseIndex
 from vertesia_client.openapi.models.indexing_status_response_reindex_progress import IndexingStatusResponseReindexProgress as IndexingStatusResponseReindexProgress
+from vertesia_client.openapi.models.inference_profile import InferenceProfile as InferenceProfile
+from vertesia_client.openapi.models.inference_profile_record import InferenceProfileRecord as InferenceProfileRecord
+from vertesia_client.openapi.models.inference_profile_snapshot import InferenceProfileSnapshot as InferenceProfileSnapshot
+from vertesia_client.openapi.models.inference_profile_usage import InferenceProfileUsage as InferenceProfileUsage
+from vertesia_client.openapi.models.inference_profile_usage_entry import InferenceProfileUsageEntry as InferenceProfileUsageEntry
 from vertesia_client.openapi.models.inherited_property_metadata import InheritedPropertyMetadata as InheritedPropertyMetadata
 from vertesia_client.openapi.models.initial_tool_call import InitialToolCall as InitialToolCall
 from vertesia_client.openapi.models.intake_page_scope import IntakePageScope as IntakePageScope
@@ -1822,6 +1843,8 @@ from vertesia_client.openapi.models.intake_vision_detail import IntakeVisionDeta
 from vertesia_client.openapi.models.intake_vision_profile_settings_map import IntakeVisionProfileSettingsMap as IntakeVisionProfileSettingsMap
 from vertesia_client.openapi.models.intake_vision_profile_settings_update import IntakeVisionProfileSettingsUpdate as IntakeVisionProfileSettingsUpdate
 from vertesia_client.openapi.models.interaction import Interaction as Interaction
+from vertesia_client.openapi.models.interaction_configuration_record import InteractionConfigurationRecord as InteractionConfigurationRecord
+from vertesia_client.openapi.models.interaction_configuration_result import InteractionConfigurationResult as InteractionConfigurationResult
 from vertesia_client.openapi.models.interaction_create_payload import InteractionCreatePayload as InteractionCreatePayload
 from vertesia_client.openapi.models.interaction_endpoint import InteractionEndpoint as InteractionEndpoint
 from vertesia_client.openapi.models.interaction_endpoint_query import InteractionEndpointQuery as InteractionEndpointQuery
@@ -2022,6 +2045,9 @@ from vertesia_client.openapi.models.project_configuration_embedding_enable_paylo
 from vertesia_client.openapi.models.project_configuration_embeddings import ProjectConfigurationEmbeddings as ProjectConfigurationEmbeddings
 from vertesia_client.openapi.models.project_configuration_oauth_clients import ProjectConfigurationOauthClients as ProjectConfigurationOauthClients
 from vertesia_client.openapi.models.project_indexing_configuration import ProjectIndexingConfiguration as ProjectIndexingConfiguration
+from vertesia_client.openapi.models.project_inference_profiles import ProjectInferenceProfiles as ProjectInferenceProfiles
+from vertesia_client.openapi.models.project_inference_profiles_modality import ProjectInferenceProfilesModality as ProjectInferenceProfilesModality
+from vertesia_client.openapi.models.project_inference_profiles_system import ProjectInferenceProfilesSystem as ProjectInferenceProfilesSystem
 from vertesia_client.openapi.models.project_intake_configuration import ProjectIntakeConfiguration as ProjectIntakeConfiguration
 from vertesia_client.openapi.models.project_intake_sniff_configuration import ProjectIntakeSniffConfiguration as ProjectIntakeSniffConfiguration
 from vertesia_client.openapi.models.project_integration_config_request import ProjectIntegrationConfigRequest as ProjectIntegrationConfigRequest
@@ -2240,6 +2266,8 @@ from vertesia_client.openapi.models.update_email_route_response import UpdateEma
 from vertesia_client.openapi.models.update_event_ingest_channel_payload import UpdateEventIngestChannelPayload as UpdateEventIngestChannelPayload
 from vertesia_client.openapi.models.update_event_subscription_payload import UpdateEventSubscriptionPayload as UpdateEventSubscriptionPayload
 from vertesia_client.openapi.models.update_execution_run_payload import UpdateExecutionRunPayload as UpdateExecutionRunPayload
+from vertesia_client.openapi.models.update_inference_profile_payload import UpdateInferenceProfilePayload as UpdateInferenceProfilePayload
+from vertesia_client.openapi.models.update_interaction_configuration_payload import UpdateInteractionConfigurationPayload as UpdateInteractionConfigurationPayload
 from vertesia_client.openapi.models.update_o_auth_client_payload import UpdateOAuthClientPayload as UpdateOAuthClientPayload
 from vertesia_client.openapi.models.update_o_auth_provider_payload import UpdateOAuthProviderPayload as UpdateOAuthProviderPayload
 from vertesia_client.openapi.models.update_process_definition_payload import UpdateProcessDefinitionPayload as UpdateProcessDefinitionPayload

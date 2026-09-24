@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, Optional
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.config_modes import ConfigModes
@@ -34,6 +34,8 @@ class InteractionExecutionConfiguration(BaseModel):
     InteractionExecutionConfiguration
     """ # noqa: E501
     id: Optional[StrictStr] = None
+    inference_profile: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Select a project inference profile. Null bypasses profile defaults.")
+    inherit_model_config: Optional[StrictBool] = Field(default=None, description="Treat supplied model settings as inherited fallback: an applicable profile replaces them.")
     environment: Optional[StrictStr] = None
     model: Optional[StrictStr] = None
     do_validate: Optional[StrictBool] = None
@@ -45,7 +47,20 @@ class InteractionExecutionConfiguration(BaseModel):
     prompt_cache_ttl_seconds: Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=60)]] = Field(default=None, description="Caller-selected explicit cache lifetime in seconds. Defaults remain provider-specific; Vertex Gemini requires at least 60 seconds.")
     prompt_cache_schema_suffix: Optional[StrictBool] = Field(default=None, description="Put the result schema after the cached prefix; Vertesia still validates the returned JSON against it.")
     http_timeout: Optional[HttpTimeoutOptions] = Field(default=None, description="Per-run HTTP timeouts for upstream LLM-provider calls.")
-    __properties: ClassVar[List[str]] = ["id", "environment", "model", "do_validate", "run_data", "configMode", "model_options", "prompt_cache_key", "prompt_cache_mode", "prompt_cache_ttl_seconds", "prompt_cache_schema_suffix", "http_timeout"]
+    __properties: ClassVar[List[str]] = ["id", "inference_profile", "inherit_model_config", "environment", "model", "do_validate", "run_data", "configMode", "model_options", "prompt_cache_key", "prompt_cache_mode", "prompt_cache_ttl_seconds", "prompt_cache_schema_suffix", "http_timeout"]
+
+    @field_validator('inference_profile')
+    def inference_profile_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if value is None:
+            return value
+
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"^[a-fA-F0-9]{24}$", value):
+            raise ValueError(r"must validate the regular expression /^[a-fA-F0-9]{24}$/")
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -92,6 +107,11 @@ class InteractionExecutionConfiguration(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of http_timeout
         if self.http_timeout:
             _dict['http_timeout'] = self.http_timeout.to_dict()
+        # set to None if inference_profile (nullable) is None
+        # and model_fields_set contains the field
+        if self.inference_profile is None and "inference_profile" in self.model_fields_set:
+            _dict['inference_profile'] = None
+
         return _dict
 
     @classmethod
@@ -105,6 +125,8 @@ class InteractionExecutionConfiguration(BaseModel):
 
         _obj = cls.model_validate({
             "id": obj.get("id"),
+            "inference_profile": obj.get("inference_profile"),
+            "inherit_model_config": obj.get("inherit_model_config"),
             "environment": obj.get("environment"),
             "model": obj.get("model"),
             "do_validate": obj.get("do_validate"),

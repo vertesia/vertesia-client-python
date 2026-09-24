@@ -21,6 +21,7 @@ vertesia_client/openapi/api/event_ingest_channels_api.py
 vertesia_client/openapi/api/event_subscriptions_api.py
 vertesia_client/openapi/api/events_api.py
 vertesia_client/openapi/api/files_api.py
+vertesia_client/openapi/api/inference_profiles_api.py
 vertesia_client/openapi/api/interaction_runs_api.py
 vertesia_client/openapi/api/interactions_api.py
 vertesia_client/openapi/api/o_auth_api.py
@@ -372,6 +373,7 @@ vertesia_client/openapi/models/create_email_route_request.py
 vertesia_client/openapi/models/create_email_route_response.py
 vertesia_client/openapi/models/create_event_ingest_channel_payload.py
 vertesia_client/openapi/models/create_event_subscription_payload.py
+vertesia_client/openapi/models/create_inference_profile_payload.py
 vertesia_client/openapi/models/create_o_auth_client_payload.py
 vertesia_client/openapi/models/create_o_auth_provider_payload.py
 vertesia_client/openapi/models/create_process_definition_payload.py
@@ -608,6 +610,11 @@ vertesia_client/openapi/models/in_code_view_definition.py
 vertesia_client/openapi/models/indexing_status_response.py
 vertesia_client/openapi/models/indexing_status_response_index.py
 vertesia_client/openapi/models/indexing_status_response_reindex_progress.py
+vertesia_client/openapi/models/inference_profile.py
+vertesia_client/openapi/models/inference_profile_record.py
+vertesia_client/openapi/models/inference_profile_snapshot.py
+vertesia_client/openapi/models/inference_profile_usage.py
+vertesia_client/openapi/models/inference_profile_usage_entry.py
 vertesia_client/openapi/models/inherited_property_metadata.py
 vertesia_client/openapi/models/initial_tool_call.py
 vertesia_client/openapi/models/intake_page_scope.py
@@ -615,6 +622,8 @@ vertesia_client/openapi/models/intake_vision_detail.py
 vertesia_client/openapi/models/intake_vision_profile_settings_map.py
 vertesia_client/openapi/models/intake_vision_profile_settings_update.py
 vertesia_client/openapi/models/interaction.py
+vertesia_client/openapi/models/interaction_configuration_record.py
+vertesia_client/openapi/models/interaction_configuration_result.py
 vertesia_client/openapi/models/interaction_create_payload.py
 vertesia_client/openapi/models/interaction_endpoint.py
 vertesia_client/openapi/models/interaction_endpoint_query.py
@@ -815,6 +824,9 @@ vertesia_client/openapi/models/project_configuration_embedding_enable_payload.py
 vertesia_client/openapi/models/project_configuration_embeddings.py
 vertesia_client/openapi/models/project_configuration_oauth_clients.py
 vertesia_client/openapi/models/project_indexing_configuration.py
+vertesia_client/openapi/models/project_inference_profiles.py
+vertesia_client/openapi/models/project_inference_profiles_modality.py
+vertesia_client/openapi/models/project_inference_profiles_system.py
 vertesia_client/openapi/models/project_intake_configuration.py
 vertesia_client/openapi/models/project_intake_sniff_configuration.py
 vertesia_client/openapi/models/project_integration_config_request.py
@@ -1033,6 +1045,8 @@ vertesia_client/openapi/models/update_email_route_response.py
 vertesia_client/openapi/models/update_event_ingest_channel_payload.py
 vertesia_client/openapi/models/update_event_subscription_payload.py
 vertesia_client/openapi/models/update_execution_run_payload.py
+vertesia_client/openapi/models/update_inference_profile_payload.py
+vertesia_client/openapi/models/update_interaction_configuration_payload.py
 vertesia_client/openapi/models/update_o_auth_client_payload.py
 vertesia_client/openapi/models/update_o_auth_provider_payload.py
 vertesia_client/openapi/models/update_process_definition_payload.py

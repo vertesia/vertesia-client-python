@@ -17,30 +17,27 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
-from vertesia_client.openapi.models.model_options import ModelOptions
-from vertesia_client.openapi.models.process_run_config_process_workstream_monitor import ProcessRunConfigProcessWorkstreamMonitor
+from vertesia_client.openapi.models.project_inference_profiles_modality import ProjectInferenceProfilesModality
+from vertesia_client.openapi.models.project_inference_profiles_system import ProjectInferenceProfilesSystem
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class ProcessRunConfig(BaseModel):
+class ProjectInferenceProfiles(BaseModel):
     """
-    ProcessRunConfig
+    Project defaults reference profile MongoDB IDs. Profile definitions are managed through the inference profiles API.
     """ # noqa: E501
-    inference_profile: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Run-level inference profile ID for process LLM nodes and the supervisor. Explicit model settings retain precedence.")
-    environment: Optional[StrictStr] = Field(default=None, description="Execution environment id used by Process LLM nodes and the supervisor.")
-    model: Optional[StrictStr] = None
-    model_options: Optional[ModelOptions] = Field(default=None, description="Validated model options applied to Process LLM nodes and the supervisor.")
-    user_message: Optional[StrictStr] = Field(default=None, description="Free-form message from the user when starting a run. Passed to the orchestrator LLM in supervised mode; stored on the run regardless so programmatic runs retain the intent that triggered them.")
-    process_workstream_monitor: Optional[ProcessRunConfigProcessWorkstreamMonitor] = None
+    default_profile: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="MongoDB ObjectId of the inference profile.")
+    modality: Optional[ProjectInferenceProfilesModality] = None
+    system: Optional[ProjectInferenceProfilesSystem] = None
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["inference_profile", "environment", "model", "model_options", "user_message", "process_workstream_monitor"]
+    __properties: ClassVar[List[str]] = ["default_profile", "modality", "system"]
 
-    @field_validator('inference_profile')
-    def inference_profile_validate_regular_expression(cls, value):
+    @field_validator('default_profile')
+    def default_profile_validate_regular_expression(cls, value):
         """Validates the regular expression"""
         if value is None:
             return value
@@ -70,7 +67,7 @@ class ProcessRunConfig(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of ProcessRunConfig from a JSON string"""
+        """Create an instance of ProjectInferenceProfiles from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -93,27 +90,22 @@ class ProcessRunConfig(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of model_options
-        if self.model_options:
-            _dict['model_options'] = self.model_options.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of process_workstream_monitor
-        if self.process_workstream_monitor:
-            _dict['process_workstream_monitor'] = self.process_workstream_monitor.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of modality
+        if self.modality:
+            _dict['modality'] = self.modality.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of system
+        if self.system:
+            _dict['system'] = self.system.to_dict()
         # puts key-value pairs in additional_properties in the top level
         if self.additional_properties is not None:
             for _key, _value in self.additional_properties.items():
                 _dict[_key] = _value
 
-        # set to None if inference_profile (nullable) is None
-        # and model_fields_set contains the field
-        if self.inference_profile is None and "inference_profile" in self.model_fields_set:
-            _dict['inference_profile'] = None
-
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of ProcessRunConfig from a dict"""
+        """Create an instance of ProjectInferenceProfiles from a dict"""
         if obj is None:
             return None
 
@@ -121,12 +113,9 @@ class ProcessRunConfig(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "inference_profile": obj.get("inference_profile"),
-            "environment": obj.get("environment"),
-            "model": obj.get("model"),
-            "model_options": ModelOptions.from_dict(obj["model_options"]) if obj.get("model_options") is not None else None,
-            "user_message": obj.get("user_message"),
-            "process_workstream_monitor": ProcessRunConfigProcessWorkstreamMonitor.from_dict(obj["process_workstream_monitor"]) if obj.get("process_workstream_monitor") is not None else None
+            "default_profile": obj.get("default_profile"),
+            "modality": ProjectInferenceProfilesModality.from_dict(obj["modality"]) if obj.get("modality") is not None else None,
+            "system": ProjectInferenceProfilesSystem.from_dict(obj["system"]) if obj.get("system") is not None else None
         })
         # store additional fields in additional_properties
         for _key in obj.keys():

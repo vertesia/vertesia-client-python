@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.agent_runner_options import AgentRunnerOptions
 from vertesia_client.openapi.models.in_code_prompt import InCodePrompt
 from vertesia_client.openapi.models.interaction_result_schema import InteractionResultSchema
@@ -47,15 +48,29 @@ class ResolvedCatalogInteraction(BaseModel):
     tags: List[StrictStr] = Field(description="Tags, normalized to an empty array when absent.")
     agent_runner_options: Optional[AgentRunnerOptions] = None
     model_options: Optional[ModelOptions] = None
+    inference_profile: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="MongoDB ObjectId of the inference profile.")
     prompts: List[InCodePrompt]
     external_id: Optional[StrictStr] = Field(default=None, alias="externalId")
     runtime: Optional[ResolvedCatalogInteractionRuntime] = None
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["type", "id", "name", "version", "published", "title", "description", "result_schema", "output_modality", "storage", "tags", "agent_runner_options", "model_options", "prompts", "externalId", "runtime"]
+    __properties: ClassVar[List[str]] = ["type", "id", "name", "version", "published", "title", "description", "result_schema", "output_modality", "storage", "tags", "agent_runner_options", "model_options", "inference_profile", "prompts", "externalId", "runtime"]
 
     @field_validator('type')
     def type_validate_enum(cls, value):
         """Validates the enum"""
+        return value
+
+    @field_validator('inference_profile')
+    def inference_profile_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if value is None:
+            return value
+
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"^[a-fA-F0-9]{24}$", value):
+            raise ValueError(r"must validate the regular expression /^[a-fA-F0-9]{24}$/")
         return value
 
     model_config = ConfigDict(
@@ -123,6 +138,11 @@ class ResolvedCatalogInteraction(BaseModel):
             for _key, _value in self.additional_properties.items():
                 _dict[_key] = _value
 
+        # set to None if inference_profile (nullable) is None
+        # and model_fields_set contains the field
+        if self.inference_profile is None and "inference_profile" in self.model_fields_set:
+            _dict['inference_profile'] = None
+
         return _dict
 
     @classmethod
@@ -148,6 +168,7 @@ class ResolvedCatalogInteraction(BaseModel):
             "tags": obj.get("tags"),
             "agent_runner_options": AgentRunnerOptions.from_dict(obj["agent_runner_options"]) if obj.get("agent_runner_options") is not None else None,
             "model_options": ModelOptions.from_dict(obj["model_options"]) if obj.get("model_options") is not None else None,
+            "inference_profile": obj.get("inference_profile"),
             "prompts": [InCodePrompt.from_dict(_item) for _item in obj["prompts"]] if obj.get("prompts") is not None else None,
             "externalId": obj.get("externalId"),
             "runtime": ResolvedCatalogInteractionRuntime.from_dict(obj["runtime"]) if obj.get("runtime") is not None else None
