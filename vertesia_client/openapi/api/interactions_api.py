@@ -8514,6 +8514,7 @@ class InteractionsApi:
         name_or_id: StrictStr,
         environment: Optional[StrictStr] = None,
         model: Optional[StrictStr] = None,
+        inherit_model_config: Annotated[Optional[StrictBool], Field(description="Treat environment and model as inherited fallbacks after interaction settings, before project defaults.")] = None,
         has_image: Optional[StrictBool] = None,
         has_video: Optional[StrictBool] = None,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
@@ -8540,6 +8541,8 @@ class InteractionsApi:
         :type environment: str
         :param model:
         :type model: str
+        :param inherit_model_config: Treat environment and model as inherited fallbacks after interaction settings, before project defaults.
+        :type inherit_model_config: bool
         :param has_image:
         :type has_image: bool
         :param has_video:
@@ -8572,6 +8575,7 @@ class InteractionsApi:
             name_or_id=name_or_id,
             environment=environment,
             model=model,
+            inherit_model_config=inherit_model_config,
             has_image=has_image,
             has_video=has_video,
             x_api_version=x_api_version,
@@ -8603,6 +8607,7 @@ class InteractionsApi:
         name_or_id: StrictStr,
         environment: Optional[StrictStr] = None,
         model: Optional[StrictStr] = None,
+        inherit_model_config: Annotated[Optional[StrictBool], Field(description="Treat environment and model as inherited fallbacks after interaction settings, before project defaults.")] = None,
         has_image: Optional[StrictBool] = None,
         has_video: Optional[StrictBool] = None,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
@@ -8629,6 +8634,8 @@ class InteractionsApi:
         :type environment: str
         :param model:
         :type model: str
+        :param inherit_model_config: Treat environment and model as inherited fallbacks after interaction settings, before project defaults.
+        :type inherit_model_config: bool
         :param has_image:
         :type has_image: bool
         :param has_video:
@@ -8661,6 +8668,7 @@ class InteractionsApi:
             name_or_id=name_or_id,
             environment=environment,
             model=model,
+            inherit_model_config=inherit_model_config,
             has_image=has_image,
             has_video=has_video,
             x_api_version=x_api_version,
@@ -8692,6 +8700,7 @@ class InteractionsApi:
         name_or_id: StrictStr,
         environment: Optional[StrictStr] = None,
         model: Optional[StrictStr] = None,
+        inherit_model_config: Annotated[Optional[StrictBool], Field(description="Treat environment and model as inherited fallbacks after interaction settings, before project defaults.")] = None,
         has_image: Optional[StrictBool] = None,
         has_video: Optional[StrictBool] = None,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
@@ -8718,6 +8727,8 @@ class InteractionsApi:
         :type environment: str
         :param model:
         :type model: str
+        :param inherit_model_config: Treat environment and model as inherited fallbacks after interaction settings, before project defaults.
+        :type inherit_model_config: bool
         :param has_image:
         :type has_image: bool
         :param has_video:
@@ -8750,6 +8761,7 @@ class InteractionsApi:
             name_or_id=name_or_id,
             environment=environment,
             model=model,
+            inherit_model_config=inherit_model_config,
             has_image=has_image,
             has_video=has_video,
             x_api_version=x_api_version,
@@ -8776,6 +8788,7 @@ class InteractionsApi:
         name_or_id,
         environment,
         model,
+        inherit_model_config,
         has_image,
         has_video,
         x_api_version,
@@ -8810,6 +8823,10 @@ class InteractionsApi:
         if model is not None:
             
             _query_params.append(('model', model))
+            
+        if inherit_model_config is not None:
+            
+            _query_params.append(('inherit_model_config', inherit_model_config))
             
         if has_image is not None:
             

@@ -35,6 +35,7 @@ class ViewAgenticExecutionConfiguration(BaseModel):
     id: Optional[StrictStr] = None
     environment: Optional[StrictStr] = None
     model: Optional[StrictStr] = None
+    inherit_model_config: Optional[StrictBool] = Field(default=None, description="Treat environment and model as inherited fallbacks after interaction settings, before project defaults.")
     do_validate: Optional[StrictBool] = None
     run_data: Optional[RunDataStorageLevel] = None
     config_mode: Optional[ConfigModes] = Field(default=None, alias="configMode")
@@ -45,7 +46,7 @@ class ViewAgenticExecutionConfiguration(BaseModel):
     prompt_cache_schema_suffix: Optional[StrictBool] = Field(default=None, description="Put the result schema after the cached prefix; Vertesia still validates the returned JSON against it.")
     http_timeout: Optional[HttpTimeoutOptions] = Field(default=None, description="Per-run HTTP timeouts for upstream LLM-provider calls.")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["id", "environment", "model", "do_validate", "run_data", "configMode", "model_options", "prompt_cache_key", "prompt_cache_mode", "prompt_cache_ttl_seconds", "prompt_cache_schema_suffix", "http_timeout"]
+    __properties: ClassVar[List[str]] = ["id", "environment", "model", "inherit_model_config", "do_validate", "run_data", "configMode", "model_options", "prompt_cache_key", "prompt_cache_mode", "prompt_cache_ttl_seconds", "prompt_cache_schema_suffix", "http_timeout"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -111,6 +112,7 @@ class ViewAgenticExecutionConfiguration(BaseModel):
             "id": obj.get("id"),
             "environment": obj.get("environment"),
             "model": obj.get("model"),
+            "inherit_model_config": obj.get("inherit_model_config"),
             "do_validate": obj.get("do_validate"),
             "run_data": obj.get("run_data"),
             "configMode": obj.get("configMode"),
