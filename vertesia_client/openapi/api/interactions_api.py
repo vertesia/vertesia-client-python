@@ -9081,7 +9081,7 @@ class InteractionsApi:
         environment: Optional[StrictStr] = None,
         model: Optional[StrictStr] = None,
         inference_profile: Optional[Annotated[str, Field(strict=True)]] = None,
-        inherit_model_config: Optional[StrictBool] = None,
+        inherit_model_config: Annotated[Optional[StrictBool], Field(description="Treat supplied model settings as inherited fallback: an applicable profile replaces them.")] = None,
         has_image: Optional[StrictBool] = None,
         has_video: Optional[StrictBool] = None,
         _request_timeout: Union[
@@ -9111,7 +9111,7 @@ class InteractionsApi:
         :type model: str
         :param inference_profile:
         :type inference_profile: str
-        :param inherit_model_config:
+        :param inherit_model_config: Treat supplied model settings as inherited fallback: an applicable profile replaces them.
         :type inherit_model_config: bool
         :param has_image:
         :type has_image: bool
@@ -9178,7 +9178,7 @@ class InteractionsApi:
         environment: Optional[StrictStr] = None,
         model: Optional[StrictStr] = None,
         inference_profile: Optional[Annotated[str, Field(strict=True)]] = None,
-        inherit_model_config: Optional[StrictBool] = None,
+        inherit_model_config: Annotated[Optional[StrictBool], Field(description="Treat supplied model settings as inherited fallback: an applicable profile replaces them.")] = None,
         has_image: Optional[StrictBool] = None,
         has_video: Optional[StrictBool] = None,
         _request_timeout: Union[
@@ -9208,7 +9208,7 @@ class InteractionsApi:
         :type model: str
         :param inference_profile:
         :type inference_profile: str
-        :param inherit_model_config:
+        :param inherit_model_config: Treat supplied model settings as inherited fallback: an applicable profile replaces them.
         :type inherit_model_config: bool
         :param has_image:
         :type has_image: bool
@@ -9275,7 +9275,7 @@ class InteractionsApi:
         environment: Optional[StrictStr] = None,
         model: Optional[StrictStr] = None,
         inference_profile: Optional[Annotated[str, Field(strict=True)]] = None,
-        inherit_model_config: Optional[StrictBool] = None,
+        inherit_model_config: Annotated[Optional[StrictBool], Field(description="Treat supplied model settings as inherited fallback: an applicable profile replaces them.")] = None,
         has_image: Optional[StrictBool] = None,
         has_video: Optional[StrictBool] = None,
         _request_timeout: Union[
@@ -9305,7 +9305,7 @@ class InteractionsApi:
         :type model: str
         :param inference_profile:
         :type inference_profile: str
-        :param inherit_model_config:
+        :param inherit_model_config: Treat supplied model settings as inherited fallback: an applicable profile replaces them.
         :type inherit_model_config: bool
         :param has_image:
         :type has_image: bool

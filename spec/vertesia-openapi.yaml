@@ -33119,6 +33119,10 @@ paths:
           required: false
           schema:
             type: boolean
+            description: "Treat supplied model settings as inherited fallback: an applicable
+              profile replaces them."
+          description: "Treat supplied model settings as inherited fallback: an applicable
+            profile replaces them."
         - name: hasImage
           in: query
           required: false

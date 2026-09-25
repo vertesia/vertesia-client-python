@@ -43802,8 +43802,10 @@
             "in": "query",
             "required": false,
             "schema": {
-              "type": "boolean"
-            }
+              "type": "boolean",
+              "description": "Treat supplied model settings as inherited fallback: an applicable profile replaces them."
+            },
+            "description": "Treat supplied model settings as inherited fallback: an applicable profile replaces them."
           },
           {
             "name": "hasImage",
