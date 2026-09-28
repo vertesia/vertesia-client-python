@@ -58,7 +58,7 @@ from vertesia_client.openapi.models.agent_run_feedback_rating import AgentRunFee
 from vertesia_client.openapi.models.agent_run_feedback_reason_code import AgentRunFeedbackReasonCode
 from vertesia_client.openapi.models.agent_run_feedback_response import AgentRunFeedbackResponse
 from vertesia_client.openapi.models.agent_run_feedback_status import AgentRunFeedbackStatus
-from vertesia_client.openapi.models.agent_run_judge_result import AgentRunJudgeResult
+from vertesia_client.openapi.models.agent_run_llm_evaluation_result import AgentRunLlmEvaluationResult
 from vertesia_client.openapi.models.agent_run_response import AgentRunResponse
 from vertesia_client.openapi.models.agent_run_search_hit import AgentRunSearchHit
 from vertesia_client.openapi.models.agent_run_status import AgentRunStatus
@@ -455,7 +455,10 @@ from vertesia_client.openapi.models.embeddings_token_usage import EmbeddingsToke
 from vertesia_client.openapi.models.enable_environment_model_payload import EnableEnvironmentModelPayload
 from vertesia_client.openapi.models.environment_token_request import EnvironmentTokenRequest
 from vertesia_client.openapi.models.error_response import ErrorResponse
+from vertesia_client.openapi.models.evaluation_gate_reason import EvaluationGateReason
+from vertesia_client.openapi.models.evaluation_outcome import EvaluationOutcome
 from vertesia_client.openapi.models.evaluation_severity import EvaluationSeverity
+from vertesia_client.openapi.models.evaluation_verdict import EvaluationVerdict
 from vertesia_client.openapi.models.event_category import EventCategory
 from vertesia_client.openapi.models.event_delivery_intent_status import EventDeliveryIntentStatus
 from vertesia_client.openapi.models.event_delivery_intent_summary import EventDeliveryIntentSummary
@@ -623,9 +626,6 @@ from vertesia_client.openapi.models.issue_token_unavailable_response import Issu
 from vertesia_client.openapi.models.json_schema import JSONSchema
 from vertesia_client.openapi.models.json_schema_additional_properties import JSONSchemaAdditionalProperties
 from vertesia_client.openapi.models.json_result import JsonResult
-from vertesia_client.openapi.models.judge_gate_reason import JudgeGateReason
-from vertesia_client.openapi.models.judge_outcome import JudgeOutcome
-from vertesia_client.openapi.models.judge_verdict import JudgeVerdict
 from vertesia_client.openapi.models.known_audit_action import KnownAuditAction
 from vertesia_client.openapi.models.linkup_configuration import LinkupConfiguration
 from vertesia_client.openapi.models.linkup_configuration_input import LinkupConfigurationInput

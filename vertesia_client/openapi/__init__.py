@@ -119,7 +119,7 @@ __all__ = [
     "AgentRunFeedbackReasonCode",
     "AgentRunFeedbackResponse",
     "AgentRunFeedbackStatus",
-    "AgentRunJudgeResult",
+    "AgentRunLlmEvaluationResult",
     "AgentRunResponse",
     "AgentRunSearchHit",
     "AgentRunStatus",
@@ -516,7 +516,10 @@ __all__ = [
     "EnableEnvironmentModelPayload",
     "EnvironmentTokenRequest",
     "ErrorResponse",
+    "EvaluationGateReason",
+    "EvaluationOutcome",
     "EvaluationSeverity",
+    "EvaluationVerdict",
     "EventCategory",
     "EventDeliveryIntentStatus",
     "EventDeliveryIntentSummary",
@@ -684,9 +687,6 @@ __all__ = [
     "JSONSchema",
     "JSONSchemaAdditionalProperties",
     "JsonResult",
-    "JudgeGateReason",
-    "JudgeOutcome",
-    "JudgeVerdict",
     "KnownAuditAction",
     "LinkupConfiguration",
     "LinkupConfigurationInput",
@@ -1318,7 +1318,7 @@ from vertesia_client.openapi.models.agent_run_feedback_rating import AgentRunFee
 from vertesia_client.openapi.models.agent_run_feedback_reason_code import AgentRunFeedbackReasonCode as AgentRunFeedbackReasonCode
 from vertesia_client.openapi.models.agent_run_feedback_response import AgentRunFeedbackResponse as AgentRunFeedbackResponse
 from vertesia_client.openapi.models.agent_run_feedback_status import AgentRunFeedbackStatus as AgentRunFeedbackStatus
-from vertesia_client.openapi.models.agent_run_judge_result import AgentRunJudgeResult as AgentRunJudgeResult
+from vertesia_client.openapi.models.agent_run_llm_evaluation_result import AgentRunLlmEvaluationResult as AgentRunLlmEvaluationResult
 from vertesia_client.openapi.models.agent_run_response import AgentRunResponse as AgentRunResponse
 from vertesia_client.openapi.models.agent_run_search_hit import AgentRunSearchHit as AgentRunSearchHit
 from vertesia_client.openapi.models.agent_run_status import AgentRunStatus as AgentRunStatus
@@ -1715,7 +1715,10 @@ from vertesia_client.openapi.models.embeddings_token_usage import EmbeddingsToke
 from vertesia_client.openapi.models.enable_environment_model_payload import EnableEnvironmentModelPayload as EnableEnvironmentModelPayload
 from vertesia_client.openapi.models.environment_token_request import EnvironmentTokenRequest as EnvironmentTokenRequest
 from vertesia_client.openapi.models.error_response import ErrorResponse as ErrorResponse
+from vertesia_client.openapi.models.evaluation_gate_reason import EvaluationGateReason as EvaluationGateReason
+from vertesia_client.openapi.models.evaluation_outcome import EvaluationOutcome as EvaluationOutcome
 from vertesia_client.openapi.models.evaluation_severity import EvaluationSeverity as EvaluationSeverity
+from vertesia_client.openapi.models.evaluation_verdict import EvaluationVerdict as EvaluationVerdict
 from vertesia_client.openapi.models.event_category import EventCategory as EventCategory
 from vertesia_client.openapi.models.event_delivery_intent_status import EventDeliveryIntentStatus as EventDeliveryIntentStatus
 from vertesia_client.openapi.models.event_delivery_intent_summary import EventDeliveryIntentSummary as EventDeliveryIntentSummary
@@ -1883,9 +1886,6 @@ from vertesia_client.openapi.models.issue_token_unavailable_response import Issu
 from vertesia_client.openapi.models.json_schema import JSONSchema as JSONSchema
 from vertesia_client.openapi.models.json_schema_additional_properties import JSONSchemaAdditionalProperties as JSONSchemaAdditionalProperties
 from vertesia_client.openapi.models.json_result import JsonResult as JsonResult
-from vertesia_client.openapi.models.judge_gate_reason import JudgeGateReason as JudgeGateReason
-from vertesia_client.openapi.models.judge_outcome import JudgeOutcome as JudgeOutcome
-from vertesia_client.openapi.models.judge_verdict import JudgeVerdict as JudgeVerdict
 from vertesia_client.openapi.models.known_audit_action import KnownAuditAction as KnownAuditAction
 from vertesia_client.openapi.models.linkup_configuration import LinkupConfiguration as LinkupConfiguration
 from vertesia_client.openapi.models.linkup_configuration_input import LinkupConfigurationInput as LinkupConfigurationInput

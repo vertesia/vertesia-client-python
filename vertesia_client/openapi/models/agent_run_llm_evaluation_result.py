@@ -17,28 +17,33 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
-from typing import Any, ClassVar, Dict, Optional
-from vertesia_client.openapi.models.agent_checkpoint_configuration import AgentCheckpointConfiguration
+from datetime import datetime
+from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
+from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing_extensions import Annotated
+from vertesia_client.openapi.models.evaluation_gate_reason import EvaluationGateReason
+from vertesia_client.openapi.models.evaluation_outcome import EvaluationOutcome
+from vertesia_client.openapi.models.evaluation_verdict import EvaluationVerdict
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class AgentProjectConfiguration(BaseModel):
+class AgentRunLlmEvaluationResult(BaseModel):
     """
-    Agent runtime configuration, scoped under project configuration so agent settings have one home (`configuration.agent`).
+    Latest LLM evaluation result for a run.
     """ # noqa: E501
-    evaluation_policy: Optional[StrictStr] = Field(default=None, description="LLM evaluation policy. Defaults to always_on when omitted. disabled prevents evaluation even when requested; opt_in requires evaluate=true on the run; always_on evaluates every eligible run without sampling. Deterministic diagnostics are unaffected.")
-    checkpoint: Optional[AgentCheckpointConfiguration] = Field(default=None, description="Conversation checkpoint (context compaction) tuning.")
-    __properties: ClassVar[List[str]] = ["evaluation_policy", "checkpoint"]
-
-    @field_validator('evaluation_policy')
-    def evaluation_policy_validate_enum(cls, value):
-        """Validates the enum"""
-        if value is None:
-            return value
-
-        return value
+    rev: Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]
+    gate: EvaluationGateReason
+    sample_rate: Union[StrictFloat, StrictInt]
+    selected_probability: Union[StrictFloat, StrictInt]
+    outcome: EvaluationOutcome
+    verdict: Optional[EvaluationVerdict] = None
+    score: Optional[Union[StrictFloat, StrictInt]] = None
+    model: Optional[StrictStr] = None
+    prompt_version: StrictStr
+    turns_evaluated: Optional[List[Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]]] = None
+    evaluated_at: datetime
+    __properties: ClassVar[List[str]] = ["rev", "gate", "sample_rate", "selected_probability", "outcome", "verdict", "score", "model", "prompt_version", "turns_evaluated", "evaluated_at"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -58,7 +63,7 @@ class AgentProjectConfiguration(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of AgentProjectConfiguration from a JSON string"""
+        """Create an instance of AgentRunLlmEvaluationResult from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -79,14 +84,11 @@ class AgentProjectConfiguration(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of checkpoint
-        if self.checkpoint:
-            _dict['checkpoint'] = self.checkpoint.to_dict()
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of AgentProjectConfiguration from a dict"""
+        """Create an instance of AgentRunLlmEvaluationResult from a dict"""
         if obj is None:
             return None
 
@@ -94,8 +96,17 @@ class AgentProjectConfiguration(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "evaluation_policy": obj.get("evaluation_policy"),
-            "checkpoint": AgentCheckpointConfiguration.from_dict(obj["checkpoint"]) if obj.get("checkpoint") is not None else None
+            "rev": obj.get("rev"),
+            "gate": obj.get("gate"),
+            "sample_rate": obj.get("sample_rate"),
+            "selected_probability": obj.get("selected_probability"),
+            "outcome": obj.get("outcome"),
+            "verdict": obj.get("verdict"),
+            "score": obj.get("score"),
+            "model": obj.get("model"),
+            "prompt_version": obj.get("prompt_version"),
+            "turns_evaluated": obj.get("turns_evaluated"),
+            "evaluated_at": obj.get("evaluated_at")
         })
         return _obj
 

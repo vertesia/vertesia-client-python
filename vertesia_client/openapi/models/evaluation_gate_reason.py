@@ -18,16 +18,18 @@ from enum import Enum
 from typing_extensions import Self
 
 
-class AgentRunContradictionReason(str, Enum):
+class EvaluationGateReason(str, Enum):
     """
-    AgentRunContradictionReason
+    Why a run was selected for LLM evaluation.
     """
 
     """
     allowed enum values
     """
-    FEEDBACK_DOWN_ON_CLEAN_RUN = 'feedback_down_on_clean_run'
-    EVALUATION_FAILURE_ON_CLEAN_RUN = 'evaluation_failure_on_clean_run'
+    SIGNAL = 'signal'
+    SAMPLE = 'sample'
+    OPT_IN = 'opt_in'
+    ALWAYS_ON = 'always_on'
 
     @classmethod
     def _missing_(cls, value: object) -> Self:
@@ -41,7 +43,7 @@ class AgentRunContradictionReason(str, Enum):
 
     @classmethod
     def from_json(cls, json_str: str) -> Self:
-        """Create an instance of AgentRunContradictionReason from a JSON string"""
+        """Create an instance of EvaluationGateReason from a JSON string"""
         return cls(json.loads(json_str))
 
 

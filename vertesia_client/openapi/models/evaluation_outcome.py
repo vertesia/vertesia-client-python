@@ -18,16 +18,17 @@ from enum import Enum
 from typing_extensions import Self
 
 
-class AgentRunContradictionReason(str, Enum):
+class EvaluationOutcome(str, Enum):
     """
-    AgentRunContradictionReason
+    Outcome of an LLM evaluation run.
     """
 
     """
     allowed enum values
     """
-    FEEDBACK_DOWN_ON_CLEAN_RUN = 'feedback_down_on_clean_run'
-    EVALUATION_FAILURE_ON_CLEAN_RUN = 'evaluation_failure_on_clean_run'
+    EVALUATED = 'evaluated'
+    SKIPPED_UNARCHIVED = 'skipped_unarchived'
+    FAILED = 'failed'
 
     @classmethod
     def _missing_(cls, value: object) -> Self:
@@ -41,7 +42,7 @@ class AgentRunContradictionReason(str, Enum):
 
     @classmethod
     def from_json(cls, json_str: str) -> Self:
-        """Create an instance of AgentRunContradictionReason from a JSON string"""
+        """Create an instance of EvaluationOutcome from a JSON string"""
         return cls(json.loads(json_str))
 
 

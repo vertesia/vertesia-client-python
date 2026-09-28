@@ -46,6 +46,7 @@ class AsyncConversationExecutionPayload(BaseModel):
     topic: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="Caller-provided conversation topic. Suppresses automatic topic generation.")
     generate_topic: Optional[StrictBool] = Field(default=None, description="Whether to generate a conversation title and topic automatically. Defaults to true; a caller-provided topic always suppresses generation.")
     generate_lessons: Optional[StrictBool] = Field(default=None, description="Whether to generate lessons automatically at completion. Defaults to true; conversation content remains searchable when disabled.")
+    evaluate: Optional[StrictBool] = Field(default=None, description="Request LLM evaluation when the project evaluation policy is opt_in. Defaults to false. Cannot override disabled or opt out of always_on.")
     app_version: Optional[StrictStr] = Field(default=None, description="Immutable app-version target inherited by this conversation execution. The workflow applies it to app-owned resource resolution; callers normally set the x-vertesia-app-version header instead of populating this field directly.")
     data: Optional[Any] = None
     config: Optional[InteractionExecutionConfiguration] = None
@@ -89,7 +90,7 @@ class AsyncConversationExecutionPayload(BaseModel):
     agent_run_id: Optional[StrictStr] = Field(default=None, description="The AgentRun MongoDB _id. Used for artifact storage paths: agents/{agent_run_id}/ Flows into ConversationState and down to workstreams. Undefined for legacy workflows started before the AgentRun system.")
     schedule_id: Optional[StrictStr] = Field(default=None, description="The Schedule MongoDB _id. Set when this execution was triggered by a Temporal schedule. Used by the workflow to create an AgentRun on first run if agent_run_id is absent.")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["interaction", "title", "topic", "generate_topic", "generate_lessons", "app_version", "data", "config", "result_schema", "do_validate", "tags", "conversation", "workflow", "prompts", "asyncCompletion", "type", "notify_endpoints", "task_queue", "tool_approval_mode", "visibility", "tool_names", "initial_skills", "initial_tool_calls", "excluded_tools", "agent_policy", "max_iterations", "interactive", "user_channels", "disable_interaction_tools", "search_scope", "collection_id", "disabled_mcp_collections", "checkpoint_tokens", "checkpoint", "strip_options", "task_id", "launch_id", "debug_mode", "max_nested_conversation_depth", "parent_metadata", "final_verification", "non_blocking_subagents", "restart_from_workflow_run_id", "source_first_workflow_run_id", "is_fork", "agent_run_id", "schedule_id"]
+    __properties: ClassVar[List[str]] = ["interaction", "title", "topic", "generate_topic", "generate_lessons", "evaluate", "app_version", "data", "config", "result_schema", "do_validate", "tags", "conversation", "workflow", "prompts", "asyncCompletion", "type", "notify_endpoints", "task_queue", "tool_approval_mode", "visibility", "tool_names", "initial_skills", "initial_tool_calls", "excluded_tools", "agent_policy", "max_iterations", "interactive", "user_channels", "disable_interaction_tools", "search_scope", "collection_id", "disabled_mcp_collections", "checkpoint_tokens", "checkpoint", "strip_options", "task_id", "launch_id", "debug_mode", "max_nested_conversation_depth", "parent_metadata", "final_verification", "non_blocking_subagents", "restart_from_workflow_run_id", "source_first_workflow_run_id", "is_fork", "agent_run_id", "schedule_id"]
 
     @field_validator('type')
     def type_validate_enum(cls, value):
@@ -216,6 +217,7 @@ class AsyncConversationExecutionPayload(BaseModel):
             "topic": obj.get("topic"),
             "generate_topic": obj.get("generate_topic"),
             "generate_lessons": obj.get("generate_lessons"),
+            "evaluate": obj.get("evaluate"),
             "app_version": obj.get("app_version"),
             "data": obj.get("data"),
             "config": InteractionExecutionConfiguration.from_dict(obj["config"]) if obj.get("config") is not None else None,

@@ -24,7 +24,7 @@ from typing_extensions import Annotated
 from vertesia_client.openapi.models.agent_run_contradiction_reason import AgentRunContradictionReason
 from vertesia_client.openapi.models.agent_run_evaluation_rollup import AgentRunEvaluationRollup
 from vertesia_client.openapi.models.agent_run_feedback_counts import AgentRunFeedbackCounts
-from vertesia_client.openapi.models.agent_run_judge_result import AgentRunJudgeResult
+from vertesia_client.openapi.models.agent_run_llm_evaluation_result import AgentRunLlmEvaluationResult
 from vertesia_client.openapi.models.evaluation_severity import EvaluationSeverity
 from vertesia_client.openapi.models.turn_evaluation_flag import TurnEvaluationFlag
 from typing import Optional, Set
@@ -38,14 +38,14 @@ class AgentRunEvaluation(BaseModel):
     rev: Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)] = Field(description="Bumped on every change to any part of the summary.")
     rollup: Optional[AgentRunEvaluationRollup] = None
     feedback_counts: Optional[AgentRunFeedbackCounts] = None
-    judge: Optional[AgentRunJudgeResult] = None
+    llm_evaluation: Optional[AgentRunLlmEvaluationResult] = None
     severity: EvaluationSeverity
     flags: List[TurnEvaluationFlag]
     contradicted: StrictBool
     contradiction_reasons: Optional[List[AgentRunContradictionReason]] = None
     deployment_env: Optional[StrictStr] = None
     updated_at: datetime
-    __properties: ClassVar[List[str]] = ["rev", "rollup", "feedback_counts", "judge", "severity", "flags", "contradicted", "contradiction_reasons", "deployment_env", "updated_at"]
+    __properties: ClassVar[List[str]] = ["rev", "rollup", "feedback_counts", "llm_evaluation", "severity", "flags", "contradicted", "contradiction_reasons", "deployment_env", "updated_at"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -92,9 +92,9 @@ class AgentRunEvaluation(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of feedback_counts
         if self.feedback_counts:
             _dict['feedback_counts'] = self.feedback_counts.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of judge
-        if self.judge:
-            _dict['judge'] = self.judge.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of llm_evaluation
+        if self.llm_evaluation:
+            _dict['llm_evaluation'] = self.llm_evaluation.to_dict()
         return _dict
 
     @classmethod
@@ -110,7 +110,7 @@ class AgentRunEvaluation(BaseModel):
             "rev": obj.get("rev"),
             "rollup": AgentRunEvaluationRollup.from_dict(obj["rollup"]) if obj.get("rollup") is not None else None,
             "feedback_counts": AgentRunFeedbackCounts.from_dict(obj["feedback_counts"]) if obj.get("feedback_counts") is not None else None,
-            "judge": AgentRunJudgeResult.from_dict(obj["judge"]) if obj.get("judge") is not None else None,
+            "llm_evaluation": AgentRunLlmEvaluationResult.from_dict(obj["llm_evaluation"]) if obj.get("llm_evaluation") is not None else None,
             "severity": obj.get("severity"),
             "flags": obj.get("flags"),
             "contradicted": obj.get("contradicted"),

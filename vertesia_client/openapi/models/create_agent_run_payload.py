@@ -43,6 +43,7 @@ class CreateAgentRunPayload(BaseModel):
     topic: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="Caller-provided conversation topic. Suppresses automatic topic generation.")
     generate_topic: Optional[StrictBool] = Field(default=None, description="Whether to generate a conversation title and topic automatically. Defaults to true; a caller-provided topic always suppresses generation.")
     generate_lessons: Optional[StrictBool] = Field(default=None, description="Whether to generate lessons automatically at completion. Defaults to true; conversation content remains searchable when disabled.")
+    evaluate: Optional[StrictBool] = Field(default=None, description="Request LLM evaluation when the project evaluation policy is opt_in. Defaults to false. Cannot override disabled or opt out of always_on.")
     data: Optional[Dict[str, Any]] = Field(default=None, description="Input parameters, typed per interaction")
     config: Optional[InteractionExecutionConfiguration] = Field(default=None, description="Execution configuration (environment, model, model_options, etc.)")
     interactive: Optional[StrictBool] = Field(default=None, description="Whether the agent accepts user input")
@@ -72,7 +73,7 @@ class CreateAgentRunPayload(BaseModel):
     debug_mode: Optional[StrictBool] = Field(default=None, description="Enable debug mode for verbose logging")
     started_by: Optional[StrictStr] = Field(default=None, description="Principal ref of the user who initiated the run (for server-to-server forwarding)")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["interaction", "title", "topic", "generate_topic", "generate_lessons", "data", "config", "interactive", "tool_approval_mode", "tool_names", "initial_skills", "initial_tool_calls", "excluded_tools", "collection_id", "disabled_mcp_collections", "content_type", "visibility", "tags", "categories", "properties", "source", "schedule_id", "source_type", "type", "search_scope", "user_channels", "checkpoint_tokens", "checkpoint", "max_iterations", "final_verification", "notify_endpoints", "debug_mode", "started_by"]
+    __properties: ClassVar[List[str]] = ["interaction", "title", "topic", "generate_topic", "generate_lessons", "evaluate", "data", "config", "interactive", "tool_approval_mode", "tool_names", "initial_skills", "initial_tool_calls", "excluded_tools", "collection_id", "disabled_mcp_collections", "content_type", "visibility", "tags", "categories", "properties", "source", "schedule_id", "source_type", "type", "search_scope", "user_channels", "checkpoint_tokens", "checkpoint", "max_iterations", "final_verification", "notify_endpoints", "debug_mode", "started_by"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -163,6 +164,7 @@ class CreateAgentRunPayload(BaseModel):
             "topic": obj.get("topic"),
             "generate_topic": obj.get("generate_topic"),
             "generate_lessons": obj.get("generate_lessons"),
+            "evaluate": obj.get("evaluate"),
             "data": obj.get("data"),
             "config": InteractionExecutionConfiguration.from_dict(obj["config"]) if obj.get("config") is not None else None,
             "interactive": obj.get("interactive"),

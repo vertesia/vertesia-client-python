@@ -4663,7 +4663,7 @@ class AgentRunsApi:
         evaluation_severity: Annotated[Optional[List[StrictStr]], Field(description="Filter by evaluation severity; `unrated` selects runs without an evaluation")] = None,
         evaluation_flag: Annotated[Optional[List[StrictStr]], Field(description="Filter by evaluation flag (any of)")] = None,
         feedback_rating: Annotated[Optional[StrictStr], Field(description="Filter by last feedback rating")] = None,
-        contradicted: Annotated[Optional[StrictBool], Field(description="Only runs whose feedback or judge contradicts the detectors")] = None,
+        contradicted: Annotated[Optional[StrictBool], Field(description="Only runs whose feedback or LLM evaluation contradicts the detectors")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4719,7 +4719,7 @@ class AgentRunsApi:
         :type evaluation_flag: List[str]
         :param feedback_rating: Filter by last feedback rating
         :type feedback_rating: str
-        :param contradicted: Only runs whose feedback or judge contradicts the detectors
+        :param contradicted: Only runs whose feedback or LLM evaluation contradicts the detectors
         :type contradicted: bool
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -4808,7 +4808,7 @@ class AgentRunsApi:
         evaluation_severity: Annotated[Optional[List[StrictStr]], Field(description="Filter by evaluation severity; `unrated` selects runs without an evaluation")] = None,
         evaluation_flag: Annotated[Optional[List[StrictStr]], Field(description="Filter by evaluation flag (any of)")] = None,
         feedback_rating: Annotated[Optional[StrictStr], Field(description="Filter by last feedback rating")] = None,
-        contradicted: Annotated[Optional[StrictBool], Field(description="Only runs whose feedback or judge contradicts the detectors")] = None,
+        contradicted: Annotated[Optional[StrictBool], Field(description="Only runs whose feedback or LLM evaluation contradicts the detectors")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4864,7 +4864,7 @@ class AgentRunsApi:
         :type evaluation_flag: List[str]
         :param feedback_rating: Filter by last feedback rating
         :type feedback_rating: str
-        :param contradicted: Only runs whose feedback or judge contradicts the detectors
+        :param contradicted: Only runs whose feedback or LLM evaluation contradicts the detectors
         :type contradicted: bool
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -4953,7 +4953,7 @@ class AgentRunsApi:
         evaluation_severity: Annotated[Optional[List[StrictStr]], Field(description="Filter by evaluation severity; `unrated` selects runs without an evaluation")] = None,
         evaluation_flag: Annotated[Optional[List[StrictStr]], Field(description="Filter by evaluation flag (any of)")] = None,
         feedback_rating: Annotated[Optional[StrictStr], Field(description="Filter by last feedback rating")] = None,
-        contradicted: Annotated[Optional[StrictBool], Field(description="Only runs whose feedback or judge contradicts the detectors")] = None,
+        contradicted: Annotated[Optional[StrictBool], Field(description="Only runs whose feedback or LLM evaluation contradicts the detectors")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5009,7 +5009,7 @@ class AgentRunsApi:
         :type evaluation_flag: List[str]
         :param feedback_rating: Filter by last feedback rating
         :type feedback_rating: str
-        :param contradicted: Only runs whose feedback or judge contradicts the detectors
+        :param contradicted: Only runs whose feedback or LLM evaluation contradicts the detectors
         :type contradicted: bool
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
