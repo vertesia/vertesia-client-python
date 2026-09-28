@@ -67,11 +67,12 @@ class CreateAgentRunPayload(BaseModel):
     checkpoint_tokens: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Token budget for checkpointing, in thousands (K). Wins over every other checkpoint setting.")
     checkpoint: Optional[AgentCheckpointConfiguration] = Field(default=None, description="Structured checkpoint override for this run. Field-wise it takes precedence over the interaction's `agent_runner_options.checkpoint` and the project's `configuration.agent.checkpoint`; the legacy `checkpoint_tokens` above still wins over everything when set.")
     max_iterations: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Maximum conversation iterations (default: 20)")
+    final_verification: Optional[StrictBool] = Field(default=None, description="When true, a non-interactive free-form run takes one extra turn after its answer to check that the task is complete. Off by default. Not kept on restart or fork.")
     notify_endpoints: Optional[List[StrictStr]] = Field(default=None, description="Webhook URLs to notify on completion")
     debug_mode: Optional[StrictBool] = Field(default=None, description="Enable debug mode for verbose logging")
     started_by: Optional[StrictStr] = Field(default=None, description="Principal ref of the user who initiated the run (for server-to-server forwarding)")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["interaction", "title", "topic", "generate_topic", "generate_lessons", "data", "config", "interactive", "tool_approval_mode", "tool_names", "initial_skills", "initial_tool_calls", "excluded_tools", "collection_id", "disabled_mcp_collections", "content_type", "visibility", "tags", "categories", "properties", "source", "schedule_id", "source_type", "type", "search_scope", "user_channels", "checkpoint_tokens", "checkpoint", "max_iterations", "notify_endpoints", "debug_mode", "started_by"]
+    __properties: ClassVar[List[str]] = ["interaction", "title", "topic", "generate_topic", "generate_lessons", "data", "config", "interactive", "tool_approval_mode", "tool_names", "initial_skills", "initial_tool_calls", "excluded_tools", "collection_id", "disabled_mcp_collections", "content_type", "visibility", "tags", "categories", "properties", "source", "schedule_id", "source_type", "type", "search_scope", "user_channels", "checkpoint_tokens", "checkpoint", "max_iterations", "final_verification", "notify_endpoints", "debug_mode", "started_by"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -186,6 +187,7 @@ class CreateAgentRunPayload(BaseModel):
             "checkpoint_tokens": obj.get("checkpoint_tokens"),
             "checkpoint": AgentCheckpointConfiguration.from_dict(obj["checkpoint"]) if obj.get("checkpoint") is not None else None,
             "max_iterations": obj.get("max_iterations"),
+            "final_verification": obj.get("final_verification"),
             "notify_endpoints": obj.get("notify_endpoints"),
             "debug_mode": obj.get("debug_mode"),
             "started_by": obj.get("started_by")

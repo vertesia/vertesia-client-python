@@ -81,6 +81,7 @@ class AsyncConversationExecutionPayload(BaseModel):
     debug_mode: Optional[StrictBool] = Field(default=None, description="Whether to enable debug mode")
     max_nested_conversation_depth: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Maximum depth for nested conversations to prevent infinite recursion (default: 5)")
     parent_metadata: Optional[Dict[str, Any]] = Field(default=None, description="Metadata inherited from parent workflow. Used to propagate context (e.g., apiKey, session info) to child workflows/workstreams. When a workstream is spawned, the parent's `data` is preserved here so that child tools can access it via metadata.parent_metadata.")
+    final_verification: Optional[StrictBool] = Field(default=None, description="When true, a non-interactive free-form run takes one extra turn after its answer to check that the task is complete. Off by default, and never applied to workstreams: their parent reviews the result and can message the workstream to continue.")
     non_blocking_subagents: Optional[StrictBool] = Field(default=None, description="When true, subagent/workstream tool calls use fire-and-forget `startChild()` instead of blocking `executeChild()`. The parent continues reasoning while children run, receiving progress/completion via Temporal signals.")
     restart_from_workflow_run_id: Optional[StrictStr] = Field(default=None, description="Temporal runId of a previous workflow to restart/fork from. When set, conversation history is loaded from the old run's GCS storage instead of calling startConversation fresh.")
     source_first_workflow_run_id: Optional[StrictStr] = Field(default=None, description="The Temporal firstExecutionRunId of the original workflow being restarted/forked. Used by loadConversationForRestart to look up the original ExecutionRun so that token accumulation and status updates target a valid run.")
@@ -88,7 +89,7 @@ class AsyncConversationExecutionPayload(BaseModel):
     agent_run_id: Optional[StrictStr] = Field(default=None, description="The AgentRun MongoDB _id. Used for artifact storage paths: agents/{agent_run_id}/ Flows into ConversationState and down to workstreams. Undefined for legacy workflows started before the AgentRun system.")
     schedule_id: Optional[StrictStr] = Field(default=None, description="The Schedule MongoDB _id. Set when this execution was triggered by a Temporal schedule. Used by the workflow to create an AgentRun on first run if agent_run_id is absent.")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["interaction", "title", "topic", "generate_topic", "generate_lessons", "app_version", "data", "config", "result_schema", "do_validate", "tags", "conversation", "workflow", "prompts", "asyncCompletion", "type", "notify_endpoints", "task_queue", "tool_approval_mode", "visibility", "tool_names", "initial_skills", "initial_tool_calls", "excluded_tools", "agent_policy", "max_iterations", "interactive", "user_channels", "disable_interaction_tools", "search_scope", "collection_id", "disabled_mcp_collections", "checkpoint_tokens", "checkpoint", "strip_options", "task_id", "launch_id", "debug_mode", "max_nested_conversation_depth", "parent_metadata", "non_blocking_subagents", "restart_from_workflow_run_id", "source_first_workflow_run_id", "is_fork", "agent_run_id", "schedule_id"]
+    __properties: ClassVar[List[str]] = ["interaction", "title", "topic", "generate_topic", "generate_lessons", "app_version", "data", "config", "result_schema", "do_validate", "tags", "conversation", "workflow", "prompts", "asyncCompletion", "type", "notify_endpoints", "task_queue", "tool_approval_mode", "visibility", "tool_names", "initial_skills", "initial_tool_calls", "excluded_tools", "agent_policy", "max_iterations", "interactive", "user_channels", "disable_interaction_tools", "search_scope", "collection_id", "disabled_mcp_collections", "checkpoint_tokens", "checkpoint", "strip_options", "task_id", "launch_id", "debug_mode", "max_nested_conversation_depth", "parent_metadata", "final_verification", "non_blocking_subagents", "restart_from_workflow_run_id", "source_first_workflow_run_id", "is_fork", "agent_run_id", "schedule_id"]
 
     @field_validator('type')
     def type_validate_enum(cls, value):
@@ -250,6 +251,7 @@ class AsyncConversationExecutionPayload(BaseModel):
             "debug_mode": obj.get("debug_mode"),
             "max_nested_conversation_depth": obj.get("max_nested_conversation_depth"),
             "parent_metadata": obj.get("parent_metadata"),
+            "final_verification": obj.get("final_verification"),
             "non_blocking_subagents": obj.get("non_blocking_subagents"),
             "restart_from_workflow_run_id": obj.get("restart_from_workflow_run_id"),
             "source_first_workflow_run_id": obj.get("source_first_workflow_run_id"),
