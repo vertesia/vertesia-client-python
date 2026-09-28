@@ -17,24 +17,20 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt
-from typing import Any, ClassVar, Dict, List, Optional, Union
-from vertesia_client.openapi.models.cost_analytics_response_pricing_coverage_cost_by_source import CostAnalyticsResponsePricingCoverageCostBySource
-from vertesia_client.openapi.models.cost_analytics_response_pricing_coverage_unpriced_inner import CostAnalyticsResponsePricingCoverageUnpricedInner
+from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt
+from typing import Any, ClassVar, Dict, Union
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class CostAnalyticsResponsePricingCoverage(BaseModel):
+class CostAnalyticsResponsePricingCoverageCostBySource(BaseModel):
     """
-    CostAnalyticsResponsePricingCoverage
+    How the total cost splits by where each call's cost came from.
     """ # noqa: E501
-    priced_calls: Union[StrictFloat, StrictInt]
-    unpriced_calls: Union[StrictFloat, StrictInt]
-    assumed_default_calls: Union[StrictFloat, StrictInt]
-    unpriced: List[CostAnalyticsResponsePricingCoverageUnpricedInner]
-    cost_by_source: Optional[CostAnalyticsResponsePricingCoverageCostBySource] = None
-    __properties: ClassVar[List[str]] = ["priced_calls", "unpriced_calls", "assumed_default_calls", "unpriced", "cost_by_source"]
+    provider_billed: Union[StrictFloat, StrictInt] = Field(description="USD the provider reported billing for the calls.")
+    run_time_estimate: Union[StrictFloat, StrictInt] = Field(description="USD estimated from list prices when the calls ran, for calls with no billed amount.")
+    price_table: Union[StrictFloat, StrictInt] = Field(description="USD computed from the pricing table, for calls with no cost recorded when they ran.")
+    __properties: ClassVar[List[str]] = ["provider_billed", "run_time_estimate", "price_table"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -54,7 +50,7 @@ class CostAnalyticsResponsePricingCoverage(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of CostAnalyticsResponsePricingCoverage from a JSON string"""
+        """Create an instance of CostAnalyticsResponsePricingCoverageCostBySource from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -75,21 +71,11 @@ class CostAnalyticsResponsePricingCoverage(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of each item in unpriced (list)
-        _items = []
-        if self.unpriced:
-            for _item_unpriced in self.unpriced:
-                if _item_unpriced:
-                    _items.append(_item_unpriced.to_dict())
-            _dict['unpriced'] = _items
-        # override the default output from pydantic by calling `to_dict()` of cost_by_source
-        if self.cost_by_source:
-            _dict['cost_by_source'] = self.cost_by_source.to_dict()
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of CostAnalyticsResponsePricingCoverage from a dict"""
+        """Create an instance of CostAnalyticsResponsePricingCoverageCostBySource from a dict"""
         if obj is None:
             return None
 
@@ -97,11 +83,9 @@ class CostAnalyticsResponsePricingCoverage(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "priced_calls": obj.get("priced_calls"),
-            "unpriced_calls": obj.get("unpriced_calls"),
-            "assumed_default_calls": obj.get("assumed_default_calls"),
-            "unpriced": [CostAnalyticsResponsePricingCoverageUnpricedInner.from_dict(_item) for _item in obj["unpriced"]] if obj.get("unpriced") is not None else None,
-            "cost_by_source": CostAnalyticsResponsePricingCoverageCostBySource.from_dict(obj["cost_by_source"]) if obj.get("cost_by_source") is not None else None
+            "provider_billed": obj.get("provider_billed"),
+            "run_time_estimate": obj.get("run_time_estimate"),
+            "price_table": obj.get("price_table")
         })
         return _obj
 

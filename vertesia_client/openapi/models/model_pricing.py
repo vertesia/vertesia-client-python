@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, Optional, Union
+from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -31,12 +32,13 @@ class ModelPricing(BaseModel):
     provider: Optional[StrictStr] = None
     provider_account_id: Optional[StrictStr] = None
     service_tier: Optional[StrictStr] = Field(default=None, description="Processing tier this price applies to")
+    min_prompt_tokens: Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=0)]] = Field(default=None, description="When set, these prices apply to calls whose prompt (input, cached and cache-write tokens) is longer than this many tokens, in place of the prices without it.")
     input_price_per_m_tokens: Union[StrictFloat, StrictInt]
     cached_input_price_per_m_tokens: Optional[Union[StrictFloat, StrictInt]] = None
     cache_write_input_price_per_m_tokens: Optional[Union[StrictFloat, StrictInt]] = None
     output_price_per_m_tokens: Union[StrictFloat, StrictInt]
-    source: StrictStr
-    __properties: ClassVar[List[str]] = ["model", "provider", "provider_account_id", "service_tier", "input_price_per_m_tokens", "cached_input_price_per_m_tokens", "cache_write_input_price_per_m_tokens", "output_price_per_m_tokens", "source"]
+    source: StrictStr = Field(description="Where the rates come from. `run_time_estimate` rates are the ones recorded on the calls when their cost was estimated; the others come from the pricing catalog.")
+    __properties: ClassVar[List[str]] = ["model", "provider", "provider_account_id", "service_tier", "min_prompt_tokens", "input_price_per_m_tokens", "cached_input_price_per_m_tokens", "cache_write_input_price_per_m_tokens", "output_price_per_m_tokens", "source"]
 
     @field_validator('source')
     def source_validate_enum(cls, value):
@@ -98,6 +100,7 @@ class ModelPricing(BaseModel):
             "provider": obj.get("provider"),
             "provider_account_id": obj.get("provider_account_id"),
             "service_tier": obj.get("service_tier"),
+            "min_prompt_tokens": obj.get("min_prompt_tokens"),
             "input_price_per_m_tokens": obj.get("input_price_per_m_tokens"),
             "cached_input_price_per_m_tokens": obj.get("cached_input_price_per_m_tokens"),
             "cache_write_input_price_per_m_tokens": obj.get("cache_write_input_price_per_m_tokens"),

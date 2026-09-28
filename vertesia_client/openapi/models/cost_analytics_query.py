@@ -31,7 +31,7 @@ class CostAnalyticsQuery(BaseModel):
     """ # noqa: E501
     var_from: Optional[GetModelPricesFromParameter] = Field(default=None, alias="from")
     to: Optional[GetModelPricesToParameter] = None
-    group_by: Optional[StrictStr] = Field(default=None, description="Group results by this dimension")
+    group_by: Optional[StrictStr] = Field(default=None, description="Group results by this dimension. `agent_run` groups by root agent run, including the calls of its sub-agents; `workflow_run` groups by Temporal workflow run, which separates each sub-agent.")
     resolution: Optional[StrictStr] = Field(default=None, description="Time series resolution")
     model: Optional[StrictStr] = Field(default=None, description="Filter by model pattern")
     environment_id: Optional[StrictStr] = Field(default=None, description="Filter by environment ID")

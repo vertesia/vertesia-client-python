@@ -32,8 +32,11 @@ class ExecutionTokenUsage(BaseModel):
     total: Optional[Union[StrictFloat, StrictInt]] = None
     prompt_cached: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Number of input tokens read from prompt cache (discounted rate).")
     prompt_cache_write: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Number of input tokens written to prompt cache.")
+    prompt_cache_write_1h: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Of `prompt_cache_write`, the tokens written with a one-hour cache lifetime, when the provider reports it. The remainder used the default (five-minute) lifetime.")
     prompt_new: Optional[Union[StrictFloat, StrictInt]] = None
-    __properties: ClassVar[List[str]] = ["prompt", "result", "total", "prompt_cached", "prompt_cache_write", "prompt_new"]
+    result_image: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Of `result`, the tokens of generated images, when the provider reports them. Image output is priced separately from text output.")
+    provider_cost_usd: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Amount the provider reported charging for this request, in USD, when the provider returns it (e.g. OpenRouter). Absent for bring-your-own-key requests.")
+    __properties: ClassVar[List[str]] = ["prompt", "result", "total", "prompt_cached", "prompt_cache_write", "prompt_cache_write_1h", "prompt_new", "result_image", "provider_cost_usd"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -91,7 +94,10 @@ class ExecutionTokenUsage(BaseModel):
             "total": obj.get("total"),
             "prompt_cached": obj.get("prompt_cached"),
             "prompt_cache_write": obj.get("prompt_cache_write"),
-            "prompt_new": obj.get("prompt_new")
+            "prompt_cache_write_1h": obj.get("prompt_cache_write_1h"),
+            "prompt_new": obj.get("prompt_new"),
+            "result_image": obj.get("result_image"),
+            "provider_cost_usd": obj.get("provider_cost_usd")
         })
         return _obj
 

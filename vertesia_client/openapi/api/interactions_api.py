@@ -9081,7 +9081,7 @@ class InteractionsApi:
         environment: Optional[StrictStr] = None,
         model: Optional[StrictStr] = None,
         inference_profile: Optional[Annotated[str, Field(strict=True)]] = None,
-        inherit_model_config: Annotated[Optional[StrictBool], Field(description="Treat supplied model settings as inherited fallback: an applicable profile replaces them.")] = None,
+        inherit_model_config: Annotated[Optional[StrictBool], Field(description="Treat the supplied environment, model and inference_profile as the caller's settings, inherited as a fallback: the interaction's bound or attached profile, or its own model, replaces them.")] = None,
         has_image: Optional[StrictBool] = None,
         has_video: Optional[StrictBool] = None,
         _request_timeout: Union[
@@ -9111,7 +9111,7 @@ class InteractionsApi:
         :type model: str
         :param inference_profile:
         :type inference_profile: str
-        :param inherit_model_config: Treat supplied model settings as inherited fallback: an applicable profile replaces them.
+        :param inherit_model_config: Treat the supplied environment, model and inference_profile as the caller's settings, inherited as a fallback: the interaction's bound or attached profile, or its own model, replaces them.
         :type inherit_model_config: bool
         :param has_image:
         :type has_image: bool
@@ -9178,7 +9178,7 @@ class InteractionsApi:
         environment: Optional[StrictStr] = None,
         model: Optional[StrictStr] = None,
         inference_profile: Optional[Annotated[str, Field(strict=True)]] = None,
-        inherit_model_config: Annotated[Optional[StrictBool], Field(description="Treat supplied model settings as inherited fallback: an applicable profile replaces them.")] = None,
+        inherit_model_config: Annotated[Optional[StrictBool], Field(description="Treat the supplied environment, model and inference_profile as the caller's settings, inherited as a fallback: the interaction's bound or attached profile, or its own model, replaces them.")] = None,
         has_image: Optional[StrictBool] = None,
         has_video: Optional[StrictBool] = None,
         _request_timeout: Union[
@@ -9208,7 +9208,7 @@ class InteractionsApi:
         :type model: str
         :param inference_profile:
         :type inference_profile: str
-        :param inherit_model_config: Treat supplied model settings as inherited fallback: an applicable profile replaces them.
+        :param inherit_model_config: Treat the supplied environment, model and inference_profile as the caller's settings, inherited as a fallback: the interaction's bound or attached profile, or its own model, replaces them.
         :type inherit_model_config: bool
         :param has_image:
         :type has_image: bool
@@ -9275,7 +9275,7 @@ class InteractionsApi:
         environment: Optional[StrictStr] = None,
         model: Optional[StrictStr] = None,
         inference_profile: Optional[Annotated[str, Field(strict=True)]] = None,
-        inherit_model_config: Annotated[Optional[StrictBool], Field(description="Treat supplied model settings as inherited fallback: an applicable profile replaces them.")] = None,
+        inherit_model_config: Annotated[Optional[StrictBool], Field(description="Treat the supplied environment, model and inference_profile as the caller's settings, inherited as a fallback: the interaction's bound or attached profile, or its own model, replaces them.")] = None,
         has_image: Optional[StrictBool] = None,
         has_video: Optional[StrictBool] = None,
         _request_timeout: Union[
@@ -9305,7 +9305,7 @@ class InteractionsApi:
         :type model: str
         :param inference_profile:
         :type inference_profile: str
-        :param inherit_model_config: Treat supplied model settings as inherited fallback: an applicable profile replaces them.
+        :param inherit_model_config: Treat the supplied environment, model and inference_profile as the caller's settings, inherited as a fallback: the interaction's bound or attached profile, or its own model, replaces them.
         :type inherit_model_config: bool
         :param has_image:
         :type has_image: bool

@@ -35,7 +35,7 @@ class InteractionExecutionConfiguration(BaseModel):
     """ # noqa: E501
     id: Optional[StrictStr] = None
     inference_profile: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Select a project inference profile. Null bypasses profile defaults.")
-    inherit_model_config: Optional[StrictBool] = Field(default=None, description="Treat supplied model settings as inherited fallback: an applicable profile replaces them.")
+    inherit_model_config: Optional[StrictBool] = Field(default=None, description="Treat the supplied environment, model and inference_profile as the caller's settings, inherited as a fallback: the interaction's bound or attached profile, or its own model, replaces them.")
     environment: Optional[StrictStr] = None
     model: Optional[StrictStr] = None
     do_validate: Optional[StrictBool] = None
