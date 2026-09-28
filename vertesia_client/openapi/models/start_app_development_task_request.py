@@ -20,6 +20,7 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictBool
 from typing import Any, ClassVar, Dict, Optional
 from typing_extensions import Annotated
+from vertesia_client.openapi.models.agent_budget_configuration import AgentBudgetConfiguration
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -32,7 +33,8 @@ class StartAppDevelopmentTaskRequest(BaseModel):
     environment: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Execution environment id for the App Builder run.")
     model: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Model id for the App Builder run.")
     build_version: Optional[StrictBool] = Field(default=None, description="Create one immutable app version after validation. Defaults to false.")
-    __properties: ClassVar[List[str]] = ["prompt", "environment", "model", "build_version"]
+    budget: Optional[AgentBudgetConfiguration] = Field(default=None, description="Token budget for the whole task, shared by the App Builder run and every step of its development process. Field-wise it overrides the project's `configuration.agent.budget`; `limit_tokens` <= 0 runs the task without a budget.")
+    __properties: ClassVar[List[str]] = ["prompt", "environment", "model", "build_version", "budget"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -73,6 +75,9 @@ class StartAppDevelopmentTaskRequest(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of budget
+        if self.budget:
+            _dict['budget'] = self.budget.to_dict()
         return _dict
 
     @classmethod
@@ -88,7 +93,8 @@ class StartAppDevelopmentTaskRequest(BaseModel):
             "prompt": obj.get("prompt"),
             "environment": obj.get("environment"),
             "model": obj.get("model"),
-            "build_version": obj.get("build_version")
+            "build_version": obj.get("build_version"),
+            "budget": AgentBudgetConfiguration.from_dict(obj["budget"]) if obj.get("budget") is not None else None
         })
         return _obj
 

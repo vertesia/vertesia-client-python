@@ -20,6 +20,7 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing_extensions import Annotated
+from vertesia_client.openapi.models.agent_budget_configuration import AgentBudgetConfiguration
 from vertesia_client.openapi.models.agent_checkpoint_configuration import AgentCheckpointConfiguration
 from vertesia_client.openapi.models.agent_run_type import AgentRunType
 from vertesia_client.openapi.models.agent_search_scope import AgentSearchScope
@@ -67,13 +68,14 @@ class CreateAgentRunPayload(BaseModel):
     user_channels: Optional[List[UserChannel]] = Field(default=None, description="User communication channels (email, interactive)")
     checkpoint_tokens: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Token budget for checkpointing, in thousands (K). Wins over every other checkpoint setting.")
     checkpoint: Optional[AgentCheckpointConfiguration] = Field(default=None, description="Structured checkpoint override for this run. Field-wise it takes precedence over the interaction's `agent_runner_options.checkpoint` and the project's `configuration.agent.checkpoint`; the legacy `checkpoint_tokens` above still wins over everything when set.")
+    budget: Optional[AgentBudgetConfiguration] = Field(default=None, description="Token budget for this run and its subagent workstreams. Field-wise it takes precedence over the interaction's `agent_runner_options.budget` and the project's `configuration.agent.budget`.")
     max_iterations: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Maximum conversation iterations (default: 20)")
     final_verification: Optional[StrictBool] = Field(default=None, description="When true, a non-interactive free-form run takes one extra turn after its answer to check that the task is complete. Off by default. Not kept on restart or fork.")
     notify_endpoints: Optional[List[StrictStr]] = Field(default=None, description="Webhook URLs to notify on completion")
     debug_mode: Optional[StrictBool] = Field(default=None, description="Enable debug mode for verbose logging")
     started_by: Optional[StrictStr] = Field(default=None, description="Principal ref of the user who initiated the run (for server-to-server forwarding)")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["interaction", "title", "topic", "generate_topic", "generate_lessons", "evaluate", "data", "config", "interactive", "tool_approval_mode", "tool_names", "initial_skills", "initial_tool_calls", "excluded_tools", "collection_id", "disabled_mcp_collections", "content_type", "visibility", "tags", "categories", "properties", "source", "schedule_id", "source_type", "type", "search_scope", "user_channels", "checkpoint_tokens", "checkpoint", "max_iterations", "final_verification", "notify_endpoints", "debug_mode", "started_by"]
+    __properties: ClassVar[List[str]] = ["interaction", "title", "topic", "generate_topic", "generate_lessons", "evaluate", "data", "config", "interactive", "tool_approval_mode", "tool_names", "initial_skills", "initial_tool_calls", "excluded_tools", "collection_id", "disabled_mcp_collections", "content_type", "visibility", "tags", "categories", "properties", "source", "schedule_id", "source_type", "type", "search_scope", "user_channels", "checkpoint_tokens", "checkpoint", "budget", "max_iterations", "final_verification", "notify_endpoints", "debug_mode", "started_by"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -142,6 +144,9 @@ class CreateAgentRunPayload(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of checkpoint
         if self.checkpoint:
             _dict['checkpoint'] = self.checkpoint.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of budget
+        if self.budget:
+            _dict['budget'] = self.budget.to_dict()
         # puts key-value pairs in additional_properties in the top level
         if self.additional_properties is not None:
             for _key, _value in self.additional_properties.items():
@@ -188,6 +193,7 @@ class CreateAgentRunPayload(BaseModel):
             "user_channels": [UserChannel.from_dict(_item) for _item in obj["user_channels"]] if obj.get("user_channels") is not None else None,
             "checkpoint_tokens": obj.get("checkpoint_tokens"),
             "checkpoint": AgentCheckpointConfiguration.from_dict(obj["checkpoint"]) if obj.get("checkpoint") is not None else None,
+            "budget": AgentBudgetConfiguration.from_dict(obj["budget"]) if obj.get("budget") is not None else None,
             "max_iterations": obj.get("max_iterations"),
             "final_verification": obj.get("final_verification"),
             "notify_endpoints": obj.get("notify_endpoints"),

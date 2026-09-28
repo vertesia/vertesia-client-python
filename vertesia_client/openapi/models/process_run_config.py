@@ -20,6 +20,7 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
+from vertesia_client.openapi.models.agent_budget_configuration import AgentBudgetConfiguration
 from vertesia_client.openapi.models.model_options import ModelOptions
 from vertesia_client.openapi.models.process_run_config_process_workstream_monitor import ProcessRunConfigProcessWorkstreamMonitor
 from typing import Optional, Set
@@ -35,9 +36,10 @@ class ProcessRunConfig(BaseModel):
     model: Optional[StrictStr] = None
     model_options: Optional[ModelOptions] = Field(default=None, description="Validated model options applied to Process LLM nodes and the supervisor.")
     user_message: Optional[StrictStr] = Field(default=None, description="Free-form message from the user when starting a run. Passed to the orchestrator LLM in supervised mode; stored on the run regardless so programmatic runs retain the intent that triggered them.")
+    budget: Optional[AgentBudgetConfiguration] = Field(default=None, description="Token budget shared by the whole run: agent nodes, interaction nodes, nested processes and, when the run is managed by an agent run, that agent run. Agent nodes and nested processes start with what is left of it. When it runs out the process stops scheduling nodes and lets running agent nodes write a final summary. A run managed by an interactive agent run then pauses (`budget.awaiting_allocation`) until more budget is added through that agent run, and retries the interrupted node; any other run ends failed with `terminal_reason` `token_budget_exhausted`. This is a soft limit, not a spending cap.")
     process_workstream_monitor: Optional[ProcessRunConfigProcessWorkstreamMonitor] = None
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["inference_profile", "environment", "model", "model_options", "user_message", "process_workstream_monitor"]
+    __properties: ClassVar[List[str]] = ["inference_profile", "environment", "model", "model_options", "user_message", "budget", "process_workstream_monitor"]
 
     @field_validator('inference_profile')
     def inference_profile_validate_regular_expression(cls, value):
@@ -96,6 +98,9 @@ class ProcessRunConfig(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of model_options
         if self.model_options:
             _dict['model_options'] = self.model_options.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of budget
+        if self.budget:
+            _dict['budget'] = self.budget.to_dict()
         # override the default output from pydantic by calling `to_dict()` of process_workstream_monitor
         if self.process_workstream_monitor:
             _dict['process_workstream_monitor'] = self.process_workstream_monitor.to_dict()
@@ -126,6 +131,7 @@ class ProcessRunConfig(BaseModel):
             "model": obj.get("model"),
             "model_options": ModelOptions.from_dict(obj["model_options"]) if obj.get("model_options") is not None else None,
             "user_message": obj.get("user_message"),
+            "budget": AgentBudgetConfiguration.from_dict(obj["budget"]) if obj.get("budget") is not None else None,
             "process_workstream_monitor": ProcessRunConfigProcessWorkstreamMonitor.from_dict(obj["process_workstream_monitor"]) if obj.get("process_workstream_monitor") is not None else None
         })
         # store additional fields in additional_properties

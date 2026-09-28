@@ -72,6 +72,7 @@ vertesia_client/openapi/models/activity_task.py
 vertesia_client/openapi/models/advance_process_payload.py
 vertesia_client/openapi/models/agent_artifact_content_response.py
 vertesia_client/openapi/models/agent_artifact_url_response.py
+vertesia_client/openapi/models/agent_budget_configuration.py
 vertesia_client/openapi/models/agent_checkpoint_configuration.py
 vertesia_client/openapi/models/agent_delivery_match_mode.py
 vertesia_client/openapi/models/agent_event_delivery_target.py
@@ -116,6 +117,7 @@ vertesia_client/openapi/models/agentic_view_search_configuration.py
 vertesia_client/openapi/models/aggregated_tool.py
 vertesia_client/openapi/models/ai_model.py
 vertesia_client/openapi/models/ai_model_status.py
+vertesia_client/openapi/models/allocate_agent_run_budget_payload.py
 vertesia_client/openapi/models/alter_table_operation.py
 vertesia_client/openapi/models/alter_table_operation_one_of.py
 vertesia_client/openapi/models/alter_table_operation_one_of1.py
@@ -770,6 +772,8 @@ vertesia_client/openapi/models/process_agent_execution_policy.py
 vertesia_client/openapi/models/process_agent_phase_reset.py
 vertesia_client/openapi/models/process_agent_tool_input_contains.py
 vertesia_client/openapi/models/process_agent_tool_phase.py
+vertesia_client/openapi/models/process_budget_state.py
+vertesia_client/openapi/models/process_budget_summary.py
 vertesia_client/openapi/models/process_context_definition.py
 vertesia_client/openapi/models/process_context_response.py
 vertesia_client/openapi/models/process_definition.py
@@ -792,6 +796,7 @@ vertesia_client/openapi/models/process_script_inline_source.py
 vertesia_client/openapi/models/process_script_language.py
 vertesia_client/openapi/models/process_script_resource.py
 vertesia_client/openapi/models/process_state.py
+vertesia_client/openapi/models/process_terminal_reason.py
 vertesia_client/openapi/models/process_test_actor_decision.py
 vertesia_client/openapi/models/process_test_assertion_result.py
 vertesia_client/openapi/models/process_test_assertions.py

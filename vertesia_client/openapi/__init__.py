@@ -96,6 +96,7 @@ __all__ = [
     "AdvanceProcessPayload",
     "AgentArtifactContentResponse",
     "AgentArtifactUrlResponse",
+    "AgentBudgetConfiguration",
     "AgentCheckpointConfiguration",
     "AgentDeliveryMatchMode",
     "AgentEventDeliveryTarget",
@@ -138,6 +139,7 @@ __all__ = [
     "AgenticViewRerankConfiguration",
     "AgenticViewSearchConfiguration",
     "AggregatedTool",
+    "AllocateAgentRunBudgetPayload",
     "AlterTableOperation",
     "AlterTableOperationOneOf",
     "AlterTableOperationOneOf1",
@@ -792,6 +794,8 @@ __all__ = [
     "ProcessAgentPhaseReset",
     "ProcessAgentToolInputContains",
     "ProcessAgentToolPhase",
+    "ProcessBudgetState",
+    "ProcessBudgetSummary",
     "ProcessContextDefinition",
     "ProcessContextResponse",
     "ProcessDefinition",
@@ -814,6 +818,7 @@ __all__ = [
     "ProcessScriptLanguage",
     "ProcessScriptResource",
     "ProcessState",
+    "ProcessTerminalReason",
     "ProcessTestActorDecision",
     "ProcessTestAssertionResult",
     "ProcessTestAssertions",
@@ -1296,6 +1301,7 @@ from vertesia_client.openapi.models.activity_task import ActivityTask as Activit
 from vertesia_client.openapi.models.advance_process_payload import AdvanceProcessPayload as AdvanceProcessPayload
 from vertesia_client.openapi.models.agent_artifact_content_response import AgentArtifactContentResponse as AgentArtifactContentResponse
 from vertesia_client.openapi.models.agent_artifact_url_response import AgentArtifactUrlResponse as AgentArtifactUrlResponse
+from vertesia_client.openapi.models.agent_budget_configuration import AgentBudgetConfiguration as AgentBudgetConfiguration
 from vertesia_client.openapi.models.agent_checkpoint_configuration import AgentCheckpointConfiguration as AgentCheckpointConfiguration
 from vertesia_client.openapi.models.agent_delivery_match_mode import AgentDeliveryMatchMode as AgentDeliveryMatchMode
 from vertesia_client.openapi.models.agent_event_delivery_target import AgentEventDeliveryTarget as AgentEventDeliveryTarget
@@ -1338,6 +1344,7 @@ from vertesia_client.openapi.models.agent_tool_definition import AgentToolDefini
 from vertesia_client.openapi.models.agentic_view_rerank_configuration import AgenticViewRerankConfiguration as AgenticViewRerankConfiguration
 from vertesia_client.openapi.models.agentic_view_search_configuration import AgenticViewSearchConfiguration as AgenticViewSearchConfiguration
 from vertesia_client.openapi.models.aggregated_tool import AggregatedTool as AggregatedTool
+from vertesia_client.openapi.models.allocate_agent_run_budget_payload import AllocateAgentRunBudgetPayload as AllocateAgentRunBudgetPayload
 from vertesia_client.openapi.models.alter_table_operation import AlterTableOperation as AlterTableOperation
 from vertesia_client.openapi.models.alter_table_operation_one_of import AlterTableOperationOneOf as AlterTableOperationOneOf
 from vertesia_client.openapi.models.alter_table_operation_one_of1 import AlterTableOperationOneOf1 as AlterTableOperationOneOf1
@@ -1992,6 +1999,8 @@ from vertesia_client.openapi.models.process_agent_execution_policy import Proces
 from vertesia_client.openapi.models.process_agent_phase_reset import ProcessAgentPhaseReset as ProcessAgentPhaseReset
 from vertesia_client.openapi.models.process_agent_tool_input_contains import ProcessAgentToolInputContains as ProcessAgentToolInputContains
 from vertesia_client.openapi.models.process_agent_tool_phase import ProcessAgentToolPhase as ProcessAgentToolPhase
+from vertesia_client.openapi.models.process_budget_state import ProcessBudgetState as ProcessBudgetState
+from vertesia_client.openapi.models.process_budget_summary import ProcessBudgetSummary as ProcessBudgetSummary
 from vertesia_client.openapi.models.process_context_definition import ProcessContextDefinition as ProcessContextDefinition
 from vertesia_client.openapi.models.process_context_response import ProcessContextResponse as ProcessContextResponse
 from vertesia_client.openapi.models.process_definition import ProcessDefinition as ProcessDefinition
@@ -2014,6 +2023,7 @@ from vertesia_client.openapi.models.process_script_inline_source import ProcessS
 from vertesia_client.openapi.models.process_script_language import ProcessScriptLanguage as ProcessScriptLanguage
 from vertesia_client.openapi.models.process_script_resource import ProcessScriptResource as ProcessScriptResource
 from vertesia_client.openapi.models.process_state import ProcessState as ProcessState
+from vertesia_client.openapi.models.process_terminal_reason import ProcessTerminalReason as ProcessTerminalReason
 from vertesia_client.openapi.models.process_test_actor_decision import ProcessTestActorDecision as ProcessTestActorDecision
 from vertesia_client.openapi.models.process_test_assertion_result import ProcessTestAssertionResult as ProcessTestAssertionResult
 from vertesia_client.openapi.models.process_test_assertions import ProcessTestAssertions as ProcessTestAssertions

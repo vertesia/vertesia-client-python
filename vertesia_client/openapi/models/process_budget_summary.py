@@ -17,29 +17,29 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
-from typing import Any, ClassVar, Dict, Optional
-from vertesia_client.openapi.models.agent_budget_configuration import AgentBudgetConfiguration
-from vertesia_client.openapi.models.agent_checkpoint_configuration import AgentCheckpointConfiguration
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
+from typing import Any, ClassVar, Dict, Optional, Union
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class AgentProjectConfiguration(BaseModel):
+class ProcessBudgetSummary(BaseModel):
     """
-    Agent runtime configuration, scoped under project configuration so agent settings have one home (`configuration.agent`).
+    ProcessBudgetSummary
     """ # noqa: E501
-    evaluation_policy: Optional[StrictStr] = Field(default=None, description="LLM evaluation policy. Defaults to always_on when omitted. disabled prevents evaluation even when requested; opt_in requires evaluate=true on the run; always_on evaluates every eligible run without sampling. Deterministic diagnostics are unaffected.")
-    checkpoint: Optional[AgentCheckpointConfiguration] = Field(default=None, description="Conversation checkpoint (context compaction) tuning.")
-    budget: Optional[AgentBudgetConfiguration] = Field(default=None, description="Default token budget for agent runs in this project. Field-wise overridden by the interaction's `agent_runner_options.budget` and the per-run `budget`.")
-    __properties: ClassVar[List[str]] = ["evaluation_policy", "checkpoint", "budget"]
+    node_id: StrictStr
+    attempt: Union[StrictFloat, StrictInt]
+    status: StrictStr = Field(description="`token_budget_exhausted`: the node ended with a final summary turn. `cancelled_at_deadline`: the node was still running at the wrap-up deadline and was cancelled without a summary.")
+    summary: Optional[StrictStr] = Field(default=None, description="The node's final summary, truncated to 2,000 characters.")
+    summary_truncated: Optional[StrictBool] = None
+    artifact: Optional[StrictStr] = Field(default=None, description="Path of the node's conversation among the process run's artifacts, which holds the full summary.")
+    child_run_id: Optional[StrictStr] = None
+    usage_incomplete: Optional[StrictBool] = Field(default=None, description="True when the node's final token usage never arrived; the run total counts its last reported usage.")
+    __properties: ClassVar[List[str]] = ["node_id", "attempt", "status", "summary", "summary_truncated", "artifact", "child_run_id", "usage_incomplete"]
 
-    @field_validator('evaluation_policy')
-    def evaluation_policy_validate_enum(cls, value):
+    @field_validator('status')
+    def status_validate_enum(cls, value):
         """Validates the enum"""
-        if value is None:
-            return value
-
         return value
 
     model_config = ConfigDict(
@@ -60,7 +60,7 @@ class AgentProjectConfiguration(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of AgentProjectConfiguration from a JSON string"""
+        """Create an instance of ProcessBudgetSummary from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -81,17 +81,11 @@ class AgentProjectConfiguration(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of checkpoint
-        if self.checkpoint:
-            _dict['checkpoint'] = self.checkpoint.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of budget
-        if self.budget:
-            _dict['budget'] = self.budget.to_dict()
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of AgentProjectConfiguration from a dict"""
+        """Create an instance of ProcessBudgetSummary from a dict"""
         if obj is None:
             return None
 
@@ -99,9 +93,14 @@ class AgentProjectConfiguration(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "evaluation_policy": obj.get("evaluation_policy"),
-            "checkpoint": AgentCheckpointConfiguration.from_dict(obj["checkpoint"]) if obj.get("checkpoint") is not None else None,
-            "budget": AgentBudgetConfiguration.from_dict(obj["budget"]) if obj.get("budget") is not None else None
+            "node_id": obj.get("node_id"),
+            "attempt": obj.get("attempt"),
+            "status": obj.get("status"),
+            "summary": obj.get("summary"),
+            "summary_truncated": obj.get("summary_truncated"),
+            "artifact": obj.get("artifact"),
+            "child_run_id": obj.get("child_run_id"),
+            "usage_incomplete": obj.get("usage_incomplete")
         })
         return _obj
 

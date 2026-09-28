@@ -17,10 +17,12 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from vertesia_client.openapi.models.node_history_entry import NodeHistoryEntry
+from vertesia_client.openapi.models.process_budget_state import ProcessBudgetState
 from vertesia_client.openapi.models.process_history_ref import ProcessHistoryRef
+from vertesia_client.openapi.models.process_terminal_reason import ProcessTerminalReason
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -34,8 +36,10 @@ class ProcessState(BaseModel):
     node_history: List[NodeHistoryEntry]
     node_history_ref: Optional[ProcessHistoryRef] = None
     sequence: Union[StrictFloat, StrictInt]
+    terminal_reason: Optional[ProcessTerminalReason] = None
+    budget: Optional[ProcessBudgetState] = Field(default=None, description="Token budget of the run, present when the run has one.")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["context", "current_node", "node_history", "node_history_ref", "sequence"]
+    __properties: ClassVar[List[str]] = ["context", "current_node", "node_history", "node_history_ref", "sequence", "terminal_reason", "budget"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -88,6 +92,9 @@ class ProcessState(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of node_history_ref
         if self.node_history_ref:
             _dict['node_history_ref'] = self.node_history_ref.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of budget
+        if self.budget:
+            _dict['budget'] = self.budget.to_dict()
         # puts key-value pairs in additional_properties in the top level
         if self.additional_properties is not None:
             for _key, _value in self.additional_properties.items():
@@ -114,7 +121,9 @@ class ProcessState(BaseModel):
             "current_node": obj.get("current_node"),
             "node_history": [NodeHistoryEntry.from_dict(_item) for _item in obj["node_history"]] if obj.get("node_history") is not None else None,
             "node_history_ref": ProcessHistoryRef.from_dict(obj["node_history_ref"]) if obj.get("node_history_ref") is not None else None,
-            "sequence": obj.get("sequence")
+            "sequence": obj.get("sequence"),
+            "terminal_reason": obj.get("terminal_reason"),
+            "budget": ProcessBudgetState.from_dict(obj["budget"]) if obj.get("budget") is not None else None
         })
         # store additional fields in additional_properties
         for _key in obj.keys():

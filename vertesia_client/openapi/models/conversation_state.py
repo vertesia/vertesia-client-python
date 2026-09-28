@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from vertesia_client.openapi.models.agent_budget_configuration import AgentBudgetConfiguration
 from vertesia_client.openapi.models.agent_tool_approval_mode import AgentToolApprovalMode
 from vertesia_client.openapi.models.completion_result import CompletionResult
 from vertesia_client.openapi.models.conversation_state_end_conversation import ConversationStateEndConversation
@@ -71,6 +72,7 @@ class ConversationState(BaseModel):
     streaming_enabled: Optional[StrictBool] = Field(default=None, description="Whether to stream LLM responses to Redis (cached from project config)")
     checkpoint_threshold: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Project-configured checkpoint threshold as a fraction of the model's context window (cached from project.configuration.agent_checkpoint_threshold at conversation start).")
     checkpoint_tokens: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Project-configured checkpoint hard cap in tokens (cached from project.configuration.agent_checkpoint_tokens at conversation start). The workflow resolves the effective threshold from these, the per-run checkpoint_tokens override, and the model-based default.")
+    budget: Optional[AgentBudgetConfiguration] = Field(default=None, description="Project-configured agent token budget (cached from project.configuration.agent.budget at conversation start). The workflow resolves the effective budget field-wise from this, the interaction's agent_runner_options.budget, and the per-run budget override.")
     user_channels: Optional[List[UserChannel]] = Field(default=None, description="Active communication channels with their current state. Channels can be updated as conversation progresses (e.g., email threading info).")
     resolved_interaction: Optional[ResolvedInteractionExecutionInfo] = Field(default=None, description="The resolved interaction execution info. Contains interaction ID, name, version, and environment details.", alias="resolvedInteraction")
     end_conversation: Optional[ConversationStateEndConversation] = None
@@ -87,7 +89,7 @@ class ConversationState(BaseModel):
     launch_id: Optional[StrictStr] = Field(default=None, description="For workstreams: the launch ID assigned by the parent workflow. When set, artifacts are stored under agents/{agent_run_id}/workstreams/{launch_id}/ to consolidate all artifacts under the parent agent run.")
     app_version: Optional[StrictStr] = Field(default=None, description="The exact app version this run is pinned to, derived from the `@version` on the started interaction ref / the `x-vertesia-app-version` header at start. Persisted on the state so it survives resume, and applied to the activity client (`withAppVersion`) so every app-owned ref the run resolves — interactions, types, processes, tools — targets this version instead of the current/promoted one. Undefined → current/promoted. Resolution-time only; never a stored capability-ref version.")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["run", "environment", "options", "tool_use", "tool_approval_mode", "tool_approval_grants", "pending_tool_approval_results", "latest_user_message", "tool_input_refs", "output", "token_usage", "parent", "ancestors", "task_id", "plan", "debug", "strip_options", "conversation_artifacts_base_url", "tool_reference", "tool_catalog_storage_id", "active_tool_names", "pinned_tool_names", "used_skills", "streaming_enabled", "checkpoint_threshold", "checkpoint_tokens", "user_channels", "resolvedInteraction", "end_conversation", "unlocked_tools", "latest_activity_id", "latest_streaming_id", "skill_instructions_delivered", "initialization_call_ids", "disabled_mcp_collections", "pending_mcp_connections", "active_activity_group_id", "finish_reason", "agent_run_id", "launch_id", "app_version"]
+    __properties: ClassVar[List[str]] = ["run", "environment", "options", "tool_use", "tool_approval_mode", "tool_approval_grants", "pending_tool_approval_results", "latest_user_message", "tool_input_refs", "output", "token_usage", "parent", "ancestors", "task_id", "plan", "debug", "strip_options", "conversation_artifacts_base_url", "tool_reference", "tool_catalog_storage_id", "active_tool_names", "pinned_tool_names", "used_skills", "streaming_enabled", "checkpoint_threshold", "checkpoint_tokens", "budget", "user_channels", "resolvedInteraction", "end_conversation", "unlocked_tools", "latest_activity_id", "latest_streaming_id", "skill_instructions_delivered", "initialization_call_ids", "disabled_mcp_collections", "pending_mcp_connections", "active_activity_group_id", "finish_reason", "agent_run_id", "launch_id", "app_version"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -198,6 +200,9 @@ class ConversationState(BaseModel):
                 if _item_used_skills:
                     _items.append(_item_used_skills.to_dict())
             _dict['used_skills'] = _items
+        # override the default output from pydantic by calling `to_dict()` of budget
+        if self.budget:
+            _dict['budget'] = self.budget.to_dict()
         # override the default output from pydantic by calling `to_dict()` of each item in user_channels (list)
         _items = []
         if self.user_channels:
@@ -271,6 +276,7 @@ class ConversationState(BaseModel):
             "streaming_enabled": obj.get("streaming_enabled"),
             "checkpoint_threshold": obj.get("checkpoint_threshold"),
             "checkpoint_tokens": obj.get("checkpoint_tokens"),
+            "budget": AgentBudgetConfiguration.from_dict(obj["budget"]) if obj.get("budget") is not None else None,
             "user_channels": [UserChannel.from_dict(_item) for _item in obj["user_channels"]] if obj.get("user_channels") is not None else None,
             "resolvedInteraction": ResolvedInteractionExecutionInfo.from_dict(obj["resolvedInteraction"]) if obj.get("resolvedInteraction") is not None else None,
             "end_conversation": ConversationStateEndConversation.from_dict(obj["end_conversation"]) if obj.get("end_conversation") is not None else None,

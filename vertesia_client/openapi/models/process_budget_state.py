@@ -17,30 +17,23 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
-from typing import Any, ClassVar, Dict, Optional
-from vertesia_client.openapi.models.agent_budget_configuration import AgentBudgetConfiguration
-from vertesia_client.openapi.models.agent_checkpoint_configuration import AgentCheckpointConfiguration
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt
+from typing import Any, ClassVar, Dict, List, Optional, Union
+from vertesia_client.openapi.models.process_budget_summary import ProcessBudgetSummary
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class AgentProjectConfiguration(BaseModel):
+class ProcessBudgetState(BaseModel):
     """
-    Agent runtime configuration, scoped under project configuration so agent settings have one home (`configuration.agent`).
+    ProcessBudgetState
     """ # noqa: E501
-    evaluation_policy: Optional[StrictStr] = Field(default=None, description="LLM evaluation policy. Defaults to always_on when omitted. disabled prevents evaluation even when requested; opt_in requires evaluate=true on the run; always_on evaluates every eligible run without sampling. Deterministic diagnostics are unaffected.")
-    checkpoint: Optional[AgentCheckpointConfiguration] = Field(default=None, description="Conversation checkpoint (context compaction) tuning.")
-    budget: Optional[AgentBudgetConfiguration] = Field(default=None, description="Default token budget for agent runs in this project. Field-wise overridden by the interaction's `agent_runner_options.budget` and the per-run `budget`.")
-    __properties: ClassVar[List[str]] = ["evaluation_policy", "checkpoint", "budget"]
-
-    @field_validator('evaluation_policy')
-    def evaluation_policy_validate_enum(cls, value):
-        """Validates the enum"""
-        if value is None:
-            return value
-
-        return value
+    limit_tokens: Union[StrictFloat, StrictInt]
+    used_units: Union[StrictFloat, StrictInt] = Field(description="Weighted tokens used by the run and everything it launched.")
+    exhausted: StrictBool
+    awaiting_allocation: Optional[StrictBool] = Field(default=None, description="True while the run is paused because its budget ran out, waiting for more budget. Only a run managed by an interactive agent run pauses; the run then shows status `running`.")
+    summaries: Optional[List[ProcessBudgetSummary]] = Field(default=None, description="One entry per node the budget stopped: at most the latest attempt, 50 entries.")
+    __properties: ClassVar[List[str]] = ["limit_tokens", "used_units", "exhausted", "awaiting_allocation", "summaries"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -60,7 +53,7 @@ class AgentProjectConfiguration(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of AgentProjectConfiguration from a JSON string"""
+        """Create an instance of ProcessBudgetState from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -81,17 +74,18 @@ class AgentProjectConfiguration(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of checkpoint
-        if self.checkpoint:
-            _dict['checkpoint'] = self.checkpoint.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of budget
-        if self.budget:
-            _dict['budget'] = self.budget.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of each item in summaries (list)
+        _items = []
+        if self.summaries:
+            for _item_summaries in self.summaries:
+                if _item_summaries:
+                    _items.append(_item_summaries.to_dict())
+            _dict['summaries'] = _items
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of AgentProjectConfiguration from a dict"""
+        """Create an instance of ProcessBudgetState from a dict"""
         if obj is None:
             return None
 
@@ -99,9 +93,11 @@ class AgentProjectConfiguration(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "evaluation_policy": obj.get("evaluation_policy"),
-            "checkpoint": AgentCheckpointConfiguration.from_dict(obj["checkpoint"]) if obj.get("checkpoint") is not None else None,
-            "budget": AgentBudgetConfiguration.from_dict(obj["budget"]) if obj.get("budget") is not None else None
+            "limit_tokens": obj.get("limit_tokens"),
+            "used_units": obj.get("used_units"),
+            "exhausted": obj.get("exhausted"),
+            "awaiting_allocation": obj.get("awaiting_allocation"),
+            "summaries": [ProcessBudgetSummary.from_dict(_item) for _item in obj["summaries"]] if obj.get("summaries") is not None else None
         })
         return _obj
 

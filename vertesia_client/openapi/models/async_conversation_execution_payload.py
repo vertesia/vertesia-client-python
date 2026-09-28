@@ -20,6 +20,7 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing_extensions import Annotated
+from vertesia_client.openapi.models.agent_budget_configuration import AgentBudgetConfiguration
 from vertesia_client.openapi.models.agent_checkpoint_configuration import AgentCheckpointConfiguration
 from vertesia_client.openapi.models.agent_search_scope_collection import AgentSearchScopeCollection
 from vertesia_client.openapi.models.agent_tool_approval_mode import AgentToolApprovalMode
@@ -76,6 +77,7 @@ class AsyncConversationExecutionPayload(BaseModel):
     disabled_mcp_collections: Optional[List[StrictStr]] = Field(default=None, description="Denylist of MCP tool-collection ids deactivated for this conversation. `undefined`/empty means all installed/connected MCP collections are active (back-compat, and new servers stay active by default). Listed collections are excluded even if connected. Can be updated mid-conversation via the MCP config signal.")
     checkpoint_tokens: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="The token threshold in thousands (K) for creating checkpoints. If total tokens exceed this value, a checkpoint will be created. When set it wins over every other checkpoint setting, including the structured `checkpoint` override below. If not specified, the default is computed from the selected model context window (80%, capped at 500k).")
     checkpoint: Optional[AgentCheckpointConfiguration] = Field(default=None, description="Structured per-run checkpoint override. Field-wise it takes precedence over the interaction's `agent_runner_options.checkpoint` and the project's `configuration.agent.checkpoint`. The legacy absolute `checkpoint_tokens` above still wins over everything when set.")
+    budget: Optional[AgentBudgetConfiguration] = Field(default=None, description="Per-run token budget override. Field-wise it takes precedence over the interaction's `agent_runner_options.budget` and the project's `configuration.agent.budget`. Subagent workstreams receive the remaining budget of their parent here.")
     strip_options: Optional[ConversationStripOptions] = Field(default=None, description="Configuration for stripping large data (images, text) from conversation history to prevent JSON serialization issues and reduce storage bloat.")
     task_id: Optional[StrictStr] = Field(default=None, description="In child execution workflow, this is the curent task_id")
     launch_id: Optional[StrictStr] = Field(default=None, description="Parent-assigned launch ID for non-blocking workstreams. The child uses this when signaling progress/completion back to the parent.")
@@ -90,7 +92,7 @@ class AsyncConversationExecutionPayload(BaseModel):
     agent_run_id: Optional[StrictStr] = Field(default=None, description="The AgentRun MongoDB _id. Used for artifact storage paths: agents/{agent_run_id}/ Flows into ConversationState and down to workstreams. Undefined for legacy workflows started before the AgentRun system.")
     schedule_id: Optional[StrictStr] = Field(default=None, description="The Schedule MongoDB _id. Set when this execution was triggered by a Temporal schedule. Used by the workflow to create an AgentRun on first run if agent_run_id is absent.")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["interaction", "title", "topic", "generate_topic", "generate_lessons", "evaluate", "app_version", "data", "config", "result_schema", "do_validate", "tags", "conversation", "workflow", "prompts", "asyncCompletion", "type", "notify_endpoints", "task_queue", "tool_approval_mode", "visibility", "tool_names", "initial_skills", "initial_tool_calls", "excluded_tools", "agent_policy", "max_iterations", "interactive", "user_channels", "disable_interaction_tools", "search_scope", "collection_id", "disabled_mcp_collections", "checkpoint_tokens", "checkpoint", "strip_options", "task_id", "launch_id", "debug_mode", "max_nested_conversation_depth", "parent_metadata", "final_verification", "non_blocking_subagents", "restart_from_workflow_run_id", "source_first_workflow_run_id", "is_fork", "agent_run_id", "schedule_id"]
+    __properties: ClassVar[List[str]] = ["interaction", "title", "topic", "generate_topic", "generate_lessons", "evaluate", "app_version", "data", "config", "result_schema", "do_validate", "tags", "conversation", "workflow", "prompts", "asyncCompletion", "type", "notify_endpoints", "task_queue", "tool_approval_mode", "visibility", "tool_names", "initial_skills", "initial_tool_calls", "excluded_tools", "agent_policy", "max_iterations", "interactive", "user_channels", "disable_interaction_tools", "search_scope", "collection_id", "disabled_mcp_collections", "checkpoint_tokens", "checkpoint", "budget", "strip_options", "task_id", "launch_id", "debug_mode", "max_nested_conversation_depth", "parent_metadata", "final_verification", "non_blocking_subagents", "restart_from_workflow_run_id", "source_first_workflow_run_id", "is_fork", "agent_run_id", "schedule_id"]
 
     @field_validator('type')
     def type_validate_enum(cls, value):
@@ -177,6 +179,9 @@ class AsyncConversationExecutionPayload(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of checkpoint
         if self.checkpoint:
             _dict['checkpoint'] = self.checkpoint.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of budget
+        if self.budget:
+            _dict['budget'] = self.budget.to_dict()
         # override the default output from pydantic by calling `to_dict()` of strip_options
         if self.strip_options:
             _dict['strip_options'] = self.strip_options.to_dict()
@@ -247,6 +252,7 @@ class AsyncConversationExecutionPayload(BaseModel):
             "disabled_mcp_collections": obj.get("disabled_mcp_collections"),
             "checkpoint_tokens": obj.get("checkpoint_tokens"),
             "checkpoint": AgentCheckpointConfiguration.from_dict(obj["checkpoint"]) if obj.get("checkpoint") is not None else None,
+            "budget": AgentBudgetConfiguration.from_dict(obj["budget"]) if obj.get("budget") is not None else None,
             "strip_options": ConversationStripOptions.from_dict(obj["strip_options"]) if obj.get("strip_options") is not None else None,
             "task_id": obj.get("task_id"),
             "launch_id": obj.get("launch_id"),
