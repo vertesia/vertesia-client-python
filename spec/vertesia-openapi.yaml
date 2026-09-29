@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: Vertesia API
-  version: 1.5.0
+  version: 1.5.1
   x-api-version: "20260803"
   description: The Vertesia API provides project-scoped access to interaction
     execution and content workflows. Use it to run interactions, inspect
@@ -1830,6 +1830,15 @@ components:
             - high
             - xhigh
             - max
+        thinking_mode:
+          type: string
+          enum:
+            - adaptive
+            - between_tools
+          description: Thinking mode override. Sonnet 5.5 supports between_tools at low,
+            medium, or high effort. It omits display and budget fields; keep
+            effort fixed during the conversation. When unset, existing
+            model-specific thinking behavior is preserved.
         thinking_budget_tokens:
           type: number
         include_thoughts:
@@ -5071,6 +5080,15 @@ components:
             type: string
         top_k:
           type: number
+        thinking_mode:
+          type: string
+          enum:
+            - adaptive
+            - between_tools
+          description: Thinking mode override. Sonnet 5.5 supports between_tools at low,
+            medium, or high effort. It omits display and budget fields; keep
+            effort fixed during the conversation. When unset, existing
+            model-specific thinking behavior is preserved.
         thinking_budget_tokens:
           type: number
         include_thoughts:
@@ -5239,6 +5257,15 @@ components:
             - high
             - xhigh
             - max
+        thinking_mode:
+          type: string
+          enum:
+            - adaptive
+            - between_tools
+          description: Thinking mode override. Sonnet 5.5 supports between_tools at low,
+            medium, or high effort. It omits display and budget fields; keep
+            effort fixed during the conversation. When unset, existing
+            model-specific thinking behavior is preserved.
         thinking_budget_tokens:
           type: number
         include_thoughts:
@@ -25320,6 +25347,15 @@ components:
             - high
             - xhigh
             - max
+        thinking_mode:
+          type: string
+          enum:
+            - adaptive
+            - between_tools
+          description: Thinking mode override. Sonnet 5.5 supports between_tools at low,
+            medium, or high effort. It omits display and budget fields; keep
+            effort fixed during the conversation. When unset, existing
+            model-specific thinking behavior is preserved.
         thinking_budget_tokens:
           type: number
         include_thoughts:
