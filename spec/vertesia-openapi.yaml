@@ -49379,6 +49379,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ContentObjectType"
+        "409":
+          description: A content type with this name already exists in the project.
         "500":
           description: Internal server error.
           content:
@@ -49568,7 +49570,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/ContentObjectType"
         "409":
-          description: The content type was changed after the caller read it.
+          description: The content type changed after the caller read it, or its new name
+            is already taken.
         "500":
           description: Internal server error.
           content:
