@@ -34,12 +34,13 @@ class AnthropicClaudeOptions(BaseModel):
     top_k: Optional[Union[StrictFloat, StrictInt]] = None
     stop_sequence: Optional[List[StrictStr]] = None
     effort: Optional[StrictStr] = None
+    thinking_mode: Optional[StrictStr] = Field(default=None, description="Thinking mode override. Sonnet 5.5 supports between_tools at low, medium, or high effort. It omits display and budget fields; keep effort fixed during the conversation. When unset, existing model-specific thinking behavior is preserved.")
     thinking_budget_tokens: Optional[Union[StrictFloat, StrictInt]] = None
     include_thoughts: Optional[StrictBool] = None
     cache_enabled: Optional[StrictBool] = None
     cache_ttl: Optional[StrictStr] = None
     speed: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["_option_id", "max_tokens", "temperature", "top_p", "top_k", "stop_sequence", "effort", "thinking_budget_tokens", "include_thoughts", "cache_enabled", "cache_ttl", "speed"]
+    __properties: ClassVar[List[str]] = ["_option_id", "max_tokens", "temperature", "top_p", "top_k", "stop_sequence", "effort", "thinking_mode", "thinking_budget_tokens", "include_thoughts", "cache_enabled", "cache_ttl", "speed"]
 
     @field_validator('option_id')
     def option_id_validate_enum(cls, value):
@@ -51,6 +52,14 @@ class AnthropicClaudeOptions(BaseModel):
 
     @field_validator('effort')
     def effort_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        return value
+
+    @field_validator('thinking_mode')
+    def thinking_mode_validate_enum(cls, value):
         """Validates the enum"""
         if value is None:
             return value
@@ -131,6 +140,7 @@ class AnthropicClaudeOptions(BaseModel):
             "top_k": obj.get("top_k"),
             "stop_sequence": obj.get("stop_sequence"),
             "effort": obj.get("effort"),
+            "thinking_mode": obj.get("thinking_mode"),
             "thinking_budget_tokens": obj.get("thinking_budget_tokens"),
             "include_thoughts": obj.get("include_thoughts"),
             "cache_enabled": obj.get("cache_enabled"),
