@@ -102,6 +102,7 @@ class ContentObjectTypesApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "ContentObjectType",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -175,6 +176,7 @@ class ContentObjectTypesApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "ContentObjectType",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -248,6 +250,7 @@ class ContentObjectTypesApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "ContentObjectType",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
