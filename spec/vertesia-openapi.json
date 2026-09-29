@@ -57418,6 +57418,9 @@
               }
             }
           },
+          "409": {
+            "description": "The agent run has ended and can no longer receive signals; restart it to continue. Also returned while a new run is not ready yet, which is retryable."
+          },
           "500": {
             "description": "Internal server error.",
             "content": {

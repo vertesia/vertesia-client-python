@@ -6924,6 +6924,7 @@ class AgentRunsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "SignalAgentResponse",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -7005,6 +7006,7 @@ class AgentRunsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "SignalAgentResponse",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -7086,6 +7088,7 @@ class AgentRunsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "SignalAgentResponse",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
