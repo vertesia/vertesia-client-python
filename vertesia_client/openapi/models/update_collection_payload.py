@@ -41,10 +41,11 @@ class UpdateCollectionPayload(BaseModel):
     shared_properties: Optional[List[StrictStr]] = Field(default=None, description="Names of collection properties whose values are propagated to member documents")
     sensitivity: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="BLP sensitivity level for member documents")
     compartments: Optional[List[StrictStr]] = Field(default=None, description="Compartments for member documents")
+    shared_root: Optional[StrictBool] = Field(default=None, description="Explicitly share this collection as a root of the project shared space (listable/readable by non-members via matching shared-content ABAC rules). This is the explicit API share flag — the sync never sets it.")
     name: Optional[StrictStr] = Field(default=None, description="Name of the collection")
     dynamic: Optional[StrictBool] = Field(default=None, description="When true, membership is determined by `query`; when false, members are added explicitly")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["description", "skip_head_sync", "tags", "type", "query", "properties", "parent", "table_layout", "allowed_types", "updated_by", "shared_properties", "sensitivity", "compartments", "name", "dynamic"]
+    __properties: ClassVar[List[str]] = ["description", "skip_head_sync", "tags", "type", "query", "properties", "parent", "table_layout", "allowed_types", "updated_by", "shared_properties", "sensitivity", "compartments", "shared_root", "name", "dynamic"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -139,6 +140,7 @@ class UpdateCollectionPayload(BaseModel):
             "shared_properties": obj.get("shared_properties"),
             "sensitivity": obj.get("sensitivity"),
             "compartments": obj.get("compartments"),
+            "shared_root": obj.get("shared_root"),
             "name": obj.get("name"),
             "dynamic": obj.get("dynamic")
         })

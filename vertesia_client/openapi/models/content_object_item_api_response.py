@@ -68,9 +68,11 @@ class ContentObjectItemApiResponse(BaseModel):
     security: Optional[Dict[str, List[StrictStr]]] = None
     sensitivity: Optional[Union[StrictFloat, StrictInt]] = None
     compartments: Optional[List[StrictStr]] = None
+    shared: Optional[StrictBool] = None
+    shared_root: Optional[StrictBool] = None
     inherited_properties: Optional[List[InheritedPropertyMetadata]] = None
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["id", "name", "description", "tags", "updated_by", "created_by", "created_at", "updated_at", "parent", "location", "status", "type", "content", "external_id", "properties", "metadata", "tokens", "revision", "is_deleted", "is_locked", "score", "user_permissions", "searchTypeResult", "text", "text_etag", "embeddings", "parts", "parts_etag", "transcript", "security", "sensitivity", "compartments", "inherited_properties"]
+    __properties: ClassVar[List[str]] = ["id", "name", "description", "tags", "updated_by", "created_by", "created_at", "updated_at", "parent", "location", "status", "type", "content", "external_id", "properties", "metadata", "tokens", "revision", "is_deleted", "is_locked", "score", "user_permissions", "searchTypeResult", "text", "text_etag", "embeddings", "parts", "parts_etag", "transcript", "security", "sensitivity", "compartments", "shared", "shared_root", "inherited_properties"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -218,6 +220,8 @@ class ContentObjectItemApiResponse(BaseModel):
             "security": obj.get("security"),
             "sensitivity": obj.get("sensitivity"),
             "compartments": obj.get("compartments"),
+            "shared": obj.get("shared"),
+            "shared_root": obj.get("shared_root"),
             "inherited_properties": [InheritedPropertyMetadata.from_dict(_item) for _item in obj["inherited_properties"]] if obj.get("inherited_properties") is not None else None
         })
         # store additional fields in additional_properties

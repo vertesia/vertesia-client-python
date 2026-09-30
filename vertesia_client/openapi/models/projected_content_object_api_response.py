@@ -68,9 +68,11 @@ class ProjectedContentObjectApiResponse(BaseModel):
     security: Optional[Dict[str, List[StrictStr]]] = None
     sensitivity: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="BLP sensitivity level — set directly or inherited from collections (max across collections).")
     compartments: Optional[List[StrictStr]] = Field(default=None, description="Compartments — set directly or inherited from collections (union across collections).")
+    shared: Optional[StrictBool] = Field(default=None, description="Effective shared state: true iff the document is a member of an effectively-shared collection (inherited; sync-managed). Combine with shared_root for full readability.")
+    shared_root: Optional[StrictBool] = Field(default=None, description="True iff the document was explicitly shared via the API (a root of the project shared space). Never set by the sync.")
     inherited_properties: Optional[List[InheritedPropertyMetadata]] = None
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["id", "name", "description", "tags", "updated_by", "created_by", "created_at", "updated_at", "parent", "location", "status", "type", "content", "external_id", "properties", "metadata", "tokens", "revision", "is_deleted", "is_locked", "score", "user_permissions", "searchTypeResult", "text", "text_etag", "embeddings", "parts", "parts_etag", "transcript", "security", "sensitivity", "compartments", "inherited_properties"]
+    __properties: ClassVar[List[str]] = ["id", "name", "description", "tags", "updated_by", "created_by", "created_at", "updated_at", "parent", "location", "status", "type", "content", "external_id", "properties", "metadata", "tokens", "revision", "is_deleted", "is_locked", "score", "user_permissions", "searchTypeResult", "text", "text_etag", "embeddings", "parts", "parts_etag", "transcript", "security", "sensitivity", "compartments", "shared", "shared_root", "inherited_properties"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -218,6 +220,8 @@ class ProjectedContentObjectApiResponse(BaseModel):
             "security": obj.get("security"),
             "sensitivity": obj.get("sensitivity"),
             "compartments": obj.get("compartments"),
+            "shared": obj.get("shared"),
+            "shared_root": obj.get("shared_root"),
             "inherited_properties": [InheritedPropertyMetadata.from_dict(_item) for _item in obj["inherited_properties"]] if obj.get("inherited_properties") is not None else None
         })
         # store additional fields in additional_properties

@@ -51,10 +51,12 @@ class Collection(BaseModel):
     security: Optional[Dict[str, List[StrictStr]]] = None
     sensitivity: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="BLP sensitivity level — propagated to member documents (max across collections)")
     compartments: Optional[List[StrictStr]] = Field(default=None, description="Compartments — propagated to member documents (union across collections)")
+    shared: Optional[StrictBool] = Field(default=None, description="Effective shared state: true iff the collection is a member of an effectively-shared parent collection (inherited; sync-managed). Combine with shared_root for full readability.")
+    shared_root: Optional[StrictBool] = Field(default=None, description="True iff the collection was explicitly shared via the API (a root of the project shared space). Never set by the sync.")
     shared_properties: Optional[List[StrictStr]] = Field(default=None, description="List of property names from the collection's properties that should be shared with (injected into) member objects. These properties will be propagated to all members of this collection and merged as arrays.")
     user_permissions: Optional[ContentObjectUserPermissions] = Field(default=None, description="Computed per-request permissions for the current user on this collection. Not stored — computed on the fly from the collection's security field (same semantics as a content object's user_permissions).")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["id", "name", "description", "tags", "updated_by", "created_by", "created_at", "updated_at", "dynamic", "status", "type", "skip_head_sync", "parents", "table_layout", "allowed_types", "properties", "query", "security", "sensitivity", "compartments", "shared_properties", "user_permissions"]
+    __properties: ClassVar[List[str]] = ["id", "name", "description", "tags", "updated_by", "created_by", "created_at", "updated_at", "dynamic", "status", "type", "skip_head_sync", "parents", "table_layout", "allowed_types", "properties", "query", "security", "sensitivity", "compartments", "shared", "shared_root", "shared_properties", "user_permissions"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -162,6 +164,8 @@ class Collection(BaseModel):
             "security": obj.get("security"),
             "sensitivity": obj.get("sensitivity"),
             "compartments": obj.get("compartments"),
+            "shared": obj.get("shared"),
+            "shared_root": obj.get("shared_root"),
             "shared_properties": obj.get("shared_properties"),
             "user_permissions": ContentObjectUserPermissions.from_dict(obj["user_permissions"]) if obj.get("user_permissions") is not None else None
         })

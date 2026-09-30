@@ -45,6 +45,7 @@ class UpdateContentObjectPayload(BaseModel):
     security: Optional[Dict[str, List[StrictStr]]] = None
     sensitivity: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="BLP sensitivity level — set directly or inherited from collections (max across collections).")
     compartments: Optional[List[StrictStr]] = Field(default=None, description="Compartments — set directly or inherited from collections (union across collections).")
+    shared_root: Optional[StrictBool] = Field(default=None, description="Explicitly share this document as a root of the project shared space (readable by non-members via matching shared-content ABAC rules). This is the explicit API share flag — the sync never sets it.")
     inherited_properties: Optional[List[InheritedPropertyMetadata]] = Field(default=None, description="Inherited properties metadata - tracks which properties were inherited from parent collections. Used to display readonly inherited properties in the UI and enable incremental sync optimization.")
     parent: Optional[StrictStr] = None
     location: Optional[StrictStr] = Field(default=None, description="An optional path based location for the object")
@@ -67,7 +68,7 @@ class UpdateContentObjectPayload(BaseModel):
     id: Optional[StrictStr] = None
     type: Optional[StrictStr] = None
     generation_run_info: Optional[GenerationRunMetadata] = None
-    __properties: ClassVar[List[str]] = ["text", "text_etag", "embeddings", "parts", "parts_etag", "transcript", "security", "sensitivity", "compartments", "inherited_properties", "parent", "location", "status", "content", "external_id", "properties", "metadata", "tokens", "revision", "is_deleted", "is_locked", "score", "user_permissions", "name", "description", "tags", "updated_by", "created_by", "id", "type", "generation_run_info"]
+    __properties: ClassVar[List[str]] = ["text", "text_etag", "embeddings", "parts", "parts_etag", "transcript", "security", "sensitivity", "compartments", "shared_root", "inherited_properties", "parent", "location", "status", "content", "external_id", "properties", "metadata", "tokens", "revision", "is_deleted", "is_locked", "score", "user_permissions", "name", "description", "tags", "updated_by", "created_by", "id", "type", "generation_run_info"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -157,6 +158,7 @@ class UpdateContentObjectPayload(BaseModel):
             "security": obj.get("security"),
             "sensitivity": obj.get("sensitivity"),
             "compartments": obj.get("compartments"),
+            "shared_root": obj.get("shared_root"),
             "inherited_properties": [InheritedPropertyMetadata.from_dict(_item) for _item in obj["inherited_properties"]] if obj.get("inherited_properties") is not None else None,
             "parent": obj.get("parent"),
             "location": obj.get("location"),

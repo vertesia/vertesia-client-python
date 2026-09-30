@@ -29,6 +29,7 @@ class RoleDomain(str, Enum):
     SYSTEM = 'system'
     CONTENT = 'content'
     AGENT_RUNS = 'agent_runs'
+    SHARED_CONTENT = 'shared_content'
     TASKS = 'tasks'
 
     @classmethod
