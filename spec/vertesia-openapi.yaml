@@ -14342,8 +14342,6 @@ components:
     ExecutionEnvironmentSettings:
       type: object
       properties:
-        bucket_access_principal:
-          type: string
         default_headers:
           $ref: "#/components/schemas/StringValueMap"
           description: Custom HTTP headers sent by OpenAI-compatible environments.
