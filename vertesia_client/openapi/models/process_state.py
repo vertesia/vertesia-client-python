@@ -37,7 +37,7 @@ class ProcessState(BaseModel):
     node_history_ref: Optional[ProcessHistoryRef] = None
     sequence: Union[StrictFloat, StrictInt]
     terminal_reason: Optional[ProcessTerminalReason] = None
-    budget: Optional[ProcessBudgetState] = Field(default=None, description="Token budget of the run, present when the run has one.")
+    budget: Optional[ProcessBudgetState] = Field(default=None, description="Run budget status, including dollar consumption when configured.")
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["context", "current_node", "node_history", "node_history_ref", "sequence", "terminal_reason", "budget"]
 

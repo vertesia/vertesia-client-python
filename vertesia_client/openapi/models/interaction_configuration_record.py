@@ -21,6 +21,7 @@ from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, Optional
 from typing_extensions import Annotated
+from vertesia_client.openapi.models.agent_budget_configuration import AgentBudgetConfiguration
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -30,12 +31,13 @@ class InteractionConfigurationRecord(BaseModel):
     InteractionConfigurationRecord
     """ # noqa: E501
     inference_profile: Optional[Annotated[str, Field(strict=True)]] = Field(description="MongoDB ObjectId of the inference profile.")
+    budget: Optional[AgentBudgetConfiguration] = Field(default=None, description="Project-scoped agent budget override. Null restores the code-defined or project default; omission preserves the saved budget.")
     id: Annotated[str, Field(strict=True)]
     project: StrictStr
     interaction: StrictStr
     created_at: datetime
     updated_at: datetime
-    __properties: ClassVar[List[str]] = ["inference_profile", "id", "project", "interaction", "created_at", "updated_at"]
+    __properties: ClassVar[List[str]] = ["inference_profile", "budget", "id", "project", "interaction", "created_at", "updated_at"]
 
     @field_validator('inference_profile')
     def inference_profile_validate_regular_expression(cls, value):
@@ -119,10 +121,18 @@ class InteractionConfigurationRecord(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of budget
+        if self.budget:
+            _dict['budget'] = self.budget.to_dict()
         # set to None if inference_profile (nullable) is None
         # and model_fields_set contains the field
         if self.inference_profile is None and "inference_profile" in self.model_fields_set:
             _dict['inference_profile'] = None
+
+        # set to None if budget (nullable) is None
+        # and model_fields_set contains the field
+        if self.budget is None and "budget" in self.model_fields_set:
+            _dict['budget'] = None
 
         return _dict
 
@@ -137,6 +147,7 @@ class InteractionConfigurationRecord(BaseModel):
 
         _obj = cls.model_validate({
             "inference_profile": obj.get("inference_profile"),
+            "budget": AgentBudgetConfiguration.from_dict(obj["budget"]) if obj.get("budget") is not None else None,
             "id": obj.get("id"),
             "project": obj.get("project"),
             "interaction": obj.get("interaction"),

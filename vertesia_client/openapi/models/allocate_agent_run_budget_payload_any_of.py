@@ -17,34 +17,19 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator
-from typing import Any, ClassVar, Dict, Optional
+from pydantic import BaseModel, ConfigDict, Field
+from typing import Any, ClassVar, Dict
 from typing_extensions import Annotated
-from vertesia_client.openapi.models.agent_budget_configuration import AgentBudgetConfiguration
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class UpdateInteractionConfigurationPayload(BaseModel):
+class AllocateAgentRunBudgetPayloadAnyOf(BaseModel):
     """
-    UpdateInteractionConfigurationPayload
+    AllocateAgentRunBudgetPayloadAnyOf
     """ # noqa: E501
-    inference_profile: Optional[Annotated[str, Field(strict=True)]] = Field(description="MongoDB ObjectId of the inference profile.")
-    budget: Optional[AgentBudgetConfiguration] = Field(default=None, description="Project-scoped agent budget override. Null restores the code-defined or project default; omission preserves the saved budget.")
-    __properties: ClassVar[List[str]] = ["inference_profile", "budget"]
-
-    @field_validator('inference_profile')
-    def inference_profile_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if value is None:
-            return value
-
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^[a-fA-F0-9]{24}$", value):
-            raise ValueError(r"must validate the regular expression /^[a-fA-F0-9]{24}$/")
-        return value
+    additional_tokens: Annotated[int, Field(le=9007199254740991, strict=True, gt=0)] = Field(description="Weighted tokens to add to the run allowance.")
+    __properties: ClassVar[List[str]] = ["additional_tokens"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -64,7 +49,7 @@ class UpdateInteractionConfigurationPayload(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of UpdateInteractionConfigurationPayload from a JSON string"""
+        """Create an instance of AllocateAgentRunBudgetPayloadAnyOf from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -85,24 +70,11 @@ class UpdateInteractionConfigurationPayload(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of budget
-        if self.budget:
-            _dict['budget'] = self.budget.to_dict()
-        # set to None if inference_profile (nullable) is None
-        # and model_fields_set contains the field
-        if self.inference_profile is None and "inference_profile" in self.model_fields_set:
-            _dict['inference_profile'] = None
-
-        # set to None if budget (nullable) is None
-        # and model_fields_set contains the field
-        if self.budget is None and "budget" in self.model_fields_set:
-            _dict['budget'] = None
-
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of UpdateInteractionConfigurationPayload from a dict"""
+        """Create an instance of AllocateAgentRunBudgetPayloadAnyOf from a dict"""
         if obj is None:
             return None
 
@@ -110,8 +82,7 @@ class UpdateInteractionConfigurationPayload(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "inference_profile": obj.get("inference_profile"),
-            "budget": AgentBudgetConfiguration.from_dict(obj["budget"]) if obj.get("budget") is not None else None
+            "additional_tokens": obj.get("additional_tokens")
         })
         return _obj
 

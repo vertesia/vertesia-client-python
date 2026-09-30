@@ -118,6 +118,8 @@ vertesia_client/openapi/models/aggregated_tool.py
 vertesia_client/openapi/models/ai_model.py
 vertesia_client/openapi/models/ai_model_status.py
 vertesia_client/openapi/models/allocate_agent_run_budget_payload.py
+vertesia_client/openapi/models/allocate_agent_run_budget_payload_any_of.py
+vertesia_client/openapi/models/allocate_agent_run_budget_payload_any_of1.py
 vertesia_client/openapi/models/alter_table_operation.py
 vertesia_client/openapi/models/alter_table_operation_one_of.py
 vertesia_client/openapi/models/alter_table_operation_one_of1.py
@@ -924,6 +926,7 @@ vertesia_client/openapi/models/run_analytics_group_by.py
 vertesia_client/openapi/models/run_analytics_query.py
 vertesia_client/openapi/models/run_analytics_result.py
 vertesia_client/openapi/models/run_analytics_result_execution_time.py
+vertesia_client/openapi/models/run_budget_capability.py
 vertesia_client/openapi/models/run_create_payload.py
 vertesia_client/openapi/models/run_data_storage_level.py
 vertesia_client/openapi/models/run_kind.py

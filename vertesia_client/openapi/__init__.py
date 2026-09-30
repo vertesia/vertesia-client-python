@@ -140,6 +140,8 @@ __all__ = [
     "AgenticViewSearchConfiguration",
     "AggregatedTool",
     "AllocateAgentRunBudgetPayload",
+    "AllocateAgentRunBudgetPayloadAnyOf",
+    "AllocateAgentRunBudgetPayloadAnyOf1",
     "AlterTableOperation",
     "AlterTableOperationOneOf",
     "AlterTableOperationOneOf1",
@@ -946,6 +948,7 @@ __all__ = [
     "RunAnalyticsQuery",
     "RunAnalyticsResult",
     "RunAnalyticsResultExecutionTime",
+    "RunBudgetCapability",
     "RunCreatePayload",
     "RunDataStorageLevel",
     "RunKind",
@@ -1345,6 +1348,8 @@ from vertesia_client.openapi.models.agentic_view_rerank_configuration import Age
 from vertesia_client.openapi.models.agentic_view_search_configuration import AgenticViewSearchConfiguration as AgenticViewSearchConfiguration
 from vertesia_client.openapi.models.aggregated_tool import AggregatedTool as AggregatedTool
 from vertesia_client.openapi.models.allocate_agent_run_budget_payload import AllocateAgentRunBudgetPayload as AllocateAgentRunBudgetPayload
+from vertesia_client.openapi.models.allocate_agent_run_budget_payload_any_of import AllocateAgentRunBudgetPayloadAnyOf as AllocateAgentRunBudgetPayloadAnyOf
+from vertesia_client.openapi.models.allocate_agent_run_budget_payload_any_of1 import AllocateAgentRunBudgetPayloadAnyOf1 as AllocateAgentRunBudgetPayloadAnyOf1
 from vertesia_client.openapi.models.alter_table_operation import AlterTableOperation as AlterTableOperation
 from vertesia_client.openapi.models.alter_table_operation_one_of import AlterTableOperationOneOf as AlterTableOperationOneOf
 from vertesia_client.openapi.models.alter_table_operation_one_of1 import AlterTableOperationOneOf1 as AlterTableOperationOneOf1
@@ -2151,6 +2156,7 @@ from vertesia_client.openapi.models.run_analytics_group_by import RunAnalyticsGr
 from vertesia_client.openapi.models.run_analytics_query import RunAnalyticsQuery as RunAnalyticsQuery
 from vertesia_client.openapi.models.run_analytics_result import RunAnalyticsResult as RunAnalyticsResult
 from vertesia_client.openapi.models.run_analytics_result_execution_time import RunAnalyticsResultExecutionTime as RunAnalyticsResultExecutionTime
+from vertesia_client.openapi.models.run_budget_capability import RunBudgetCapability as RunBudgetCapability
 from vertesia_client.openapi.models.run_create_payload import RunCreatePayload as RunCreatePayload
 from vertesia_client.openapi.models.run_data_storage_level import RunDataStorageLevel as RunDataStorageLevel
 from vertesia_client.openapi.models.run_kind import RunKind as RunKind

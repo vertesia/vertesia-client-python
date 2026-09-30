@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.process_budget_summary import ProcessBudgetSummary
 from typing import Optional, Set
 from typing_extensions import Self
@@ -28,12 +29,34 @@ class ProcessBudgetState(BaseModel):
     """
     ProcessBudgetState
     """ # noqa: E501
+    mode: Optional[StrictStr] = Field(default=None, description="Absent on historical token-only status.")
+    limit_usd: Optional[Union[Annotated[float, Field(strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None
+    reported_usd: Optional[Union[Annotated[float, Field(strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None
+    estimated_usd: Optional[Union[Annotated[float, Field(strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None
+    accounting_status: Optional[StrictStr] = None
+    unmeasured_calls: Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=0)]] = None
     limit_tokens: Union[StrictFloat, StrictInt]
     used_units: Union[StrictFloat, StrictInt] = Field(description="Weighted tokens used by the run and everything it launched.")
     exhausted: StrictBool
     awaiting_allocation: Optional[StrictBool] = Field(default=None, description="True while the run is paused because its budget ran out, waiting for more budget. Only a run managed by an interactive agent run pauses; the run then shows status `running`.")
     summaries: Optional[List[ProcessBudgetSummary]] = Field(default=None, description="One entry per node the budget stopped: at most the latest attempt, 50 entries.")
-    __properties: ClassVar[List[str]] = ["limit_tokens", "used_units", "exhausted", "awaiting_allocation", "summaries"]
+    __properties: ClassVar[List[str]] = ["mode", "limit_usd", "reported_usd", "estimated_usd", "accounting_status", "unmeasured_calls", "limit_tokens", "used_units", "exhausted", "awaiting_allocation", "summaries"]
+
+    @field_validator('mode')
+    def mode_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        return value
+
+    @field_validator('accounting_status')
+    def accounting_status_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -93,6 +116,12 @@ class ProcessBudgetState(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "mode": obj.get("mode"),
+            "limit_usd": obj.get("limit_usd"),
+            "reported_usd": obj.get("reported_usd"),
+            "estimated_usd": obj.get("estimated_usd"),
+            "accounting_status": obj.get("accounting_status"),
+            "unmeasured_calls": obj.get("unmeasured_calls"),
             "limit_tokens": obj.get("limit_tokens"),
             "used_units": obj.get("used_units"),
             "exhausted": obj.get("exhausted"),
