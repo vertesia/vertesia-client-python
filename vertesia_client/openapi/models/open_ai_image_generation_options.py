@@ -17,41 +17,42 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr, field_validator
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, Optional, Union
 from typing_extensions import Annotated
+from vertesia_client.openapi.models.open_ai_image_generation_mask import OpenAiImageGenerationMask
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class OpenAiGptImageOptions(BaseModel):
+class OpenAiImageGenerationOptions(BaseModel):
     """
-    OpenAiGptImageOptions
+    OpenAiImageGenerationOptions
     """ # noqa: E501
-    option_id: Optional[StrictStr] = Field(default=None, alias="_option_id")
+    model: StrictStr
+    force: Optional[StrictBool] = None
+    action: Optional[StrictStr] = None
     size: Optional[StrictStr] = None
-    width: Optional[Union[StrictFloat, StrictInt]] = None
-    height: Optional[Union[StrictFloat, StrictInt]] = None
-    image_quality: Optional[StrictStr] = None
+    quality: Optional[StrictStr] = None
     background: Optional[StrictStr] = None
     output_format: Optional[StrictStr] = None
-    n: Optional[Union[StrictFloat, StrictInt]] = None
     output_compression: Optional[Annotated[int, Field(le=100, strict=True, ge=0)]] = None
     moderation: Optional[StrictStr] = None
     input_fidelity: Optional[StrictStr] = None
     partial_images: Optional[Union[StrictFloat, StrictInt]] = None
-    __properties: ClassVar[List[str]] = ["_option_id", "size", "width", "height", "image_quality", "background", "output_format", "n", "output_compression", "moderation", "input_fidelity", "partial_images"]
+    input_image_mask: Optional[OpenAiImageGenerationMask] = None
+    __properties: ClassVar[List[str]] = ["model", "force", "action", "size", "quality", "background", "output_format", "output_compression", "moderation", "input_fidelity", "partial_images", "input_image_mask"]
 
-    @field_validator('option_id')
-    def option_id_validate_enum(cls, value):
+    @field_validator('action')
+    def action_validate_enum(cls, value):
         """Validates the enum"""
         if value is None:
             return value
 
         return value
 
-    @field_validator('image_quality')
-    def image_quality_validate_enum(cls, value):
+    @field_validator('quality')
+    def quality_validate_enum(cls, value):
         """Validates the enum"""
         if value is None:
             return value
@@ -108,7 +109,7 @@ class OpenAiGptImageOptions(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of OpenAiGptImageOptions from a JSON string"""
+        """Create an instance of OpenAiImageGenerationOptions from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -129,11 +130,14 @@ class OpenAiGptImageOptions(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of input_image_mask
+        if self.input_image_mask:
+            _dict['input_image_mask'] = self.input_image_mask.to_dict()
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of OpenAiGptImageOptions from a dict"""
+        """Create an instance of OpenAiImageGenerationOptions from a dict"""
         if obj is None:
             return None
 
@@ -141,18 +145,18 @@ class OpenAiGptImageOptions(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "_option_id": obj.get("_option_id"),
+            "model": obj.get("model"),
+            "force": obj.get("force"),
+            "action": obj.get("action"),
             "size": obj.get("size"),
-            "width": obj.get("width"),
-            "height": obj.get("height"),
-            "image_quality": obj.get("image_quality"),
+            "quality": obj.get("quality"),
             "background": obj.get("background"),
             "output_format": obj.get("output_format"),
-            "n": obj.get("n"),
             "output_compression": obj.get("output_compression"),
             "moderation": obj.get("moderation"),
             "input_fidelity": obj.get("input_fidelity"),
-            "partial_images": obj.get("partial_images")
+            "partial_images": obj.get("partial_images"),
+            "input_image_mask": OpenAiImageGenerationMask.from_dict(obj["input_image_mask"]) if obj.get("input_image_mask") is not None else None
         })
         return _obj
 

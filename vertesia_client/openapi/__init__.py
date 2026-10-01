@@ -724,6 +724,8 @@ __all__ = [
     "OnboardingProgress",
     "OpenAiDalleOptions",
     "OpenAiGptImageOptions",
+    "OpenAiImageGenerationMask",
+    "OpenAiImageGenerationOptions",
     "OpenAiTextOptions",
     "OpenAiThinkingOptions",
     "ParallelCollectDefinition",
@@ -1865,6 +1867,8 @@ from vertesia_client.openapi.models.object_search_response import ObjectSearchRe
 from vertesia_client.openapi.models.onboarding_progress import OnboardingProgress as OnboardingProgress
 from vertesia_client.openapi.models.open_ai_dalle_options import OpenAiDalleOptions as OpenAiDalleOptions
 from vertesia_client.openapi.models.open_ai_gpt_image_options import OpenAiGptImageOptions as OpenAiGptImageOptions
+from vertesia_client.openapi.models.open_ai_image_generation_mask import OpenAiImageGenerationMask as OpenAiImageGenerationMask
+from vertesia_client.openapi.models.open_ai_image_generation_options import OpenAiImageGenerationOptions as OpenAiImageGenerationOptions
 from vertesia_client.openapi.models.open_ai_text_options import OpenAiTextOptions as OpenAiTextOptions
 from vertesia_client.openapi.models.open_ai_thinking_options import OpenAiThinkingOptions as OpenAiThinkingOptions
 from vertesia_client.openapi.models.parallel_collect_definition import ParallelCollectDefinition as ParallelCollectDefinition
