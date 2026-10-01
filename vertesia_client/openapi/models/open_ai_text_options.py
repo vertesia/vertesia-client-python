@@ -20,6 +20,7 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing_extensions import Annotated
+from vertesia_client.openapi.models.open_ai_image_generation_options import OpenAiImageGenerationOptions
 from vertesia_client.openapi.models.reasoning_effort import ReasoningEffort
 from typing import Optional, Set
 from typing_extensions import Self
@@ -30,6 +31,7 @@ class OpenAiTextOptions(BaseModel):
     OpenAiTextOptions
     """ # noqa: E501
     option_id: Optional[StrictStr] = Field(default=None, alias="_option_id")
+    image_generation: Optional[OpenAiImageGenerationOptions] = None
     max_tokens: Optional[Union[StrictFloat, StrictInt]] = None
     tool_choice: Optional[StrictStr] = None
     effort: Optional[ReasoningEffort] = None
@@ -43,7 +45,7 @@ class OpenAiTextOptions(BaseModel):
     include_thoughts: Optional[StrictBool] = None
     service_tier: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="Provider-defined processing tier. Unknown non-empty values are preserved for forward compatibility.")
     extra_body: Optional[Dict[str, Any]] = Field(default=None, description="Additional provider-specific fields merged into the OpenAI-compatible request body.")
-    __properties: ClassVar[List[str]] = ["_option_id", "max_tokens", "tool_choice", "effort", "reasoning_effort", "temperature", "top_p", "presence_penalty", "frequency_penalty", "stop_sequence", "image_detail", "include_thoughts", "service_tier", "extra_body"]
+    __properties: ClassVar[List[str]] = ["_option_id", "image_generation", "max_tokens", "tool_choice", "effort", "reasoning_effort", "temperature", "top_p", "presence_penalty", "frequency_penalty", "stop_sequence", "image_detail", "include_thoughts", "service_tier", "extra_body"]
 
     @field_validator('option_id')
     def option_id_validate_enum(cls, value):
@@ -108,6 +110,9 @@ class OpenAiTextOptions(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of image_generation
+        if self.image_generation:
+            _dict['image_generation'] = self.image_generation.to_dict()
         return _dict
 
     @classmethod
@@ -121,6 +126,7 @@ class OpenAiTextOptions(BaseModel):
 
         _obj = cls.model_validate({
             "_option_id": obj.get("_option_id"),
+            "image_generation": OpenAiImageGenerationOptions.from_dict(obj["image_generation"]) if obj.get("image_generation") is not None else None,
             "max_tokens": obj.get("max_tokens"),
             "tool_choice": obj.get("tool_choice"),
             "effort": obj.get("effort"),

@@ -770,6 +770,8 @@ __all__ = [
     "OpenAiAudioOptions",
     "OpenAiDalleOptions",
     "OpenAiGptImageOptions",
+    "OpenAiImageGenerationMask",
+    "OpenAiImageGenerationOptions",
     "OpenAiSpeechOptions",
     "OpenAiTextOptions",
     "OpenAiThinkingOptions",
@@ -1978,6 +1980,8 @@ from vertesia_client.openapi.models.onboarding_progress import OnboardingProgres
 from vertesia_client.openapi.models.open_ai_audio_options import OpenAiAudioOptions as OpenAiAudioOptions
 from vertesia_client.openapi.models.open_ai_dalle_options import OpenAiDalleOptions as OpenAiDalleOptions
 from vertesia_client.openapi.models.open_ai_gpt_image_options import OpenAiGptImageOptions as OpenAiGptImageOptions
+from vertesia_client.openapi.models.open_ai_image_generation_mask import OpenAiImageGenerationMask as OpenAiImageGenerationMask
+from vertesia_client.openapi.models.open_ai_image_generation_options import OpenAiImageGenerationOptions as OpenAiImageGenerationOptions
 from vertesia_client.openapi.models.open_ai_speech_options import OpenAiSpeechOptions as OpenAiSpeechOptions
 from vertesia_client.openapi.models.open_ai_text_options import OpenAiTextOptions as OpenAiTextOptions
 from vertesia_client.openapi.models.open_ai_thinking_options import OpenAiThinkingOptions as OpenAiThinkingOptions
