@@ -6033,6 +6033,8 @@
           "event_category",
           "provider",
           "project_id",
+          "principal_id",
+          "actor_id",
           "details.pipeline",
           "details.verdict",
           "details.workflow_type",
@@ -6103,6 +6105,26 @@
               }
             ]
           },
+          "principal_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "actor_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
           "details.pipeline": {
             "anyOf": [
               {
@@ -6160,7 +6182,9 @@
         "type": "string",
         "enum": [
           "resource_id",
-          "request_id"
+          "request_id",
+          "principal_id",
+          "actor_id"
         ]
       },
       "AuditAggregationFilter": {
@@ -6189,6 +6213,13 @@
             "items": {
               "type": "string"
             }
+          },
+          "principalTypes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Restrict events to top-level actor categories such as user or apikey."
           },
           "success": {
             "type": "boolean"

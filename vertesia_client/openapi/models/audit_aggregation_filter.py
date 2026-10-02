@@ -34,9 +34,10 @@ class AuditAggregationFilter(BaseModel):
     resource_types: Optional[List[StrictStr]] = Field(default=None, alias="resourceTypes")
     event_categories: Optional[List[EventCategory]] = Field(default=None, alias="eventCategories")
     providers: Optional[List[StrictStr]] = None
+    principal_types: Optional[List[StrictStr]] = Field(default=None, description="Restrict events to top-level actor categories such as user or apikey.", alias="principalTypes")
     success: Optional[StrictBool] = None
     details: Optional[List[AuditAggregationDetailFilter]] = None
-    __properties: ClassVar[List[str]] = ["actions", "resourceTypes", "eventCategories", "providers", "success", "details"]
+    __properties: ClassVar[List[str]] = ["actions", "resourceTypes", "eventCategories", "providers", "principalTypes", "success", "details"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -107,6 +108,7 @@ class AuditAggregationFilter(BaseModel):
             "resourceTypes": obj.get("resourceTypes"),
             "eventCategories": obj.get("eventCategories"),
             "providers": obj.get("providers"),
+            "principalTypes": obj.get("principalTypes"),
             "success": obj.get("success"),
             "details": [AuditAggregationDetailFilter.from_dict(_item) for _item in obj["details"]] if obj.get("details") is not None else None
         })

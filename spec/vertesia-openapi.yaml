@@ -5063,6 +5063,8 @@ components:
         - event_category
         - provider
         - project_id
+        - principal_id
+        - actor_id
         - details.pipeline
         - details.verdict
         - details.workflow_type
@@ -5095,6 +5097,14 @@ components:
           anyOf:
             - type: string
             - type: "null"
+        principal_id:
+          anyOf:
+            - type: string
+            - type: "null"
+        actor_id:
+          anyOf:
+            - type: string
+            - type: "null"
         details.pipeline:
           anyOf:
             - type: string
@@ -5121,6 +5131,8 @@ components:
       enum:
         - resource_id
         - request_id
+        - principal_id
+        - actor_id
     AuditAggregationFilter:
       type: object
       properties:
@@ -5140,6 +5152,11 @@ components:
           type: array
           items:
             type: string
+        principalTypes:
+          type: array
+          items:
+            type: string
+          description: Restrict events to top-level actor categories such as user or apikey.
         success:
           type: boolean
         details:

@@ -32,6 +32,8 @@ class AuditAggregationDimension(str, Enum):
     EVENT_CATEGORY = 'event_category'
     PROVIDER = 'provider'
     PROJECT_ID = 'project_id'
+    PRINCIPAL_ID = 'principal_id'
+    ACTOR_ID = 'actor_id'
     DETAILS_DOT_PIPELINE = 'details.pipeline'
     DETAILS_DOT_VERDICT = 'details.verdict'
     DETAILS_DOT_WORKFLOW_TYPE = 'details.workflow_type'
