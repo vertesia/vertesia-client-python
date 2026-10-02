@@ -18,7 +18,7 @@ import re  # noqa: F401
 import json
 
 from datetime import datetime
-from pydantic import BaseModel, ConfigDict, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from vertesia_client.openapi.models.project_configuration import ProjectConfiguration
 from typing import Optional, Set
@@ -37,12 +37,14 @@ class Project(BaseModel):
     configuration: ProjectConfiguration
     integrations: Optional[Dict[str, Any]] = None
     plugins: List[StrictStr]
+    annotations: Optional[List[StrictStr]] = Field(default=None, description="Classification annotations")
+    last_activity_at: Optional[datetime] = Field(default=None, description="When the project last saw activity. Not yet populated.")
     created_by: StrictStr
     updated_by: StrictStr
     created_at: datetime
     updated_at: datetime
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["id", "name", "namespace", "description", "account", "configuration", "integrations", "plugins", "created_by", "updated_by", "created_at", "updated_at"]
+    __properties: ClassVar[List[str]] = ["id", "name", "namespace", "description", "account", "configuration", "integrations", "plugins", "annotations", "last_activity_at", "created_by", "updated_by", "created_at", "updated_at"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -118,6 +120,8 @@ class Project(BaseModel):
             "configuration": ProjectConfiguration.from_dict(obj["configuration"]) if obj.get("configuration") is not None else None,
             "integrations": obj.get("integrations"),
             "plugins": obj.get("plugins"),
+            "annotations": obj.get("annotations"),
+            "last_activity_at": obj.get("last_activity_at"),
             "created_by": obj.get("created_by"),
             "updated_by": obj.get("updated_by"),
             "created_at": obj.get("created_at"),
