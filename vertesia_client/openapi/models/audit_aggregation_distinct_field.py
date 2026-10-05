@@ -30,6 +30,7 @@ class AuditAggregationDistinctField(str, Enum):
     REQUEST_ID = 'request_id'
     PRINCIPAL_ID = 'principal_id'
     ACTOR_ID = 'actor_id'
+    USER_ID = 'user_id'
 
     @classmethod
     def _missing_(cls, value: object) -> Self:

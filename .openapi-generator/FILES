@@ -205,6 +205,14 @@ vertesia_client/openapi/models/async_execution_result.py
 vertesia_client/openapi/models/async_interaction_execution_payload.py
 vertesia_client/openapi/models/audio_result.py
 vertesia_client/openapi/models/audit_action.py
+vertesia_client/openapi/models/audit_adoption_active_days.py
+vertesia_client/openapi/models/audit_adoption_bucket.py
+vertesia_client/openapi/models/audit_adoption_filter.py
+vertesia_client/openapi/models/audit_adoption_history.py
+vertesia_client/openapi/models/audit_adoption_period.py
+vertesia_client/openapi/models/audit_adoption_project.py
+vertesia_client/openapi/models/audit_adoption_query.py
+vertesia_client/openapi/models/audit_adoption_response.py
 vertesia_client/openapi/models/audit_aggregation_detail_field.py
 vertesia_client/openapi/models/audit_aggregation_detail_filter.py
 vertesia_client/openapi/models/audit_aggregation_dimension.py
@@ -221,6 +229,10 @@ vertesia_client/openapi/models/audit_aggregation_row.py
 vertesia_client/openapi/models/audit_meter.py
 vertesia_client/openapi/models/audit_trail_event.py
 vertesia_client/openapi/models/audit_trail_response.py
+vertesia_client/openapi/models/audit_usage_bucket.py
+vertesia_client/openapi/models/audit_usage_counts.py
+vertesia_client/openapi/models/audit_usage_query.py
+vertesia_client/openapi/models/audit_usage_response.py
 vertesia_client/openapi/models/auth_token_response.py
 vertesia_client/openapi/models/autonomous_run_response.py
 vertesia_client/openapi/models/aws_configuration.py

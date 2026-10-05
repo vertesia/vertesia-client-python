@@ -39,6 +39,8 @@ class KnownAuditAction(str, Enum):
     CREDENTIALS_TOTP_GENERATION = 'credentials_totp_generation'
     PUBLISH = 'publish'
     UNPUBLISH = 'unpublish'
+    SEARCH = 'search'
+    READ = 'read'
     INFERENCE = 'inference'
     EMBEDDING = 'embedding'
     IMAGE_GENERATION = 'image_generation'

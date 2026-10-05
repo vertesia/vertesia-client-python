@@ -166,6 +166,14 @@ from vertesia_client.openapi.models.async_execution_result import AsyncExecution
 from vertesia_client.openapi.models.async_interaction_execution_payload import AsyncInteractionExecutionPayload
 from vertesia_client.openapi.models.audio_result import AudioResult
 from vertesia_client.openapi.models.audit_action import AuditAction
+from vertesia_client.openapi.models.audit_adoption_active_days import AuditAdoptionActiveDays
+from vertesia_client.openapi.models.audit_adoption_bucket import AuditAdoptionBucket
+from vertesia_client.openapi.models.audit_adoption_filter import AuditAdoptionFilter
+from vertesia_client.openapi.models.audit_adoption_history import AuditAdoptionHistory
+from vertesia_client.openapi.models.audit_adoption_period import AuditAdoptionPeriod
+from vertesia_client.openapi.models.audit_adoption_project import AuditAdoptionProject
+from vertesia_client.openapi.models.audit_adoption_query import AuditAdoptionQuery
+from vertesia_client.openapi.models.audit_adoption_response import AuditAdoptionResponse
 from vertesia_client.openapi.models.audit_aggregation_detail_field import AuditAggregationDetailField
 from vertesia_client.openapi.models.audit_aggregation_detail_filter import AuditAggregationDetailFilter
 from vertesia_client.openapi.models.audit_aggregation_dimension import AuditAggregationDimension
@@ -182,6 +190,10 @@ from vertesia_client.openapi.models.audit_aggregation_row import AuditAggregatio
 from vertesia_client.openapi.models.audit_meter import AuditMeter
 from vertesia_client.openapi.models.audit_trail_event import AuditTrailEvent
 from vertesia_client.openapi.models.audit_trail_response import AuditTrailResponse
+from vertesia_client.openapi.models.audit_usage_bucket import AuditUsageBucket
+from vertesia_client.openapi.models.audit_usage_counts import AuditUsageCounts
+from vertesia_client.openapi.models.audit_usage_query import AuditUsageQuery
+from vertesia_client.openapi.models.audit_usage_response import AuditUsageResponse
 from vertesia_client.openapi.models.auth_token_response import AuthTokenResponse
 from vertesia_client.openapi.models.autonomous_run_response import AutonomousRunResponse
 from vertesia_client.openapi.models.aws_configuration import AwsConfiguration

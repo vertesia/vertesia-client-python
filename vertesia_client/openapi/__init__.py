@@ -227,6 +227,14 @@ __all__ = [
     "AsyncInteractionExecutionPayload",
     "AudioResult",
     "AuditAction",
+    "AuditAdoptionActiveDays",
+    "AuditAdoptionBucket",
+    "AuditAdoptionFilter",
+    "AuditAdoptionHistory",
+    "AuditAdoptionPeriod",
+    "AuditAdoptionProject",
+    "AuditAdoptionQuery",
+    "AuditAdoptionResponse",
     "AuditAggregationDetailField",
     "AuditAggregationDetailFilter",
     "AuditAggregationDimension",
@@ -243,6 +251,10 @@ __all__ = [
     "AuditMeter",
     "AuditTrailEvent",
     "AuditTrailResponse",
+    "AuditUsageBucket",
+    "AuditUsageCounts",
+    "AuditUsageQuery",
+    "AuditUsageResponse",
     "AuthTokenResponse",
     "AutonomousRunResponse",
     "AwsConfiguration",
@@ -1437,6 +1449,14 @@ from vertesia_client.openapi.models.async_execution_result import AsyncExecution
 from vertesia_client.openapi.models.async_interaction_execution_payload import AsyncInteractionExecutionPayload as AsyncInteractionExecutionPayload
 from vertesia_client.openapi.models.audio_result import AudioResult as AudioResult
 from vertesia_client.openapi.models.audit_action import AuditAction as AuditAction
+from vertesia_client.openapi.models.audit_adoption_active_days import AuditAdoptionActiveDays as AuditAdoptionActiveDays
+from vertesia_client.openapi.models.audit_adoption_bucket import AuditAdoptionBucket as AuditAdoptionBucket
+from vertesia_client.openapi.models.audit_adoption_filter import AuditAdoptionFilter as AuditAdoptionFilter
+from vertesia_client.openapi.models.audit_adoption_history import AuditAdoptionHistory as AuditAdoptionHistory
+from vertesia_client.openapi.models.audit_adoption_period import AuditAdoptionPeriod as AuditAdoptionPeriod
+from vertesia_client.openapi.models.audit_adoption_project import AuditAdoptionProject as AuditAdoptionProject
+from vertesia_client.openapi.models.audit_adoption_query import AuditAdoptionQuery as AuditAdoptionQuery
+from vertesia_client.openapi.models.audit_adoption_response import AuditAdoptionResponse as AuditAdoptionResponse
 from vertesia_client.openapi.models.audit_aggregation_detail_field import AuditAggregationDetailField as AuditAggregationDetailField
 from vertesia_client.openapi.models.audit_aggregation_detail_filter import AuditAggregationDetailFilter as AuditAggregationDetailFilter
 from vertesia_client.openapi.models.audit_aggregation_dimension import AuditAggregationDimension as AuditAggregationDimension
@@ -1453,6 +1473,10 @@ from vertesia_client.openapi.models.audit_aggregation_row import AuditAggregatio
 from vertesia_client.openapi.models.audit_meter import AuditMeter as AuditMeter
 from vertesia_client.openapi.models.audit_trail_event import AuditTrailEvent as AuditTrailEvent
 from vertesia_client.openapi.models.audit_trail_response import AuditTrailResponse as AuditTrailResponse
+from vertesia_client.openapi.models.audit_usage_bucket import AuditUsageBucket as AuditUsageBucket
+from vertesia_client.openapi.models.audit_usage_counts import AuditUsageCounts as AuditUsageCounts
+from vertesia_client.openapi.models.audit_usage_query import AuditUsageQuery as AuditUsageQuery
+from vertesia_client.openapi.models.audit_usage_response import AuditUsageResponse as AuditUsageResponse
 from vertesia_client.openapi.models.auth_token_response import AuthTokenResponse as AuthTokenResponse
 from vertesia_client.openapi.models.autonomous_run_response import AutonomousRunResponse as AutonomousRunResponse
 from vertesia_client.openapi.models.aws_configuration import AwsConfiguration as AwsConfiguration

@@ -35,12 +35,13 @@ class AuditAggregationDimensionMap(BaseModel):
     project_id: Optional[StrictStr] = None
     principal_id: Optional[StrictStr] = None
     actor_id: Optional[StrictStr] = None
+    user_id: Optional[StrictStr] = Field(default=None, description="Originating user identity, including delegated and scheduled activity with a recorded user owner. Non-user principals without a user origin are excluded.")
     details_pipeline: Optional[StrictStr] = Field(default=None, alias="details.pipeline")
     details_verdict: Optional[StrictStr] = Field(default=None, alias="details.verdict")
     details_workflow_type: Optional[StrictStr] = Field(default=None, alias="details.workflow_type")
     details_rule_id: Optional[StrictStr] = Field(default=None, alias="details.rule_id")
     model: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["time", "action", "resource_type", "event_category", "provider", "project_id", "principal_id", "actor_id", "details.pipeline", "details.verdict", "details.workflow_type", "details.rule_id", "model"]
+    __properties: ClassVar[List[str]] = ["time", "action", "resource_type", "event_category", "provider", "project_id", "principal_id", "actor_id", "user_id", "details.pipeline", "details.verdict", "details.workflow_type", "details.rule_id", "model"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -121,6 +122,11 @@ class AuditAggregationDimensionMap(BaseModel):
         if self.actor_id is None and "actor_id" in self.model_fields_set:
             _dict['actor_id'] = None
 
+        # set to None if user_id (nullable) is None
+        # and model_fields_set contains the field
+        if self.user_id is None and "user_id" in self.model_fields_set:
+            _dict['user_id'] = None
+
         # set to None if details_pipeline (nullable) is None
         # and model_fields_set contains the field
         if self.details_pipeline is None and "details_pipeline" in self.model_fields_set:
@@ -166,6 +172,7 @@ class AuditAggregationDimensionMap(BaseModel):
             "project_id": obj.get("project_id"),
             "principal_id": obj.get("principal_id"),
             "actor_id": obj.get("actor_id"),
+            "user_id": obj.get("user_id"),
             "details.pipeline": obj.get("details.pipeline"),
             "details.verdict": obj.get("details.verdict"),
             "details.workflow_type": obj.get("details.workflow_type"),
