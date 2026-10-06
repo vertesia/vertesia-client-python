@@ -28245,10 +28245,14 @@ paths:
       tags:
         - Projects
       summary: Delete a project
-      description: Deletes a project.
+      description: |-
+        Deletes a project.
+
+        **Required permissions:** `account:admin`
       security:
         - bearerAuth: []
-        - OAuth2: []
+        - OAuth2:
+            - account:admin
       parameters:
         - name: projectId
           in: path
@@ -28282,7 +28286,8 @@ paths:
                 error: Bad Request
                 status: 400
                 message: Request validation failed.
-      x-vertesia-permissions: []
+      x-vertesia-permissions:
+        - account:admin
       x-vertesia-source:
         file: ../../apps/studio-server/src/api/projects/index.ts
         className: ProjectResource

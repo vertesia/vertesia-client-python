@@ -36628,13 +36628,15 @@
           "Projects"
         ],
         "summary": "Delete a project",
-        "description": "Deletes a project.",
+        "description": "Deletes a project.\n\n**Required permissions:** `account:admin`",
         "security": [
           {
             "bearerAuth": []
           },
           {
-            "OAuth2": []
+            "OAuth2": [
+              "account:admin"
+            ]
           }
         ],
         "parameters": [
@@ -36689,7 +36691,9 @@
             }
           }
         },
-        "x-vertesia-permissions": [],
+        "x-vertesia-permissions": [
+          "account:admin"
+        ],
         "x-vertesia-source": {
           "file": "../../apps/studio-server/src/api/projects/index.ts",
           "className": "ProjectResource",
