@@ -367,7 +367,7 @@ class FilesApi:
     ) -> DeleteFileResult:
         """Delete a file or file prefix
 
-        Deletes a single file or, with `prefix=true`, all files under the provided relative project path prefix.
+        Deletes a single file or, with `prefix=true`, all files under the provided relative project path prefix.  **Required permissions:** Any of `content:write`, `content:delete`, `content:superadmin`
 
         :param path: (required)
         :type path: str
@@ -444,7 +444,7 @@ class FilesApi:
     ) -> ApiResponse[DeleteFileResult]:
         """Delete a file or file prefix
 
-        Deletes a single file or, with `prefix=true`, all files under the provided relative project path prefix.
+        Deletes a single file or, with `prefix=true`, all files under the provided relative project path prefix.  **Required permissions:** Any of `content:write`, `content:delete`, `content:superadmin`
 
         :param path: (required)
         :type path: str
@@ -521,7 +521,7 @@ class FilesApi:
     ) -> RESTResponseType:
         """Delete a file or file prefix
 
-        Deletes a single file or, with `prefix=true`, all files under the provided relative project path prefix.
+        Deletes a single file or, with `prefix=true`, all files under the provided relative project path prefix.  **Required permissions:** Any of `content:write`, `content:delete`, `content:superadmin`
 
         :param path: (required)
         :type path: str

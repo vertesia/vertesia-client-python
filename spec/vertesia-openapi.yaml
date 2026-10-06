@@ -51718,11 +51718,21 @@ paths:
       tags:
         - Files
       summary: Delete a file or file prefix
-      description: Deletes a single file or, with `prefix=true`, all files under the
+      description: >-
+        Deletes a single file or, with `prefix=true`, all files under the
         provided relative project path prefix.
+
+
+        **Required permissions:** Any of `content:write`, `content:delete`,
+        `content:superadmin`
       security:
         - bearerAuth: []
-        - OAuth2: []
+        - OAuth2:
+            - content:write
+        - OAuth2:
+            - content:delete
+        - OAuth2:
+            - content:superadmin
       parameters:
         - name: path
           in: path
@@ -51761,7 +51771,10 @@ paths:
                 error: Bad Request
                 status: 400
                 message: Request validation failed.
-      x-vertesia-permissions: []
+      x-vertesia-permissions:
+        - content:write
+        - content:delete
+        - content:superadmin
       x-vertesia-source:
         file: ../../apps/zeno-server/src/api/files.ts
         className: FilesResource
@@ -53290,8 +53303,8 @@ paths:
       tags:
         - Commands
       summary: List content migrations
-      description: Lists the available synchronous content migrations that can be
-        executed by an authenticated admin API key.
+      description: Lists the available synchronous content migrations that Vertesia
+        staff can execute.
       security:
         - bearerAuth: []
         - OAuth2: []
@@ -53344,9 +53357,9 @@ paths:
       tags:
         - Commands
       summary: Run a content migration
-      description: Executes a named synchronous migration. This endpoint requires an
-        authenticated admin API key. `params` is passed through to the migration
-        and its shape is the migration's own.
+      description: Executes a named synchronous migration. Only Vertesia staff can run
+        migrations. `params` is passed through to the migration and its shape is
+        the migration's own.
       security:
         - bearerAuth: []
       parameters:
