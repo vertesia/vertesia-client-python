@@ -2558,7 +2558,7 @@ class CommandsApi:
     ) -> MigrationListResponse:
         """List content migrations
 
-        Lists the available synchronous content migrations that can be executed by an authenticated admin API key.
+        Lists the available synchronous content migrations that Vertesia staff can execute.
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -2627,7 +2627,7 @@ class CommandsApi:
     ) -> ApiResponse[MigrationListResponse]:
         """List content migrations
 
-        Lists the available synchronous content migrations that can be executed by an authenticated admin API key.
+        Lists the available synchronous content migrations that Vertesia staff can execute.
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -2696,7 +2696,7 @@ class CommandsApi:
     ) -> RESTResponseType:
         """List content migrations
 
-        Lists the available synchronous content migrations that can be executed by an authenticated admin API key.
+        Lists the available synchronous content migrations that Vertesia staff can execute.
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -3441,7 +3441,7 @@ class CommandsApi:
     ) -> RunMigrationResponse:
         """Run a content migration
 
-        Executes a named synchronous migration. This endpoint requires an authenticated admin API key. `params` is passed through to the migration and its shape is the migration's own.
+        Executes a named synchronous migration. Only Vertesia staff can run migrations. `params` is passed through to the migration and its shape is the migration's own.
 
         :param name: (required)
         :type name: str
@@ -3518,7 +3518,7 @@ class CommandsApi:
     ) -> ApiResponse[RunMigrationResponse]:
         """Run a content migration
 
-        Executes a named synchronous migration. This endpoint requires an authenticated admin API key. `params` is passed through to the migration and its shape is the migration's own.
+        Executes a named synchronous migration. Only Vertesia staff can run migrations. `params` is passed through to the migration and its shape is the migration's own.
 
         :param name: (required)
         :type name: str
@@ -3595,7 +3595,7 @@ class CommandsApi:
     ) -> RESTResponseType:
         """Run a content migration
 
-        Executes a named synchronous migration. This endpoint requires an authenticated admin API key. `params` is passed through to the migration and its shape is the migration's own.
+        Executes a named synchronous migration. Only Vertesia staff can run migrations. `params` is passed through to the migration and its shape is the migration's own.
 
         :param name: (required)
         :type name: str

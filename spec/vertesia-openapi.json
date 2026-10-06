@@ -76738,13 +76738,25 @@
           "Files"
         ],
         "summary": "Delete a file or file prefix",
-        "description": "Deletes a single file or, with `prefix=true`, all files under the provided relative project path prefix.",
+        "description": "Deletes a single file or, with `prefix=true`, all files under the provided relative project path prefix.\n\n**Required permissions:** Any of `content:write`, `content:delete`, `content:superadmin`",
         "security": [
           {
             "bearerAuth": []
           },
           {
-            "OAuth2": []
+            "OAuth2": [
+              "content:write"
+            ]
+          },
+          {
+            "OAuth2": [
+              "content:delete"
+            ]
+          },
+          {
+            "OAuth2": [
+              "content:superadmin"
+            ]
           }
         ],
         "parameters": [
@@ -76807,7 +76819,11 @@
             }
           }
         },
-        "x-vertesia-permissions": [],
+        "x-vertesia-permissions": [
+          "content:write",
+          "content:delete",
+          "content:superadmin"
+        ],
         "x-vertesia-source": {
           "file": "../../apps/zeno-server/src/api/files.ts",
           "className": "FilesResource",
@@ -79036,7 +79052,7 @@
           "Commands"
         ],
         "summary": "List content migrations",
-        "description": "Lists the available synchronous content migrations that can be executed by an authenticated admin API key.",
+        "description": "Lists the available synchronous content migrations that Vertesia staff can execute.",
         "security": [
           {
             "bearerAuth": []
@@ -79118,7 +79134,7 @@
           "Commands"
         ],
         "summary": "Run a content migration",
-        "description": "Executes a named synchronous migration. This endpoint requires an authenticated admin API key. `params` is passed through to the migration and its shape is the migration's own.",
+        "description": "Executes a named synchronous migration. Only Vertesia staff can run migrations. `params` is passed through to the migration and its shape is the migration's own.",
         "security": [
           {
             "bearerAuth": []
