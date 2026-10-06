@@ -373,7 +373,7 @@ class ProjectsApi:
     ) -> DeleteByIdResult:
         """Delete a project
 
-        Deletes a project.
+        Deletes a project.  **Required permissions:** `account:admin`
 
         :param project_id: (required)
         :type project_id: str
@@ -446,7 +446,7 @@ class ProjectsApi:
     ) -> ApiResponse[DeleteByIdResult]:
         """Delete a project
 
-        Deletes a project.
+        Deletes a project.  **Required permissions:** `account:admin`
 
         :param project_id: (required)
         :type project_id: str
@@ -519,7 +519,7 @@ class ProjectsApi:
     ) -> RESTResponseType:
         """Delete a project
 
-        Deletes a project.
+        Deletes a project.  **Required permissions:** `account:admin`
 
         :param project_id: (required)
         :type project_id: str
