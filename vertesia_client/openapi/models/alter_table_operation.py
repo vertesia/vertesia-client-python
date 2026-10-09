@@ -21,11 +21,13 @@ from vertesia_client.openapi.models.alter_table_operation_one_of import AlterTab
 from vertesia_client.openapi.models.alter_table_operation_one_of1 import AlterTableOperationOneOf1
 from vertesia_client.openapi.models.alter_table_operation_one_of2 import AlterTableOperationOneOf2
 from vertesia_client.openapi.models.alter_table_operation_one_of3 import AlterTableOperationOneOf3
+from vertesia_client.openapi.models.alter_table_operation_one_of4 import AlterTableOperationOneOf4
+from vertesia_client.openapi.models.alter_table_operation_one_of5 import AlterTableOperationOneOf5
 from pydantic import StrictStr, Field
 from typing import Union, List, Set, Optional, Dict
 from typing_extensions import Literal, Self
 
-ALTERTABLEOPERATION_ONE_OF_SCHEMAS = ["AlterTableOperationOneOf", "AlterTableOperationOneOf1", "AlterTableOperationOneOf2", "AlterTableOperationOneOf3"]
+ALTERTABLEOPERATION_ONE_OF_SCHEMAS = ["AlterTableOperationOneOf", "AlterTableOperationOneOf1", "AlterTableOperationOneOf2", "AlterTableOperationOneOf3", "AlterTableOperationOneOf4", "AlterTableOperationOneOf5"]
 
 class AlterTableOperation(BaseModel):
     """
@@ -39,8 +41,12 @@ class AlterTableOperation(BaseModel):
     oneof_schema_3_validator: Optional[AlterTableOperationOneOf2] = None
     # data type: AlterTableOperationOneOf3
     oneof_schema_4_validator: Optional[AlterTableOperationOneOf3] = None
-    actual_instance: Optional[Union[AlterTableOperationOneOf, AlterTableOperationOneOf1, AlterTableOperationOneOf2, AlterTableOperationOneOf3]] = None
-    one_of_schemas: Set[str] = { "AlterTableOperationOneOf", "AlterTableOperationOneOf1", "AlterTableOperationOneOf2", "AlterTableOperationOneOf3" }
+    # data type: AlterTableOperationOneOf4
+    oneof_schema_5_validator: Optional[AlterTableOperationOneOf4] = None
+    # data type: AlterTableOperationOneOf5
+    oneof_schema_6_validator: Optional[AlterTableOperationOneOf5] = None
+    actual_instance: Optional[Union[AlterTableOperationOneOf, AlterTableOperationOneOf1, AlterTableOperationOneOf2, AlterTableOperationOneOf3, AlterTableOperationOneOf4, AlterTableOperationOneOf5]] = None
+    one_of_schemas: Set[str] = { "AlterTableOperationOneOf", "AlterTableOperationOneOf1", "AlterTableOperationOneOf2", "AlterTableOperationOneOf3", "AlterTableOperationOneOf4", "AlterTableOperationOneOf5" }
 
     model_config = ConfigDict(
         validate_assignment=True,
@@ -86,12 +92,22 @@ class AlterTableOperation(BaseModel):
             error_messages.append(f"Error! Input type `{type(v)}` is not `AlterTableOperationOneOf3`")
         else:
             match += 1
+        # validate data type: AlterTableOperationOneOf4
+        if not isinstance(v, AlterTableOperationOneOf4):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `AlterTableOperationOneOf4`")
+        else:
+            match += 1
+        # validate data type: AlterTableOperationOneOf5
+        if not isinstance(v, AlterTableOperationOneOf5):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `AlterTableOperationOneOf5`")
+        else:
+            match += 1
         if match > 1:
             # more than 1 match
-            raise ValueError("Multiple matches found when setting `actual_instance` in AlterTableOperation with oneOf schemas: AlterTableOperationOneOf, AlterTableOperationOneOf1, AlterTableOperationOneOf2, AlterTableOperationOneOf3. Details: " + ", ".join(error_messages))
+            raise ValueError("Multiple matches found when setting `actual_instance` in AlterTableOperation with oneOf schemas: AlterTableOperationOneOf, AlterTableOperationOneOf1, AlterTableOperationOneOf2, AlterTableOperationOneOf3, AlterTableOperationOneOf4, AlterTableOperationOneOf5. Details: " + ", ".join(error_messages))
         elif match == 0:
             # no match
-            raise ValueError("No match found when setting `actual_instance` in AlterTableOperation with oneOf schemas: AlterTableOperationOneOf, AlterTableOperationOneOf1, AlterTableOperationOneOf2, AlterTableOperationOneOf3. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when setting `actual_instance` in AlterTableOperation with oneOf schemas: AlterTableOperationOneOf, AlterTableOperationOneOf1, AlterTableOperationOneOf2, AlterTableOperationOneOf3, AlterTableOperationOneOf4, AlterTableOperationOneOf5. Details: " + ", ".join(error_messages))
         else:
             return v
 
@@ -130,13 +146,25 @@ class AlterTableOperation(BaseModel):
             match += 1
         except (ValidationError, ValueError) as e:
             error_messages.append(str(e))
+        # deserialize data into AlterTableOperationOneOf4
+        try:
+            instance.actual_instance = AlterTableOperationOneOf4.from_json(json_str)
+            match += 1
+        except (ValidationError, ValueError) as e:
+            error_messages.append(str(e))
+        # deserialize data into AlterTableOperationOneOf5
+        try:
+            instance.actual_instance = AlterTableOperationOneOf5.from_json(json_str)
+            match += 1
+        except (ValidationError, ValueError) as e:
+            error_messages.append(str(e))
 
         if match > 1:
             # more than 1 match
-            raise ValueError("Multiple matches found when deserializing the JSON string into AlterTableOperation with oneOf schemas: AlterTableOperationOneOf, AlterTableOperationOneOf1, AlterTableOperationOneOf2, AlterTableOperationOneOf3. Details: " + ", ".join(error_messages))
+            raise ValueError("Multiple matches found when deserializing the JSON string into AlterTableOperation with oneOf schemas: AlterTableOperationOneOf, AlterTableOperationOneOf1, AlterTableOperationOneOf2, AlterTableOperationOneOf3, AlterTableOperationOneOf4, AlterTableOperationOneOf5. Details: " + ", ".join(error_messages))
         elif match == 0:
             # no match
-            raise ValueError("No match found when deserializing the JSON string into AlterTableOperation with oneOf schemas: AlterTableOperationOneOf, AlterTableOperationOneOf1, AlterTableOperationOneOf2, AlterTableOperationOneOf3. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when deserializing the JSON string into AlterTableOperation with oneOf schemas: AlterTableOperationOneOf, AlterTableOperationOneOf1, AlterTableOperationOneOf2, AlterTableOperationOneOf3, AlterTableOperationOneOf4, AlterTableOperationOneOf5. Details: " + ", ".join(error_messages))
         else:
             return instance
 
@@ -150,7 +178,7 @@ class AlterTableOperation(BaseModel):
         else:
             return json.dumps(self.actual_instance)
 
-    def to_dict(self) -> Optional[Union[Dict[str, Any], AlterTableOperationOneOf, AlterTableOperationOneOf1, AlterTableOperationOneOf2, AlterTableOperationOneOf3]]:
+    def to_dict(self) -> Optional[Union[Dict[str, Any], AlterTableOperationOneOf, AlterTableOperationOneOf1, AlterTableOperationOneOf2, AlterTableOperationOneOf3, AlterTableOperationOneOf4, AlterTableOperationOneOf5]]:
         """Returns the dict representation of the actual instance"""
         if self.actual_instance is None:
             return None

@@ -147,6 +147,8 @@ __all__ = [
     "AlterTableOperationOneOf1",
     "AlterTableOperationOneOf2",
     "AlterTableOperationOneOf3",
+    "AlterTableOperationOneOf4",
+    "AlterTableOperationOneOf5",
     "AlterTablePayload",
     "AnalyticsAxis",
     "AnswerProcessTaskPayload",
@@ -1369,6 +1371,8 @@ from vertesia_client.openapi.models.alter_table_operation_one_of import AlterTab
 from vertesia_client.openapi.models.alter_table_operation_one_of1 import AlterTableOperationOneOf1 as AlterTableOperationOneOf1
 from vertesia_client.openapi.models.alter_table_operation_one_of2 import AlterTableOperationOneOf2 as AlterTableOperationOneOf2
 from vertesia_client.openapi.models.alter_table_operation_one_of3 import AlterTableOperationOneOf3 as AlterTableOperationOneOf3
+from vertesia_client.openapi.models.alter_table_operation_one_of4 import AlterTableOperationOneOf4 as AlterTableOperationOneOf4
+from vertesia_client.openapi.models.alter_table_operation_one_of5 import AlterTableOperationOneOf5 as AlterTableOperationOneOf5
 from vertesia_client.openapi.models.alter_table_payload import AlterTablePayload as AlterTablePayload
 from vertesia_client.openapi.models.analytics_axis import AnalyticsAxis as AnalyticsAxis
 from vertesia_client.openapi.models.answer_process_task_payload import AnswerProcessTaskPayload as AnswerProcessTaskPayload
