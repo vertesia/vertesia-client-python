@@ -38,6 +38,8 @@ class TurnEvaluationFlag(str, Enum):
     FOLLOWUP_AFTER_ANSWER = 'followup_after_answer'
     APPROVAL_DENIED = 'approval_denied'
     CIRCUIT_BREAKER = 'circuit_breaker'
+    NO_VISIBLE_ANSWER = 'no_visible_answer'
+    ANSWER_IN_TOOL_PREAMBLE = 'answer_in_tool_preamble'
 
     @classmethod
     def _missing_(cls, value: object) -> Self:

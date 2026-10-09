@@ -33653,7 +33653,9 @@
           "overhead",
           "followup_after_answer",
           "approval_denied",
-          "circuit_breaker"
+          "circuit_breaker",
+          "no_visible_answer",
+          "answer_in_tool_preamble"
         ],
         "description": "Reason behind an evaluation severity."
       },
@@ -62588,7 +62590,9 @@
                   "overhead",
                   "followup_after_answer",
                   "approval_denied",
-                  "circuit_breaker"
+                  "circuit_breaker",
+                  "no_visible_answer",
+                  "answer_in_tool_preamble"
                 ],
                 "description": "Reason behind an evaluation severity."
               },
