@@ -20,6 +20,7 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing_extensions import Annotated
+from vertesia_client.openapi.models.reasoning_effort import ReasoningEffort
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -33,12 +34,23 @@ class BedrockConverseOptions(BaseModel):
     temperature: Optional[Union[StrictFloat, StrictInt]] = None
     top_p: Optional[Union[StrictFloat, StrictInt]] = None
     stop_sequence: Optional[List[StrictStr]] = None
+    effort: Optional[ReasoningEffort] = None
+    reasoning_effort: Optional[ReasoningEffort] = None
+    verbosity: Optional[StrictStr] = None
     include_thoughts: Optional[StrictBool] = None
     service_tier: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="Provider-defined processing tier. Unknown non-empty values are preserved for forward compatibility.")
-    __properties: ClassVar[List[str]] = ["_option_id", "max_tokens", "temperature", "top_p", "stop_sequence", "include_thoughts", "service_tier"]
+    __properties: ClassVar[List[str]] = ["_option_id", "max_tokens", "temperature", "top_p", "stop_sequence", "effort", "reasoning_effort", "verbosity", "include_thoughts", "service_tier"]
 
     @field_validator('option_id')
     def option_id_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        return value
+
+    @field_validator('verbosity')
+    def verbosity_validate_enum(cls, value):
         """Validates the enum"""
         if value is None:
             return value
@@ -101,6 +113,9 @@ class BedrockConverseOptions(BaseModel):
             "temperature": obj.get("temperature"),
             "top_p": obj.get("top_p"),
             "stop_sequence": obj.get("stop_sequence"),
+            "effort": obj.get("effort"),
+            "reasoning_effort": obj.get("reasoning_effort"),
+            "verbosity": obj.get("verbosity"),
             "include_thoughts": obj.get("include_thoughts"),
             "service_tier": obj.get("service_tier")
         })
