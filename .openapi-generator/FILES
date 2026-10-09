@@ -103,6 +103,8 @@ vertesia_client/openapi/models/alter_table_operation_one_of.py
 vertesia_client/openapi/models/alter_table_operation_one_of1.py
 vertesia_client/openapi/models/alter_table_operation_one_of2.py
 vertesia_client/openapi/models/alter_table_operation_one_of3.py
+vertesia_client/openapi/models/alter_table_operation_one_of4.py
+vertesia_client/openapi/models/alter_table_operation_one_of5.py
 vertesia_client/openapi/models/alter_table_payload.py
 vertesia_client/openapi/models/analytics_axis.py
 vertesia_client/openapi/models/answer_process_task_payload.py
