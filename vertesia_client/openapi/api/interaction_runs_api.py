@@ -1388,7 +1388,7 @@ class InteractionRunsApi:
     ) -> List[ExecutionRunRef]:
         """Search runs
 
-        Searches execution runs with a structured query body. Filters can include name, status, interaction, environment, model, tags, full-text query, parent runs, linked object, creation range, finish reason, creator, workflow IDs, run IDs, and agent-run status.  **Required permissions:** `run:read`
+        Searches execution runs with a structured query body. Filters can include name, status, interaction, environment, model, tags, parent runs, creation range, finish reason, creator, workflow IDs, run IDs, and agent-run status.  **Required permissions:** `run:read`
 
         :param run_search_payload: (required)
         :type run_search_payload: RunSearchPayload
@@ -1461,7 +1461,7 @@ class InteractionRunsApi:
     ) -> ApiResponse[List[ExecutionRunRef]]:
         """Search runs
 
-        Searches execution runs with a structured query body. Filters can include name, status, interaction, environment, model, tags, full-text query, parent runs, linked object, creation range, finish reason, creator, workflow IDs, run IDs, and agent-run status.  **Required permissions:** `run:read`
+        Searches execution runs with a structured query body. Filters can include name, status, interaction, environment, model, tags, parent runs, creation range, finish reason, creator, workflow IDs, run IDs, and agent-run status.  **Required permissions:** `run:read`
 
         :param run_search_payload: (required)
         :type run_search_payload: RunSearchPayload
@@ -1534,7 +1534,7 @@ class InteractionRunsApi:
     ) -> RESTResponseType:
         """Search runs
 
-        Searches execution runs with a structured query body. Filters can include name, status, interaction, environment, model, tags, full-text query, parent runs, linked object, creation range, finish reason, creator, workflow IDs, run IDs, and agent-run status.  **Required permissions:** `run:read`
+        Searches execution runs with a structured query body. Filters can include name, status, interaction, environment, model, tags, parent runs, creation range, finish reason, creator, workflow IDs, run IDs, and agent-run status.  **Required permissions:** `run:read`
 
         :param run_search_payload: (required)
         :type run_search_payload: RunSearchPayload

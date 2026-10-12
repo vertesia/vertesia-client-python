@@ -921,6 +921,7 @@ __all__ = [
     "SetFileMetadataPayload",
     "SetMcpApiKeyRequest",
     "SetObjectEmbeddingsResponse",
+    "SetObjectTextPayload",
     "SignalAgentResponse",
     "SignalEventProperties",
     "SignalEventPropertiesSender",
@@ -2066,6 +2067,7 @@ from vertesia_client.openapi.models.service_account_token_request import Service
 from vertesia_client.openapi.models.set_file_metadata_payload import SetFileMetadataPayload as SetFileMetadataPayload
 from vertesia_client.openapi.models.set_mcp_api_key_request import SetMcpApiKeyRequest as SetMcpApiKeyRequest
 from vertesia_client.openapi.models.set_object_embeddings_response import SetObjectEmbeddingsResponse as SetObjectEmbeddingsResponse
+from vertesia_client.openapi.models.set_object_text_payload import SetObjectTextPayload as SetObjectTextPayload
 from vertesia_client.openapi.models.signal_agent_response import SignalAgentResponse as SignalAgentResponse
 from vertesia_client.openapi.models.signal_event_properties import SignalEventProperties as SignalEventProperties
 from vertesia_client.openapi.models.signal_event_properties_sender import SignalEventPropertiesSender as SignalEventPropertiesSender

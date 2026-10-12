@@ -899,6 +899,7 @@ vertesia_client/openapi/models/service_account_token_request.py
 vertesia_client/openapi/models/set_file_metadata_payload.py
 vertesia_client/openapi/models/set_mcp_api_key_request.py
 vertesia_client/openapi/models/set_object_embeddings_response.py
+vertesia_client/openapi/models/set_object_text_payload.py
 vertesia_client/openapi/models/signal_agent_response.py
 vertesia_client/openapi/models/signal_event_properties.py
 vertesia_client/openapi/models/signal_event_properties_sender.py
