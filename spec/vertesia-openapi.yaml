@@ -5388,6 +5388,8 @@ components:
         _option_id:
           type: string
           const: bedrock-nova
+        effort:
+          $ref: "#/components/schemas/ReasoningEffort"
         max_tokens:
           type: number
         temperature:
@@ -18207,6 +18209,8 @@ components:
           const: openai-text
         image_generation:
           $ref: "#/components/schemas/OpenAiImageGenerationOptions"
+        seed:
+          type: number
         max_tokens:
           type: number
         effort:
