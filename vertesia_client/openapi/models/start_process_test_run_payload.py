@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -30,7 +31,8 @@ class StartProcessTestRunPayload(BaseModel):
     suite_id: StrictStr
     process_revision_id: StrictStr
     scenario_ids: Optional[List[StrictStr]] = None
-    __properties: ClassVar[List[str]] = ["suite_id", "process_revision_id", "scenario_ids"]
+    idempotency_key: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=256)]] = Field(default=None, description="Client-chosen key, unique per intended run, that makes this request safe to retry. A repeat of the request with the same key and the same body returns the run the first request started instead of starting another. Reusing a key with a different body is rejected with 409. Keys are scoped to the project and stay bound to their run for as long as it exists; once the run is deleted, the same key starts a new one.")
+    __properties: ClassVar[List[str]] = ["suite_id", "process_revision_id", "scenario_ids", "idempotency_key"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -85,7 +87,8 @@ class StartProcessTestRunPayload(BaseModel):
         _obj = cls.model_validate({
             "suite_id": obj.get("suite_id"),
             "process_revision_id": obj.get("process_revision_id"),
-            "scenario_ids": obj.get("scenario_ids")
+            "scenario_ids": obj.get("scenario_ids"),
+            "idempotency_key": obj.get("idempotency_key")
         })
         return _obj
 

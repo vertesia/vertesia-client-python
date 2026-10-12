@@ -18,7 +18,7 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, Field
-from typing import Any, ClassVar, Dict, List
+from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.process_test_scenario import ProcessTestScenario
 from vertesia_client.openapi.models.process_test_target import ProcessTestTarget
@@ -32,7 +32,8 @@ class SubmitProcessTestRunPayload(BaseModel):
     """ # noqa: E501
     process: ProcessTestTarget
     scenarios: Annotated[List[ProcessTestScenario], Field(min_length=1)]
-    __properties: ClassVar[List[str]] = ["process", "scenarios"]
+    idempotency_key: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=256)]] = Field(default=None, description="Client-chosen key, unique per intended run, that makes this request safe to retry. A repeat of the request with the same key and the same body returns the run the first request started instead of starting another. Reusing a key with a different body is rejected with 409. Keys are scoped to the project and stay bound to their run for as long as it exists; once the run is deleted, the same key starts a new one.")
+    __properties: ClassVar[List[str]] = ["process", "scenarios", "idempotency_key"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -96,7 +97,8 @@ class SubmitProcessTestRunPayload(BaseModel):
 
         _obj = cls.model_validate({
             "process": ProcessTestTarget.from_dict(obj["process"]) if obj.get("process") is not None else None,
-            "scenarios": [ProcessTestScenario.from_dict(_item) for _item in obj["scenarios"]] if obj.get("scenarios") is not None else None
+            "scenarios": [ProcessTestScenario.from_dict(_item) for _item in obj["scenarios"]] if obj.get("scenarios") is not None else None,
+            "idempotency_key": obj.get("idempotency_key")
         })
         return _obj
 
