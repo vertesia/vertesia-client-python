@@ -8062,6 +8062,9 @@
             "type": "string",
             "const": "bedrock-nova"
           },
+          "effort": {
+            "$ref": "#/components/schemas/ReasoningEffort"
+          },
           "max_tokens": {
             "type": "number"
           },
@@ -25588,6 +25591,9 @@
           "image_generation": {
             "$ref": "#/components/schemas/OpenAiImageGenerationOptions"
           },
+          "seed": {
+            "type": "number"
+          },
           "max_tokens": {
             "type": "number"
           },
@@ -25730,6 +25736,9 @@
       "OpenRouterTextOptions": {
         "type": "object",
         "properties": {
+          "seed": {
+            "type": "number"
+          },
           "max_tokens": {
             "type": "number"
           },
@@ -31792,6 +31801,24 @@
         },
         "additionalProperties": false
       },
+      "SetObjectTextPayload": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "The extracted text to store for the object."
+          },
+          "etag": {
+            "type": "string",
+            "description": "The etag of the content the text was extracted from. When provided, the server records it as the object text_etag so extraction can be skipped while the content is unchanged."
+          }
+        },
+        "required": [
+          "text"
+        ],
+        "additionalProperties": false,
+        "description": "Payload for storing the extracted text of a content object as a text artifact."
+      },
       "SignalAgentPayload": {
         "type": "object",
         "additionalProperties": true,
@@ -32273,6 +32300,11 @@
           },
           "bulk_concurrency": {
             "type": "number"
+          },
+          "modified_since": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When set, reindex only documents whose updated_at is at or after this RFC3339/ISO-8601 datetime. Writes in-place into the live index (no new versioned target, no alias swap). Omit for a full reindex into a fresh versioned target."
           }
         },
         "additionalProperties": false
@@ -48177,7 +48209,7 @@
           "Interaction Runs"
         ],
         "summary": "Search runs",
-        "description": "Searches execution runs with a structured query body. Filters can include name, status, interaction, environment, model, tags, full-text query, parent runs, linked object, creation range, finish reason, creator, workflow IDs, run IDs, and agent-run status.\n\n**Required permissions:** `run:read`",
+        "description": "Searches execution runs with a structured query body. Filters can include name, status, interaction, environment, model, tags, parent runs, creation range, finish reason, creator, workflow IDs, run IDs, and agent-run status.\n\n**Required permissions:** `run:read`",
         "security": [
           {
             "bearerAuth": []
@@ -71605,6 +71637,94 @@
           "methodName": "getText"
         }
       },
+      "put": {
+        "operationId": "SetObjectText",
+        "tags": [
+          "Objects"
+        ],
+        "summary": "Set content object text",
+        "description": "Stores the extracted text of a content object as a GCS text artifact. The text is never stored inline in the database; a legacy inline copy is removed. When an etag is provided it is recorded as the object text_etag so extraction can be skipped while the content is unchanged.\n\n**Required permissions:** `content:write`",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OAuth2": [
+              "content:write"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "objectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The stored text.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContentObjectTextResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [
+          "content:write"
+        ],
+        "x-vertesia-source": {
+          "file": "../../apps/zeno-server/src/api/objects.ts",
+          "className": "ContentObjectResource",
+          "methodName": "setText"
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetObjectTextPayload"
+              }
+            }
+          }
+        }
+      },
       "parameters": [
         {
           "name": "x-api-version",
@@ -72057,6 +72177,92 @@
               }
             }
           }
+        }
+      },
+      "get": {
+        "operationId": "GetObjectEmbeddings",
+        "tags": [
+          "Objects"
+        ],
+        "summary": "Get content object embeddings",
+        "description": "Returns the stored embedding for a specific embedding type: GCS embeddings artifact first, with legacy inline database embeddings as fallback.\n\n**Required permissions:** `content:read`",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OAuth2": [
+              "content:read"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "objectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "type",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The stored embedding value.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Embedding"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [
+          "content:read"
+        ],
+        "x-vertesia-source": {
+          "file": "../../apps/zeno-server/src/api/objects.ts",
+          "className": "ContentObjectResource",
+          "methodName": "getEmbeddings"
         }
       },
       "parameters": [

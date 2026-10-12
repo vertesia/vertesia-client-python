@@ -17,7 +17,8 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt
+from datetime import datetime
+from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt
 from typing import Any, ClassVar, Dict, Optional, Union
 from typing import Optional, Set
 from typing_extensions import Self
@@ -32,7 +33,8 @@ class StartProjectReindexPayload(BaseModel):
     concurrency: Optional[Union[StrictFloat, StrictInt]] = None
     bulk_size_bytes: Optional[Union[StrictFloat, StrictInt]] = None
     bulk_concurrency: Optional[Union[StrictFloat, StrictInt]] = None
-    __properties: ClassVar[List[str]] = ["shard_size", "parallel_shard_count", "concurrency", "bulk_size_bytes", "bulk_concurrency"]
+    modified_since: Optional[datetime] = Field(default=None, description="When set, reindex only documents whose updated_at is at or after this RFC3339/ISO-8601 datetime. Writes in-place into the live index (no new versioned target, no alias swap). Omit for a full reindex into a fresh versioned target.")
+    __properties: ClassVar[List[str]] = ["shard_size", "parallel_shard_count", "concurrency", "bulk_size_bytes", "bulk_concurrency", "modified_since"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -89,7 +91,8 @@ class StartProjectReindexPayload(BaseModel):
             "parallel_shard_count": obj.get("parallel_shard_count"),
             "concurrency": obj.get("concurrency"),
             "bulk_size_bytes": obj.get("bulk_size_bytes"),
-            "bulk_concurrency": obj.get("bulk_concurrency")
+            "bulk_concurrency": obj.get("bulk_concurrency"),
+            "modified_since": obj.get("modified_since")
         })
         return _obj
 

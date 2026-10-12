@@ -20,6 +20,7 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing_extensions import Annotated
+from vertesia_client.openapi.models.reasoning_effort import ReasoningEffort
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -29,6 +30,7 @@ class BedrockNovaOptions(BaseModel):
     BedrockNovaOptions
     """ # noqa: E501
     option_id: Optional[StrictStr] = Field(default=None, alias="_option_id")
+    effort: Optional[ReasoningEffort] = None
     max_tokens: Optional[Union[StrictFloat, StrictInt]] = None
     temperature: Optional[Union[StrictFloat, StrictInt]] = None
     top_p: Optional[Union[StrictFloat, StrictInt]] = None
@@ -36,7 +38,7 @@ class BedrockNovaOptions(BaseModel):
     stop_sequence: Optional[List[StrictStr]] = None
     include_thoughts: Optional[StrictBool] = None
     service_tier: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="Provider-defined processing tier. Unknown non-empty values are preserved for forward compatibility.")
-    __properties: ClassVar[List[str]] = ["_option_id", "max_tokens", "temperature", "top_p", "top_k", "stop_sequence", "include_thoughts", "service_tier"]
+    __properties: ClassVar[List[str]] = ["_option_id", "effort", "max_tokens", "temperature", "top_p", "top_k", "stop_sequence", "include_thoughts", "service_tier"]
 
     @field_validator('option_id')
     def option_id_validate_enum(cls, value):
@@ -98,6 +100,7 @@ class BedrockNovaOptions(BaseModel):
 
         _obj = cls.model_validate({
             "_option_id": obj.get("_option_id"),
+            "effort": obj.get("effort"),
             "max_tokens": obj.get("max_tokens"),
             "temperature": obj.get("temperature"),
             "top_p": obj.get("top_p"),
