@@ -166,6 +166,7 @@ vertesia_client/openapi/models/app_manifest_data.py
 vertesia_client/openapi/models/app_manifest_preview_screenshot.py
 vertesia_client/openapi/models/app_manifest_source.py
 vertesia_client/openapi/models/app_manifest_source_git.py
+vertesia_client/openapi/models/app_o_auth_client_config.py
 vertesia_client/openapi/models/app_package.py
 vertesia_client/openapi/models/app_package_event_hook.py
 vertesia_client/openapi/models/app_package_hooks.py

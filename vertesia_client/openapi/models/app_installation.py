@@ -35,6 +35,7 @@ class AppInstallation(BaseModel):
     project: StrictStr
     manifest: StrictStr
     oauth_approval: Optional[AppInstallationOauthApproval] = None
+    oauth_client_id: Optional[StrictStr] = None
     settings: Optional[Dict[str, Any]] = None
     tool_allowlist: Optional[List[StrictStr]] = Field(default=None, description="Admin-managed allowlist of tool names permitted for this installation. When undefined, all tools from the app are permitted. When set, only listed tool names are available for agent configuration and execution.")
     oauth_bindings: Optional[List[AppInstallationOAuthBinding]] = Field(default=None, description="OAuth bindings created at install time via oauth_config provisioning. Maps collection identity (id or name) → OAuth provider ObjectId. Used by the runtime to resolve the correct OAuth provider without relying on manifest names.")
@@ -43,7 +44,7 @@ class AppInstallation(BaseModel):
     created_at: StrictStr
     updated_at: StrictStr
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["id", "project", "manifest", "oauth_approval", "settings", "tool_allowlist", "oauth_bindings", "provider_bindings", "access_control", "created_at", "updated_at"]
+    __properties: ClassVar[List[str]] = ["id", "project", "manifest", "oauth_approval", "oauth_client_id", "settings", "tool_allowlist", "oauth_bindings", "provider_bindings", "access_control", "created_at", "updated_at"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -129,6 +130,7 @@ class AppInstallation(BaseModel):
             "project": obj.get("project"),
             "manifest": obj.get("manifest"),
             "oauth_approval": AppInstallationOauthApproval.from_dict(obj["oauth_approval"]) if obj.get("oauth_approval") is not None else None,
+            "oauth_client_id": obj.get("oauth_client_id"),
             "settings": obj.get("settings"),
             "tool_allowlist": obj.get("tool_allowlist"),
             "oauth_bindings": [AppInstallationOAuthBinding.from_dict(_item) for _item in obj["oauth_bindings"]] if obj.get("oauth_bindings") is not None else None,

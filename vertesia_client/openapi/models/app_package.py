@@ -22,6 +22,7 @@ from typing import Any, ClassVar, Dict, List, Optional
 from vertesia_client.openapi.models.agent_tool_definition import AgentToolDefinition
 from vertesia_client.openapi.models.app_dashboard_definition import AppDashboardDefinition
 from vertesia_client.openapi.models.app_event_subscription_definition import AppEventSubscriptionDefinition
+from vertesia_client.openapi.models.app_o_auth_client_config import AppOAuthClientConfig
 from vertesia_client.openapi.models.app_package_hooks import AppPackageHooks
 from vertesia_client.openapi.models.app_ui_config import AppUIConfig
 from vertesia_client.openapi.models.app_widget_info import AppWidgetInfo
@@ -40,6 +41,7 @@ class AppPackage(BaseModel):
     """
     AppPackage
     """ # noqa: E501
+    oauth_client: Optional[AppOAuthClientConfig] = None
     oauth_scopes: Optional[List[StrictStr]] = Field(default=None, description="OAuth scopes requested by the app. Users must consent to project permissions.")
     ui: Optional[AppUIConfig] = Field(default=None, description="The UI configuration of the app")
     tools: Optional[List[AgentToolDefinition]] = Field(default=None, description="A list of tools exposed by the app.")
@@ -55,7 +57,7 @@ class AppPackage(BaseModel):
     settings_schema: Optional[JSONSchema] = Field(default=None, description="A JSON chema for the app installation settings.")
     hooks: Optional[AppPackageHooks] = None
     subscriptions: Optional[List[AppEventSubscriptionDefinition]] = Field(default=None, description="Event subscriptions contributed by the app.")
-    __properties: ClassVar[List[str]] = ["oauth_scopes", "ui", "tools", "skills", "interactions", "types", "processes", "views", "templates", "dashboards", "widgets", "activities", "settings_schema", "hooks", "subscriptions"]
+    __properties: ClassVar[List[str]] = ["oauth_client", "oauth_scopes", "ui", "tools", "skills", "interactions", "types", "processes", "views", "templates", "dashboards", "widgets", "activities", "settings_schema", "hooks", "subscriptions"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -96,6 +98,9 @@ class AppPackage(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of oauth_client
+        if self.oauth_client:
+            _dict['oauth_client'] = self.oauth_client.to_dict()
         # override the default output from pydantic by calling `to_dict()` of ui
         if self.ui:
             _dict['ui'] = self.ui.to_dict()
@@ -194,6 +199,7 @@ class AppPackage(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "oauth_client": AppOAuthClientConfig.from_dict(obj["oauth_client"]) if obj.get("oauth_client") is not None else None,
             "oauth_scopes": obj.get("oauth_scopes"),
             "ui": AppUIConfig.from_dict(obj["ui"]) if obj.get("ui") is not None else None,
             "tools": [AgentToolDefinition.from_dict(_item) for _item in obj["tools"]] if obj.get("tools") is not None else None,

@@ -34,6 +34,7 @@ class OAuthClientCreateResponse(BaseModel):
     """
     OAuthClientCreateResponse
     """ # noqa: E501
+    app_id: Optional[StrictStr] = Field(default=None, description="App associated with this client. Authorization requires an installation explicitly enabling this client and current user app access.")
     client_name: StrictStr
     client_type: OAuthClientType
     redirect_uris: List[StrictStr]
@@ -55,7 +56,7 @@ class OAuthClientCreateResponse(BaseModel):
     client_id: StrictStr
     client_secret: Optional[StrictStr] = None
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["client_name", "client_type", "redirect_uris", "grant_types", "response_types", "token_endpoint_auth_method", "allowed_scopes", "default_scopes", "registration_source", "status", "project_binding_mode", "fixed_project_id", "restrict_to_owner_account", "metadata", "created_by", "client_secret_configured", "created_at", "updated_at", "client_id", "client_secret"]
+    __properties: ClassVar[List[str]] = ["app_id", "client_name", "client_type", "redirect_uris", "grant_types", "response_types", "token_endpoint_auth_method", "allowed_scopes", "default_scopes", "registration_source", "status", "project_binding_mode", "fixed_project_id", "restrict_to_owner_account", "metadata", "created_by", "client_secret_configured", "created_at", "updated_at", "client_id", "client_secret"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -120,6 +121,7 @@ class OAuthClientCreateResponse(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "app_id": obj.get("app_id"),
             "client_name": obj.get("client_name"),
             "client_type": obj.get("client_type"),
             "redirect_uris": obj.get("redirect_uris"),

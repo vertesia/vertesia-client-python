@@ -127,6 +127,7 @@ from vertesia_client.openapi.models.app_manifest_data import AppManifestData
 from vertesia_client.openapi.models.app_manifest_preview_screenshot import AppManifestPreviewScreenshot
 from vertesia_client.openapi.models.app_manifest_source import AppManifestSource
 from vertesia_client.openapi.models.app_manifest_source_git import AppManifestSourceGit
+from vertesia_client.openapi.models.app_o_auth_client_config import AppOAuthClientConfig
 from vertesia_client.openapi.models.app_package import AppPackage
 from vertesia_client.openapi.models.app_package_event_hook import AppPackageEventHook
 from vertesia_client.openapi.models.app_package_hooks import AppPackageHooks

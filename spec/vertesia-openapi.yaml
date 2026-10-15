@@ -3141,6 +3141,8 @@ components:
             - approved_by
             - approved_at
           additionalProperties: false
+        oauth_client_id:
+          type: string
         settings:
           type: object
           additionalProperties: true
@@ -3211,6 +3213,8 @@ components:
             - approved_by
             - approved_at
           additionalProperties: false
+        oauth_client_id:
+          type: string
         settings:
           type: object
           additionalProperties: true
@@ -3393,6 +3397,8 @@ components:
             - approved_by
             - approved_at
           additionalProperties: false
+        oauth_client_id:
+          type: string
         settings:
           type: object
           additionalProperties: true
@@ -3457,6 +3463,8 @@ components:
           type: array
           items:
             type: string
+        oauth_client:
+          $ref: "#/components/schemas/AppOAuthClientConfig"
         edit_revision:
           type: integer
           minimum: 1
@@ -3644,6 +3652,8 @@ components:
           type: array
           items:
             type: string
+        oauth_client:
+          $ref: "#/components/schemas/AppOAuthClientConfig"
         name:
           type: string
           description: The name of the app, used as the id in the system. Must be in kebab
@@ -3830,6 +3840,20 @@ components:
         - kind
         - git
       additionalProperties: false
+    AppOAuthClientConfig:
+      type: object
+      properties:
+        redirect_uris:
+          minItems: 1
+          type: array
+          items:
+            type: string
+            format: uri
+      required:
+        - redirect_uris
+      additionalProperties: false
+      description: Standalone public PKCE OAuth. Installation automatically provisions
+        an app client with these exact callback URLs.
     AppOAuthCollectionParams:
       $ref: "#/components/schemas/OAuthClientCredentialsMap"
     AppOAuthProviderParams:
@@ -3837,6 +3861,8 @@ components:
     AppPackage:
       type: object
       properties:
+        oauth_client:
+          $ref: "#/components/schemas/AppOAuthClientConfig"
         oauth_scopes:
           type: array
           items:
@@ -19198,6 +19224,11 @@ components:
     OAuthClient:
       type: object
       properties:
+        app_id:
+          type: string
+          description: App associated with this client. Authorization requires an
+            installation explicitly enabling this client and current user app
+            access.
         client_name:
           type: string
         client_type:
@@ -19275,6 +19306,11 @@ components:
     OAuthClientCreateResponse:
       type: object
       properties:
+        app_id:
+          type: string
+          description: App associated with this client. Authorization requires an
+            installation explicitly enabling this client and current user app
+            access.
         client_name:
           type: string
         client_type:
@@ -26266,6 +26302,8 @@ components:
           type: array
           items:
             type: string
+        oauth_client:
+          $ref: "#/components/schemas/AppOAuthClientConfig"
         name:
           type: string
           description: The name of the app, used as the id in the system. Must be in kebab
@@ -61836,6 +61874,53 @@ paths:
         description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
+  /oauth/requests/{request_id}/grantable-projects:
+    get:
+      operationId: GetOAuthGrantableProjects
+      tags:
+        - OAuth
+      summary: List projects eligible for an app OAuth request
+      security:
+        - bearerAuth: []
+        - OAuth2: []
+      parameters:
+        - name: request_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Eligible projects.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProjectRefArray"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions: []
+      x-vertesia-source:
+        file: ../../apps/token-server/src/api/oauth.ts
+        className: OAuthResource
+        methodName: retrieveGrantableProjects
   /oauth/requests/{request_id}/login:
     post:
       operationId: LoginOAuthAuthorizationRequest

@@ -22,6 +22,7 @@ from typing import Any, ClassVar, Dict, List, Optional
 from vertesia_client.openapi.models.app_access_control import AppAccessControl
 from vertesia_client.openapi.models.app_capabilities import AppCapabilities
 from vertesia_client.openapi.models.app_manifest_preview_screenshot import AppManifestPreviewScreenshot
+from vertesia_client.openapi.models.app_o_auth_client_config import AppOAuthClientConfig
 from vertesia_client.openapi.models.app_source_config import AppSourceConfig
 from vertesia_client.openapi.models.app_ui_config import AppUIConfig
 from vertesia_client.openapi.models.json_schema import JSONSchema
@@ -36,6 +37,7 @@ class AppManifestData(BaseModel):
     AppManifestData
     """ # noqa: E501
     oauth_scopes: Optional[List[StrictStr]] = None
+    oauth_client: Optional[AppOAuthClientConfig] = None
     name: StrictStr = Field(description="The name of the app, used as the id in the system. Must be in kebab case (e.g. my-app).")
     visibility: StrictStr = Field(description="Visibility level of the app: - \"public\": visible to all accounts - \"private\": visible only to the owning account - \"vertesia\": visible only to Vertesia team members (any project)")
     title: StrictStr
@@ -58,7 +60,7 @@ class AppManifestData(BaseModel):
     tags: Optional[List[StrictStr]] = Field(default=None, description="Free-form tags used for classification and filtering. Platform apps carry `\"system\"` so UIs can skip install/uninstall/manage-permission controls that don't apply to synthetic installations.")
     access_control: Optional[AppAccessControl] = Field(default=None, description="Access control policy for the app. Defaults to 'all' (ACE-gated everywhere) when undefined. See  {@link  AppAccessControl }  for semantics. May be overridden on the AppInstallation.")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["oauth_scopes", "name", "visibility", "title", "description", "publisher", "icon", "color", "preview_screenshot", "status", "ui", "tool_collections", "oauth_providers", "interactions", "settings_schema", "capabilities", "endpoint", "endpoint_overrides", "version", "source", "tags", "access_control"]
+    __properties: ClassVar[List[str]] = ["oauth_scopes", "oauth_client", "name", "visibility", "title", "description", "publisher", "icon", "color", "preview_screenshot", "status", "ui", "tool_collections", "oauth_providers", "interactions", "settings_schema", "capabilities", "endpoint", "endpoint_overrides", "version", "source", "tags", "access_control"]
 
     @field_validator('visibility')
     def visibility_validate_enum(cls, value):
@@ -111,6 +113,9 @@ class AppManifestData(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of oauth_client
+        if self.oauth_client:
+            _dict['oauth_client'] = self.oauth_client.to_dict()
         # override the default output from pydantic by calling `to_dict()` of preview_screenshot
         if self.preview_screenshot:
             _dict['preview_screenshot'] = self.preview_screenshot.to_dict()
@@ -155,6 +160,7 @@ class AppManifestData(BaseModel):
 
         _obj = cls.model_validate({
             "oauth_scopes": obj.get("oauth_scopes"),
+            "oauth_client": AppOAuthClientConfig.from_dict(obj["oauth_client"]) if obj.get("oauth_client") is not None else None,
             "name": obj.get("name"),
             "visibility": obj.get("visibility"),
             "title": obj.get("title"),

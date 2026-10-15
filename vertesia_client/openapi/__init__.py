@@ -188,6 +188,7 @@ __all__ = [
     "AppManifestPreviewScreenshot",
     "AppManifestSource",
     "AppManifestSourceGit",
+    "AppOAuthClientConfig",
     "AppPackage",
     "AppPackageEventHook",
     "AppPackageHooks",
@@ -1413,6 +1414,7 @@ from vertesia_client.openapi.models.app_manifest_data import AppManifestData as 
 from vertesia_client.openapi.models.app_manifest_preview_screenshot import AppManifestPreviewScreenshot as AppManifestPreviewScreenshot
 from vertesia_client.openapi.models.app_manifest_source import AppManifestSource as AppManifestSource
 from vertesia_client.openapi.models.app_manifest_source_git import AppManifestSourceGit as AppManifestSourceGit
+from vertesia_client.openapi.models.app_o_auth_client_config import AppOAuthClientConfig as AppOAuthClientConfig
 from vertesia_client.openapi.models.app_package import AppPackage as AppPackage
 from vertesia_client.openapi.models.app_package_event_hook import AppPackageEventHook as AppPackageEventHook
 from vertesia_client.openapi.models.app_package_hooks import AppPackageHooks as AppPackageHooks

@@ -3871,6 +3871,9 @@
             ],
             "additionalProperties": false
           },
+          "oauth_client_id": {
+            "type": "string"
+          },
           "settings": {
             "type": "object",
             "additionalProperties": true
@@ -3953,6 +3956,9 @@
               "approved_at"
             ],
             "additionalProperties": false
+          },
+          "oauth_client_id": {
+            "type": "string"
           },
           "settings": {
             "type": "object",
@@ -4150,6 +4156,9 @@
             ],
             "additionalProperties": false
           },
+          "oauth_client_id": {
+            "type": "string"
+          },
           "settings": {
             "type": "object",
             "additionalProperties": true
@@ -4219,6 +4228,9 @@
             "items": {
               "type": "string"
             }
+          },
+          "oauth_client": {
+            "$ref": "#/components/schemas/AppOAuthClientConfig"
           },
           "edit_revision": {
             "type": "integer",
@@ -4385,6 +4397,9 @@
               "type": "string"
             }
           },
+          "oauth_client": {
+            "$ref": "#/components/schemas/AppOAuthClientConfig"
+          },
           "name": {
             "type": "string",
             "description": "The name of the app, used as the id in the system. Must be in kebab case (e.g. my-app)."
@@ -4547,6 +4562,24 @@
         ],
         "additionalProperties": false
       },
+      "AppOAuthClientConfig": {
+        "type": "object",
+        "properties": {
+          "redirect_uris": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri"
+            }
+          }
+        },
+        "required": [
+          "redirect_uris"
+        ],
+        "additionalProperties": false,
+        "description": "Standalone public PKCE OAuth. Installation automatically provisions an app client with these exact callback URLs."
+      },
       "AppOAuthCollectionParams": {
         "$ref": "#/components/schemas/OAuthClientCredentialsMap"
       },
@@ -4556,6 +4589,9 @@
       "AppPackage": {
         "type": "object",
         "properties": {
+          "oauth_client": {
+            "$ref": "#/components/schemas/AppOAuthClientConfig"
+          },
           "oauth_scopes": {
             "type": "array",
             "items": {
@@ -24621,6 +24657,10 @@
       "OAuthClient": {
         "type": "object",
         "properties": {
+          "app_id": {
+            "type": "string",
+            "description": "App associated with this client. Authorization requires an installation explicitly enabling this client and current user app access."
+          },
           "client_name": {
             "type": "string"
           },
@@ -24722,6 +24762,10 @@
       "OAuthClientCreateResponse": {
         "type": "object",
         "properties": {
+          "app_id": {
+            "type": "string",
+            "description": "App associated with this client. Authorization requires an installation explicitly enabling this client and current user app access."
+          },
           "client_name": {
             "type": "string"
           },
@@ -33899,6 +33943,9 @@
             "items": {
               "type": "string"
             }
+          },
+          "oauth_client": {
+            "$ref": "#/components/schemas/AppOAuthClientConfig"
           },
           "name": {
             "type": "string",
@@ -84859,6 +84906,81 @@
           "x-vertesia-global-header": true
         }
       ]
+    },
+    "/oauth/requests/{request_id}/grantable-projects": {
+      "get": {
+        "operationId": "GetOAuthGrantableProjects",
+        "tags": [
+          "OAuth"
+        ],
+        "summary": "List projects eligible for an app OAuth request",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OAuth2": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "request_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Eligible projects.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectRefArray"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [],
+        "x-vertesia-source": {
+          "file": "../../apps/token-server/src/api/oauth.ts",
+          "className": "OAuthResource",
+          "methodName": "retrieveGrantableProjects"
+        }
+      }
     },
     "/oauth/requests/{request_id}/login": {
       "post": {
