@@ -45830,14 +45830,14 @@
           "Interactions"
         ],
         "summary": "Delete an interaction",
-        "description": "Deletes an interaction from the current project. Pass ?cascade=true to also delete every interaction that lists this one as its parent (forward-only — never deletes ancestors).\n\n**Required permissions:** `interaction:write`",
+        "description": "Deletes an interaction from the current project. Pass ?cascade=true to also delete every interaction that lists this one as its parent (forward-only — never deletes ancestors).\n\n**Required permissions:** `interaction:delete`",
         "security": [
           {
             "bearerAuth": []
           },
           {
             "OAuth2": [
-              "interaction:write"
+              "interaction:delete"
             ]
           }
         ],
@@ -45894,7 +45894,7 @@
           }
         },
         "x-vertesia-permissions": [
-          "interaction:write"
+          "interaction:delete"
         ],
         "x-vertesia-source": {
           "file": "../../apps/studio-server/src/api/interactions.ts",

@@ -34710,11 +34710,11 @@ paths:
         (forward-only — never deletes ancestors).
 
 
-        **Required permissions:** `interaction:write`
+        **Required permissions:** `interaction:delete`
       security:
         - bearerAuth: []
         - OAuth2:
-            - interaction:write
+            - interaction:delete
       parameters:
         - name: interactionId
           in: path
@@ -34749,7 +34749,7 @@ paths:
                 status: 400
                 message: Request validation failed.
       x-vertesia-permissions:
-        - interaction:write
+        - interaction:delete
       x-vertesia-source:
         file: ../../apps/studio-server/src/api/interactions.ts
         className: InteractionResource
