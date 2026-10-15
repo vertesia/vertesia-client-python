@@ -44669,6 +44669,9 @@
               }
             }
           },
+          "400": {
+            "description": "A prompt segment references a prompt template that is not in the project."
+          },
           "500": {
             "description": "Internal server error.",
             "content": {
@@ -45770,6 +45773,9 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "A prompt segment references a prompt template that is not in the project."
           },
           "409": {
             "description": "The interaction was changed after the caller read it."
@@ -47255,7 +47261,7 @@
           "Prompt Templates"
         ],
         "summary": "Delete a prompt",
-        "description": "Deletes a prompt template from the current project.\n\n**Required permissions:** `interaction:write`",
+        "description": "Deletes a prompt template from the current project. A prompt that an interaction still references cannot be deleted; detach it from those interactions first.\n\n**Required permissions:** `interaction:write`",
         "security": [
           {
             "bearerAuth": []
@@ -47286,6 +47292,9 @@
                 }
               }
             }
+          },
+          "409": {
+            "description": "An interaction in the project still references the prompt."
           },
           "500": {
             "description": "Internal server error.",

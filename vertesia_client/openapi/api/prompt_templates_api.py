@@ -659,7 +659,7 @@ class PromptTemplatesApi:
     ) -> DeleteByIdResult:
         """Delete a prompt
 
-        Deletes a prompt template from the current project.  **Required permissions:** `interaction:write`
+        Deletes a prompt template from the current project. A prompt that an interaction still references cannot be deleted; detach it from those interactions first.  **Required permissions:** `interaction:write`
 
         :param pt_id: (required)
         :type pt_id: str
@@ -698,6 +698,7 @@ class PromptTemplatesApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "DeleteByIdResult",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -732,7 +733,7 @@ class PromptTemplatesApi:
     ) -> ApiResponse[DeleteByIdResult]:
         """Delete a prompt
 
-        Deletes a prompt template from the current project.  **Required permissions:** `interaction:write`
+        Deletes a prompt template from the current project. A prompt that an interaction still references cannot be deleted; detach it from those interactions first.  **Required permissions:** `interaction:write`
 
         :param pt_id: (required)
         :type pt_id: str
@@ -771,6 +772,7 @@ class PromptTemplatesApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "DeleteByIdResult",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -805,7 +807,7 @@ class PromptTemplatesApi:
     ) -> RESTResponseType:
         """Delete a prompt
 
-        Deletes a prompt template from the current project.  **Required permissions:** `interaction:write`
+        Deletes a prompt template from the current project. A prompt that an interaction still references cannot be deleted; detach it from those interactions first.  **Required permissions:** `interaction:write`
 
         :param pt_id: (required)
         :type pt_id: str
@@ -844,6 +846,7 @@ class PromptTemplatesApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "DeleteByIdResult",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
