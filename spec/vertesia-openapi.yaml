@@ -18666,10 +18666,7 @@ components:
           items:
             type: string
         effort:
-          type: string
-          enum:
-            - none
-            - high
+          $ref: "#/components/schemas/ReasoningEffort"
         random_seed:
           type: integer
           minimum: -9007199254740991
@@ -22586,6 +22583,7 @@ components:
         - fallback_wait_timeout
         - minimum_token_rejection
         - unusable_resource_recreated
+        - unsupported_model
     PromptImprovementResponse:
       type: object
       properties:

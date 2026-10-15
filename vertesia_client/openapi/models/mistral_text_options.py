@@ -20,6 +20,7 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing_extensions import Annotated
+from vertesia_client.openapi.models.reasoning_effort import ReasoningEffort
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -35,7 +36,7 @@ class MistralTextOptions(BaseModel):
     presence_penalty: Optional[Union[StrictFloat, StrictInt]] = None
     frequency_penalty: Optional[Union[StrictFloat, StrictInt]] = None
     stop_sequence: Optional[List[StrictStr]] = None
-    effort: Optional[StrictStr] = None
+    effort: Optional[ReasoningEffort] = None
     random_seed: Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]] = None
     safe_prompt: Optional[StrictBool] = None
     parallel_tool_calls: Optional[StrictBool] = None
@@ -46,14 +47,6 @@ class MistralTextOptions(BaseModel):
 
     @field_validator('option_id')
     def option_id_validate_enum(cls, value):
-        """Validates the enum"""
-        if value is None:
-            return value
-
-        return value
-
-    @field_validator('effort')
-    def effort_validate_enum(cls, value):
         """Validates the enum"""
         if value is None:
             return value

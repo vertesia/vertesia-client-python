@@ -40,6 +40,7 @@ class PromptCachePath(str, Enum):
     FALLBACK_WAIT_TIMEOUT = 'fallback_wait_timeout'
     MINIMUM_TOKEN_REJECTION = 'minimum_token_rejection'
     UNUSABLE_RESOURCE_RECREATED = 'unusable_resource_recreated'
+    UNSUPPORTED_MODEL = 'unsupported_model'
 
     @classmethod
     def _missing_(cls, value: object) -> Self:
