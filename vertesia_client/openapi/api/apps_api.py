@@ -3600,7 +3600,7 @@ class AppsApi:
     ) -> bytes:
         """Read a file from the app git repository
 
-        Returns the original bytes of a single file in the app's git repository at a ref (default branch when ref is omitted). Read-only — reads live from the git server without a clone.  **Required permissions:** `account:member`
+        Returns the original bytes of a single file in the app's git repository at a ref (default branch when ref is omitted). Read-only — reads live from the git server without a clone. Served as an attachment to prevent active content rendering on the API origin.  **Required permissions:** `account:member`
 
         :param id: (required)
         :type id: str
@@ -3673,7 +3673,7 @@ class AppsApi:
     ) -> ApiResponse[bytes]:
         """Read a file from the app git repository
 
-        Returns the original bytes of a single file in the app's git repository at a ref (default branch when ref is omitted). Read-only — reads live from the git server without a clone.  **Required permissions:** `account:member`
+        Returns the original bytes of a single file in the app's git repository at a ref (default branch when ref is omitted). Read-only — reads live from the git server without a clone. Served as an attachment to prevent active content rendering on the API origin.  **Required permissions:** `account:member`
 
         :param id: (required)
         :type id: str
@@ -3746,7 +3746,7 @@ class AppsApi:
     ) -> RESTResponseType:
         """Read a file from the app git repository
 
-        Returns the original bytes of a single file in the app's git repository at a ref (default branch when ref is omitted). Read-only — reads live from the git server without a clone.  **Required permissions:** `account:member`
+        Returns the original bytes of a single file in the app's git repository at a ref (default branch when ref is omitted). Read-only — reads live from the git server without a clone. Served as an attachment to prevent active content rendering on the API origin.  **Required permissions:** `account:member`
 
         :param id: (required)
         :type id: str
