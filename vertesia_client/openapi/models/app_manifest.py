@@ -27,6 +27,7 @@ from vertesia_client.openapi.models.app_manifest_source import AppManifestSource
 from vertesia_client.openapi.models.app_o_auth_client_config import AppOAuthClientConfig
 from vertesia_client.openapi.models.app_ui_config import AppUIConfig
 from vertesia_client.openapi.models.json_schema import JSONSchema
+from vertesia_client.openapi.models.mcp_connection_parameter import McpConnectionParameter
 from vertesia_client.openapi.models.mcpo_auth_config import MCPOAuthConfig
 from vertesia_client.openapi.models.tool_collection_object import ToolCollectionObject
 from typing import Optional, Set
@@ -37,6 +38,7 @@ class AppManifest(BaseModel):
     """
     AppManifest
     """ # noqa: E501
+    parameters: Optional[Dict[str, McpConnectionParameter]] = Field(default=None, description="Shared MCP installation parameters available to every collection. Collection-local names must not overlap.")
     oauth_scopes: Optional[List[StrictStr]] = None
     oauth_client: Optional[AppOAuthClientConfig] = None
     edit_revision: Annotated[int, Field(le=9007199254740991, strict=True, ge=1)] = Field(description="Monotonic edit revision used to detect concurrent updates.")
@@ -66,7 +68,7 @@ class AppManifest(BaseModel):
     created_at: StrictStr
     updated_at: StrictStr
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["oauth_scopes", "oauth_client", "edit_revision", "name", "visibility", "title", "description", "publisher", "icon", "color", "preview_screenshot", "status", "ui", "tool_collections", "oauth_providers", "interactions", "settings_schema", "capabilities", "endpoint", "endpoint_overrides", "version", "source", "tags", "access_control", "id", "account", "created_at", "updated_at"]
+    __properties: ClassVar[List[str]] = ["parameters", "oauth_scopes", "oauth_client", "edit_revision", "name", "visibility", "title", "description", "publisher", "icon", "color", "preview_screenshot", "status", "ui", "tool_collections", "oauth_providers", "interactions", "settings_schema", "capabilities", "endpoint", "endpoint_overrides", "version", "source", "tags", "access_control", "id", "account", "created_at", "updated_at"]
 
     @field_validator('visibility')
     def visibility_validate_enum(cls, value):
@@ -119,6 +121,13 @@ class AppManifest(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of each value in parameters (dict)
+        _field_dict = {}
+        if self.parameters:
+            for _key_parameters in self.parameters:
+                if self.parameters[_key_parameters]:
+                    _field_dict[_key_parameters] = self.parameters[_key_parameters].to_dict()
+            _dict['parameters'] = _field_dict
         # override the default output from pydantic by calling `to_dict()` of oauth_client
         if self.oauth_client:
             _dict['oauth_client'] = self.oauth_client.to_dict()
@@ -165,6 +174,12 @@ class AppManifest(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "parameters": dict(
+                (_k, McpConnectionParameter.from_dict(_v))
+                for _k, _v in obj["parameters"].items()
+            )
+            if obj.get("parameters") is not None
+            else None,
             "oauth_scopes": obj.get("oauth_scopes"),
             "oauth_client": AppOAuthClientConfig.from_dict(obj["oauth_client"]) if obj.get("oauth_client") is not None else None,
             "edit_revision": obj.get("edit_revision"),

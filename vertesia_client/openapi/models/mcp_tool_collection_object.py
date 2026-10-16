@@ -20,6 +20,7 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
 from vertesia_client.openapi.models.mcp_api_key_config import MCPApiKeyConfig
+from vertesia_client.openapi.models.mcp_connection_parameter import McpConnectionParameter
 from vertesia_client.openapi.models.mcpo_auth_config import MCPOAuthConfig
 from vertesia_client.openapi.models.tool_collection_auth_type import ToolCollectionAuthType
 from typing import Optional, Set
@@ -33,6 +34,8 @@ class MCPToolCollectionObject(BaseModel):
     url: StrictStr = Field(description="The URL endpoint for the tool collection")
     auth: Optional[ToolCollectionAuthType] = Field(default=None, description="Optional authentication type required for this tool collection")
     type: StrictStr
+    parameters: Optional[Dict[str, McpConnectionParameter]] = None
+    headers: Optional[Dict[str, StrictStr]] = Field(default=None, description="HTTP header templates. Reference declared installation parameters with {{name}}. Never embed secrets.")
     id: StrictStr = Field(description="Stable identifier for this collection. Used to key oauth_bindings on AppInstallation — protects against collection renames. Required for new manifests.")
     name: StrictStr = Field(description="Name for the tool collection. Human-readable label for the collection. Used in UI.")
     description: StrictStr = Field(description="Description for the tool collection. Helps users understand what tools this collection provides.")
@@ -42,7 +45,7 @@ class MCPToolCollectionObject(BaseModel):
     api_key_config: Optional[MCPApiKeyConfig] = Field(default=None, description="Install-time provisioning blueprint for auth: 'api_key' collections. Only meaningful alongside auth: 'api_key'; ignored otherwise.")
     oauth_provider: Optional[StrictStr] = Field(default=None, description="Reference to a key in AppManifestData.oauth_providers. When set, this collection shares the named provider's OAuth provider configuration. Mutually exclusive with oauth_config and oauth_app. Requires auth: \"oauth\" to be set.")
     oauth_scopes: Optional[List[StrictStr]] = Field(default=None, description="Additional OAuth scopes for this collection when using a shared oauth_provider. These are merged (union) with the provider's default_scopes at install time. Only valid when oauth_provider is set.")
-    __properties: ClassVar[List[str]] = ["url", "auth", "type", "id", "name", "description", "namespace", "oauth_app", "oauth_config", "api_key_config", "oauth_provider", "oauth_scopes"]
+    __properties: ClassVar[List[str]] = ["url", "auth", "type", "parameters", "headers", "id", "name", "description", "namespace", "oauth_app", "oauth_config", "api_key_config", "oauth_provider", "oauth_scopes"]
 
     @field_validator('type')
     def type_validate_enum(cls, value):
@@ -88,6 +91,13 @@ class MCPToolCollectionObject(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of each value in parameters (dict)
+        _field_dict = {}
+        if self.parameters:
+            for _key_parameters in self.parameters:
+                if self.parameters[_key_parameters]:
+                    _field_dict[_key_parameters] = self.parameters[_key_parameters].to_dict()
+            _dict['parameters'] = _field_dict
         # override the default output from pydantic by calling `to_dict()` of oauth_config
         if self.oauth_config:
             _dict['oauth_config'] = self.oauth_config.to_dict()
@@ -109,6 +119,13 @@ class MCPToolCollectionObject(BaseModel):
             "url": obj.get("url"),
             "auth": obj.get("auth"),
             "type": obj.get("type"),
+            "parameters": dict(
+                (_k, McpConnectionParameter.from_dict(_v))
+                for _k, _v in obj["parameters"].items()
+            )
+            if obj.get("parameters") is not None
+            else None,
+            "headers": obj.get("headers"),
             "id": obj.get("id"),
             "name": obj.get("name"),
             "description": obj.get("description"),

@@ -178,9 +178,11 @@ __all__ = [
     "AppInspectionResult",
     "AppInstallation",
     "AppInstallationListEntry",
+    "AppInstallationMcpConfiguration",
     "AppInstallationOAuthBinding",
     "AppInstallationOauthApproval",
     "AppInstallationPayload",
+    "AppInstallationPayloadMcpSharedParametersValue",
     "AppInstallationProviderBinding",
     "AppInstallationWithManifest",
     "AppManifest",
@@ -729,10 +731,13 @@ __all__ = [
     "MarkdownRenditionFormat",
     "McpApiKeyCredential",
     "McpApiKeyStatus",
+    "McpConnectionParameter",
     "McpOAuthConnectResponse",
     "McpOAuthDisconnectResponse",
     "McpOAuthTokenRequest",
     "McpOAuthTokenResponse",
+    "McpPublicParameter",
+    "McpSecretParameter",
     "MediatorEnvConfig",
     "MigrationListResponse",
     "MigrationListResponseMigrationsInner",
@@ -1404,9 +1409,11 @@ from vertesia_client.openapi.models.app_inspection_issue import AppInspectionIss
 from vertesia_client.openapi.models.app_inspection_result import AppInspectionResult as AppInspectionResult
 from vertesia_client.openapi.models.app_installation import AppInstallation as AppInstallation
 from vertesia_client.openapi.models.app_installation_list_entry import AppInstallationListEntry as AppInstallationListEntry
+from vertesia_client.openapi.models.app_installation_mcp_configuration import AppInstallationMcpConfiguration as AppInstallationMcpConfiguration
 from vertesia_client.openapi.models.app_installation_o_auth_binding import AppInstallationOAuthBinding as AppInstallationOAuthBinding
 from vertesia_client.openapi.models.app_installation_oauth_approval import AppInstallationOauthApproval as AppInstallationOauthApproval
 from vertesia_client.openapi.models.app_installation_payload import AppInstallationPayload as AppInstallationPayload
+from vertesia_client.openapi.models.app_installation_payload_mcp_shared_parameters_value import AppInstallationPayloadMcpSharedParametersValue as AppInstallationPayloadMcpSharedParametersValue
 from vertesia_client.openapi.models.app_installation_provider_binding import AppInstallationProviderBinding as AppInstallationProviderBinding
 from vertesia_client.openapi.models.app_installation_with_manifest import AppInstallationWithManifest as AppInstallationWithManifest
 from vertesia_client.openapi.models.app_manifest import AppManifest as AppManifest
@@ -1955,10 +1962,13 @@ from vertesia_client.openapi.models.magic_pdf_configuration import MagicPdfConfi
 from vertesia_client.openapi.models.markdown_rendition_format import MarkdownRenditionFormat as MarkdownRenditionFormat
 from vertesia_client.openapi.models.mcp_api_key_credential import McpApiKeyCredential as McpApiKeyCredential
 from vertesia_client.openapi.models.mcp_api_key_status import McpApiKeyStatus as McpApiKeyStatus
+from vertesia_client.openapi.models.mcp_connection_parameter import McpConnectionParameter as McpConnectionParameter
 from vertesia_client.openapi.models.mcp_o_auth_connect_response import McpOAuthConnectResponse as McpOAuthConnectResponse
 from vertesia_client.openapi.models.mcp_o_auth_disconnect_response import McpOAuthDisconnectResponse as McpOAuthDisconnectResponse
 from vertesia_client.openapi.models.mcp_o_auth_token_request import McpOAuthTokenRequest as McpOAuthTokenRequest
 from vertesia_client.openapi.models.mcp_o_auth_token_response import McpOAuthTokenResponse as McpOAuthTokenResponse
+from vertesia_client.openapi.models.mcp_public_parameter import McpPublicParameter as McpPublicParameter
+from vertesia_client.openapi.models.mcp_secret_parameter import McpSecretParameter as McpSecretParameter
 from vertesia_client.openapi.models.mediator_env_config import MediatorEnvConfig as MediatorEnvConfig
 from vertesia_client.openapi.models.migration_list_response import MigrationListResponse as MigrationListResponse
 from vertesia_client.openapi.models.migration_list_response_migrations_inner import MigrationListResponseMigrationsInner as MigrationListResponseMigrationsInner

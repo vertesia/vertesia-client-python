@@ -3848,6 +3848,50 @@
           "manifest": {
             "type": "string"
           },
+          "mcp_configuration": {
+            "type": "object",
+            "properties": {
+              "revision": {
+                "type": "string"
+              },
+              "values": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                }
+              },
+              "configured_secrets": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "shared_values": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                }
+              },
+              "configured_shared_secrets": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "revision",
+              "values",
+              "configured_secrets"
+            ],
+            "additionalProperties": false
+          },
           "oauth_approval": {
             "type": "object",
             "properties": {
@@ -3933,6 +3977,50 @@
           },
           "project": {
             "type": "string"
+          },
+          "mcp_configuration": {
+            "type": "object",
+            "properties": {
+              "revision": {
+                "type": "string"
+              },
+              "values": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                }
+              },
+              "configured_secrets": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "shared_values": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                }
+              },
+              "configured_shared_secrets": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "revision",
+              "values",
+              "configured_secrets"
+            ],
+            "additionalProperties": false
           },
           "oauth_approval": {
             "type": "object",
@@ -4057,6 +4145,37 @@
           "app_id": {
             "type": "string"
           },
+          "mcp_shared_parameters": {
+            "type": "object",
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "description": "Shared MCP parameter overrides. Omitted values are retained; null clears an override or restores its default."
+          },
+          "mcp_parameters": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "additionalProperties": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "description": "Installation parameter overrides by MCP collection id. Omit to preserve; null clears an override. Secret inputs are write-only."
+          },
           "settings": {
             "type": "object",
             "additionalProperties": true
@@ -4132,6 +4251,50 @@
           },
           "project": {
             "type": "string"
+          },
+          "mcp_configuration": {
+            "type": "object",
+            "properties": {
+              "revision": {
+                "type": "string"
+              },
+              "values": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                }
+              },
+              "configured_secrets": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "shared_values": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                }
+              },
+              "configured_shared_secrets": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "revision",
+              "values",
+              "configured_secrets"
+            ],
+            "additionalProperties": false
           },
           "oauth_approval": {
             "type": "object",
@@ -4223,6 +4386,17 @@
       "AppManifest": {
         "type": "object",
         "properties": {
+          "parameters": {
+            "type": "object",
+            "propertyNames": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]*$"
+            },
+            "additionalProperties": {
+              "$ref": "#/components/schemas/McpConnectionParameter"
+            },
+            "description": "Shared MCP installation parameters available to every collection. Collection-local names must not overlap."
+          },
           "oauth_scopes": {
             "type": "array",
             "items": {
@@ -4391,6 +4565,17 @@
       "AppManifestData": {
         "type": "object",
         "properties": {
+          "parameters": {
+            "type": "object",
+            "propertyNames": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]*$"
+            },
+            "additionalProperties": {
+              "$ref": "#/components/schemas/McpConnectionParameter"
+            },
+            "description": "Shared MCP installation parameters available to every collection. Collection-local names must not overlap."
+          },
           "oauth_scopes": {
             "type": "array",
             "items": {
@@ -23597,6 +23782,23 @@
             "type": "string",
             "const": "mcp"
           },
+          "parameters": {
+            "type": "object",
+            "propertyNames": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]*$"
+            },
+            "additionalProperties": {
+              "$ref": "#/components/schemas/McpConnectionParameter"
+            }
+          },
+          "headers": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "HTTP header templates. Reference declared installation parameters with {{name}}. Never embed secrets."
+          },
           "id": {
             "type": "string",
             "description": "Stable identifier for this collection. Used to key oauth_bindings on AppInstallation — protects against collection renames. Required for new manifests."
@@ -23724,6 +23926,16 @@
         "additionalProperties": false,
         "description": "Whether an API key is configured for an MCP tool collection"
       },
+      "McpConnectionParameter": {
+        "anyOf": [
+          {
+            "$ref": "#/components/schemas/McpPublicParameter"
+          },
+          {
+            "$ref": "#/components/schemas/McpSecretParameter"
+          }
+        ]
+      },
       "McpOAuthConnectResponse": {
         "type": "object",
         "properties": {
@@ -23776,6 +23988,50 @@
         },
         "required": [
           "access_token"
+        ],
+        "additionalProperties": false
+      },
+      "McpPublicParameter": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "type": {
+            "type": "string",
+            "const": "string"
+          },
+          "default": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "McpSecretParameter": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "type": {
+            "type": "string",
+            "const": "secret"
+          }
+        },
+        "required": [
+          "type"
         ],
         "additionalProperties": false
       },
@@ -33935,6 +34191,17 @@
       "UpdateAppPayload": {
         "type": "object",
         "properties": {
+          "parameters": {
+            "type": "object",
+            "propertyNames": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]*$"
+            },
+            "additionalProperties": {
+              "$ref": "#/components/schemas/McpConnectionParameter"
+            },
+            "description": "Shared MCP installation parameters available to every collection. Collection-local names must not overlap."
+          },
           "oauth_scopes": {
             "type": "array",
             "items": {

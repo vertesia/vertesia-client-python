@@ -20,6 +20,7 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from vertesia_client.openapi.models.app_access_control import AppAccessControl
+from vertesia_client.openapi.models.app_installation_payload_mcp_shared_parameters_value import AppInstallationPayloadMcpSharedParametersValue
 from vertesia_client.openapi.models.mcp_api_key_credential import McpApiKeyCredential
 from vertesia_client.openapi.models.o_auth_client_credentials import OAuthClientCredentials
 from typing import Optional, Set
@@ -31,13 +32,15 @@ class AppInstallationPayload(BaseModel):
     AppInstallationPayload
     """ # noqa: E501
     app_id: StrictStr
+    mcp_shared_parameters: Optional[Dict[str, Optional[AppInstallationPayloadMcpSharedParametersValue]]] = Field(default=None, description="Shared MCP parameter overrides. Omitted values are retained; null clears an override or restores its default.")
+    mcp_parameters: Optional[Dict[str, Dict[str, Optional[AppInstallationPayloadMcpSharedParametersValue]]]] = Field(default=None, description="Installation parameter overrides by MCP collection id. Omit to preserve; null clears an override. Secret inputs are write-only.")
     settings: Optional[Dict[str, Any]] = None
     access_control: Optional[AppAccessControl] = Field(default=None, description="Per-installation override of the manifest's `access_control` policy. When provided, takes precedence over the manifest default for every access check. Sibling of `settings` — admin-controlled, not part of the app's own settings JSON.  Three send-time semantics on update:  - Field omitted entirely from the payload → leave the existing override unchanged.  - Explicit `null` → clear the override, fall back to the manifest default.  - String enum → set the override to that value.  (On install, the same shape applies; omit or pass `null` to use the manifest default.)")
     oauth_params: Optional[Dict[str, OAuthClientCredentials]] = Field(default=None, description="OAuth credentials for each collection, keyed by collection.id. Legacy callers may still use collection.name for older manifests. Collected from the user at install time for collections with oauth_config.required_at_install.")
     oauth_provider_params: Optional[Dict[str, OAuthClientCredentials]] = Field(default=None, description="OAuth credentials for named providers, keyed by the provider key from oauth_providers. Collected from the user at install time for providers with required_at_install. Separate from oauth_params to avoid key collisions between provider keys and collection ids.")
     api_key_params: Optional[Dict[str, McpApiKeyCredential]] = Field(default=None, description="API keys for auth: 'api_key' collections, keyed by collection.id. Collected from the user at install time for collections with api_key_config.required_at_install. Each key is stored in the installing project's encrypted secret store, replacing any key already held for that collection.")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["app_id", "settings", "access_control", "oauth_params", "oauth_provider_params", "api_key_params"]
+    __properties: ClassVar[List[str]] = ["app_id", "mcp_shared_parameters", "mcp_parameters", "settings", "access_control", "oauth_params", "oauth_provider_params", "api_key_params"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -80,6 +83,22 @@ class AppInstallationPayload(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of each value in mcp_shared_parameters (dict)
+        _field_dict = {}
+        if self.mcp_shared_parameters:
+            for _key_mcp_shared_parameters in self.mcp_shared_parameters:
+                if self.mcp_shared_parameters[_key_mcp_shared_parameters]:
+                    _field_dict[_key_mcp_shared_parameters] = self.mcp_shared_parameters[_key_mcp_shared_parameters].to_dict()
+            _dict['mcp_shared_parameters'] = _field_dict
+        # override the default output from pydantic by calling `to_dict()` of each value in mcp_parameters (dict of dict)
+        _field_dict_of_dict = {}
+        if self.mcp_parameters:
+            for _key_mcp_parameters, _value_mcp_parameters in self.mcp_parameters.items():
+                if _value_mcp_parameters is not None:
+                    _field_dict_of_dict[_key_mcp_parameters] = {
+                        _key: _value.to_dict() for _key, _value in _value_mcp_parameters.items()
+                    }
+            _dict['mcp_parameters'] = _field_dict_of_dict
         # override the default output from pydantic by calling `to_dict()` of each value in oauth_params (dict)
         _field_dict = {}
         if self.oauth_params:
@@ -129,6 +148,24 @@ class AppInstallationPayload(BaseModel):
 
         _obj = cls.model_validate({
             "app_id": obj.get("app_id"),
+            "mcp_shared_parameters": dict(
+                (_k, AppInstallationPayloadMcpSharedParametersValue.from_dict(_v))
+                for _k, _v in obj["mcp_shared_parameters"].items()
+            )
+            if obj.get("mcp_shared_parameters") is not None
+            else None,
+            "mcp_parameters": dict(
+                (_k, dict(
+                    (_ik, AppInstallationPayloadMcpSharedParametersValue.from_dict(_iv))
+                        for _ik, _iv in _v.items()
+                    )
+                    if _v is not None
+                    else None
+                )
+                for _k, _v in obj["mcp_parameters"].items()
+            )
+            if obj.get("mcp_parameters") is not None
+            else None,
             "settings": obj.get("settings"),
             "access_control": obj.get("access_control"),
             "oauth_params": dict(

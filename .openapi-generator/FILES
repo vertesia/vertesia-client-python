@@ -156,9 +156,11 @@ vertesia_client/openapi/models/app_inspection_issue.py
 vertesia_client/openapi/models/app_inspection_result.py
 vertesia_client/openapi/models/app_installation.py
 vertesia_client/openapi/models/app_installation_list_entry.py
+vertesia_client/openapi/models/app_installation_mcp_configuration.py
 vertesia_client/openapi/models/app_installation_o_auth_binding.py
 vertesia_client/openapi/models/app_installation_oauth_approval.py
 vertesia_client/openapi/models/app_installation_payload.py
+vertesia_client/openapi/models/app_installation_payload_mcp_shared_parameters_value.py
 vertesia_client/openapi/models/app_installation_provider_binding.py
 vertesia_client/openapi/models/app_installation_with_manifest.py
 vertesia_client/openapi/models/app_manifest.py
@@ -704,10 +706,13 @@ vertesia_client/openapi/models/markdown_rendition_format.py
 vertesia_client/openapi/models/mcp_api_key_config.py
 vertesia_client/openapi/models/mcp_api_key_credential.py
 vertesia_client/openapi/models/mcp_api_key_status.py
+vertesia_client/openapi/models/mcp_connection_parameter.py
 vertesia_client/openapi/models/mcp_o_auth_connect_response.py
 vertesia_client/openapi/models/mcp_o_auth_disconnect_response.py
 vertesia_client/openapi/models/mcp_o_auth_token_request.py
 vertesia_client/openapi/models/mcp_o_auth_token_response.py
+vertesia_client/openapi/models/mcp_public_parameter.py
+vertesia_client/openapi/models/mcp_secret_parameter.py
 vertesia_client/openapi/models/mcp_tool_annotations.py
 vertesia_client/openapi/models/mcp_tool_collection_object.py
 vertesia_client/openapi/models/mcpo_auth_config.py

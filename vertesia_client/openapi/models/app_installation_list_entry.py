@@ -20,6 +20,7 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from vertesia_client.openapi.models.app_access_control import AppAccessControl
+from vertesia_client.openapi.models.app_installation_mcp_configuration import AppInstallationMcpConfiguration
 from vertesia_client.openapi.models.app_installation_o_auth_binding import AppInstallationOAuthBinding
 from vertesia_client.openapi.models.app_installation_oauth_approval import AppInstallationOauthApproval
 from vertesia_client.openapi.models.app_installation_provider_binding import AppInstallationProviderBinding
@@ -34,6 +35,7 @@ class AppInstallationListEntry(BaseModel):
     """ # noqa: E501
     id: StrictStr
     project: StrictStr
+    mcp_configuration: Optional[AppInstallationMcpConfiguration] = None
     oauth_approval: Optional[AppInstallationOauthApproval] = None
     oauth_client_id: Optional[StrictStr] = None
     settings: Optional[Dict[str, Any]] = None
@@ -46,7 +48,7 @@ class AppInstallationListEntry(BaseModel):
     manifest: Optional[AppManifest]
     oauth_collection_ids: Optional[List[StrictStr]] = None
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["id", "project", "oauth_approval", "oauth_client_id", "settings", "tool_allowlist", "oauth_bindings", "provider_bindings", "access_control", "created_at", "updated_at", "manifest", "oauth_collection_ids"]
+    __properties: ClassVar[List[str]] = ["id", "project", "mcp_configuration", "oauth_approval", "oauth_client_id", "settings", "tool_allowlist", "oauth_bindings", "provider_bindings", "access_control", "created_at", "updated_at", "manifest", "oauth_collection_ids"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -89,6 +91,9 @@ class AppInstallationListEntry(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of mcp_configuration
+        if self.mcp_configuration:
+            _dict['mcp_configuration'] = self.mcp_configuration.to_dict()
         # override the default output from pydantic by calling `to_dict()` of oauth_approval
         if self.oauth_approval:
             _dict['oauth_approval'] = self.oauth_approval.to_dict()
@@ -138,6 +143,7 @@ class AppInstallationListEntry(BaseModel):
         _obj = cls.model_validate({
             "id": obj.get("id"),
             "project": obj.get("project"),
+            "mcp_configuration": AppInstallationMcpConfiguration.from_dict(obj["mcp_configuration"]) if obj.get("mcp_configuration") is not None else None,
             "oauth_approval": AppInstallationOauthApproval.from_dict(obj["oauth_approval"]) if obj.get("oauth_approval") is not None else None,
             "oauth_client_id": obj.get("oauth_client_id"),
             "settings": obj.get("settings"),
