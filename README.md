@@ -168,3 +168,46 @@ match the underlying JSON type.
 ### Generated API version headers
 
 The high-level client supplies required generated `x_api_version` arguments from its configured API version before validation, including calls with positional payloads. A per-call `x_api_version` keyword overrides that default. Raw generated clients still require the declared arguments.
+
+## OIDC federation for provisioned users
+
+Use one client per user/project/resource/scope combination. Users must already be SCIM-provisioned
+and the organization must configure federation trust. The facade does not create or adopt users.
+
+```python
+from vertesia_client import Client, ClientOptions, FederationOptions, exchange_federation_token
+
+policy = FederationOptions(
+    connection_id="connection-id",
+    project_id="project-id",
+    resource="https://api.us1.vertesia.io",
+    subject_token_provider=get_fresh_idp_token,  # callable returning a current assertion
+    # scope="content:read",  # omit for current delegable permissions
+)
+options = ClientOptions(region="us1", federation=policy)
+client = Client(options)
+# Use client.projects, client.objects, etc. as usual.
+
+# One-shot exchange; caller manages token lifetime:
+issued = exchange_federation_token(idp_assertion, policy, options)
+# issued.access_token, issued.expires_in, issued.scope
+```
+
+The first authenticated request exchanges an assertion. Studio and Store share the cached token;
+after 90% of its lifetime, the next request obtains a fresh assertion and exchanges again. Renewal
+is serialized across threads, uses no background worker or refresh token, and propagates failures
+instead of sending expired credentials. API writes are not automatically retried on a 401. Your
+provider must fetch a current assertion on each renewal. `federation`, `api_key` and `token` are
+mutually exclusive.
+
+`subject_token_type` defaults to `urn:ietf:params:oauth:token-type:jwt`. The endpoint defaults to
+resolved STS plus `/oauth/token`; use `token_endpoint` for a full tenant endpoint or explicit
+`token_server_url` for custom split URLs. HTTPS is required except loopback HTTP; redirects are
+rejected. Assertions and secrets are excluded from the new configuration/result representations
+and exchange error messages.
+
+Optional middleware authentication: set `client_id` plus `client_secret` for `client_secret_post`;
+add `client_secret_basic=True` for Basic instead. Or set `client_id` and a
+`client_assertion_provider` callback for `private_key_jwt`. It must mint a new short-lived signed
+assertion with a unique `jti` for each exchange; the single-string `aud` must be the Vertesia
+authorization-server issuer from discovery, including any tenant. Do not mix authentication methods.

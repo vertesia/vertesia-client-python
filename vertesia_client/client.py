@@ -12,6 +12,7 @@ from dataclasses import dataclass
 from functools import wraps
 from typing import Any
 
+from vertesia_client.federation import FederationOptions, _FederationTokenSource
 from vertesia_client.openapi.api.access_control_entries_api import AccessControlEntriesApi
 from vertesia_client.openapi.api.accounts_api import AccountsApi
 from vertesia_client.openapi.api.agent_runs_api import AgentRunsApi
@@ -72,6 +73,7 @@ class ClientOptions:
     api_key: str | None = None
     token: str | None = None
     api_version: str | None = None
+    federation: FederationOptions | None = None
 
 
 @dataclass(frozen=True)
@@ -313,6 +315,10 @@ def _new_api_client(base_url: str, token_source: _TokenSource, api_version: str)
 
 
 def _new_token_source(options: ClientOptions, endpoints: _ResolvedEndpoints, api_version: str) -> _TokenSource:
+    if options.federation is not None:
+        if options.api_key or options.token:
+            raise VertesiaClientError("federation, api_key and token are mutually exclusive")
+        return _FederationTokenSource(options.federation, options)
     api_key = (options.api_key or "").strip()
     token = (options.token or "").strip()
 

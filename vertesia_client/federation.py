@@ -1,0 +1,190 @@
+"""Server-to-server federation without modifying generated OpenAPI code."""
+
+from __future__ import annotations
+
+import base64
+import json
+import math
+import threading
+import time
+import urllib.error
+import urllib.parse
+import urllib.request
+from collections.abc import Callable
+from dataclasses import dataclass, field
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from vertesia_client.client import ClientOptions
+
+
+@dataclass(frozen=True)
+class FederationOptions:
+    """Use one configuration per user/project/resource/scope; providers return fresh assertions."""
+
+    connection_id: str
+    project_id: str
+    resource: str
+    subject_token_provider: Callable[[], str] | None = field(default=None, repr=False)
+    scope: str | None = None
+    subject_token_type: str = "urn:ietf:params:oauth:token-type:jwt"
+    token_endpoint: str | None = None
+    client_secret_basic: bool = False
+    client_id: str | None = None
+    client_secret: str | None = field(default=None, repr=False)
+    client_assertion_provider: Callable[[], str] | None = field(default=None, repr=False)
+
+
+@dataclass(frozen=True)
+class FederationToken:
+    """A one-shot token; no refresh token is issued."""
+
+    access_token: str = field(repr=False)
+    expires_in: int
+    token_type: str = "Bearer"
+    scope: str | None = None
+
+
+class _NoRedirect(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        return None
+
+
+def _endpoint(federation: FederationOptions, options: ClientOptions) -> str:
+    from vertesia_client.client import VertesiaClientError, _resolve_client_endpoints
+
+    f = federation
+    if not f.connection_id or not f.project_id or not f.resource:
+        raise VertesiaClientError("federation requires connection_id, project_id and resource")
+    if (
+        (f.client_secret_basic and not f.client_secret)
+        or bool(f.client_secret or f.client_assertion_provider) != bool(f.client_id)
+        or (f.client_secret and f.client_assertion_provider)
+    ):
+        raise VertesiaClientError("client authentication requires client_id and exactly one credential method")
+    endpoint = f.token_endpoint
+    if not endpoint:
+        endpoints = _resolve_client_endpoints(options)
+        if not endpoints.token_server_url_explicit and not endpoints.token_server_url_safely_derived:
+            raise VertesiaClientError("explicit federation token_server_url or token_endpoint required for custom URLs")
+        endpoint = endpoints.token_server_url + "/oauth/token"
+    url = urllib.parse.urlsplit(endpoint)
+    if (
+        not url.hostname
+        or url.username is not None
+        or url.password is not None
+        or url.query
+        or url.fragment
+        or not (url.scheme == "https" or (url.scheme == "http" and url.hostname in {"localhost", "127.0.0.1", "::1"}))
+    ):
+        raise VertesiaClientError(
+            "federation endpoint must use HTTPS (or loopback HTTP), without credentials/query/fragment"
+        )
+    return endpoint
+
+
+def exchange_federation_token(
+    subject_token: str, federation: FederationOptions, options: ClientOptions | None = None
+) -> FederationToken:
+    """Exchange one assertion without caching or changing any client authentication."""
+    from vertesia_client.client import ClientOptions, VertesiaClientError
+
+    options = options or ClientOptions()
+    endpoint = _endpoint(federation, options)
+    if not isinstance(subject_token, str) or not subject_token.strip():
+        raise VertesiaClientError("empty IdP assertion")
+    values = {
+        "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
+        "subject_token": subject_token,
+        "subject_token_type": federation.subject_token_type,
+        "federation_connection_id": federation.connection_id,
+        "project_id": federation.project_id,
+        "resource": federation.resource,
+    }
+    if federation.scope:
+        values["scope"] = federation.scope
+    if federation.client_id and not federation.client_secret_basic:
+        values["client_id"] = federation.client_id
+    if federation.client_secret and not federation.client_secret_basic:
+        values["client_secret"] = federation.client_secret
+    if federation.client_assertion_provider:
+        try:
+            assertion = federation.client_assertion_provider()
+        except Exception:
+            raise VertesiaClientError("client assertion provider failed") from None
+        if not isinstance(assertion, str) or not assertion.strip():
+            raise VertesiaClientError("empty client assertion")
+        values["client_assertion"] = assertion
+        values["client_assertion_type"] = "urn:ietf:params:oauth:client-assertion-type:jwt-bearer"
+    request = urllib.request.Request(
+        endpoint,
+        data=urllib.parse.urlencode(values).encode(),
+        headers={"Content-Type": "application/x-www-form-urlencoded", "Accept": "application/json"},
+        method="POST",
+    )
+    if federation.client_secret_basic:
+        credentials = (
+            urllib.parse.quote_plus(federation.client_id) + ":" + urllib.parse.quote_plus(federation.client_secret)
+        )
+        request.add_header("Authorization", "Basic " + base64.b64encode(credentials.encode()).decode())
+    try:
+        with urllib.request.build_opener(_NoRedirect()).open(request, timeout=60) as response:
+            body = response.read(65537)
+            if response.status != 200 or len(body) > 65536:
+                raise VertesiaClientError("invalid federation response")
+    except urllib.error.HTTPError as exc:
+        code = exc.code
+        exc.close()
+        raise VertesiaClientError(f"federation exchange failed: HTTP {code}") from None
+    except (OSError, urllib.error.URLError):
+        raise VertesiaClientError("federation exchange request failed") from None
+    try:
+        data = json.loads(body)
+        token = data["access_token"]
+        ttl = data["expires_in"]
+        if (
+            not isinstance(token, str)
+            or not token.strip()
+            or type(ttl) is not int
+            or not 1 <= ttl <= 300
+            or data["token_type"] != "Bearer"
+            or data["issued_token_type"] != "urn:ietf:params:oauth:token-type:access_token"
+        ):
+            raise ValueError
+        return FederationToken(token, ttl, scope=data.get("scope"))
+    except (ValueError, TypeError, KeyError):
+        raise VertesiaClientError("invalid federation token response") from None
+
+
+class _FederationTokenSource:
+    def __init__(self, federation: FederationOptions, options: ClientOptions) -> None:
+        from vertesia_client.client import VertesiaClientError
+
+        _endpoint(federation, options)
+        if not callable(federation.subject_token_provider):
+            raise VertesiaClientError("federation requires subject_token_provider")
+        self.federation = federation
+        self.options = options
+        self._clock = time.monotonic
+        self._lock = threading.Lock()
+        self._token = ""
+        self._renew_at = 0.0
+
+    def token(self) -> str:
+        from vertesia_client.client import VertesiaClientError
+
+        with self._lock:
+            now = self._clock()
+            if self._token and now < self._renew_at:
+                return self._token
+            try:
+                assertion = self.federation.subject_token_provider()
+            except Exception:
+                raise VertesiaClientError("IdP token provider failed") from None
+            issued = exchange_federation_token(assertion, self.federation, self.options)
+            renew_at = now + issued.expires_in * 0.9
+            if not math.isfinite(renew_at) or self._clock() >= renew_at:
+                raise VertesiaClientError("federation token expired during exchange")
+            self._token = issued.access_token
+            self._renew_at = renew_at
+            return self._token
