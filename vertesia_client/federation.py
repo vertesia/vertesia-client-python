@@ -5,6 +5,7 @@ from __future__ import annotations
 import base64
 import json
 import math
+import re
 import threading
 import time
 import urllib.error
@@ -12,6 +13,7 @@ import urllib.parse
 import urllib.request
 from collections.abc import Callable
 from dataclasses import dataclass, field
+from http.client import HTTPException
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -37,7 +39,7 @@ class FederationOptions:
 
 @dataclass(frozen=True)
 class FederationToken:
-    """A one-shot token; no refresh token is issued."""
+    """A one-shot token with conservative remaining expires_in seconds; no refresh token."""
 
     access_token: str = field(repr=False)
     expires_in: int
@@ -65,7 +67,9 @@ def _endpoint(federation: FederationOptions, options: ClientOptions) -> str:
     endpoint = f.token_endpoint
     if not endpoint:
         endpoints = _resolve_client_endpoints(options)
-        if not endpoints.token_server_url_explicit and not endpoints.token_server_url_safely_derived:
+        host = urllib.parse.urlsplit(endpoints.token_server_url).hostname or ""
+        hosted = host == "sts.vertesia.io" or (host.startswith("sts.") and host.endswith(".vertesia.io"))
+        if not endpoints.token_server_url_explicit and not (endpoints.token_server_url_safely_derived and hosted):
             raise VertesiaClientError("explicit federation token_server_url or token_endpoint required for custom URLs")
         endpoint = endpoints.token_server_url + "/oauth/token"
     url = urllib.parse.urlsplit(endpoint)
@@ -87,6 +91,10 @@ def exchange_federation_token(
     subject_token: str, federation: FederationOptions, options: ClientOptions | None = None
 ) -> FederationToken:
     """Exchange one assertion without caching or changing any client authentication."""
+    return _exchange_federation_token(subject_token, federation, options, time.monotonic)
+
+
+def _exchange_federation_token(subject_token, federation, options, clock):
     from vertesia_client.client import ClientOptions, VertesiaClientError
 
     options = options or ClientOptions()
@@ -127,6 +135,7 @@ def exchange_federation_token(
             urllib.parse.quote_plus(federation.client_id) + ":" + urllib.parse.quote_plus(federation.client_secret)
         )
         request.add_header("Authorization", "Basic " + base64.b64encode(credentials.encode()).decode())
+    started = clock()
     try:
         with urllib.request.build_opener(_NoRedirect()).open(request, timeout=60) as response:
             body = response.read(65537)
@@ -136,7 +145,7 @@ def exchange_federation_token(
         code = exc.code
         exc.close()
         raise VertesiaClientError(f"federation exchange failed: HTTP {code}") from None
-    except (OSError, urllib.error.URLError):
+    except (OSError, urllib.error.URLError, HTTPException):
         raise VertesiaClientError("federation exchange request failed") from None
     try:
         data = json.loads(body)
@@ -144,14 +153,20 @@ def exchange_federation_token(
         ttl = data["expires_in"]
         if (
             not isinstance(token, str)
-            or not token.strip()
+            or not re.fullmatch(r"[A-Za-z0-9._~+/-]+=*", token)
             or type(ttl) is not int
             or not 1 <= ttl <= 300
-            or data["token_type"] != "Bearer"
+            or not isinstance(data["token_type"], str)
+            or data["token_type"].lower() != "bearer"
             or data["issued_token_type"] != "urn:ietf:params:oauth:token-type:access_token"
         ):
             raise ValueError
-        return FederationToken(token, ttl, scope=data.get("scope"))
+        remaining = ttl - math.ceil(max(0.0, clock() - started))
+        if remaining < 1:
+            raise VertesiaClientError("federation token expired during exchange")
+        return FederationToken(token, remaining, scope=data.get("scope"))
+    except VertesiaClientError:
+        raise
     except (ValueError, TypeError, KeyError):
         raise VertesiaClientError("invalid federation token response") from None
 
@@ -181,8 +196,8 @@ class _FederationTokenSource:
                 assertion = self.federation.subject_token_provider()
             except Exception:
                 raise VertesiaClientError("IdP token provider failed") from None
-            issued = exchange_federation_token(assertion, self.federation, self.options)
-            renew_at = now + issued.expires_in * 0.9
+            issued = _exchange_federation_token(assertion, self.federation, self.options, self._clock)
+            renew_at = self._clock() + issued.expires_in * 0.9
             if not math.isfinite(renew_at) or self._clock() >= renew_at:
                 raise VertesiaClientError("federation token expired during exchange")
             self._token = issued.access_token

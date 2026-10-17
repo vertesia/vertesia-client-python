@@ -5,9 +5,10 @@ import urllib.parse
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import replace
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from unittest.mock import MagicMock, patch
 
 from vertesia_client import Client, ClientOptions, FederationOptions, VertesiaClientError, exchange_federation_token
-from vertesia_client.federation import _FederationTokenSource
+from vertesia_client.federation import _endpoint, _exchange_federation_token, _FederationTokenSource
 
 
 class FederationTest(unittest.TestCase):
@@ -15,6 +16,7 @@ class FederationTest(unittest.TestCase):
         self.forms = []
         self.providers = 0
         self.status = 200
+        self.malformed_status = False
         self.response = {
             "access_token": "delegated",
             "token_type": "Bearer",
@@ -29,6 +31,10 @@ class FederationTest(unittest.TestCase):
             def do_POST(self):
                 owner.sts_headers.append(self.headers.get("Authorization"))
                 owner.forms.append(urllib.parse.parse_qs(self.rfile.read(int(self.headers["Content-Length"])).decode()))
+                if owner.malformed_status:
+                    self.connection.sendall(b"sensitive-idp-status\r\n\r\n")
+                    self.close_connection = True
+                    return
                 data = json.dumps(owner.response).encode()
                 self.send_response(owner.status)
                 if owner.status == 307:
@@ -99,7 +105,8 @@ class FederationTest(unittest.TestCase):
         )
         result = exchange_federation_token("idp+token", f, self.options)
         self.assertEqual(result.access_token, "delegated")
-        self.assertEqual(result.expires_in, 30)
+        self.assertGreaterEqual(result.expires_in, 28)
+        self.assertLessEqual(result.expires_in, 30)
         self.assertEqual(self.forms[0]["client_secret"], ["a+b%secret"])
         self.assertEqual(self.forms[0]["subject_token"], ["idp+token"])
         self.assertEqual(self.providers, 0)
@@ -176,5 +183,64 @@ class FederationTest(unittest.TestCase):
 
         source = _FederationTokenSource(replace(f, subject_token_provider=slow_provider), self.options)
         source._clock = lambda: now[0]
-        with self.assertRaisesRegex(VertesiaClientError, "expired during exchange"):
-            source.token()
+        self.assertEqual(source.token(), "delegated")
+
+    def test_custom_sts_must_be_explicit_in_both_modes(self):
+        for host in ["api.example.com", "api.vertesia.io.attacker.test", "api.evilvertesia.io"]:
+            options = ClientOptions(server_url="https://" + host, store_url="https://store.example.com")
+            with self.subTest(host=host):
+                with self.assertRaises(VertesiaClientError):
+                    Client(replace(options, federation=self.federation))
+                with self.assertRaises(VertesiaClientError):
+                    exchange_federation_token("idp", self.federation, options)
+                Client(replace(options, token_server_url=self.base, federation=self.federation))
+                Client(
+                    replace(options, federation=replace(self.federation, token_endpoint=self.base + "/tenant/token"))
+                )
+        for options in [
+            ClientOptions(),
+            ClientOptions(region="us1", preview=True),
+            ClientOptions(site="api.us1.harness.vertesia.io"),
+        ]:
+            self.assertIn("vertesia.io", _endpoint(self.federation, options))
+        self.assertEqual(self.forms, [])
+        self.assertEqual(self.providers, 0)
+
+    def test_malformed_http_status_is_redacted(self):
+        self.malformed_status = True
+        with self.assertRaises(VertesiaClientError) as error:
+            exchange_federation_token("idp", self.federation, self.options)
+        self.assertNotIn("sensitive-idp-status", str(error.exception))
+        self.assertTrue(error.exception.__suppress_context__)
+
+    def test_shared_transit_accounting_and_bearer_validation(self):
+        now = [0.0]
+        response = MagicMock()
+        response.status = 200
+        response.__enter__.return_value = response
+        delay = [2.0]
+        data = {**self.response, "token_type": "bearer"}
+
+        def read(_limit):
+            now[0] += delay[0]
+            return json.dumps(data).encode()
+
+        response.read.side_effect = read
+        opener = MagicMock()
+        opener.open.return_value = response
+
+        def slow_proof():
+            now[0] += 60
+            return "proof"
+
+        f = replace(self.federation, client_id="m", client_assertion_provider=slow_proof)
+        with patch("urllib.request.build_opener", return_value=opener):
+            result = _exchange_federation_token("idp", f, self.options, lambda: now[0])
+            self.assertEqual(result.expires_in, 28)
+            delay[0] = 31
+            with self.assertRaisesRegex(VertesiaClientError, "expired during exchange"):
+                _exchange_federation_token("idp", f, self.options, lambda: now[0])
+            delay[0] = 0
+            data["access_token"] = "bad\ntoken"
+            with self.assertRaises(VertesiaClientError):
+                exchange_federation_token("idp", f, self.options)

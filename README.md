@@ -211,3 +211,9 @@ add `client_secret_basic=True` for Basic instead. Or set `client_id` and a
 `client_assertion_provider` callback for `private_key_jwt`. It must mint a new short-lived signed
 assertion with a unique `jti` for each exchange; the single-string `aud` must be the Vertesia
 authorization-server issuer from discovery, including any tenant. Do not mix authentication methods.
+
+Exchange results report conservative remaining `expires_in` seconds after subtracting the STS
+round trip (rounded up). Time spent obtaining IdP/client assertions does not consume the delegated
+token's lifetime. Already-expired results are rejected in both one-shot and automatic modes.
+Implicit STS routing is limited to recognized Vertesia STS domains; custom `api*` hostnames require
+an explicit STS URL or complete token endpoint, even when their names resemble hosted endpoints.
