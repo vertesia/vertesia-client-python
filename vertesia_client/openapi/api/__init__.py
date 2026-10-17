@@ -28,6 +28,7 @@ from vertesia_client.openapi.api.o_auth_api import OAuthApi
 from vertesia_client.openapi.api.o_auth_clients_api import OAuthClientsApi
 from vertesia_client.openapi.api.o_auth_grants_api import OAuthGrantsApi
 from vertesia_client.openapi.api.o_auth_providers_api import OAuthProvidersApi
+from vertesia_client.openapi.api.oidc_federation_api import OIDCFederationApi
 from vertesia_client.openapi.api.objects_api import ObjectsApi
 from vertesia_client.openapi.api.pending_asks_api import PendingAsksApi
 from vertesia_client.openapi.api.processes_api import ProcessesApi

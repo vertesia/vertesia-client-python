@@ -29,6 +29,7 @@ vertesia_client/openapi/api/o_auth_clients_api.py
 vertesia_client/openapi/api/o_auth_grants_api.py
 vertesia_client/openapi/api/o_auth_providers_api.py
 vertesia_client/openapi/api/objects_api.py
+vertesia_client/openapi/api/oidc_federation_api.py
 vertesia_client/openapi/api/pending_asks_api.py
 vertesia_client/openapi/api/processes_api.py
 vertesia_client/openapi/api/projects_api.py
@@ -764,6 +765,8 @@ vertesia_client/openapi/models/o_auth_registration_source.py
 vertesia_client/openapi/models/o_auth_response_type.py
 vertesia_client/openapi/models/o_auth_token_endpoint_auth_method.py
 vertesia_client/openapi/models/object_search_response.py
+vertesia_client/openapi/models/oidc_federation_connection.py
+vertesia_client/openapi/models/oidc_federation_connection_payload.py
 vertesia_client/openapi/models/onboarding_progress.py
 vertesia_client/openapi/models/open_ai_audio_options.py
 vertesia_client/openapi/models/open_ai_dalle_options.py

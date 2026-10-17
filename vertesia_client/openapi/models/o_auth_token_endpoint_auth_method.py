@@ -29,6 +29,7 @@ class OAuthTokenEndpointAuthMethod(str, Enum):
     NONE = 'none'
     CLIENT_SECRET_POST = 'client_secret_post'
     CLIENT_SECRET_BASIC = 'client_secret_basic'
+    PRIVATE_KEY_JWT = 'private_key_jwt'
 
     @classmethod
     def _missing_(cls, value: object) -> Self:

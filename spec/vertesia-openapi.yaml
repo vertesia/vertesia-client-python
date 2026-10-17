@@ -10791,6 +10791,9 @@ components:
             $ref: "#/components/schemas/OAuthResponseType"
         token_endpoint_auth_method:
           $ref: "#/components/schemas/OAuthTokenEndpointAuthMethod"
+        jwks_uri:
+          type: string
+          format: uri
         allowed_scopes:
           type: array
           items:
@@ -19417,6 +19420,9 @@ components:
             $ref: "#/components/schemas/OAuthResponseType"
         token_endpoint_auth_method:
           $ref: "#/components/schemas/OAuthTokenEndpointAuthMethod"
+        jwks_uri:
+          type: string
+          format: uri
         allowed_scopes:
           type: array
           items:
@@ -19499,6 +19505,9 @@ components:
             $ref: "#/components/schemas/OAuthResponseType"
         token_endpoint_auth_method:
           $ref: "#/components/schemas/OAuthTokenEndpointAuthMethod"
+        jwks_uri:
+          type: string
+          format: uri
         allowed_scopes:
           type: array
           items:
@@ -19697,6 +19706,7 @@ components:
         - authorization_code
         - refresh_token
         - urn:ietf:params:oauth:grant-type:device_code
+        - urn:ietf:params:oauth:grant-type:token-exchange
     OAuthLoginDecisionResponse:
       type: object
       properties:
@@ -19894,6 +19904,7 @@ components:
         - none
         - client_secret_post
         - client_secret_basic
+        - private_key_jwt
     ObjectSearchResponse:
       type: object
       properties:
@@ -19909,6 +19920,229 @@ components:
       required:
         - results
         - facets
+      additionalProperties: false
+    OidcFederationConnection:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 200
+        issuer:
+          type: string
+          format: uri
+        jwks_uri:
+          type: string
+          format: uri
+        external_id_claim:
+          type: string
+          minLength: 1
+          maxLength: 256
+          pattern: \S
+          description: Exact top-level verified token claim matched to SCIM externalId
+            within the owning provisioning account.
+        allowed_audiences:
+          minItems: 1
+          maxItems: 20
+          type: array
+          items:
+            type: string
+            minLength: 1
+        allowed_algorithms:
+          minItems: 1
+          maxItems: 2
+          type: array
+          items:
+            type: string
+            enum:
+              - RS256
+              - ES256
+        subject_token_type:
+          type: string
+          enum:
+            - urn:ietf:params:oauth:token-type:jwt
+            - urn:ietf:params:oauth:token-type:id_token
+            - urn:ietf:params:oauth:token-type:access_token
+        required_claims:
+          type: object
+          additionalProperties:
+            type: string
+          description: Exact string matches against verified top-level IdP claims, such as
+            tenant or azp.
+        all_projects:
+          type: boolean
+          description: Explicitly allow all current and future projects in the owning
+            organization, subject to the user’s current access. Defaults to
+            false for existing allowlists. When true, allowed_project_ids must
+            be empty.
+        allowed_project_ids:
+          maxItems: 100
+          type: array
+          items:
+            type: string
+            pattern: ^[a-fA-F0-9]{24}$
+          description: Explicit project allowlist. Must contain 1–100 projects unless
+            all_projects is true.
+        allowed_client_ids:
+          minItems: 1
+          maxItems: 20
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 256
+          description: When set, require authentication by one of these account-owned
+            confidential OAuth clients. Omit to allow exchanges without separate
+            client authentication.
+        allowed_scopes:
+          minItems: 1
+          maxItems: 100
+          type: array
+          items:
+            type: string
+            minLength: 1
+          description: Optional restriction on delegable Vertesia permissions, excluding
+            account:admin. Omit to use the user’s current permissions. An
+            explicit list further restricts the grant.
+        max_token_ttl_seconds:
+          type: integer
+          minimum: 30
+          maximum: 300
+        max_subject_token_age_seconds:
+          type: integer
+          minimum: 30
+          maximum: 86400
+        enabled:
+          type: boolean
+        id:
+          type: string
+          pattern: ^[a-fA-F0-9]{24}$
+        account_id:
+          type: string
+          pattern: ^[a-fA-F0-9]{24}$
+      required:
+        - name
+        - issuer
+        - external_id_claim
+        - allowed_audiences
+        - allowed_algorithms
+        - subject_token_type
+        - allowed_project_ids
+        - max_token_ttl_seconds
+        - max_subject_token_age_seconds
+        - enabled
+        - id
+        - account_id
+      additionalProperties: false
+    OidcFederationConnectionArray:
+      type: array
+      items:
+        $ref: "#/components/schemas/OidcFederationConnection"
+    OidcFederationConnectionPayload:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 200
+        issuer:
+          type: string
+          format: uri
+        jwks_uri:
+          type: string
+          format: uri
+        external_id_claim:
+          type: string
+          minLength: 1
+          maxLength: 256
+          pattern: \S
+          description: Exact top-level verified token claim matched to SCIM externalId
+            within the owning provisioning account.
+        allowed_audiences:
+          minItems: 1
+          maxItems: 20
+          type: array
+          items:
+            type: string
+            minLength: 1
+        allowed_algorithms:
+          minItems: 1
+          maxItems: 2
+          type: array
+          items:
+            type: string
+            enum:
+              - RS256
+              - ES256
+        subject_token_type:
+          type: string
+          enum:
+            - urn:ietf:params:oauth:token-type:jwt
+            - urn:ietf:params:oauth:token-type:id_token
+            - urn:ietf:params:oauth:token-type:access_token
+        required_claims:
+          type: object
+          additionalProperties:
+            type: string
+          description: Exact string matches against verified top-level IdP claims, such as
+            tenant or azp.
+        all_projects:
+          type: boolean
+          description: Explicitly allow all current and future projects in the owning
+            organization, subject to the user’s current access. Defaults to
+            false for existing allowlists. When true, allowed_project_ids must
+            be empty.
+        allowed_project_ids:
+          maxItems: 100
+          type: array
+          items:
+            type: string
+            pattern: ^[a-fA-F0-9]{24}$
+          description: Explicit project allowlist. Must contain 1–100 projects unless
+            all_projects is true.
+        allowed_client_ids:
+          minItems: 1
+          maxItems: 20
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 256
+          description: When set, require authentication by one of these account-owned
+            confidential OAuth clients. Omit to allow exchanges without separate
+            client authentication.
+        allowed_scopes:
+          minItems: 1
+          maxItems: 100
+          type: array
+          items:
+            type: string
+            minLength: 1
+          description: Optional restriction on delegable Vertesia permissions, excluding
+            account:admin. Omit to use the user’s current permissions. An
+            explicit list further restricts the grant.
+        max_token_ttl_seconds:
+          type: integer
+          minimum: 30
+          maximum: 300
+        max_subject_token_age_seconds:
+          type: integer
+          minimum: 30
+          maximum: 86400
+          description: Maximum age since the signed iat claim. Defaults to 3600 seconds;
+            60 seconds of clock tolerance applies.
+        enabled:
+          type: boolean
+      required:
+        - name
+        - issuer
+        - external_id_claim
+        - allowed_audiences
+        - allowed_algorithms
+        - subject_token_type
+        - allowed_project_ids
+        - max_token_ttl_seconds
+        - enabled
       additionalProperties: false
     OnboardingProgress:
       type: object
@@ -27164,6 +27398,9 @@ components:
             $ref: "#/components/schemas/OAuthResponseType"
         token_endpoint_auth_method:
           $ref: "#/components/schemas/OAuthTokenEndpointAuthMethod"
+        jwks_uri:
+          type: string
+          format: uri
         allowed_scopes:
           type: array
           items:
@@ -27174,6 +27411,10 @@ components:
             type: string
         status:
           $ref: "#/components/schemas/OAuthClientStatus"
+        revoke_previous_client_secret:
+          type: boolean
+          description: Immediately revoke the previous rotation secret while retaining the
+            current secret.
         project_binding_mode:
           $ref: "#/components/schemas/OAuthProjectBindingMode"
         fixed_project_id:
@@ -44386,6 +44627,291 @@ paths:
         file: ../../apps/studio-server/src/api/oauth-clients.ts
         className: OAuthClientsResource
         methodName: delete
+    parameters:
+      - name: x-api-version
+        in: header
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          pattern: \S
+          example: "20260803"
+        description: Required Vertesia API version header. Use `20260803` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /oidc-federation:
+    get:
+      operationId: ListOidcFederationConnections
+      tags:
+        - OIDC Federation
+      summary: List OIDC federation connections
+      description: "**Required permissions:** `account:admin`"
+      security:
+        - bearerAuth: []
+        - OAuth2:
+            - account:admin
+      parameters: []
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OidcFederationConnectionArray"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - account:admin
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/oidc-federation.ts
+        className: OidcFederationResource
+        methodName: list
+    post:
+      operationId: CreateOidcFederationConnection
+      tags:
+        - OIDC Federation
+      summary: Create an OIDC federation connection
+      description: >-
+        GitHub Actions, GitLab.com and Google issuers require a recognized
+        immutable signed tenant or application binding in required_claims, such
+        as repository_id, namespace_id or azp.
+
+
+        **Required permissions:** `account:admin`
+      security:
+        - bearerAuth: []
+        - OAuth2:
+            - account:admin
+      parameters: []
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OidcFederationConnection"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - account:admin
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/oidc-federation.ts
+        className: OidcFederationResource
+        methodName: create
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OidcFederationConnectionPayload"
+    parameters:
+      - name: x-api-version
+        in: header
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          pattern: \S
+          example: "20260803"
+        description: Required Vertesia API version header. Use `20260803` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /oidc-federation/{connection_id}:
+    get:
+      operationId: GetOidcFederationConnection
+      tags:
+        - OIDC Federation
+      summary: Get an OIDC federation connection
+      description: "**Required permissions:** `account:admin`"
+      security:
+        - bearerAuth: []
+        - OAuth2:
+            - account:admin
+      parameters:
+        - name: connection_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OidcFederationConnection"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - account:admin
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/oidc-federation.ts
+        className: OidcFederationResource
+        methodName: retrieve
+    put:
+      operationId: UpdateOidcFederationConnection
+      tags:
+        - OIDC Federation
+      summary: Replace an OIDC federation trust policy
+      description: >-
+        Shared GitHub Actions, GitLab.com and Google issuers require a
+        recognized immutable signed tenant or application binding. Status-only
+        disabling remains available for an unsafe or unavailable policy.
+
+
+        **Required permissions:** `account:admin`
+      security:
+        - bearerAuth: []
+        - OAuth2:
+            - account:admin
+      parameters:
+        - name: connection_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OidcFederationConnection"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - account:admin
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/oidc-federation.ts
+        className: OidcFederationResource
+        methodName: update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OidcFederationConnectionPayload"
+    delete:
+      operationId: DeleteOidcFederationConnection
+      tags:
+        - OIDC Federation
+      summary: Delete an OIDC federation connection
+      description: "**Required permissions:** `account:admin`"
+      security:
+        - bearerAuth: []
+        - OAuth2:
+            - account:admin
+      parameters:
+        - name: connection_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - account:admin
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/oidc-federation.ts
+        className: OidcFederationResource
+        methodName: remove
     parameters:
       - name: x-api-version
         in: header

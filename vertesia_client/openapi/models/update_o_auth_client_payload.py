@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictBool, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from vertesia_client.openapi.models.o_auth_client_status import OAuthClientStatus
 from vertesia_client.openapi.models.o_auth_grant_type import OAuthGrantType
@@ -37,16 +37,18 @@ class UpdateOAuthClientPayload(BaseModel):
     grant_types: Optional[List[OAuthGrantType]] = None
     response_types: Optional[List[OAuthResponseType]] = None
     token_endpoint_auth_method: Optional[OAuthTokenEndpointAuthMethod] = None
+    jwks_uri: Optional[StrictStr] = None
     allowed_scopes: Optional[List[StrictStr]] = None
     default_scopes: Optional[List[StrictStr]] = None
     status: Optional[OAuthClientStatus] = None
+    revoke_previous_client_secret: Optional[StrictBool] = Field(default=None, description="Immediately revoke the previous rotation secret while retaining the current secret.")
     project_binding_mode: Optional[OAuthProjectBindingMode] = None
     fixed_project_id: Optional[StrictStr] = None
     restrict_to_owner_account: Optional[StrictBool] = None
     client_secret: Optional[StrictStr] = None
     metadata: Optional[Dict[str, Any]] = None
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["client_name", "redirect_uris", "grant_types", "response_types", "token_endpoint_auth_method", "allowed_scopes", "default_scopes", "status", "project_binding_mode", "fixed_project_id", "restrict_to_owner_account", "client_secret", "metadata"]
+    __properties: ClassVar[List[str]] = ["client_name", "redirect_uris", "grant_types", "response_types", "token_endpoint_auth_method", "jwks_uri", "allowed_scopes", "default_scopes", "status", "revoke_previous_client_secret", "project_binding_mode", "fixed_project_id", "restrict_to_owner_account", "client_secret", "metadata"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -116,9 +118,11 @@ class UpdateOAuthClientPayload(BaseModel):
             "grant_types": obj.get("grant_types"),
             "response_types": obj.get("response_types"),
             "token_endpoint_auth_method": obj.get("token_endpoint_auth_method"),
+            "jwks_uri": obj.get("jwks_uri"),
             "allowed_scopes": obj.get("allowed_scopes"),
             "default_scopes": obj.get("default_scopes"),
             "status": obj.get("status"),
+            "revoke_previous_client_secret": obj.get("revoke_previous_client_secret"),
             "project_binding_mode": obj.get("project_binding_mode"),
             "fixed_project_id": obj.get("fixed_project_id"),
             "restrict_to_owner_account": obj.get("restrict_to_owner_account"),

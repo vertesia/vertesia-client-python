@@ -29,6 +29,7 @@ class OAuthGrantType(str, Enum):
     AUTHORIZATION_CODE = 'authorization_code'
     REFRESH_TOKEN = 'refresh_token'
     URN_COLON_IETF_COLON_PARAMS_COLON_OAUTH_COLON_GRANT_MINUS_TYPE_COLON_DEVICE_CODE = 'urn:ietf:params:oauth:grant-type:device_code'
+    URN_COLON_IETF_COLON_PARAMS_COLON_OAUTH_COLON_GRANT_MINUS_TYPE_COLON_TOKEN_MINUS_EXCHANGE = 'urn:ietf:params:oauth:grant-type:token-exchange'
 
     @classmethod
     def _missing_(cls, value: object) -> Self:

@@ -45,6 +45,7 @@ __all__ = [
     "OAuthClientsApi",
     "OAuthGrantsApi",
     "OAuthProvidersApi",
+    "OIDCFederationApi",
     "ObjectsApi",
     "PendingAsksApi",
     "ProcessesApi",
@@ -786,6 +787,8 @@ __all__ = [
     "OAuthResponseType",
     "OAuthTokenEndpointAuthMethod",
     "ObjectSearchResponse",
+    "OidcFederationConnection",
+    "OidcFederationConnectionPayload",
     "OnboardingProgress",
     "OpenAiAudioOptions",
     "OpenAiDalleOptions",
@@ -1272,6 +1275,7 @@ from vertesia_client.openapi.api.o_auth_api import OAuthApi as OAuthApi
 from vertesia_client.openapi.api.o_auth_clients_api import OAuthClientsApi as OAuthClientsApi
 from vertesia_client.openapi.api.o_auth_grants_api import OAuthGrantsApi as OAuthGrantsApi
 from vertesia_client.openapi.api.o_auth_providers_api import OAuthProvidersApi as OAuthProvidersApi
+from vertesia_client.openapi.api.oidc_federation_api import OIDCFederationApi as OIDCFederationApi
 from vertesia_client.openapi.api.objects_api import ObjectsApi as ObjectsApi
 from vertesia_client.openapi.api.pending_asks_api import PendingAsksApi as PendingAsksApi
 from vertesia_client.openapi.api.processes_api import ProcessesApi as ProcessesApi
@@ -2017,6 +2021,8 @@ from vertesia_client.openapi.models.o_auth_registration_source import OAuthRegis
 from vertesia_client.openapi.models.o_auth_response_type import OAuthResponseType as OAuthResponseType
 from vertesia_client.openapi.models.o_auth_token_endpoint_auth_method import OAuthTokenEndpointAuthMethod as OAuthTokenEndpointAuthMethod
 from vertesia_client.openapi.models.object_search_response import ObjectSearchResponse as ObjectSearchResponse
+from vertesia_client.openapi.models.oidc_federation_connection import OidcFederationConnection as OidcFederationConnection
+from vertesia_client.openapi.models.oidc_federation_connection_payload import OidcFederationConnectionPayload as OidcFederationConnectionPayload
 from vertesia_client.openapi.models.onboarding_progress import OnboardingProgress as OnboardingProgress
 from vertesia_client.openapi.models.open_ai_audio_options import OpenAiAudioOptions as OpenAiAudioOptions
 from vertesia_client.openapi.models.open_ai_dalle_options import OpenAiDalleOptions as OpenAiDalleOptions

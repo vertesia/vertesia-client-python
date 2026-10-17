@@ -41,6 +41,7 @@ class OAuthClientCreateResponse(BaseModel):
     grant_types: List[OAuthGrantType]
     response_types: List[OAuthResponseType]
     token_endpoint_auth_method: OAuthTokenEndpointAuthMethod
+    jwks_uri: Optional[StrictStr] = None
     allowed_scopes: List[StrictStr]
     default_scopes: Optional[List[StrictStr]] = None
     registration_source: OAuthRegistrationSource
@@ -56,7 +57,7 @@ class OAuthClientCreateResponse(BaseModel):
     client_id: StrictStr
     client_secret: Optional[StrictStr] = None
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["app_id", "client_name", "client_type", "redirect_uris", "grant_types", "response_types", "token_endpoint_auth_method", "allowed_scopes", "default_scopes", "registration_source", "status", "project_binding_mode", "fixed_project_id", "restrict_to_owner_account", "metadata", "created_by", "client_secret_configured", "created_at", "updated_at", "client_id", "client_secret"]
+    __properties: ClassVar[List[str]] = ["app_id", "client_name", "client_type", "redirect_uris", "grant_types", "response_types", "token_endpoint_auth_method", "jwks_uri", "allowed_scopes", "default_scopes", "registration_source", "status", "project_binding_mode", "fixed_project_id", "restrict_to_owner_account", "metadata", "created_by", "client_secret_configured", "created_at", "updated_at", "client_id", "client_secret"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -128,6 +129,7 @@ class OAuthClientCreateResponse(BaseModel):
             "grant_types": obj.get("grant_types"),
             "response_types": obj.get("response_types"),
             "token_endpoint_auth_method": obj.get("token_endpoint_auth_method"),
+            "jwks_uri": obj.get("jwks_uri"),
             "allowed_scopes": obj.get("allowed_scopes"),
             "default_scopes": obj.get("default_scopes"),
             "registration_source": obj.get("registration_source"),
