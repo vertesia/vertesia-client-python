@@ -10,7 +10,7 @@ import urllib.parse
 import urllib.request
 from dataclasses import dataclass
 from functools import wraps
-from typing import Any
+from typing import Any, Protocol
 
 from vertesia_client.federation import FederationOptions, _FederationTokenSource
 from vertesia_client.openapi.api.access_control_entries_api import AccessControlEntriesApi
@@ -60,6 +60,16 @@ class VertesiaClientError(ValueError):
     """Raised when the client facade cannot be configured or authenticated."""
 
 
+class FederationExchangeError(VertesiaClientError):
+    """Sanitized token-server failure with programmatically inspectable metadata."""
+
+    def __init__(self, status_code: int, error_code: str | None = None) -> None:
+        self.status_code = status_code
+        self.error_code = error_code
+        suffix = f" ({error_code})" if error_code else ""
+        super().__init__(f"federation exchange failed: HTTP {status_code}{suffix}")
+
+
 @dataclass(frozen=True)
 class ClientOptions:
     """Options for the high-level Vertesia client."""
@@ -85,9 +95,8 @@ class _ResolvedEndpoints:
     token_server_url_safely_derived: bool
 
 
-class _TokenSource:
-    def token(self) -> str:
-        raise NotImplementedError
+class _TokenSource(Protocol):
+    def token(self) -> str: ...
 
 
 class _StaticTokenSource(_TokenSource):
@@ -308,8 +317,28 @@ class Client:
         self.workflow_runs = self.store.workflow_runs
 
 
+class _FederationApiClient(ApiClient):
+    def __init__(self, configuration, token_source):
+        super().__init__(configuration)
+        self._federation_source = token_source
+
+    def call_api(self, method, url, header_params=None, body=None, post_params=None, _request_timeout=None):
+        response = super().call_api(method, url, header_params, body, post_params, _request_timeout)
+        if response.status == 401:
+            headers = header_params or {}
+            bearer = next((v for k, v in headers.items() if k.lower() == "authorization"), "")
+            if bearer.startswith("Bearer "):
+                self._federation_source.invalidate(bearer[7:])
+        return response
+
+
 def _new_api_client(base_url: str, token_source: _TokenSource, api_version: str) -> ApiClient:
-    api_client = ApiClient(_TokenSourceConfiguration(base_url, token_source))
+    configuration = _TokenSourceConfiguration(base_url, token_source)
+    api_client = (
+        _FederationApiClient(configuration, token_source)
+        if isinstance(token_source, _FederationTokenSource)
+        else ApiClient(configuration)
+    )
     api_client.set_default_header("x-api-version", api_version)
     return api_client
 

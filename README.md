@@ -189,7 +189,7 @@ client = Client(options)
 # Use client.projects, client.objects, etc. as usual.
 
 # One-shot exchange; caller manages token lifetime:
-issued = exchange_federation_token(idp_assertion, policy, options)
+issued = exchange_federation_token(options, policy, idp_assertion)
 # issued.access_token, issued.expires_in, issued.scope
 ```
 
@@ -217,3 +217,14 @@ round trip (rounded up). Time spent obtaining IdP/client assertions does not con
 token's lifetime. Already-expired results are rejected in both one-shot and automatic modes.
 Implicit STS routing is limited to recognized Vertesia STS domains; custom `api*` hostnames require
 an explicit STS URL or complete token endpoint, even when their names resemble hosted endpoints.
+
+An API 401 invalidates only the bearer token that request used. The SDK does not replay the request;
+the next call attempts a fresh exchange. Concurrent late 401s do not evict a different newer token.
+Failed automatic exchanges are cached for one second to avoid repeatedly calling the IdP/STS during
+an outage. Finite lifetimes up to one day are accepted, including fractional seconds; returned
+remaining seconds are rounded down. The server's current five-minute cap is not a client limit.
+
+Catch `FederationExchangeError` to inspect `status_code` and `error_code`, for example to distinguish
+`invalid_scope` from `invalid_grant` or identify HTTP 429/503. Only known OAuth codes are exposed;
+remote descriptions and unknown error text remain redacted. The one-shot function takes arguments
+in the same order as the Go/Java facades: options, federation policy, subject assertion.

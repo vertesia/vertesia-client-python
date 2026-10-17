@@ -16,6 +16,7 @@ class FederationTest(unittest.TestCase):
         self.forms = []
         self.providers = 0
         self.status = 200
+        self.api_status = 200
         self.malformed_status = False
         self.response = {
             "access_token": "delegated",
@@ -45,7 +46,7 @@ class FederationTest(unittest.TestCase):
 
             def do_GET(self):
                 owner.gets.append(self.headers.get("Authorization"))
-                self.send_response(200)
+                self.send_response(owner.api_status)
                 self.send_header("Content-Type", "application/json")
                 self.send_header("Content-Length", "2")
                 self.end_headers()
@@ -103,7 +104,7 @@ class FederationTest(unittest.TestCase):
         f = replace(
             self.federation, token_endpoint=self.base + "/tenant/token", client_id="m", client_secret="a+b%secret"
         )
-        result = exchange_federation_token("idp+token", f, self.options)
+        result = exchange_federation_token(self.options, f, "idp+token")
         self.assertEqual(result.access_token, "delegated")
         self.assertGreaterEqual(result.expires_in, 28)
         self.assertLessEqual(result.expires_in, 30)
@@ -120,7 +121,7 @@ class FederationTest(unittest.TestCase):
 
         f = replace(f, client_secret=None, client_assertion_provider=proof)
         for _ in range(2):
-            exchange_federation_token("idp", f, self.options)
+            exchange_federation_token(self.options, f, "idp")
         self.assertEqual([item["client_assertion"] for item in self.forms[1:]], [["1"], ["2"]])
 
     def test_malformed_responses_fail_closed(self):
@@ -128,8 +129,8 @@ class FederationTest(unittest.TestCase):
             with self.subTest(response=response):
                 self.response = response
                 with self.assertRaises(VertesiaClientError):
-                    exchange_federation_token("idp", self.federation, self.options)
-        for ttl in [0, -1, 301, "30", 1.5, True, None]:
+                    exchange_federation_token(self.options, self.federation, "idp")
+        for ttl in [0, -1, 86401, "30", True, None]:
             self.response = {
                 "access_token": "token",
                 "token_type": "Bearer",
@@ -137,12 +138,12 @@ class FederationTest(unittest.TestCase):
                 "expires_in": ttl,
             }
             with self.subTest(ttl=ttl), self.assertRaises(VertesiaClientError):
-                exchange_federation_token("idp", self.federation, self.options)
+                exchange_federation_token(self.options, self.federation, "idp")
 
     def test_redirects_and_invalid_configuration(self):
         self.status = 307
         with self.assertRaises(VertesiaClientError):
-            exchange_federation_token("idp", self.federation, self.options)
+            exchange_federation_token(self.options, self.federation, "idp")
         self.assertEqual(len(self.forms), 1)
         for f in [
             replace(self.federation, token_endpoint="http://remote.example/token"),
@@ -150,7 +151,7 @@ class FederationTest(unittest.TestCase):
             replace(self.federation, client_id="m", client_secret="secret", client_assertion_provider=lambda: "proof"),
         ]:
             with self.subTest(f=f), self.assertRaises(VertesiaClientError):
-                exchange_federation_token("idp", f, self.options)
+                exchange_federation_token(self.options, f, "idp")
         with self.assertRaises(VertesiaClientError):
             Client(replace(self.options, federation=self.federation, token="direct"))
         with self.assertRaises(VertesiaClientError):
@@ -170,7 +171,7 @@ class FederationTest(unittest.TestCase):
         import base64
 
         f = replace(self.federation, client_id="client+id", client_secret="a+b%:secret", client_secret_basic=True)
-        exchange_federation_token("idp", f, replace(self.options, token="must-not-forward"))
+        exchange_federation_token(replace(self.options, token="must-not-forward"), f, "idp")
         encoded = self.sts_headers[0].removeprefix("Basic ")
         self.assertEqual(base64.b64decode(encoded).decode(), "client%2Bid:a%2Bb%25%3Asecret")
         self.assertNotIn("client_secret", self.forms[0])
@@ -192,7 +193,7 @@ class FederationTest(unittest.TestCase):
                 with self.assertRaises(VertesiaClientError):
                     Client(replace(options, federation=self.federation))
                 with self.assertRaises(VertesiaClientError):
-                    exchange_federation_token("idp", self.federation, options)
+                    exchange_federation_token(options, self.federation, "idp")
                 Client(replace(options, token_server_url=self.base, federation=self.federation))
                 Client(
                     replace(options, federation=replace(self.federation, token_endpoint=self.base + "/tenant/token"))
@@ -209,7 +210,7 @@ class FederationTest(unittest.TestCase):
     def test_malformed_http_status_is_redacted(self):
         self.malformed_status = True
         with self.assertRaises(VertesiaClientError) as error:
-            exchange_federation_token("idp", self.federation, self.options)
+            exchange_federation_token(self.options, self.federation, "idp")
         self.assertNotIn("sensitive-idp-status", str(error.exception))
         self.assertTrue(error.exception.__suppress_context__)
 
@@ -243,4 +244,66 @@ class FederationTest(unittest.TestCase):
             delay[0] = 0
             data["access_token"] = "bad\ntoken"
             with self.assertRaises(VertesiaClientError):
-                exchange_federation_token("idp", f, self.options)
+                exchange_federation_token(self.options, f, "idp")
+
+    def test_allowlisted_oauth_error_metadata(self):
+        from vertesia_client import FederationExchangeError
+
+        self.status = 400
+        for code in [
+            "invalid_grant",
+            "invalid_client",
+            "invalid_scope",
+            "unauthorized_client",
+            "invalid_target",
+            "invalid_request",
+            "temporarily_unavailable",
+        ]:
+            self.response = {"error": code, "error_description": "secret-idp-token"}
+            with self.assertRaises(FederationExchangeError) as error:
+                exchange_federation_token(self.options, self.federation, "idp")
+            self.assertEqual(error.exception.status_code, 400)
+            self.assertEqual(error.exception.error_code, code)
+            self.assertNotIn("secret-idp-token", str(error.exception))
+        self.status = 503
+        self.response = {"error": "secret-idp-token"}
+        with self.assertRaises(FederationExchangeError) as error:
+            exchange_federation_token(self.options, self.federation, "idp")
+        self.assertEqual(error.exception.status_code, 503)
+        self.assertIsNone(error.exception.error_code)
+        self.assertNotIn("secret-idp-token", str(error.exception))
+
+    def test_401_invalidates_without_replaying_and_failures_back_off(self):
+        from vertesia_client.openapi.exceptions import ApiException
+
+        client = Client(replace(self.options, federation=self.federation))
+        self.api_status = 401
+        with self.assertRaises(ApiException):
+            client.projects.list_projects()
+        self.assertEqual(len(self.forms), 1)
+        self.assertEqual(len(self.gets), 1)
+        self.api_status = 200
+        client.store.projects.list_projects()
+        self.assertEqual(len(self.forms), 2)
+        self.assertEqual(len(self.gets), 2)
+        source = _FederationTokenSource(self.federation, self.options)
+        now = [0.0]
+        source._clock = lambda: now[0]
+        self.status = 429
+        initial = len(self.forms)
+        for _ in range(10):
+            with self.assertRaises(VertesiaClientError):
+                source.token()
+        self.assertEqual(len(self.forms), initial + 1)
+        now[0] += 2
+        with self.assertRaises(VertesiaClientError):
+            source.token()
+        self.assertEqual(len(self.forms), initial + 2)
+        source._token = "new"
+        source.invalidate("old")
+        self.assertEqual(source._token, "new")
+
+    def test_accepts_raised_fractional_lifetimes(self):
+        self.response["expires_in"] = 600.75
+        token = _exchange_federation_token("idp", self.federation, self.options, lambda: 0.0)
+        self.assertEqual(token.expires_in, 600)
