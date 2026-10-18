@@ -29,9 +29,10 @@ class AppToolCollection(BaseModel):
     A description of the tools provided by an app
     """ # noqa: E501
     name: StrictStr = Field(description="The collection name")
+    collection_id: Optional[StrictStr] = None
     description: Optional[StrictStr] = Field(default=None, description="Optional collection description")
     tools: List[AgentToolDefinition] = Field(description="the tools provided by this collection")
-    __properties: ClassVar[List[str]] = ["name", "description", "tools"]
+    __properties: ClassVar[List[str]] = ["name", "collection_id", "description", "tools"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -92,6 +93,7 @@ class AppToolCollection(BaseModel):
 
         _obj = cls.model_validate({
             "name": obj.get("name"),
+            "collection_id": obj.get("collection_id"),
             "description": obj.get("description"),
             "tools": [AgentToolDefinition.from_dict(_item) for _item in obj["tools"]] if obj.get("tools") is not None else None
         })

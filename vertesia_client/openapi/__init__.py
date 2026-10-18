@@ -186,6 +186,7 @@ __all__ = [
     "AppInstallationPayloadMcpSharedParametersValue",
     "AppInstallationProviderBinding",
     "AppInstallationWithManifest",
+    "AppInstanceAvailability",
     "AppManifest",
     "AppManifestData",
     "AppManifestPreviewScreenshot",
@@ -1420,6 +1421,7 @@ from vertesia_client.openapi.models.app_installation_payload import AppInstallat
 from vertesia_client.openapi.models.app_installation_payload_mcp_shared_parameters_value import AppInstallationPayloadMcpSharedParametersValue as AppInstallationPayloadMcpSharedParametersValue
 from vertesia_client.openapi.models.app_installation_provider_binding import AppInstallationProviderBinding as AppInstallationProviderBinding
 from vertesia_client.openapi.models.app_installation_with_manifest import AppInstallationWithManifest as AppInstallationWithManifest
+from vertesia_client.openapi.models.app_instance_availability import AppInstanceAvailability as AppInstanceAvailability
 from vertesia_client.openapi.models.app_manifest import AppManifest as AppManifest
 from vertesia_client.openapi.models.app_manifest_data import AppManifestData as AppManifestData
 from vertesia_client.openapi.models.app_manifest_preview_screenshot import AppManifestPreviewScreenshot as AppManifestPreviewScreenshot

@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.app_access_control import AppAccessControl
 from vertesia_client.openapi.models.app_installation_payload_mcp_shared_parameters_value import AppInstallationPayloadMcpSharedParametersValue
 from vertesia_client.openapi.models.mcp_api_key_credential import McpApiKeyCredential
@@ -32,6 +33,9 @@ class AppInstallationPayload(BaseModel):
     AppInstallationPayload
     """ # noqa: E501
     app_id: StrictStr
+    instance_key: Optional[Annotated[str, Field(strict=True)]] = None
+    display_name: Optional[Annotated[str, Field(strict=True, max_length=120)]] = Field(default=None, description="Optional instance label. Send an empty string to clear the saved label; omit to preserve it.")
+    namespace_overrides: Optional[Dict[str, Annotated[str, Field(strict=True, max_length=24)]]] = None
     mcp_shared_parameters: Optional[Dict[str, Optional[AppInstallationPayloadMcpSharedParametersValue]]] = Field(default=None, description="Shared MCP parameter overrides. Omitted values are retained; null clears an override or restores its default.")
     mcp_parameters: Optional[Dict[str, Dict[str, Optional[AppInstallationPayloadMcpSharedParametersValue]]]] = Field(default=None, description="Installation parameter overrides by MCP collection id. Omit to preserve; null clears an override. Secret inputs are write-only.")
     settings: Optional[Dict[str, Any]] = None
@@ -40,7 +44,20 @@ class AppInstallationPayload(BaseModel):
     oauth_provider_params: Optional[Dict[str, OAuthClientCredentials]] = Field(default=None, description="OAuth credentials for named providers, keyed by the provider key from oauth_providers. Collected from the user at install time for providers with required_at_install. Separate from oauth_params to avoid key collisions between provider keys and collection ids.")
     api_key_params: Optional[Dict[str, McpApiKeyCredential]] = Field(default=None, description="API keys for auth: 'api_key' collections, keyed by collection.id. Collected from the user at install time for collections with api_key_config.required_at_install. Each key is stored in the installing project's encrypted secret store, replacing any key already held for that collection.")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["app_id", "mcp_shared_parameters", "mcp_parameters", "settings", "access_control", "oauth_params", "oauth_provider_params", "api_key_params"]
+    __properties: ClassVar[List[str]] = ["app_id", "instance_key", "display_name", "namespace_overrides", "mcp_shared_parameters", "mcp_parameters", "settings", "access_control", "oauth_params", "oauth_provider_params", "api_key_params"]
+
+    @field_validator('instance_key')
+    def instance_key_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if value is None:
+            return value
+
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"^[a-z][a-z0-9_-]{0,31}$", value):
+            raise ValueError(r"must validate the regular expression /^[a-z][a-z0-9_-]{0,31}$/")
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -148,6 +165,9 @@ class AppInstallationPayload(BaseModel):
 
         _obj = cls.model_validate({
             "app_id": obj.get("app_id"),
+            "instance_key": obj.get("instance_key"),
+            "display_name": obj.get("display_name"),
+            "namespace_overrides": obj.get("namespace_overrides"),
             "mcp_shared_parameters": dict(
                 (_k, AppInstallationPayloadMcpSharedParametersValue.from_dict(_v))
                 for _k, _v in obj["mcp_shared_parameters"].items()

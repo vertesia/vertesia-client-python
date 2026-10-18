@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional
+from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr, field_validator
+from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.app_access_control import AppAccessControl
 from vertesia_client.openapi.models.app_installation_mcp_configuration import AppInstallationMcpConfiguration
 from vertesia_client.openapi.models.app_installation_o_auth_binding import AppInstallationOAuthBinding
@@ -34,6 +35,12 @@ class AppInstallation(BaseModel):
     """ # noqa: E501
     id: StrictStr
     project: StrictStr
+    instance_key: Optional[StrictStr] = None
+    display_name: Optional[StrictStr] = None
+    installation_version: Optional[Union[StrictFloat, StrictInt]] = None
+    namespace_overrides: Optional[Dict[str, StrictStr]] = None
+    reserved_namespaces: Optional[Annotated[List[StrictStr], Field(min_length=1)]] = None
+    namespace_conflicts: Optional[List[StrictStr]] = None
     manifest: StrictStr
     mcp_configuration: Optional[AppInstallationMcpConfiguration] = None
     oauth_approval: Optional[AppInstallationOauthApproval] = None
@@ -46,7 +53,15 @@ class AppInstallation(BaseModel):
     created_at: StrictStr
     updated_at: StrictStr
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["id", "project", "manifest", "mcp_configuration", "oauth_approval", "oauth_client_id", "settings", "tool_allowlist", "oauth_bindings", "provider_bindings", "access_control", "created_at", "updated_at"]
+    __properties: ClassVar[List[str]] = ["id", "project", "instance_key", "display_name", "installation_version", "namespace_overrides", "reserved_namespaces", "namespace_conflicts", "manifest", "mcp_configuration", "oauth_approval", "oauth_client_id", "settings", "tool_allowlist", "oauth_bindings", "provider_bindings", "access_control", "created_at", "updated_at"]
+
+    @field_validator('installation_version')
+    def installation_version_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -133,6 +148,12 @@ class AppInstallation(BaseModel):
         _obj = cls.model_validate({
             "id": obj.get("id"),
             "project": obj.get("project"),
+            "instance_key": obj.get("instance_key"),
+            "display_name": obj.get("display_name"),
+            "installation_version": obj.get("installation_version"),
+            "namespace_overrides": obj.get("namespace_overrides"),
+            "reserved_namespaces": obj.get("reserved_namespaces"),
+            "namespace_conflicts": obj.get("namespace_conflicts"),
             "manifest": obj.get("manifest"),
             "mcp_configuration": AppInstallationMcpConfiguration.from_dict(obj["mcp_configuration"]) if obj.get("mcp_configuration") is not None else None,
             "oauth_approval": AppInstallationOauthApproval.from_dict(obj["oauth_approval"]) if obj.get("oauth_approval") is not None else None,
