@@ -48877,8 +48877,9 @@ paths:
         - Agent Runs
       summary: Get an agent run artifact
       description: >-
-        Downloads an artifact or returns a signed download URL when `url=1` is
-        supplied.
+        Returns a signed download URL as JSON when `url=1` is supplied, and
+        otherwise streams the artifact bytes as `application/octet-stream`.
+        Prefer `url=1` and download from the signed URL.
 
 
         **Required permissions:** Any of `agent_run:read`, `workflow:run`
@@ -48919,11 +48920,17 @@ paths:
             type: string
       responses:
         "200":
-          description: Artifact download URL metadata, or streamed file content.
+          description: Signed download URL metadata with `url=1`, otherwise the artifact
+            bytes.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/AgentArtifactUrlResponse"
+            application/octet-stream:
+              schema:
+                $ref: "#/components/schemas/BinaryFileResponse"
+        "404":
+          description: The agent run or the artifact does not exist.
         "500":
           description: Internal server error.
           content:

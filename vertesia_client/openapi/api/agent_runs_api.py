@@ -2195,7 +2195,7 @@ class AgentRunsApi:
     ) -> AgentArtifactUrlResponse:
         """Get an agent run artifact
 
-        Downloads an artifact or returns a signed download URL when `url=1` is supplied.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
+        Returns a signed download URL as JSON when `url=1` is supplied, and otherwise streams the artifact bytes as `application/octet-stream`. Prefer `url=1` and download from the signed URL.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
         :param agent_run_id: (required)
         :type agent_run_id: str
@@ -2246,6 +2246,7 @@ class AgentRunsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "AgentArtifactUrlResponse",
+            '404': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -2284,7 +2285,7 @@ class AgentRunsApi:
     ) -> ApiResponse[AgentArtifactUrlResponse]:
         """Get an agent run artifact
 
-        Downloads an artifact or returns a signed download URL when `url=1` is supplied.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
+        Returns a signed download URL as JSON when `url=1` is supplied, and otherwise streams the artifact bytes as `application/octet-stream`. Prefer `url=1` and download from the signed URL.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
         :param agent_run_id: (required)
         :type agent_run_id: str
@@ -2335,6 +2336,7 @@ class AgentRunsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "AgentArtifactUrlResponse",
+            '404': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -2373,7 +2375,7 @@ class AgentRunsApi:
     ) -> RESTResponseType:
         """Get an agent run artifact
 
-        Downloads an artifact or returns a signed download URL when `url=1` is supplied.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
+        Returns a signed download URL as JSON when `url=1` is supplied, and otherwise streams the artifact bytes as `application/octet-stream`. Prefer `url=1` and download from the signed URL.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
         :param agent_run_id: (required)
         :type agent_run_id: str
@@ -2424,6 +2426,7 @@ class AgentRunsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "AgentArtifactUrlResponse",
+            '404': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -2491,7 +2494,8 @@ class AgentRunsApi:
         if 'Accept' not in _header_params:
             _header_params['Accept'] = self.api_client.select_header_accept(
                 [
-                    'application/json'
+                    'application/json', 
+                    'application/octet-stream'
                 ]
             )
 
