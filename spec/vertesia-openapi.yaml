@@ -14002,6 +14002,12 @@ components:
         details:
           type: string
           description: Optional additional error details.
+        errorCode:
+          type: string
+          description: Machine-readable code for the specific failure, present when the
+            error carries one, so clients can branch on it without parsing
+            `message`.
+          example: account_api_key_creation_disabled
       required:
         - error
         - status

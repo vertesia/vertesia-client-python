@@ -32,7 +32,8 @@ class ErrorResponse(BaseModel):
     status: Annotated[int, Field(le=599, strict=True, ge=400)] = Field(description="HTTP status code. Client errors use a 4xx status code; server errors use 500.")
     message: Optional[StrictStr] = Field(default=None, description="Human-readable error message.")
     details: Optional[StrictStr] = Field(default=None, description="Optional additional error details.")
-    __properties: ClassVar[List[str]] = ["error", "status", "message", "details"]
+    error_code: Optional[StrictStr] = Field(default=None, description="Machine-readable code for the specific failure, present when the error carries one, so clients can branch on it without parsing `message`.", alias="errorCode")
+    __properties: ClassVar[List[str]] = ["error", "status", "message", "details", "errorCode"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -88,7 +89,8 @@ class ErrorResponse(BaseModel):
             "error": obj.get("error"),
             "status": obj.get("status"),
             "message": obj.get("message"),
-            "details": obj.get("details")
+            "details": obj.get("details"),
+            "errorCode": obj.get("errorCode")
         })
         return _obj
 
