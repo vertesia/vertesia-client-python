@@ -15,7 +15,7 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
+from pydantic import Field, StrictBool, StrictStr, field_validator
 from typing import List, Optional, Union
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.content_object_type import ContentObjectType
@@ -1198,8 +1198,8 @@ class ContentObjectTypesApi:
         tag: Optional[StrictStr] = None,
         layout: Optional[StrictBool] = None,
         var_schema: Optional[StrictBool] = None,
-        limit: Optional[Union[StrictFloat, StrictInt]] = None,
-        offset: Optional[Union[StrictFloat, StrictInt]] = None,
+        limit: Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None,
+        offset: Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1287,8 +1287,8 @@ class ContentObjectTypesApi:
         tag: Optional[StrictStr] = None,
         layout: Optional[StrictBool] = None,
         var_schema: Optional[StrictBool] = None,
-        limit: Optional[Union[StrictFloat, StrictInt]] = None,
-        offset: Optional[Union[StrictFloat, StrictInt]] = None,
+        limit: Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None,
+        offset: Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1376,8 +1376,8 @@ class ContentObjectTypesApi:
         tag: Optional[StrictStr] = None,
         layout: Optional[StrictBool] = None,
         var_schema: Optional[StrictBool] = None,
-        limit: Optional[Union[StrictFloat, StrictInt]] = None,
-        offset: Optional[Union[StrictFloat, StrictInt]] = None,
+        limit: Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None,
+        offset: Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1551,8 +1551,8 @@ class ContentObjectTypesApi:
         tag: Optional[StrictStr] = None,
         layout: Optional[StrictBool] = None,
         var_schema: Optional[StrictBool] = None,
-        limit: Optional[Union[StrictFloat, StrictInt]] = None,
-        offset: Optional[Union[StrictFloat, StrictInt]] = None,
+        limit: Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None,
+        offset: Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1640,8 +1640,8 @@ class ContentObjectTypesApi:
         tag: Optional[StrictStr] = None,
         layout: Optional[StrictBool] = None,
         var_schema: Optional[StrictBool] = None,
-        limit: Optional[Union[StrictFloat, StrictInt]] = None,
-        offset: Optional[Union[StrictFloat, StrictInt]] = None,
+        limit: Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None,
+        offset: Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1729,8 +1729,8 @@ class ContentObjectTypesApi:
         tag: Optional[StrictStr] = None,
         layout: Optional[StrictBool] = None,
         var_schema: Optional[StrictBool] = None,
-        limit: Optional[Union[StrictFloat, StrictInt]] = None,
-        offset: Optional[Union[StrictFloat, StrictInt]] = None,
+        limit: Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None,
+        offset: Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1905,8 +1905,8 @@ class ContentObjectTypesApi:
         chunkable: Optional[StrictBool] = None,
         layout: Optional[StrictBool] = None,
         var_schema: Optional[StrictBool] = None,
-        limit: Optional[Union[StrictFloat, StrictInt]] = None,
-        offset: Optional[Union[StrictFloat, StrictInt]] = None,
+        limit: Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None,
+        offset: Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1998,8 +1998,8 @@ class ContentObjectTypesApi:
         chunkable: Optional[StrictBool] = None,
         layout: Optional[StrictBool] = None,
         var_schema: Optional[StrictBool] = None,
-        limit: Optional[Union[StrictFloat, StrictInt]] = None,
-        offset: Optional[Union[StrictFloat, StrictInt]] = None,
+        limit: Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None,
+        offset: Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2091,8 +2091,8 @@ class ContentObjectTypesApi:
         chunkable: Optional[StrictBool] = None,
         layout: Optional[StrictBool] = None,
         var_schema: Optional[StrictBool] = None,
-        limit: Optional[Union[StrictFloat, StrictInt]] = None,
-        offset: Optional[Union[StrictFloat, StrictInt]] = None,
+        limit: Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None,
+        offset: Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2274,8 +2274,8 @@ class ContentObjectTypesApi:
         tag: Optional[StrictStr] = None,
         layout: Optional[StrictBool] = None,
         var_schema: Optional[StrictBool] = None,
-        limit: Optional[Union[StrictFloat, StrictInt]] = None,
-        offset: Optional[Union[StrictFloat, StrictInt]] = None,
+        limit: Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None,
+        offset: Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2363,8 +2363,8 @@ class ContentObjectTypesApi:
         tag: Optional[StrictStr] = None,
         layout: Optional[StrictBool] = None,
         var_schema: Optional[StrictBool] = None,
-        limit: Optional[Union[StrictFloat, StrictInt]] = None,
-        offset: Optional[Union[StrictFloat, StrictInt]] = None,
+        limit: Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None,
+        offset: Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2452,8 +2452,8 @@ class ContentObjectTypesApi:
         tag: Optional[StrictStr] = None,
         layout: Optional[StrictBool] = None,
         var_schema: Optional[StrictBool] = None,
-        limit: Optional[Union[StrictFloat, StrictInt]] = None,
-        offset: Optional[Union[StrictFloat, StrictInt]] = None,
+        limit: Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None,
+        offset: Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2627,8 +2627,8 @@ class ContentObjectTypesApi:
         tag: Optional[StrictStr] = None,
         layout: Optional[StrictBool] = None,
         var_schema: Optional[StrictBool] = None,
-        limit: Optional[Union[StrictFloat, StrictInt]] = None,
-        offset: Optional[Union[StrictFloat, StrictInt]] = None,
+        limit: Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None,
+        offset: Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2716,8 +2716,8 @@ class ContentObjectTypesApi:
         tag: Optional[StrictStr] = None,
         layout: Optional[StrictBool] = None,
         var_schema: Optional[StrictBool] = None,
-        limit: Optional[Union[StrictFloat, StrictInt]] = None,
-        offset: Optional[Union[StrictFloat, StrictInt]] = None,
+        limit: Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None,
+        offset: Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2805,8 +2805,8 @@ class ContentObjectTypesApi:
         tag: Optional[StrictStr] = None,
         layout: Optional[StrictBool] = None,
         var_schema: Optional[StrictBool] = None,
-        limit: Optional[Union[StrictFloat, StrictInt]] = None,
-        offset: Optional[Union[StrictFloat, StrictInt]] = None,
+        limit: Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None,
+        offset: Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],

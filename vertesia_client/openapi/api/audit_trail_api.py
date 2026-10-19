@@ -15,7 +15,7 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
+from pydantic import Field, StrictBool, StrictStr, field_validator
 from typing import List, Optional, Union
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.audit_action import AuditAction
@@ -947,8 +947,8 @@ class AuditTrailApi:
         project_id: Annotated[Optional[StrictStr], Field(description="Filter by project ID. Honoured only for account-scoped principals; a project-scoped principal always reads its own project.")] = None,
         var_from: Annotated[Optional[StrictStr], Field(description="Start time (ISO string)")] = None,
         to: Annotated[Optional[StrictStr], Field(description="End time (ISO string)")] = None,
-        limit: Annotated[Optional[Union[StrictFloat, StrictInt]], Field(description="Pagination: number of items to return (default 50, max 200)")] = None,
-        offset: Annotated[Optional[Union[StrictFloat, StrictInt]], Field(description="Pagination: offset")] = None,
+        limit: Annotated[Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]], Field(description="Pagination: number of items to return (default 50, max 200)")] = None,
+        offset: Annotated[Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]], Field(description="Pagination: offset")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1064,8 +1064,8 @@ class AuditTrailApi:
         project_id: Annotated[Optional[StrictStr], Field(description="Filter by project ID. Honoured only for account-scoped principals; a project-scoped principal always reads its own project.")] = None,
         var_from: Annotated[Optional[StrictStr], Field(description="Start time (ISO string)")] = None,
         to: Annotated[Optional[StrictStr], Field(description="End time (ISO string)")] = None,
-        limit: Annotated[Optional[Union[StrictFloat, StrictInt]], Field(description="Pagination: number of items to return (default 50, max 200)")] = None,
-        offset: Annotated[Optional[Union[StrictFloat, StrictInt]], Field(description="Pagination: offset")] = None,
+        limit: Annotated[Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]], Field(description="Pagination: number of items to return (default 50, max 200)")] = None,
+        offset: Annotated[Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]], Field(description="Pagination: offset")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1181,8 +1181,8 @@ class AuditTrailApi:
         project_id: Annotated[Optional[StrictStr], Field(description="Filter by project ID. Honoured only for account-scoped principals; a project-scoped principal always reads its own project.")] = None,
         var_from: Annotated[Optional[StrictStr], Field(description="Start time (ISO string)")] = None,
         to: Annotated[Optional[StrictStr], Field(description="End time (ISO string)")] = None,
-        limit: Annotated[Optional[Union[StrictFloat, StrictInt]], Field(description="Pagination: number of items to return (default 50, max 200)")] = None,
-        offset: Annotated[Optional[Union[StrictFloat, StrictInt]], Field(description="Pagination: offset")] = None,
+        limit: Annotated[Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]], Field(description="Pagination: number of items to return (default 50, max 200)")] = None,
+        offset: Annotated[Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]], Field(description="Pagination: offset")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],

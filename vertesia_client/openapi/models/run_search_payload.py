@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.facet_spec import FacetSpec
 from vertesia_client.openapi.models.run_search_query import RunSearchQuery
 from vertesia_client.openapi.models.sort_option import SortOption
@@ -33,8 +34,8 @@ class RunSearchPayload(BaseModel):
     facets: Optional[List[FacetSpec]] = None
     limit_facets: Optional[StrictBool] = Field(default=None, description="If the facets should be limited to the current page of results. Defaults to false. When false, the facets are independent of the search results page.")
     query: Optional[RunSearchQuery] = None
-    limit: Optional[Union[StrictFloat, StrictInt]] = None
-    offset: Optional[Union[StrictFloat, StrictInt]] = None
+    limit: Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None
+    offset: Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None
     select: Optional[StrictStr] = None
     all_revisions: Optional[StrictBool] = None
     from_root: Optional[StrictStr] = None

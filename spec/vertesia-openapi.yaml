@@ -7592,8 +7592,12 @@ components:
           $ref: "#/components/schemas/CollectionStatus"
         limit:
           type: number
+          minimum: 0
+          multipleOf: 1
         offset:
           type: number
+          minimum: 0
+          multipleOf: 1
         name:
           type: string
         type:
@@ -17462,8 +17466,12 @@ components:
       properties:
         limit:
           type: number
+          minimum: 0
+          multipleOf: 1
         offset:
           type: number
+          minimum: 0
+          multipleOf: 1
         status:
           $ref: "#/components/schemas/InteractionStatus"
         visibility:
@@ -23126,9 +23134,13 @@ components:
             list drafts only, and always have.
         limit:
           type: number
+          minimum: 0
+          multipleOf: 1
           description: Maximum number of prompts to return. Defaults to 100.
         offset:
           type: number
+          minimum: 0
+          multipleOf: 1
           description: Number of prompts to skip.
         role:
           type: string
@@ -24752,8 +24764,12 @@ components:
           $ref: "#/components/schemas/RunSearchQuery"
         limit:
           type: number
+          minimum: 0
+          multipleOf: 1
         offset:
           type: number
+          minimum: 0
+          multipleOf: 1
         select:
           type: string
         all_revisions:
@@ -35947,6 +35963,8 @@ paths:
           required: false
           schema:
             type: number
+            minimum: 0
+            multipleOf: 1
             description: Maximum number of prompts to return. Defaults to 100.
           description: Maximum number of prompts to return. Defaults to 100.
         - name: offset
@@ -35954,6 +35972,8 @@ paths:
           required: false
           schema:
             type: number
+            minimum: 0
+            multipleOf: 1
             description: Number of prompts to skip.
           description: Number of prompts to skip.
         - name: role
@@ -36806,7 +36826,7 @@ paths:
           required: false
           schema:
             type: integer
-            minimum: -9007199254740991
+            minimum: 0
             maximum: 9007199254740991
             description: Maximum number of runs to return.
           description: Maximum number of runs to return.
@@ -36815,7 +36835,7 @@ paths:
           required: false
           schema:
             type: integer
-            minimum: -9007199254740991
+            minimum: 0
             maximum: 9007199254740991
             description: Number of runs to skip.
           description: Number of runs to skip.
@@ -39131,6 +39151,8 @@ paths:
           required: false
           schema:
             type: number
+            minimum: 0
+            multipleOf: 1
             description: "Pagination: number of items to return (default 50, max 200)"
           description: "Pagination: number of items to return (default 50, max 200)"
         - name: offset
@@ -39138,6 +39160,8 @@ paths:
           required: false
           schema:
             type: number
+            minimum: 0
+            multipleOf: 1
             description: "Pagination: offset"
           description: "Pagination: offset"
       responses:
@@ -47571,6 +47595,8 @@ paths:
           required: false
           schema:
             type: number
+            minimum: 0
+            multipleOf: 1
             description: "Maximum number of results (default: 50)"
           description: "Maximum number of results (default: 50)"
         - name: offset
@@ -47578,6 +47604,8 @@ paths:
           required: false
           schema:
             type: number
+            minimum: 0
+            multipleOf: 1
             description: Offset for pagination
           description: Offset for pagination
         - name: cursor
@@ -52443,11 +52471,15 @@ paths:
           required: false
           schema:
             type: number
+            minimum: 0
+            multipleOf: 1
         - name: offset
           in: query
           required: false
           schema:
             type: number
+            minimum: 0
+            multipleOf: 1
       responses:
         "200":
           description: Matching tasks.
@@ -54920,11 +54952,15 @@ paths:
           required: false
           schema:
             type: number
+            minimum: 0
+            multipleOf: 1
         - name: offset
           in: query
           required: false
           schema:
             type: number
+            minimum: 0
+            multipleOf: 1
       responses:
         "200":
           description: Content object type catalog entries.
@@ -55005,11 +55041,15 @@ paths:
           required: false
           schema:
             type: number
+            minimum: 0
+            multipleOf: 1
         - name: offset
           in: query
           required: false
           schema:
             type: number
+            minimum: 0
+            multipleOf: 1
       responses:
         "200":
           description: System content object types.
@@ -55090,11 +55130,15 @@ paths:
           required: false
           schema:
             type: number
+            minimum: 0
+            multipleOf: 1
         - name: offset
           in: query
           required: false
           schema:
             type: number
+            minimum: 0
+            multipleOf: 1
       responses:
         "200":
           description: Application content object types.
@@ -55175,11 +55219,15 @@ paths:
           required: false
           schema:
             type: number
+            minimum: 0
+            multipleOf: 1
         - name: offset
           in: query
           required: false
           schema:
             type: number
+            minimum: 0
+            multipleOf: 1
       responses:
         "200":
           description: Stored content object types.
@@ -55334,11 +55382,15 @@ paths:
           required: false
           schema:
             type: number
+            minimum: 0
+            multipleOf: 1
         - name: offset
           in: query
           required: false
           schema:
             type: number
+            minimum: 0
+            multipleOf: 1
       responses:
         "200":
           description: Content object types.
@@ -59760,11 +59812,15 @@ paths:
           required: false
           schema:
             type: number
+            minimum: 0
+            multipleOf: 1
         - name: offset
           in: query
           required: false
           schema:
             type: number
+            minimum: 0
+            multipleOf: 1
       responses:
         "200":
           description: Collection members.

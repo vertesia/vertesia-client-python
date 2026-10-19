@@ -909,8 +909,8 @@ class InteractionRunsApi:
     def list_runs(
         self,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
-        limit: Annotated[Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]], Field(description="Maximum number of runs to return.")] = None,
-        offset: Annotated[Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]], Field(description="Number of runs to skip.")] = None,
+        limit: Annotated[Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=0)]], Field(description="Maximum number of runs to return.")] = None,
+        offset: Annotated[Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=0)]], Field(description="Number of runs to skip.")] = None,
         interaction: Annotated[Optional[List[StrictStr]], Field(description="Interaction ids, or in-code interaction names, to filter by.")] = None,
         model: Annotated[Optional[List[StrictStr]], Field(description="Model ids to filter by.")] = None,
         environment: Annotated[Optional[List[StrictStr]], Field(description="Environment ids to filter by.")] = None,
@@ -1022,8 +1022,8 @@ class InteractionRunsApi:
     def list_runs_with_http_info(
         self,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
-        limit: Annotated[Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]], Field(description="Maximum number of runs to return.")] = None,
-        offset: Annotated[Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]], Field(description="Number of runs to skip.")] = None,
+        limit: Annotated[Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=0)]], Field(description="Maximum number of runs to return.")] = None,
+        offset: Annotated[Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=0)]], Field(description="Number of runs to skip.")] = None,
         interaction: Annotated[Optional[List[StrictStr]], Field(description="Interaction ids, or in-code interaction names, to filter by.")] = None,
         model: Annotated[Optional[List[StrictStr]], Field(description="Model ids to filter by.")] = None,
         environment: Annotated[Optional[List[StrictStr]], Field(description="Environment ids to filter by.")] = None,
@@ -1135,8 +1135,8 @@ class InteractionRunsApi:
     def list_runs_without_preload_content(
         self,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
-        limit: Annotated[Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]], Field(description="Maximum number of runs to return.")] = None,
-        offset: Annotated[Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]], Field(description="Number of runs to skip.")] = None,
+        limit: Annotated[Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=0)]], Field(description="Maximum number of runs to return.")] = None,
+        offset: Annotated[Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=0)]], Field(description="Number of runs to skip.")] = None,
         interaction: Annotated[Optional[List[StrictStr]], Field(description="Interaction ids, or in-code interaction names, to filter by.")] = None,
         model: Annotated[Optional[List[StrictStr]], Field(description="Model ids to filter by.")] = None,
         environment: Annotated[Optional[List[StrictStr]], Field(description="Environment ids to filter by.")] = None,

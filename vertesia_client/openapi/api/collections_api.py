@@ -15,7 +15,7 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import Field, StrictFloat, StrictInt, StrictStr, field_validator
+from pydantic import Field, StrictStr, field_validator
 from typing import Dict, List, Optional, Union
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.collection import Collection
@@ -1530,8 +1530,8 @@ class CollectionsApi:
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         status: Optional[StrictStr] = None,
         type: Optional[StrictStr] = None,
-        limit: Optional[Union[StrictFloat, StrictInt]] = None,
-        offset: Optional[Union[StrictFloat, StrictInt]] = None,
+        limit: Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None,
+        offset: Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1619,8 +1619,8 @@ class CollectionsApi:
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         status: Optional[StrictStr] = None,
         type: Optional[StrictStr] = None,
-        limit: Optional[Union[StrictFloat, StrictInt]] = None,
-        offset: Optional[Union[StrictFloat, StrictInt]] = None,
+        limit: Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None,
+        offset: Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1708,8 +1708,8 @@ class CollectionsApi:
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         status: Optional[StrictStr] = None,
         type: Optional[StrictStr] = None,
-        limit: Optional[Union[StrictFloat, StrictInt]] = None,
-        offset: Optional[Union[StrictFloat, StrictInt]] = None,
+        limit: Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None,
+        offset: Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],

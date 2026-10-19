@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.interaction_status import InteractionStatus
 from vertesia_client.openapi.models.interaction_visibility import InteractionVisibility
 from typing import Optional, Set
@@ -29,8 +30,8 @@ class InteractionEndpointQuery(BaseModel):
     """
     The payload to query the interaction endpoints
     """ # noqa: E501
-    limit: Optional[Union[StrictFloat, StrictInt]] = None
-    offset: Optional[Union[StrictFloat, StrictInt]] = None
+    limit: Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None
+    offset: Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None
     status: Optional[InteractionStatus] = None
     visibility: Optional[InteractionVisibility] = None
     version: Optional[Union[StrictFloat, StrictInt]] = None

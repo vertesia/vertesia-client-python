@@ -15,7 +15,7 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
+from pydantic import Field, StrictBool, StrictStr, field_validator
 from typing import Any, Dict, List, Optional, Union
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.compute_prompt_facet_payload import ComputePromptFacetPayload
@@ -2374,8 +2374,8 @@ class PromptTemplatesApi:
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         name: Annotated[Optional[StrictStr], Field(description="Case-insensitive substring match on the prompt name.")] = None,
         status: Annotated[Optional[List[StrictStr]], Field(description="Accepted and ignored. `GET /prompts` and `POST /prompts/facets` list drafts only, and always have.")] = None,
-        limit: Annotated[Optional[Union[StrictFloat, StrictInt]], Field(description="Maximum number of prompts to return. Defaults to 100.")] = None,
-        offset: Annotated[Optional[Union[StrictFloat, StrictInt]], Field(description="Number of prompts to skip.")] = None,
+        limit: Annotated[Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]], Field(description="Maximum number of prompts to return. Defaults to 100.")] = None,
+        offset: Annotated[Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]], Field(description="Number of prompts to skip.")] = None,
         role: Annotated[Optional[StrictStr], Field(description="Exact match on the prompt role.")] = None,
         tags: Annotated[Optional[List[StrictStr]], Field(description="Match prompts carrying any of these tags.")] = None,
         match_interactions: Annotated[Optional[StrictBool], Field(description="Accepted and ignored. It used to attach the interactions referencing each prompt, in a shape no response component ever declared; nothing consumed it.")] = None,
@@ -2471,8 +2471,8 @@ class PromptTemplatesApi:
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         name: Annotated[Optional[StrictStr], Field(description="Case-insensitive substring match on the prompt name.")] = None,
         status: Annotated[Optional[List[StrictStr]], Field(description="Accepted and ignored. `GET /prompts` and `POST /prompts/facets` list drafts only, and always have.")] = None,
-        limit: Annotated[Optional[Union[StrictFloat, StrictInt]], Field(description="Maximum number of prompts to return. Defaults to 100.")] = None,
-        offset: Annotated[Optional[Union[StrictFloat, StrictInt]], Field(description="Number of prompts to skip.")] = None,
+        limit: Annotated[Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]], Field(description="Maximum number of prompts to return. Defaults to 100.")] = None,
+        offset: Annotated[Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]], Field(description="Number of prompts to skip.")] = None,
         role: Annotated[Optional[StrictStr], Field(description="Exact match on the prompt role.")] = None,
         tags: Annotated[Optional[List[StrictStr]], Field(description="Match prompts carrying any of these tags.")] = None,
         match_interactions: Annotated[Optional[StrictBool], Field(description="Accepted and ignored. It used to attach the interactions referencing each prompt, in a shape no response component ever declared; nothing consumed it.")] = None,
@@ -2568,8 +2568,8 @@ class PromptTemplatesApi:
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         name: Annotated[Optional[StrictStr], Field(description="Case-insensitive substring match on the prompt name.")] = None,
         status: Annotated[Optional[List[StrictStr]], Field(description="Accepted and ignored. `GET /prompts` and `POST /prompts/facets` list drafts only, and always have.")] = None,
-        limit: Annotated[Optional[Union[StrictFloat, StrictInt]], Field(description="Maximum number of prompts to return. Defaults to 100.")] = None,
-        offset: Annotated[Optional[Union[StrictFloat, StrictInt]], Field(description="Number of prompts to skip.")] = None,
+        limit: Annotated[Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]], Field(description="Maximum number of prompts to return. Defaults to 100.")] = None,
+        offset: Annotated[Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]], Field(description="Number of prompts to skip.")] = None,
         role: Annotated[Optional[StrictStr], Field(description="Exact match on the prompt role.")] = None,
         tags: Annotated[Optional[List[StrictStr]], Field(description="Match prompts carrying any of these tags.")] = None,
         match_interactions: Annotated[Optional[StrictBool], Field(description="Accepted and ignored. It used to attach the interactions referencing each prompt, in a shape no response component ever declared; nothing consumed it.")] = None,

@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictBool, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.collection_status import CollectionStatus
 from typing import Optional, Set
 from typing_extensions import Self
@@ -31,8 +32,8 @@ class ComplexCollectionSearchQuery(BaseModel):
     parent: Optional[StrictStr] = None
     dynamic: Optional[StrictBool] = None
     status: Optional[CollectionStatus] = None
-    limit: Optional[Union[StrictFloat, StrictInt]] = None
-    offset: Optional[Union[StrictFloat, StrictInt]] = None
+    limit: Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None
+    offset: Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None
     name: Optional[StrictStr] = None
     type: Optional[StrictStr] = None
     types: Optional[List[StrictStr]] = None

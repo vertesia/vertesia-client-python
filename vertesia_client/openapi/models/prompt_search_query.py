@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -29,8 +30,8 @@ class PromptSearchQuery(BaseModel):
     """ # noqa: E501
     name: Optional[StrictStr] = Field(default=None, description="Case-insensitive substring match on the prompt name.")
     status: Optional[List[StrictStr]] = Field(default=None, description="Accepted and ignored. `GET /prompts` and `POST /prompts/facets` list drafts only, and always have.")
-    limit: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Maximum number of prompts to return. Defaults to 100.")
-    offset: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Number of prompts to skip.")
+    limit: Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = Field(default=None, description="Maximum number of prompts to return. Defaults to 100.")
+    offset: Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = Field(default=None, description="Number of prompts to skip.")
     role: Optional[StrictStr] = Field(default=None, description="Exact match on the prompt role.")
     tags: Optional[List[StrictStr]] = Field(default=None, description="Match prompts carrying any of these tags.")
     match_interactions: Optional[StrictBool] = Field(default=None, description="Accepted and ignored. It used to attach the interactions referencing each prompt, in a shape no response component ever declared; nothing consumed it.", alias="matchInteractions")
