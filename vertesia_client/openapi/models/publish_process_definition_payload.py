@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -31,7 +32,8 @@ class PublishProcessDefinitionPayload(BaseModel):
     tags: Optional[List[StrictStr]] = Field(default=None, description="Optional tags to merge into the published revision.")
     label: Optional[StrictStr] = Field(default=None, description="Optional human-readable revision label.")
     comment: Optional[StrictStr] = Field(default=None, description="Optional publish note.")
-    __properties: ClassVar[List[str]] = ["confirmed", "tags", "label", "comment"]
+    idempotency_key: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=256)]] = Field(default=None, description="Client-chosen key that makes this request safe to retry. Publishing is otherwise not idempotent: a repeat of a publish that already succeeded is rejected because the revision is no longer a draft. When the revision was published by a request with the same key and the same body, the repeat returns that revision instead. Reusing the key with a different body is rejected with 409. The key is bound to the revision it published.")
+    __properties: ClassVar[List[str]] = ["confirmed", "tags", "label", "comment", "idempotency_key"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -87,7 +89,8 @@ class PublishProcessDefinitionPayload(BaseModel):
             "confirmed": obj.get("confirmed"),
             "tags": obj.get("tags"),
             "label": obj.get("label"),
-            "comment": obj.get("comment")
+            "comment": obj.get("comment"),
+            "idempotency_key": obj.get("idempotency_key")
         })
         return _obj
 

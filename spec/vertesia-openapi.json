@@ -30260,6 +30260,12 @@
           "comment": {
             "type": "string",
             "description": "Optional publish note."
+          },
+          "idempotency_key": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256,
+            "description": "Client-chosen key that makes this request safe to retry. Publishing is otherwise not idempotent: a repeat of a publish that already succeeded is rejected because the revision is no longer a draft. When the revision was published by a request with the same key and the same body, the repeat returns that revision instead. Reusing the key with a different body is rejected with 409. The key is bound to the revision it published."
           }
         },
         "required": [
@@ -70403,7 +70409,7 @@
           "Processes"
         ],
         "summary": "Publish a process definition",
-        "description": "Publishes the latest draft revision for a process definition, optionally attaching tags and a revision label. `confirmed=true` is required, and the endpoint rejects non-head or non-draft revisions.\n\n**Required permissions:** `workflow:admin`",
+        "description": "Publishes the latest draft revision for a process definition, optionally attaching tags and a revision label. `confirmed=true` is required, and the endpoint rejects non-head or non-draft revisions. With an `idempotency_key`, a repeat of the request that published the revision returns that revision instead of being rejected.\n\n**Required permissions:** `workflow:admin`",
         "security": [
           {
             "bearerAuth": []
@@ -70436,7 +70442,7 @@
             }
           },
           "409": {
-            "description": "The process definition changed while it was being published."
+            "description": "The process definition changed while it was being published, or the idempotency key was reused with a different request."
           },
           "500": {
             "description": "Internal server error.",
