@@ -155,7 +155,6 @@ __all__ = [
     "AnswerProcessTaskPayload",
     "AnthropicClaudeOptions",
     "ApiKey",
-    "ApiKeyReadResponse",
     "ApiKeyTokenRequest",
     "ApiKeyTypes",
     "ApiKeyWithValue",
@@ -1390,7 +1389,6 @@ from vertesia_client.openapi.models.analytics_axis import AnalyticsAxis as Analy
 from vertesia_client.openapi.models.answer_process_task_payload import AnswerProcessTaskPayload as AnswerProcessTaskPayload
 from vertesia_client.openapi.models.anthropic_claude_options import AnthropicClaudeOptions as AnthropicClaudeOptions
 from vertesia_client.openapi.models.api_key import ApiKey as ApiKey
-from vertesia_client.openapi.models.api_key_read_response import ApiKeyReadResponse as ApiKeyReadResponse
 from vertesia_client.openapi.models.api_key_token_request import ApiKeyTokenRequest as ApiKeyTokenRequest
 from vertesia_client.openapi.models.api_key_types import ApiKeyTypes as ApiKeyTypes
 from vertesia_client.openapi.models.api_key_with_value import ApiKeyWithValue as ApiKeyWithValue

@@ -15,11 +15,10 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import Field, StrictBool, StrictStr, field_validator
+from pydantic import Field, StrictStr, field_validator
 from typing import List, Optional
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.api_key import ApiKey
-from vertesia_client.openapi.models.api_key_read_response import ApiKeyReadResponse
 from vertesia_client.openapi.models.api_key_with_value import ApiKeyWithValue
 from vertesia_client.openapi.models.auth_token_response import AuthTokenResponse
 from vertesia_client.openapi.models.create_api_key_payload import CreateApiKeyPayload
@@ -626,7 +625,6 @@ class APIKeysApi:
         self,
         key_id: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
-        with_value: Optional[StrictBool] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -639,17 +637,15 @@ class APIKeysApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiKeyReadResponse:
+    ) -> ApiKey:
         """Retrieve an API key
 
-        Retrieves API key metadata and optionally the raw key value when it is still retrievable.  **Required permissions:** `api_key:read`
+        Retrieves API key metadata. The raw key value is returned only once, on creation.  **Required permissions:** `api_key:read`
 
         :param key_id: (required)
         :type key_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
-        :param with_value:
-        :type with_value: bool
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -675,7 +671,6 @@ class APIKeysApi:
         _param = self._get_api_key_serialize(
             key_id=key_id,
             x_api_version=x_api_version,
-            with_value=with_value,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -683,7 +678,7 @@ class APIKeysApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "ApiKeyReadResponse",
+            '200': "ApiKey",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -703,7 +698,6 @@ class APIKeysApi:
         self,
         key_id: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
-        with_value: Optional[StrictBool] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -716,17 +710,15 @@ class APIKeysApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[ApiKeyReadResponse]:
+    ) -> ApiResponse[ApiKey]:
         """Retrieve an API key
 
-        Retrieves API key metadata and optionally the raw key value when it is still retrievable.  **Required permissions:** `api_key:read`
+        Retrieves API key metadata. The raw key value is returned only once, on creation.  **Required permissions:** `api_key:read`
 
         :param key_id: (required)
         :type key_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
-        :param with_value:
-        :type with_value: bool
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -752,7 +744,6 @@ class APIKeysApi:
         _param = self._get_api_key_serialize(
             key_id=key_id,
             x_api_version=x_api_version,
-            with_value=with_value,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -760,7 +751,7 @@ class APIKeysApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "ApiKeyReadResponse",
+            '200': "ApiKey",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -780,7 +771,6 @@ class APIKeysApi:
         self,
         key_id: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
-        with_value: Optional[StrictBool] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -796,14 +786,12 @@ class APIKeysApi:
     ) -> RESTResponseType:
         """Retrieve an API key
 
-        Retrieves API key metadata and optionally the raw key value when it is still retrievable.  **Required permissions:** `api_key:read`
+        Retrieves API key metadata. The raw key value is returned only once, on creation.  **Required permissions:** `api_key:read`
 
         :param key_id: (required)
         :type key_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
-        :param with_value:
-        :type with_value: bool
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -829,7 +817,6 @@ class APIKeysApi:
         _param = self._get_api_key_serialize(
             key_id=key_id,
             x_api_version=x_api_version,
-            with_value=with_value,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -837,7 +824,7 @@ class APIKeysApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "ApiKeyReadResponse",
+            '200': "ApiKey",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -852,7 +839,6 @@ class APIKeysApi:
         self,
         key_id,
         x_api_version,
-        with_value,
         _request_auth,
         _content_type,
         _headers,
@@ -877,10 +863,6 @@ class APIKeysApi:
         if key_id is not None:
             _path_params['keyId'] = key_id
         # process the query parameters
-        if with_value is not None:
-            
-            _query_params.append(('withValue', with_value))
-            
         # process the header parameters
         if x_api_version is not None:
             _header_params['x-api-version'] = x_api_version

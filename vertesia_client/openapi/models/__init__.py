@@ -93,7 +93,6 @@ from vertesia_client.openapi.models.analytics_axis import AnalyticsAxis
 from vertesia_client.openapi.models.answer_process_task_payload import AnswerProcessTaskPayload
 from vertesia_client.openapi.models.anthropic_claude_options import AnthropicClaudeOptions
 from vertesia_client.openapi.models.api_key import ApiKey
-from vertesia_client.openapi.models.api_key_read_response import ApiKeyReadResponse
 from vertesia_client.openapi.models.api_key_token_request import ApiKeyTokenRequest
 from vertesia_client.openapi.models.api_key_types import ApiKeyTypes
 from vertesia_client.openapi.models.api_key_with_value import ApiKeyWithValue
