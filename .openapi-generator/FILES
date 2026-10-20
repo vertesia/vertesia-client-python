@@ -151,6 +151,8 @@ vertesia_client/openapi/models/app_event_delivery_target.py
 vertesia_client/openapi/models/app_event_delivery_target_input.py
 vertesia_client/openapi/models/app_event_subscription_definition.py
 vertesia_client/openapi/models/app_git_source_config.py
+vertesia_client/openapi/models/app_git_source_provider.py
+vertesia_client/openapi/models/app_github_repository_creation.py
 vertesia_client/openapi/models/app_inspection_capability_report.py
 vertesia_client/openapi/models/app_inspection_issue.py
 vertesia_client/openapi/models/app_inspection_result.py
@@ -185,6 +187,7 @@ vertesia_client/openapi/models/app_repo_tree_entry.py
 vertesia_client/openapi/models/app_scaffold_module.py
 vertesia_client/openapi/models/app_scaffold_progress.py
 vertesia_client/openapi/models/app_scaffold_progress_status.py
+vertesia_client/openapi/models/app_scaffold_source_mode.py
 vertesia_client/openapi/models/app_session_token_request.py
 vertesia_client/openapi/models/app_session_token_response.py
 vertesia_client/openapi/models/app_source_config.py

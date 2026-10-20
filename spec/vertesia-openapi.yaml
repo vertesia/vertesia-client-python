@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: Vertesia API
-  version: 1.6.0-dev.20261014.015055Z
+  version: 1.6.0-dev.20261019.172735Z
   x-api-version: "20260803"
   description: The Vertesia API provides project-scoped access to interaction
     execution and content workflows. Use it to run interactions, inspect
@@ -2932,8 +2932,20 @@ components:
     AppGitSourceConfig:
       type: object
       properties:
+        provider:
+          $ref: "#/components/schemas/AppGitSourceProvider"
+          description: Repository provider. Missing values are treated as `vertesia` for
+            apps created before provider support.
         url:
           type: string
+        installation_id:
+          type: string
+          description: Verified GitHub App installation id. Required when provider is
+            `github`.
+        repository:
+          type: string
+          description: GitHub repository in `owner/name` form. Required when provider is
+            `github`.
         default_branch:
           type: string
         production_branch:
@@ -2941,6 +2953,26 @@ components:
         development_branch:
           type: string
       additionalProperties: false
+    AppGitSourceProvider:
+      type: string
+      enum:
+        - vertesia
+        - github
+    AppGithubRepositoryCreation:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+          pattern: ^[A-Za-z0-9][A-Za-z0-9._-]*$
+          description: Name of the empty GitHub repository to create in the verified
+            installation.
+        private:
+          type: boolean
+          description: Create a private repository. Defaults to true when omitted.
+      required:
+        - name
     AppInspectionCapabilityReport:
       type: object
       properties:
@@ -3963,7 +3995,13 @@ components:
         git:
           type: object
           properties:
+            provider:
+              $ref: "#/components/schemas/AppGitSourceProvider"
             url:
+              type: string
+            installation_id:
+              type: string
+            repository:
               type: string
             default_branch:
               type: string
@@ -4340,6 +4378,14 @@ components:
         - building
         - completed
         - failed
+    AppScaffoldSourceMode:
+      type: string
+      enum:
+        - generate
+        - existing
+      description: How App Builder should use a connected source repository.
+        `generate` writes a starter app to an empty branch; `existing` only
+        binds the repository.
     AppSessionTokenRequest:
       type: object
       properties:
@@ -25399,6 +25445,22 @@ components:
           type: boolean
           description: Start an initial app version build after the source has been
             pushed. Defaults to true.
+        source_mode:
+          $ref: "#/components/schemas/AppScaffoldSourceMode"
+          description: Explicit source setup behavior for external repositories. Omit to
+            retain the legacy automatic behavior.
+        source:
+          $ref: "#/components/schemas/AppSourceConfig"
+          description: Source repository to bind to the app. Omit to create and scaffold a
+            Vertesia-managed repository.
+        github_connection_id:
+          type: string
+          description: Short-lived proof that the current user verified the selected
+            GitHub installation.
+        github_repository_creation:
+          $ref: "#/components/schemas/AppGithubRepositoryCreation"
+          description: Create an empty repository in the verified GitHub installation
+            before generating the app source.
       required:
         - app_id
       additionalProperties: false
