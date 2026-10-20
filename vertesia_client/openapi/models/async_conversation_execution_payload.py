@@ -60,6 +60,7 @@ class AsyncConversationExecutionPayload(BaseModel):
     async_completion: Optional[AsyncCompletionOptions] = Field(default=None, description="Options for async completion and/or streaming LLM response chunks to Redis. Used by agent workflows for async activity completion and real-time streaming.", alias="asyncCompletion")
     type: StrictStr
     notify_endpoints: Optional[List[StrictStr]] = Field(default=None, description="An array of endpoint URLs to be notified upon execution")
+    idempotency_key: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=256)]] = Field(default=None, description="Client-chosen key, unique per intended run, that makes this request safe to retry. A repeat of the request with the same key and the same body returns the agent run the first request started instead of starting another. Reusing a key with a different body is rejected with 409, and a repeat that arrives while the first request is still starting the run may be answered with 503 and `Retry-After`. Keys are scoped to the project and stay bound to their run for as long as it exists; once the run is deleted, the same key starts a new one.")
     task_queue: Optional[StrictStr] = None
     tool_approval_mode: Optional[AgentToolApprovalMode] = Field(default=None, description="Effective tool approval mode for interactive agent conversations.")
     visibility: Optional[ConversationVisibility] = Field(default=None, description="Visibility determine if the conversation should be seen by the user only or by anyone with access to the project If not specified, the default is project")
@@ -92,7 +93,7 @@ class AsyncConversationExecutionPayload(BaseModel):
     agent_run_id: Optional[StrictStr] = Field(default=None, description="The AgentRun MongoDB _id. Used for artifact storage paths: agents/{agent_run_id}/ Flows into ConversationState and down to workstreams. Undefined for legacy workflows started before the AgentRun system.")
     schedule_id: Optional[StrictStr] = Field(default=None, description="The Schedule MongoDB _id. Set when this execution was triggered by a Temporal schedule. Used by the workflow to create an AgentRun on first run if agent_run_id is absent.")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["interaction", "title", "topic", "generate_topic", "generate_lessons", "evaluate", "app_version", "data", "config", "result_schema", "do_validate", "tags", "conversation", "workflow", "prompts", "asyncCompletion", "type", "notify_endpoints", "task_queue", "tool_approval_mode", "visibility", "tool_names", "initial_skills", "initial_tool_calls", "excluded_tools", "agent_policy", "max_iterations", "interactive", "user_channels", "disable_interaction_tools", "search_scope", "collection_id", "disabled_mcp_collections", "checkpoint_tokens", "checkpoint", "budget", "strip_options", "task_id", "launch_id", "debug_mode", "max_nested_conversation_depth", "parent_metadata", "final_verification", "non_blocking_subagents", "restart_from_workflow_run_id", "source_first_workflow_run_id", "is_fork", "agent_run_id", "schedule_id"]
+    __properties: ClassVar[List[str]] = ["interaction", "title", "topic", "generate_topic", "generate_lessons", "evaluate", "app_version", "data", "config", "result_schema", "do_validate", "tags", "conversation", "workflow", "prompts", "asyncCompletion", "type", "notify_endpoints", "idempotency_key", "task_queue", "tool_approval_mode", "visibility", "tool_names", "initial_skills", "initial_tool_calls", "excluded_tools", "agent_policy", "max_iterations", "interactive", "user_channels", "disable_interaction_tools", "search_scope", "collection_id", "disabled_mcp_collections", "checkpoint_tokens", "checkpoint", "budget", "strip_options", "task_id", "launch_id", "debug_mode", "max_nested_conversation_depth", "parent_metadata", "final_verification", "non_blocking_subagents", "restart_from_workflow_run_id", "source_first_workflow_run_id", "is_fork", "agent_run_id", "schedule_id"]
 
     @field_validator('type')
     def type_validate_enum(cls, value):
@@ -235,6 +236,7 @@ class AsyncConversationExecutionPayload(BaseModel):
             "asyncCompletion": AsyncCompletionOptions.from_dict(obj["asyncCompletion"]) if obj.get("asyncCompletion") is not None else None,
             "type": obj.get("type"),
             "notify_endpoints": obj.get("notify_endpoints"),
+            "idempotency_key": obj.get("idempotency_key"),
             "task_queue": obj.get("task_queue"),
             "tool_approval_mode": obj.get("tool_approval_mode"),
             "visibility": obj.get("visibility"),
