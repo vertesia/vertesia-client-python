@@ -49778,6 +49778,9 @@ paths:
                 error: Internal Server Error
                 status: 500
                 message: Internal server error.
+        "503":
+          description: Cost analytics is not available on this deployment, or its model
+            pricing is not synced yet.
         4XX:
           description: Client error.
           content:
@@ -49862,6 +49865,9 @@ paths:
                 error: Internal Server Error
                 status: 500
                 message: Internal server error.
+        "503":
+          description: Cost analytics is not available on this deployment, or its model
+            pricing is not synced yet.
         4XX:
           description: Client error.
           content:
@@ -49922,6 +49928,9 @@ paths:
                 error: Internal Server Error
                 status: 500
                 message: Internal server error.
+        "503":
+          description: Cost analytics is not available on this deployment, or its model
+            pricing is not synced yet.
         4XX:
           description: Client error.
           content:
@@ -50032,6 +50041,9 @@ paths:
                 error: Internal Server Error
                 status: 500
                 message: Internal server error.
+        "503":
+          description: Cost analytics is not available on this deployment, or its model
+            pricing is not synced yet.
         4XX:
           description: Client error.
           content:
@@ -56321,6 +56333,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/SignalAgentResponse"
+        "409":
+          description: The workflow run has closed and can no longer receive signals.
         "500":
           description: Internal server error.
           content:

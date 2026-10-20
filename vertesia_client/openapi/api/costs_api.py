@@ -118,6 +118,7 @@ class CostsApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "str",
             '500': "ErrorResponse",
+            '503': None,
             '4XX': "ErrorResponse",
         }
         response_data = self.api_client.call_api(
@@ -207,6 +208,7 @@ class CostsApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "str",
             '500': "ErrorResponse",
+            '503': None,
             '4XX': "ErrorResponse",
         }
         response_data = self.api_client.call_api(
@@ -296,6 +298,7 @@ class CostsApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "str",
             '500': "ErrorResponse",
+            '503': None,
             '4XX': "ErrorResponse",
         }
         response_data = self.api_client.call_api(
@@ -455,6 +458,7 @@ class CostsApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "CostAnalyticsResponse",
             '500': "ErrorResponse",
+            '503': None,
             '4XX': "ErrorResponse",
         }
         response_data = self.api_client.call_api(
@@ -528,6 +532,7 @@ class CostsApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "CostAnalyticsResponse",
             '500': "ErrorResponse",
+            '503': None,
             '4XX': "ErrorResponse",
         }
         response_data = self.api_client.call_api(
@@ -601,6 +606,7 @@ class CostsApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "CostAnalyticsResponse",
             '500': "ErrorResponse",
+            '503': None,
             '4XX': "ErrorResponse",
         }
         response_data = self.api_client.call_api(
@@ -754,6 +760,7 @@ class CostsApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "ModelPriceComparisonResponse",
             '500': "ErrorResponse",
+            '503': None,
             '4XX': "ErrorResponse",
         }
         response_data = self.api_client.call_api(
@@ -831,6 +838,7 @@ class CostsApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "ModelPriceComparisonResponse",
             '500': "ErrorResponse",
+            '503': None,
             '4XX': "ErrorResponse",
         }
         response_data = self.api_client.call_api(
@@ -908,6 +916,7 @@ class CostsApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "ModelPriceComparisonResponse",
             '500': "ErrorResponse",
+            '503': None,
             '4XX': "ErrorResponse",
         }
         response_data = self.api_client.call_api(
@@ -1051,6 +1060,7 @@ class CostsApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "CostRunPriceResponse",
             '500': "ErrorResponse",
+            '503': None,
             '4XX': "ErrorResponse",
         }
         response_data = self.api_client.call_api(
@@ -1124,6 +1134,7 @@ class CostsApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "CostRunPriceResponse",
             '500': "ErrorResponse",
+            '503': None,
             '4XX': "ErrorResponse",
         }
         response_data = self.api_client.call_api(
@@ -1197,6 +1208,7 @@ class CostsApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "CostRunPriceResponse",
             '500': "ErrorResponse",
+            '503': None,
             '4XX': "ErrorResponse",
         }
         response_data = self.api_client.call_api(

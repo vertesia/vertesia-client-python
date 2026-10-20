@@ -67252,6 +67252,9 @@
               }
             }
           },
+          "503": {
+            "description": "Cost analytics is not available on this deployment, or its model pricing is not synced yet."
+          },
           "4XX": {
             "description": "Client error.",
             "content": {
@@ -67370,6 +67373,9 @@
               }
             }
           },
+          "503": {
+            "description": "Cost analytics is not available on this deployment, or its model pricing is not synced yet."
+          },
           "4XX": {
             "description": "Client error.",
             "content": {
@@ -67450,6 +67456,9 @@
                 }
               }
             }
+          },
+          "503": {
+            "description": "Cost analytics is not available on this deployment, or its model pricing is not synced yet."
           },
           "4XX": {
             "description": "Client error.",
@@ -67602,6 +67611,9 @@
                 }
               }
             }
+          },
+          "503": {
+            "description": "Cost analytics is not available on this deployment, or its model pricing is not synced yet."
           },
           "4XX": {
             "description": "Client error.",
@@ -76705,6 +76717,9 @@
                 }
               }
             }
+          },
+          "409": {
+            "description": "The workflow run has closed and can no longer receive signals."
           },
           "500": {
             "description": "Internal server error.",
