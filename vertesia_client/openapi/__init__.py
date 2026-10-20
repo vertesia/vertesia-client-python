@@ -174,7 +174,14 @@ __all__ = [
     "AppEventSubscriptionDefinition",
     "AppGitSourceConfig",
     "AppGitSourceProvider",
+    "AppGithubAccount",
+    "AppGithubBranchState",
+    "AppGithubConfiguration",
+    "AppGithubInstallation",
+    "AppGithubRepository",
     "AppGithubRepositoryCreation",
+    "AppGithubRepositoryList",
+    "AppGithubRepositorySetup",
     "AppInspectionCapabilityReport",
     "AppInspectionIssue",
     "AppInspectionResult",
@@ -576,6 +583,8 @@ __all__ = [
     "EventSubscriptionMutationResponse",
     "ExaConfiguration",
     "ExaConfigurationInput",
+    "ExchangeAppGithubAuthorizationRequest",
+    "ExchangeAppGithubAuthorizationResponse",
     "ExecuteViewRequest",
     "ExecuteWorkflowPayload",
     "ExecutionEnvironment",
@@ -1018,6 +1027,7 @@ __all__ = [
     "StartAppBuildRequest",
     "StartAppBuildResponse",
     "StartAppDevelopmentTaskRequest",
+    "StartAppGithubAuthorizationResponse",
     "StartAppScaffoldRequest",
     "StartAppScaffoldResponse",
     "StartContentObjectExportRequest",
@@ -1411,7 +1421,14 @@ from vertesia_client.openapi.models.app_event_delivery_target_input import AppEv
 from vertesia_client.openapi.models.app_event_subscription_definition import AppEventSubscriptionDefinition as AppEventSubscriptionDefinition
 from vertesia_client.openapi.models.app_git_source_config import AppGitSourceConfig as AppGitSourceConfig
 from vertesia_client.openapi.models.app_git_source_provider import AppGitSourceProvider as AppGitSourceProvider
+from vertesia_client.openapi.models.app_github_account import AppGithubAccount as AppGithubAccount
+from vertesia_client.openapi.models.app_github_branch_state import AppGithubBranchState as AppGithubBranchState
+from vertesia_client.openapi.models.app_github_configuration import AppGithubConfiguration as AppGithubConfiguration
+from vertesia_client.openapi.models.app_github_installation import AppGithubInstallation as AppGithubInstallation
+from vertesia_client.openapi.models.app_github_repository import AppGithubRepository as AppGithubRepository
 from vertesia_client.openapi.models.app_github_repository_creation import AppGithubRepositoryCreation as AppGithubRepositoryCreation
+from vertesia_client.openapi.models.app_github_repository_list import AppGithubRepositoryList as AppGithubRepositoryList
+from vertesia_client.openapi.models.app_github_repository_setup import AppGithubRepositorySetup as AppGithubRepositorySetup
 from vertesia_client.openapi.models.app_inspection_capability_report import AppInspectionCapabilityReport as AppInspectionCapabilityReport
 from vertesia_client.openapi.models.app_inspection_issue import AppInspectionIssue as AppInspectionIssue
 from vertesia_client.openapi.models.app_inspection_result import AppInspectionResult as AppInspectionResult
@@ -1813,6 +1830,8 @@ from vertesia_client.openapi.models.event_subscription_filter import EventSubscr
 from vertesia_client.openapi.models.event_subscription_mutation_response import EventSubscriptionMutationResponse as EventSubscriptionMutationResponse
 from vertesia_client.openapi.models.exa_configuration import ExaConfiguration as ExaConfiguration
 from vertesia_client.openapi.models.exa_configuration_input import ExaConfigurationInput as ExaConfigurationInput
+from vertesia_client.openapi.models.exchange_app_github_authorization_request import ExchangeAppGithubAuthorizationRequest as ExchangeAppGithubAuthorizationRequest
+from vertesia_client.openapi.models.exchange_app_github_authorization_response import ExchangeAppGithubAuthorizationResponse as ExchangeAppGithubAuthorizationResponse
 from vertesia_client.openapi.models.execute_view_request import ExecuteViewRequest as ExecuteViewRequest
 from vertesia_client.openapi.models.execute_workflow_payload import ExecuteWorkflowPayload as ExecuteWorkflowPayload
 from vertesia_client.openapi.models.execution_environment import ExecutionEnvironment as ExecutionEnvironment
@@ -2255,6 +2274,7 @@ from vertesia_client.openapi.models.sort_order import SortOrder as SortOrder
 from vertesia_client.openapi.models.start_app_build_request import StartAppBuildRequest as StartAppBuildRequest
 from vertesia_client.openapi.models.start_app_build_response import StartAppBuildResponse as StartAppBuildResponse
 from vertesia_client.openapi.models.start_app_development_task_request import StartAppDevelopmentTaskRequest as StartAppDevelopmentTaskRequest
+from vertesia_client.openapi.models.start_app_github_authorization_response import StartAppGithubAuthorizationResponse as StartAppGithubAuthorizationResponse
 from vertesia_client.openapi.models.start_app_scaffold_request import StartAppScaffoldRequest as StartAppScaffoldRequest
 from vertesia_client.openapi.models.start_app_scaffold_response import StartAppScaffoldResponse as StartAppScaffoldResponse
 from vertesia_client.openapi.models.start_content_object_export_request import StartContentObjectExportRequest as StartContentObjectExportRequest

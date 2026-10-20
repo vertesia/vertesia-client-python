@@ -152,7 +152,14 @@ vertesia_client/openapi/models/app_event_delivery_target_input.py
 vertesia_client/openapi/models/app_event_subscription_definition.py
 vertesia_client/openapi/models/app_git_source_config.py
 vertesia_client/openapi/models/app_git_source_provider.py
+vertesia_client/openapi/models/app_github_account.py
+vertesia_client/openapi/models/app_github_branch_state.py
+vertesia_client/openapi/models/app_github_configuration.py
+vertesia_client/openapi/models/app_github_installation.py
+vertesia_client/openapi/models/app_github_repository.py
 vertesia_client/openapi/models/app_github_repository_creation.py
+vertesia_client/openapi/models/app_github_repository_list.py
+vertesia_client/openapi/models/app_github_repository_setup.py
 vertesia_client/openapi/models/app_inspection_capability_report.py
 vertesia_client/openapi/models/app_inspection_issue.py
 vertesia_client/openapi/models/app_inspection_result.py
@@ -554,6 +561,8 @@ vertesia_client/openapi/models/event_subscription_filter.py
 vertesia_client/openapi/models/event_subscription_mutation_response.py
 vertesia_client/openapi/models/exa_configuration.py
 vertesia_client/openapi/models/exa_configuration_input.py
+vertesia_client/openapi/models/exchange_app_github_authorization_request.py
+vertesia_client/openapi/models/exchange_app_github_authorization_response.py
 vertesia_client/openapi/models/execute_view_request.py
 vertesia_client/openapi/models/execute_workflow_payload.py
 vertesia_client/openapi/models/execution_environment.py
@@ -996,6 +1005,7 @@ vertesia_client/openapi/models/sort_order.py
 vertesia_client/openapi/models/start_app_build_request.py
 vertesia_client/openapi/models/start_app_build_response.py
 vertesia_client/openapi/models/start_app_development_task_request.py
+vertesia_client/openapi/models/start_app_github_authorization_response.py
 vertesia_client/openapi/models/start_app_scaffold_request.py
 vertesia_client/openapi/models/start_app_scaffold_response.py
 vertesia_client/openapi/models/start_content_object_export_request.py
