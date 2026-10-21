@@ -228,3 +228,17 @@ Catch `FederationExchangeError` to inspect `status_code` and `error_code`, for e
 `invalid_scope` from `invalid_grant` or identify HTTP 429/503. Only known OAuth codes are exposed;
 remote descriptions and unknown error text remain redacted. The one-shot function takes arguments
 in the same order as the Go/Java facades: options, federation policy, subject assertion.
+
+## Release
+
+The Release workflow accepts a synchronized spec version such as `v1.6.0` from
+`release/1.6`, or `v1.6.0-dev.20261021.123456Z` from `main`. Optional `source_sha`
+pins the exact tested commit. `dry_run=true` (the default) validates, tests and
+builds distributions without creating tags or publishing.
+
+Dev artifact versions use PEP 440, for example `1.6.0.dev20261021123456`. The
+publisher stamps this unique version in the build workspace; generator/source
+metadata can keep its existing `.dev0` convention. PyPI trusted publishing uses
+the existing `pypi` environment and Release workflow identity. GitHub releases
+are marked as prereleases for dev cohorts. Retries never replace a source tag;
+an already published version requires a matching tag at the same commit.
