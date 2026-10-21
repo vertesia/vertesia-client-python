@@ -43,5 +43,9 @@ jobs:
       - name: Check Ruff formatting
         run: python -m ruff format --check .
 
+      # Exercise patch changes before the next generated client refresh.
+      - name: Apply generation patches
+        run: python scripts/patch_forward_compat_enums.py
+
       - name: Run unit tests
         run: python -m unittest discover -s test
