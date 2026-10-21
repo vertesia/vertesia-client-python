@@ -50,6 +50,8 @@ class MCPToolCollectionObject(BaseModel):
     @field_validator('type')
     def type_validate_enum(cls, value):
         """Validates the enum"""
+        if value is not None and value != 'mcp':
+            raise ValueError('Expected type to be mcp')
         return value
 
     model_config = ConfigDict(

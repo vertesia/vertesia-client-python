@@ -109,6 +109,8 @@ class AutonomousRunResponse(BaseModel):
     @field_validator('run_type')
     def run_type_validate_enum(cls, value):
         """Validates the enum"""
+        if value is not None and value != 'autonomous':
+            raise ValueError('Expected run_type to be autonomous')
         return value
 
     model_config = ConfigDict(

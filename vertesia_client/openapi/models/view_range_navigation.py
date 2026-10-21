@@ -50,6 +50,8 @@ class ViewRangeNavigation(BaseModel):
     @field_validator('source')
     def source_validate_enum(cls, value):
         """Validates the enum"""
+        if value is not None and value != 'range':
+            raise ValueError('Expected source to be range')
         return value
 
     model_config = ConfigDict(

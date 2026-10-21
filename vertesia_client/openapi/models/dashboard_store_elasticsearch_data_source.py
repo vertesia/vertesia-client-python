@@ -37,6 +37,8 @@ class DashboardStoreElasticsearchDataSource(BaseModel):
     @field_validator('kind')
     def kind_validate_enum(cls, value):
         """Validates the enum"""
+        if value is not None and value != 'store_es_dsl':
+            raise ValueError('Expected kind to be store_es_dsl')
         return value
 
     model_config = ConfigDict(

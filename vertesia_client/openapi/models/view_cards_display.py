@@ -45,6 +45,8 @@ class ViewCardsDisplay(BaseModel):
     @field_validator('type')
     def type_validate_enum(cls, value):
         """Validates the enum"""
+        if value is not None and value != 'cards':
+            raise ValueError('Expected type to be cards')
         return value
 
     @field_validator('columns')

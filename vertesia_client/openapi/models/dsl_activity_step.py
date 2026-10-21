@@ -48,6 +48,8 @@ class DSLActivityStep(BaseModel):
     @field_validator('type')
     def type_validate_enum(cls, value):
         """Validates the enum"""
+        if value is not None and value != 'activity':
+            raise ValueError('Expected type to be activity')
         return value
 
     model_config = ConfigDict(

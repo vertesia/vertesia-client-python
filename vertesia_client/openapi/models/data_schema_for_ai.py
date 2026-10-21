@@ -40,6 +40,8 @@ class DataSchemaForAI(BaseModel):
     @field_validator('schema_format')
     def schema_format_validate_enum(cls, value):
         """Validates the enum"""
+        if value is not None and value != 'ai':
+            raise ValueError('Expected schema_format to be ai')
         return value
 
     model_config = ConfigDict(

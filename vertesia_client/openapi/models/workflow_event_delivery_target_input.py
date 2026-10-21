@@ -41,6 +41,8 @@ class WorkflowEventDeliveryTargetInput(BaseModel):
     @field_validator('type')
     def type_validate_enum(cls, value):
         """Validates the enum"""
+        if value is not None and value != 'workflow':
+            raise ValueError('Expected type to be workflow')
         return value
 
     model_config = ConfigDict(

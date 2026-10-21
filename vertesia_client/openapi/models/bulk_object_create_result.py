@@ -40,6 +40,8 @@ class BulkObjectCreateResult(BaseModel):
     @field_validator('operation')
     def operation_validate_enum(cls, value):
         """Validates the enum"""
+        if value is not None and value != 'create':
+            raise ValueError('Expected operation to be create')
         return value
 
     @field_validator('status')

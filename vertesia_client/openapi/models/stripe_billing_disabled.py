@@ -36,6 +36,8 @@ class StripeBillingDisabled(BaseModel):
     @field_validator('status')
     def status_validate_enum(cls, value):
         """Validates the enum"""
+        if value is not None and value != 'disabled':
+            raise ValueError('Expected status to be disabled')
         return value
 
     model_config = ConfigDict(

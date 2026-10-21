@@ -48,6 +48,8 @@ class UpdateWorkflowDefinitionPayloadWithSteps(BaseModel):
     @field_validator('spec_format')
     def spec_format_validate_enum(cls, value):
         """Validates the enum"""
+        if value is not None and value != 'steps':
+            raise ValueError('Expected spec_format to be steps')
         return value
 
     model_config = ConfigDict(

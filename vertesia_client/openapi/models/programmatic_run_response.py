@@ -73,6 +73,8 @@ class ProgrammaticRunResponse(BaseModel):
     @field_validator('run_type')
     def run_type_validate_enum(cls, value):
         """Validates the enum"""
+        if value is not None and value != 'programmatic':
+            raise ValueError('Expected run_type to be programmatic')
         return value
 
     @field_validator('run_kind')

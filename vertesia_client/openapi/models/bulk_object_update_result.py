@@ -36,6 +36,8 @@ class BulkObjectUpdateResult(BaseModel):
     @field_validator('operation')
     def operation_validate_enum(cls, value):
         """Validates the enum"""
+        if value is not None and value != 'update':
+            raise ValueError('Expected operation to be update')
         return value
 
     @field_validator('status')

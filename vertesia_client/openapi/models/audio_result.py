@@ -43,6 +43,8 @@ class AudioResult(BaseModel):
     @field_validator('type')
     def type_validate_enum(cls, value):
         """Validates the enum"""
+        if value is not None and value != 'audio':
+            raise ValueError('Expected type to be audio')
         return value
 
     @field_validator('value')
