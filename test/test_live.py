@@ -17,11 +17,13 @@ from vertesia_client.openapi.models.create_data_store_payload import CreateDataS
 from vertesia_client.openapi.models.get_upload_url_payload import GetUploadUrlPayload
 from vertesia_client.openapi.models.interaction_create_payload import InteractionCreatePayload
 from vertesia_client.openapi.models.interaction_execution_payload import InteractionExecutionPayload
+from vertesia_client.openapi.models.interaction_prompt_segment_input import InteractionPromptSegmentInput
+from vertesia_client.openapi.models.interaction_prompt_segment_input_template import (
+    InteractionPromptSegmentInputTemplate,
+)
 from vertesia_client.openapi.models.interaction_status import InteractionStatus
 from vertesia_client.openapi.models.interaction_visibility import InteractionVisibility
 from vertesia_client.openapi.models.prompt_role import PromptRole
-from vertesia_client.openapi.models.prompt_segment_def import PromptSegmentDef
-from vertesia_client.openapi.models.prompt_segment_def_template import PromptSegmentDefTemplate
 from vertesia_client.openapi.models.prompt_segment_def_type import PromptSegmentDefType
 from vertesia_client.openapi.models.prompt_template_create_payload import PromptTemplateCreatePayload
 from vertesia_client.openapi.models.template_type import TemplateType
@@ -31,10 +33,16 @@ DEFAULT_ZENO_URL = "http://localhost:8092/api/v1"
 DEFAULT_STS_URL = "http://localhost:8093"
 INTAKE_TIMEOUT_SECONDS = 180
 INTAKE_POLL_SECONDS = 3
+# Valid 2x2 JPEG, matching the generated image used by the Go and Java intake tests.
 TEST_JPEG = base64.b64decode(
-    "/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAP//////////////////////////////////////////////////////////////////////////////////////"
-    "2wBDAf//////////////////////////////////////////////////////////////////////////////////////"
-    "wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAX/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIQAxAAAAH/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/9oACAEBAAEFAqf/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oACAEDAQE/ASP/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oACAECAQE/ASP/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/9oACAEBAAY/Al//xAAUEAEAAAAAAAAAAAAAAAAAAAAA/9oACAEBAAE/IV//2gAMAwEAAgADAAAAEP/EFBQRAQAAAAAAAAAAAAAAAAAAABD/2gAIAQMBAT8QH//EFBQRAQAAAAAAAAAAAAAAAAAAABD/2gAIAQIBAT8QH//EFBABAQAAAAAAAAAAAAAAAAAAABD/2gAIAQEAAT8QH//Z"
+    "/9j/4AAQSkZJRgABAgAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PT"
+    "gyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAAC"
+    "AAIDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhBy"
+    "JxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKT"
+    "lJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAA"
+    "AAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRom"
+    "JygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExc"
+    "bHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD5/ooooA//2Q=="
 )
 
 
@@ -190,8 +198,8 @@ class LiveIntegrationTest(unittest.TestCase):
                 PromptTemplateCreatePayload(
                     name=unique_name("python-openapi-prompt"),
                     role=PromptRole.USER,
-                    content="Answer with a short greeting for <%= name %>.",
-                    content_type=TemplateType.JST,
+                    content="Answer with a short greeting for {{name}}.",
+                    content_type=TemplateType.HANDLEBARS,
                 )
             ),
             403,
@@ -208,9 +216,9 @@ class LiveIntegrationTest(unittest.TestCase):
             InteractionCreatePayload(
                 status=InteractionStatus.DRAFT,
                 prompts=[
-                    PromptSegmentDef(
+                    InteractionPromptSegmentInput(
                         type=PromptSegmentDefType.TEMPLATE,
-                        template=PromptSegmentDefTemplate(prompt.id),
+                        template=InteractionPromptSegmentInputTemplate(prompt.id),
                     )
                 ],
                 name=unique_name("python-openapi-interaction"),

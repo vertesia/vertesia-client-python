@@ -3,9 +3,12 @@ import unittest
 from vertesia_client.openapi.api.accounts_api import AccountsApi
 from vertesia_client.openapi.models.account_projects_response import AccountProjectsResponse
 from vertesia_client.openapi.models.account_type import AccountType
+from vertesia_client.openapi.models.content_object_type_ref import ContentObjectTypeRef
 from vertesia_client.openapi.models.doc_table_csv import DocTableCsv
 from vertesia_client.openapi.models.doc_table_response import DocTableResponse
+from vertesia_client.openapi.models.in_code_type_ref import InCodeTypeRef
 from vertesia_client.openapi.models.issue_token_response import IssueTokenResponse
+from vertesia_client.openapi.models.stored_type_ref import StoredTypeRef
 
 
 class GeneratedCompatibilityTest(unittest.TestCase):
@@ -53,6 +56,17 @@ class GeneratedCompatibilityTest(unittest.TestCase):
         )
         self.assertIsInstance(response.actual_instance, DocTableCsv)
         self.assertEqual(response.actual_instance.data, "name,value\nalpha,1")
+
+    def test_content_type_reference_literals_select_one_branch(self):
+        for tag, model in (("stored", StoredTypeRef), ("incode", InCodeTypeRef)):
+            with self.subTest(tag=tag):
+                response = ContentObjectTypeRef.from_dict(
+                    {"ref_type": tag, "id": "type-1", "name": "Test type", "future_field": True}
+                )
+                self.assertIsInstance(response.actual_instance, model)
+                self.assertEqual(response.actual_instance.ref_type, tag)
+        with self.assertRaises(ValueError):
+            ContentObjectTypeRef.from_dict({"ref_type": "unknown", "id": "type-1", "name": "Test type"})
 
     def test_unknown_standalone_enum_values_are_preserved(self):
         value = AccountType("future-account-type")

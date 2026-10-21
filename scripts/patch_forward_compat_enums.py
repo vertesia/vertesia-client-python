@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import json
 import re
 from pathlib import Path
 
@@ -49,13 +50,61 @@ def patch_client_headers(text: str) -> str:
     )
 
 
+def patch_schema_constants(text: str, schemas: dict) -> str:
+    """Keep literal tags strict so permissive enum handling cannot merge union branches."""
+    match = re.search(r"class (\w+)\(BaseModel\):", text)
+    if not match:
+        return text
+    schema = schemas.get(match[1], {})
+    for field, definition in schema.get("properties", {}).items():
+        if "const" not in definition or not isinstance(definition["const"], str):
+            continue
+        constant = repr(definition["const"])
+        pattern = (
+            r"(@field_validator\('" + re.escape(field) + r"'\)\n"
+            r"    def \w+_validate_enum\(cls, value\):\n"
+            r'        """Validates the enum"""\n)'
+            r".*?(?=\n    @|\n    model_config)"
+        )
+        message = repr(f"Expected {field} to be {definition['const']}")
+        body = (
+            f"        if value is not None and value != {constant}:\n"
+            f"            raise ValueError({message})\n"
+            "        return value\n"
+        )
+        text = re.sub(pattern, lambda m, replacement=body: m[1] + replacement, text, flags=re.DOTALL)
+    return text
+
+
+def union_literal_schemas(schemas: dict) -> dict:
+    """Find required, distinct literal tags that discriminate object union branches."""
+    tagged = {}
+    for union in schemas.values():
+        variants = union.get("oneOf", union.get("anyOf", []))
+        names = [item["$ref"].rsplit("/", 1)[-1] for item in variants if "$ref" in item]
+        if len(names) < 2 or len(names) != len(variants):
+            continue
+        branches = [schemas.get(name, {}) for name in names]
+        shared = set.intersection(*(set(branch.get("required", [])) for branch in branches))
+        for field in shared:
+            definitions = [branch.get("properties", {}).get(field, {}) for branch in branches]
+            values = [definition.get("const") for definition in definitions]
+            if not all(isinstance(value, str) for value in values) or len(set(values)) != len(values):
+                continue
+            for name, definition in zip(names, definitions):
+                tagged.setdefault(name, {"properties": {}})["properties"][field] = definition
+    return tagged
+
+
 def main() -> None:
     client = ROOT / "vertesia_client" / "openapi" / "api_client.py"
     client.write_text(patch_client_headers(client.read_text()))
+    schemas = json.loads((ROOT / "spec/vertesia-openapi.json").read_text())["components"]["schemas"]
+    schemas = union_literal_schemas(schemas)
     changed = 0
     for path in sorted(MODELS_DIR.glob("*.py")):
         original = path.read_text()
-        updated = patch_inline_enum_validators(patch_standalone_enum(original))
+        updated = patch_schema_constants(patch_inline_enum_validators(patch_standalone_enum(original)), schemas)
         if updated != original:
             path.write_text(updated)
             changed += 1
