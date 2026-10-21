@@ -35,6 +35,8 @@ class ProcessTestStoredSubject(BaseModel):
     @field_validator('kind')
     def kind_validate_enum(cls, value):
         """Validates the enum"""
+        if value is not None and value != 'stored':
+            raise ValueError('Expected kind to be stored')
         return value
 
     model_config = ConfigDict(

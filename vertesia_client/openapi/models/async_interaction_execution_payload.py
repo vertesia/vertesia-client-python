@@ -52,6 +52,8 @@ class AsyncInteractionExecutionPayload(BaseModel):
     @field_validator('type')
     def type_validate_enum(cls, value):
         """Validates the enum"""
+        if value is not None and value != 'interaction':
+            raise ValueError('Expected type to be interaction')
         return value
 
     model_config = ConfigDict(

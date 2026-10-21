@@ -39,6 +39,8 @@ class ViewTableDisplay(BaseModel):
     @field_validator('type')
     def type_validate_enum(cls, value):
         """Validates the enum"""
+        if value is not None and value != 'table':
+            raise ValueError('Expected type to be table')
         return value
 
     model_config = ConfigDict(

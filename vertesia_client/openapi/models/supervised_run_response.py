@@ -73,6 +73,8 @@ class SupervisedRunResponse(BaseModel):
     @field_validator('run_type')
     def run_type_validate_enum(cls, value):
         """Validates the enum"""
+        if value is not None and value != 'supervised':
+            raise ValueError('Expected run_type to be supervised')
         return value
 
     @field_validator('run_kind')

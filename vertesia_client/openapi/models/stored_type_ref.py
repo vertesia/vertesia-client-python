@@ -36,6 +36,8 @@ class StoredTypeRef(BaseModel):
     @field_validator('ref_type')
     def ref_type_validate_enum(cls, value):
         """Validates the enum"""
+        if value is not None and value != 'stored':
+            raise ValueError('Expected ref_type to be stored')
         return value
 
     @field_validator('default_view')

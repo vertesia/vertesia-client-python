@@ -36,6 +36,8 @@ class BulkObjectDeleteResult(BaseModel):
     @field_validator('operation')
     def operation_validate_enum(cls, value):
         """Validates the enum"""
+        if value is not None and value != 'delete':
+            raise ValueError('Expected operation to be delete')
         return value
 
     @field_validator('status')

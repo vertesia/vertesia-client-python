@@ -49,6 +49,8 @@ class ViewLocationNavigation(BaseModel):
     @field_validator('source')
     def source_validate_enum(cls, value):
         """Validates the enum"""
+        if value is not None and value != 'location':
+            raise ValueError('Expected source to be location')
         return value
 
     model_config = ConfigDict(

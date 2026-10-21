@@ -34,6 +34,8 @@ class BulkOperationResult(BaseModel):
     @field_validator('operation')
     def operation_validate_enum(cls, value):
         """Validates the enum"""
+        if value is not None and value != 'generic':
+            raise ValueError('Expected operation to be generic')
         return value
 
     @field_validator('status')

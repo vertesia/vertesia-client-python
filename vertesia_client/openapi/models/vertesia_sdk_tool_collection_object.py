@@ -39,6 +39,8 @@ class VertesiaSDKToolCollectionObject(BaseModel):
     @field_validator('type')
     def type_validate_enum(cls, value):
         """Validates the enum"""
+        if value is not None and value != 'vertesia_sdk':
+            raise ValueError('Expected type to be vertesia_sdk')
         return value
 
     model_config = ConfigDict(

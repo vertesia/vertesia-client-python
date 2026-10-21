@@ -49,6 +49,8 @@ class ViewCollectionNavigation(BaseModel):
     @field_validator('source')
     def source_validate_enum(cls, value):
         """Validates the enum"""
+        if value is not None and value != 'collection':
+            raise ValueError('Expected source to be collection')
         return value
 
     model_config = ConfigDict(
