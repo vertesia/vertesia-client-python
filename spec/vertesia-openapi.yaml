@@ -37279,6 +37279,19 @@ paths:
           required: true
           schema:
             type: string
+        - name: include_prompt
+          in: query
+          required: false
+          schema:
+            type: boolean
+            description: "Whether the run includes the rendered `prompt` sent to the model.
+              Defaults to true. Pass false when the caller does not read the
+              prompt: it can be large (for example when media is inlined), and
+              it is then not loaded from storage."
+          description: "Whether the run includes the rendered `prompt` sent to the model.
+            Defaults to true. Pass false when the caller does not read the
+            prompt: it can be large (for example when media is inlined), and it
+            is then not loaded from storage."
       responses:
         "200":
           description: The requested execution run.
@@ -39452,7 +39465,22 @@ paths:
         - bearerAuth: []
         - OAuth2:
             - interaction:execute
-      parameters: []
+      parameters:
+        - name: include_prompt
+          in: query
+          required: false
+          schema:
+            type: boolean
+            description: "Whether the synchronous execution result includes the rendered
+              `prompt` sent to the model. Defaults to true. Pass false when the
+              caller does not read the prompt: it can be large (for example when
+              media is inlined). It is still stored with the run unless run data
+              storage is restricted."
+          description: "Whether the synchronous execution result includes the rendered
+            `prompt` sent to the model. Defaults to true. Pass false when the
+            caller does not read the prompt: it can be large (for example when
+            media is inlined). It is still stored with the run unless run data
+            storage is restricted."
       responses:
         "200":
           description: Interaction execution result.
@@ -39599,6 +39627,21 @@ paths:
           required: false
           schema:
             type: string
+        - name: include_prompt
+          in: query
+          required: false
+          schema:
+            type: boolean
+            description: "Whether the synchronous execution result includes the rendered
+              `prompt` sent to the model. Defaults to true. Pass false when the
+              caller does not read the prompt: it can be large (for example when
+              media is inlined). It is still stored with the run unless run data
+              storage is restricted."
+          description: "Whether the synchronous execution result includes the rendered
+            `prompt` sent to the model. Defaults to true. Pass false when the
+            caller does not read the prompt: it can be large (for example when
+            media is inlined). It is still stored with the run unless run data
+            storage is restricted."
         - name: x-interaction-tag
           in: header
           required: false
