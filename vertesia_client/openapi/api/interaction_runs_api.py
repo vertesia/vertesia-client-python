@@ -626,6 +626,7 @@ class InteractionRunsApi:
     def get_run(
         self,
         run_id: StrictStr,
+        include_prompt: Annotated[Optional[StrictBool], Field(description="Whether the run includes the rendered `prompt` sent to the model. Defaults to true. Pass false when the caller does not read the prompt: it can be large (for example when media is inlined), and it is then not loaded from storage.")] = None,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -646,6 +647,8 @@ class InteractionRunsApi:
 
         :param run_id: (required)
         :type run_id: str
+        :param include_prompt: Whether the run includes the rendered `prompt` sent to the model. Defaults to true. Pass false when the caller does not read the prompt: it can be large (for example when media is inlined), and it is then not loaded from storage.
+        :type include_prompt: bool
         :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -672,6 +675,7 @@ class InteractionRunsApi:
 
         _param = self._get_run_serialize(
             run_id=run_id,
+            include_prompt=include_prompt,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -699,6 +703,7 @@ class InteractionRunsApi:
     def get_run_with_http_info(
         self,
         run_id: StrictStr,
+        include_prompt: Annotated[Optional[StrictBool], Field(description="Whether the run includes the rendered `prompt` sent to the model. Defaults to true. Pass false when the caller does not read the prompt: it can be large (for example when media is inlined), and it is then not loaded from storage.")] = None,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -719,6 +724,8 @@ class InteractionRunsApi:
 
         :param run_id: (required)
         :type run_id: str
+        :param include_prompt: Whether the run includes the rendered `prompt` sent to the model. Defaults to true. Pass false when the caller does not read the prompt: it can be large (for example when media is inlined), and it is then not loaded from storage.
+        :type include_prompt: bool
         :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -745,6 +752,7 @@ class InteractionRunsApi:
 
         _param = self._get_run_serialize(
             run_id=run_id,
+            include_prompt=include_prompt,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -772,6 +780,7 @@ class InteractionRunsApi:
     def get_run_without_preload_content(
         self,
         run_id: StrictStr,
+        include_prompt: Annotated[Optional[StrictBool], Field(description="Whether the run includes the rendered `prompt` sent to the model. Defaults to true. Pass false when the caller does not read the prompt: it can be large (for example when media is inlined), and it is then not loaded from storage.")] = None,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -792,6 +801,8 @@ class InteractionRunsApi:
 
         :param run_id: (required)
         :type run_id: str
+        :param include_prompt: Whether the run includes the rendered `prompt` sent to the model. Defaults to true. Pass false when the caller does not read the prompt: it can be large (for example when media is inlined), and it is then not loaded from storage.
+        :type include_prompt: bool
         :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -818,6 +829,7 @@ class InteractionRunsApi:
 
         _param = self._get_run_serialize(
             run_id=run_id,
+            include_prompt=include_prompt,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -840,6 +852,7 @@ class InteractionRunsApi:
     def _get_run_serialize(
         self,
         run_id,
+        include_prompt,
         x_api_version,
         _request_auth,
         _content_type,
@@ -865,6 +878,10 @@ class InteractionRunsApi:
         if run_id is not None:
             _path_params['runId'] = run_id
         # process the query parameters
+        if include_prompt is not None:
+            
+            _query_params.append(('include_prompt', include_prompt))
+            
         # process the header parameters
         if x_api_version is not None:
             _header_params['x-api-version'] = x_api_version

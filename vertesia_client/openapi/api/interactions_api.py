@@ -1556,6 +1556,7 @@ class InteractionsApi:
         endpoint: StrictStr,
         interaction_execution_payload: InteractionExecutionPayload,
         tag: Optional[StrictStr] = None,
+        include_prompt: Annotated[Optional[StrictBool], Field(description="Whether the synchronous execution result includes the rendered `prompt` sent to the model. Defaults to true. Pass false when the caller does not read the prompt: it can be large (for example when media is inlined). It is still stored with the run unless run data storage is restricted.")] = None,
         x_interaction_tag: Optional[StrictStr] = None,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
@@ -1581,6 +1582,8 @@ class InteractionsApi:
         :type interaction_execution_payload: InteractionExecutionPayload
         :param tag:
         :type tag: str
+        :param include_prompt: Whether the synchronous execution result includes the rendered `prompt` sent to the model. Defaults to true. Pass false when the caller does not read the prompt: it can be large (for example when media is inlined). It is still stored with the run unless run data storage is restricted.
+        :type include_prompt: bool
         :param x_interaction_tag:
         :type x_interaction_tag: str
         :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
@@ -1611,6 +1614,7 @@ class InteractionsApi:
             endpoint=endpoint,
             interaction_execution_payload=interaction_execution_payload,
             tag=tag,
+            include_prompt=include_prompt,
             x_interaction_tag=x_interaction_tag,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
@@ -1641,6 +1645,7 @@ class InteractionsApi:
         endpoint: StrictStr,
         interaction_execution_payload: InteractionExecutionPayload,
         tag: Optional[StrictStr] = None,
+        include_prompt: Annotated[Optional[StrictBool], Field(description="Whether the synchronous execution result includes the rendered `prompt` sent to the model. Defaults to true. Pass false when the caller does not read the prompt: it can be large (for example when media is inlined). It is still stored with the run unless run data storage is restricted.")] = None,
         x_interaction_tag: Optional[StrictStr] = None,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
@@ -1666,6 +1671,8 @@ class InteractionsApi:
         :type interaction_execution_payload: InteractionExecutionPayload
         :param tag:
         :type tag: str
+        :param include_prompt: Whether the synchronous execution result includes the rendered `prompt` sent to the model. Defaults to true. Pass false when the caller does not read the prompt: it can be large (for example when media is inlined). It is still stored with the run unless run data storage is restricted.
+        :type include_prompt: bool
         :param x_interaction_tag:
         :type x_interaction_tag: str
         :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
@@ -1696,6 +1703,7 @@ class InteractionsApi:
             endpoint=endpoint,
             interaction_execution_payload=interaction_execution_payload,
             tag=tag,
+            include_prompt=include_prompt,
             x_interaction_tag=x_interaction_tag,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
@@ -1726,6 +1734,7 @@ class InteractionsApi:
         endpoint: StrictStr,
         interaction_execution_payload: InteractionExecutionPayload,
         tag: Optional[StrictStr] = None,
+        include_prompt: Annotated[Optional[StrictBool], Field(description="Whether the synchronous execution result includes the rendered `prompt` sent to the model. Defaults to true. Pass false when the caller does not read the prompt: it can be large (for example when media is inlined). It is still stored with the run unless run data storage is restricted.")] = None,
         x_interaction_tag: Optional[StrictStr] = None,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
@@ -1751,6 +1760,8 @@ class InteractionsApi:
         :type interaction_execution_payload: InteractionExecutionPayload
         :param tag:
         :type tag: str
+        :param include_prompt: Whether the synchronous execution result includes the rendered `prompt` sent to the model. Defaults to true. Pass false when the caller does not read the prompt: it can be large (for example when media is inlined). It is still stored with the run unless run data storage is restricted.
+        :type include_prompt: bool
         :param x_interaction_tag:
         :type x_interaction_tag: str
         :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
@@ -1781,6 +1792,7 @@ class InteractionsApi:
             endpoint=endpoint,
             interaction_execution_payload=interaction_execution_payload,
             tag=tag,
+            include_prompt=include_prompt,
             x_interaction_tag=x_interaction_tag,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
@@ -1806,6 +1818,7 @@ class InteractionsApi:
         endpoint,
         interaction_execution_payload,
         tag,
+        include_prompt,
         x_interaction_tag,
         x_api_version,
         _request_auth,
@@ -1835,6 +1848,10 @@ class InteractionsApi:
         if tag is not None:
             
             _query_params.append(('tag', tag))
+            
+        if include_prompt is not None:
+            
+            _query_params.append(('include_prompt', include_prompt))
             
         # process the header parameters
         if x_interaction_tag is not None:
@@ -1897,6 +1914,7 @@ class InteractionsApi:
     def execute_named_interaction(
         self,
         named_interaction_execution_payload: NamedInteractionExecutionPayload,
+        include_prompt: Annotated[Optional[StrictBool], Field(description="Whether the synchronous execution result includes the rendered `prompt` sent to the model. Defaults to true. Pass false when the caller does not read the prompt: it can be large (for example when media is inlined). It is still stored with the run unless run data storage is restricted.")] = None,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -1917,6 +1935,8 @@ class InteractionsApi:
 
         :param named_interaction_execution_payload: (required)
         :type named_interaction_execution_payload: NamedInteractionExecutionPayload
+        :param include_prompt: Whether the synchronous execution result includes the rendered `prompt` sent to the model. Defaults to true. Pass false when the caller does not read the prompt: it can be large (for example when media is inlined). It is still stored with the run unless run data storage is restricted.
+        :type include_prompt: bool
         :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -1943,6 +1963,7 @@ class InteractionsApi:
 
         _param = self._execute_named_interaction_serialize(
             named_interaction_execution_payload=named_interaction_execution_payload,
+            include_prompt=include_prompt,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1970,6 +1991,7 @@ class InteractionsApi:
     def execute_named_interaction_with_http_info(
         self,
         named_interaction_execution_payload: NamedInteractionExecutionPayload,
+        include_prompt: Annotated[Optional[StrictBool], Field(description="Whether the synchronous execution result includes the rendered `prompt` sent to the model. Defaults to true. Pass false when the caller does not read the prompt: it can be large (for example when media is inlined). It is still stored with the run unless run data storage is restricted.")] = None,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -1990,6 +2012,8 @@ class InteractionsApi:
 
         :param named_interaction_execution_payload: (required)
         :type named_interaction_execution_payload: NamedInteractionExecutionPayload
+        :param include_prompt: Whether the synchronous execution result includes the rendered `prompt` sent to the model. Defaults to true. Pass false when the caller does not read the prompt: it can be large (for example when media is inlined). It is still stored with the run unless run data storage is restricted.
+        :type include_prompt: bool
         :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -2016,6 +2040,7 @@ class InteractionsApi:
 
         _param = self._execute_named_interaction_serialize(
             named_interaction_execution_payload=named_interaction_execution_payload,
+            include_prompt=include_prompt,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -2043,6 +2068,7 @@ class InteractionsApi:
     def execute_named_interaction_without_preload_content(
         self,
         named_interaction_execution_payload: NamedInteractionExecutionPayload,
+        include_prompt: Annotated[Optional[StrictBool], Field(description="Whether the synchronous execution result includes the rendered `prompt` sent to the model. Defaults to true. Pass false when the caller does not read the prompt: it can be large (for example when media is inlined). It is still stored with the run unless run data storage is restricted.")] = None,
         x_api_version: Annotated[Optional[StrictStr], Field(description="Optional Vertesia API version header. Use `20260803` for the current stable API shape.")] = None,
         _request_timeout: Union[
             None,
@@ -2063,6 +2089,8 @@ class InteractionsApi:
 
         :param named_interaction_execution_payload: (required)
         :type named_interaction_execution_payload: NamedInteractionExecutionPayload
+        :param include_prompt: Whether the synchronous execution result includes the rendered `prompt` sent to the model. Defaults to true. Pass false when the caller does not read the prompt: it can be large (for example when media is inlined). It is still stored with the run unless run data storage is restricted.
+        :type include_prompt: bool
         :param x_api_version: Optional Vertesia API version header. Use `20260803` for the current stable API shape.
         :type x_api_version: str
         :param _request_timeout: timeout setting for this request. If one
@@ -2089,6 +2117,7 @@ class InteractionsApi:
 
         _param = self._execute_named_interaction_serialize(
             named_interaction_execution_payload=named_interaction_execution_payload,
+            include_prompt=include_prompt,
             x_api_version=x_api_version,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -2111,6 +2140,7 @@ class InteractionsApi:
     def _execute_named_interaction_serialize(
         self,
         named_interaction_execution_payload,
+        include_prompt,
         x_api_version,
         _request_auth,
         _content_type,
@@ -2134,6 +2164,10 @@ class InteractionsApi:
 
         # process the path parameters
         # process the query parameters
+        if include_prompt is not None:
+            
+            _query_params.append(('include_prompt', include_prompt))
+            
         # process the header parameters
         if x_api_version is not None:
             _header_params['x-api-version'] = x_api_version
