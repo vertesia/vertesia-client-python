@@ -166,6 +166,7 @@ __all__ = [
     "AppCapabilities",
     "AppDashboardDefinition",
     "AppDeleteSummary",
+    "AppDeploymentAliasTarget",
     "AppDevelopmentTask",
     "AppDevelopmentTaskDetails",
     "AppDevelopmentTaskList",
@@ -226,6 +227,7 @@ __all__ = [
     "AppVersionGitRefType",
     "AppVersionGitSource",
     "AppVersionKind",
+    "AppVersionLaunchTarget",
     "AppVersionRecord",
     "AppVersionState",
     "AppVersionStorage",
@@ -416,6 +418,8 @@ __all__ = [
     "CreateAccountApiKeyPayload",
     "CreateAgentRunPayload",
     "CreateApiKeyPayload",
+    "CreateAppVersionLaunchRequest",
+    "CreateAppVersionLaunchResponse",
     "CreateCollectionPayload",
     "CreateContentObjectPayload",
     "CreateContentObjectPayloadTokens",
@@ -1413,6 +1417,7 @@ from vertesia_client.openapi.models.app_build_trigger import AppBuildTrigger as 
 from vertesia_client.openapi.models.app_capabilities import AppCapabilities as AppCapabilities
 from vertesia_client.openapi.models.app_dashboard_definition import AppDashboardDefinition as AppDashboardDefinition
 from vertesia_client.openapi.models.app_delete_summary import AppDeleteSummary as AppDeleteSummary
+from vertesia_client.openapi.models.app_deployment_alias_target import AppDeploymentAliasTarget as AppDeploymentAliasTarget
 from vertesia_client.openapi.models.app_development_task import AppDevelopmentTask as AppDevelopmentTask
 from vertesia_client.openapi.models.app_development_task_details import AppDevelopmentTaskDetails as AppDevelopmentTaskDetails
 from vertesia_client.openapi.models.app_development_task_list import AppDevelopmentTaskList as AppDevelopmentTaskList
@@ -1473,6 +1478,7 @@ from vertesia_client.openapi.models.app_ui_nav_item import AppUINavItem as AppUI
 from vertesia_client.openapi.models.app_version_git_ref_type import AppVersionGitRefType as AppVersionGitRefType
 from vertesia_client.openapi.models.app_version_git_source import AppVersionGitSource as AppVersionGitSource
 from vertesia_client.openapi.models.app_version_kind import AppVersionKind as AppVersionKind
+from vertesia_client.openapi.models.app_version_launch_target import AppVersionLaunchTarget as AppVersionLaunchTarget
 from vertesia_client.openapi.models.app_version_record import AppVersionRecord as AppVersionRecord
 from vertesia_client.openapi.models.app_version_state import AppVersionState as AppVersionState
 from vertesia_client.openapi.models.app_version_storage import AppVersionStorage as AppVersionStorage
@@ -1663,6 +1669,8 @@ from vertesia_client.openapi.models.count_result import CountResult as CountResu
 from vertesia_client.openapi.models.create_account_api_key_payload import CreateAccountApiKeyPayload as CreateAccountApiKeyPayload
 from vertesia_client.openapi.models.create_agent_run_payload import CreateAgentRunPayload as CreateAgentRunPayload
 from vertesia_client.openapi.models.create_api_key_payload import CreateApiKeyPayload as CreateApiKeyPayload
+from vertesia_client.openapi.models.create_app_version_launch_request import CreateAppVersionLaunchRequest as CreateAppVersionLaunchRequest
+from vertesia_client.openapi.models.create_app_version_launch_response import CreateAppVersionLaunchResponse as CreateAppVersionLaunchResponse
 from vertesia_client.openapi.models.create_collection_payload import CreateCollectionPayload as CreateCollectionPayload
 from vertesia_client.openapi.models.create_content_object_payload import CreateContentObjectPayload as CreateContentObjectPayload
 from vertesia_client.openapi.models.create_content_object_payload_tokens import CreateContentObjectPayloadTokens as CreateContentObjectPayloadTokens

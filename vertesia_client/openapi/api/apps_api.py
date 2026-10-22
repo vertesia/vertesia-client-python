@@ -16,7 +16,7 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
 from pydantic import Field, StrictBytes, StrictStr, field_validator
-from typing import List, Optional, Tuple, Union
+from typing import Any, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.agent_run_response import AgentRunResponse
 from vertesia_client.openapi.models.app_build_progress import AppBuildProgress
@@ -42,8 +42,11 @@ from vertesia_client.openapi.models.app_repo_refs import AppRepoRefs
 from vertesia_client.openapi.models.app_repo_tree import AppRepoTree
 from vertesia_client.openapi.models.app_scaffold_progress import AppScaffoldProgress
 from vertesia_client.openapi.models.app_tool_collection import AppToolCollection
+from vertesia_client.openapi.models.app_version_launch_target import AppVersionLaunchTarget
 from vertesia_client.openapi.models.app_version_record import AppVersionRecord
 from vertesia_client.openapi.models.count_result import CountResult
+from vertesia_client.openapi.models.create_app_version_launch_request import CreateAppVersionLaunchRequest
+from vertesia_client.openapi.models.create_app_version_launch_response import CreateAppVersionLaunchResponse
 from vertesia_client.openapi.models.delete_app_version_response import DeleteAppVersionResponse
 from vertesia_client.openapi.models.exchange_app_github_authorization_request import ExchangeAppGithubAuthorizationRequest
 from vertesia_client.openapi.models.exchange_app_github_authorization_response import ExchangeAppGithubAuthorizationResponse
@@ -80,6 +83,304 @@ class AppsApi:
         if api_client is None:
             api_client = ApiClient.get_default()
         self.api_client = api_client
+
+
+    @validate_call
+    def assign_app_version_alias(
+        self,
+        id: StrictStr,
+        alias: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> AppVersionRecord:
+        """Assign a deployment alias to an app version
+
+        Atomically assigns or moves one stable deployment alias to this immutable app version. This does not change the promoted version.  **Required permissions:** `app:manage`
+
+        :param id: (required)
+        :type id: str
+        :param alias: (required)
+        :type alias: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._assign_app_version_alias_serialize(
+            id=id,
+            alias=alias,
+            x_api_version=x_api_version,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "AppVersionRecord",
+            '500': "ErrorResponse",
+            '4XX': "ErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def assign_app_version_alias_with_http_info(
+        self,
+        id: StrictStr,
+        alias: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[AppVersionRecord]:
+        """Assign a deployment alias to an app version
+
+        Atomically assigns or moves one stable deployment alias to this immutable app version. This does not change the promoted version.  **Required permissions:** `app:manage`
+
+        :param id: (required)
+        :type id: str
+        :param alias: (required)
+        :type alias: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._assign_app_version_alias_serialize(
+            id=id,
+            alias=alias,
+            x_api_version=x_api_version,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "AppVersionRecord",
+            '500': "ErrorResponse",
+            '4XX': "ErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def assign_app_version_alias_without_preload_content(
+        self,
+        id: StrictStr,
+        alias: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Assign a deployment alias to an app version
+
+        Atomically assigns or moves one stable deployment alias to this immutable app version. This does not change the promoted version.  **Required permissions:** `app:manage`
+
+        :param id: (required)
+        :type id: str
+        :param alias: (required)
+        :type alias: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._assign_app_version_alias_serialize(
+            id=id,
+            alias=alias,
+            x_api_version=x_api_version,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "AppVersionRecord",
+            '500': "ErrorResponse",
+            '4XX': "ErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _assign_app_version_alias_serialize(
+        self,
+        id,
+        alias,
+        x_api_version,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if id is not None:
+            _path_params['id'] = id
+        if alias is not None:
+            _path_params['alias'] = alias
+        # process the query parameters
+        # process the header parameters
+        if x_api_version is not None:
+            _header_params['x-api-version'] = x_api_version
+        # process the form parameters
+        # process the body parameter
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'OAuth2', 
+            'bearerAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='PUT',
+            resource_path='/apps/versions/{id}/aliases/{alias}',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
 
 
     @validate_call
@@ -945,6 +1246,317 @@ class AppsApi:
 
 
     @validate_call
+    def create_app_version_launch(
+        self,
+        id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        create_app_version_launch_request: CreateAppVersionLaunchRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> CreateAppVersionLaunchResponse:
+        """Create an advanced app version launch
+
+        Creates a short-lived launch selector for an immutable app version. Temporary settings override the selected project installation only for requests carrying that selector.  **Required permissions:** `app:manage`
+
+        :param id: (required)
+        :type id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
+        :param create_app_version_launch_request: (required)
+        :type create_app_version_launch_request: CreateAppVersionLaunchRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._create_app_version_launch_serialize(
+            id=id,
+            x_api_version=x_api_version,
+            create_app_version_launch_request=create_app_version_launch_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "CreateAppVersionLaunchResponse",
+            '500': "ErrorResponse",
+            '4XX': "ErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def create_app_version_launch_with_http_info(
+        self,
+        id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        create_app_version_launch_request: CreateAppVersionLaunchRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[CreateAppVersionLaunchResponse]:
+        """Create an advanced app version launch
+
+        Creates a short-lived launch selector for an immutable app version. Temporary settings override the selected project installation only for requests carrying that selector.  **Required permissions:** `app:manage`
+
+        :param id: (required)
+        :type id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
+        :param create_app_version_launch_request: (required)
+        :type create_app_version_launch_request: CreateAppVersionLaunchRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._create_app_version_launch_serialize(
+            id=id,
+            x_api_version=x_api_version,
+            create_app_version_launch_request=create_app_version_launch_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "CreateAppVersionLaunchResponse",
+            '500': "ErrorResponse",
+            '4XX': "ErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def create_app_version_launch_without_preload_content(
+        self,
+        id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        create_app_version_launch_request: CreateAppVersionLaunchRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Create an advanced app version launch
+
+        Creates a short-lived launch selector for an immutable app version. Temporary settings override the selected project installation only for requests carrying that selector.  **Required permissions:** `app:manage`
+
+        :param id: (required)
+        :type id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
+        :param create_app_version_launch_request: (required)
+        :type create_app_version_launch_request: CreateAppVersionLaunchRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._create_app_version_launch_serialize(
+            id=id,
+            x_api_version=x_api_version,
+            create_app_version_launch_request=create_app_version_launch_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "CreateAppVersionLaunchResponse",
+            '500': "ErrorResponse",
+            '4XX': "ErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _create_app_version_launch_serialize(
+        self,
+        id,
+        x_api_version,
+        create_app_version_launch_request,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if id is not None:
+            _path_params['id'] = id
+        # process the query parameters
+        # process the header parameters
+        if x_api_version is not None:
+            _header_params['x-api-version'] = x_api_version
+        # process the form parameters
+        # process the body parameter
+        if create_app_version_launch_request is not None:
+            _body_params = create_app_version_launch_request
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+        # set the HTTP header `Content-Type`
+        if _content_type:
+            _header_params['Content-Type'] = _content_type
+        else:
+            _default_content_type = (
+                self.api_client.select_header_content_type(
+                    [
+                        'application/json'
+                    ]
+                )
+            )
+            if _default_content_type is not None:
+                _header_params['Content-Type'] = _default_content_type
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'OAuth2', 
+            'bearerAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='POST',
+            resource_path='/apps/versions/{id}/launches',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
     def delete_app(
         self,
         id: StrictStr,
@@ -1247,7 +1859,7 @@ class AppsApi:
     ) -> DeleteAppVersionResponse:
         """Delete an app version
 
-        Deletes an unpromoted app version and its stored build artifacts.  **Required permissions:** `app:manage`
+        Deletes an unpromoted, unaliased app version and its stored build artifacts.  **Required permissions:** `app:manage`
 
         :param id: (required)
         :type id: str
@@ -1320,7 +1932,7 @@ class AppsApi:
     ) -> ApiResponse[DeleteAppVersionResponse]:
         """Delete an app version
 
-        Deletes an unpromoted app version and its stored build artifacts.  **Required permissions:** `app:manage`
+        Deletes an unpromoted, unaliased app version and its stored build artifacts.  **Required permissions:** `app:manage`
 
         :param id: (required)
         :type id: str
@@ -1393,7 +2005,7 @@ class AppsApi:
     ) -> RESTResponseType:
         """Delete an app version
 
-        Deletes an unpromoted app version and its stored build artifacts.  **Required permissions:** `app:manage`
+        Deletes an unpromoted, unaliased app version and its stored build artifacts.  **Required permissions:** `app:manage`
 
         :param id: (required)
         :type id: str
@@ -4755,6 +5367,7 @@ class AppsApi:
         id: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         scope: Annotated[Optional[List[StrictStr]], Field(description="Which capabilities to include in the returned package. Defaults to `all`. Comma-joined (`?scope=ui,tools`) or repeated.")] = None,
+        deployment_alias: Annotated[Optional[Any], Field(description="Resolve the package from this named deployment. Used before installation to load the selected deployment configuration.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4778,6 +5391,8 @@ class AppsApi:
         :type x_api_version: str
         :param scope: Which capabilities to include in the returned package. Defaults to `all`. Comma-joined (`?scope=ui,tools`) or repeated.
         :type scope: List[str]
+        :param deployment_alias: Resolve the package from this named deployment. Used before installation to load the selected deployment configuration.
+        :type deployment_alias: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4804,6 +5419,7 @@ class AppsApi:
             id=id,
             x_api_version=x_api_version,
             scope=scope,
+            deployment_alias=deployment_alias,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4832,6 +5448,7 @@ class AppsApi:
         id: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         scope: Annotated[Optional[List[StrictStr]], Field(description="Which capabilities to include in the returned package. Defaults to `all`. Comma-joined (`?scope=ui,tools`) or repeated.")] = None,
+        deployment_alias: Annotated[Optional[Any], Field(description="Resolve the package from this named deployment. Used before installation to load the selected deployment configuration.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4855,6 +5472,8 @@ class AppsApi:
         :type x_api_version: str
         :param scope: Which capabilities to include in the returned package. Defaults to `all`. Comma-joined (`?scope=ui,tools`) or repeated.
         :type scope: List[str]
+        :param deployment_alias: Resolve the package from this named deployment. Used before installation to load the selected deployment configuration.
+        :type deployment_alias: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4881,6 +5500,7 @@ class AppsApi:
             id=id,
             x_api_version=x_api_version,
             scope=scope,
+            deployment_alias=deployment_alias,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4909,6 +5529,7 @@ class AppsApi:
         id: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         scope: Annotated[Optional[List[StrictStr]], Field(description="Which capabilities to include in the returned package. Defaults to `all`. Comma-joined (`?scope=ui,tools`) or repeated.")] = None,
+        deployment_alias: Annotated[Optional[Any], Field(description="Resolve the package from this named deployment. Used before installation to load the selected deployment configuration.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4932,6 +5553,8 @@ class AppsApi:
         :type x_api_version: str
         :param scope: Which capabilities to include in the returned package. Defaults to `all`. Comma-joined (`?scope=ui,tools`) or repeated.
         :type scope: List[str]
+        :param deployment_alias: Resolve the package from this named deployment. Used before installation to load the selected deployment configuration.
+        :type deployment_alias: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4958,6 +5581,7 @@ class AppsApi:
             id=id,
             x_api_version=x_api_version,
             scope=scope,
+            deployment_alias=deployment_alias,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4981,6 +5605,7 @@ class AppsApi:
         id,
         x_api_version,
         scope,
+        deployment_alias,
         _request_auth,
         _content_type,
         _headers,
@@ -5009,6 +5634,10 @@ class AppsApi:
         if scope is not None:
             
             _query_params.append(('scope', scope))
+            
+        if deployment_alias is not None:
+            
+            _query_params.append(('deployment_alias', deployment_alias))
             
         # process the header parameters
         if x_api_version is not None:
@@ -10231,6 +10860,289 @@ class AppsApi:
 
 
     @validate_call
+    def list_app_version_launch_targets(
+        self,
+        id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> List[AppVersionLaunchTarget]:
+        """List projects available for an advanced app version launch
+
+        Returns projects in the current account that the caller can access and where this application is already installed.  **Required permissions:** `app:manage`
+
+        :param id: (required)
+        :type id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._list_app_version_launch_targets_serialize(
+            id=id,
+            x_api_version=x_api_version,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "List[AppVersionLaunchTarget]",
+            '500': "ErrorResponse",
+            '4XX': "ErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def list_app_version_launch_targets_with_http_info(
+        self,
+        id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[List[AppVersionLaunchTarget]]:
+        """List projects available for an advanced app version launch
+
+        Returns projects in the current account that the caller can access and where this application is already installed.  **Required permissions:** `app:manage`
+
+        :param id: (required)
+        :type id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._list_app_version_launch_targets_serialize(
+            id=id,
+            x_api_version=x_api_version,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "List[AppVersionLaunchTarget]",
+            '500': "ErrorResponse",
+            '4XX': "ErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def list_app_version_launch_targets_without_preload_content(
+        self,
+        id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """List projects available for an advanced app version launch
+
+        Returns projects in the current account that the caller can access and where this application is already installed.  **Required permissions:** `app:manage`
+
+        :param id: (required)
+        :type id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._list_app_version_launch_targets_serialize(
+            id=id,
+            x_api_version=x_api_version,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "List[AppVersionLaunchTarget]",
+            '500': "ErrorResponse",
+            '4XX': "ErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _list_app_version_launch_targets_serialize(
+        self,
+        id,
+        x_api_version,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if id is not None:
+            _path_params['id'] = id
+        # process the query parameters
+        # process the header parameters
+        if x_api_version is not None:
+            _header_params['x-api-version'] = x_api_version
+        # process the form parameters
+        # process the body parameter
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'OAuth2', 
+            'bearerAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='GET',
+            resource_path='/apps/versions/{id}/launch-targets',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
     def list_app_versions(
         self,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
@@ -11334,6 +12246,307 @@ class AppsApi:
         return self.api_client.param_serialize(
             method='POST',
             resource_path='/apps/versions/{id}/rebuild',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def remove_app_version_alias(
+        self,
+        id: StrictStr,
+        alias: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> AppVersionRecord:
+        """Remove a deployment alias from an app version
+
+        Removes the alias only if it still points to this version, so a stale client cannot remove an alias that was reassigned elsewhere.  **Required permissions:** `app:manage`
+
+        :param id: (required)
+        :type id: str
+        :param alias: (required)
+        :type alias: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._remove_app_version_alias_serialize(
+            id=id,
+            alias=alias,
+            x_api_version=x_api_version,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "AppVersionRecord",
+            '409': None,
+            '500': "ErrorResponse",
+            '4XX': "ErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def remove_app_version_alias_with_http_info(
+        self,
+        id: StrictStr,
+        alias: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[AppVersionRecord]:
+        """Remove a deployment alias from an app version
+
+        Removes the alias only if it still points to this version, so a stale client cannot remove an alias that was reassigned elsewhere.  **Required permissions:** `app:manage`
+
+        :param id: (required)
+        :type id: str
+        :param alias: (required)
+        :type alias: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._remove_app_version_alias_serialize(
+            id=id,
+            alias=alias,
+            x_api_version=x_api_version,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "AppVersionRecord",
+            '409': None,
+            '500': "ErrorResponse",
+            '4XX': "ErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def remove_app_version_alias_without_preload_content(
+        self,
+        id: StrictStr,
+        alias: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Remove a deployment alias from an app version
+
+        Removes the alias only if it still points to this version, so a stale client cannot remove an alias that was reassigned elsewhere.  **Required permissions:** `app:manage`
+
+        :param id: (required)
+        :type id: str
+        :param alias: (required)
+        :type alias: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._remove_app_version_alias_serialize(
+            id=id,
+            alias=alias,
+            x_api_version=x_api_version,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "AppVersionRecord",
+            '409': None,
+            '500': "ErrorResponse",
+            '4XX': "ErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _remove_app_version_alias_serialize(
+        self,
+        id,
+        alias,
+        x_api_version,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if id is not None:
+            _path_params['id'] = id
+        if alias is not None:
+            _path_params['alias'] = alias
+        # process the query parameters
+        # process the header parameters
+        if x_api_version is not None:
+            _header_params['x-api-version'] = x_api_version
+        # process the form parameters
+        # process the body parameter
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'OAuth2', 
+            'bearerAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='DELETE',
+            resource_path='/apps/versions/{id}/aliases/{alias}',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,

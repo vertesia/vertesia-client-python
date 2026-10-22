@@ -144,6 +144,7 @@ vertesia_client/openapi/models/app_build_trigger.py
 vertesia_client/openapi/models/app_capabilities.py
 vertesia_client/openapi/models/app_dashboard_definition.py
 vertesia_client/openapi/models/app_delete_summary.py
+vertesia_client/openapi/models/app_deployment_alias_target.py
 vertesia_client/openapi/models/app_development_task.py
 vertesia_client/openapi/models/app_development_task_details.py
 vertesia_client/openapi/models/app_development_task_list.py
@@ -204,6 +205,7 @@ vertesia_client/openapi/models/app_ui_nav_item.py
 vertesia_client/openapi/models/app_version_git_ref_type.py
 vertesia_client/openapi/models/app_version_git_source.py
 vertesia_client/openapi/models/app_version_kind.py
+vertesia_client/openapi/models/app_version_launch_target.py
 vertesia_client/openapi/models/app_version_record.py
 vertesia_client/openapi/models/app_version_state.py
 vertesia_client/openapi/models/app_version_storage.py
@@ -394,6 +396,8 @@ vertesia_client/openapi/models/count_result.py
 vertesia_client/openapi/models/create_account_api_key_payload.py
 vertesia_client/openapi/models/create_agent_run_payload.py
 vertesia_client/openapi/models/create_api_key_payload.py
+vertesia_client/openapi/models/create_app_version_launch_request.py
+vertesia_client/openapi/models/create_app_version_launch_response.py
 vertesia_client/openapi/models/create_collection_payload.py
 vertesia_client/openapi/models/create_content_object_payload.py
 vertesia_client/openapi/models/create_content_object_payload_tokens.py

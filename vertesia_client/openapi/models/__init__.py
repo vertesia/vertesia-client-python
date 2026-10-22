@@ -104,6 +104,7 @@ from vertesia_client.openapi.models.app_build_trigger import AppBuildTrigger
 from vertesia_client.openapi.models.app_capabilities import AppCapabilities
 from vertesia_client.openapi.models.app_dashboard_definition import AppDashboardDefinition
 from vertesia_client.openapi.models.app_delete_summary import AppDeleteSummary
+from vertesia_client.openapi.models.app_deployment_alias_target import AppDeploymentAliasTarget
 from vertesia_client.openapi.models.app_development_task import AppDevelopmentTask
 from vertesia_client.openapi.models.app_development_task_details import AppDevelopmentTaskDetails
 from vertesia_client.openapi.models.app_development_task_list import AppDevelopmentTaskList
@@ -164,6 +165,7 @@ from vertesia_client.openapi.models.app_ui_nav_item import AppUINavItem
 from vertesia_client.openapi.models.app_version_git_ref_type import AppVersionGitRefType
 from vertesia_client.openapi.models.app_version_git_source import AppVersionGitSource
 from vertesia_client.openapi.models.app_version_kind import AppVersionKind
+from vertesia_client.openapi.models.app_version_launch_target import AppVersionLaunchTarget
 from vertesia_client.openapi.models.app_version_record import AppVersionRecord
 from vertesia_client.openapi.models.app_version_state import AppVersionState
 from vertesia_client.openapi.models.app_version_storage import AppVersionStorage
@@ -354,6 +356,8 @@ from vertesia_client.openapi.models.count_result import CountResult
 from vertesia_client.openapi.models.create_account_api_key_payload import CreateAccountApiKeyPayload
 from vertesia_client.openapi.models.create_agent_run_payload import CreateAgentRunPayload
 from vertesia_client.openapi.models.create_api_key_payload import CreateApiKeyPayload
+from vertesia_client.openapi.models.create_app_version_launch_request import CreateAppVersionLaunchRequest
+from vertesia_client.openapi.models.create_app_version_launch_response import CreateAppVersionLaunchResponse
 from vertesia_client.openapi.models.create_collection_payload import CreateCollectionPayload
 from vertesia_client.openapi.models.create_content_object_payload import CreateContentObjectPayload
 from vertesia_client.openapi.models.create_content_object_payload_tokens import CreateContentObjectPayloadTokens

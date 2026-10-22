@@ -3417,6 +3417,30 @@
         "additionalProperties": false,
         "description": "Result of `DELETE /apps/:id`. Doubles as the dry-run preview: without `?confirm=true` the same shape comes back with `deleted: false` describing what the cascade would remove."
       },
+      "AppDeploymentAlias": {
+        "type": "string",
+        "pattern": "^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$",
+        "description": "Stable, lowercase deployment alias for an immutable app version, such as `production`, `preview`, or `customer-demo`."
+      },
+      "AppDeploymentAliasTarget": {
+        "type": "object",
+        "properties": {
+          "version_id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Immutable AppGen version id."
+          },
+          "version_record_id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Globally unique app-version record id used to resolve the exact build."
+          }
+        },
+        "required": [
+          "version_id",
+          "version_record_id"
+        ]
+      },
       "AppDevelopmentTask": {
         "type": "object",
         "properties": {
@@ -3972,6 +3996,10 @@
               "type": "string"
             }
           },
+          "deployment_alias": {
+            "$ref": "#/components/schemas/AppDeploymentAlias",
+            "description": "Stable deployment alias selected for this installation. The alias is resolved to its current immutable app version at request time."
+          },
           "manifest": {
             "type": "string"
           },
@@ -4133,6 +4161,10 @@
             "items": {
               "type": "string"
             }
+          },
+          "deployment_alias": {
+            "$ref": "#/components/schemas/AppDeploymentAlias",
+            "description": "Stable deployment alias selected for this installation. The alias is resolved to its current immutable app version at request time."
           },
           "mcp_configuration": {
             "type": "object",
@@ -4301,6 +4333,10 @@
           "app_id": {
             "type": "string"
           },
+          "deployment_alias": {
+            "$ref": "#/components/schemas/AppDeploymentAlias",
+            "description": "Optional stable deployment alias to follow for this installation instead of the app's promoted version."
+          },
           "instance_key": {
             "type": "string",
             "pattern": "^[a-z][a-z0-9_-]{0,31}$"
@@ -4453,6 +4489,10 @@
             "items": {
               "type": "string"
             }
+          },
+          "deployment_alias": {
+            "$ref": "#/components/schemas/AppDeploymentAlias",
+            "description": "Stable deployment alias selected for this installation. The alias is resolved to its current immutable app version at request time."
           },
           "mcp_configuration": {
             "type": "object",
@@ -4726,6 +4766,16 @@
           "version": {
             "type": "string",
             "description": "Optional app version string (e.g. \"1.0.0\") — informational."
+          },
+          "deployment_aliases": {
+            "type": "object",
+            "propertyNames": {
+              "$ref": "#/components/schemas/AppDeploymentAlias"
+            },
+            "additionalProperties": {
+              "$ref": "#/components/schemas/AppDeploymentAliasTarget"
+            },
+            "description": "Vertesia-managed mapping from stable deployment aliases to immutable AppGen versions."
           },
           "source": {
             "$ref": "#/components/schemas/AppManifestSource",
@@ -5691,6 +5741,35 @@
           "version"
         ]
       },
+      "AppVersionLaunchTarget": {
+        "type": "object",
+        "properties": {
+          "project": {
+            "$ref": "#/components/schemas/ProjectRef"
+          },
+          "installation_id": {
+            "type": "string"
+          },
+          "settings": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Current settings of the app installation in the target project."
+          }
+        },
+        "required": [
+          "project",
+          "installation_id",
+          "settings"
+        ],
+        "additionalProperties": false,
+        "description": "A user-accessible project where this app version may be launched temporarily."
+      },
+      "AppVersionLaunchTargetArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/AppVersionLaunchTarget"
+        }
+      },
       "AppVersionRecord": {
         "type": "object",
         "properties": {
@@ -5723,6 +5802,13 @@
           },
           "promoted": {
             "type": "boolean"
+          },
+          "aliases": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AppDeploymentAlias"
+            },
+            "description": "Deployment aliases that currently resolve to this immutable version."
           },
           "target": {
             "$ref": "#/components/schemas/AppVersionTarget"
@@ -13137,6 +13223,46 @@
           "role"
         ],
         "additionalProperties": false
+      },
+      "CreateAppVersionLaunchRequest": {
+        "type": "object",
+        "properties": {
+          "target_project_id": {
+            "type": "string",
+            "description": "Project in the source account where the app is already installed and the temporary version will run. Defaults to the current project."
+          },
+          "settings": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Temporary app installation settings used only by this version launch."
+          }
+        },
+        "required": [
+          "settings"
+        ],
+        "additionalProperties": false,
+        "description": "Creates a short-lived launch of one immutable app version with temporary installation settings."
+      },
+      "CreateAppVersionLaunchResponse": {
+        "type": "object",
+        "properties": {
+          "version_launch_id": {
+            "type": "string"
+          },
+          "version_selector": {
+            "type": "string"
+          },
+          "app_url": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "version_launch_id",
+          "version_selector",
+          "app_url"
+        ],
+        "additionalProperties": false,
+        "description": "Opaque launch selector and App Gateway URL for an advanced app-version launch."
       },
       "CreateCollectionPayload": {
         "type": "object",
@@ -57077,6 +57203,16 @@
             "description": "Which capabilities to include in the returned package. Defaults to `all`. Comma-joined (`?scope=ui,tools`) or repeated.",
             "style": "form",
             "explode": true
+          },
+          {
+            "name": "deployment_alias",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/AppDeploymentAlias",
+              "description": "Resolve the package from this named deployment. Used before installation to load the selected deployment configuration."
+            },
+            "description": "Resolve the package from this named deployment. Used before installation to load the selected deployment configuration."
           }
         ],
         "responses": {
@@ -57396,7 +57532,7 @@
           "Apps"
         ],
         "summary": "Delete an app version",
-        "description": "Deletes an unpromoted app version and its stored build artifacts.\n\n**Required permissions:** `app:manage`",
+        "description": "Deletes an unpromoted, unaliased app version and its stored build artifacts.\n\n**Required permissions:** `app:manage`",
         "security": [
           {
             "bearerAuth": []
@@ -57466,6 +57602,398 @@
           "file": "../../apps/studio-server/src/api/apps.ts",
           "className": "AppsResource",
           "methodName": "deleteAppVersion"
+        }
+      },
+      "parameters": [
+        {
+          "name": "x-api-version",
+          "in": "header",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S",
+            "example": "20260803"
+          },
+          "description": "Required Vertesia API version header. Use `20260803` for the current stable API shape.",
+          "x-vertesia-global-header": true
+        }
+      ]
+    },
+    "/apps/versions/{id}/launch-targets": {
+      "get": {
+        "operationId": "ListAppVersionLaunchTargets",
+        "tags": [
+          "Apps"
+        ],
+        "summary": "List projects available for an advanced app version launch",
+        "description": "Returns projects in the current account that the caller can access and where this application is already installed.\n\n**Required permissions:** `app:manage`",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OAuth2": [
+              "app:manage"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Eligible launch targets.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AppVersionLaunchTargetArray"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [
+          "app:manage"
+        ],
+        "x-vertesia-source": {
+          "file": "../../apps/studio-server/src/api/apps.ts",
+          "className": "AppsResource",
+          "methodName": "listAppVersionLaunchTargets"
+        }
+      },
+      "parameters": [
+        {
+          "name": "x-api-version",
+          "in": "header",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S",
+            "example": "20260803"
+          },
+          "description": "Required Vertesia API version header. Use `20260803` for the current stable API shape.",
+          "x-vertesia-global-header": true
+        }
+      ]
+    },
+    "/apps/versions/{id}/launches": {
+      "post": {
+        "operationId": "CreateAppVersionLaunch",
+        "tags": [
+          "Apps"
+        ],
+        "summary": "Create an advanced app version launch",
+        "description": "Creates a short-lived launch selector for an immutable app version. Temporary settings override the selected project installation only for requests carrying that selector.\n\n**Required permissions:** `app:manage`",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OAuth2": [
+              "app:manage"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The temporary version launch.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateAppVersionLaunchResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [
+          "app:manage"
+        ],
+        "x-vertesia-source": {
+          "file": "../../apps/studio-server/src/api/apps.ts",
+          "className": "AppsResource",
+          "methodName": "createAppVersionLaunch"
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAppVersionLaunchRequest"
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "x-api-version",
+          "in": "header",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S",
+            "example": "20260803"
+          },
+          "description": "Required Vertesia API version header. Use `20260803` for the current stable API shape.",
+          "x-vertesia-global-header": true
+        }
+      ]
+    },
+    "/apps/versions/{id}/aliases/{alias}": {
+      "put": {
+        "operationId": "AssignAppVersionAlias",
+        "tags": [
+          "Apps"
+        ],
+        "summary": "Assign a deployment alias to an app version",
+        "description": "Atomically assigns or moves one stable deployment alias to this immutable app version. This does not change the promoted version.\n\n**Required permissions:** `app:manage`",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OAuth2": [
+              "app:manage"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "alias",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The aliased app version.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AppVersionRecord"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [
+          "app:manage"
+        ],
+        "x-vertesia-source": {
+          "file": "../../apps/studio-server/src/api/apps.ts",
+          "className": "AppsResource",
+          "methodName": "assignAppVersionAlias"
+        }
+      },
+      "delete": {
+        "operationId": "RemoveAppVersionAlias",
+        "tags": [
+          "Apps"
+        ],
+        "summary": "Remove a deployment alias from an app version",
+        "description": "Removes the alias only if it still points to this version, so a stale client cannot remove an alias that was reassigned elsewhere.\n\n**Required permissions:** `app:manage`",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OAuth2": [
+              "app:manage"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "alias",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The app version after removing the alias.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AppVersionRecord"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "The alias moved to another version or is still used by an app installation."
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [
+          "app:manage"
+        ],
+        "x-vertesia-source": {
+          "file": "../../apps/studio-server/src/api/apps.ts",
+          "className": "AppsResource",
+          "methodName": "removeAppVersionAlias"
         }
       },
       "parameters": [

@@ -22,6 +22,7 @@ from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.app_access_control import AppAccessControl
 from vertesia_client.openapi.models.app_capabilities import AppCapabilities
+from vertesia_client.openapi.models.app_deployment_alias_target import AppDeploymentAliasTarget
 from vertesia_client.openapi.models.app_manifest_preview_screenshot import AppManifestPreviewScreenshot
 from vertesia_client.openapi.models.app_manifest_source import AppManifestSource
 from vertesia_client.openapi.models.app_o_auth_client_config import AppOAuthClientConfig
@@ -60,6 +61,7 @@ class AppManifest(BaseModel):
     endpoint: Optional[StrictStr] = Field(default=None, description="The app endpoint URL This URL should return a JSON object describing the contributions provided by the app. The object shape must satisfies AppPackage interface. The endpoint must support GET method and a `scope` parameter to filter which resources are included in the returned AppPackage: The supported scope values are: - ui - tools - interactions - types - processes - templates - dashboards - settings - all (the default if no scope is provided)  You can also use comma-separated values to combine scopes (e.g. \"ui,tools\").  Example: - ?scope=ui,tools - returns only the UI configuration")
     endpoint_overrides: Optional[Dict[str, StrictStr]] = Field(default=None, description="Optional endpoint overrides keyed by environment name. When resolving the app endpoint, if the current environment name matches a key, the corresponding URL is used instead of the main `endpoint`. Only dev environment names are allowed as keys (starting with \"desktop-\" or \"dev-\").")
     version: Optional[StrictStr] = Field(default=None, description="Optional app version string (e.g. \"1.0.0\") — informational.")
+    deployment_aliases: Optional[Dict[str, AppDeploymentAliasTarget]] = Field(default=None, description="Vertesia-managed mapping from stable deployment aliases to immutable AppGen versions.")
     source: Optional[AppManifestSource] = Field(default=None, description="Source metadata for generated or synced app manifests.")
     tags: Optional[List[StrictStr]] = Field(default=None, description="Free-form tags used for classification and filtering. Platform apps carry `\"system\"` so UIs can skip install/uninstall/manage-permission controls that don't apply to synthetic installations.")
     access_control: Optional[AppAccessControl] = Field(default=None, description="Access control policy for the app. Defaults to 'all' (ACE-gated everywhere) when undefined. See  {@link  AppAccessControl }  for semantics. May be overridden on the AppInstallation.")
@@ -68,7 +70,7 @@ class AppManifest(BaseModel):
     created_at: StrictStr
     updated_at: StrictStr
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["parameters", "oauth_scopes", "oauth_client", "edit_revision", "name", "visibility", "title", "description", "publisher", "icon", "color", "preview_screenshot", "status", "ui", "tool_collections", "oauth_providers", "interactions", "settings_schema", "capabilities", "endpoint", "endpoint_overrides", "version", "source", "tags", "access_control", "id", "account", "created_at", "updated_at"]
+    __properties: ClassVar[List[str]] = ["parameters", "oauth_scopes", "oauth_client", "edit_revision", "name", "visibility", "title", "description", "publisher", "icon", "color", "preview_screenshot", "status", "ui", "tool_collections", "oauth_providers", "interactions", "settings_schema", "capabilities", "endpoint", "endpoint_overrides", "version", "deployment_aliases", "source", "tags", "access_control", "id", "account", "created_at", "updated_at"]
 
     @field_validator('visibility')
     def visibility_validate_enum(cls, value):
@@ -154,6 +156,13 @@ class AppManifest(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of settings_schema
         if self.settings_schema:
             _dict['settings_schema'] = self.settings_schema.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of each value in deployment_aliases (dict)
+        _field_dict = {}
+        if self.deployment_aliases:
+            for _key_deployment_aliases in self.deployment_aliases:
+                if self.deployment_aliases[_key_deployment_aliases]:
+                    _field_dict[_key_deployment_aliases] = self.deployment_aliases[_key_deployment_aliases].to_dict()
+            _dict['deployment_aliases'] = _field_dict
         # override the default output from pydantic by calling `to_dict()` of source
         if self.source:
             _dict['source'] = self.source.to_dict()
@@ -206,6 +215,12 @@ class AppManifest(BaseModel):
             "endpoint": obj.get("endpoint"),
             "endpoint_overrides": obj.get("endpoint_overrides"),
             "version": obj.get("version"),
+            "deployment_aliases": dict(
+                (_k, AppDeploymentAliasTarget.from_dict(_v))
+                for _k, _v in obj["deployment_aliases"].items()
+            )
+            if obj.get("deployment_aliases") is not None
+            else None,
             "source": AppManifestSource.from_dict(obj["source"]) if obj.get("source") is not None else None,
             "tags": obj.get("tags"),
             "access_control": obj.get("access_control"),

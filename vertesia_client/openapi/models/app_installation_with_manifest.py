@@ -42,6 +42,7 @@ class AppInstallationWithManifest(BaseModel):
     namespace_overrides: Optional[Dict[str, StrictStr]] = None
     reserved_namespaces: Optional[Annotated[List[StrictStr], Field(min_length=1)]] = None
     namespace_conflicts: Optional[List[StrictStr]] = None
+    deployment_alias: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Stable deployment alias selected for this installation. The alias is resolved to its current immutable app version at request time.")
     mcp_configuration: Optional[AppInstallationMcpConfiguration] = None
     oauth_approval: Optional[AppInstallationOauthApproval] = None
     oauth_client_id: Optional[StrictStr] = None
@@ -55,7 +56,7 @@ class AppInstallationWithManifest(BaseModel):
     manifest: AppManifest
     oauth_collection_ids: Optional[List[StrictStr]] = Field(default=None, description="Computed by the server: ids of MCP tool collections for this installation that require OAuth. Accounts for all three signals: manifest auth:'oauth', manifest oauth_app, and oauth_bindings. Populated by the GET /installations/all endpoint.")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["id", "project", "instance_key", "display_name", "installation_version", "namespace_overrides", "reserved_namespaces", "namespace_conflicts", "mcp_configuration", "oauth_approval", "oauth_client_id", "settings", "tool_allowlist", "oauth_bindings", "provider_bindings", "access_control", "created_at", "updated_at", "manifest", "oauth_collection_ids"]
+    __properties: ClassVar[List[str]] = ["id", "project", "instance_key", "display_name", "installation_version", "namespace_overrides", "reserved_namespaces", "namespace_conflicts", "deployment_alias", "mcp_configuration", "oauth_approval", "oauth_client_id", "settings", "tool_allowlist", "oauth_bindings", "provider_bindings", "access_control", "created_at", "updated_at", "manifest", "oauth_collection_ids"]
 
     @field_validator('installation_version')
     def installation_version_validate_enum(cls, value):
@@ -63,6 +64,19 @@ class AppInstallationWithManifest(BaseModel):
         if value is None:
             return value
 
+        return value
+
+    @field_validator('deployment_alias')
+    def deployment_alias_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if value is None:
+            return value
+
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$", value):
+            raise ValueError(r"must validate the regular expression /^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/")
         return value
 
     model_config = ConfigDict(
@@ -159,6 +173,7 @@ class AppInstallationWithManifest(BaseModel):
             "namespace_overrides": obj.get("namespace_overrides"),
             "reserved_namespaces": obj.get("reserved_namespaces"),
             "namespace_conflicts": obj.get("namespace_conflicts"),
+            "deployment_alias": obj.get("deployment_alias"),
             "mcp_configuration": AppInstallationMcpConfiguration.from_dict(obj["mcp_configuration"]) if obj.get("mcp_configuration") is not None else None,
             "oauth_approval": AppInstallationOauthApproval.from_dict(obj["oauth_approval"]) if obj.get("oauth_approval") is not None else None,
             "oauth_client_id": obj.get("oauth_client_id"),

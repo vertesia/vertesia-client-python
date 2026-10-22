@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.app_version_kind import AppVersionKind
 from vertesia_client.openapi.models.app_version_state import AppVersionState
 from vertesia_client.openapi.models.app_version_storage import AppVersionStorage
@@ -42,6 +43,7 @@ class AppVersionRecord(BaseModel):
     kind: AppVersionKind
     state: AppVersionState
     promoted: Optional[StrictBool] = None
+    aliases: Optional[List[Annotated[str, Field(strict=True)]]] = Field(default=None, description="Deployment aliases that currently resolve to this immutable version.")
     target: Optional[AppVersionTarget] = None
     agent_run_id: Optional[StrictStr] = None
     development_task_id: Optional[StrictStr] = Field(default=None, description="Development task that produced this version, when built by the app assistant.")
@@ -66,7 +68,7 @@ class AppVersionRecord(BaseModel):
     checked_at: Optional[StrictStr] = None
     expires_at: Optional[StrictStr] = None
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["id", "account", "project", "app", "app_id", "app_name", "version_id", "kind", "state", "promoted", "target", "agent_run_id", "development_task_id", "build_workflow_id", "build_workflow_run_id", "sandbox_id", "title", "description", "storage", "source_commit", "urls", "manifest", "files", "file_count", "source_file_count", "screenshot_artifact", "checks", "created_by", "created_at", "updated_at", "built_at", "checked_at", "expires_at"]
+    __properties: ClassVar[List[str]] = ["id", "account", "project", "app", "app_id", "app_name", "version_id", "kind", "state", "promoted", "aliases", "target", "agent_run_id", "development_task_id", "build_workflow_id", "build_workflow_run_id", "sandbox_id", "title", "description", "storage", "source_commit", "urls", "manifest", "files", "file_count", "source_file_count", "screenshot_artifact", "checks", "created_by", "created_at", "updated_at", "built_at", "checked_at", "expires_at"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -147,6 +149,7 @@ class AppVersionRecord(BaseModel):
             "kind": obj.get("kind"),
             "state": obj.get("state"),
             "promoted": obj.get("promoted"),
+            "aliases": obj.get("aliases"),
             "target": obj.get("target"),
             "agent_run_id": obj.get("agent_run_id"),
             "development_task_id": obj.get("development_task_id"),
