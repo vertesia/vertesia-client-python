@@ -8,6 +8,8 @@ The approval gate uses trusted base-branch code and the existing
 `vertesia-automerge` App. It approves ready, same-repository PRs from active
 `@vertesia/engineering` members only after CI passes for the current head and
 base. `human-review-required` opts out; human reviews remain untouched.
+The tested commit is the one named in the gate's review body, not the review's
+`commit_id`, which GitHub moves forward to the new head on push.
 
 Dependabot runtime minor/patch groups and the GitHub Actions group are eligible
 for automatic approval and squash merge after the same CI gate. The merge gate
@@ -17,7 +19,9 @@ configured update groups. Major runtime upgrades and opted-out PRs require a hum
 Configure `APP_VERTESIA_RENOVATE_AUTOMERGE_CLIENT_ID` and the secret
 `APP_VERTESIA_RENOVATE_AUTOMERGE_PEM` in the `renovate-automerge` environment.
 Install the App on this repository with pull requests write, contents write,
-and organization members read. No merge bypass is granted to this App.
+workflows write, and organization members read. Only GitHub Actions updates
+request workflows write, because GitHub refuses to merge a workflow change
+without it. No merge bypass is granted to this App.
 
 The dedicated SDK generation App may bypass PR rules to synchronize generated
 sources after the upstream live tests. This exception does not apply to users
