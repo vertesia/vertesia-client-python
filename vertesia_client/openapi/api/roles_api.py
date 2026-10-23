@@ -326,7 +326,7 @@ class RolesApi:
     ) -> List[SystemRoleDefinition]:
         """List system roles
 
-        Lists system-domain roles only. Permissions are `Permission` enum values — suited for client-side permission gating (button visibility, route guards). ABAC roles are excluded and must be consumed via the JWT `content_security` claim at the data layer.
+        Lists system-domain roles only. Permissions are `Permission` enum values — suited for client-side permission gating (button visibility, route guards). ABAC roles are excluded and must be consumed via the JWT `abac` claim at the data layer.
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -395,7 +395,7 @@ class RolesApi:
     ) -> ApiResponse[List[SystemRoleDefinition]]:
         """List system roles
 
-        Lists system-domain roles only. Permissions are `Permission` enum values — suited for client-side permission gating (button visibility, route guards). ABAC roles are excluded and must be consumed via the JWT `content_security` claim at the data layer.
+        Lists system-domain roles only. Permissions are `Permission` enum values — suited for client-side permission gating (button visibility, route guards). ABAC roles are excluded and must be consumed via the JWT `abac` claim at the data layer.
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -464,7 +464,7 @@ class RolesApi:
     ) -> RESTResponseType:
         """List system roles
 
-        Lists system-domain roles only. Permissions are `Permission` enum values — suited for client-side permission gating (button visibility, route guards). ABAC roles are excluded and must be consumed via the JWT `content_security` claim at the data layer.
+        Lists system-domain roles only. Permissions are `Permission` enum values — suited for client-side permission gating (button visibility, route guards). ABAC roles are excluded and must be consumed via the JWT `abac` claim at the data layer.
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str

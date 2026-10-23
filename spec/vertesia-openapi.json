@@ -664,7 +664,7 @@
           },
           "scope": {
             "$ref": "#/components/schemas/AbacScope",
-            "description": "Kind of object the `resource_props` matches. Used to disambiguate which partition's roles apply (e.g. content roles vs agent-run roles) and to form the JWT `content_security` key prefix (`{scope}:{verb}`). Absent → `'document'` (default; emits bare `read`/`write`/`delete` keys for backward compatibility)."
+            "description": "Kind of object the `resource_props` matches. Used to disambiguate which partition's roles apply (e.g. content roles vs agent-run roles) and to form the JWT `abac` key prefix (`{scope}:{verb}`). Absent → `'document'` (default; emits bare `read`/`write`/`delete` keys for backward compatibility)."
           }
         },
         "additionalProperties": false,
@@ -53936,7 +53936,7 @@
           "Roles"
         ],
         "summary": "List system roles",
-        "description": "Lists system-domain roles only. Permissions are `Permission` enum values — suited for client-side permission gating (button visibility, route guards). ABAC roles are excluded and must be consumed via the JWT `content_security` claim at the data layer.",
+        "description": "Lists system-domain roles only. Permissions are `Permission` enum values — suited for client-side permission gating (button visibility, route guards). ABAC roles are excluded and must be consumed via the JWT `abac` claim at the data layer.",
         "security": [
           {
             "bearerAuth": []
