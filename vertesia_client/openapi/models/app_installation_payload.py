@@ -41,11 +41,12 @@ class AppInstallationPayload(BaseModel):
     mcp_parameters: Optional[Dict[str, Dict[str, Optional[AppInstallationPayloadMcpSharedParametersValue]]]] = Field(default=None, description="Installation parameter overrides by MCP collection id. Omit to preserve; null clears an override. Secret inputs are write-only.")
     settings: Optional[Dict[str, Any]] = None
     access_control: Optional[AppAccessControl] = Field(default=None, description="Per-installation override of the manifest's `access_control` policy. When provided, takes precedence over the manifest default for every access check. Sibling of `settings` — admin-controlled, not part of the app's own settings JSON.  Three send-time semantics on update:  - Field omitted entirely from the payload → leave the existing override unchanged.  - Explicit `null` → clear the override, fall back to the manifest default.  - String enum → set the override to that value.  (On install, the same shape applies; omit or pass `null` to use the manifest default.)")
+    approved_scopes: Optional[Annotated[List[Annotated[str, Field(min_length=1, strict=True)]], Field(max_length=200)]] = Field(default=None, description="OAuth scopes approved by the project manager during installation. The server records the approving user and timestamp; omitted defaults to all scopes requested by the selected deployment.")
     oauth_params: Optional[Dict[str, OAuthClientCredentials]] = Field(default=None, description="OAuth credentials for each collection, keyed by collection.id. Legacy callers may still use collection.name for older manifests. Collected from the user at install time for collections with oauth_config.required_at_install.")
     oauth_provider_params: Optional[Dict[str, OAuthClientCredentials]] = Field(default=None, description="OAuth credentials for named providers, keyed by the provider key from oauth_providers. Collected from the user at install time for providers with required_at_install. Separate from oauth_params to avoid key collisions between provider keys and collection ids.")
     api_key_params: Optional[Dict[str, McpApiKeyCredential]] = Field(default=None, description="API keys for auth: 'api_key' collections, keyed by collection.id. Collected from the user at install time for collections with api_key_config.required_at_install. Each key is stored in the installing project's encrypted secret store, replacing any key already held for that collection.")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["app_id", "deployment_alias", "instance_key", "display_name", "namespace_overrides", "mcp_shared_parameters", "mcp_parameters", "settings", "access_control", "oauth_params", "oauth_provider_params", "api_key_params"]
+    __properties: ClassVar[List[str]] = ["app_id", "deployment_alias", "instance_key", "display_name", "namespace_overrides", "mcp_shared_parameters", "mcp_parameters", "settings", "access_control", "approved_scopes", "oauth_params", "oauth_provider_params", "api_key_params"]
 
     @field_validator('deployment_alias')
     def deployment_alias_validate_regular_expression(cls, value):
@@ -203,6 +204,7 @@ class AppInstallationPayload(BaseModel):
             else None,
             "settings": obj.get("settings"),
             "access_control": obj.get("access_control"),
+            "approved_scopes": obj.get("approved_scopes"),
             "oauth_params": dict(
                 (_k, OAuthClientCredentials.from_dict(_v))
                 for _k, _v in obj["oauth_params"].items()
