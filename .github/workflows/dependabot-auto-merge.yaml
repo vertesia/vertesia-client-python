@@ -24,6 +24,7 @@ jobs:
           persist-credentials: false
           sparse-checkout: .github/bin
       - name: Generate merge token
+        if: ${{ !startsWith(github.event.client_payload.head_branch, 'dependabot/github_actions/') }}
         id: token
         uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
         with:
@@ -31,10 +32,23 @@ jobs:
           private-key: ${{ secrets.APP_VERTESIA_RENOVATE_AUTOMERGE_PEM }}
           permission-contents: write
           permission-pull-requests: write
+      # GitHub refuses to merge a change to .github/workflows/ with an App token that lacks the
+      # workflows permission. Only github-actions updates request it, so a missing App grant cannot
+      # block the other ecosystems.
+      - name: Generate workflow merge token
+        if: ${{ startsWith(github.event.client_payload.head_branch, 'dependabot/github_actions/') }}
+        id: workflow-token
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        with:
+          client-id: ${{ vars.APP_VERTESIA_RENOVATE_AUTOMERGE_CLIENT_ID }}
+          private-key: ${{ secrets.APP_VERTESIA_RENOVATE_AUTOMERGE_PEM }}
+          permission-contents: write
+          permission-pull-requests: write
+          permission-workflows: write
       - name: Approve and merge the tested revision
         env:
           GH_TOKEN: ${{ github.token }}
-          GH_MERGE_TOKEN: ${{ steps.token.outputs.token }}
+          GH_MERGE_TOKEN: ${{ steps.token.outputs.token || steps.workflow-token.outputs.token }}
           REPO: ${{ github.repository }}
           PR_NUMBER: ${{ github.event.client_payload.pr_number }}
           HEAD_BRANCH: ${{ github.event.client_payload.head_branch }}
