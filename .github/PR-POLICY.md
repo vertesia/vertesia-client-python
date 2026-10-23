@@ -28,3 +28,15 @@ required approval status. New release branches cut from main inherit them.
 
 To reconcile a missed event, send a `ci-approve-reconcile` repository dispatch,
 optionally with `client_payload.pr_number`.
+
+## CI and credentials
+
+Only pull-request CI for the current head and base can satisfy the gate; manual
+release runs cannot substitute for it. Both supported Python matrix entries
+are mandatory in the Python SDK. A successful workflow that skips a required
+job or step does not qualify.
+
+The approval environment permits protected branches only. The App key may be
+provided by an environment secret or an existing repository secret with the
+same name. The gate requests separate review, membership, and dispatch tokens.
+If membership cannot be verified, automatic engineering approval fails closed.
