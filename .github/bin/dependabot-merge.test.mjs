@@ -39,7 +39,7 @@ test('merge checks exact revision twice and submits approval for the tested comm
     const pr = fixture();
     pr.head.ref = `dependabot/${local.ecosystem}/${local.group}-123`;
     pr.head.sha = 'a'.repeat(40); pr.base.sha = 'b'.repeat(40); pr.changed_files = 1;
-    const env = { REPO: repo, PR_NUMBER: '12', HEAD_BRANCH: pr.head.ref, HEAD_SHA: pr.head.sha, BASE_REF: pr.base.ref, BASE_SHA: pr.base.sha };
+    const env = { GH_MERGE_TOKEN: 'merge-app', REPO: repo, PR_NUMBER: '12', HEAD_BRANCH: pr.head.ref, HEAD_SHA: pr.head.sha, BASE_REF: pr.base.ref, BASE_SHA: pr.base.sha };
     const writes = [];
     const api = endpoint => endpoint.includes('/statuses')
         ? [[{ context: 'PR approval gate', state: 'success', creator: { login: 'github-actions[bot]' } }]]

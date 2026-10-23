@@ -21,6 +21,8 @@ export function eligibilityReason(pr, files, config, repo) {
 
 export function main(env, api = ghApi, run = execFileSync) {
     const repo = env.REPO;
+    if (!env.GH_MERGE_TOKEN) throw new Error('Missing merge token');
+    const writeOptions = { stdio: 'inherit', env: { ...process.env, GH_TOKEN: env.GH_MERGE_TOKEN } };
     const number = Number(env.PR_NUMBER);
     if (!Number.isSafeInteger(number) || number < 1 || !/^[\w.-]+\/[\w.-]+$/.test(repo ?? '')) {
         throw new Error('Invalid repository or PR');
@@ -39,11 +41,11 @@ export function main(env, api = ghApi, run = execFileSync) {
     if (reason) { console.log(`Skipping #${number}: ${reason}`); return false; }
     run('gh', ['api', '--method', 'POST', `repos/${repo}/pulls/${number}/reviews`,
         '-f', 'event=APPROVE', '-f', `commit_id=${expected.headSha}`,
-        '-f', 'body=Auto-approved configured Dependabot update after all required CI passed.'], { stdio: 'inherit' });
+        '-f', 'body=Auto-approved configured Dependabot update after all required CI passed.'], writeOptions);
     reason = inspect();
     if (reason) { console.log(`Not merging #${number}: ${reason}`); return false; }
     run('gh', ['pr', 'merge', String(number), '--repo', repo, '--squash', '--auto',
-        '--delete-branch', '--match-head-commit', expected.headSha], { stdio: 'inherit' });
+        '--delete-branch', '--match-head-commit', expected.headSha], writeOptions);
     return true;
 }
 

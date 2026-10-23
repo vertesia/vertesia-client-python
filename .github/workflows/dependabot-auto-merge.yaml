@@ -15,6 +15,8 @@ jobs:
       queue: max
     permissions:
       contents: read # Read trusted default-branch policy only.
+      pull-requests: read # Inspect the current PR and its files.
+      statuses: read # Verify the Actions-published approval gate.
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -31,7 +33,8 @@ jobs:
           permission-pull-requests: write
       - name: Approve and merge the tested revision
         env:
-          GH_TOKEN: ${{ steps.token.outputs.token }}
+          GH_TOKEN: ${{ github.token }}
+          GH_MERGE_TOKEN: ${{ steps.token.outputs.token }}
           REPO: ${{ github.repository }}
           PR_NUMBER: ${{ github.event.client_payload.pr_number }}
           HEAD_BRANCH: ${{ github.event.client_payload.head_branch }}
