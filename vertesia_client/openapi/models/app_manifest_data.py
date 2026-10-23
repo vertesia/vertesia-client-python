@@ -38,7 +38,7 @@ class AppManifestData(BaseModel):
     AppManifestData
     """ # noqa: E501
     parameters: Optional[Dict[str, McpConnectionParameter]] = Field(default=None, description="Shared MCP installation parameters available to every collection. Collection-local names must not overlap.")
-    oauth_scopes: Optional[List[StrictStr]] = None
+    oauth_scopes: Optional[List[StrictStr]] = Field(default=None, description="Publisher-managed maximum OAuth scopes this app may request. App code and version promotion cannot expand this permission ceiling.")
     oauth_client: Optional[AppOAuthClientConfig] = None
     name: StrictStr = Field(description="The name of the app, used as the id in the system. Must be in kebab case (e.g. my-app).")
     visibility: StrictStr = Field(description="Visibility level of the app: - \"public\": visible to all accounts - \"private\": visible only to the owning account - \"vertesia\": visible only to Vertesia team members (any project)")

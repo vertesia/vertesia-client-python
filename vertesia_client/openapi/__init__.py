@@ -1122,6 +1122,7 @@ __all__ = [
     "UpdateInferenceProfilePayload",
     "UpdateInteractionConfigurationPayload",
     "UpdateOAuthClientPayload",
+    "UpdateOAuthClientStatusPayload",
     "UpdateOAuthProviderPayload",
     "UpdateProcessDefinitionPayload",
     "UpdateProcessTestSuitePayload",
@@ -2373,6 +2374,7 @@ from vertesia_client.openapi.models.update_execution_run_payload import UpdateEx
 from vertesia_client.openapi.models.update_inference_profile_payload import UpdateInferenceProfilePayload as UpdateInferenceProfilePayload
 from vertesia_client.openapi.models.update_interaction_configuration_payload import UpdateInteractionConfigurationPayload as UpdateInteractionConfigurationPayload
 from vertesia_client.openapi.models.update_o_auth_client_payload import UpdateOAuthClientPayload as UpdateOAuthClientPayload
+from vertesia_client.openapi.models.update_o_auth_client_status_payload import UpdateOAuthClientStatusPayload as UpdateOAuthClientStatusPayload
 from vertesia_client.openapi.models.update_o_auth_provider_payload import UpdateOAuthProviderPayload as UpdateOAuthProviderPayload
 from vertesia_client.openapi.models.update_process_definition_payload import UpdateProcessDefinitionPayload as UpdateProcessDefinitionPayload
 from vertesia_client.openapi.models.update_process_test_suite_payload import UpdateProcessTestSuitePayload as UpdateProcessTestSuitePayload

@@ -34,7 +34,7 @@ class OAuthClientCreateResponse(BaseModel):
     """
     OAuthClientCreateResponse
     """ # noqa: E501
-    app_id: Optional[StrictStr] = Field(default=None, description="App associated with this client. Authorization requires an installation explicitly enabling this client and current user app access.")
+    app_id: Optional[StrictStr] = Field(default=None, description="App managing this client. Generic updates and deletion are prohibited; configure it through the app. Authorization requires a current installation and user app access.")
     client_name: StrictStr
     client_type: OAuthClientType
     redirect_uris: List[StrictStr]

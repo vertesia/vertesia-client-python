@@ -1100,6 +1100,7 @@ vertesia_client/openapi/models/update_execution_run_payload.py
 vertesia_client/openapi/models/update_inference_profile_payload.py
 vertesia_client/openapi/models/update_interaction_configuration_payload.py
 vertesia_client/openapi/models/update_o_auth_client_payload.py
+vertesia_client/openapi/models/update_o_auth_client_status_payload.py
 vertesia_client/openapi/models/update_o_auth_provider_payload.py
 vertesia_client/openapi/models/update_process_definition_payload.py
 vertesia_client/openapi/models/update_process_test_suite_payload.py

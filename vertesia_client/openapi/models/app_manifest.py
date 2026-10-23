@@ -40,7 +40,7 @@ class AppManifest(BaseModel):
     AppManifest
     """ # noqa: E501
     parameters: Optional[Dict[str, McpConnectionParameter]] = Field(default=None, description="Shared MCP installation parameters available to every collection. Collection-local names must not overlap.")
-    oauth_scopes: Optional[List[StrictStr]] = None
+    oauth_scopes: Optional[List[StrictStr]] = Field(default=None, description="Publisher-managed maximum OAuth scopes this app may request. App code and version promotion cannot expand this permission ceiling.")
     oauth_client: Optional[AppOAuthClientConfig] = None
     edit_revision: Annotated[int, Field(le=9007199254740991, strict=True, ge=1)] = Field(description="Monotonic edit revision used to detect concurrent updates.")
     name: StrictStr = Field(description="The name of the app, used as the id in the system. Must be in kebab case (e.g. my-app).")

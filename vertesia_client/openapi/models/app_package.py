@@ -42,7 +42,7 @@ class AppPackage(BaseModel):
     AppPackage
     """ # noqa: E501
     oauth_client: Optional[AppOAuthClientConfig] = None
-    oauth_scopes: Optional[List[StrictStr]] = Field(default=None, description="OAuth scopes requested by the app. Users must consent to project permissions.")
+    oauth_scopes: Optional[List[StrictStr]] = Field(default=None, description="Scopes requested by app code. These do not replace the publisher-managed permission ceiling in the app manifest.")
     ui: Optional[AppUIConfig] = Field(default=None, description="The UI configuration of the app")
     tools: Optional[List[AgentToolDefinition]] = Field(default=None, description="A list of tools exposed by the app.")
     skills: Optional[List[AgentToolDefinition]] = Field(default=None, description="A list of skills (`learn_*` tools) exposed by the app. Kept separate from `tools` so clients can render them distinctly — consumers that don't care (e.g. the worker building a combined tool registry) should concatenate the two lists.")

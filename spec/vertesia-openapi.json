@@ -4655,7 +4655,8 @@
             "type": "array",
             "items": {
               "type": "string"
-            }
+            },
+            "description": "Publisher-managed maximum OAuth scopes this app may request. App code and version promotion cannot expand this permission ceiling."
           },
           "oauth_client": {
             "$ref": "#/components/schemas/AppOAuthClientConfig"
@@ -4844,7 +4845,8 @@
             "type": "array",
             "items": {
               "type": "string"
-            }
+            },
+            "description": "Publisher-managed maximum OAuth scopes this app may request. App code and version promotion cannot expand this permission ceiling."
           },
           "oauth_client": {
             "$ref": "#/components/schemas/AppOAuthClientConfig"
@@ -5030,13 +5032,17 @@
               "type": "string",
               "format": "uri"
             }
+          },
+          "require_consent": {
+            "type": "boolean",
+            "description": "Show user consent before authorizing this app. Defaults to true. Disabling the prompt applies only within the publisher organization. Other organizations and loopback callbacks always require consent. Installation, app access, scope and project-policy enforcement are preserved."
           }
         },
         "required": [
           "redirect_uris"
         ],
         "additionalProperties": false,
-        "description": "Standalone public PKCE OAuth. Installation automatically provisions an app client with these exact callback URLs."
+        "description": "Standalone public PKCE OAuth. The publisher manifest provisions one app-managed registration with these exact callback URLs."
       },
       "AppOAuthCollectionParams": {
         "$ref": "#/components/schemas/OAuthClientCredentialsMap"
@@ -5055,7 +5061,7 @@
             "items": {
               "type": "string"
             },
-            "description": "OAuth scopes requested by the app. Users must consent to project permissions."
+            "description": "Scopes requested by app code. These do not replace the publisher-managed permission ceiling in the app manifest."
           },
           "ui": {
             "$ref": "#/components/schemas/AppUIConfig",
@@ -25343,7 +25349,7 @@
         "properties": {
           "app_id": {
             "type": "string",
-            "description": "App associated with this client. Authorization requires an installation explicitly enabling this client and current user app access."
+            "description": "App managing this client. Generic updates and deletion are prohibited; configure it through the app. Authorization requires a current installation and user app access."
           },
           "client_name": {
             "type": "string"
@@ -25452,7 +25458,7 @@
         "properties": {
           "app_id": {
             "type": "string",
-            "description": "App associated with this client. Authorization requires an installation explicitly enabling this client and current user app access."
+            "description": "App managing this client. Generic updates and deletion are prohibited; configure it through the app. Authorization requires a current installation and user app access."
           },
           "client_name": {
             "type": "string"
@@ -34947,7 +34953,8 @@
             "type": "array",
             "items": {
               "type": "string"
-            }
+            },
+            "description": "Publisher-managed maximum OAuth scopes this app may request. App code and version promotion cannot expand this permission ceiling."
           },
           "oauth_client": {
             "$ref": "#/components/schemas/AppOAuthClientConfig"
@@ -35799,6 +35806,18 @@
             "additionalProperties": true
           }
         },
+        "additionalProperties": false
+      },
+      "UpdateOAuthClientStatusPayload": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/OAuthClientStatus"
+          }
+        },
+        "required": [
+          "status"
+        ],
         "additionalProperties": false
       },
       "UpdateOAuthProviderPayload": {
@@ -58794,6 +58813,101 @@
         }
       ]
     },
+    "/apps/{id}/oauth-client": {
+      "get": {
+        "operationId": "GetAppOAuthClient",
+        "tags": [
+          "Apps"
+        ],
+        "summary": "Get the publisher-managed OAuth client for an app",
+        "description": "**Required permissions:** `app:manage`",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OAuth2": [
+              "app:manage"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The shared app registration.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthClient"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [
+          "app:manage"
+        ],
+        "x-vertesia-source": {
+          "file": "../../apps/studio-server/src/api/apps.ts",
+          "className": "AppsResource",
+          "methodName": "getAppOAuthClient"
+        }
+      },
+      "parameters": [
+        {
+          "name": "x-api-version",
+          "in": "header",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S",
+            "example": "20260803"
+          },
+          "description": "Required Vertesia API version header. Use `20260803` for the current stable API shape.",
+          "x-vertesia-global-header": true
+        }
+      ]
+    },
     "/apps/{id}": {
       "put": {
         "operationId": "UpdateApp",
@@ -61236,7 +61350,7 @@
           "OAuth Clients"
         ],
         "summary": "List OAuth clients",
-        "description": "Lists OAuth clients registered with the Vertesia OAuth server.\n\n**Required permissions:** `account:admin`",
+        "description": "Organization admins see all account clients; project admins see standalone clients restricted to their current project whose stored scopes are within their own permissions.\n\n**Required permissions:** Any of `account:admin`, `project:admin`",
         "security": [
           {
             "bearerAuth": []
@@ -61245,12 +61359,17 @@
             "OAuth2": [
               "account:admin"
             ]
+          },
+          {
+            "OAuth2": [
+              "project:admin"
+            ]
           }
         ],
         "parameters": [],
         "responses": {
           "200": {
-            "description": "OAuth clients owned by the current account.",
+            "description": "OAuth clients the administrator can manage.",
             "content": {
               "application/json": {
                 "schema": {
@@ -61291,7 +61410,8 @@
           }
         },
         "x-vertesia-permissions": [
-          "account:admin"
+          "account:admin",
+          "project:admin"
         ],
         "x-vertesia-source": {
           "file": "../../apps/studio-server/src/api/oauth-clients.ts",
@@ -61305,7 +61425,7 @@
           "OAuth Clients"
         ],
         "summary": "Create an OAuth client",
-        "description": "Creates a new OAuth client and returns the generated client secret for confidential clients.\n\n**Required permissions:** `account:admin`",
+        "description": "Creates an OAuth client and returns any generated client secret. Project-admin clients are fixed to the current project and owning account.\n\n**Required permissions:** Any of `account:admin`, `project:admin`",
         "security": [
           {
             "bearerAuth": []
@@ -61313,6 +61433,11 @@
           {
             "OAuth2": [
               "account:admin"
+            ]
+          },
+          {
+            "OAuth2": [
+              "project:admin"
             ]
           }
         ],
@@ -61360,7 +61485,8 @@
           }
         },
         "x-vertesia-permissions": [
-          "account:admin"
+          "account:admin",
+          "project:admin"
         ],
         "x-vertesia-source": {
           "file": "../../apps/studio-server/src/api/oauth-clients.ts",
@@ -61401,7 +61527,7 @@
           "OAuth Clients"
         ],
         "summary": "Retrieve OAuth client scope metadata",
-        "description": "Returns the OAuth scopes supported by the Vertesia OAuth server for client configuration.\n\n**Required permissions:** `account:admin`",
+        "description": "Returns configurable OAuth scopes. Project admins receive only project permissions they hold and standard identity/session scopes.\n\n**Required permissions:** Any of `account:admin`, `project:admin`",
         "security": [
           {
             "bearerAuth": []
@@ -61409,6 +61535,11 @@
           {
             "OAuth2": [
               "account:admin"
+            ]
+          },
+          {
+            "OAuth2": [
+              "project:admin"
             ]
           }
         ],
@@ -61456,7 +61587,8 @@
           }
         },
         "x-vertesia-permissions": [
-          "account:admin"
+          "account:admin",
+          "project:admin"
         ],
         "x-vertesia-source": {
           "file": "../../apps/studio-server/src/api/oauth-clients.ts",
@@ -61487,7 +61619,7 @@
           "OAuth Clients"
         ],
         "summary": "Retrieve an OAuth client",
-        "description": "Retrieves an OAuth client by client ID.\n\n**Required permissions:** `account:admin`",
+        "description": "Retrieves an OAuth client by client ID.\n\n**Required permissions:** Any of `account:admin`, `project:admin`",
         "security": [
           {
             "bearerAuth": []
@@ -61495,6 +61627,11 @@
           {
             "OAuth2": [
               "account:admin"
+            ]
+          },
+          {
+            "OAuth2": [
+              "project:admin"
             ]
           }
         ],
@@ -61551,7 +61688,8 @@
           }
         },
         "x-vertesia-permissions": [
-          "account:admin"
+          "account:admin",
+          "project:admin"
         ],
         "x-vertesia-source": {
           "file": "../../apps/studio-server/src/api/oauth-clients.ts",
@@ -61565,7 +61703,7 @@
           "OAuth Clients"
         ],
         "summary": "Update an OAuth client",
-        "description": "Updates an existing OAuth client.\n\n**Required permissions:** `account:admin`",
+        "description": "Updates an OAuth client. Project admins cannot change its project binding or widen organization access; app-managed clients must be configured through their app.\n\n**Required permissions:** Any of `account:admin`, `project:admin`",
         "security": [
           {
             "bearerAuth": []
@@ -61573,6 +61711,11 @@
           {
             "OAuth2": [
               "account:admin"
+            ]
+          },
+          {
+            "OAuth2": [
+              "project:admin"
             ]
           }
         ],
@@ -61589,6 +61732,207 @@
         "responses": {
           "200": {
             "description": "The updated OAuth client.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthClient"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "App-managed clients must be configured through their application."
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [
+          "account:admin",
+          "project:admin"
+        ],
+        "x-vertesia-source": {
+          "file": "../../apps/studio-server/src/api/oauth-clients.ts",
+          "className": "OAuthClientsResource",
+          "methodName": "update"
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateOAuthClientPayload"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "DeleteOAuthClient",
+        "tags": [
+          "OAuth Clients"
+        ],
+        "summary": "Delete an OAuth client",
+        "description": "Deletes an OAuth client and associated authorization artifacts.\n\n**Required permissions:** Any of `account:admin`, `project:admin`",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OAuth2": [
+              "account:admin"
+            ]
+          },
+          {
+            "OAuth2": [
+              "project:admin"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "client_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OAuth client deletion result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "App-managed clients can only be removed by deleting their application."
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [
+          "account:admin",
+          "project:admin"
+        ],
+        "x-vertesia-source": {
+          "file": "../../apps/studio-server/src/api/oauth-clients.ts",
+          "className": "OAuthClientsResource",
+          "methodName": "delete"
+        }
+      },
+      "parameters": [
+        {
+          "name": "x-api-version",
+          "in": "header",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S",
+            "example": "20260803"
+          },
+          "description": "Required Vertesia API version header. Use `20260803` for the current stable API shape.",
+          "x-vertesia-global-header": true
+        }
+      ]
+    },
+    "/oauth-clients/{client_id}/status": {
+      "put": {
+        "operationId": "UpdateOAuthClientStatus",
+        "tags": [
+          "OAuth Clients"
+        ],
+        "summary": "Enable or disable an OAuth client",
+        "description": "**Required permissions:** Any of `account:admin`, `project:admin`",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OAuth2": [
+              "account:admin"
+            ]
+          },
+          {
+            "OAuth2": [
+              "project:admin"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "client_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The OAuth client with its updated status.",
             "content": {
               "application/json": {
                 "schema": {
@@ -61629,100 +61973,23 @@
           }
         },
         "x-vertesia-permissions": [
-          "account:admin"
+          "account:admin",
+          "project:admin"
         ],
         "x-vertesia-source": {
           "file": "../../apps/studio-server/src/api/oauth-clients.ts",
           "className": "OAuthClientsResource",
-          "methodName": "update"
+          "methodName": "setStatus"
         },
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateOAuthClientPayload"
+                "$ref": "#/components/schemas/UpdateOAuthClientStatusPayload"
               }
             }
           }
-        }
-      },
-      "delete": {
-        "operationId": "DeleteOAuthClient",
-        "tags": [
-          "OAuth Clients"
-        ],
-        "summary": "Delete an OAuth client",
-        "description": "Deletes an OAuth client and associated authorization artifacts.\n\n**Required permissions:** `account:admin`",
-        "security": [
-          {
-            "bearerAuth": []
-          },
-          {
-            "OAuth2": [
-              "account:admin"
-            ]
-          }
-        ],
-        "parameters": [
-          {
-            "name": "client_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OAuth client deletion result.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SuccessResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                },
-                "example": {
-                  "error": "Internal Server Error",
-                  "status": 500,
-                  "message": "Internal server error."
-                }
-              }
-            }
-          },
-          "4XX": {
-            "description": "Client error.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                },
-                "example": {
-                  "error": "Bad Request",
-                  "status": 400,
-                  "message": "Request validation failed."
-                }
-              }
-            }
-          }
-        },
-        "x-vertesia-permissions": [
-          "account:admin"
-        ],
-        "x-vertesia-source": {
-          "file": "../../apps/studio-server/src/api/oauth-clients.ts",
-          "className": "OAuthClientsResource",
-          "methodName": "delete"
         }
       },
       "parameters": [

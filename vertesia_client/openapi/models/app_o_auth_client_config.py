@@ -17,8 +17,8 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
-from typing import Any, ClassVar, Dict, List
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
+from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
@@ -26,10 +26,11 @@ from pydantic_core import to_jsonable_python
 
 class AppOAuthClientConfig(BaseModel):
     """
-    Standalone public PKCE OAuth. Installation automatically provisions an app client with these exact callback URLs.
+    Standalone public PKCE OAuth. The publisher manifest provisions one app-managed registration with these exact callback URLs.
     """ # noqa: E501
     redirect_uris: Annotated[List[StrictStr], Field(min_length=1)]
-    __properties: ClassVar[List[str]] = ["redirect_uris"]
+    require_consent: Optional[StrictBool] = Field(default=None, description="Show user consent before authorizing this app. Defaults to true. Disabling the prompt applies only within the publisher organization. Other organizations and loopback callbacks always require consent. Installation, app access, scope and project-policy enforcement are preserved.")
+    __properties: ClassVar[List[str]] = ["redirect_uris", "require_consent"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -82,7 +83,8 @@ class AppOAuthClientConfig(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "redirect_uris": obj.get("redirect_uris")
+            "redirect_uris": obj.get("redirect_uris"),
+            "require_consent": obj.get("require_consent")
         })
         return _obj
 

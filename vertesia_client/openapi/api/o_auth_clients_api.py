@@ -24,6 +24,7 @@ from vertesia_client.openapi.models.o_auth_client_create_response import OAuthCl
 from vertesia_client.openapi.models.o_auth_client_scope_metadata import OAuthClientScopeMetadata
 from vertesia_client.openapi.models.success_response import SuccessResponse
 from vertesia_client.openapi.models.update_o_auth_client_payload import UpdateOAuthClientPayload
+from vertesia_client.openapi.models.update_o_auth_client_status_payload import UpdateOAuthClientStatusPayload
 
 from vertesia_client.openapi.api_client import ApiClient, RequestSerialized
 from vertesia_client.openapi.api_response import ApiResponse
@@ -63,7 +64,7 @@ class OAuthClientsApi:
     ) -> OAuthClientCreateResponse:
         """Create an OAuth client
 
-        Creates a new OAuth client and returns the generated client secret for confidential clients.  **Required permissions:** `account:admin`
+        Creates an OAuth client and returns any generated client secret. Project-admin clients are fixed to the current project and owning account.  **Required permissions:** Any of `account:admin`, `project:admin`
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -136,7 +137,7 @@ class OAuthClientsApi:
     ) -> ApiResponse[OAuthClientCreateResponse]:
         """Create an OAuth client
 
-        Creates a new OAuth client and returns the generated client secret for confidential clients.  **Required permissions:** `account:admin`
+        Creates an OAuth client and returns any generated client secret. Project-admin clients are fixed to the current project and owning account.  **Required permissions:** Any of `account:admin`, `project:admin`
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -209,7 +210,7 @@ class OAuthClientsApi:
     ) -> RESTResponseType:
         """Create an OAuth client
 
-        Creates a new OAuth client and returns the generated client secret for confidential clients.  **Required permissions:** `account:admin`
+        Creates an OAuth client and returns any generated client secret. Project-admin clients are fixed to the current project and owning account.  **Required permissions:** Any of `account:admin`, `project:admin`
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -359,7 +360,7 @@ class OAuthClientsApi:
     ) -> SuccessResponse:
         """Delete an OAuth client
 
-        Deletes an OAuth client and associated authorization artifacts.  **Required permissions:** `account:admin`
+        Deletes an OAuth client and associated authorization artifacts.  **Required permissions:** Any of `account:admin`, `project:admin`
 
         :param client_id: (required)
         :type client_id: str
@@ -398,6 +399,7 @@ class OAuthClientsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "SuccessResponse",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -432,7 +434,7 @@ class OAuthClientsApi:
     ) -> ApiResponse[SuccessResponse]:
         """Delete an OAuth client
 
-        Deletes an OAuth client and associated authorization artifacts.  **Required permissions:** `account:admin`
+        Deletes an OAuth client and associated authorization artifacts.  **Required permissions:** Any of `account:admin`, `project:admin`
 
         :param client_id: (required)
         :type client_id: str
@@ -471,6 +473,7 @@ class OAuthClientsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "SuccessResponse",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -505,7 +508,7 @@ class OAuthClientsApi:
     ) -> RESTResponseType:
         """Delete an OAuth client
 
-        Deletes an OAuth client and associated authorization artifacts.  **Required permissions:** `account:admin`
+        Deletes an OAuth client and associated authorization artifacts.  **Required permissions:** Any of `account:admin`, `project:admin`
 
         :param client_id: (required)
         :type client_id: str
@@ -544,6 +547,7 @@ class OAuthClientsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "SuccessResponse",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -642,7 +646,7 @@ class OAuthClientsApi:
     ) -> OAuthClient:
         """Retrieve an OAuth client
 
-        Retrieves an OAuth client by client ID.  **Required permissions:** `account:admin`
+        Retrieves an OAuth client by client ID.  **Required permissions:** Any of `account:admin`, `project:admin`
 
         :param client_id: (required)
         :type client_id: str
@@ -715,7 +719,7 @@ class OAuthClientsApi:
     ) -> ApiResponse[OAuthClient]:
         """Retrieve an OAuth client
 
-        Retrieves an OAuth client by client ID.  **Required permissions:** `account:admin`
+        Retrieves an OAuth client by client ID.  **Required permissions:** Any of `account:admin`, `project:admin`
 
         :param client_id: (required)
         :type client_id: str
@@ -788,7 +792,7 @@ class OAuthClientsApi:
     ) -> RESTResponseType:
         """Retrieve an OAuth client
 
-        Retrieves an OAuth client by client ID.  **Required permissions:** `account:admin`
+        Retrieves an OAuth client by client ID.  **Required permissions:** Any of `account:admin`, `project:admin`
 
         :param client_id: (required)
         :type client_id: str
@@ -924,7 +928,7 @@ class OAuthClientsApi:
     ) -> OAuthClientScopeMetadata:
         """Retrieve OAuth client scope metadata
 
-        Returns the OAuth scopes supported by the Vertesia OAuth server for client configuration.  **Required permissions:** `account:admin`
+        Returns configurable OAuth scopes. Project admins receive only project permissions they hold and standard identity/session scopes.  **Required permissions:** Any of `account:admin`, `project:admin`
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -993,7 +997,7 @@ class OAuthClientsApi:
     ) -> ApiResponse[OAuthClientScopeMetadata]:
         """Retrieve OAuth client scope metadata
 
-        Returns the OAuth scopes supported by the Vertesia OAuth server for client configuration.  **Required permissions:** `account:admin`
+        Returns configurable OAuth scopes. Project admins receive only project permissions they hold and standard identity/session scopes.  **Required permissions:** Any of `account:admin`, `project:admin`
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1062,7 +1066,7 @@ class OAuthClientsApi:
     ) -> RESTResponseType:
         """Retrieve OAuth client scope metadata
 
-        Returns the OAuth scopes supported by the Vertesia OAuth server for client configuration.  **Required permissions:** `account:admin`
+        Returns configurable OAuth scopes. Project admins receive only project permissions they hold and standard identity/session scopes.  **Required permissions:** Any of `account:admin`, `project:admin`
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1192,7 +1196,7 @@ class OAuthClientsApi:
     ) -> List[OAuthClient]:
         """List OAuth clients
 
-        Lists OAuth clients registered with the Vertesia OAuth server.  **Required permissions:** `account:admin`
+        Organization admins see all account clients; project admins see standalone clients restricted to their current project whose stored scopes are within their own permissions.  **Required permissions:** Any of `account:admin`, `project:admin`
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1261,7 +1265,7 @@ class OAuthClientsApi:
     ) -> ApiResponse[List[OAuthClient]]:
         """List OAuth clients
 
-        Lists OAuth clients registered with the Vertesia OAuth server.  **Required permissions:** `account:admin`
+        Organization admins see all account clients; project admins see standalone clients restricted to their current project whose stored scopes are within their own permissions.  **Required permissions:** Any of `account:admin`, `project:admin`
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1330,7 +1334,7 @@ class OAuthClientsApi:
     ) -> RESTResponseType:
         """List OAuth clients
 
-        Lists OAuth clients registered with the Vertesia OAuth server.  **Required permissions:** `account:admin`
+        Organization admins see all account clients; project admins see standalone clients restricted to their current project whose stored scopes are within their own permissions.  **Required permissions:** Any of `account:admin`, `project:admin`
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1462,7 +1466,7 @@ class OAuthClientsApi:
     ) -> OAuthClient:
         """Update an OAuth client
 
-        Updates an existing OAuth client.  **Required permissions:** `account:admin`
+        Updates an OAuth client. Project admins cannot change its project binding or widen organization access; app-managed clients must be configured through their app.  **Required permissions:** Any of `account:admin`, `project:admin`
 
         :param client_id: (required)
         :type client_id: str
@@ -1504,6 +1508,7 @@ class OAuthClientsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "OAuthClient",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -1539,7 +1544,7 @@ class OAuthClientsApi:
     ) -> ApiResponse[OAuthClient]:
         """Update an OAuth client
 
-        Updates an existing OAuth client.  **Required permissions:** `account:admin`
+        Updates an OAuth client. Project admins cannot change its project binding or widen organization access; app-managed clients must be configured through their app.  **Required permissions:** Any of `account:admin`, `project:admin`
 
         :param client_id: (required)
         :type client_id: str
@@ -1581,6 +1586,7 @@ class OAuthClientsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "OAuthClient",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -1616,7 +1622,7 @@ class OAuthClientsApi:
     ) -> RESTResponseType:
         """Update an OAuth client
 
-        Updates an existing OAuth client.  **Required permissions:** `account:admin`
+        Updates an OAuth client. Project admins cannot change its project binding or widen organization access; app-managed clients must be configured through their app.  **Required permissions:** Any of `account:admin`, `project:admin`
 
         :param client_id: (required)
         :type client_id: str
@@ -1658,6 +1664,7 @@ class OAuthClientsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "OAuthClient",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -1737,6 +1744,317 @@ class OAuthClientsApi:
         return self.api_client.param_serialize(
             method='PUT',
             resource_path='/oauth-clients/{client_id}',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def update_o_auth_client_status(
+        self,
+        client_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        update_o_auth_client_status_payload: UpdateOAuthClientStatusPayload,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> OAuthClient:
+        """Enable or disable an OAuth client
+
+        **Required permissions:** Any of `account:admin`, `project:admin`
+
+        :param client_id: (required)
+        :type client_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
+        :param update_o_auth_client_status_payload: (required)
+        :type update_o_auth_client_status_payload: UpdateOAuthClientStatusPayload
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._update_o_auth_client_status_serialize(
+            client_id=client_id,
+            x_api_version=x_api_version,
+            update_o_auth_client_status_payload=update_o_auth_client_status_payload,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "OAuthClient",
+            '500': "ErrorResponse",
+            '4XX': "ErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def update_o_auth_client_status_with_http_info(
+        self,
+        client_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        update_o_auth_client_status_payload: UpdateOAuthClientStatusPayload,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[OAuthClient]:
+        """Enable or disable an OAuth client
+
+        **Required permissions:** Any of `account:admin`, `project:admin`
+
+        :param client_id: (required)
+        :type client_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
+        :param update_o_auth_client_status_payload: (required)
+        :type update_o_auth_client_status_payload: UpdateOAuthClientStatusPayload
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._update_o_auth_client_status_serialize(
+            client_id=client_id,
+            x_api_version=x_api_version,
+            update_o_auth_client_status_payload=update_o_auth_client_status_payload,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "OAuthClient",
+            '500': "ErrorResponse",
+            '4XX': "ErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def update_o_auth_client_status_without_preload_content(
+        self,
+        client_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        update_o_auth_client_status_payload: UpdateOAuthClientStatusPayload,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Enable or disable an OAuth client
+
+        **Required permissions:** Any of `account:admin`, `project:admin`
+
+        :param client_id: (required)
+        :type client_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
+        :param update_o_auth_client_status_payload: (required)
+        :type update_o_auth_client_status_payload: UpdateOAuthClientStatusPayload
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._update_o_auth_client_status_serialize(
+            client_id=client_id,
+            x_api_version=x_api_version,
+            update_o_auth_client_status_payload=update_o_auth_client_status_payload,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "OAuthClient",
+            '500': "ErrorResponse",
+            '4XX': "ErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _update_o_auth_client_status_serialize(
+        self,
+        client_id,
+        x_api_version,
+        update_o_auth_client_status_payload,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if client_id is not None:
+            _path_params['client_id'] = client_id
+        # process the query parameters
+        # process the header parameters
+        if x_api_version is not None:
+            _header_params['x-api-version'] = x_api_version
+        # process the form parameters
+        # process the body parameter
+        if update_o_auth_client_status_payload is not None:
+            _body_params = update_o_auth_client_status_payload
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+        # set the HTTP header `Content-Type`
+        if _content_type:
+            _header_params['Content-Type'] = _content_type
+        else:
+            _default_content_type = (
+                self.api_client.select_header_content_type(
+                    [
+                        'application/json'
+                    ]
+                )
+            )
+            if _default_content_type is not None:
+                _header_params['Content-Type'] = _default_content_type
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'OAuth2', 
+            'bearerAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='PUT',
+            resource_path='/oauth-clients/{client_id}/status',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
