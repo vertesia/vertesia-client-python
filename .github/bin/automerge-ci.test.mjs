@@ -170,3 +170,15 @@ test('reads all pages for every configured SDK workflow', () => {
         }
     }
 });
+
+
+test('configured SDK checks name jobs and steps in the actual workflows', () => {
+    const policies = JSON.parse(readFileSync(new URL('./automerge-ci-policy.json', import.meta.url), 'utf8'));
+    for (const [file, policy] of Object.entries(policies)) {
+        const yaml = readFileSync(new URL(`../workflows/${file}`, import.meta.url), 'utf8');
+        for (const required of policy.jobs) {
+            if (!required.example.startsWith('Python ')) assert.ok(yaml.includes(`name: ${required.example}`), `${file}: ${required.example}`);
+            for (const name of required.steps) assert.ok(yaml.includes(`name: ${name}`), `${file}: ${name}`);
+        }
+    }
+});
