@@ -1,0 +1,58 @@
+{
+    "test.yaml": {
+        "jobs": [
+            {
+                "name": "^Python 3\\.9$",
+                "steps": [
+                    "Run Ruff checks",
+                    "Check Ruff formatting",
+                    "Run unit tests"
+                ],
+                "example": "Python 3.9"
+            },
+            {
+                "name": "^Python 3\\.12$",
+                "steps": [
+                    "Run Ruff checks",
+                    "Check Ruff formatting",
+                    "Run unit tests"
+                ],
+                "example": "Python 3.12"
+            }
+        ]
+    },
+    "generated-code-guard.yaml": {
+        "jobs": [
+            {
+                "name": "^Generated code guard$",
+                "steps": [
+                    "Reject generated OpenAPI changes in PRs"
+                ],
+                "example": "Generated code guard"
+            }
+        ]
+    },
+    "zizmor.yaml": {
+        "jobs": [
+            {
+                "name": "^zizmor$",
+                "steps": [
+                    "Run zizmor",
+                    "Upload SARIF"
+                ],
+                "example": "zizmor"
+            }
+        ]
+    },
+    "ci-policy.yaml": {
+        "jobs": [
+            {
+                "name": "^CI policy tests$",
+                "steps": [
+                    "Test approval and merge policy"
+                ],
+                "example": "CI policy tests"
+            }
+        ]
+    }
+}
