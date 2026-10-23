@@ -1,0 +1,19 @@
+name: CI policy
+on:
+  pull_request:
+  push:
+    branches: [main, "release/**"]
+permissions: {}
+jobs:
+  policy:
+    name: CI policy tests
+    runs-on: ubuntu-slim
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          sparse-checkout: .github
+      - name: Test approval and merge policy
+        run: node --test .github/bin/*.test.mjs
