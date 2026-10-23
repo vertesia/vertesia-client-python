@@ -1,0 +1,7 @@
+{
+    "group": "python-minor-patch",
+    "ecosystem": "pip",
+    "files": [
+        "pyproject.toml"
+    ]
+}

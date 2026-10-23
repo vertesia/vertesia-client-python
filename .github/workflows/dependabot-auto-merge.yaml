@@ -1,83 +1,44 @@
 name: Dependabot Auto Merge
-
 on:
-  # zizmor: ignore[dangerous-triggers] This intentionally chains after the read-only Test workflow passes for a Dependabot PR.
-  workflow_run:
-    workflows: ["Test"]
-    types: [completed]
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.event.workflow_run.head_sha }}
-  cancel-in-progress: true
-
+  repository_dispatch:
+    types: [ci-approved-dependabot]
 permissions: {}
-
 jobs:
   auto-merge:
-    name: Auto merge eligible Dependabot updates
-    runs-on: ubuntu-latest
-    if: >-
-      github.event.workflow_run.event == 'pull_request' &&
-      github.event.workflow_run.conclusion == 'success' &&
-      github.repository == 'vertesia/vertesia-client-python'
+    name: Merge tested Dependabot update
+    runs-on: ubuntu-slim
+    environment: renovate-automerge
+    timeout-minutes: 10
+    concurrency:
+      group: dependabot-merge-${{ github.event.client_payload.pr_number }}
+      cancel-in-progress: false
+      queue: max
     permissions:
-      contents: write # Merge the Dependabot pull request and delete its branch.
-      pull-requests: write # Enable auto-merge on the Dependabot pull request.
+      contents: read # Read trusted default-branch policy only.
+      pull-requests: read # Inspect the current PR and its files.
+      statuses: read # Verify the Actions-published approval gate.
     steps:
-      - name: Enable auto-merge for eligible Dependabot pull request
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.workflow_sha }}
+          persist-credentials: false
+          sparse-checkout: .github/bin
+      - name: Generate merge token
+        id: token
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        with:
+          client-id: ${{ vars.APP_VERTESIA_RENOVATE_AUTOMERGE_CLIENT_ID }}
+          private-key: ${{ secrets.APP_VERTESIA_RENOVATE_AUTOMERGE_PEM }}
+          permission-contents: write
+          permission-pull-requests: write
+      - name: Approve and merge the tested revision
         env:
           GH_TOKEN: ${{ github.token }}
-          PR_NUMBER: ${{ github.event.workflow_run.pull_requests[0].number }}
-          REPOSITORY: ${{ github.repository }}
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          if [[ -z "${PR_NUMBER:-}" ]]; then
-            echo "No pull request is associated with this workflow run."
-            exit 0
-          fi
-
-          pr_json="$(gh pr view "$PR_NUMBER" --repo "$REPOSITORY" --json author,files,headRefName,isDraft,state,url)"
-          author="$(jq -r '.author.login' <<<"$pr_json")"
-          head_ref="$(jq -r '.headRefName' <<<"$pr_json")"
-          is_draft="$(jq -r '.isDraft' <<<"$pr_json")"
-          pr_state="$(jq -r '.state' <<<"$pr_json")"
-          pr_url="$(jq -r '.url' <<<"$pr_json")"
-
-          if [[ "$author" != "dependabot[bot]" ]]; then
-            echo "Skipping non-Dependabot pull request: $pr_url"
-            exit 0
-          fi
-
-          if [[ "$pr_state" != "OPEN" || "$is_draft" == "true" ]]; then
-            echo "Skipping pull request that is not open and ready: $pr_url"
-            exit 0
-          fi
-
-          case "$head_ref" in
-            dependabot/pip/python-minor-patch*)
-              unexpected_files="$(jq -r '.files[].path | select(. != "pyproject.toml")' <<<"$pr_json")"
-              ;;
-            dependabot/github_actions/github-actions*)
-              unexpected_files="$(
-                jq -r '.files[].path | select((test("^\\.github/workflows/.*\\.ya?ml$") | not))' <<<"$pr_json"
-              )"
-              ;;
-            *)
-              echo "Skipping Dependabot pull request outside the auto-merge groups: $head_ref"
-              exit 0
-              ;;
-          esac
-
-          if [[ -n "$unexpected_files" ]]; then
-            echo "Refusing to auto-merge because the PR changes unexpected files:" >&2
-            echo "$unexpected_files" >&2
-            exit 1
-          fi
-
-          # Branch protection on main requires the PR checks. --auto defers the
-          # merge to GitHub, which fires it only
-          # after those required checks pass for the PR's current head — so a
-          # Dependabot rebase is handled transparently without a polling loop.
-          gh pr merge --repo "$REPOSITORY" --squash --delete-branch --auto "$PR_NUMBER"
+          GH_MERGE_TOKEN: ${{ steps.token.outputs.token }}
+          REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.client_payload.pr_number }}
+          HEAD_BRANCH: ${{ github.event.client_payload.head_branch }}
+          HEAD_SHA: ${{ github.event.client_payload.head_sha }}
+          BASE_REF: ${{ github.event.client_payload.base_ref }}
+          BASE_SHA: ${{ github.event.client_payload.base_sha }}
+        run: node .github/bin/dependabot-merge.mjs
