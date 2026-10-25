@@ -27,7 +27,7 @@ class ReindexAgentRunsPayload(BaseModel):
     """
     ReindexAgentRunsPayload
     """ # noqa: E501
-    recreate_index: Optional[StrictBool] = Field(default=None, description="Drop any existing agent-runs index/alias family and recreate the stable concrete index before indexing. Defaults to true.")
+    recreate_index: Optional[StrictBool] = Field(default=None, description="Rebuild into a new index and switch searches to it once it is filled, so searches keep working during the rebuild; when false, index into the current index in place. Defaults to true.")
     batch_size: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Number of MongoDB records to scan per batch. Defaults to 500.")
     limit: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Optional cap for partial/manual repair runs. Omit for all agent runs in the project.")
     __properties: ClassVar[List[str]] = ["recreate_index", "batch_size", "limit"]
