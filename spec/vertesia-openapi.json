@@ -70217,7 +70217,7 @@
           "Commands"
         ],
         "summary": "Reindex agent runs",
-        "description": "Rebuilds the current project agent-run Elasticsearch index directly from MongoDB. By default this recreates the stable agent-runs index before indexing.\n\n**Required permissions:** `content:admin`",
+        "description": "Rebuilds the current project agent-run Elasticsearch index directly from MongoDB. By default it rebuilds into a new index and swaps searches to it once filled, so searches keep working during the rebuild.\n\n**Required permissions:** `content:admin`",
         "security": [
           {
             "bearerAuth": []

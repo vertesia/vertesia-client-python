@@ -3144,7 +3144,7 @@ class CommandsApi:
     ) -> ReindexAgentRunsResponse:
         """Reindex agent runs
 
-        Rebuilds the current project agent-run Elasticsearch index directly from MongoDB. By default this recreates the stable agent-runs index before indexing.  **Required permissions:** `content:admin`
+        Rebuilds the current project agent-run Elasticsearch index directly from MongoDB. By default it rebuilds into a new index and swaps searches to it once filled, so searches keep working during the rebuild.  **Required permissions:** `content:admin`
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -3217,7 +3217,7 @@ class CommandsApi:
     ) -> ApiResponse[ReindexAgentRunsResponse]:
         """Reindex agent runs
 
-        Rebuilds the current project agent-run Elasticsearch index directly from MongoDB. By default this recreates the stable agent-runs index before indexing.  **Required permissions:** `content:admin`
+        Rebuilds the current project agent-run Elasticsearch index directly from MongoDB. By default it rebuilds into a new index and swaps searches to it once filled, so searches keep working during the rebuild.  **Required permissions:** `content:admin`
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -3290,7 +3290,7 @@ class CommandsApi:
     ) -> RESTResponseType:
         """Reindex agent runs
 
-        Rebuilds the current project agent-run Elasticsearch index directly from MongoDB. By default this recreates the stable agent-runs index before indexing.  **Required permissions:** `content:admin`
+        Rebuilds the current project agent-run Elasticsearch index directly from MongoDB. By default it rebuilds into a new index and swaps searches to it once filled, so searches keep working during the rebuild.  **Required permissions:** `content:admin`
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
