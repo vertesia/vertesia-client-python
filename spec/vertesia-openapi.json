@@ -70659,7 +70659,7 @@
           "Content Query"
         ],
         "summary": "Execute a SQL, ES|QL, or Elasticsearch DSL content query",
-        "description": "Execute a query against the project's Elasticsearch index\n\nSecurity filtering is automatically applied based on the authenticated user's principals.\nFor SQL/ES|QL, a WHERE clause is injected.\nFor DSL, a filter clause is added.\n\n**Required permissions:** `content:read`",
+        "description": "Execute a query against the project's Elasticsearch index\n\nSecurity filtering is automatically applied based on the authenticated user's principals.\nSQL and ES|QL may only read the project index (`FROM content`).\nFor DSL, a filter clause is added.\n\n**Required permissions:** `content:read`",
         "security": [
           {
             "bearerAuth": []
