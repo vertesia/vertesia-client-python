@@ -59,7 +59,7 @@ class ContentQueryApi:
     ) -> ContentQueryResult:
         """Execute a SQL, ES|QL, or Elasticsearch DSL content query
 
-        Execute a query against the project's Elasticsearch index  Security filtering is automatically applied based on the authenticated user's principals. For SQL/ES|QL, a WHERE clause is injected. For DSL, a filter clause is added.  **Required permissions:** `content:read`
+        Execute a query against the project's Elasticsearch index  Security filtering is automatically applied based on the authenticated user's principals. SQL and ES|QL may only read the project index (`FROM content`). For DSL, a filter clause is added.  **Required permissions:** `content:read`
 
         :param content_query_payload: (required)
         :type content_query_payload: ContentQueryPayload
@@ -132,7 +132,7 @@ class ContentQueryApi:
     ) -> ApiResponse[ContentQueryResult]:
         """Execute a SQL, ES|QL, or Elasticsearch DSL content query
 
-        Execute a query against the project's Elasticsearch index  Security filtering is automatically applied based on the authenticated user's principals. For SQL/ES|QL, a WHERE clause is injected. For DSL, a filter clause is added.  **Required permissions:** `content:read`
+        Execute a query against the project's Elasticsearch index  Security filtering is automatically applied based on the authenticated user's principals. SQL and ES|QL may only read the project index (`FROM content`). For DSL, a filter clause is added.  **Required permissions:** `content:read`
 
         :param content_query_payload: (required)
         :type content_query_payload: ContentQueryPayload
@@ -205,7 +205,7 @@ class ContentQueryApi:
     ) -> RESTResponseType:
         """Execute a SQL, ES|QL, or Elasticsearch DSL content query
 
-        Execute a query against the project's Elasticsearch index  Security filtering is automatically applied based on the authenticated user's principals. For SQL/ES|QL, a WHERE clause is injected. For DSL, a filter clause is added.  **Required permissions:** `content:read`
+        Execute a query against the project's Elasticsearch index  Security filtering is automatically applied based on the authenticated user's principals. SQL and ES|QL may only read the project index (`FROM content`). For DSL, a filter clause is added.  **Required permissions:** `content:read`
 
         :param content_query_payload: (required)
         :type content_query_payload: ContentQueryPayload
