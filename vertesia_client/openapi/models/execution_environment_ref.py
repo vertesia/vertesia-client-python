@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from vertesia_client.openapi.models.ai_model import AIModel
 from vertesia_client.openapi.models.supported_providers import SupportedProviders
@@ -36,12 +36,13 @@ class ExecutionEnvironmentRef(BaseModel):
     default_model: Optional[StrictStr] = None
     endpoint_url: Optional[StrictStr] = None
     allowed_projects: Optional[List[StrictStr]] = None
+    managed: Optional[StrictBool] = Field(default=None, description="True when Vertesia manages this environment and supplies its inference credential. Only Vertesia staff can change its name, description, provider, endpoint or credential, or delete it, and its configuration and settings are locked; account administrators can still change its default model, enabled models and allowed projects. Absent on every other environment.")
     account: StrictStr
     created_by: StrictStr
     updated_by: StrictStr
     created_at: StrictStr
     updated_at: StrictStr
-    __properties: ClassVar[List[str]] = ["id", "name", "provider", "enabled_models", "default_model", "endpoint_url", "allowed_projects", "account", "created_by", "updated_by", "created_at", "updated_at"]
+    __properties: ClassVar[List[str]] = ["id", "name", "provider", "enabled_models", "default_model", "endpoint_url", "allowed_projects", "managed", "account", "created_by", "updated_by", "created_at", "updated_at"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -108,6 +109,7 @@ class ExecutionEnvironmentRef(BaseModel):
             "default_model": obj.get("default_model"),
             "endpoint_url": obj.get("endpoint_url"),
             "allowed_projects": obj.get("allowed_projects"),
+            "managed": obj.get("managed"),
             "account": obj.get("account"),
             "created_by": obj.get("created_by"),
             "updated_by": obj.get("updated_by"),

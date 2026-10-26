@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from vertesia_client.openapi.models.ai_model import AIModel
 from vertesia_client.openapi.models.execution_environment_settings import ExecutionEnvironmentSettings
@@ -43,11 +43,12 @@ class ExecutionEnvironment(BaseModel):
     settings: Optional[ExecutionEnvironmentSettings] = Field(default=None, description="Additional provider-specific settings passed through to the driver. For example, custom headers for Apigee-proxied endpoints.")
     account: StrictStr
     allowed_projects: Optional[List[StrictStr]] = None
+    managed: Optional[StrictBool] = Field(default=None, description="True when Vertesia manages this environment and supplies its inference credential. Only Vertesia staff can change its name, description, provider, endpoint or credential, or delete it, and its configuration and settings are locked; account administrators can still change its default model, enabled models and allowed projects. Absent on every other environment.")
     created_by: StrictStr
     updated_by: StrictStr
     created_at: StrictStr
     updated_at: StrictStr
-    __properties: ClassVar[List[str]] = ["id", "name", "provider", "description", "endpoint_url", "default_model", "enabled_models", "apiKey", "apikey_hint", "config", "settings", "account", "allowed_projects", "created_by", "updated_by", "created_at", "updated_at"]
+    __properties: ClassVar[List[str]] = ["id", "name", "provider", "description", "endpoint_url", "default_model", "enabled_models", "apiKey", "apikey_hint", "config", "settings", "account", "allowed_projects", "managed", "created_by", "updated_by", "created_at", "updated_at"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -128,6 +129,7 @@ class ExecutionEnvironment(BaseModel):
             "settings": ExecutionEnvironmentSettings.from_dict(obj["settings"]) if obj.get("settings") is not None else None,
             "account": obj.get("account"),
             "allowed_projects": obj.get("allowed_projects"),
+            "managed": obj.get("managed"),
             "created_by": obj.get("created_by"),
             "updated_by": obj.get("updated_by"),
             "created_at": obj.get("created_at"),
