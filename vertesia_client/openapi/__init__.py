@@ -468,6 +468,9 @@ __all__ = [
     "DashboardElasticsearchResultMapping",
     "DashboardElasticsearchResultMappingOneOf",
     "DashboardElasticsearchResultMappingOneOf1",
+    "DashboardExport",
+    "DashboardExportError",
+    "DashboardExportStatus",
     "DashboardItem",
     "DashboardLayout",
     "DashboardPanel",
@@ -610,6 +613,8 @@ __all__ = [
     "ExecutionTokenUsage",
     "ExportContentObjectsFilter",
     "ExportContentObjectsIncludeOptions",
+    "ExportDashboardPayload",
+    "ExportDashboardPreviewPayload",
     "ExportPropertiesPayload",
     "ExportPropertiesResponse",
     "ExportedPromptTemplateRef",
@@ -1720,6 +1725,9 @@ from vertesia_client.openapi.models.dashboard_elasticsearch_dsl import Dashboard
 from vertesia_client.openapi.models.dashboard_elasticsearch_result_mapping import DashboardElasticsearchResultMapping as DashboardElasticsearchResultMapping
 from vertesia_client.openapi.models.dashboard_elasticsearch_result_mapping_one_of import DashboardElasticsearchResultMappingOneOf as DashboardElasticsearchResultMappingOneOf
 from vertesia_client.openapi.models.dashboard_elasticsearch_result_mapping_one_of1 import DashboardElasticsearchResultMappingOneOf1 as DashboardElasticsearchResultMappingOneOf1
+from vertesia_client.openapi.models.dashboard_export import DashboardExport as DashboardExport
+from vertesia_client.openapi.models.dashboard_export_error import DashboardExportError as DashboardExportError
+from vertesia_client.openapi.models.dashboard_export_status import DashboardExportStatus as DashboardExportStatus
 from vertesia_client.openapi.models.dashboard_item import DashboardItem as DashboardItem
 from vertesia_client.openapi.models.dashboard_layout import DashboardLayout as DashboardLayout
 from vertesia_client.openapi.models.dashboard_panel import DashboardPanel as DashboardPanel
@@ -1862,6 +1870,8 @@ from vertesia_client.openapi.models.execution_run_workflow import ExecutionRunWo
 from vertesia_client.openapi.models.execution_token_usage import ExecutionTokenUsage as ExecutionTokenUsage
 from vertesia_client.openapi.models.export_content_objects_filter import ExportContentObjectsFilter as ExportContentObjectsFilter
 from vertesia_client.openapi.models.export_content_objects_include_options import ExportContentObjectsIncludeOptions as ExportContentObjectsIncludeOptions
+from vertesia_client.openapi.models.export_dashboard_payload import ExportDashboardPayload as ExportDashboardPayload
+from vertesia_client.openapi.models.export_dashboard_preview_payload import ExportDashboardPreviewPayload as ExportDashboardPreviewPayload
 from vertesia_client.openapi.models.export_properties_payload import ExportPropertiesPayload as ExportPropertiesPayload
 from vertesia_client.openapi.models.export_properties_response import ExportPropertiesResponse as ExportPropertiesResponse
 from vertesia_client.openapi.models.exported_prompt_template_ref import ExportedPromptTemplateRef as ExportedPromptTemplateRef

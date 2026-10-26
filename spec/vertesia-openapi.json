@@ -15253,6 +15253,97 @@
         ],
         "description": "How an Elasticsearch DSL result should be converted into Vega rows."
       },
+      "DashboardExport": {
+        "type": "object",
+        "properties": {
+          "export_id": {
+            "type": "string",
+            "description": "Identifier of this export. Every export creates a new image."
+          },
+          "status": {
+            "$ref": "#/components/schemas/DashboardExportStatus"
+          },
+          "started_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the export was started."
+          },
+          "completed_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the export completed or failed."
+          },
+          "url": {
+            "type": "string",
+            "description": "Signed URL to download the image, set when the export is `completed`. It expires at `expires_at`; fetch the export again for a new one."
+          },
+          "content_type": {
+            "type": "string",
+            "description": "Media type of the image."
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the download URL expires."
+          },
+          "width": {
+            "type": "number",
+            "description": "Image width in pixels."
+          },
+          "height": {
+            "type": "number",
+            "description": "Image height in pixels."
+          },
+          "row_count": {
+            "type": "number",
+            "description": "Number of rows the query returned."
+          },
+          "error": {
+            "$ref": "#/components/schemas/DashboardExportError",
+            "description": "Why the export failed, set when it is `failed`."
+          }
+        },
+        "required": [
+          "export_id",
+          "status",
+          "started_at"
+        ],
+        "additionalProperties": false,
+        "description": "A dashboard export. Starting an export returns it `running`; poll it until it is `completed`, with a signed download URL, or `failed`, with the reason."
+      },
+      "DashboardExportError": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Why the export failed: `spec_invalid`, `query_invalid`, `parameter_invalid`, `not_renderable`, `data_access_denied` and `data_not_found` describe the dashboard or its data; `export_failed` means the export could not complete. More codes may be added."
+          },
+          "message": {
+            "type": "string",
+            "description": "What went wrong."
+          },
+          "retryable": {
+            "type": "boolean",
+            "description": "Whether starting the same export again may succeed. False when the dashboard, its query or its parameters must change first."
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "retryable"
+        ],
+        "additionalProperties": false,
+        "description": "Why a dashboard export failed."
+      },
+      "DashboardExportStatus": {
+        "type": "string",
+        "enum": [
+          "running",
+          "completed",
+          "failed"
+        ],
+        "description": "Status of a dashboard export."
+      },
       "DashboardItem": {
         "type": "object",
         "properties": {
@@ -19933,6 +20024,81 @@
         },
         "additionalProperties": false,
         "description": "Optional object context to include in content object export rows."
+      },
+      "ExportDashboardPayload": {
+        "type": "object",
+        "properties": {
+          "parameter_values": {
+            "$ref": "#/components/schemas/StringValueMap",
+            "description": "Values for the dashboard's SQL {{param}} placeholders, overriding its saved defaults."
+          },
+          "format": {
+            "type": "string",
+            "enum": [
+              "png"
+            ],
+            "description": "Image format. Only PNG is supported."
+          },
+          "scale": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "maximum": 4,
+            "description": "Render scale factor for higher resolution images (default: 1, maximum: 4)."
+          },
+          "background_color": {
+            "type": "string",
+            "maxLength": 64,
+            "description": "CSS background color of the image (default: '#ffffff')."
+          }
+        },
+        "additionalProperties": false,
+        "description": "Options for exporting a saved dashboard as an image."
+      },
+      "ExportDashboardPreviewPayload": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "SQL query that returns all data for the dashboard."
+          },
+          "queryLimit": {
+            "type": "number",
+            "description": "Maximum rows to return from the query (default: 10000)"
+          },
+          "queryParameters": {
+            "$ref": "#/components/schemas/StringValueMap",
+            "description": "Values for SQL {{param}} placeholders"
+          },
+          "spec": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Complete Vega-Lite specification (use vconcat/hconcat for multiple panels)"
+          },
+          "format": {
+            "type": "string",
+            "enum": [
+              "png"
+            ],
+            "description": "Image format. Only PNG is supported."
+          },
+          "scale": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "maximum": 4,
+            "description": "Render scale factor for higher resolution images (default: 1, maximum: 4)."
+          },
+          "background_color": {
+            "type": "string",
+            "maxLength": 64,
+            "description": "CSS background color of the image (default: '#ffffff')."
+          }
+        },
+        "required": [
+          "query",
+          "spec"
+        ],
+        "additionalProperties": false,
+        "description": "An unsaved dashboard (SQL query and Vega-Lite spec) to render as an image."
       },
       "ExportPropertiesPayload": {
         "type": "object",
@@ -86895,6 +87061,345 @@
           "file": "../../apps/zeno-server/src/api/data/dashboards.ts",
           "className": "DashboardsResource",
           "methodName": "delete"
+        }
+      },
+      "parameters": [
+        {
+          "name": "x-api-version",
+          "in": "header",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S",
+            "example": "20260803"
+          },
+          "description": "Required Vertesia API version header. Use `20260803` for the current stable API shape.",
+          "x-vertesia-global-header": true
+        }
+      ]
+    },
+    "/data/{storeId}/dashboards/export": {
+      "post": {
+        "operationId": "ExportDashboardPreview",
+        "tags": [
+          "Data"
+        ],
+        "summary": "Export an unsaved dashboard as an image",
+        "description": "Starts rendering the rows of a SQL query with a Vega-Lite spec as a PNG, and returns the `running` export. Poll GET /data/{storeId}/dashboards/exports/{exportId} until it is `completed`, with a signed URL to the image, or `failed`, with the reason. Nothing is saved: use it to check a dashboard before creating it.\n\n**Required permissions:** `content:read`",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OAuth2": [
+              "content:read"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "storeId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "The export started; poll it until it completes.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DashboardExport"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Rendering is temporarily unavailable; retry after the Retry-After delay."
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [
+          "content:read"
+        ],
+        "x-vertesia-source": {
+          "file": "../../apps/zeno-server/src/api/data/dashboards.ts",
+          "className": "DashboardsResource",
+          "methodName": "exportPreview"
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExportDashboardPreviewPayload"
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "x-api-version",
+          "in": "header",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S",
+            "example": "20260803"
+          },
+          "description": "Required Vertesia API version header. Use `20260803` for the current stable API shape.",
+          "x-vertesia-global-header": true
+        }
+      ]
+    },
+    "/data/{storeId}/dashboards/exports/{exportId}": {
+      "get": {
+        "operationId": "GetDashboardExport",
+        "tags": [
+          "Data"
+        ],
+        "summary": "Get a dashboard export",
+        "description": "Returns the status of an export. A `completed` export carries a freshly signed URL to the image; a `failed` one carries the reason and whether starting it again may succeed.\n\n**Required permissions:** `content:read`",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OAuth2": [
+              "content:read"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "storeId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "exportId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The export.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DashboardExport"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No export with this ID was started on this data store, or it is no longer retained."
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The export status is temporarily unavailable; retry after the Retry-After delay."
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [
+          "content:read"
+        ],
+        "x-vertesia-source": {
+          "file": "../../apps/zeno-server/src/api/data/dashboards.ts",
+          "className": "DashboardsResource",
+          "methodName": "getExport"
+        }
+      },
+      "parameters": [
+        {
+          "name": "x-api-version",
+          "in": "header",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S",
+            "example": "20260803"
+          },
+          "description": "Required Vertesia API version header. Use `20260803` for the current stable API shape.",
+          "x-vertesia-global-header": true
+        }
+      ]
+    },
+    "/data/{storeId}/dashboards/{dashboardId}/export": {
+      "post": {
+        "operationId": "ExportDashboard",
+        "tags": [
+          "Data"
+        ],
+        "summary": "Export a dashboard as an image",
+        "description": "Starts rendering the saved dashboard to PNG with fresh query results, and returns the `running` export. Poll GET /data/{storeId}/dashboards/exports/{exportId} until it is `completed` or `failed`. Every export creates a new image, so earlier URLs keep showing what they were issued for. The dashboard's `last_rendered_at` is set once the image is uploaded.\n\n**Required permissions:** `content:read`",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OAuth2": [
+              "content:read"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "storeId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "dashboardId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "The export started; poll it until it completes.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DashboardExport"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The data store or the dashboard does not exist."
+          },
+          "422": {
+            "description": "The dashboard has nothing to render."
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Rendering is temporarily unavailable; retry after the Retry-After delay."
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [
+          "content:read"
+        ],
+        "x-vertesia-source": {
+          "file": "../../apps/zeno-server/src/api/data/dashboards.ts",
+          "className": "DashboardsResource",
+          "methodName": "export"
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExportDashboardPayload"
+              }
+            }
+          }
         }
       },
       "parameters": [

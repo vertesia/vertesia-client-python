@@ -435,6 +435,9 @@ vertesia_client/openapi/models/dashboard_elasticsearch_dsl.py
 vertesia_client/openapi/models/dashboard_elasticsearch_result_mapping.py
 vertesia_client/openapi/models/dashboard_elasticsearch_result_mapping_one_of.py
 vertesia_client/openapi/models/dashboard_elasticsearch_result_mapping_one_of1.py
+vertesia_client/openapi/models/dashboard_export.py
+vertesia_client/openapi/models/dashboard_export_error.py
+vertesia_client/openapi/models/dashboard_export_status.py
 vertesia_client/openapi/models/dashboard_item.py
 vertesia_client/openapi/models/dashboard_layout.py
 vertesia_client/openapi/models/dashboard_panel.py
@@ -588,6 +591,8 @@ vertesia_client/openapi/models/execution_run_workflow.py
 vertesia_client/openapi/models/execution_token_usage.py
 vertesia_client/openapi/models/export_content_objects_filter.py
 vertesia_client/openapi/models/export_content_objects_include_options.py
+vertesia_client/openapi/models/export_dashboard_payload.py
+vertesia_client/openapi/models/export_dashboard_preview_payload.py
 vertesia_client/openapi/models/export_properties_payload.py
 vertesia_client/openapi/models/export_properties_response.py
 vertesia_client/openapi/models/exported_prompt_template_ref.py
