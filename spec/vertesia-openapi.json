@@ -75494,6 +75494,9 @@
               }
             }
           },
+          "409": {
+            "description": "The embedding's etag no longer matches the object's current source for this type: the source changed after the embedding was computed."
+          },
           "500": {
             "description": "Internal server error.",
             "content": {

@@ -6951,6 +6951,7 @@ class ObjectsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "SetObjectEmbeddingsResponse",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -7032,6 +7033,7 @@ class ObjectsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "SetObjectEmbeddingsResponse",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -7113,6 +7115,7 @@ class ObjectsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "SetObjectEmbeddingsResponse",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
