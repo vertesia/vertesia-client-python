@@ -4248,6 +4248,7 @@ class ProcessesApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "ProcessDefinition",
             '409': None,
+            '422': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -4326,6 +4327,7 @@ class ProcessesApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "ProcessDefinition",
             '409': None,
+            '422': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -4404,6 +4406,7 @@ class ProcessesApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "ProcessDefinition",
             '409': None,
+            '422': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }

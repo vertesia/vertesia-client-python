@@ -5167,7 +5167,7 @@ components:
             safe to retry. A repeat of the request with the same key and the
             same body returns the agent run the first request started instead of
             starting another. Reusing a key with a different body is rejected
-            with 409, and a repeat that arrives while the first request is still
+            with 422, and a repeat that arrives while the first request is still
             starting the run may be answered with 503 and `Retry-After`. Keys
             are scoped to the project and stay bound to their run for as long as
             it exists; once the run is deleted, the same key starts a new one.
@@ -10553,7 +10553,7 @@ components:
             safe to retry. A repeat of the request with the same key and the
             same body returns the agent run the first request started instead of
             starting another. Reusing a key with a different body is rejected
-            with 409, and a repeat that arrives while the first request is still
+            with 422, and a repeat that arrives while the first request is still
             starting the run may be answered with 503 and `Retry-After`. Keys
             are scoped to the project and stay bound to their run for as long as
             it exists; once the run is deleted, the same key starts a new one.
@@ -10835,6 +10835,16 @@ components:
           type: string
         generation_run_info:
           $ref: "#/components/schemas/GenerationRunMetadata"
+        idempotency_key:
+          type: string
+          minLength: 1
+          maxLength: 256
+          description: Client-chosen key, unique per intended object, that makes this
+            request safe to retry. A repeat of the request with the same key,
+            body, collection and processing priority returns the object the
+            first request created instead of creating another. Reusing a key
+            with different input is rejected with 409. Keys are scoped to the
+            project and stay bound to their object for as long as it exists.
       additionalProperties: false
       description: When creating from an uploaded file the content should be an URL to
         the uploaded file
@@ -16847,8 +16857,9 @@ components:
           description: Optional client-generated Mongo ObjectId for idempotent retries.
             Generate once before submitting, then reuse with identical input.
             New IDs must be less than 24 hours old; existing jobs are returned
-            without executing again. Poll GET /data/:storeId/import/:importId
-            after a timeout.
+            without executing again, and reusing an ID with different input is
+            rejected with 422. Poll GET /data/:storeId/import/:importId after a
+            timeout.
         tables:
           $ref: "#/components/schemas/ImportTableDataMap"
           description: Map of table name to data specification
@@ -23880,7 +23891,7 @@ components:
             already succeeded is rejected because the revision is no longer a
             draft. When the revision was published by a request with the same
             key and the same body, the repeat returns that revision instead.
-            Reusing the key with a different body is rejected with 409. The key
+            Reusing the key with a different body is rejected with 422. The key
             is bound to the revision it published."
       required:
         - confirmed
@@ -25977,7 +25988,7 @@ components:
             safe to retry. A repeat of the request with the same key and the
             same body returns the run the first request started instead of
             starting another. Reusing a key with a different body is rejected
-            with 409. Keys are scoped to the project and stay bound to their run
+            with 422. Keys are scoped to the project and stay bound to their run
             for as long as it exists; once the run is deleted, the same key
             starts a new one.
       required:
@@ -26199,7 +26210,7 @@ components:
             safe to retry. A repeat of the request with the same key and the
             same body returns the run the first request started instead of
             starting another. Reusing a key with a different body is rejected
-            with 409. Keys are scoped to the project and stay bound to their run
+            with 422. Keys are scoped to the project and stay bound to their run
             for as long as it exists; once the run is deleted, the same key
             starts a new one.
       required:
@@ -53305,8 +53316,9 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProcessDefinition"
         "409":
-          description: The process definition changed while it was being published, or the
-            idempotency key was reused with a different request.
+          description: The process definition changed while it was being published.
+        "422":
+          description: The idempotency key was already used for a different request.
         "500":
           description: Internal server error.
           content:
@@ -54730,6 +54742,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ContentObjectApiResponse"
+        "422":
+          description: The idempotency key was already used for a different request.
         "500":
           description: Internal server error.
           content:
@@ -62461,6 +62475,11 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ImportJob"
+        "409":
+          description: The import ID is unknown and too old or in the future to start a
+            new import.
+        "422":
+          description: The import ID was already used for a different request.
         "500":
           description: Internal server error.
           content:

@@ -6227,6 +6227,8 @@ class DataApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "ImportJob",
             '202': "ImportJob",
+            '409': None,
+            '422': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -6305,6 +6307,8 @@ class DataApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "ImportJob",
             '202': "ImportJob",
+            '409': None,
+            '422': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -6383,6 +6387,8 @@ class DataApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "ImportJob",
             '202': "ImportJob",
+            '409': None,
+            '422': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }

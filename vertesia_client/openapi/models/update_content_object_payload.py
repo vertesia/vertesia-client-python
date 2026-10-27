@@ -68,6 +68,7 @@ class UpdateContentObjectPayload(BaseModel):
     id: Optional[StrictStr] = None
     type: Optional[StrictStr] = None
     generation_run_info: Optional[GenerationRunMetadata] = None
+    additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["text", "text_etag", "embeddings", "parts", "parts_etag", "transcript", "security", "sensitivity", "compartments", "shared_root", "inherited_properties", "parent", "location", "status", "content", "external_id", "properties", "metadata", "tokens", "revision", "is_deleted", "is_locked", "score", "user_permissions", "name", "description", "tags", "updated_by", "created_by", "id", "type", "generation_run_info"]
 
     model_config = ConfigDict(
@@ -100,8 +101,10 @@ class UpdateContentObjectPayload(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -137,6 +140,11 @@ class UpdateContentObjectPayload(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of generation_run_info
         if self.generation_run_info:
             _dict['generation_run_info'] = self.generation_run_info.to_dict()
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
         return _dict
 
     @classmethod
@@ -182,6 +190,11 @@ class UpdateContentObjectPayload(BaseModel):
             "type": obj.get("type"),
             "generation_run_info": GenerationRunMetadata.from_dict(obj["generation_run_info"]) if obj.get("generation_run_info") is not None else None
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 

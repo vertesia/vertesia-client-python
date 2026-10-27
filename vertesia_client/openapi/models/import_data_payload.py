@@ -29,7 +29,7 @@ class ImportDataPayload(BaseModel):
     """
     Payload for importing data into tables.
     """ # noqa: E501
-    import_id: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Optional client-generated Mongo ObjectId for idempotent retries. Generate once before submitting, then reuse with identical input. New IDs must be less than 24 hours old; existing jobs are returned without executing again. Poll GET /data/:storeId/import/:importId after a timeout.")
+    import_id: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Optional client-generated Mongo ObjectId for idempotent retries. Generate once before submitting, then reuse with identical input. New IDs must be less than 24 hours old; existing jobs are returned without executing again, and reusing an ID with different input is rejected with 422. Poll GET /data/:storeId/import/:importId after a timeout.")
     tables: Dict[str, ImportTableData] = Field(description="Map of table name to data specification")
     mode: StrictStr = Field(description="Import mode")
     message: StrictStr = Field(description="Commit message")

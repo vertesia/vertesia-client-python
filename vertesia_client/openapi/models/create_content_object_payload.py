@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.content_embedding_map import ContentEmbeddingMap
 from vertesia_client.openapi.models.content_object_status import ContentObjectStatus
 from vertesia_client.openapi.models.content_object_user_permissions import ContentObjectUserPermissions
@@ -68,8 +69,9 @@ class CreateContentObjectPayload(BaseModel):
     id: Optional[StrictStr] = None
     type: Optional[StrictStr] = None
     generation_run_info: Optional[GenerationRunMetadata] = None
+    idempotency_key: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=256)]] = Field(default=None, description="Client-chosen key, unique per intended object, that makes this request safe to retry. A repeat of the request with the same key, body, collection and processing priority returns the object the first request created instead of creating another. Reusing a key with different input is rejected with 409. Keys are scoped to the project and stay bound to their object for as long as it exists.")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["text", "text_etag", "embeddings", "parts", "parts_etag", "transcript", "security", "sensitivity", "compartments", "shared_root", "inherited_properties", "parent", "location", "status", "content", "external_id", "properties", "metadata", "tokens", "revision", "is_deleted", "is_locked", "score", "user_permissions", "name", "description", "tags", "updated_by", "created_by", "id", "type", "generation_run_info"]
+    __properties: ClassVar[List[str]] = ["text", "text_etag", "embeddings", "parts", "parts_etag", "transcript", "security", "sensitivity", "compartments", "shared_root", "inherited_properties", "parent", "location", "status", "content", "external_id", "properties", "metadata", "tokens", "revision", "is_deleted", "is_locked", "score", "user_permissions", "name", "description", "tags", "updated_by", "created_by", "id", "type", "generation_run_info", "idempotency_key"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -188,7 +190,8 @@ class CreateContentObjectPayload(BaseModel):
             "created_by": obj.get("created_by"),
             "id": obj.get("id"),
             "type": obj.get("type"),
-            "generation_run_info": GenerationRunMetadata.from_dict(obj["generation_run_info"]) if obj.get("generation_run_info") is not None else None
+            "generation_run_info": GenerationRunMetadata.from_dict(obj["generation_run_info"]) if obj.get("generation_run_info") is not None else None,
+            "idempotency_key": obj.get("idempotency_key")
         })
         # store additional fields in additional_properties
         for _key in obj.keys():
