@@ -34,6 +34,7 @@ class OpenRouterTextOptions(BaseModel):
     tool_choice: Optional[StrictStr] = None
     effort: Optional[ReasoningEffort] = None
     reasoning_effort: Optional[ReasoningEffort] = None
+    verbosity: Optional[StrictStr] = None
     temperature: Optional[Union[StrictFloat, StrictInt]] = None
     top_p: Optional[Union[StrictFloat, StrictInt]] = None
     presence_penalty: Optional[Union[StrictFloat, StrictInt]] = None
@@ -52,10 +53,18 @@ class OpenRouterTextOptions(BaseModel):
     provider_data_collection: Optional[StrictStr] = None
     provider_zdr: Optional[StrictBool] = None
     provider_quantizations: Optional[List[StrictStr]] = None
-    __properties: ClassVar[List[str]] = ["seed", "max_tokens", "tool_choice", "effort", "reasoning_effort", "temperature", "top_p", "presence_penalty", "frequency_penalty", "stop_sequence", "image_detail", "include_thoughts", "service_tier", "_option_id", "provider_sort", "provider_order", "provider_only", "provider_ignore", "provider_allow_fallbacks", "provider_require_parameters", "provider_data_collection", "provider_zdr", "provider_quantizations"]
+    __properties: ClassVar[List[str]] = ["seed", "max_tokens", "tool_choice", "effort", "reasoning_effort", "verbosity", "temperature", "top_p", "presence_penalty", "frequency_penalty", "stop_sequence", "image_detail", "include_thoughts", "service_tier", "_option_id", "provider_sort", "provider_order", "provider_only", "provider_ignore", "provider_allow_fallbacks", "provider_require_parameters", "provider_data_collection", "provider_zdr", "provider_quantizations"]
 
     @field_validator('tool_choice')
     def tool_choice_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        return value
+
+    @field_validator('verbosity')
+    def verbosity_validate_enum(cls, value):
         """Validates the enum"""
         if value is None:
             return value
@@ -161,6 +170,7 @@ class OpenRouterTextOptions(BaseModel):
             "tool_choice": obj.get("tool_choice"),
             "effort": obj.get("effort"),
             "reasoning_effort": obj.get("reasoning_effort"),
+            "verbosity": obj.get("verbosity"),
             "temperature": obj.get("temperature"),
             "top_p": obj.get("top_p"),
             "presence_penalty": obj.get("presence_penalty"),
