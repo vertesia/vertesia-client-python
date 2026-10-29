@@ -18093,6 +18093,12 @@ components:
           $ref: "#/components/schemas/ReasoningEffort"
         reasoning_effort:
           $ref: "#/components/schemas/ReasoningEffort"
+        verbosity:
+          type: string
+          enum:
+            - low
+            - medium
+            - high
         temperature:
           type: number
         top_p:
@@ -18148,6 +18154,12 @@ components:
             - auto
             - current_turn
             - all_turns
+        verbosity:
+          type: string
+          enum:
+            - low
+            - medium
+            - high
         image_detail:
           type: string
           enum:

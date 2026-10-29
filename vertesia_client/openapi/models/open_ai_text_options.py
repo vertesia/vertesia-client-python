@@ -36,6 +36,7 @@ class OpenAiTextOptions(BaseModel):
     max_tokens: Optional[Union[StrictFloat, StrictInt]] = None
     effort: Optional[ReasoningEffort] = None
     reasoning_effort: Optional[ReasoningEffort] = None
+    verbosity: Optional[StrictStr] = None
     temperature: Optional[Union[StrictFloat, StrictInt]] = None
     top_p: Optional[Union[StrictFloat, StrictInt]] = None
     presence_penalty: Optional[Union[StrictFloat, StrictInt]] = None
@@ -45,10 +46,18 @@ class OpenAiTextOptions(BaseModel):
     include_thoughts: Optional[StrictBool] = None
     service_tier: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="Provider-defined processing tier. Unknown non-empty values are preserved for forward compatibility.")
     extra_body: Optional[Dict[str, Any]] = Field(default=None, description="Additional provider-specific fields merged into the OpenAI-compatible request body.")
-    __properties: ClassVar[List[str]] = ["_option_id", "image_generation", "seed", "max_tokens", "effort", "reasoning_effort", "temperature", "top_p", "presence_penalty", "frequency_penalty", "stop_sequence", "image_detail", "include_thoughts", "service_tier", "extra_body"]
+    __properties: ClassVar[List[str]] = ["_option_id", "image_generation", "seed", "max_tokens", "effort", "reasoning_effort", "verbosity", "temperature", "top_p", "presence_penalty", "frequency_penalty", "stop_sequence", "image_detail", "include_thoughts", "service_tier", "extra_body"]
 
     @field_validator('option_id')
     def option_id_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        return value
+
+    @field_validator('verbosity')
+    def verbosity_validate_enum(cls, value):
         """Validates the enum"""
         if value is None:
             return value
@@ -123,6 +132,7 @@ class OpenAiTextOptions(BaseModel):
             "max_tokens": obj.get("max_tokens"),
             "effort": obj.get("effort"),
             "reasoning_effort": obj.get("reasoning_effort"),
+            "verbosity": obj.get("verbosity"),
             "temperature": obj.get("temperature"),
             "top_p": obj.get("top_p"),
             "presence_penalty": obj.get("presence_penalty"),

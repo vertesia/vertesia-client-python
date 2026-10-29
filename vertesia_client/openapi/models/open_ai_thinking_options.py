@@ -37,12 +37,13 @@ class OpenAiThinkingOptions(BaseModel):
     effort: Optional[ReasoningEffort] = None
     reasoning_effort: Optional[ReasoningEffort] = None
     reasoning_context: Optional[StrictStr] = None
+    verbosity: Optional[StrictStr] = None
     image_detail: Optional[StrictStr] = None
     include_thoughts: Optional[StrictBool] = None
     service_tier: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="Provider-defined processing tier. Unknown non-empty values are preserved for forward compatibility.")
     extra_body: Optional[Dict[str, Any]] = Field(default=None, description="Additional provider-specific fields merged into the OpenAI-compatible request body.")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["_option_id", "image_generation", "max_tokens", "stop_sequence", "effort", "reasoning_effort", "reasoning_context", "image_detail", "include_thoughts", "service_tier", "extra_body"]
+    __properties: ClassVar[List[str]] = ["_option_id", "image_generation", "max_tokens", "stop_sequence", "effort", "reasoning_effort", "reasoning_context", "verbosity", "image_detail", "include_thoughts", "service_tier", "extra_body"]
 
     @field_validator('option_id')
     def option_id_validate_enum(cls, value):
@@ -54,6 +55,14 @@ class OpenAiThinkingOptions(BaseModel):
 
     @field_validator('reasoning_context')
     def reasoning_context_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        return value
+
+    @field_validator('verbosity')
+    def verbosity_validate_enum(cls, value):
         """Validates the enum"""
         if value is None:
             return value
@@ -136,6 +145,7 @@ class OpenAiThinkingOptions(BaseModel):
             "effort": obj.get("effort"),
             "reasoning_effort": obj.get("reasoning_effort"),
             "reasoning_context": obj.get("reasoning_context"),
+            "verbosity": obj.get("verbosity"),
             "image_detail": obj.get("image_detail"),
             "include_thoughts": obj.get("include_thoughts"),
             "service_tier": obj.get("service_tier"),
