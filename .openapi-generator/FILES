@@ -537,11 +537,7 @@ vertesia_client/openapi/models/forward_email_request.py
 vertesia_client/openapi/models/forward_email_request_attachments_inner.py
 vertesia_client/openapi/models/forward_email_request_email.py
 vertesia_client/openapi/models/forward_email_response.py
-vertesia_client/openapi/models/generate_interaction_payload.py
 vertesia_client/openapi/models/generate_test_data_payload.py
-vertesia_client/openapi/models/generated_interaction_definition.py
-vertesia_client/openapi/models/generated_interaction_prompt_segment.py
-vertesia_client/openapi/models/generated_interaction_prompt_template.py
 vertesia_client/openapi/models/generation_run_metadata.py
 vertesia_client/openapi/models/generic_command_response.py
 vertesia_client/openapi/models/get_file_url_payload.py
@@ -574,9 +570,6 @@ vertesia_client/openapi/models/import_data_source.py
 vertesia_client/openapi/models/import_job.py
 vertesia_client/openapi/models/import_status.py
 vertesia_client/openapi/models/import_table_data.py
-vertesia_client/openapi/models/improve_prompt_payload.py
-vertesia_client/openapi/models/improve_prompt_payload_config.py
-vertesia_client/openapi/models/improve_prompt_payload_prompt_inner.py
 vertesia_client/openapi/models/in_code_process_definition.py
 vertesia_client/openapi/models/in_code_prompt.py
 vertesia_client/openapi/models/in_code_type_definition.py
@@ -799,7 +792,6 @@ vertesia_client/openapi/models/promote_dashboard_version_payload.py
 vertesia_client/openapi/models/prompt_cache_diagnostic.py
 vertesia_client/openapi/models/prompt_cache_mode.py
 vertesia_client/openapi/models/prompt_cache_path.py
-vertesia_client/openapi/models/prompt_improvement_response.py
 vertesia_client/openapi/models/prompt_modalities.py
 vertesia_client/openapi/models/prompt_role.py
 vertesia_client/openapi/models/prompt_search_query.py

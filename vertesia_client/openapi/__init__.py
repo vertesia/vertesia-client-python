@@ -559,11 +559,7 @@ __all__ = [
     "ForwardEmailRequestAttachmentsInner",
     "ForwardEmailRequestEmail",
     "ForwardEmailResponse",
-    "GenerateInteractionPayload",
     "GenerateTestDataPayload",
-    "GeneratedInteractionDefinition",
-    "GeneratedInteractionPromptSegment",
-    "GeneratedInteractionPromptTemplate",
     "GenerationRunMetadata",
     "GenericCommandResponse",
     "GetFileUrlPayload",
@@ -596,9 +592,6 @@ __all__ = [
     "ImportJob",
     "ImportStatus",
     "ImportTableData",
-    "ImprovePromptPayload",
-    "ImprovePromptPayloadConfig",
-    "ImprovePromptPayloadPromptInner",
     "InCodeProcessDefinition",
     "InCodePrompt",
     "InCodeTypeDefinition",
@@ -821,7 +814,6 @@ __all__ = [
     "PromptCacheDiagnostic",
     "PromptCacheMode",
     "PromptCachePath",
-    "PromptImprovementResponse",
     "PromptModalities",
     "PromptRole",
     "PromptSearchQuery",
@@ -1705,11 +1697,7 @@ from vertesia_client.openapi.models.forward_email_request import ForwardEmailReq
 from vertesia_client.openapi.models.forward_email_request_attachments_inner import ForwardEmailRequestAttachmentsInner as ForwardEmailRequestAttachmentsInner
 from vertesia_client.openapi.models.forward_email_request_email import ForwardEmailRequestEmail as ForwardEmailRequestEmail
 from vertesia_client.openapi.models.forward_email_response import ForwardEmailResponse as ForwardEmailResponse
-from vertesia_client.openapi.models.generate_interaction_payload import GenerateInteractionPayload as GenerateInteractionPayload
 from vertesia_client.openapi.models.generate_test_data_payload import GenerateTestDataPayload as GenerateTestDataPayload
-from vertesia_client.openapi.models.generated_interaction_definition import GeneratedInteractionDefinition as GeneratedInteractionDefinition
-from vertesia_client.openapi.models.generated_interaction_prompt_segment import GeneratedInteractionPromptSegment as GeneratedInteractionPromptSegment
-from vertesia_client.openapi.models.generated_interaction_prompt_template import GeneratedInteractionPromptTemplate as GeneratedInteractionPromptTemplate
 from vertesia_client.openapi.models.generation_run_metadata import GenerationRunMetadata as GenerationRunMetadata
 from vertesia_client.openapi.models.generic_command_response import GenericCommandResponse as GenericCommandResponse
 from vertesia_client.openapi.models.get_file_url_payload import GetFileUrlPayload as GetFileUrlPayload
@@ -1742,9 +1730,6 @@ from vertesia_client.openapi.models.import_data_source import ImportDataSource a
 from vertesia_client.openapi.models.import_job import ImportJob as ImportJob
 from vertesia_client.openapi.models.import_status import ImportStatus as ImportStatus
 from vertesia_client.openapi.models.import_table_data import ImportTableData as ImportTableData
-from vertesia_client.openapi.models.improve_prompt_payload import ImprovePromptPayload as ImprovePromptPayload
-from vertesia_client.openapi.models.improve_prompt_payload_config import ImprovePromptPayloadConfig as ImprovePromptPayloadConfig
-from vertesia_client.openapi.models.improve_prompt_payload_prompt_inner import ImprovePromptPayloadPromptInner as ImprovePromptPayloadPromptInner
 from vertesia_client.openapi.models.in_code_process_definition import InCodeProcessDefinition as InCodeProcessDefinition
 from vertesia_client.openapi.models.in_code_prompt import InCodePrompt as InCodePrompt
 from vertesia_client.openapi.models.in_code_type_definition import InCodeTypeDefinition as InCodeTypeDefinition
@@ -1967,7 +1952,6 @@ from vertesia_client.openapi.models.promote_dashboard_version_payload import Pro
 from vertesia_client.openapi.models.prompt_cache_diagnostic import PromptCacheDiagnostic as PromptCacheDiagnostic
 from vertesia_client.openapi.models.prompt_cache_mode import PromptCacheMode as PromptCacheMode
 from vertesia_client.openapi.models.prompt_cache_path import PromptCachePath as PromptCachePath
-from vertesia_client.openapi.models.prompt_improvement_response import PromptImprovementResponse as PromptImprovementResponse
 from vertesia_client.openapi.models.prompt_modalities import PromptModalities as PromptModalities
 from vertesia_client.openapi.models.prompt_role import PromptRole as PromptRole
 from vertesia_client.openapi.models.prompt_search_query import PromptSearchQuery as PromptSearchQuery

@@ -14084,17 +14084,6 @@ components:
         - workflow_id
         - route_key
       additionalProperties: false
-    GenerateInteractionPayload:
-      type: object
-      properties:
-        description:
-          type: string
-        config:
-          $ref: "#/components/schemas/InteractionExecutionConfiguration"
-      required:
-        - description
-        - config
-      additionalProperties: false
     GenerateTestDataPayload:
       type: object
       properties:
@@ -14106,79 +14095,6 @@ components:
           $ref: "#/components/schemas/InteractionExecutionConfiguration"
       required:
         - config
-      additionalProperties: false
-    GeneratedInteractionDefinition:
-      type: object
-      properties:
-        name:
-          type: string
-        description:
-          type: string
-        temperature:
-          type: number
-        prompts:
-          type: array
-          items:
-            $ref: "#/components/schemas/GeneratedInteractionPromptSegment"
-        max_tokens:
-          type: number
-        result_schema:
-          $ref: "#/components/schemas/JSONSchema"
-        tags:
-          type: array
-          items:
-            type: string
-            enum:
-              - generated
-              - agent
-      required:
-        - name
-        - description
-        - temperature
-        - prompts
-        - result_schema
-        - tags
-      additionalProperties: false
-    GeneratedInteractionDefinitionArray:
-      type: array
-      items:
-        $ref: "#/components/schemas/GeneratedInteractionDefinition"
-    GeneratedInteractionPromptSegment:
-      type: object
-      properties:
-        type:
-          type: string
-          const: template
-        template:
-          $ref: "#/components/schemas/GeneratedInteractionPromptTemplate"
-      required:
-        - type
-        - template
-      additionalProperties: false
-    GeneratedInteractionPromptTemplate:
-      type: object
-      properties:
-        role:
-          type: string
-          enum:
-            - safety
-            - system
-            - user
-        name:
-          type: string
-        content:
-          type: string
-        content_type:
-          type: string
-          const: jst
-        inputSchema:
-          $ref: "#/components/schemas/JSONSchema"
-      required:
-        - role
-        - name
-        - content
-        - content_type
-        - inputSchema
       additionalProperties: false
     GeneratedTestDataRecord:
       type: object
@@ -14928,43 +14844,6 @@ components:
       type: object
       additionalProperties:
         $ref: "#/components/schemas/ImportTableData"
-    ImprovePromptPayload:
-      type: object
-      properties:
-        config:
-          $ref: "#/components/schemas/InteractionExecutionConfiguration"
-        interaction_name:
-          type: string
-        context:
-          type: string
-        prompt:
-          type: array
-          items:
-            type: object
-            properties:
-              name:
-                type: string
-              content:
-                type: string
-            required:
-              - name
-              - content
-            additionalProperties: false
-        result_schema:
-          $ref: "#/components/schemas/JSONSchema"
-      required:
-        - config
-        - interaction_name
-        - prompt
-      additionalProperties: false
-    ImprovePromptPayloadConfig:
-      type: object
-      properties:
-        config:
-          $ref: "#/components/schemas/InteractionExecutionConfiguration"
-      required:
-        - config
-      additionalProperties: false
     InCodeProcessDefinition:
       type: object
       properties:
@@ -20347,16 +20226,6 @@ components:
         - minimum_token_rejection
         - unusable_resource_recreated
         - unsupported_model
-    PromptImprovementResponse:
-      type: object
-      properties:
-        result:
-          type: array
-          items:
-            $ref: "#/components/schemas/CompletionResult"
-      required:
-        - result
-      additionalProperties: false
     PromptModalities:
       type: object
       properties:
@@ -31384,72 +31253,6 @@ paths:
         description: Optional Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
-  /interactions/improve:
-    post:
-      operationId: ImprovePrompt
-      tags:
-        - Interactions
-      summary: Improve prompt content
-      description: >-
-        Uses a system interaction to suggest improvements for prompt segments
-        supplied in the request.
-
-
-        **Required permissions:** `interaction:execute`
-      security:
-        - bearerAuth: []
-        - OAuth2:
-            - interaction:execute
-      parameters: []
-      responses:
-        "200":
-          description: Prompt improvement result.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/PromptImprovementResponse"
-        "500":
-          description: Internal server error.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-              example:
-                error: Internal Server Error
-                status: 500
-                message: Internal server error.
-        4XX:
-          description: Client error.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-              example:
-                error: Bad Request
-                status: 400
-                message: Request validation failed.
-      x-vertesia-permissions:
-        - interaction:execute
-      x-vertesia-source:
-        file: ../../apps/studio-server/src/api/interactions.ts
-        className: InteractionsResource
-        methodName: improvePrompt
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ImprovePromptPayload"
-    parameters:
-      - name: x-api-version
-        in: header
-        required: false
-        schema:
-          type: string
-          example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
-          current stable API shape.
-        x-vertesia-global-header: true
   /interactions/{interactionId}:
     get:
       operationId: GetInteraction
@@ -31904,77 +31707,6 @@ paths:
         description: Optional Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
-  /interactions/{interactionId}/generate-interaction:
-    post:
-      operationId: GenerateInteraction
-      tags:
-        - Interactions
-      summary: Generate an interaction
-      description: >-
-        Uses a system interaction to generate an interaction definition from a
-        natural-language description.
-
-
-        **Required permissions:** `interaction:read`
-      security:
-        - bearerAuth: []
-        - OAuth2:
-            - interaction:read
-      parameters:
-        - name: interactionId
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Generated interaction definition data.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/GeneratedInteractionDefinitionArray"
-        "500":
-          description: Internal server error.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-              example:
-                error: Internal Server Error
-                status: 500
-                message: Internal server error.
-        4XX:
-          description: Client error.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-              example:
-                error: Bad Request
-                status: 400
-                message: Request validation failed.
-      x-vertesia-permissions:
-        - interaction:read
-      x-vertesia-source:
-        file: ../../apps/studio-server/src/api/interactions.ts
-        className: InteractionResource
-        methodName: generateInteraction
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/GenerateInteractionPayload"
-    parameters:
-      - name: x-api-version
-        in: header
-        required: false
-        schema:
-          type: string
-          example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
-          current stable API shape.
-        x-vertesia-global-header: true
   /interactions/{interactionId}/generate-test-data:
     post:
       operationId: GenerateInteractionTestData
@@ -32036,77 +31768,6 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/GenerateTestDataPayload"
-    parameters:
-      - name: x-api-version
-        in: header
-        required: false
-        schema:
-          type: string
-          example: "20260803"
-        description: Optional Vertesia API version header. Use `20260803` for the
-          current stable API shape.
-        x-vertesia-global-header: true
-  /interactions/{interactionId}/suggest-prompt-improvements:
-    post:
-      operationId: SuggestPromptImprovementsForInteraction
-      tags:
-        - Interactions
-      summary: Suggest prompt improvements
-      description: >-
-        Uses a system interaction to suggest prompt improvements for the
-        selected interaction.
-
-
-        **Required permissions:** `interaction:read`
-      security:
-        - bearerAuth: []
-        - OAuth2:
-            - interaction:read
-      parameters:
-        - name: interactionId
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Suggested prompt improvements.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/PromptImprovementResponse"
-        "500":
-          description: Internal server error.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-              example:
-                error: Internal Server Error
-                status: 500
-                message: Internal server error.
-        4XX:
-          description: Client error.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-              example:
-                error: Bad Request
-                status: 400
-                message: Request validation failed.
-      x-vertesia-permissions:
-        - interaction:read
-      x-vertesia-source:
-        file: ../../apps/studio-server/src/api/interactions.ts
-        className: InteractionResource
-        methodName: suggestPromptImprovements
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ImprovePromptPayloadConfig"
     parameters:
       - name: x-api-version
         in: header
