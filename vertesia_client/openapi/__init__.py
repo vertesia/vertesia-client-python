@@ -446,6 +446,7 @@ __all__ = [
     "CreateTablesPayload",
     "CreateTaskPayload",
     "CreateUserGroupPayload",
+    "CreateUserPayload",
     "CreateViewExperienceRequest",
     "CreateWorkflowRulePayload",
     "DSLActivityOptions",
@@ -1703,6 +1704,7 @@ from vertesia_client.openapi.models.create_table_payload import CreateTablePaylo
 from vertesia_client.openapi.models.create_tables_payload import CreateTablesPayload as CreateTablesPayload
 from vertesia_client.openapi.models.create_task_payload import CreateTaskPayload as CreateTaskPayload
 from vertesia_client.openapi.models.create_user_group_payload import CreateUserGroupPayload as CreateUserGroupPayload
+from vertesia_client.openapi.models.create_user_payload import CreateUserPayload as CreateUserPayload
 from vertesia_client.openapi.models.create_view_experience_request import CreateViewExperienceRequest as CreateViewExperienceRequest
 from vertesia_client.openapi.models.create_workflow_rule_payload import CreateWorkflowRulePayload as CreateWorkflowRulePayload
 from vertesia_client.openapi.models.dsl_activity_options import DSLActivityOptions as DSLActivityOptions

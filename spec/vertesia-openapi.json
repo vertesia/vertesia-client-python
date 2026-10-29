@@ -14326,6 +14326,53 @@
         ],
         "additionalProperties": false
       },
+      "CreateUserPayload": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "language": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "properties": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Custom properties for dynamic permission matching"
+          },
+          "clearance": {
+            "type": "number",
+            "description": "BLP clearance level — determines max document sensitivity the user can access"
+          },
+          "compartments": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Compartments the user belongs to — restricts access to documents in matching compartments"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "The address the user signs in with. Matched case-insensitively against existing users, so repeating a request returns the same user."
+          },
+          "groups": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "IDs of groups of the current account to add the user to."
+          }
+        },
+        "required": [
+          "email"
+        ],
+        "additionalProperties": false,
+        "description": "Adds a user to the current account. When no user has this address, the user is created and can sign in through the account's identity providers. When one exists, it is added to the account and its profile is left unchanged. Authorization attributes (`properties`, `clearance`, `compartments`) apply to every account the user belongs to, so they are refused for a user who also belongs to another account: assign groups instead."
+      },
       "CreateViewExperienceRequest": {
         "type": "object",
         "properties": {
@@ -54954,6 +55001,119 @@
           "file": "../../apps/studio-server/src/api/iam/groups.ts",
           "className": "UserGroupResource",
           "methodName": "removeMember"
+        }
+      },
+      "parameters": [
+        {
+          "name": "x-api-version",
+          "in": "header",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S",
+            "example": "20260803"
+          },
+          "description": "Required Vertesia API version header. Use `20260803` for the current stable API shape.",
+          "x-vertesia-global-header": true
+        }
+      ]
+    },
+    "/iam/users": {
+      "post": {
+        "operationId": "CreateUser",
+        "tags": [
+          "Users"
+        ],
+        "summary": "Add a user to the current account",
+        "description": "Adds a user to the current account with the member role, without sending an invitation. When no user has the address, one is created; it can sign in through the account's identity providers. When one exists, it is added to the account and its profile is left unchanged. Project roles are granted separately, through access control entries. Requires an account administrator or a SCIM provisioning API key.\n\n**Required permissions:** Any of `account:admin`, `account:user:manage`",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OAuth2": [
+              "account:admin"
+            ]
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "An existing user with this address, now a member of the account.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "The created user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The address is reserved, or belongs to a user another account provisioned."
+          },
+          "409": {
+            "description": "Authorization attributes were given for a user who also belongs to another account, or the address matches more than one user."
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [
+          "account:admin",
+          "account:user:manage"
+        ],
+        "x-vertesia-source": {
+          "file": "../../apps/studio-server/src/api/iam/users.ts",
+          "className": "UsersResource",
+          "methodName": "createUser"
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserPayload"
+              }
+            }
+          }
         }
       },
       "parameters": [

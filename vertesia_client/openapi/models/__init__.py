@@ -384,6 +384,7 @@ from vertesia_client.openapi.models.create_table_payload import CreateTablePaylo
 from vertesia_client.openapi.models.create_tables_payload import CreateTablesPayload
 from vertesia_client.openapi.models.create_task_payload import CreateTaskPayload
 from vertesia_client.openapi.models.create_user_group_payload import CreateUserGroupPayload
+from vertesia_client.openapi.models.create_user_payload import CreateUserPayload
 from vertesia_client.openapi.models.create_view_experience_request import CreateViewExperienceRequest
 from vertesia_client.openapi.models.create_workflow_rule_payload import CreateWorkflowRulePayload
 from vertesia_client.openapi.models.dsl_activity_options import DSLActivityOptions
