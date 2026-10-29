@@ -43,6 +43,7 @@ class ProjectConfiguration(BaseModel):
     inference: Optional[ProjectInferenceProfiles] = None
     default_visibility: Optional[ResourceVisibility] = None
     sync_content_properties: Optional[StrictBool] = None
+    shared_content_enabled: Optional[StrictBool] = Field(default=None, description="Enable Shared Content for this project: sharing its documents and collections with other projects in the account, and browsing content they share. Defaults to false if not specified.")
     embeddings: ProjectConfigurationEmbeddings
     datacenter: Optional[StrictStr] = None
     storage_bucket: Optional[StrictStr] = None
@@ -55,7 +56,7 @@ class ProjectConfiguration(BaseModel):
     browser_use: Optional[BrowserUseProjectConfiguration] = Field(default=None, description="Project defaults and caps for browser_use agent workstreams.")
     pdf_template_object_id: Optional[StrictStr] = Field(default=None, description="Object ID of a content object containing a custom LaTeX template (.latex file) to use as the branded PDF template. When set, \"Export as Branded PDF\" uses this template instead of the built-in Vertesia default template. `null` clears it.")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["default_environment", "default_model", "human_context", "defaults", "inference", "default_visibility", "sync_content_properties", "embeddings", "datacenter", "storage_bucket", "agent_streaming_enabled", "agent", "indexing", "intake", "main_language", "oauth_clients", "browser_use", "pdf_template_object_id"]
+    __properties: ClassVar[List[str]] = ["default_environment", "default_model", "human_context", "defaults", "inference", "default_visibility", "sync_content_properties", "shared_content_enabled", "embeddings", "datacenter", "storage_bucket", "agent_streaming_enabled", "agent", "indexing", "intake", "main_language", "oauth_clients", "browser_use", "pdf_template_object_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -151,6 +152,7 @@ class ProjectConfiguration(BaseModel):
             "inference": ProjectInferenceProfiles.from_dict(obj["inference"]) if obj.get("inference") is not None else None,
             "default_visibility": obj.get("default_visibility"),
             "sync_content_properties": obj.get("sync_content_properties"),
+            "shared_content_enabled": obj.get("shared_content_enabled"),
             "embeddings": ProjectConfigurationEmbeddings.from_dict(obj["embeddings"]) if obj.get("embeddings") is not None else None,
             "datacenter": obj.get("datacenter"),
             "storage_bucket": obj.get("storage_bucket"),
