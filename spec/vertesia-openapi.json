@@ -87930,6 +87930,9 @@
               }
             }
           },
+          "404": {
+            "description": "The object_id does not name a content object the caller can read."
+          },
           "500": {
             "description": "Internal server error.",
             "content": {

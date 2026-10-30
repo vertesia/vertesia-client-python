@@ -98,6 +98,7 @@ class RenderingApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "RenderMarkdownStartResponse",
+            '404': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -171,6 +172,7 @@ class RenderingApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "RenderMarkdownStartResponse",
+            '404': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -244,6 +246,7 @@ class RenderingApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "RenderMarkdownStartResponse",
+            '404': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
