@@ -48,13 +48,14 @@ class AppInstallation(BaseModel):
     oauth_client_id: Optional[StrictStr] = None
     settings: Optional[Dict[str, Any]] = None
     tool_allowlist: Optional[List[StrictStr]] = Field(default=None, description="Admin-managed allowlist of tool names permitted for this installation. When undefined, all tools from the app are permitted. When set, only listed tool names are available for agent configuration and execution.")
+    tools_requiring_approval: Optional[List[StrictStr]] = Field(default=None, description="Admin-managed list of tool names from this installation that always require human approval before an agent runs them, regardless of the run's tool approval mode. When undefined, the default approval behavior applies.")
     oauth_bindings: Optional[List[AppInstallationOAuthBinding]] = Field(default=None, description="OAuth bindings created at install time via oauth_config provisioning. Maps collection identity (id or name) → OAuth provider ObjectId. Used by the runtime to resolve the correct OAuth provider without relying on manifest names.")
     provider_bindings: Optional[List[AppInstallationProviderBinding]] = Field(default=None, description="OAuth bindings created at install time via oauth_providers provisioning. Maps provider key → OAuth provider ObjectId. Multiple collections sharing the same provider all resolve to the same OAuth provider.")
     access_control: Optional[AppAccessControl] = Field(default=None, description="Per-installation override of the manifest's access_control policy. When set, takes precedence over the manifest value. When undefined, the manifest value (or 'all' default) applies.")
     created_at: StrictStr
     updated_at: StrictStr
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["id", "project", "instance_key", "display_name", "installation_version", "namespace_overrides", "reserved_namespaces", "namespace_conflicts", "deployment_alias", "manifest", "mcp_configuration", "oauth_approval", "oauth_client_id", "settings", "tool_allowlist", "oauth_bindings", "provider_bindings", "access_control", "created_at", "updated_at"]
+    __properties: ClassVar[List[str]] = ["id", "project", "instance_key", "display_name", "installation_version", "namespace_overrides", "reserved_namespaces", "namespace_conflicts", "deployment_alias", "manifest", "mcp_configuration", "oauth_approval", "oauth_client_id", "settings", "tool_allowlist", "tools_requiring_approval", "oauth_bindings", "provider_bindings", "access_control", "created_at", "updated_at"]
 
     @field_validator('installation_version')
     def installation_version_validate_enum(cls, value):
@@ -175,6 +176,7 @@ class AppInstallation(BaseModel):
             "oauth_client_id": obj.get("oauth_client_id"),
             "settings": obj.get("settings"),
             "tool_allowlist": obj.get("tool_allowlist"),
+            "tools_requiring_approval": obj.get("tools_requiring_approval"),
             "oauth_bindings": [AppInstallationOAuthBinding.from_dict(_item) for _item in obj["oauth_bindings"]] if obj.get("oauth_bindings") is not None else None,
             "provider_bindings": [AppInstallationProviderBinding.from_dict(_item) for _item in obj["provider_bindings"]] if obj.get("provider_bindings") is not None else None,
             "access_control": obj.get("access_control"),

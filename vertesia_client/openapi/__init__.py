@@ -1107,6 +1107,7 @@ __all__ = [
     "UpdateApiKeyPayload",
     "UpdateAppInstallationOAuthApprovalPayload",
     "UpdateAppInstallationToolAllowlistPayload",
+    "UpdateAppInstallationToolPermissionsPayload",
     "UpdateAppPayload",
     "UpdateCollectionPayload",
     "UpdateContentObjectPayload",
@@ -2357,6 +2358,7 @@ from vertesia_client.openapi.models.update_agent_artifact_content_response impor
 from vertesia_client.openapi.models.update_api_key_payload import UpdateApiKeyPayload as UpdateApiKeyPayload
 from vertesia_client.openapi.models.update_app_installation_o_auth_approval_payload import UpdateAppInstallationOAuthApprovalPayload as UpdateAppInstallationOAuthApprovalPayload
 from vertesia_client.openapi.models.update_app_installation_tool_allowlist_payload import UpdateAppInstallationToolAllowlistPayload as UpdateAppInstallationToolAllowlistPayload
+from vertesia_client.openapi.models.update_app_installation_tool_permissions_payload import UpdateAppInstallationToolPermissionsPayload as UpdateAppInstallationToolPermissionsPayload
 from vertesia_client.openapi.models.update_app_payload import UpdateAppPayload as UpdateAppPayload
 from vertesia_client.openapi.models.update_collection_payload import UpdateCollectionPayload as UpdateCollectionPayload
 from vertesia_client.openapi.models.update_content_object_payload import UpdateContentObjectPayload as UpdateContentObjectPayload

@@ -4084,6 +4084,13 @@
             },
             "description": "Admin-managed allowlist of tool names permitted for this installation. When undefined, all tools from the app are permitted. When set, only listed tool names are available for agent configuration and execution."
           },
+          "tools_requiring_approval": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Admin-managed list of tool names from this installation that always require human approval before an agent runs them, regardless of the run's tool approval mode. When undefined, the default approval behavior applies."
+          },
           "oauth_bindings": {
             "type": "array",
             "items": {
@@ -4246,6 +4253,13 @@
               "type": "string"
             },
             "description": "Admin-managed allowlist of tool names permitted for this installation. When undefined, all tools from the app are permitted. When set, only listed tool names are available for agent configuration and execution."
+          },
+          "tools_requiring_approval": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Admin-managed list of tool names from this installation that always require human approval before an agent runs them, regardless of the run's tool approval mode. When undefined, the default approval behavior applies."
           },
           "oauth_bindings": {
             "type": "array",
@@ -4583,6 +4597,13 @@
               "type": "string"
             },
             "description": "Admin-managed allowlist of tool names permitted for this installation. When undefined, all tools from the app are permitted. When set, only listed tool names are available for agent configuration and execution."
+          },
+          "tools_requiring_approval": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Admin-managed list of tool names from this installation that always require human approval before an agent runs them, regardless of the run's tool approval mode. When undefined, the default approval behavior applies."
           },
           "oauth_bindings": {
             "type": "array",
@@ -35012,6 +35033,33 @@
         ],
         "additionalProperties": false
       },
+      "UpdateAppInstallationToolPermissionsPayload": {
+        "type": "object",
+        "properties": {
+          "tool_allowlist": {
+            "type": [
+              "array",
+              "null"
+            ],
+            "items": {
+              "type": "string"
+            },
+            "description": "Tool names agents may use. Null removes the restriction; omit to leave the allowlist unchanged."
+          },
+          "tools_requiring_approval": {
+            "type": [
+              "array",
+              "null"
+            ],
+            "items": {
+              "type": "string"
+            },
+            "description": "Tool names that always require human approval before an agent runs them. Null clears the list; omit to leave it unchanged."
+          }
+        },
+        "additionalProperties": false,
+        "description": "Updates the tool allowlist and the tools requiring approval of an app installation in one atomic write."
+      },
       "UpdateAppPayload": {
         "type": "object",
         "properties": {
@@ -60440,6 +60488,111 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/UpdateAppInstallationToolAllowlistPayload"
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "x-api-version",
+          "in": "header",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S",
+            "example": "20260803"
+          },
+          "description": "Required Vertesia API version header. Use `20260803` for the current stable API shape.",
+          "x-vertesia-global-header": true
+        }
+      ]
+    },
+    "/apps/installations/{installId}/tool-permissions": {
+      "put": {
+        "operationId": "UpdateAppInstallationToolPermissions",
+        "tags": [
+          "Apps"
+        ],
+        "summary": "Update app installation tool permissions",
+        "description": "Updates the tool allowlist and the tools that always require human approval of an app installation in one atomic write. Omitted fields are left unchanged.\n\n**Required permissions:** `project:admin`",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OAuth2": [
+              "project:admin"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "installId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The updated app installation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AppInstallationWithManifest"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [
+          "project:admin"
+        ],
+        "x-vertesia-source": {
+          "file": "../../apps/studio-server/src/api/apps.ts",
+          "className": "AppsResource",
+          "methodName": "updateToolPermissions"
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAppInstallationToolPermissionsPayload"
               }
             }
           }

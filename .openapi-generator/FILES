@@ -1085,6 +1085,7 @@ vertesia_client/openapi/models/update_agent_artifact_content_response.py
 vertesia_client/openapi/models/update_api_key_payload.py
 vertesia_client/openapi/models/update_app_installation_o_auth_approval_payload.py
 vertesia_client/openapi/models/update_app_installation_tool_allowlist_payload.py
+vertesia_client/openapi/models/update_app_installation_tool_permissions_payload.py
 vertesia_client/openapi/models/update_app_payload.py
 vertesia_client/openapi/models/update_collection_payload.py
 vertesia_client/openapi/models/update_content_object_payload.py
