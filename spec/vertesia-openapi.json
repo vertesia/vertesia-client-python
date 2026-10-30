@@ -68254,6 +68254,9 @@
               }
             }
           },
+          "409": {
+            "description": "The process run has ended and can no longer receive signals."
+          },
           "500": {
             "description": "Internal server error.",
             "content": {
@@ -68359,6 +68362,9 @@
               }
             }
           },
+          "409": {
+            "description": "The process run has ended and can no longer receive signals."
+          },
           "500": {
             "description": "Internal server error.",
             "content": {
@@ -68461,6 +68467,9 @@
                 }
               }
             }
+          },
+          "409": {
+            "description": "The process run has ended and can no longer receive signals."
           },
           "500": {
             "description": "Internal server error.",
