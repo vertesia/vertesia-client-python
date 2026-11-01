@@ -34916,6 +34916,9 @@ paths:
         "400":
           description: A prompt segment references a prompt template that is not in the
             project.
+        "409":
+          description: The endpoint derived from the name is already used by another
+            interaction in the project.
         "500":
           description: Internal server error.
           content:
@@ -35620,7 +35623,9 @@ paths:
           description: A prompt segment references a prompt template that is not in the
             project.
         "409":
-          description: The interaction was changed after the caller read it.
+          description: The interaction was changed after the caller read it, or the
+            requested endpoint is already used by another interaction in the
+            project.
         "500":
           description: Internal server error.
           content:
@@ -35936,6 +35941,10 @@ paths:
       description: >-
         Creates a draft copy of an interaction, optionally for another
         accessible project and with prompt templates forked alongside it.
+        Without `newName`, a fork into another project keeps the source name;
+        otherwise, or when that endpoint is taken, it gets the first of `<name>
+        (fork)`, `<name> (fork 2)`, ... whose endpoint is free in the target
+        project.
 
 
         **Required permissions:** `interaction:write`
@@ -35956,6 +35965,9 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Interaction"
+        "409":
+          description: The endpoint derived from `newName` is already used in the target
+            project.
         "500":
           description: Internal server error.
           content:

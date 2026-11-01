@@ -45880,6 +45880,9 @@
           "400": {
             "description": "A prompt segment references a prompt template that is not in the project."
           },
+          "409": {
+            "description": "The endpoint derived from the name is already used by another interaction in the project."
+          },
           "500": {
             "description": "Internal server error.",
             "content": {
@@ -46890,7 +46893,7 @@
             "description": "A prompt segment references a prompt template that is not in the project."
           },
           "409": {
-            "description": "The interaction was changed after the caller read it."
+            "description": "The interaction was changed after the caller read it, or the requested endpoint is already used by another interaction in the project."
           },
           "500": {
             "description": "Internal server error.",
@@ -47341,7 +47344,7 @@
           "Interactions"
         ],
         "summary": "Fork an interaction",
-        "description": "Creates a draft copy of an interaction, optionally for another accessible project and with prompt templates forked alongside it.\n\n**Required permissions:** `interaction:write`",
+        "description": "Creates a draft copy of an interaction, optionally for another accessible project and with prompt templates forked alongside it. Without `newName`, a fork into another project keeps the source name; otherwise, or when that endpoint is taken, it gets the first of `<name> (fork)`, `<name> (fork 2)`, ... whose endpoint is free in the target project.\n\n**Required permissions:** `interaction:write`",
         "security": [
           {
             "bearerAuth": []
@@ -47372,6 +47375,9 @@
                 }
               }
             }
+          },
+          "409": {
+            "description": "The endpoint derived from `newName` is already used in the target project."
           },
           "500": {
             "description": "Internal server error.",

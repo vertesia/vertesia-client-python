@@ -421,6 +421,7 @@ class InteractionsApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "Interaction",
             '400': None,
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -495,6 +496,7 @@ class InteractionsApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "Interaction",
             '400': None,
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -569,6 +571,7 @@ class InteractionsApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "Interaction",
             '400': None,
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -2823,7 +2826,7 @@ class InteractionsApi:
     ) -> Interaction:
         """Fork an interaction
 
-        Creates a draft copy of an interaction, optionally for another accessible project and with prompt templates forked alongside it.  **Required permissions:** `interaction:write`
+        Creates a draft copy of an interaction, optionally for another accessible project and with prompt templates forked alongside it. Without `newName`, a fork into another project keeps the source name; otherwise, or when that endpoint is taken, it gets the first of `<name> (fork)`, `<name> (fork 2)`, ... whose endpoint is free in the target project.  **Required permissions:** `interaction:write`
 
         :param interaction_id: (required)
         :type interaction_id: str
@@ -2865,6 +2868,7 @@ class InteractionsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "Interaction",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -2900,7 +2904,7 @@ class InteractionsApi:
     ) -> ApiResponse[Interaction]:
         """Fork an interaction
 
-        Creates a draft copy of an interaction, optionally for another accessible project and with prompt templates forked alongside it.  **Required permissions:** `interaction:write`
+        Creates a draft copy of an interaction, optionally for another accessible project and with prompt templates forked alongside it. Without `newName`, a fork into another project keeps the source name; otherwise, or when that endpoint is taken, it gets the first of `<name> (fork)`, `<name> (fork 2)`, ... whose endpoint is free in the target project.  **Required permissions:** `interaction:write`
 
         :param interaction_id: (required)
         :type interaction_id: str
@@ -2942,6 +2946,7 @@ class InteractionsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "Interaction",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -2977,7 +2982,7 @@ class InteractionsApi:
     ) -> RESTResponseType:
         """Fork an interaction
 
-        Creates a draft copy of an interaction, optionally for another accessible project and with prompt templates forked alongside it.  **Required permissions:** `interaction:write`
+        Creates a draft copy of an interaction, optionally for another accessible project and with prompt templates forked alongside it. Without `newName`, a fork into another project keeps the source name; otherwise, or when that endpoint is taken, it gets the first of `<name> (fork)`, `<name> (fork 2)`, ... whose endpoint is free in the target project.  **Required permissions:** `interaction:write`
 
         :param interaction_id: (required)
         :type interaction_id: str
@@ -3019,6 +3024,7 @@ class InteractionsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "Interaction",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
