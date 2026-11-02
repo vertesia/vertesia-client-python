@@ -231,6 +231,8 @@ vertesia_client/openapi/models/audit_adoption_period.py
 vertesia_client/openapi/models/audit_adoption_project.py
 vertesia_client/openapi/models/audit_adoption_query.py
 vertesia_client/openapi/models/audit_adoption_response.py
+vertesia_client/openapi/models/audit_aggregation_batch_query.py
+vertesia_client/openapi/models/audit_aggregation_batch_response.py
 vertesia_client/openapi/models/audit_aggregation_detail_field.py
 vertesia_client/openapi/models/audit_aggregation_detail_filter.py
 vertesia_client/openapi/models/audit_aggregation_dimension.py

@@ -253,6 +253,8 @@ __all__ = [
     "AuditAdoptionProject",
     "AuditAdoptionQuery",
     "AuditAdoptionResponse",
+    "AuditAggregationBatchQuery",
+    "AuditAggregationBatchResponse",
     "AuditAggregationDetailField",
     "AuditAggregationDetailFilter",
     "AuditAggregationDimension",
@@ -1511,6 +1513,8 @@ from vertesia_client.openapi.models.audit_adoption_period import AuditAdoptionPe
 from vertesia_client.openapi.models.audit_adoption_project import AuditAdoptionProject as AuditAdoptionProject
 from vertesia_client.openapi.models.audit_adoption_query import AuditAdoptionQuery as AuditAdoptionQuery
 from vertesia_client.openapi.models.audit_adoption_response import AuditAdoptionResponse as AuditAdoptionResponse
+from vertesia_client.openapi.models.audit_aggregation_batch_query import AuditAggregationBatchQuery as AuditAggregationBatchQuery
+from vertesia_client.openapi.models.audit_aggregation_batch_response import AuditAggregationBatchResponse as AuditAggregationBatchResponse
 from vertesia_client.openapi.models.audit_aggregation_detail_field import AuditAggregationDetailField as AuditAggregationDetailField
 from vertesia_client.openapi.models.audit_aggregation_detail_filter import AuditAggregationDetailFilter as AuditAggregationDetailFilter
 from vertesia_client.openapi.models.audit_aggregation_dimension import AuditAggregationDimension as AuditAggregationDimension

@@ -6964,6 +6964,41 @@
         "additionalProperties": false,
         "description": "Distinct user adoption sets over two equal-duration half-open periods. Ratios use available audit history, not guaranteed historical coverage. No user identities are returned."
       },
+      "AuditAggregationBatchQuery": {
+        "type": "object",
+        "properties": {
+          "queries": {
+            "minItems": 1,
+            "maxItems": 12,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AuditAggregationQuery"
+            },
+            "description": "The aggregations to run, at most 12. Each one has the same semantics as a single aggregation request."
+          }
+        },
+        "required": [
+          "queries"
+        ],
+        "additionalProperties": false,
+        "description": "Several audit aggregation queries answered by one request. The server may compute queries that share a scope, time range and filter in a single pass over the audit events."
+      },
+      "AuditAggregationBatchResponse": {
+        "type": "object",
+        "properties": {
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AuditAggregationResponse"
+            },
+            "description": "One result per query, in the order of the request. Each equals the single aggregation result."
+          }
+        },
+        "required": [
+          "results"
+        ],
+        "additionalProperties": false
+      },
       "AuditAggregationDetailField": {
         "type": "string",
         "enum": [
@@ -53065,6 +53100,114 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/AuditAggregationQuery"
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "x-api-version",
+          "in": "header",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S",
+            "example": "20260803"
+          },
+          "description": "Required Vertesia API version header. Use `20260803` for the current stable API shape.",
+          "x-vertesia-global-header": true
+        }
+      ]
+    },
+    "/audit-trail/aggregate/batch": {
+      "post": {
+        "operationId": "AggregateAuditTrailEventsBatch",
+        "tags": [
+          "Audit Trail"
+        ],
+        "summary": "Run several audit trail aggregations",
+        "description": "Runs up to 12 aggregations in one request. Each result equals the result of the same query sent to the single aggregation endpoint, and results come back in request order. Queries that share a scope, time range and filter are computed in one pass over the audit events. Account and project scope are enforced from the authenticated request context, per query.\n\n**Required permissions:** Any of `project:admin`, `account:admin`, `audit:read`",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OAuth2": [
+              "project:admin"
+            ]
+          },
+          {
+            "OAuth2": [
+              "account:admin"
+            ]
+          },
+          {
+            "OAuth2": [
+              "audit:read"
+            ]
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "One aggregation result per query, in order.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuditAggregationBatchResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [
+          "project:admin",
+          "account:admin",
+          "audit:read"
+        ],
+        "x-vertesia-source": {
+          "file": "../../apps/studio-server/src/api/audit-trail.ts",
+          "className": "AuditTrailResource",
+          "methodName": "aggregateEventsBatch"
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuditAggregationBatchQuery"
               }
             }
           }
