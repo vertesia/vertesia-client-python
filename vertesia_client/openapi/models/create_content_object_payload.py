@@ -35,7 +35,7 @@ from pydantic_core import to_jsonable_python
 
 class CreateContentObjectPayload(BaseModel):
     """
-    When creating from an uploaded file the content should be an URL to the uploaded file
+    When creating from an uploaded file the content should be an URL to the uploaded file. `name` is required unless `content.name` or `content.source` is given; it then defaults to the content file name.
     """ # noqa: E501
     text: Optional[StrictStr] = None
     text_etag: Optional[StrictStr] = None

@@ -15,7 +15,7 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
+from pydantic import Field, StrictBool, StrictStr, field_validator
 from typing import Optional, Union
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.bulk_revoke_o_auth_grants_payload import BulkRevokeOAuthGrantsPayload
@@ -630,8 +630,8 @@ class OAuthGrantsApi:
         client_id: Optional[StrictStr] = None,
         resource: Optional[StrictStr] = None,
         status: Optional[StrictStr] = None,
-        limit: Optional[Union[StrictFloat, StrictInt]] = None,
-        offset: Optional[Union[StrictFloat, StrictInt]] = None,
+        limit: Optional[Union[Annotated[float, Field(strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None,
+        offset: Optional[Union[Annotated[float, Field(strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None,
         sort_by: Optional[StrictStr] = None,
         sort_order: Optional[StrictStr] = None,
         _request_timeout: Union[
@@ -739,8 +739,8 @@ class OAuthGrantsApi:
         client_id: Optional[StrictStr] = None,
         resource: Optional[StrictStr] = None,
         status: Optional[StrictStr] = None,
-        limit: Optional[Union[StrictFloat, StrictInt]] = None,
-        offset: Optional[Union[StrictFloat, StrictInt]] = None,
+        limit: Optional[Union[Annotated[float, Field(strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None,
+        offset: Optional[Union[Annotated[float, Field(strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None,
         sort_by: Optional[StrictStr] = None,
         sort_order: Optional[StrictStr] = None,
         _request_timeout: Union[
@@ -848,8 +848,8 @@ class OAuthGrantsApi:
         client_id: Optional[StrictStr] = None,
         resource: Optional[StrictStr] = None,
         status: Optional[StrictStr] = None,
-        limit: Optional[Union[StrictFloat, StrictInt]] = None,
-        offset: Optional[Union[StrictFloat, StrictInt]] = None,
+        limit: Optional[Union[Annotated[float, Field(strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None,
+        offset: Optional[Union[Annotated[float, Field(strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None,
         sort_by: Optional[StrictStr] = None,
         sort_order: Optional[StrictStr] = None,
         _request_timeout: Union[

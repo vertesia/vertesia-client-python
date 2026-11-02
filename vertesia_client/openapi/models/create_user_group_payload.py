@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -27,7 +28,7 @@ class CreateUserGroupPayload(BaseModel):
     """
     CreateUserGroupPayload
     """ # noqa: E501
-    name: StrictStr
+    name: Annotated[str, Field(min_length=1, strict=True)]
     description: Optional[StrictStr] = None
     tags: Optional[List[StrictStr]] = None
     allowed_projects: Optional[List[StrictStr]] = Field(default=None, description="Restrict the new group to the given projects (empty/absent = org-wide).")

@@ -52,8 +52,8 @@ class ProcessesApi:
     @validate_call
     def cancel_process_test_run(
         self,
-        process_id: StrictStr,
-        run_id: StrictStr,
+        process_id: Annotated[str, Field(strict=True, description="The process definition ID, as 24 hexadecimal characters.")],
+        run_id: Annotated[str, Field(strict=True, description="The process test run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -72,9 +72,9 @@ class ProcessesApi:
 
         **Required permissions:** `workflow:run`
 
-        :param process_id: (required)
+        :param process_id: The process definition ID, as 24 hexadecimal characters. (required)
         :type process_id: str
-        :param run_id: (required)
+        :param run_id: The process test run ID, as 24 hexadecimal characters. (required)
         :type run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -129,8 +129,8 @@ class ProcessesApi:
     @validate_call
     def cancel_process_test_run_with_http_info(
         self,
-        process_id: StrictStr,
-        run_id: StrictStr,
+        process_id: Annotated[str, Field(strict=True, description="The process definition ID, as 24 hexadecimal characters.")],
+        run_id: Annotated[str, Field(strict=True, description="The process test run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -149,9 +149,9 @@ class ProcessesApi:
 
         **Required permissions:** `workflow:run`
 
-        :param process_id: (required)
+        :param process_id: The process definition ID, as 24 hexadecimal characters. (required)
         :type process_id: str
-        :param run_id: (required)
+        :param run_id: The process test run ID, as 24 hexadecimal characters. (required)
         :type run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -206,8 +206,8 @@ class ProcessesApi:
     @validate_call
     def cancel_process_test_run_without_preload_content(
         self,
-        process_id: StrictStr,
-        run_id: StrictStr,
+        process_id: Annotated[str, Field(strict=True, description="The process definition ID, as 24 hexadecimal characters.")],
+        run_id: Annotated[str, Field(strict=True, description="The process test run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -226,9 +226,9 @@ class ProcessesApi:
 
         **Required permissions:** `workflow:run`
 
-        :param process_id: (required)
+        :param process_id: The process definition ID, as 24 hexadecimal characters. (required)
         :type process_id: str
-        :param run_id: (required)
+        :param run_id: The process test run ID, as 24 hexadecimal characters. (required)
         :type run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -350,7 +350,7 @@ class ProcessesApi:
     @validate_call
     def cancel_process_test_run_by_id(
         self,
-        run_id: StrictStr,
+        run_id: Annotated[str, Field(strict=True, description="The process test run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -369,7 +369,7 @@ class ProcessesApi:
 
         **Required permissions:** `workflow:run`
 
-        :param run_id: (required)
+        :param run_id: The process test run ID, as 24 hexadecimal characters. (required)
         :type run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -423,7 +423,7 @@ class ProcessesApi:
     @validate_call
     def cancel_process_test_run_by_id_with_http_info(
         self,
-        run_id: StrictStr,
+        run_id: Annotated[str, Field(strict=True, description="The process test run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -442,7 +442,7 @@ class ProcessesApi:
 
         **Required permissions:** `workflow:run`
 
-        :param run_id: (required)
+        :param run_id: The process test run ID, as 24 hexadecimal characters. (required)
         :type run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -496,7 +496,7 @@ class ProcessesApi:
     @validate_call
     def cancel_process_test_run_by_id_without_preload_content(
         self,
-        run_id: StrictStr,
+        run_id: Annotated[str, Field(strict=True, description="The process test run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -515,7 +515,7 @@ class ProcessesApi:
 
         **Required permissions:** `workflow:run`
 
-        :param run_id: (required)
+        :param run_id: The process test run ID, as 24 hexadecimal characters. (required)
         :type run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -929,7 +929,7 @@ class ProcessesApi:
     @validate_call
     def create_process_test_suite(
         self,
-        process_id: StrictStr,
+        process_id: Annotated[str, Field(strict=True, description="The process definition ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_process_test_suite_payload: CreateProcessTestSuitePayload,
         _request_timeout: Union[
@@ -949,7 +949,7 @@ class ProcessesApi:
 
         **Required permissions:** `workflow:admin`
 
-        :param process_id: (required)
+        :param process_id: The process definition ID, as 24 hexadecimal characters. (required)
         :type process_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1006,7 +1006,7 @@ class ProcessesApi:
     @validate_call
     def create_process_test_suite_with_http_info(
         self,
-        process_id: StrictStr,
+        process_id: Annotated[str, Field(strict=True, description="The process definition ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_process_test_suite_payload: CreateProcessTestSuitePayload,
         _request_timeout: Union[
@@ -1026,7 +1026,7 @@ class ProcessesApi:
 
         **Required permissions:** `workflow:admin`
 
-        :param process_id: (required)
+        :param process_id: The process definition ID, as 24 hexadecimal characters. (required)
         :type process_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1083,7 +1083,7 @@ class ProcessesApi:
     @validate_call
     def create_process_test_suite_without_preload_content(
         self,
-        process_id: StrictStr,
+        process_id: Annotated[str, Field(strict=True, description="The process definition ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_process_test_suite_payload: CreateProcessTestSuitePayload,
         _request_timeout: Union[
@@ -1103,7 +1103,7 @@ class ProcessesApi:
 
         **Required permissions:** `workflow:admin`
 
-        :param process_id: (required)
+        :param process_id: The process definition ID, as 24 hexadecimal characters. (required)
         :type process_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1240,7 +1240,7 @@ class ProcessesApi:
     @validate_call
     def delete_process_definition(
         self,
-        process_id: StrictStr,
+        process_id: Annotated[str, Field(strict=True, description="The process definition ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -1259,7 +1259,7 @@ class ProcessesApi:
 
         Deletes a process definition revision by id.  **Required permissions:** `workflow:admin`
 
-        :param process_id: (required)
+        :param process_id: The process definition ID, as 24 hexadecimal characters. (required)
         :type process_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1313,7 +1313,7 @@ class ProcessesApi:
     @validate_call
     def delete_process_definition_with_http_info(
         self,
-        process_id: StrictStr,
+        process_id: Annotated[str, Field(strict=True, description="The process definition ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -1332,7 +1332,7 @@ class ProcessesApi:
 
         Deletes a process definition revision by id.  **Required permissions:** `workflow:admin`
 
-        :param process_id: (required)
+        :param process_id: The process definition ID, as 24 hexadecimal characters. (required)
         :type process_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1386,7 +1386,7 @@ class ProcessesApi:
     @validate_call
     def delete_process_definition_without_preload_content(
         self,
-        process_id: StrictStr,
+        process_id: Annotated[str, Field(strict=True, description="The process definition ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -1405,7 +1405,7 @@ class ProcessesApi:
 
         Deletes a process definition revision by id.  **Required permissions:** `workflow:admin`
 
-        :param process_id: (required)
+        :param process_id: The process definition ID, as 24 hexadecimal characters. (required)
         :type process_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1523,7 +1523,7 @@ class ProcessesApi:
     @validate_call
     def delete_process_test_run(
         self,
-        run_id: StrictStr,
+        run_id: Annotated[str, Field(strict=True, description="The process test run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -1542,7 +1542,7 @@ class ProcessesApi:
 
         Deletes a process test run and its definition snapshot. A run that is still active is cancelled first. Test runs are disposable diagnostic records; this is how a CI client or a test fixture cleans up after itself.  **Required permissions:** `workflow:admin`
 
-        :param run_id: (required)
+        :param run_id: The process test run ID, as 24 hexadecimal characters. (required)
         :type run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1596,7 +1596,7 @@ class ProcessesApi:
     @validate_call
     def delete_process_test_run_with_http_info(
         self,
-        run_id: StrictStr,
+        run_id: Annotated[str, Field(strict=True, description="The process test run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -1615,7 +1615,7 @@ class ProcessesApi:
 
         Deletes a process test run and its definition snapshot. A run that is still active is cancelled first. Test runs are disposable diagnostic records; this is how a CI client or a test fixture cleans up after itself.  **Required permissions:** `workflow:admin`
 
-        :param run_id: (required)
+        :param run_id: The process test run ID, as 24 hexadecimal characters. (required)
         :type run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1669,7 +1669,7 @@ class ProcessesApi:
     @validate_call
     def delete_process_test_run_without_preload_content(
         self,
-        run_id: StrictStr,
+        run_id: Annotated[str, Field(strict=True, description="The process test run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -1688,7 +1688,7 @@ class ProcessesApi:
 
         Deletes a process test run and its definition snapshot. A run that is still active is cancelled first. Test runs are disposable diagnostic records; this is how a CI client or a test fixture cleans up after itself.  **Required permissions:** `workflow:admin`
 
-        :param run_id: (required)
+        :param run_id: The process test run ID, as 24 hexadecimal characters. (required)
         :type run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1806,8 +1806,8 @@ class ProcessesApi:
     @validate_call
     def delete_process_test_suite(
         self,
-        process_id: StrictStr,
-        suite_id: StrictStr,
+        process_id: Annotated[str, Field(strict=True, description="The process definition ID, as 24 hexadecimal characters.")],
+        suite_id: Annotated[str, Field(strict=True, description="The process test suite ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -1826,9 +1826,9 @@ class ProcessesApi:
 
         **Required permissions:** `workflow:admin`
 
-        :param process_id: (required)
+        :param process_id: The process definition ID, as 24 hexadecimal characters. (required)
         :type process_id: str
-        :param suite_id: (required)
+        :param suite_id: The process test suite ID, as 24 hexadecimal characters. (required)
         :type suite_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1883,8 +1883,8 @@ class ProcessesApi:
     @validate_call
     def delete_process_test_suite_with_http_info(
         self,
-        process_id: StrictStr,
-        suite_id: StrictStr,
+        process_id: Annotated[str, Field(strict=True, description="The process definition ID, as 24 hexadecimal characters.")],
+        suite_id: Annotated[str, Field(strict=True, description="The process test suite ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -1903,9 +1903,9 @@ class ProcessesApi:
 
         **Required permissions:** `workflow:admin`
 
-        :param process_id: (required)
+        :param process_id: The process definition ID, as 24 hexadecimal characters. (required)
         :type process_id: str
-        :param suite_id: (required)
+        :param suite_id: The process test suite ID, as 24 hexadecimal characters. (required)
         :type suite_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1960,8 +1960,8 @@ class ProcessesApi:
     @validate_call
     def delete_process_test_suite_without_preload_content(
         self,
-        process_id: StrictStr,
-        suite_id: StrictStr,
+        process_id: Annotated[str, Field(strict=True, description="The process definition ID, as 24 hexadecimal characters.")],
+        suite_id: Annotated[str, Field(strict=True, description="The process test suite ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -1980,9 +1980,9 @@ class ProcessesApi:
 
         **Required permissions:** `workflow:admin`
 
-        :param process_id: (required)
+        :param process_id: The process definition ID, as 24 hexadecimal characters. (required)
         :type process_id: str
-        :param suite_id: (required)
+        :param suite_id: The process test suite ID, as 24 hexadecimal characters. (required)
         :type suite_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -2104,7 +2104,7 @@ class ProcessesApi:
     @validate_call
     def get_process_definition(
         self,
-        process_id: StrictStr,
+        process_id: Annotated[str, Field(strict=True, description="The process definition ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -2123,7 +2123,7 @@ class ProcessesApi:
 
         Retrieves a process definition by id.  **Required permissions:** Any of `workflow:read`, `workflow:run`
 
-        :param process_id: (required)
+        :param process_id: The process definition ID, as 24 hexadecimal characters. (required)
         :type process_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -2177,7 +2177,7 @@ class ProcessesApi:
     @validate_call
     def get_process_definition_with_http_info(
         self,
-        process_id: StrictStr,
+        process_id: Annotated[str, Field(strict=True, description="The process definition ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -2196,7 +2196,7 @@ class ProcessesApi:
 
         Retrieves a process definition by id.  **Required permissions:** Any of `workflow:read`, `workflow:run`
 
-        :param process_id: (required)
+        :param process_id: The process definition ID, as 24 hexadecimal characters. (required)
         :type process_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -2250,7 +2250,7 @@ class ProcessesApi:
     @validate_call
     def get_process_definition_without_preload_content(
         self,
-        process_id: StrictStr,
+        process_id: Annotated[str, Field(strict=True, description="The process definition ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -2269,7 +2269,7 @@ class ProcessesApi:
 
         Retrieves a process definition by id.  **Required permissions:** Any of `workflow:read`, `workflow:run`
 
-        :param process_id: (required)
+        :param process_id: The process definition ID, as 24 hexadecimal characters. (required)
         :type process_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -2387,8 +2387,8 @@ class ProcessesApi:
     @validate_call
     def get_process_test_run(
         self,
-        process_id: StrictStr,
-        run_id: StrictStr,
+        process_id: Annotated[str, Field(strict=True, description="The process definition ID, as 24 hexadecimal characters.")],
+        run_id: Annotated[str, Field(strict=True, description="The process test run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -2407,9 +2407,9 @@ class ProcessesApi:
 
         **Required permissions:** Any of `workflow:read`, `workflow:run`
 
-        :param process_id: (required)
+        :param process_id: The process definition ID, as 24 hexadecimal characters. (required)
         :type process_id: str
-        :param run_id: (required)
+        :param run_id: The process test run ID, as 24 hexadecimal characters. (required)
         :type run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -2464,8 +2464,8 @@ class ProcessesApi:
     @validate_call
     def get_process_test_run_with_http_info(
         self,
-        process_id: StrictStr,
-        run_id: StrictStr,
+        process_id: Annotated[str, Field(strict=True, description="The process definition ID, as 24 hexadecimal characters.")],
+        run_id: Annotated[str, Field(strict=True, description="The process test run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -2484,9 +2484,9 @@ class ProcessesApi:
 
         **Required permissions:** Any of `workflow:read`, `workflow:run`
 
-        :param process_id: (required)
+        :param process_id: The process definition ID, as 24 hexadecimal characters. (required)
         :type process_id: str
-        :param run_id: (required)
+        :param run_id: The process test run ID, as 24 hexadecimal characters. (required)
         :type run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -2541,8 +2541,8 @@ class ProcessesApi:
     @validate_call
     def get_process_test_run_without_preload_content(
         self,
-        process_id: StrictStr,
-        run_id: StrictStr,
+        process_id: Annotated[str, Field(strict=True, description="The process definition ID, as 24 hexadecimal characters.")],
+        run_id: Annotated[str, Field(strict=True, description="The process test run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -2561,9 +2561,9 @@ class ProcessesApi:
 
         **Required permissions:** Any of `workflow:read`, `workflow:run`
 
-        :param process_id: (required)
+        :param process_id: The process definition ID, as 24 hexadecimal characters. (required)
         :type process_id: str
-        :param run_id: (required)
+        :param run_id: The process test run ID, as 24 hexadecimal characters. (required)
         :type run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -2685,7 +2685,7 @@ class ProcessesApi:
     @validate_call
     def get_process_test_run_by_id(
         self,
-        run_id: StrictStr,
+        run_id: Annotated[str, Field(strict=True, description="The process test run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -2704,7 +2704,7 @@ class ProcessesApi:
 
         Retrieves any process test run by its own id, whatever it was started against. Runs against a stored process report staleness against the current head revision; runs against an in-code or inline definition are never stale, since no later revision exists to drift from.  **Required permissions:** Any of `workflow:read`, `workflow:run`
 
-        :param run_id: (required)
+        :param run_id: The process test run ID, as 24 hexadecimal characters. (required)
         :type run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -2758,7 +2758,7 @@ class ProcessesApi:
     @validate_call
     def get_process_test_run_by_id_with_http_info(
         self,
-        run_id: StrictStr,
+        run_id: Annotated[str, Field(strict=True, description="The process test run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -2777,7 +2777,7 @@ class ProcessesApi:
 
         Retrieves any process test run by its own id, whatever it was started against. Runs against a stored process report staleness against the current head revision; runs against an in-code or inline definition are never stale, since no later revision exists to drift from.  **Required permissions:** Any of `workflow:read`, `workflow:run`
 
-        :param run_id: (required)
+        :param run_id: The process test run ID, as 24 hexadecimal characters. (required)
         :type run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -2831,7 +2831,7 @@ class ProcessesApi:
     @validate_call
     def get_process_test_run_by_id_without_preload_content(
         self,
-        run_id: StrictStr,
+        run_id: Annotated[str, Field(strict=True, description="The process test run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -2850,7 +2850,7 @@ class ProcessesApi:
 
         Retrieves any process test run by its own id, whatever it was started against. Runs against a stored process report staleness against the current head revision; runs against an in-code or inline definition are never stale, since no later revision exists to drift from.  **Required permissions:** Any of `workflow:read`, `workflow:run`
 
-        :param run_id: (required)
+        :param run_id: The process test run ID, as 24 hexadecimal characters. (required)
         :type run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -2968,7 +2968,7 @@ class ProcessesApi:
     @validate_call
     def list_process_definition_versions(
         self,
-        process_id: StrictStr,
+        process_id: Annotated[str, Field(strict=True, description="The process definition ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -2987,7 +2987,7 @@ class ProcessesApi:
 
         Lists all revisions for the process definition revision bucket containing the requested process id.  **Required permissions:** Any of `workflow:read`, `workflow:run`
 
-        :param process_id: (required)
+        :param process_id: The process definition ID, as 24 hexadecimal characters. (required)
         :type process_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -3041,7 +3041,7 @@ class ProcessesApi:
     @validate_call
     def list_process_definition_versions_with_http_info(
         self,
-        process_id: StrictStr,
+        process_id: Annotated[str, Field(strict=True, description="The process definition ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -3060,7 +3060,7 @@ class ProcessesApi:
 
         Lists all revisions for the process definition revision bucket containing the requested process id.  **Required permissions:** Any of `workflow:read`, `workflow:run`
 
-        :param process_id: (required)
+        :param process_id: The process definition ID, as 24 hexadecimal characters. (required)
         :type process_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -3114,7 +3114,7 @@ class ProcessesApi:
     @validate_call
     def list_process_definition_versions_without_preload_content(
         self,
-        process_id: StrictStr,
+        process_id: Annotated[str, Field(strict=True, description="The process definition ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -3133,7 +3133,7 @@ class ProcessesApi:
 
         Lists all revisions for the process definition revision bucket containing the requested process id.  **Required permissions:** Any of `workflow:read`, `workflow:run`
 
-        :param process_id: (required)
+        :param process_id: The process definition ID, as 24 hexadecimal characters. (required)
         :type process_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -3604,7 +3604,7 @@ class ProcessesApi:
     @validate_call
     def list_process_test_runs(
         self,
-        process_id: StrictStr,
+        process_id: Annotated[str, Field(strict=True, description="The process definition ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         limit: Optional[Annotated[int, Field(le=100, strict=True, ge=1)]] = None,
         _request_timeout: Union[
@@ -3624,7 +3624,7 @@ class ProcessesApi:
 
         **Required permissions:** Any of `workflow:read`, `workflow:run`
 
-        :param process_id: (required)
+        :param process_id: The process definition ID, as 24 hexadecimal characters. (required)
         :type process_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -3681,7 +3681,7 @@ class ProcessesApi:
     @validate_call
     def list_process_test_runs_with_http_info(
         self,
-        process_id: StrictStr,
+        process_id: Annotated[str, Field(strict=True, description="The process definition ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         limit: Optional[Annotated[int, Field(le=100, strict=True, ge=1)]] = None,
         _request_timeout: Union[
@@ -3701,7 +3701,7 @@ class ProcessesApi:
 
         **Required permissions:** Any of `workflow:read`, `workflow:run`
 
-        :param process_id: (required)
+        :param process_id: The process definition ID, as 24 hexadecimal characters. (required)
         :type process_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -3758,7 +3758,7 @@ class ProcessesApi:
     @validate_call
     def list_process_test_runs_without_preload_content(
         self,
-        process_id: StrictStr,
+        process_id: Annotated[str, Field(strict=True, description="The process definition ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         limit: Optional[Annotated[int, Field(le=100, strict=True, ge=1)]] = None,
         _request_timeout: Union[
@@ -3778,7 +3778,7 @@ class ProcessesApi:
 
         **Required permissions:** Any of `workflow:read`, `workflow:run`
 
-        :param process_id: (required)
+        :param process_id: The process definition ID, as 24 hexadecimal characters. (required)
         :type process_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -3904,7 +3904,7 @@ class ProcessesApi:
     @validate_call
     def list_process_test_suites(
         self,
-        process_id: StrictStr,
+        process_id: Annotated[str, Field(strict=True, description="The process definition ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -3923,7 +3923,7 @@ class ProcessesApi:
 
         Lists deterministic test suites attached to this process revision family.  **Required permissions:** Any of `workflow:read`, `workflow:run`
 
-        :param process_id: (required)
+        :param process_id: The process definition ID, as 24 hexadecimal characters. (required)
         :type process_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -3977,7 +3977,7 @@ class ProcessesApi:
     @validate_call
     def list_process_test_suites_with_http_info(
         self,
-        process_id: StrictStr,
+        process_id: Annotated[str, Field(strict=True, description="The process definition ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -3996,7 +3996,7 @@ class ProcessesApi:
 
         Lists deterministic test suites attached to this process revision family.  **Required permissions:** Any of `workflow:read`, `workflow:run`
 
-        :param process_id: (required)
+        :param process_id: The process definition ID, as 24 hexadecimal characters. (required)
         :type process_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -4050,7 +4050,7 @@ class ProcessesApi:
     @validate_call
     def list_process_test_suites_without_preload_content(
         self,
-        process_id: StrictStr,
+        process_id: Annotated[str, Field(strict=True, description="The process definition ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -4069,7 +4069,7 @@ class ProcessesApi:
 
         Lists deterministic test suites attached to this process revision family.  **Required permissions:** Any of `workflow:read`, `workflow:run`
 
-        :param process_id: (required)
+        :param process_id: The process definition ID, as 24 hexadecimal characters. (required)
         :type process_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -4187,7 +4187,7 @@ class ProcessesApi:
     @validate_call
     def publish_process_definition(
         self,
-        process_id: StrictStr,
+        process_id: Annotated[str, Field(strict=True, description="The process definition ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         publish_process_definition_payload: PublishProcessDefinitionPayload,
         _request_timeout: Union[
@@ -4207,7 +4207,7 @@ class ProcessesApi:
 
         Publishes the latest draft revision for a process definition, optionally attaching tags and a revision label. `confirmed=true` is required, and the endpoint rejects non-head or non-draft revisions. With an `idempotency_key`, a repeat of the request that published the revision returns that revision instead of being rejected.  **Required permissions:** `workflow:admin`
 
-        :param process_id: (required)
+        :param process_id: The process definition ID, as 24 hexadecimal characters. (required)
         :type process_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -4266,7 +4266,7 @@ class ProcessesApi:
     @validate_call
     def publish_process_definition_with_http_info(
         self,
-        process_id: StrictStr,
+        process_id: Annotated[str, Field(strict=True, description="The process definition ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         publish_process_definition_payload: PublishProcessDefinitionPayload,
         _request_timeout: Union[
@@ -4286,7 +4286,7 @@ class ProcessesApi:
 
         Publishes the latest draft revision for a process definition, optionally attaching tags and a revision label. `confirmed=true` is required, and the endpoint rejects non-head or non-draft revisions. With an `idempotency_key`, a repeat of the request that published the revision returns that revision instead of being rejected.  **Required permissions:** `workflow:admin`
 
-        :param process_id: (required)
+        :param process_id: The process definition ID, as 24 hexadecimal characters. (required)
         :type process_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -4345,7 +4345,7 @@ class ProcessesApi:
     @validate_call
     def publish_process_definition_without_preload_content(
         self,
-        process_id: StrictStr,
+        process_id: Annotated[str, Field(strict=True, description="The process definition ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         publish_process_definition_payload: PublishProcessDefinitionPayload,
         _request_timeout: Union[
@@ -4365,7 +4365,7 @@ class ProcessesApi:
 
         Publishes the latest draft revision for a process definition, optionally attaching tags and a revision label. `confirmed=true` is required, and the endpoint rejects non-head or non-draft revisions. With an `idempotency_key`, a repeat of the request that published the revision returns that revision instead of being rejected.  **Required permissions:** `workflow:admin`
 
-        :param process_id: (required)
+        :param process_id: The process definition ID, as 24 hexadecimal characters. (required)
         :type process_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -4504,7 +4504,7 @@ class ProcessesApi:
     @validate_call
     def revert_process_definition(
         self,
-        process_id: StrictStr,
+        process_id: Annotated[str, Field(strict=True, description="The process definition ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         revert_process_definition_payload: RevertProcessDefinitionPayload,
         _request_timeout: Union[
@@ -4524,7 +4524,7 @@ class ProcessesApi:
 
         Creates or overwrites the latest draft revision from the requested process definition revision. If the current head is already a draft it is overwritten; otherwise a new draft head is created from the selected revision.  **Required permissions:** `workflow:admin`
 
-        :param process_id: (required)
+        :param process_id: The process definition ID, as 24 hexadecimal characters. (required)
         :type process_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -4582,7 +4582,7 @@ class ProcessesApi:
     @validate_call
     def revert_process_definition_with_http_info(
         self,
-        process_id: StrictStr,
+        process_id: Annotated[str, Field(strict=True, description="The process definition ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         revert_process_definition_payload: RevertProcessDefinitionPayload,
         _request_timeout: Union[
@@ -4602,7 +4602,7 @@ class ProcessesApi:
 
         Creates or overwrites the latest draft revision from the requested process definition revision. If the current head is already a draft it is overwritten; otherwise a new draft head is created from the selected revision.  **Required permissions:** `workflow:admin`
 
-        :param process_id: (required)
+        :param process_id: The process definition ID, as 24 hexadecimal characters. (required)
         :type process_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -4660,7 +4660,7 @@ class ProcessesApi:
     @validate_call
     def revert_process_definition_without_preload_content(
         self,
-        process_id: StrictStr,
+        process_id: Annotated[str, Field(strict=True, description="The process definition ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         revert_process_definition_payload: RevertProcessDefinitionPayload,
         _request_timeout: Union[
@@ -4680,7 +4680,7 @@ class ProcessesApi:
 
         Creates or overwrites the latest draft revision from the requested process definition revision. If the current head is already a draft it is overwritten; otherwise a new draft head is created from the selected revision.  **Required permissions:** `workflow:admin`
 
-        :param process_id: (required)
+        :param process_id: The process definition ID, as 24 hexadecimal characters. (required)
         :type process_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -4818,7 +4818,7 @@ class ProcessesApi:
     @validate_call
     def start_process_test_run(
         self,
-        process_id: StrictStr,
+        process_id: Annotated[str, Field(strict=True, description="The process definition ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         start_process_test_run_payload: StartProcessTestRunPayload,
         _request_timeout: Union[
@@ -4838,7 +4838,7 @@ class ProcessesApi:
 
         Starts isolated deterministic scenarios against an explicit stored process revision.  **Required permissions:** `workflow:run`
 
-        :param process_id: (required)
+        :param process_id: The process definition ID, as 24 hexadecimal characters. (required)
         :type process_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -4895,7 +4895,7 @@ class ProcessesApi:
     @validate_call
     def start_process_test_run_with_http_info(
         self,
-        process_id: StrictStr,
+        process_id: Annotated[str, Field(strict=True, description="The process definition ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         start_process_test_run_payload: StartProcessTestRunPayload,
         _request_timeout: Union[
@@ -4915,7 +4915,7 @@ class ProcessesApi:
 
         Starts isolated deterministic scenarios against an explicit stored process revision.  **Required permissions:** `workflow:run`
 
-        :param process_id: (required)
+        :param process_id: The process definition ID, as 24 hexadecimal characters. (required)
         :type process_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -4972,7 +4972,7 @@ class ProcessesApi:
     @validate_call
     def start_process_test_run_without_preload_content(
         self,
-        process_id: StrictStr,
+        process_id: Annotated[str, Field(strict=True, description="The process definition ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         start_process_test_run_payload: StartProcessTestRunPayload,
         _request_timeout: Union[
@@ -4992,7 +4992,7 @@ class ProcessesApi:
 
         Starts isolated deterministic scenarios against an explicit stored process revision.  **Required permissions:** `workflow:run`
 
-        :param process_id: (required)
+        :param process_id: The process definition ID, as 24 hexadecimal characters. (required)
         :type process_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -5425,7 +5425,7 @@ class ProcessesApi:
     @validate_call
     def update_process_definition(
         self,
-        process_id: StrictStr,
+        process_id: Annotated[str, Field(strict=True, description="The process definition ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_process_definition_payload: UpdateProcessDefinitionPayload,
         _request_timeout: Union[
@@ -5445,7 +5445,7 @@ class ProcessesApi:
 
         Updates the latest draft revision in place when the current head is a draft. Updating a published head forks a new latest draft revision while keeping the published revision immutable. The processId must identify the current head; non-head revisions are rejected with HTTP 400 and the response identifies the head to update.  **Required permissions:** `workflow:admin`
 
-        :param process_id: (required)
+        :param process_id: The process definition ID, as 24 hexadecimal characters. (required)
         :type process_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -5503,7 +5503,7 @@ class ProcessesApi:
     @validate_call
     def update_process_definition_with_http_info(
         self,
-        process_id: StrictStr,
+        process_id: Annotated[str, Field(strict=True, description="The process definition ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_process_definition_payload: UpdateProcessDefinitionPayload,
         _request_timeout: Union[
@@ -5523,7 +5523,7 @@ class ProcessesApi:
 
         Updates the latest draft revision in place when the current head is a draft. Updating a published head forks a new latest draft revision while keeping the published revision immutable. The processId must identify the current head; non-head revisions are rejected with HTTP 400 and the response identifies the head to update.  **Required permissions:** `workflow:admin`
 
-        :param process_id: (required)
+        :param process_id: The process definition ID, as 24 hexadecimal characters. (required)
         :type process_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -5581,7 +5581,7 @@ class ProcessesApi:
     @validate_call
     def update_process_definition_without_preload_content(
         self,
-        process_id: StrictStr,
+        process_id: Annotated[str, Field(strict=True, description="The process definition ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_process_definition_payload: UpdateProcessDefinitionPayload,
         _request_timeout: Union[
@@ -5601,7 +5601,7 @@ class ProcessesApi:
 
         Updates the latest draft revision in place when the current head is a draft. Updating a published head forks a new latest draft revision while keeping the published revision immutable. The processId must identify the current head; non-head revisions are rejected with HTTP 400 and the response identifies the head to update.  **Required permissions:** `workflow:admin`
 
-        :param process_id: (required)
+        :param process_id: The process definition ID, as 24 hexadecimal characters. (required)
         :type process_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -5739,8 +5739,8 @@ class ProcessesApi:
     @validate_call
     def update_process_test_suite(
         self,
-        process_id: StrictStr,
-        suite_id: StrictStr,
+        process_id: Annotated[str, Field(strict=True, description="The process definition ID, as 24 hexadecimal characters.")],
+        suite_id: Annotated[str, Field(strict=True, description="The process test suite ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_process_test_suite_payload: UpdateProcessTestSuitePayload,
         _request_timeout: Union[
@@ -5760,9 +5760,9 @@ class ProcessesApi:
 
         **Required permissions:** `workflow:admin`
 
-        :param process_id: (required)
+        :param process_id: The process definition ID, as 24 hexadecimal characters. (required)
         :type process_id: str
-        :param suite_id: (required)
+        :param suite_id: The process test suite ID, as 24 hexadecimal characters. (required)
         :type suite_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -5820,8 +5820,8 @@ class ProcessesApi:
     @validate_call
     def update_process_test_suite_with_http_info(
         self,
-        process_id: StrictStr,
-        suite_id: StrictStr,
+        process_id: Annotated[str, Field(strict=True, description="The process definition ID, as 24 hexadecimal characters.")],
+        suite_id: Annotated[str, Field(strict=True, description="The process test suite ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_process_test_suite_payload: UpdateProcessTestSuitePayload,
         _request_timeout: Union[
@@ -5841,9 +5841,9 @@ class ProcessesApi:
 
         **Required permissions:** `workflow:admin`
 
-        :param process_id: (required)
+        :param process_id: The process definition ID, as 24 hexadecimal characters. (required)
         :type process_id: str
-        :param suite_id: (required)
+        :param suite_id: The process test suite ID, as 24 hexadecimal characters. (required)
         :type suite_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -5901,8 +5901,8 @@ class ProcessesApi:
     @validate_call
     def update_process_test_suite_without_preload_content(
         self,
-        process_id: StrictStr,
-        suite_id: StrictStr,
+        process_id: Annotated[str, Field(strict=True, description="The process definition ID, as 24 hexadecimal characters.")],
+        suite_id: Annotated[str, Field(strict=True, description="The process test suite ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_process_test_suite_payload: UpdateProcessTestSuitePayload,
         _request_timeout: Union[
@@ -5922,9 +5922,9 @@ class ProcessesApi:
 
         **Required permissions:** `workflow:admin`
 
-        :param process_id: (required)
+        :param process_id: The process definition ID, as 24 hexadecimal characters. (required)
         :type process_id: str
-        :param suite_id: (required)
+        :param suite_id: The process test suite ID, as 24 hexadecimal characters. (required)
         :type suite_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str

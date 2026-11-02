@@ -25,7 +25,7 @@ from pydantic_core import to_jsonable_python
 
 class FindPayload(BaseModel):
     """
-    FindPayload
+    `query` is a Mongo filter. Its keys are dotted field paths or `$and`, `$or` and `$nor`, and a condition is a literal or uses the comparison operators, `$in`, `$nin`, `$all`, `$exists`, `$type`, `$size`, `$regex`, `$not` and `$elemMatch`.
     """ # noqa: E501
     query: Optional[Dict[str, Any]]
     offset: Optional[Union[StrictFloat, StrictInt]] = None

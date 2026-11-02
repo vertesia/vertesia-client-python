@@ -27,7 +27,7 @@ from pydantic_core import to_jsonable_python
 
 class ComputeObjectFacetPayload(BaseModel):
     """
-    ComputeObjectFacetPayload
+    Each facet `name` is an Elasticsearch aggregation name: non-empty, without `[`, `]` or `>`, and not `total`.
     """ # noqa: E501
     facets: List[FacetSpec]
     query: Optional[ComplexSearchQuery] = None

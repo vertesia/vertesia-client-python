@@ -418,6 +418,7 @@ __all__ = [
     "CreateAccountApiKeyPayload",
     "CreateAgentRunPayload",
     "CreateApiKeyPayload",
+    "CreateAppRepoBranchRequest",
     "CreateAppVersionLaunchRequest",
     "CreateAppVersionLaunchResponse",
     "CreateCollectionPayload",
@@ -1675,6 +1676,7 @@ from vertesia_client.openapi.models.count_result import CountResult as CountResu
 from vertesia_client.openapi.models.create_account_api_key_payload import CreateAccountApiKeyPayload as CreateAccountApiKeyPayload
 from vertesia_client.openapi.models.create_agent_run_payload import CreateAgentRunPayload as CreateAgentRunPayload
 from vertesia_client.openapi.models.create_api_key_payload import CreateApiKeyPayload as CreateApiKeyPayload
+from vertesia_client.openapi.models.create_app_repo_branch_request import CreateAppRepoBranchRequest as CreateAppRepoBranchRequest
 from vertesia_client.openapi.models.create_app_version_launch_request import CreateAppVersionLaunchRequest as CreateAppVersionLaunchRequest
 from vertesia_client.openapi.models.create_app_version_launch_response import CreateAppVersionLaunchResponse as CreateAppVersionLaunchResponse
 from vertesia_client.openapi.models.create_collection_payload import CreateCollectionPayload as CreateCollectionPayload

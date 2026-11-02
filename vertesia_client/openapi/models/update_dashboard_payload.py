@@ -20,7 +20,7 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing_extensions import Annotated
-from vertesia_client.openapi.models.dashboard_data_source import DashboardDataSource
+from vertesia_client.openapi.models.dashboard_sql_data_source import DashboardSqlDataSource
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -29,9 +29,9 @@ class UpdateDashboardPayload(BaseModel):
     """
     Payload for updating a dashboard.
     """ # noqa: E501
-    name: Optional[StrictStr] = Field(default=None, description="Dashboard name")
+    name: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="Dashboard name")
     summary: Optional[StrictStr] = Field(default=None, description="Dashboard summary")
-    data_source: Optional[DashboardDataSource] = Field(default=None, description="Data source used to populate Vega `data.values`.", alias="dataSource")
+    data_source: Optional[DashboardSqlDataSource] = Field(default=None, description="SQL data source used to populate Vega `data.values`. Its query, limit and parameters are stored as the dashboard's own; a top-level `query`, `queryLimit` or `queryParameters` sent alongside takes precedence.", alias="dataSource")
     query: Optional[StrictStr] = Field(default=None, description="SQL query that returns all data for the dashboard. Deprecated shortcut for a SQL data source.")
     query_limit: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Maximum rows to return from the query (default: 10000)", alias="queryLimit")
     query_parameters: Optional[Dict[str, StrictStr]] = Field(default=None, description="Default values for SQL {{param}} placeholders", alias="queryParameters")
@@ -104,7 +104,7 @@ class UpdateDashboardPayload(BaseModel):
         _obj = cls.model_validate({
             "name": obj.get("name"),
             "summary": obj.get("summary"),
-            "dataSource": DashboardDataSource.from_dict(obj["dataSource"]) if obj.get("dataSource") is not None else None,
+            "dataSource": DashboardSqlDataSource.from_dict(obj["dataSource"]) if obj.get("dataSource") is not None else None,
             "query": obj.get("query"),
             "queryLimit": obj.get("queryLimit"),
             "queryParameters": obj.get("queryParameters"),

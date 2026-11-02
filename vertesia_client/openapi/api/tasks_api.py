@@ -45,7 +45,7 @@ class TasksApi:
     @validate_call
     def cancel_task(
         self,
-        task_id: StrictStr,
+        task_id: Annotated[str, Field(strict=True, description="The task ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -64,7 +64,7 @@ class TasksApi:
 
         Cancels a pending or in-progress durable task.  **Required permissions:** `task:manage`
 
-        :param task_id: (required)
+        :param task_id: The task ID, as 24 hexadecimal characters. (required)
         :type task_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -118,7 +118,7 @@ class TasksApi:
     @validate_call
     def cancel_task_with_http_info(
         self,
-        task_id: StrictStr,
+        task_id: Annotated[str, Field(strict=True, description="The task ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -137,7 +137,7 @@ class TasksApi:
 
         Cancels a pending or in-progress durable task.  **Required permissions:** `task:manage`
 
-        :param task_id: (required)
+        :param task_id: The task ID, as 24 hexadecimal characters. (required)
         :type task_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -191,7 +191,7 @@ class TasksApi:
     @validate_call
     def cancel_task_without_preload_content(
         self,
-        task_id: StrictStr,
+        task_id: Annotated[str, Field(strict=True, description="The task ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -210,7 +210,7 @@ class TasksApi:
 
         Cancels a pending or in-progress durable task.  **Required permissions:** `task:manage`
 
-        :param task_id: (required)
+        :param task_id: The task ID, as 24 hexadecimal characters. (required)
         :type task_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -328,7 +328,7 @@ class TasksApi:
     @validate_call
     def complete_task(
         self,
-        task_id: StrictStr,
+        task_id: Annotated[str, Field(strict=True, description="The task ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         complete_task_payload: CompleteTaskPayload,
         _request_timeout: Union[
@@ -348,7 +348,7 @@ class TasksApi:
 
         Completes a durable task and, for agent ask tasks, signals the backing workflow with the submitted result. Process `human_task` nodes should be resumed through `POST /agents/{agentRunId}/answer-task` instead of this endpoint.
 
-        :param task_id: (required)
+        :param task_id: The task ID, as 24 hexadecimal characters. (required)
         :type task_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -405,7 +405,7 @@ class TasksApi:
     @validate_call
     def complete_task_with_http_info(
         self,
-        task_id: StrictStr,
+        task_id: Annotated[str, Field(strict=True, description="The task ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         complete_task_payload: CompleteTaskPayload,
         _request_timeout: Union[
@@ -425,7 +425,7 @@ class TasksApi:
 
         Completes a durable task and, for agent ask tasks, signals the backing workflow with the submitted result. Process `human_task` nodes should be resumed through `POST /agents/{agentRunId}/answer-task` instead of this endpoint.
 
-        :param task_id: (required)
+        :param task_id: The task ID, as 24 hexadecimal characters. (required)
         :type task_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -482,7 +482,7 @@ class TasksApi:
     @validate_call
     def complete_task_without_preload_content(
         self,
-        task_id: StrictStr,
+        task_id: Annotated[str, Field(strict=True, description="The task ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         complete_task_payload: CompleteTaskPayload,
         _request_timeout: Union[
@@ -502,7 +502,7 @@ class TasksApi:
 
         Completes a durable task and, for agent ask tasks, signals the backing workflow with the submitted result. Process `human_task` nodes should be resumed through `POST /agents/{agentRunId}/answer-task` instead of this endpoint.
 
-        :param task_id: (required)
+        :param task_id: The task ID, as 24 hexadecimal characters. (required)
         :type task_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -935,7 +935,7 @@ class TasksApi:
     @validate_call
     def delete_task(
         self,
-        task_id: StrictStr,
+        task_id: Annotated[str, Field(strict=True, description="The task ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -954,7 +954,7 @@ class TasksApi:
 
         Deletes a durable task by id.  **Required permissions:** `task:manage`
 
-        :param task_id: (required)
+        :param task_id: The task ID, as 24 hexadecimal characters. (required)
         :type task_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1008,7 +1008,7 @@ class TasksApi:
     @validate_call
     def delete_task_with_http_info(
         self,
-        task_id: StrictStr,
+        task_id: Annotated[str, Field(strict=True, description="The task ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -1027,7 +1027,7 @@ class TasksApi:
 
         Deletes a durable task by id.  **Required permissions:** `task:manage`
 
-        :param task_id: (required)
+        :param task_id: The task ID, as 24 hexadecimal characters. (required)
         :type task_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1081,7 +1081,7 @@ class TasksApi:
     @validate_call
     def delete_task_without_preload_content(
         self,
-        task_id: StrictStr,
+        task_id: Annotated[str, Field(strict=True, description="The task ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -1100,7 +1100,7 @@ class TasksApi:
 
         Deletes a durable task by id.  **Required permissions:** `task:manage`
 
-        :param task_id: (required)
+        :param task_id: The task ID, as 24 hexadecimal characters. (required)
         :type task_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1218,7 +1218,7 @@ class TasksApi:
     @validate_call
     def get_task(
         self,
-        task_id: StrictStr,
+        task_id: Annotated[str, Field(strict=True, description="The task ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -1237,7 +1237,7 @@ class TasksApi:
 
         Retrieves a single durable task by id.
 
-        :param task_id: (required)
+        :param task_id: The task ID, as 24 hexadecimal characters. (required)
         :type task_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1291,7 +1291,7 @@ class TasksApi:
     @validate_call
     def get_task_with_http_info(
         self,
-        task_id: StrictStr,
+        task_id: Annotated[str, Field(strict=True, description="The task ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -1310,7 +1310,7 @@ class TasksApi:
 
         Retrieves a single durable task by id.
 
-        :param task_id: (required)
+        :param task_id: The task ID, as 24 hexadecimal characters. (required)
         :type task_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1364,7 +1364,7 @@ class TasksApi:
     @validate_call
     def get_task_without_preload_content(
         self,
-        task_id: StrictStr,
+        task_id: Annotated[str, Field(strict=True, description="The task ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -1383,7 +1383,7 @@ class TasksApi:
 
         Retrieves a single durable task by id.
 
-        :param task_id: (required)
+        :param task_id: The task ID, as 24 hexadecimal characters. (required)
         :type task_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1872,7 +1872,7 @@ class TasksApi:
     @validate_call
     def update_task(
         self,
-        task_id: StrictStr,
+        task_id: Annotated[str, Field(strict=True, description="The task ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_task_payload: UpdateTaskPayload,
         _request_timeout: Union[
@@ -1892,7 +1892,7 @@ class TasksApi:
 
         Updates a durable task, including assignment, fields, due date, and status.  **Required permissions:** `task:manage`
 
-        :param task_id: (required)
+        :param task_id: The task ID, as 24 hexadecimal characters. (required)
         :type task_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1949,7 +1949,7 @@ class TasksApi:
     @validate_call
     def update_task_with_http_info(
         self,
-        task_id: StrictStr,
+        task_id: Annotated[str, Field(strict=True, description="The task ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_task_payload: UpdateTaskPayload,
         _request_timeout: Union[
@@ -1969,7 +1969,7 @@ class TasksApi:
 
         Updates a durable task, including assignment, fields, due date, and status.  **Required permissions:** `task:manage`
 
-        :param task_id: (required)
+        :param task_id: The task ID, as 24 hexadecimal characters. (required)
         :type task_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -2026,7 +2026,7 @@ class TasksApi:
     @validate_call
     def update_task_without_preload_content(
         self,
-        task_id: StrictStr,
+        task_id: Annotated[str, Field(strict=True, description="The task ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_task_payload: UpdateTaskPayload,
         _request_timeout: Union[
@@ -2046,7 +2046,7 @@ class TasksApi:
 
         Updates a durable task, including assignment, fields, due date, and status.  **Required permissions:** `task:manage`
 
-        :param task_id: (required)
+        :param task_id: The task ID, as 24 hexadecimal characters. (required)
         :type task_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str

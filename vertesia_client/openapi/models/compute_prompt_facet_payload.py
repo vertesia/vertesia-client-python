@@ -27,7 +27,7 @@ from pydantic_core import to_jsonable_python
 
 class ComputePromptFacetPayload(BaseModel):
     """
-    ComputePromptFacetPayload
+    Each facet `name` is a Mongo field name: non-empty, without `.` or NUL, not starting with `$`, and not `total`. Each `field` is a dotted path of such names.
     """ # noqa: E501
     facets: List[FacetSpec]
     query: Optional[PromptSearchQuery] = None

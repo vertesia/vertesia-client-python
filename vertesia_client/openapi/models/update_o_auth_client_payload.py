@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.o_auth_client_status import OAuthClientStatus
 from vertesia_client.openapi.models.o_auth_grant_type import OAuthGrantType
 from vertesia_client.openapi.models.o_auth_project_binding_mode import OAuthProjectBindingMode
@@ -33,7 +34,7 @@ class UpdateOAuthClientPayload(BaseModel):
     UpdateOAuthClientPayload
     """ # noqa: E501
     client_name: Optional[StrictStr] = None
-    redirect_uris: Optional[List[StrictStr]] = None
+    redirect_uris: Optional[Annotated[List[StrictStr], Field(min_length=1)]] = None
     grant_types: Optional[List[OAuthGrantType]] = None
     response_types: Optional[List[OAuthResponseType]] = None
     token_endpoint_auth_method: Optional[OAuthTokenEndpointAuthMethod] = None

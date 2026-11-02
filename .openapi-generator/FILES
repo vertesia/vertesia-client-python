@@ -396,6 +396,7 @@ vertesia_client/openapi/models/count_result.py
 vertesia_client/openapi/models/create_account_api_key_payload.py
 vertesia_client/openapi/models/create_agent_run_payload.py
 vertesia_client/openapi/models/create_api_key_payload.py
+vertesia_client/openapi/models/create_app_repo_branch_request.py
 vertesia_client/openapi/models/create_app_version_launch_request.py
 vertesia_client/openapi/models/create_app_version_launch_response.py
 vertesia_client/openapi/models/create_collection_payload.py

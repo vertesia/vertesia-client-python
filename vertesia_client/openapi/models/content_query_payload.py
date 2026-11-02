@@ -26,7 +26,7 @@ from pydantic_core import to_jsonable_python
 
 class ContentQueryPayload(BaseModel):
     """
-    ContentQueryPayload
+    Exactly one of `sql`, `esql` or `dsl`. An empty `sql` or `esql` counts as absent.
     """ # noqa: E501
     sql: Optional[StrictStr] = None
     esql: Optional[StrictStr] = None

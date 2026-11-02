@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic import BaseModel, ConfigDict, Field
 from typing import Any, ClassVar, Dict, List
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.create_table_payload import CreateTablePayload
 from typing import Optional, Set
 from typing_extensions import Self
@@ -28,8 +29,8 @@ class CreateTablesPayload(BaseModel):
     """
     Payload for creating multiple tables atomically.
     """ # noqa: E501
-    tables: List[CreateTablePayload] = Field(description="Table definitions to create")
-    message: StrictStr = Field(description="Commit message")
+    tables: Annotated[List[CreateTablePayload], Field(min_length=1)] = Field(description="Table definitions to create")
+    message: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Commit message")
     __properties: ClassVar[List[str]] = ["tables", "message"]
 
     model_config = ConfigDict(

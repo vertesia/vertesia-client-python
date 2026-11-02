@@ -1934,7 +1934,7 @@ class ObjectsApi:
     @validate_call
     def delete_content_object_export(
         self,
-        export_id: StrictStr,
+        export_id: Annotated[str, Field(strict=True, description="The content object export ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -1953,7 +1953,7 @@ class ObjectsApi:
 
         Deletes all files under a single content object export artifact folder in the project bucket.  **Required permissions:** `content:superadmin`
 
-        :param export_id: (required)
+        :param export_id: The content object export ID, as 24 hexadecimal characters. (required)
         :type export_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -2007,7 +2007,7 @@ class ObjectsApi:
     @validate_call
     def delete_content_object_export_with_http_info(
         self,
-        export_id: StrictStr,
+        export_id: Annotated[str, Field(strict=True, description="The content object export ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -2026,7 +2026,7 @@ class ObjectsApi:
 
         Deletes all files under a single content object export artifact folder in the project bucket.  **Required permissions:** `content:superadmin`
 
-        :param export_id: (required)
+        :param export_id: The content object export ID, as 24 hexadecimal characters. (required)
         :type export_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -2080,7 +2080,7 @@ class ObjectsApi:
     @validate_call
     def delete_content_object_export_without_preload_content(
         self,
-        export_id: StrictStr,
+        export_id: Annotated[str, Field(strict=True, description="The content object export ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -2099,7 +2099,7 @@ class ObjectsApi:
 
         Deletes all files under a single content object export artifact folder in the project bucket.  **Required permissions:** `content:superadmin`
 
-        :param export_id: (required)
+        :param export_id: The content object export ID, as 24 hexadecimal characters. (required)
         :type export_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -2796,8 +2796,8 @@ class ObjectsApi:
     @validate_call
     def get_content_object_export_download_url(
         self,
-        export_id: StrictStr,
-        role: StrictStr,
+        export_id: Annotated[str, Field(strict=True, description="The content object export ID, as 24 hexadecimal characters.")],
+        role: Annotated[StrictStr, Field(description="The export file: its data or its manifest.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -2816,9 +2816,9 @@ class ObjectsApi:
 
         Creates a signed download URL for a content object export data file or manifest sidecar.  **Required permissions:** `content:superadmin`
 
-        :param export_id: (required)
+        :param export_id: The content object export ID, as 24 hexadecimal characters. (required)
         :type export_id: str
-        :param role: (required)
+        :param role: The export file: its data or its manifest. (required)
         :type role: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -2873,8 +2873,8 @@ class ObjectsApi:
     @validate_call
     def get_content_object_export_download_url_with_http_info(
         self,
-        export_id: StrictStr,
-        role: StrictStr,
+        export_id: Annotated[str, Field(strict=True, description="The content object export ID, as 24 hexadecimal characters.")],
+        role: Annotated[StrictStr, Field(description="The export file: its data or its manifest.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -2893,9 +2893,9 @@ class ObjectsApi:
 
         Creates a signed download URL for a content object export data file or manifest sidecar.  **Required permissions:** `content:superadmin`
 
-        :param export_id: (required)
+        :param export_id: The content object export ID, as 24 hexadecimal characters. (required)
         :type export_id: str
-        :param role: (required)
+        :param role: The export file: its data or its manifest. (required)
         :type role: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -2950,8 +2950,8 @@ class ObjectsApi:
     @validate_call
     def get_content_object_export_download_url_without_preload_content(
         self,
-        export_id: StrictStr,
-        role: StrictStr,
+        export_id: Annotated[str, Field(strict=True, description="The content object export ID, as 24 hexadecimal characters.")],
+        role: Annotated[StrictStr, Field(description="The export file: its data or its manifest.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -2970,9 +2970,9 @@ class ObjectsApi:
 
         Creates a signed download URL for a content object export data file or manifest sidecar.  **Required permissions:** `content:superadmin`
 
-        :param export_id: (required)
+        :param export_id: The content object export ID, as 24 hexadecimal characters. (required)
         :type export_id: str
-        :param role: (required)
+        :param role: The export file: its data or its manifest. (required)
         :type role: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str

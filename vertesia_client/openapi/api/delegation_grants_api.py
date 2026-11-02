@@ -15,7 +15,7 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import Field, StrictStr, field_validator
+from pydantic import Field, field_validator
 from typing import List
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.create_delegation_grant_payload import CreateDelegationGrantPayload
@@ -337,7 +337,7 @@ class DelegationGrantsApi:
     @validate_call
     def get_delegation_grant(
         self,
-        grant_id: StrictStr,
+        grant_id: Annotated[str, Field(strict=True, description="The delegation grant ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -356,7 +356,7 @@ class DelegationGrantsApi:
 
         **Required permissions:** `account:read`
 
-        :param grant_id: (required)
+        :param grant_id: The delegation grant ID, as 24 hexadecimal characters. (required)
         :type grant_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -410,7 +410,7 @@ class DelegationGrantsApi:
     @validate_call
     def get_delegation_grant_with_http_info(
         self,
-        grant_id: StrictStr,
+        grant_id: Annotated[str, Field(strict=True, description="The delegation grant ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -429,7 +429,7 @@ class DelegationGrantsApi:
 
         **Required permissions:** `account:read`
 
-        :param grant_id: (required)
+        :param grant_id: The delegation grant ID, as 24 hexadecimal characters. (required)
         :type grant_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -483,7 +483,7 @@ class DelegationGrantsApi:
     @validate_call
     def get_delegation_grant_without_preload_content(
         self,
-        grant_id: StrictStr,
+        grant_id: Annotated[str, Field(strict=True, description="The delegation grant ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -502,7 +502,7 @@ class DelegationGrantsApi:
 
         **Required permissions:** `account:read`
 
-        :param grant_id: (required)
+        :param grant_id: The delegation grant ID, as 24 hexadecimal characters. (required)
         :type grant_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1153,7 +1153,7 @@ class DelegationGrantsApi:
     @validate_call
     def revoke_delegation_grant(
         self,
-        grant_id: StrictStr,
+        grant_id: Annotated[str, Field(strict=True, description="The delegation grant ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -1171,7 +1171,7 @@ class DelegationGrantsApi:
         """Revoke a standing delegation
 
 
-        :param grant_id: (required)
+        :param grant_id: The delegation grant ID, as 24 hexadecimal characters. (required)
         :type grant_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1225,7 +1225,7 @@ class DelegationGrantsApi:
     @validate_call
     def revoke_delegation_grant_with_http_info(
         self,
-        grant_id: StrictStr,
+        grant_id: Annotated[str, Field(strict=True, description="The delegation grant ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -1243,7 +1243,7 @@ class DelegationGrantsApi:
         """Revoke a standing delegation
 
 
-        :param grant_id: (required)
+        :param grant_id: The delegation grant ID, as 24 hexadecimal characters. (required)
         :type grant_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1297,7 +1297,7 @@ class DelegationGrantsApi:
     @validate_call
     def revoke_delegation_grant_without_preload_content(
         self,
-        grant_id: StrictStr,
+        grant_id: Annotated[str, Field(strict=True, description="The delegation grant ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -1315,7 +1315,7 @@ class DelegationGrantsApi:
         """Revoke a standing delegation
 
 
-        :param grant_id: (required)
+        :param grant_id: The delegation grant ID, as 24 hexadecimal characters. (required)
         :type grant_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str

@@ -29,7 +29,7 @@ class RateLimitRequestPayload(BaseModel):
     """
     RateLimitRequestPayload
     """ # noqa: E501
-    interaction: StrictStr
+    interaction: Annotated[str, Field(min_length=1, strict=True)]
     environment_id: Optional[StrictStr] = None
     inference_profile: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="MongoDB ObjectId of the inference profile.")
     inherit_model_config: Optional[StrictBool] = None

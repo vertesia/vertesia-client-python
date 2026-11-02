@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.dsl_activity_options import DSLActivityOptions
 from vertesia_client.openapi.models.dsl_activity_spec import DSLActivitySpec
 from vertesia_client.openapi.models.dsl_workflow_step import DSLWorkflowStep
@@ -30,7 +31,7 @@ class WorkflowDefinitionPayloadWithSteps(BaseModel):
     """
     WorkflowDefinitionPayloadWithSteps
     """ # noqa: E501
-    name: StrictStr
+    name: Annotated[str, Field(min_length=1, strict=True)]
     description: Optional[StrictStr] = None
     tags: Optional[List[StrictStr]] = None
     vars: Optional[Dict[str, Any]]

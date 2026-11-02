@@ -45,6 +45,7 @@ from vertesia_client.openapi.models.app_tool_collection import AppToolCollection
 from vertesia_client.openapi.models.app_version_launch_target import AppVersionLaunchTarget
 from vertesia_client.openapi.models.app_version_record import AppVersionRecord
 from vertesia_client.openapi.models.count_result import CountResult
+from vertesia_client.openapi.models.create_app_repo_branch_request import CreateAppRepoBranchRequest
 from vertesia_client.openapi.models.create_app_version_launch_request import CreateAppVersionLaunchRequest
 from vertesia_client.openapi.models.create_app_version_launch_response import CreateAppVersionLaunchResponse
 from vertesia_client.openapi.models.delete_app_version_response import DeleteAppVersionResponse
@@ -90,7 +91,7 @@ class AppsApi:
     @validate_call
     def assign_app_version_alias(
         self,
-        id: StrictStr,
+        id: Annotated[str, Field(strict=True, description="The app version ID, as 24 hexadecimal characters.")],
         alias: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
@@ -110,7 +111,7 @@ class AppsApi:
 
         Atomically assigns or moves one stable deployment alias to this immutable app version. This does not change the promoted version.  **Required permissions:** `app:manage`
 
-        :param id: (required)
+        :param id: The app version ID, as 24 hexadecimal characters. (required)
         :type id: str
         :param alias: (required)
         :type alias: str
@@ -167,7 +168,7 @@ class AppsApi:
     @validate_call
     def assign_app_version_alias_with_http_info(
         self,
-        id: StrictStr,
+        id: Annotated[str, Field(strict=True, description="The app version ID, as 24 hexadecimal characters.")],
         alias: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
@@ -187,7 +188,7 @@ class AppsApi:
 
         Atomically assigns or moves one stable deployment alias to this immutable app version. This does not change the promoted version.  **Required permissions:** `app:manage`
 
-        :param id: (required)
+        :param id: The app version ID, as 24 hexadecimal characters. (required)
         :type id: str
         :param alias: (required)
         :type alias: str
@@ -244,7 +245,7 @@ class AppsApi:
     @validate_call
     def assign_app_version_alias_without_preload_content(
         self,
-        id: StrictStr,
+        id: Annotated[str, Field(strict=True, description="The app version ID, as 24 hexadecimal characters.")],
         alias: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
@@ -264,7 +265,7 @@ class AppsApi:
 
         Atomically assigns or moves one stable deployment alias to this immutable app version. This does not change the promoted version.  **Required permissions:** `app:manage`
 
-        :param id: (required)
+        :param id: The app version ID, as 24 hexadecimal characters. (required)
         :type id: str
         :param alias: (required)
         :type alias: str
@@ -969,6 +970,7 @@ class AppsApi:
         self,
         id: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        create_app_repo_branch_request: CreateAppRepoBranchRequest,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -990,6 +992,8 @@ class AppsApi:
         :type id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
+        :param create_app_repo_branch_request: (required)
+        :type create_app_repo_branch_request: CreateAppRepoBranchRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1015,6 +1019,7 @@ class AppsApi:
         _param = self._create_app_repo_branch_serialize(
             id=id,
             x_api_version=x_api_version,
+            create_app_repo_branch_request=create_app_repo_branch_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1042,6 +1047,7 @@ class AppsApi:
         self,
         id: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        create_app_repo_branch_request: CreateAppRepoBranchRequest,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1063,6 +1069,8 @@ class AppsApi:
         :type id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
+        :param create_app_repo_branch_request: (required)
+        :type create_app_repo_branch_request: CreateAppRepoBranchRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1088,6 +1096,7 @@ class AppsApi:
         _param = self._create_app_repo_branch_serialize(
             id=id,
             x_api_version=x_api_version,
+            create_app_repo_branch_request=create_app_repo_branch_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1115,6 +1124,7 @@ class AppsApi:
         self,
         id: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        create_app_repo_branch_request: CreateAppRepoBranchRequest,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1136,6 +1146,8 @@ class AppsApi:
         :type id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
+        :param create_app_repo_branch_request: (required)
+        :type create_app_repo_branch_request: CreateAppRepoBranchRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1161,6 +1173,7 @@ class AppsApi:
         _param = self._create_app_repo_branch_serialize(
             id=id,
             x_api_version=x_api_version,
+            create_app_repo_branch_request=create_app_repo_branch_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1183,6 +1196,7 @@ class AppsApi:
         self,
         id,
         x_api_version,
+        create_app_repo_branch_request,
         _request_auth,
         _content_type,
         _headers,
@@ -1212,6 +1226,8 @@ class AppsApi:
             _header_params['x-api-version'] = x_api_version
         # process the form parameters
         # process the body parameter
+        if create_app_repo_branch_request is not None:
+            _body_params = create_app_repo_branch_request
 
 
         # set the HTTP header `Accept`
@@ -1222,6 +1238,19 @@ class AppsApi:
                 ]
             )
 
+        # set the HTTP header `Content-Type`
+        if _content_type:
+            _header_params['Content-Type'] = _content_type
+        else:
+            _default_content_type = (
+                self.api_client.select_header_content_type(
+                    [
+                        'application/json'
+                    ]
+                )
+            )
+            if _default_content_type is not None:
+                _header_params['Content-Type'] = _default_content_type
 
         # authentication setting
         _auth_settings: List[str] = [
@@ -1250,7 +1279,7 @@ class AppsApi:
     @validate_call
     def create_app_version_launch(
         self,
-        id: StrictStr,
+        id: Annotated[str, Field(strict=True, description="The app version ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_app_version_launch_request: CreateAppVersionLaunchRequest,
         _request_timeout: Union[
@@ -1270,7 +1299,7 @@ class AppsApi:
 
         Creates a short-lived launch selector for an immutable app version. Temporary settings override the selected project installation only for requests carrying that selector.  **Required permissions:** `app:manage`
 
-        :param id: (required)
+        :param id: The app version ID, as 24 hexadecimal characters. (required)
         :type id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1327,7 +1356,7 @@ class AppsApi:
     @validate_call
     def create_app_version_launch_with_http_info(
         self,
-        id: StrictStr,
+        id: Annotated[str, Field(strict=True, description="The app version ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_app_version_launch_request: CreateAppVersionLaunchRequest,
         _request_timeout: Union[
@@ -1347,7 +1376,7 @@ class AppsApi:
 
         Creates a short-lived launch selector for an immutable app version. Temporary settings override the selected project installation only for requests carrying that selector.  **Required permissions:** `app:manage`
 
-        :param id: (required)
+        :param id: The app version ID, as 24 hexadecimal characters. (required)
         :type id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1404,7 +1433,7 @@ class AppsApi:
     @validate_call
     def create_app_version_launch_without_preload_content(
         self,
-        id: StrictStr,
+        id: Annotated[str, Field(strict=True, description="The app version ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_app_version_launch_request: CreateAppVersionLaunchRequest,
         _request_timeout: Union[
@@ -1424,7 +1453,7 @@ class AppsApi:
 
         Creates a short-lived launch selector for an immutable app version. Temporary settings override the selected project installation only for requests carrying that selector.  **Required permissions:** `app:manage`
 
-        :param id: (required)
+        :param id: The app version ID, as 24 hexadecimal characters. (required)
         :type id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1844,7 +1873,7 @@ class AppsApi:
     @validate_call
     def delete_app_version(
         self,
-        id: StrictStr,
+        id: Annotated[str, Field(strict=True, description="The app version ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -1863,7 +1892,7 @@ class AppsApi:
 
         Deletes an unpromoted, unaliased app version and its stored build artifacts.  **Required permissions:** `app:manage`
 
-        :param id: (required)
+        :param id: The app version ID, as 24 hexadecimal characters. (required)
         :type id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1917,7 +1946,7 @@ class AppsApi:
     @validate_call
     def delete_app_version_with_http_info(
         self,
-        id: StrictStr,
+        id: Annotated[str, Field(strict=True, description="The app version ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -1936,7 +1965,7 @@ class AppsApi:
 
         Deletes an unpromoted, unaliased app version and its stored build artifacts.  **Required permissions:** `app:manage`
 
-        :param id: (required)
+        :param id: The app version ID, as 24 hexadecimal characters. (required)
         :type id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1990,7 +2019,7 @@ class AppsApi:
     @validate_call
     def delete_app_version_without_preload_content(
         self,
-        id: StrictStr,
+        id: Annotated[str, Field(strict=True, description="The app version ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -2009,7 +2038,7 @@ class AppsApi:
 
         Deletes an unpromoted, unaliased app version and its stored build artifacts.  **Required permissions:** `app:manage`
 
-        :param id: (required)
+        :param id: The app version ID, as 24 hexadecimal characters. (required)
         :type id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -2127,7 +2156,7 @@ class AppsApi:
     @validate_call
     def delete_installation_mcp_api_key(
         self,
-        install_id: StrictStr,
+        install_id: Annotated[str, Field(strict=True, description="The app installation ID, as 24 hexadecimal characters.")],
         collection_id: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
@@ -2147,7 +2176,7 @@ class AppsApi:
 
         **Required permissions:** `app:manage`
 
-        :param install_id: (required)
+        :param install_id: The app installation ID, as 24 hexadecimal characters. (required)
         :type install_id: str
         :param collection_id: (required)
         :type collection_id: str
@@ -2204,7 +2233,7 @@ class AppsApi:
     @validate_call
     def delete_installation_mcp_api_key_with_http_info(
         self,
-        install_id: StrictStr,
+        install_id: Annotated[str, Field(strict=True, description="The app installation ID, as 24 hexadecimal characters.")],
         collection_id: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
@@ -2224,7 +2253,7 @@ class AppsApi:
 
         **Required permissions:** `app:manage`
 
-        :param install_id: (required)
+        :param install_id: The app installation ID, as 24 hexadecimal characters. (required)
         :type install_id: str
         :param collection_id: (required)
         :type collection_id: str
@@ -2281,7 +2310,7 @@ class AppsApi:
     @validate_call
     def delete_installation_mcp_api_key_without_preload_content(
         self,
-        install_id: StrictStr,
+        install_id: Annotated[str, Field(strict=True, description="The app installation ID, as 24 hexadecimal characters.")],
         collection_id: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
@@ -2301,7 +2330,7 @@ class AppsApi:
 
         **Required permissions:** `app:manage`
 
-        :param install_id: (required)
+        :param install_id: The app installation ID, as 24 hexadecimal characters. (required)
         :type install_id: str
         :param collection_id: (required)
         :type collection_id: str
@@ -4234,7 +4263,7 @@ class AppsApi:
     @validate_call
     def get_app_installation(
         self,
-        install_id: StrictStr,
+        install_id: Annotated[str, Field(strict=True, description="The app installation ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -4252,7 +4281,7 @@ class AppsApi:
         """Retrieve an authorized app installation by ID
 
 
-        :param install_id: (required)
+        :param install_id: The app installation ID, as 24 hexadecimal characters. (required)
         :type install_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -4306,7 +4335,7 @@ class AppsApi:
     @validate_call
     def get_app_installation_with_http_info(
         self,
-        install_id: StrictStr,
+        install_id: Annotated[str, Field(strict=True, description="The app installation ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -4324,7 +4353,7 @@ class AppsApi:
         """Retrieve an authorized app installation by ID
 
 
-        :param install_id: (required)
+        :param install_id: The app installation ID, as 24 hexadecimal characters. (required)
         :type install_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -4378,7 +4407,7 @@ class AppsApi:
     @validate_call
     def get_app_installation_without_preload_content(
         self,
-        install_id: StrictStr,
+        install_id: Annotated[str, Field(strict=True, description="The app installation ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -4396,7 +4425,7 @@ class AppsApi:
         """Retrieve an authorized app installation by ID
 
 
-        :param install_id: (required)
+        :param install_id: The app installation ID, as 24 hexadecimal characters. (required)
         :type install_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -6251,7 +6280,9 @@ class AppsApi:
     def get_app_repo_file(
         self,
         id: StrictStr,
+        path: Annotated[str, Field(strict=True, description="Path of the file, relative to the repository root.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        ref: Annotated[Optional[StrictStr], Field(description="Branch, tag or commit. Defaults to the default branch.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -6271,8 +6302,12 @@ class AppsApi:
 
         :param id: (required)
         :type id: str
+        :param path: Path of the file, relative to the repository root. (required)
+        :type path: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
+        :param ref: Branch, tag or commit. Defaults to the default branch.
+        :type ref: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -6297,7 +6332,9 @@ class AppsApi:
 
         _param = self._get_app_repo_file_serialize(
             id=id,
+            path=path,
             x_api_version=x_api_version,
+            ref=ref,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -6324,7 +6361,9 @@ class AppsApi:
     def get_app_repo_file_with_http_info(
         self,
         id: StrictStr,
+        path: Annotated[str, Field(strict=True, description="Path of the file, relative to the repository root.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        ref: Annotated[Optional[StrictStr], Field(description="Branch, tag or commit. Defaults to the default branch.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -6344,8 +6383,12 @@ class AppsApi:
 
         :param id: (required)
         :type id: str
+        :param path: Path of the file, relative to the repository root. (required)
+        :type path: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
+        :param ref: Branch, tag or commit. Defaults to the default branch.
+        :type ref: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -6370,7 +6413,9 @@ class AppsApi:
 
         _param = self._get_app_repo_file_serialize(
             id=id,
+            path=path,
             x_api_version=x_api_version,
+            ref=ref,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -6397,7 +6442,9 @@ class AppsApi:
     def get_app_repo_file_without_preload_content(
         self,
         id: StrictStr,
+        path: Annotated[str, Field(strict=True, description="Path of the file, relative to the repository root.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        ref: Annotated[Optional[StrictStr], Field(description="Branch, tag or commit. Defaults to the default branch.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -6417,8 +6464,12 @@ class AppsApi:
 
         :param id: (required)
         :type id: str
+        :param path: Path of the file, relative to the repository root. (required)
+        :type path: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
+        :param ref: Branch, tag or commit. Defaults to the default branch.
+        :type ref: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -6443,7 +6494,9 @@ class AppsApi:
 
         _param = self._get_app_repo_file_serialize(
             id=id,
+            path=path,
             x_api_version=x_api_version,
+            ref=ref,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -6465,7 +6518,9 @@ class AppsApi:
     def _get_app_repo_file_serialize(
         self,
         id,
+        path,
         x_api_version,
+        ref,
         _request_auth,
         _content_type,
         _headers,
@@ -6490,6 +6545,14 @@ class AppsApi:
         if id is not None:
             _path_params['id'] = id
         # process the query parameters
+        if path is not None:
+            
+            _query_params.append(('path', path))
+            
+        if ref is not None:
+            
+            _query_params.append(('ref', ref))
+            
         # process the header parameters
         if x_api_version is not None:
             _header_params['x-api-version'] = x_api_version
@@ -6819,6 +6882,8 @@ class AppsApi:
         self,
         id: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        prefix: Annotated[Optional[StrictStr], Field(description="Directory to list, relative to the repository root. Defaults to the root.")] = None,
+        ref: Annotated[Optional[StrictStr], Field(description="Branch, tag or commit. Defaults to the default branch.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -6840,6 +6905,10 @@ class AppsApi:
         :type id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
+        :param prefix: Directory to list, relative to the repository root. Defaults to the root.
+        :type prefix: str
+        :param ref: Branch, tag or commit. Defaults to the default branch.
+        :type ref: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -6865,6 +6934,8 @@ class AppsApi:
         _param = self._get_app_repo_tree_serialize(
             id=id,
             x_api_version=x_api_version,
+            prefix=prefix,
+            ref=ref,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -6892,6 +6963,8 @@ class AppsApi:
         self,
         id: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        prefix: Annotated[Optional[StrictStr], Field(description="Directory to list, relative to the repository root. Defaults to the root.")] = None,
+        ref: Annotated[Optional[StrictStr], Field(description="Branch, tag or commit. Defaults to the default branch.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -6913,6 +6986,10 @@ class AppsApi:
         :type id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
+        :param prefix: Directory to list, relative to the repository root. Defaults to the root.
+        :type prefix: str
+        :param ref: Branch, tag or commit. Defaults to the default branch.
+        :type ref: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -6938,6 +7015,8 @@ class AppsApi:
         _param = self._get_app_repo_tree_serialize(
             id=id,
             x_api_version=x_api_version,
+            prefix=prefix,
+            ref=ref,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -6965,6 +7044,8 @@ class AppsApi:
         self,
         id: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        prefix: Annotated[Optional[StrictStr], Field(description="Directory to list, relative to the repository root. Defaults to the root.")] = None,
+        ref: Annotated[Optional[StrictStr], Field(description="Branch, tag or commit. Defaults to the default branch.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -6986,6 +7067,10 @@ class AppsApi:
         :type id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
+        :param prefix: Directory to list, relative to the repository root. Defaults to the root.
+        :type prefix: str
+        :param ref: Branch, tag or commit. Defaults to the default branch.
+        :type ref: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -7011,6 +7096,8 @@ class AppsApi:
         _param = self._get_app_repo_tree_serialize(
             id=id,
             x_api_version=x_api_version,
+            prefix=prefix,
+            ref=ref,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -7033,6 +7120,8 @@ class AppsApi:
         self,
         id,
         x_api_version,
+        prefix,
+        ref,
         _request_auth,
         _content_type,
         _headers,
@@ -7057,6 +7146,14 @@ class AppsApi:
         if id is not None:
             _path_params['id'] = id
         # process the query parameters
+        if prefix is not None:
+            
+            _query_params.append(('prefix', prefix))
+            
+        if ref is not None:
+            
+            _query_params.append(('ref', ref))
+            
         # process the header parameters
         if x_api_version is not None:
             _header_params['x-api-version'] = x_api_version
@@ -7398,7 +7495,7 @@ class AppsApi:
     @validate_call
     def get_app_version(
         self,
-        id: StrictStr,
+        id: Annotated[str, Field(strict=True, description="The app version ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -7417,7 +7514,7 @@ class AppsApi:
 
         **Required permissions:** `account:member`
 
-        :param id: (required)
+        :param id: The app version ID, as 24 hexadecimal characters. (required)
         :type id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -7471,7 +7568,7 @@ class AppsApi:
     @validate_call
     def get_app_version_with_http_info(
         self,
-        id: StrictStr,
+        id: Annotated[str, Field(strict=True, description="The app version ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -7490,7 +7587,7 @@ class AppsApi:
 
         **Required permissions:** `account:member`
 
-        :param id: (required)
+        :param id: The app version ID, as 24 hexadecimal characters. (required)
         :type id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -7544,7 +7641,7 @@ class AppsApi:
     @validate_call
     def get_app_version_without_preload_content(
         self,
-        id: StrictStr,
+        id: Annotated[str, Field(strict=True, description="The app version ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -7563,7 +7660,7 @@ class AppsApi:
 
         **Required permissions:** `account:member`
 
-        :param id: (required)
+        :param id: The app version ID, as 24 hexadecimal characters. (required)
         :type id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -7681,7 +7778,7 @@ class AppsApi:
     @validate_call
     def get_installation_mcp_api_key_status(
         self,
-        install_id: StrictStr,
+        install_id: Annotated[str, Field(strict=True, description="The app installation ID, as 24 hexadecimal characters.")],
         collection_id: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
@@ -7701,7 +7798,7 @@ class AppsApi:
 
         **Required permissions:** `app:manage`
 
-        :param install_id: (required)
+        :param install_id: The app installation ID, as 24 hexadecimal characters. (required)
         :type install_id: str
         :param collection_id: (required)
         :type collection_id: str
@@ -7758,7 +7855,7 @@ class AppsApi:
     @validate_call
     def get_installation_mcp_api_key_status_with_http_info(
         self,
-        install_id: StrictStr,
+        install_id: Annotated[str, Field(strict=True, description="The app installation ID, as 24 hexadecimal characters.")],
         collection_id: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
@@ -7778,7 +7875,7 @@ class AppsApi:
 
         **Required permissions:** `app:manage`
 
-        :param install_id: (required)
+        :param install_id: The app installation ID, as 24 hexadecimal characters. (required)
         :type install_id: str
         :param collection_id: (required)
         :type collection_id: str
@@ -7835,7 +7932,7 @@ class AppsApi:
     @validate_call
     def get_installation_mcp_api_key_status_without_preload_content(
         self,
-        install_id: StrictStr,
+        install_id: Annotated[str, Field(strict=True, description="The app installation ID, as 24 hexadecimal characters.")],
         collection_id: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
@@ -7855,7 +7952,7 @@ class AppsApi:
 
         **Required permissions:** `app:manage`
 
-        :param install_id: (required)
+        :param install_id: The app installation ID, as 24 hexadecimal characters. (required)
         :type install_id: str
         :param collection_id: (required)
         :type collection_id: str
@@ -9993,8 +10090,8 @@ class AppsApi:
     def list_app_installation_projects(
         self,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
-        name: Annotated[Optional[StrictStr], Field(description="App manifest name. One of `name` or `id` is required.")] = None,
-        id: Annotated[Optional[StrictStr], Field(description="App manifest id. One of `name` or `id` is required.")] = None,
+        name: Annotated[Optional[StrictStr], Field(description="App manifest name. At least one of `name` or `id` is required.")] = None,
+        id: Annotated[Optional[StrictStr], Field(description="App manifest id. At least one of `name` or `id` is required; it wins over `name`.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -10014,9 +10111,9 @@ class AppsApi:
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
-        :param name: App manifest name. One of `name` or `id` is required.
+        :param name: App manifest name. At least one of `name` or `id` is required.
         :type name: str
-        :param id: App manifest id. One of `name` or `id` is required.
+        :param id: App manifest id. At least one of `name` or `id` is required; it wins over `name`.
         :type id: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -10070,8 +10167,8 @@ class AppsApi:
     def list_app_installation_projects_with_http_info(
         self,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
-        name: Annotated[Optional[StrictStr], Field(description="App manifest name. One of `name` or `id` is required.")] = None,
-        id: Annotated[Optional[StrictStr], Field(description="App manifest id. One of `name` or `id` is required.")] = None,
+        name: Annotated[Optional[StrictStr], Field(description="App manifest name. At least one of `name` or `id` is required.")] = None,
+        id: Annotated[Optional[StrictStr], Field(description="App manifest id. At least one of `name` or `id` is required; it wins over `name`.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -10091,9 +10188,9 @@ class AppsApi:
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
-        :param name: App manifest name. One of `name` or `id` is required.
+        :param name: App manifest name. At least one of `name` or `id` is required.
         :type name: str
-        :param id: App manifest id. One of `name` or `id` is required.
+        :param id: App manifest id. At least one of `name` or `id` is required; it wins over `name`.
         :type id: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -10147,8 +10244,8 @@ class AppsApi:
     def list_app_installation_projects_without_preload_content(
         self,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
-        name: Annotated[Optional[StrictStr], Field(description="App manifest name. One of `name` or `id` is required.")] = None,
-        id: Annotated[Optional[StrictStr], Field(description="App manifest id. One of `name` or `id` is required.")] = None,
+        name: Annotated[Optional[StrictStr], Field(description="App manifest name. At least one of `name` or `id` is required.")] = None,
+        id: Annotated[Optional[StrictStr], Field(description="App manifest id. At least one of `name` or `id` is required; it wins over `name`.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -10168,9 +10265,9 @@ class AppsApi:
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
-        :param name: App manifest name. One of `name` or `id` is required.
+        :param name: App manifest name. At least one of `name` or `id` is required.
         :type name: str
-        :param id: App manifest id. One of `name` or `id` is required.
+        :param id: App manifest id. At least one of `name` or `id` is required; it wins over `name`.
         :type id: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -10562,7 +10659,7 @@ class AppsApi:
     @validate_call
     def list_app_installation_tools(
         self,
-        install_id: StrictStr,
+        install_id: Annotated[str, Field(strict=True, description="The app installation ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -10581,7 +10678,7 @@ class AppsApi:
 
         Lists tools exposed by an installed app.  **Required permissions:** `account:member`
 
-        :param install_id: (required)
+        :param install_id: The app installation ID, as 24 hexadecimal characters. (required)
         :type install_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -10635,7 +10732,7 @@ class AppsApi:
     @validate_call
     def list_app_installation_tools_with_http_info(
         self,
-        install_id: StrictStr,
+        install_id: Annotated[str, Field(strict=True, description="The app installation ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -10654,7 +10751,7 @@ class AppsApi:
 
         Lists tools exposed by an installed app.  **Required permissions:** `account:member`
 
-        :param install_id: (required)
+        :param install_id: The app installation ID, as 24 hexadecimal characters. (required)
         :type install_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -10708,7 +10805,7 @@ class AppsApi:
     @validate_call
     def list_app_installation_tools_without_preload_content(
         self,
-        install_id: StrictStr,
+        install_id: Annotated[str, Field(strict=True, description="The app installation ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -10727,7 +10824,7 @@ class AppsApi:
 
         Lists tools exposed by an installed app.  **Required permissions:** `account:member`
 
-        :param install_id: (required)
+        :param install_id: The app installation ID, as 24 hexadecimal characters. (required)
         :type install_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -11147,7 +11244,7 @@ class AppsApi:
     @validate_call
     def list_app_version_launch_targets(
         self,
-        id: StrictStr,
+        id: Annotated[str, Field(strict=True, description="The app version ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -11166,7 +11263,7 @@ class AppsApi:
 
         Returns projects in the current account that the caller can access and where this application is already installed.  **Required permissions:** `app:manage`
 
-        :param id: (required)
+        :param id: The app version ID, as 24 hexadecimal characters. (required)
         :type id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -11220,7 +11317,7 @@ class AppsApi:
     @validate_call
     def list_app_version_launch_targets_with_http_info(
         self,
-        id: StrictStr,
+        id: Annotated[str, Field(strict=True, description="The app version ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -11239,7 +11336,7 @@ class AppsApi:
 
         Returns projects in the current account that the caller can access and where this application is already installed.  **Required permissions:** `app:manage`
 
-        :param id: (required)
+        :param id: The app version ID, as 24 hexadecimal characters. (required)
         :type id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -11293,7 +11390,7 @@ class AppsApi:
     @validate_call
     def list_app_version_launch_targets_without_preload_content(
         self,
-        id: StrictStr,
+        id: Annotated[str, Field(strict=True, description="The app version ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -11312,7 +11409,7 @@ class AppsApi:
 
         Returns projects in the current account that the caller can access and where this application is already installed.  **Required permissions:** `app:manage`
 
-        :param id: (required)
+        :param id: The app version ID, as 24 hexadecimal characters. (required)
         :type id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -11983,7 +12080,7 @@ class AppsApi:
     @validate_call
     def promote_app_version(
         self,
-        id: StrictStr,
+        id: Annotated[str, Field(strict=True, description="The app version ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -12002,7 +12099,7 @@ class AppsApi:
 
         **Required permissions:** `app:manage`
 
-        :param id: (required)
+        :param id: The app version ID, as 24 hexadecimal characters. (required)
         :type id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -12056,7 +12153,7 @@ class AppsApi:
     @validate_call
     def promote_app_version_with_http_info(
         self,
-        id: StrictStr,
+        id: Annotated[str, Field(strict=True, description="The app version ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -12075,7 +12172,7 @@ class AppsApi:
 
         **Required permissions:** `app:manage`
 
-        :param id: (required)
+        :param id: The app version ID, as 24 hexadecimal characters. (required)
         :type id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -12129,7 +12226,7 @@ class AppsApi:
     @validate_call
     def promote_app_version_without_preload_content(
         self,
-        id: StrictStr,
+        id: Annotated[str, Field(strict=True, description="The app version ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -12148,7 +12245,7 @@ class AppsApi:
 
         **Required permissions:** `app:manage`
 
-        :param id: (required)
+        :param id: The app version ID, as 24 hexadecimal characters. (required)
         :type id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -12266,7 +12363,7 @@ class AppsApi:
     @validate_call
     def rebuild_app_version(
         self,
-        id: StrictStr,
+        id: Annotated[str, Field(strict=True, description="The app version ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -12285,7 +12382,7 @@ class AppsApi:
 
         Rebuilds a failed or expired, unpromoted app version in place from its recorded exact source commit and target.  **Required permissions:** `app:manage`
 
-        :param id: (required)
+        :param id: The app version ID, as 24 hexadecimal characters. (required)
         :type id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -12339,7 +12436,7 @@ class AppsApi:
     @validate_call
     def rebuild_app_version_with_http_info(
         self,
-        id: StrictStr,
+        id: Annotated[str, Field(strict=True, description="The app version ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -12358,7 +12455,7 @@ class AppsApi:
 
         Rebuilds a failed or expired, unpromoted app version in place from its recorded exact source commit and target.  **Required permissions:** `app:manage`
 
-        :param id: (required)
+        :param id: The app version ID, as 24 hexadecimal characters. (required)
         :type id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -12412,7 +12509,7 @@ class AppsApi:
     @validate_call
     def rebuild_app_version_without_preload_content(
         self,
-        id: StrictStr,
+        id: Annotated[str, Field(strict=True, description="The app version ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -12431,7 +12528,7 @@ class AppsApi:
 
         Rebuilds a failed or expired, unpromoted app version in place from its recorded exact source commit and target.  **Required permissions:** `app:manage`
 
-        :param id: (required)
+        :param id: The app version ID, as 24 hexadecimal characters. (required)
         :type id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -12549,7 +12646,7 @@ class AppsApi:
     @validate_call
     def remove_app_version_alias(
         self,
-        id: StrictStr,
+        id: Annotated[str, Field(strict=True, description="The app version ID, as 24 hexadecimal characters.")],
         alias: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
@@ -12569,7 +12666,7 @@ class AppsApi:
 
         Removes the alias only if it still points to this version, so a stale client cannot remove an alias that was reassigned elsewhere.  **Required permissions:** `app:manage`
 
-        :param id: (required)
+        :param id: The app version ID, as 24 hexadecimal characters. (required)
         :type id: str
         :param alias: (required)
         :type alias: str
@@ -12627,7 +12724,7 @@ class AppsApi:
     @validate_call
     def remove_app_version_alias_with_http_info(
         self,
-        id: StrictStr,
+        id: Annotated[str, Field(strict=True, description="The app version ID, as 24 hexadecimal characters.")],
         alias: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
@@ -12647,7 +12744,7 @@ class AppsApi:
 
         Removes the alias only if it still points to this version, so a stale client cannot remove an alias that was reassigned elsewhere.  **Required permissions:** `app:manage`
 
-        :param id: (required)
+        :param id: The app version ID, as 24 hexadecimal characters. (required)
         :type id: str
         :param alias: (required)
         :type alias: str
@@ -12705,7 +12802,7 @@ class AppsApi:
     @validate_call
     def remove_app_version_alias_without_preload_content(
         self,
-        id: StrictStr,
+        id: Annotated[str, Field(strict=True, description="The app version ID, as 24 hexadecimal characters.")],
         alias: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
@@ -12725,7 +12822,7 @@ class AppsApi:
 
         Removes the alias only if it still points to this version, so a stale client cannot remove an alias that was reassigned elsewhere.  **Required permissions:** `app:manage`
 
-        :param id: (required)
+        :param id: The app version ID, as 24 hexadecimal characters. (required)
         :type id: str
         :param alias: (required)
         :type alias: str
@@ -12850,7 +12947,7 @@ class AppsApi:
     @validate_call
     def set_installation_mcp_api_key(
         self,
-        install_id: StrictStr,
+        install_id: Annotated[str, Field(strict=True, description="The app installation ID, as 24 hexadecimal characters.")],
         collection_id: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         set_mcp_api_key_request: SetMcpApiKeyRequest,
@@ -12871,7 +12968,7 @@ class AppsApi:
 
         **Required permissions:** `app:manage`
 
-        :param install_id: (required)
+        :param install_id: The app installation ID, as 24 hexadecimal characters. (required)
         :type install_id: str
         :param collection_id: (required)
         :type collection_id: str
@@ -12931,7 +13028,7 @@ class AppsApi:
     @validate_call
     def set_installation_mcp_api_key_with_http_info(
         self,
-        install_id: StrictStr,
+        install_id: Annotated[str, Field(strict=True, description="The app installation ID, as 24 hexadecimal characters.")],
         collection_id: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         set_mcp_api_key_request: SetMcpApiKeyRequest,
@@ -12952,7 +13049,7 @@ class AppsApi:
 
         **Required permissions:** `app:manage`
 
-        :param install_id: (required)
+        :param install_id: The app installation ID, as 24 hexadecimal characters. (required)
         :type install_id: str
         :param collection_id: (required)
         :type collection_id: str
@@ -13012,7 +13109,7 @@ class AppsApi:
     @validate_call
     def set_installation_mcp_api_key_without_preload_content(
         self,
-        install_id: StrictStr,
+        install_id: Annotated[str, Field(strict=True, description="The app installation ID, as 24 hexadecimal characters.")],
         collection_id: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         set_mcp_api_key_request: SetMcpApiKeyRequest,
@@ -13033,7 +13130,7 @@ class AppsApi:
 
         **Required permissions:** `app:manage`
 
-        :param install_id: (required)
+        :param install_id: The app installation ID, as 24 hexadecimal characters. (required)
         :type install_id: str
         :param collection_id: (required)
         :type collection_id: str
@@ -14703,7 +14800,7 @@ class AppsApi:
     @validate_call
     def uninstall_app(
         self,
-        install_id: StrictStr,
+        install_id: Annotated[str, Field(strict=True, description="The app installation ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -14722,7 +14819,7 @@ class AppsApi:
 
         Uninstalls an app from the current project and removes installation-scoped OAuth providers.  **Required permissions:** `project:admin`
 
-        :param install_id: (required)
+        :param install_id: The app installation ID, as 24 hexadecimal characters. (required)
         :type install_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -14776,7 +14873,7 @@ class AppsApi:
     @validate_call
     def uninstall_app_with_http_info(
         self,
-        install_id: StrictStr,
+        install_id: Annotated[str, Field(strict=True, description="The app installation ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -14795,7 +14892,7 @@ class AppsApi:
 
         Uninstalls an app from the current project and removes installation-scoped OAuth providers.  **Required permissions:** `project:admin`
 
-        :param install_id: (required)
+        :param install_id: The app installation ID, as 24 hexadecimal characters. (required)
         :type install_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -14849,7 +14946,7 @@ class AppsApi:
     @validate_call
     def uninstall_app_without_preload_content(
         self,
-        install_id: StrictStr,
+        install_id: Annotated[str, Field(strict=True, description="The app installation ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -14868,7 +14965,7 @@ class AppsApi:
 
         Uninstalls an app from the current project and removes installation-scoped OAuth providers.  **Required permissions:** `project:admin`
 
-        :param install_id: (required)
+        :param install_id: The app installation ID, as 24 hexadecimal characters. (required)
         :type install_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -15300,7 +15397,7 @@ class AppsApi:
     @validate_call
     def update_app_installation_o_auth_approval(
         self,
-        install_id: StrictStr,
+        install_id: Annotated[str, Field(strict=True, description="The app installation ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_app_installation_o_auth_approval_payload: UpdateAppInstallationOAuthApprovalPayload,
         _request_timeout: Union[
@@ -15320,7 +15417,7 @@ class AppsApi:
 
         **Required permissions:** `project:admin`
 
-        :param install_id: (required)
+        :param install_id: The app installation ID, as 24 hexadecimal characters. (required)
         :type install_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -15377,7 +15474,7 @@ class AppsApi:
     @validate_call
     def update_app_installation_o_auth_approval_with_http_info(
         self,
-        install_id: StrictStr,
+        install_id: Annotated[str, Field(strict=True, description="The app installation ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_app_installation_o_auth_approval_payload: UpdateAppInstallationOAuthApprovalPayload,
         _request_timeout: Union[
@@ -15397,7 +15494,7 @@ class AppsApi:
 
         **Required permissions:** `project:admin`
 
-        :param install_id: (required)
+        :param install_id: The app installation ID, as 24 hexadecimal characters. (required)
         :type install_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -15454,7 +15551,7 @@ class AppsApi:
     @validate_call
     def update_app_installation_o_auth_approval_without_preload_content(
         self,
-        install_id: StrictStr,
+        install_id: Annotated[str, Field(strict=True, description="The app installation ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_app_installation_o_auth_approval_payload: UpdateAppInstallationOAuthApprovalPayload,
         _request_timeout: Union[
@@ -15474,7 +15571,7 @@ class AppsApi:
 
         **Required permissions:** `project:admin`
 
-        :param install_id: (required)
+        :param install_id: The app installation ID, as 24 hexadecimal characters. (required)
         :type install_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -15922,7 +16019,7 @@ class AppsApi:
     @validate_call
     def update_app_installation_tool_allowlist(
         self,
-        install_id: StrictStr,
+        install_id: Annotated[str, Field(strict=True, description="The app installation ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_app_installation_tool_allowlist_payload: UpdateAppInstallationToolAllowlistPayload,
         _request_timeout: Union[
@@ -15942,7 +16039,7 @@ class AppsApi:
 
         Updates the installation-scoped tool allowlist for an app installation.  **Required permissions:** `project:admin`
 
-        :param install_id: (required)
+        :param install_id: The app installation ID, as 24 hexadecimal characters. (required)
         :type install_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -15999,7 +16096,7 @@ class AppsApi:
     @validate_call
     def update_app_installation_tool_allowlist_with_http_info(
         self,
-        install_id: StrictStr,
+        install_id: Annotated[str, Field(strict=True, description="The app installation ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_app_installation_tool_allowlist_payload: UpdateAppInstallationToolAllowlistPayload,
         _request_timeout: Union[
@@ -16019,7 +16116,7 @@ class AppsApi:
 
         Updates the installation-scoped tool allowlist for an app installation.  **Required permissions:** `project:admin`
 
-        :param install_id: (required)
+        :param install_id: The app installation ID, as 24 hexadecimal characters. (required)
         :type install_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -16076,7 +16173,7 @@ class AppsApi:
     @validate_call
     def update_app_installation_tool_allowlist_without_preload_content(
         self,
-        install_id: StrictStr,
+        install_id: Annotated[str, Field(strict=True, description="The app installation ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_app_installation_tool_allowlist_payload: UpdateAppInstallationToolAllowlistPayload,
         _request_timeout: Union[
@@ -16096,7 +16193,7 @@ class AppsApi:
 
         Updates the installation-scoped tool allowlist for an app installation.  **Required permissions:** `project:admin`
 
-        :param install_id: (required)
+        :param install_id: The app installation ID, as 24 hexadecimal characters. (required)
         :type install_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -16233,7 +16330,7 @@ class AppsApi:
     @validate_call
     def update_app_installation_tool_permissions(
         self,
-        install_id: StrictStr,
+        install_id: Annotated[str, Field(strict=True, description="The app installation ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_app_installation_tool_permissions_payload: UpdateAppInstallationToolPermissionsPayload,
         _request_timeout: Union[
@@ -16253,7 +16350,7 @@ class AppsApi:
 
         Updates the tool allowlist and the tools that always require human approval of an app installation in one atomic write. Omitted fields are left unchanged.  **Required permissions:** `project:admin`
 
-        :param install_id: (required)
+        :param install_id: The app installation ID, as 24 hexadecimal characters. (required)
         :type install_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -16310,7 +16407,7 @@ class AppsApi:
     @validate_call
     def update_app_installation_tool_permissions_with_http_info(
         self,
-        install_id: StrictStr,
+        install_id: Annotated[str, Field(strict=True, description="The app installation ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_app_installation_tool_permissions_payload: UpdateAppInstallationToolPermissionsPayload,
         _request_timeout: Union[
@@ -16330,7 +16427,7 @@ class AppsApi:
 
         Updates the tool allowlist and the tools that always require human approval of an app installation in one atomic write. Omitted fields are left unchanged.  **Required permissions:** `project:admin`
 
-        :param install_id: (required)
+        :param install_id: The app installation ID, as 24 hexadecimal characters. (required)
         :type install_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -16387,7 +16484,7 @@ class AppsApi:
     @validate_call
     def update_app_installation_tool_permissions_without_preload_content(
         self,
-        install_id: StrictStr,
+        install_id: Annotated[str, Field(strict=True, description="The app installation ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_app_installation_tool_permissions_payload: UpdateAppInstallationToolPermissionsPayload,
         _request_timeout: Union[
@@ -16407,7 +16504,7 @@ class AppsApi:
 
         Updates the tool allowlist and the tools that always require human approval of an app installation in one atomic write. Omitted fields are left unchanged.  **Required permissions:** `project:admin`
 
-        :param install_id: (required)
+        :param install_id: The app installation ID, as 24 hexadecimal characters. (required)
         :type install_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str

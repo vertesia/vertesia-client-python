@@ -66,7 +66,7 @@ class AgentRunsApi:
     @validate_call
     def advance_process_run(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         advance_process_payload: AdvanceProcessPayload,
         _request_timeout: Union[
@@ -86,7 +86,7 @@ class AgentRunsApi:
 
         Signals a process workflow to advance to an explicit target or continue from its current node. The engine still validates the requested target against the current node's declared user-triggered transitions and guards.  **Required permissions:** `workflow:admin`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -144,7 +144,7 @@ class AgentRunsApi:
     @validate_call
     def advance_process_run_with_http_info(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         advance_process_payload: AdvanceProcessPayload,
         _request_timeout: Union[
@@ -164,7 +164,7 @@ class AgentRunsApi:
 
         Signals a process workflow to advance to an explicit target or continue from its current node. The engine still validates the requested target against the current node's declared user-triggered transitions and guards.  **Required permissions:** `workflow:admin`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -222,7 +222,7 @@ class AgentRunsApi:
     @validate_call
     def advance_process_run_without_preload_content(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         advance_process_payload: AdvanceProcessPayload,
         _request_timeout: Union[
@@ -242,7 +242,7 @@ class AgentRunsApi:
 
         Signals a process workflow to advance to an explicit target or continue from its current node. The engine still validates the requested target against the current node's declared user-triggered transitions and guards.  **Required permissions:** `workflow:admin`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -380,7 +380,7 @@ class AgentRunsApi:
     @validate_call
     def allocate_agent_run_budget(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         allocate_agent_run_budget_payload: AllocateAgentRunBudgetPayload,
         _request_timeout: Union[
@@ -400,7 +400,7 @@ class AgentRunsApi:
 
         Adds token budget to a run paused because its budget ran out; the run resumes from where it stopped. Interactive agent runs pause when their budget runs out, and so do process runs managed by one; other runs end instead. The amount is added to the limit the run was granted, so usage past that limit is paid out of it. Sent to a run that is not paused yet, it is applied when the budget runs out.  **Required permissions:** `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -457,7 +457,7 @@ class AgentRunsApi:
     @validate_call
     def allocate_agent_run_budget_with_http_info(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         allocate_agent_run_budget_payload: AllocateAgentRunBudgetPayload,
         _request_timeout: Union[
@@ -477,7 +477,7 @@ class AgentRunsApi:
 
         Adds token budget to a run paused because its budget ran out; the run resumes from where it stopped. Interactive agent runs pause when their budget runs out, and so do process runs managed by one; other runs end instead. The amount is added to the limit the run was granted, so usage past that limit is paid out of it. Sent to a run that is not paused yet, it is applied when the budget runs out.  **Required permissions:** `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -534,7 +534,7 @@ class AgentRunsApi:
     @validate_call
     def allocate_agent_run_budget_without_preload_content(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         allocate_agent_run_budget_payload: AllocateAgentRunBudgetPayload,
         _request_timeout: Union[
@@ -554,7 +554,7 @@ class AgentRunsApi:
 
         Adds token budget to a run paused because its budget ran out; the run resumes from where it stopped. Interactive agent runs pause when their budget runs out, and so do process runs managed by one; other runs end instead. The amount is added to the limit the run was granted, so usage past that limit is paid out of it. Sent to a run that is not paused yet, it is applied when the budget runs out.  **Required permissions:** `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -691,7 +691,7 @@ class AgentRunsApi:
     @validate_call
     def answer_process_task(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         answer_process_task_payload: AnswerProcessTaskPayload,
         _request_timeout: Union[
@@ -711,7 +711,7 @@ class AgentRunsApi:
 
         Validates and signals a human task answer to the backing process workflow, resuming a run paused on a `human_task` node. The caller must be the task assignee or have `task:manage`.
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -769,7 +769,7 @@ class AgentRunsApi:
     @validate_call
     def answer_process_task_with_http_info(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         answer_process_task_payload: AnswerProcessTaskPayload,
         _request_timeout: Union[
@@ -789,7 +789,7 @@ class AgentRunsApi:
 
         Validates and signals a human task answer to the backing process workflow, resuming a run paused on a `human_task` node. The caller must be the task assignee or have `task:manage`.
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -847,7 +847,7 @@ class AgentRunsApi:
     @validate_call
     def answer_process_task_without_preload_content(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         answer_process_task_payload: AnswerProcessTaskPayload,
         _request_timeout: Union[
@@ -867,7 +867,7 @@ class AgentRunsApi:
 
         Validates and signals a human task answer to the backing process workflow, resuming a run paused on a `human_task` node. The caller must be the task assignee or have `task:manage`.
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1301,7 +1301,7 @@ class AgentRunsApi:
     @validate_call
     def create_agent_run_artifact_upload_url(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         path: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         content_type: Optional[StrictStr] = None,
@@ -1322,7 +1322,7 @@ class AgentRunsApi:
 
         Creates a signed upload URL for writing an artifact into the agent run artifact namespace.  **Required permissions:** `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param path: (required)
         :type path: str
@@ -1382,7 +1382,7 @@ class AgentRunsApi:
     @validate_call
     def create_agent_run_artifact_upload_url_with_http_info(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         path: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         content_type: Optional[StrictStr] = None,
@@ -1403,7 +1403,7 @@ class AgentRunsApi:
 
         Creates a signed upload URL for writing an artifact into the agent run artifact namespace.  **Required permissions:** `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param path: (required)
         :type path: str
@@ -1463,7 +1463,7 @@ class AgentRunsApi:
     @validate_call
     def create_agent_run_artifact_upload_url_without_preload_content(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         path: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         content_type: Optional[StrictStr] = None,
@@ -1484,7 +1484,7 @@ class AgentRunsApi:
 
         Creates a signed upload URL for writing an artifact into the agent run artifact namespace.  **Required permissions:** `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param path: (required)
         :type path: str
@@ -1614,7 +1614,7 @@ class AgentRunsApi:
     @validate_call
     def fork_agent_run(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -1633,7 +1633,7 @@ class AgentRunsApi:
 
         Creates a new agent run from an existing run's interaction, input, configuration, artifacts, and conversation history.  **Required permissions:** `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1687,7 +1687,7 @@ class AgentRunsApi:
     @validate_call
     def fork_agent_run_with_http_info(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -1706,7 +1706,7 @@ class AgentRunsApi:
 
         Creates a new agent run from an existing run's interaction, input, configuration, artifacts, and conversation history.  **Required permissions:** `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1760,7 +1760,7 @@ class AgentRunsApi:
     @validate_call
     def fork_agent_run_without_preload_content(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -1779,7 +1779,7 @@ class AgentRunsApi:
 
         Creates a new agent run from an existing run's interaction, input, configuration, artifacts, and conversation history.  **Required permissions:** `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1897,7 +1897,7 @@ class AgentRunsApi:
     @validate_call
     def get_agent_run(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -1916,7 +1916,7 @@ class AgentRunsApi:
 
         Retrieves a single agent run by stable agent run ID.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1970,7 +1970,7 @@ class AgentRunsApi:
     @validate_call
     def get_agent_run_with_http_info(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -1989,7 +1989,7 @@ class AgentRunsApi:
 
         Retrieves a single agent run by stable agent run ID.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -2043,7 +2043,7 @@ class AgentRunsApi:
     @validate_call
     def get_agent_run_without_preload_content(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -2062,7 +2062,7 @@ class AgentRunsApi:
 
         Retrieves a single agent run by stable agent run ID.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -2180,7 +2180,7 @@ class AgentRunsApi:
     @validate_call
     def get_agent_run_artifact(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         path: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         url: Optional[StrictBool] = None,
@@ -2203,7 +2203,7 @@ class AgentRunsApi:
 
         Returns a signed download URL as JSON when `url=1` is supplied, and otherwise streams the artifact bytes as `application/octet-stream`. Prefer `url=1` and download from the signed URL.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param path: (required)
         :type path: str
@@ -2270,7 +2270,7 @@ class AgentRunsApi:
     @validate_call
     def get_agent_run_artifact_with_http_info(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         path: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         url: Optional[StrictBool] = None,
@@ -2293,7 +2293,7 @@ class AgentRunsApi:
 
         Returns a signed download URL as JSON when `url=1` is supplied, and otherwise streams the artifact bytes as `application/octet-stream`. Prefer `url=1` and download from the signed URL.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param path: (required)
         :type path: str
@@ -2360,7 +2360,7 @@ class AgentRunsApi:
     @validate_call
     def get_agent_run_artifact_without_preload_content(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         path: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         url: Optional[StrictBool] = None,
@@ -2383,7 +2383,7 @@ class AgentRunsApi:
 
         Returns a signed download URL as JSON when `url=1` is supplied, and otherwise streams the artifact bytes as `application/octet-stream`. Prefer `url=1` and download from the signed URL.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param path: (required)
         :type path: str
@@ -2533,7 +2533,7 @@ class AgentRunsApi:
     @validate_call
     def get_agent_run_artifact_content(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         path: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
@@ -2553,7 +2553,7 @@ class AgentRunsApi:
 
         Reads a text artifact and returns its blob generation token for conditional updates.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param path: (required)
         :type path: str
@@ -2611,7 +2611,7 @@ class AgentRunsApi:
     @validate_call
     def get_agent_run_artifact_content_with_http_info(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         path: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
@@ -2631,7 +2631,7 @@ class AgentRunsApi:
 
         Reads a text artifact and returns its blob generation token for conditional updates.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param path: (required)
         :type path: str
@@ -2689,7 +2689,7 @@ class AgentRunsApi:
     @validate_call
     def get_agent_run_artifact_content_without_preload_content(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         path: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
@@ -2709,7 +2709,7 @@ class AgentRunsApi:
 
         Reads a text artifact and returns its blob generation token for conditional updates.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param path: (required)
         :type path: str
@@ -2834,7 +2834,7 @@ class AgentRunsApi:
     @validate_call
     def get_agent_run_child_details(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         child_workflow_id: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         var_from: Annotated[Optional[Annotated[str, Field(strict=True, max_length=12000)]], Field(description="Opaque history cursor from next_from; requires include_history. Invalid or expired cursors return a snapshot.")] = None,
@@ -2857,7 +2857,7 @@ class AgentRunsApi:
 
         Fetches detailed workflow execution state for a child workflow of an agent run.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param child_workflow_id: (required)
         :type child_workflow_id: str
@@ -2923,7 +2923,7 @@ class AgentRunsApi:
     @validate_call
     def get_agent_run_child_details_with_http_info(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         child_workflow_id: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         var_from: Annotated[Optional[Annotated[str, Field(strict=True, max_length=12000)]], Field(description="Opaque history cursor from next_from; requires include_history. Invalid or expired cursors return a snapshot.")] = None,
@@ -2946,7 +2946,7 @@ class AgentRunsApi:
 
         Fetches detailed workflow execution state for a child workflow of an agent run.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param child_workflow_id: (required)
         :type child_workflow_id: str
@@ -3012,7 +3012,7 @@ class AgentRunsApi:
     @validate_call
     def get_agent_run_child_details_without_preload_content(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         child_workflow_id: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         var_from: Annotated[Optional[Annotated[str, Field(strict=True, max_length=12000)]], Field(description="Opaque history cursor from next_from; requires include_history. Invalid or expired cursors return a snapshot.")] = None,
@@ -3035,7 +3035,7 @@ class AgentRunsApi:
 
         Fetches detailed workflow execution state for a child workflow of an agent run.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param child_workflow_id: (required)
         :type child_workflow_id: str
@@ -3183,7 +3183,7 @@ class AgentRunsApi:
     @validate_call
     def get_agent_run_details(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         var_from: Annotated[Optional[Annotated[str, Field(strict=True, max_length=12000)]], Field(description="Opaque history cursor from next_from; requires include_history. Invalid or expired cursors return a snapshot.")] = None,
         include_history: Optional[StrictBool] = None,
@@ -3205,7 +3205,7 @@ class AgentRunsApi:
 
         Fetches detailed workflow execution state for an agent run, optionally including processed history.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -3268,7 +3268,7 @@ class AgentRunsApi:
     @validate_call
     def get_agent_run_details_with_http_info(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         var_from: Annotated[Optional[Annotated[str, Field(strict=True, max_length=12000)]], Field(description="Opaque history cursor from next_from; requires include_history. Invalid or expired cursors return a snapshot.")] = None,
         include_history: Optional[StrictBool] = None,
@@ -3290,7 +3290,7 @@ class AgentRunsApi:
 
         Fetches detailed workflow execution state for an agent run, optionally including processed history.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -3353,7 +3353,7 @@ class AgentRunsApi:
     @validate_call
     def get_agent_run_details_without_preload_content(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         var_from: Annotated[Optional[Annotated[str, Field(strict=True, max_length=12000)]], Field(description="Opaque history cursor from next_from; requires include_history. Invalid or expired cursors return a snapshot.")] = None,
         include_history: Optional[StrictBool] = None,
@@ -3375,7 +3375,7 @@ class AgentRunsApi:
 
         Fetches detailed workflow execution state for an agent run, optionally including processed history.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -3517,7 +3517,7 @@ class AgentRunsApi:
     @validate_call
     def get_process_run_context(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -3536,7 +3536,7 @@ class AgentRunsApi:
 
         Returns the current node and the current process context snapshot for a process run.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -3590,7 +3590,7 @@ class AgentRunsApi:
     @validate_call
     def get_process_run_context_with_http_info(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -3609,7 +3609,7 @@ class AgentRunsApi:
 
         Returns the current node and the current process context snapshot for a process run.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -3663,7 +3663,7 @@ class AgentRunsApi:
     @validate_call
     def get_process_run_context_without_preload_content(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -3682,7 +3682,7 @@ class AgentRunsApi:
 
         Returns the current node and the current process context snapshot for a process run.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -3800,7 +3800,7 @@ class AgentRunsApi:
     @validate_call
     def get_process_run_history(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -3819,7 +3819,7 @@ class AgentRunsApi:
 
         Returns the hydrated node history for a process run, loading full history artifacts when available for long-running executions.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -3873,7 +3873,7 @@ class AgentRunsApi:
     @validate_call
     def get_process_run_history_with_http_info(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -3892,7 +3892,7 @@ class AgentRunsApi:
 
         Returns the hydrated node history for a process run, loading full history artifacts when available for long-running executions.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -3946,7 +3946,7 @@ class AgentRunsApi:
     @validate_call
     def get_process_run_history_without_preload_content(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -3965,7 +3965,7 @@ class AgentRunsApi:
 
         Returns the hydrated node history for a process run, loading full history artifacts when available for long-running executions.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -4083,7 +4083,7 @@ class AgentRunsApi:
     @validate_call
     def list_agent_run_artifacts(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         visibility: Optional[StrictStr] = None,
         _request_timeout: Union[
@@ -4103,7 +4103,7 @@ class AgentRunsApi:
 
         Lists user-visible artifact paths for an agent run. Internal artifact files are excluded by default.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -4160,7 +4160,7 @@ class AgentRunsApi:
     @validate_call
     def list_agent_run_artifacts_with_http_info(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         visibility: Optional[StrictStr] = None,
         _request_timeout: Union[
@@ -4180,7 +4180,7 @@ class AgentRunsApi:
 
         Lists user-visible artifact paths for an agent run. Internal artifact files are excluded by default.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -4237,7 +4237,7 @@ class AgentRunsApi:
     @validate_call
     def list_agent_run_artifacts_without_preload_content(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         visibility: Optional[StrictStr] = None,
         _request_timeout: Union[
@@ -4257,7 +4257,7 @@ class AgentRunsApi:
 
         Lists user-visible artifact paths for an agent run. Internal artifact files are excluded by default.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -4383,7 +4383,7 @@ class AgentRunsApi:
     @validate_call
     def list_agent_run_children(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -4402,7 +4402,7 @@ class AgentRunsApi:
 
         Lists child workflows or sub-agent executions associated with an agent run.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -4456,7 +4456,7 @@ class AgentRunsApi:
     @validate_call
     def list_agent_run_children_with_http_info(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -4475,7 +4475,7 @@ class AgentRunsApi:
 
         Lists child workflows or sub-agent executions associated with an agent run.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -4529,7 +4529,7 @@ class AgentRunsApi:
     @validate_call
     def list_agent_run_children_without_preload_content(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -4548,7 +4548,7 @@ class AgentRunsApi:
 
         Lists child workflows or sub-agent executions associated with an agent run.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -4666,7 +4666,7 @@ class AgentRunsApi:
     @validate_call
     def list_agent_run_updates(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         since: Optional[Union[StrictFloat, StrictInt]] = None,
         _request_timeout: Union[
@@ -4686,7 +4686,7 @@ class AgentRunsApi:
 
         Returns stored compact messages for an agent run after an optional timestamp cursor.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -4743,7 +4743,7 @@ class AgentRunsApi:
     @validate_call
     def list_agent_run_updates_with_http_info(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         since: Optional[Union[StrictFloat, StrictInt]] = None,
         _request_timeout: Union[
@@ -4763,7 +4763,7 @@ class AgentRunsApi:
 
         Returns stored compact messages for an agent run after an optional timestamp cursor.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -4820,7 +4820,7 @@ class AgentRunsApi:
     @validate_call
     def list_agent_run_updates_without_preload_content(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         since: Optional[Union[StrictFloat, StrictInt]] = None,
         _request_timeout: Union[
@@ -4840,7 +4840,7 @@ class AgentRunsApi:
 
         Returns stored compact messages for an agent run after an optional timestamp cursor.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -5579,7 +5579,7 @@ class AgentRunsApi:
     @validate_call
     def post_agent_run_update(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         post_agent_run_update_payload: PostAgentRunUpdatePayload,
         _request_timeout: Union[
@@ -5599,7 +5599,7 @@ class AgentRunsApi:
 
         Publishes a message or update into an agent run's workflow stream.  **Required permissions:** `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -5656,7 +5656,7 @@ class AgentRunsApi:
     @validate_call
     def post_agent_run_update_with_http_info(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         post_agent_run_update_payload: PostAgentRunUpdatePayload,
         _request_timeout: Union[
@@ -5676,7 +5676,7 @@ class AgentRunsApi:
 
         Publishes a message or update into an agent run's workflow stream.  **Required permissions:** `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -5733,7 +5733,7 @@ class AgentRunsApi:
     @validate_call
     def post_agent_run_update_without_preload_content(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         post_agent_run_update_payload: PostAgentRunUpdatePayload,
         _request_timeout: Union[
@@ -5753,7 +5753,7 @@ class AgentRunsApi:
 
         Publishes a message or update into an agent run's workflow stream.  **Required permissions:** `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -5890,7 +5890,7 @@ class AgentRunsApi:
     @validate_call
     def query_agent_run(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         query_name: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
@@ -5910,7 +5910,7 @@ class AgentRunsApi:
 
         Runs a named query against an agent run.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param query_name: (required)
         :type query_name: str
@@ -5967,7 +5967,7 @@ class AgentRunsApi:
     @validate_call
     def query_agent_run_with_http_info(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         query_name: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
@@ -5987,7 +5987,7 @@ class AgentRunsApi:
 
         Runs a named query against an agent run.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param query_name: (required)
         :type query_name: str
@@ -6044,7 +6044,7 @@ class AgentRunsApi:
     @validate_call
     def query_agent_run_without_preload_content(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         query_name: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
@@ -6064,7 +6064,7 @@ class AgentRunsApi:
 
         Runs a named query against an agent run.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param query_name: (required)
         :type query_name: str
@@ -6188,7 +6188,7 @@ class AgentRunsApi:
     @validate_call
     def record_agent_run_feedback(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         agent_run_feedback_payload: AgentRunFeedbackPayload,
         _request_timeout: Union[
@@ -6208,7 +6208,7 @@ class AgentRunsApi:
 
         Records a thumbs up/down, an optional reason code and an optional comment against an agent run. One active rating per user and scope; a new rating replaces the previous one and a retried `feedback_id` is idempotent. The comment stays in the project; only its presence is exported.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -6265,7 +6265,7 @@ class AgentRunsApi:
     @validate_call
     def record_agent_run_feedback_with_http_info(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         agent_run_feedback_payload: AgentRunFeedbackPayload,
         _request_timeout: Union[
@@ -6285,7 +6285,7 @@ class AgentRunsApi:
 
         Records a thumbs up/down, an optional reason code and an optional comment against an agent run. One active rating per user and scope; a new rating replaces the previous one and a retried `feedback_id` is idempotent. The comment stays in the project; only its presence is exported.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -6342,7 +6342,7 @@ class AgentRunsApi:
     @validate_call
     def record_agent_run_feedback_without_preload_content(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         agent_run_feedback_payload: AgentRunFeedbackPayload,
         _request_timeout: Union[
@@ -6362,7 +6362,7 @@ class AgentRunsApi:
 
         Records a thumbs up/down, an optional reason code and an optional comment against an agent run. One active rating per user and scope; a new rating replaces the previous one and a retried `feedback_id` is idempotent. The comment stays in the project; only its presence is exported.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -6499,7 +6499,7 @@ class AgentRunsApi:
     @validate_call
     def restart_agent_run(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         restart_agent_run_payload: Optional[RestartAgentRunPayload] = None,
         _request_timeout: Union[
@@ -6519,7 +6519,7 @@ class AgentRunsApi:
 
         Restarts a stopped, failed, or completed agent run by launching a new workflow that loads the previous conversation history.  **Required permissions:** `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -6576,7 +6576,7 @@ class AgentRunsApi:
     @validate_call
     def restart_agent_run_with_http_info(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         restart_agent_run_payload: Optional[RestartAgentRunPayload] = None,
         _request_timeout: Union[
@@ -6596,7 +6596,7 @@ class AgentRunsApi:
 
         Restarts a stopped, failed, or completed agent run by launching a new workflow that loads the previous conversation history.  **Required permissions:** `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -6653,7 +6653,7 @@ class AgentRunsApi:
     @validate_call
     def restart_agent_run_without_preload_content(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         restart_agent_run_payload: Optional[RestartAgentRunPayload] = None,
         _request_timeout: Union[
@@ -6673,7 +6673,7 @@ class AgentRunsApi:
 
         Restarts a stopped, failed, or completed agent run by launching a new workflow that loads the previous conversation history.  **Required permissions:** `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -6810,7 +6810,7 @@ class AgentRunsApi:
     @validate_call
     def retry_process_node(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         retry_process_node_payload: RetryProcessNodePayload,
         _request_timeout: Union[
@@ -6830,7 +6830,7 @@ class AgentRunsApi:
 
         Signals a process workflow to retry the current node or a requested node, re-entering the node with the current process context.  **Required permissions:** `workflow:admin`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -6888,7 +6888,7 @@ class AgentRunsApi:
     @validate_call
     def retry_process_node_with_http_info(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         retry_process_node_payload: RetryProcessNodePayload,
         _request_timeout: Union[
@@ -6908,7 +6908,7 @@ class AgentRunsApi:
 
         Signals a process workflow to retry the current node or a requested node, re-entering the node with the current process context.  **Required permissions:** `workflow:admin`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -6966,7 +6966,7 @@ class AgentRunsApi:
     @validate_call
     def retry_process_node_without_preload_content(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         retry_process_node_payload: RetryProcessNodePayload,
         _request_timeout: Union[
@@ -6986,7 +6986,7 @@ class AgentRunsApi:
 
         Signals a process workflow to retry the current node or a requested node, re-entering the node with the current process context.  **Required permissions:** `workflow:admin`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -7135,8 +7135,8 @@ class AgentRunsApi:
         run_type: Annotated[Optional[List[StrictStr]], Field(description="Filter by public runtime mode")] = None,
         since: Annotated[Optional[datetime], Field(description="Only return runs started after this date")] = None,
         until: Annotated[Optional[datetime], Field(description="Only return runs started at or before this date")] = None,
-        limit: Annotated[Optional[Union[StrictFloat, StrictInt]], Field(description="Maximum number of results (default: 50)")] = None,
-        offset: Annotated[Optional[Union[StrictFloat, StrictInt]], Field(description="Offset for pagination")] = None,
+        limit: Annotated[Optional[Union[Annotated[float, Field(strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]], Field(description="Maximum number of results (default: 50)")] = None,
+        offset: Annotated[Optional[Union[Annotated[float, Field(strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]], Field(description="Offset for pagination")] = None,
         sort: Annotated[Optional[List[StrictStr]], Field(description="Multi-field sort. Each item has the form `field` or `field:order`, where   field is one of: `started_at`, `updated_at`   order is one of: `asc`, `desc` (default: `desc`) The first item is the primary sort; subsequent items are tie-breakers. Example: `['updated_at:desc', 'started_at:asc']`. Defaults to `['started_at:desc']` when omitted.")] = None,
         _request_timeout: Union[
             None,
@@ -7256,8 +7256,8 @@ class AgentRunsApi:
         run_type: Annotated[Optional[List[StrictStr]], Field(description="Filter by public runtime mode")] = None,
         since: Annotated[Optional[datetime], Field(description="Only return runs started after this date")] = None,
         until: Annotated[Optional[datetime], Field(description="Only return runs started at or before this date")] = None,
-        limit: Annotated[Optional[Union[StrictFloat, StrictInt]], Field(description="Maximum number of results (default: 50)")] = None,
-        offset: Annotated[Optional[Union[StrictFloat, StrictInt]], Field(description="Offset for pagination")] = None,
+        limit: Annotated[Optional[Union[Annotated[float, Field(strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]], Field(description="Maximum number of results (default: 50)")] = None,
+        offset: Annotated[Optional[Union[Annotated[float, Field(strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]], Field(description="Offset for pagination")] = None,
         sort: Annotated[Optional[List[StrictStr]], Field(description="Multi-field sort. Each item has the form `field` or `field:order`, where   field is one of: `started_at`, `updated_at`   order is one of: `asc`, `desc` (default: `desc`) The first item is the primary sort; subsequent items are tie-breakers. Example: `['updated_at:desc', 'started_at:asc']`. Defaults to `['started_at:desc']` when omitted.")] = None,
         _request_timeout: Union[
             None,
@@ -7377,8 +7377,8 @@ class AgentRunsApi:
         run_type: Annotated[Optional[List[StrictStr]], Field(description="Filter by public runtime mode")] = None,
         since: Annotated[Optional[datetime], Field(description="Only return runs started after this date")] = None,
         until: Annotated[Optional[datetime], Field(description="Only return runs started at or before this date")] = None,
-        limit: Annotated[Optional[Union[StrictFloat, StrictInt]], Field(description="Maximum number of results (default: 50)")] = None,
-        offset: Annotated[Optional[Union[StrictFloat, StrictInt]], Field(description="Offset for pagination")] = None,
+        limit: Annotated[Optional[Union[Annotated[float, Field(strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]], Field(description="Maximum number of results (default: 50)")] = None,
+        offset: Annotated[Optional[Union[Annotated[float, Field(strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]], Field(description="Offset for pagination")] = None,
         sort: Annotated[Optional[List[StrictStr]], Field(description="Multi-field sort. Each item has the form `field` or `field:order`, where   field is one of: `started_at`, `updated_at`   order is one of: `asc`, `desc` (default: `desc`) The first item is the primary sort; subsequent items are tie-breakers. Example: `['updated_at:desc', 'started_at:asc']`. Defaults to `['started_at:desc']` when omitted.")] = None,
         _request_timeout: Union[
             None,
@@ -7636,7 +7636,7 @@ class AgentRunsApi:
     @validate_call
     def signal_agent_run(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         signal_name: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         request_body: Optional[Dict[str, Any]] = None,
@@ -7657,7 +7657,7 @@ class AgentRunsApi:
 
         Sends a named signal to an agent run.  **Required permissions:** `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param signal_name: (required)
         :type signal_name: str
@@ -7718,7 +7718,7 @@ class AgentRunsApi:
     @validate_call
     def signal_agent_run_with_http_info(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         signal_name: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         request_body: Optional[Dict[str, Any]] = None,
@@ -7739,7 +7739,7 @@ class AgentRunsApi:
 
         Sends a named signal to an agent run.  **Required permissions:** `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param signal_name: (required)
         :type signal_name: str
@@ -7800,7 +7800,7 @@ class AgentRunsApi:
     @validate_call
     def signal_agent_run_without_preload_content(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         signal_name: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         request_body: Optional[Dict[str, Any]] = None,
@@ -7821,7 +7821,7 @@ class AgentRunsApi:
 
         Sends a named signal to an agent run.  **Required permissions:** `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param signal_name: (required)
         :type signal_name: str
@@ -7965,7 +7965,7 @@ class AgentRunsApi:
     @validate_call
     def stream_agent_run(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         since: Optional[Union[StrictFloat, StrictInt]] = None,
         skip_history: Optional[StrictBool] = None,
         _request_timeout: Union[
@@ -7985,7 +7985,7 @@ class AgentRunsApi:
 
         Opens a Server-Sent Events stream for live and archived agent run messages.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param since:
         :type since: float
@@ -8042,7 +8042,7 @@ class AgentRunsApi:
     @validate_call
     def stream_agent_run_with_http_info(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         since: Optional[Union[StrictFloat, StrictInt]] = None,
         skip_history: Optional[StrictBool] = None,
         _request_timeout: Union[
@@ -8062,7 +8062,7 @@ class AgentRunsApi:
 
         Opens a Server-Sent Events stream for live and archived agent run messages.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param since:
         :type since: float
@@ -8119,7 +8119,7 @@ class AgentRunsApi:
     @validate_call
     def stream_agent_run_without_preload_content(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         since: Optional[Union[StrictFloat, StrictInt]] = None,
         skip_history: Optional[StrictBool] = None,
         _request_timeout: Union[
@@ -8139,7 +8139,7 @@ class AgentRunsApi:
 
         Opens a Server-Sent Events stream for live and archived agent run messages.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param since:
         :type since: float
@@ -8268,7 +8268,7 @@ class AgentRunsApi:
     @validate_call
     def stream_agent_run_details(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -8286,7 +8286,7 @@ class AgentRunsApi:
 
         Streams Temporal history events for an agent run across continue-as-new workflow runs.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -8337,7 +8337,7 @@ class AgentRunsApi:
     @validate_call
     def stream_agent_run_details_with_http_info(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -8355,7 +8355,7 @@ class AgentRunsApi:
 
         Streams Temporal history events for an agent run across continue-as-new workflow runs.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -8406,7 +8406,7 @@ class AgentRunsApi:
     @validate_call
     def stream_agent_run_details_without_preload_content(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -8424,7 +8424,7 @@ class AgentRunsApi:
 
         Streams Temporal history events for an agent run across continue-as-new workflow runs.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -8537,7 +8537,7 @@ class AgentRunsApi:
     @validate_call
     def terminate_agent_run(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -8556,7 +8556,7 @@ class AgentRunsApi:
 
         Cancels the backing workflow, marks the agent run as cancelled, and schedules archival.  **Required permissions:** `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -8610,7 +8610,7 @@ class AgentRunsApi:
     @validate_call
     def terminate_agent_run_with_http_info(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -8629,7 +8629,7 @@ class AgentRunsApi:
 
         Cancels the backing workflow, marks the agent run as cancelled, and schedules archival.  **Required permissions:** `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -8683,7 +8683,7 @@ class AgentRunsApi:
     @validate_call
     def terminate_agent_run_without_preload_content(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -8702,7 +8702,7 @@ class AgentRunsApi:
 
         Cancels the backing workflow, marks the agent run as cancelled, and schedules archival.  **Required permissions:** `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -8820,7 +8820,7 @@ class AgentRunsApi:
     @validate_call
     def update_agent_run_artifact_content(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         path: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_agent_artifact_content_payload: UpdateAgentArtifactContentPayload,
@@ -8841,7 +8841,7 @@ class AgentRunsApi:
 
         Updates a text artifact only when its blob generation token still matches.  **Required permissions:** `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param path: (required)
         :type path: str
@@ -8901,7 +8901,7 @@ class AgentRunsApi:
     @validate_call
     def update_agent_run_artifact_content_with_http_info(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         path: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_agent_artifact_content_payload: UpdateAgentArtifactContentPayload,
@@ -8922,7 +8922,7 @@ class AgentRunsApi:
 
         Updates a text artifact only when its blob generation token still matches.  **Required permissions:** `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param path: (required)
         :type path: str
@@ -8982,7 +8982,7 @@ class AgentRunsApi:
     @validate_call
     def update_agent_run_artifact_content_without_preload_content(
         self,
-        agent_run_id: StrictStr,
+        agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         path: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_agent_artifact_content_payload: UpdateAgentArtifactContentPayload,
@@ -9003,7 +9003,7 @@ class AgentRunsApi:
 
         Updates a text artifact only when its blob generation token still matches.  **Required permissions:** `workflow:run`
 
-        :param agent_run_id: (required)
+        :param agent_run_id: The agent run ID, as 24 hexadecimal characters. (required)
         :type agent_run_id: str
         :param path: (required)
         :type path: str

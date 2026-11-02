@@ -27,7 +27,7 @@ from pydantic_core import to_jsonable_python
 
 class CostRunPriceQuery(BaseModel):
     """
-    CostRunPriceQuery
+    Identifies the run to price by at least one of `run_id`, `agent_run_id`, `workflow_id` or `workflow_run_id`. An empty identifier counts as absent.
     """ # noqa: E501
     run_id: Optional[StrictStr] = Field(default=None, description="Interaction execution run ID")
     agent_run_id: Optional[StrictStr] = Field(default=None, description="Agent run ID")

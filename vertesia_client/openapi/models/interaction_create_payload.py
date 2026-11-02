@@ -45,7 +45,7 @@ class InteractionCreatePayload(BaseModel):
     cache_policy: Optional[CachePolicy] = None
     prompts: List[InteractionPromptSegmentInput]
     last_published_at: Optional[datetime] = None
-    name: StrictStr
+    name: Annotated[str, Field(min_length=1, strict=True)]
     description: Optional[StrictStr] = None
     agent_runner_options: Optional[AgentRunnerOptions] = None
     result_schema: Optional[InteractionResultSchema] = None

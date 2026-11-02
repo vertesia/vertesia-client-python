@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.view_experience_configuration import ViewExperienceConfiguration
 from typing import Optional, Set
 from typing_extensions import Self
@@ -34,8 +35,8 @@ class PreviewViewExperienceRequest(BaseModel):
     navigation_queries: Optional[Dict[str, StrictStr]] = Field(default=None, description="Server-side text filters for large navigation sources, keyed by navigation id.")
     display: Optional[StrictStr] = None
     sort: Optional[StrictStr] = None
-    offset: Optional[Union[StrictFloat, StrictInt]] = None
-    limit: Optional[Union[StrictFloat, StrictInt]] = None
+    offset: Optional[Union[Annotated[float, Field(multiple_of=1, le=50000, strict=True, ge=0)], Annotated[int, Field(le=50000, strict=True, ge=0)]]] = None
+    limit: Optional[Union[Annotated[float, Field(multiple_of=1, le=200, strict=True, ge=1)], Annotated[int, Field(le=200, strict=True, ge=1)]]] = None
     configuration: ViewExperienceConfiguration = Field(description="The unsaved View configuration to validate and execute.")
     __properties: ClassVar[List[str]] = ["query", "key_terms", "navigation", "navigation_queries", "display", "sort", "offset", "limit", "configuration"]
 

@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.async_completion_options import AsyncCompletionOptions
 from vertesia_client.openapi.models.async_conversation_execution_payload_result_schema import AsyncConversationExecutionPayloadResultSchema
 from vertesia_client.openapi.models.execution_run_workflow import ExecutionRunWorkflow
@@ -32,7 +33,7 @@ class AsyncInteractionExecutionPayload(BaseModel):
     """
     AsyncInteractionExecutionPayload
     """ # noqa: E501
-    interaction: StrictStr = Field(description="The interaction name and suffixed by an optional tag or version separated from the name using a @ character If no version/tag part is specified then the latest version is used. Example: ReviewContract, ReviewContract@draft, ReviewContract@1, ReviewContract@some-tag")
+    interaction: Annotated[str, Field(min_length=1, strict=True)] = Field(description="The interaction name and suffixed by an optional tag or version separated from the name using a @ character If no version/tag part is specified then the latest version is used. Example: ReviewContract, ReviewContract@draft, ReviewContract@1, ReviewContract@some-tag")
     data: Optional[Any] = None
     config: Optional[InteractionExecutionConfiguration] = None
     result_schema: Optional[AsyncConversationExecutionPayloadResultSchema] = None

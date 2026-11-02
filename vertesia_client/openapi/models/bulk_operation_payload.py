@@ -29,7 +29,7 @@ class BulkOperationPayload(BaseModel):
     """ # noqa: E501
     name: StrictStr = Field(description="The operation name")
     ids: List[StrictStr] = Field(description="The IDs of the objects to operate on")
-    params: Dict[str, Any] = Field(description="The operation parameters.")
+    params: Dict[str, Any] = Field(description="The operation parameters. `create` takes the objects to create as `objects`, 1 to 10000.")
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["name", "ids", "params"]
 

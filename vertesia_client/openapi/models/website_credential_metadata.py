@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.website_credential_capability import WebsiteCredentialCapability
 from vertesia_client.openapi.models.website_credential_totp_metadata import WebsiteCredentialTotpMetadata
 from vertesia_client.openapi.models.website_credential_website import WebsiteCredentialWebsite
@@ -30,8 +31,8 @@ class WebsiteCredentialMetadata(BaseModel):
     """
     WebsiteCredentialMetadata
     """ # noqa: E501
-    name: StrictStr
-    websites: List[WebsiteCredentialWebsite]
+    name: Annotated[str, Field(strict=True)]
+    websites: Annotated[List[WebsiteCredentialWebsite], Field(min_length=1)]
     username: Optional[StrictStr] = None
     username_hint: Optional[StrictStr] = None
     username_secret: Optional[StrictBool] = None
@@ -44,6 +45,16 @@ class WebsiteCredentialMetadata(BaseModel):
     expires_at: Optional[StrictStr] = Field(default=None, description="Optional ISO timestamp after which the credential is no longer usable. Expired credentials are hidden from lookup and cannot be filled.")
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["name", "websites", "username", "username_hint", "username_secret", "properties", "tags", "enabled", "capabilities", "notes", "totp", "expires_at"]
+
+    @field_validator('name')
+    def name_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"\S", value):
+            raise ValueError(r"must validate the regular expression /\S/")
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,

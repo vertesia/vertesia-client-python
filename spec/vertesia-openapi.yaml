@@ -2019,12 +2019,15 @@ components:
             compatibility.
         account_id:
           type: string
+          minLength: 1
         project_id:
           type: string
+          minLength: 1
         name:
           type: string
         on_behalf_of:
           type: string
+          minLength: 1
           description: >-
             User information.
 
@@ -2334,6 +2337,7 @@ components:
       type: object
       properties:
         changes:
+          minItems: 1
           type: array
           items:
             $ref: "#/components/schemas/AlterTableOperation"
@@ -2519,6 +2523,7 @@ components:
             compatibility.
         key:
           type: string
+          minLength: 1
       required:
         - key
         - type
@@ -4007,6 +4012,7 @@ components:
           $ref: "#/components/schemas/AppOAuthClientConfig"
         name:
           type: string
+          minLength: 1
           description: The name of the app, used as the id in the system. Must be in kebab
             case (e.g. my-app).
         visibility:
@@ -5102,6 +5108,7 @@ components:
       properties:
         interaction:
           type: string
+          minLength: 1
           description: "The interaction name and suffixed by an optional tag or version
             separated from the name using a @ character If no version/tag part
             is specified then the latest version is used. Example:
@@ -5393,6 +5400,7 @@ components:
       properties:
         interaction:
           type: string
+          minLength: 1
           description: "The interaction name and suffixed by an optional tag or version
             separated from the name using a @ character If no version/tag part
             is specified then the latest version is used. Example:
@@ -6551,6 +6559,8 @@ components:
       type: object
       properties:
         queries:
+          minItems: 1
+          maxItems: 20
           type: array
           items:
             type: object
@@ -6559,6 +6569,7 @@ components:
                 type: string
               sql:
                 type: string
+                minLength: 1
               limit:
                 type: number
             required:
@@ -7211,12 +7222,29 @@ components:
         params:
           type: object
           additionalProperties: true
-          description: The operation parameters.
+          description: The operation parameters. `create` takes the objects to create as
+            `objects`, 1 to 10000.
       required:
         - name
         - ids
         - params
       additionalProperties: false
+      if:
+        required:
+          - name
+        properties:
+          name:
+            const: create
+      then:
+        properties:
+          params:
+            required:
+              - objects
+            properties:
+              objects:
+                type: array
+                minItems: 1
+                maxItems: 10000
     BulkOperationResponse:
       oneOf:
         - $ref: "#/components/schemas/BulkOperationResult"
@@ -7288,12 +7316,15 @@ components:
       type: object
       properties:
         files:
+          minItems: 1
+          maxItems: 10000
           type: array
           items:
             type: object
             properties:
               name:
                 type: string
+                minLength: 1
               mime_type:
                 type: string
               id:
@@ -7618,6 +7649,7 @@ components:
             - add
             - delete
         children:
+          minItems: 1
           type: array
           items:
             type: string
@@ -7642,6 +7674,7 @@ components:
             - add
             - delete
         members:
+          minItems: 1
           type: array
           items:
             type: string
@@ -7813,6 +7846,18 @@ components:
           type: object
           additionalProperties: true
       additionalProperties: false
+      if:
+        required:
+          - match
+      then:
+        properties:
+          match:
+            propertyNames:
+              pattern: ^(\$(and|or|nor)|[^$.\x00][^.\x00]*(\.[^$.\x00][^.\x00]*)*)$
+      description: "`match` is a Mongo filter. Its keys are dotted field paths or
+        `$and`, `$or` and `$nor`, and a condition is a literal or uses the
+        comparison operators, `$in`, `$nin`, `$all`, `$exists`, `$type`,
+        `$size`, `$regex`, `$not` and `$elemMatch`."
     ComplexSearchPayload:
       type: object
       properties:
@@ -7827,8 +7872,10 @@ components:
             search results page.
         limit:
           type: number
+          minimum: 0
         offset:
           type: number
+          minimum: 0
         select:
           type: string
         all_revisions:
@@ -7849,6 +7896,20 @@ components:
         query:
           $ref: "#/components/schemas/ComplexSearchQuery"
       additionalProperties: false
+      if:
+        required:
+          - facets
+      then:
+        properties:
+          facets:
+            items:
+              properties:
+                name:
+                  pattern: ^[^\[\]>]+$
+                  not:
+                    const: total
+      description: "Each facet `name` is an Elasticsearch aggregation name: non-empty,
+        without `[`, `]` or `>`, and not `total`."
     ComplexSearchQuery:
       type: object
       properties:
@@ -8422,6 +8483,23 @@ components:
       required:
         - facets
       additionalProperties: false
+      if:
+        required:
+          - facets
+      then:
+        properties:
+          facets:
+            items:
+              properties:
+                name:
+                  pattern: ^[^$.\x00][^.\x00]*$
+                  not:
+                    const: total
+                field:
+                  pattern: ^[^$.\x00][^.\x00]*(\.[^$.\x00][^.\x00]*)*$
+      description: "Each facet `name` is a Mongo field name: non-empty, without `.` or
+        NUL, not starting with `$`, and not `total`. Each `field` is a dotted
+        path of such names."
     ComputeInteractionFacetPayload:
       type: object
       properties:
@@ -8434,6 +8512,23 @@ components:
       required:
         - facets
       additionalProperties: false
+      if:
+        required:
+          - facets
+      then:
+        properties:
+          facets:
+            items:
+              properties:
+                name:
+                  pattern: ^[^$.\x00][^.\x00]*$
+                  not:
+                    const: total
+                field:
+                  pattern: ^[^$.\x00][^.\x00]*(\.[^$.\x00][^.\x00]*)*$
+      description: "Each facet `name` is a Mongo field name: non-empty, without `.` or
+        NUL, not starting with `$`, and not `total`. Each `field` is a dotted
+        path of such names."
     ComputeObjectFacetPayload:
       type: object
       properties:
@@ -8446,6 +8541,20 @@ components:
       required:
         - facets
       additionalProperties: false
+      if:
+        required:
+          - facets
+      then:
+        properties:
+          facets:
+            items:
+              properties:
+                name:
+                  pattern: ^[^\[\]>]+$
+                  not:
+                    const: total
+      description: "Each facet `name` is an Elasticsearch aggregation name: non-empty,
+        without `[`, `]` or `>`, and not `total`."
     ComputePromptFacetPayload:
       type: object
       properties:
@@ -8458,6 +8567,23 @@ components:
       required:
         - facets
       additionalProperties: false
+      if:
+        required:
+          - facets
+      then:
+        properties:
+          facets:
+            items:
+              properties:
+                name:
+                  pattern: ^[^$.\x00][^.\x00]*$
+                  not:
+                    const: total
+                field:
+                  pattern: ^[^$.\x00][^.\x00]*(\.[^$.\x00][^.\x00]*)*$
+      description: "Each facet `name` is a Mongo field name: non-empty, without `.` or
+        NUL, not starting with `$`, and not `total`. Each `field` is a dotted
+        path of such names."
     ComputedFacetResponse:
       type: object
       properties:
@@ -9221,6 +9347,51 @@ components:
             - csv
             - table
       additionalProperties: false
+      allOf:
+        - if:
+            not:
+              anyOf:
+                - required:
+                    - sql
+                  properties:
+                    sql:
+                      minLength: 1
+                - required:
+                    - esql
+                  properties:
+                    esql:
+                      minLength: 1
+          then:
+            required:
+              - dsl
+        - if:
+            required:
+              - sql
+            properties:
+              sql:
+                minLength: 1
+          then:
+            not:
+              anyOf:
+                - required:
+                    - esql
+                  properties:
+                    esql:
+                      minLength: 1
+                - required:
+                    - dsl
+        - if:
+            required:
+              - esql
+            properties:
+              esql:
+                minLength: 1
+          then:
+            not:
+              required:
+                - dsl
+      description: Exactly one of `sql`, `esql` or `dsl`. An empty `sql` or `esql`
+        counts as absent.
     ContentQueryResult:
       type: object
       properties:
@@ -10027,8 +10198,10 @@ components:
       properties:
         source:
           type: string
+          minLength: 1
         dest:
           type: string
+          minLength: 1
       required:
         - source
         - dest
@@ -10321,6 +10494,33 @@ components:
             - org
           description: "Scope: 'project' (default, current project) or 'org'"
       additionalProperties: false
+      if:
+        not:
+          anyOf:
+            - required:
+                - run_id
+              properties:
+                run_id:
+                  minLength: 1
+            - required:
+                - agent_run_id
+              properties:
+                agent_run_id:
+                  minLength: 1
+            - required:
+                - workflow_id
+              properties:
+                workflow_id:
+                  minLength: 1
+      then:
+        required:
+          - workflow_run_id
+        properties:
+          workflow_run_id:
+            minLength: 1
+      description: Identifies the run to price by at least one of `run_id`,
+        `agent_run_id`, `workflow_id` or `workflow_run_id`. An empty identifier
+        counts as absent.
     CostRunPriceResponse:
       type: object
       properties:
@@ -10485,6 +10685,7 @@ components:
       properties:
         interaction:
           type: string
+          minLength: 1
           description: Interaction ID or code (e.g. "sys:generic_question").
         title:
           type: string
@@ -10688,6 +10889,22 @@ components:
         - name
         - role
       additionalProperties: false
+    CreateAppRepoBranchRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          pattern: \S
+          description: The new branch name.
+        source_ref:
+          type: string
+          pattern: \S
+          description: The existing branch, tag or commit the new branch starts from.
+      required:
+        - name
+        - source_ref
+      additionalProperties: false
+      description: Request to create a branch from an existing branch, tag, or commit.
     CreateAppVersionLaunchRequest:
       type: object
       properties:
@@ -10790,6 +11007,7 @@ components:
             sets it.
         name:
           type: string
+          minLength: 1
           description: Name of the collection
         dynamic:
           type: boolean
@@ -10799,6 +11017,18 @@ components:
         - name
         - dynamic
       additionalProperties: false
+      if:
+        required:
+          - query
+      then:
+        properties:
+          query:
+            propertyNames:
+              pattern: ^(\$(and|or|nor)|[^$.\x00][^.\x00]*(\.[^$.\x00][^.\x00]*)*)$
+      description: "`query` is a Mongo filter. Its keys are dotted field paths or
+        `$and`, `$or` and `$nor`, and a condition is a literal or uses the
+        comparison operators, `$in`, `$nin`, `$all`, `$exists`, `$type`,
+        `$size`, `$regex`, `$not` and `$elemMatch`."
     CreateContentObjectPayload:
       type: object
       properties:
@@ -10936,8 +11166,36 @@ components:
             with different input is rejected with 409. Keys are scoped to the
             project and stay bound to their object for as long as it exists.
       additionalProperties: false
+      if:
+        not:
+          anyOf:
+            - required:
+                - name
+              properties:
+                name:
+                  minLength: 1
+            - required:
+                - content
+              properties:
+                content:
+                  required:
+                    - name
+                  properties:
+                    name:
+                      minLength: 1
+      then:
+        required:
+          - content
+        properties:
+          content:
+            required:
+              - source
+            properties:
+              source:
+                minLength: 1
       description: When creating from an uploaded file the content should be an URL to
-        the uploaded file
+        the uploaded file. `name` is required unless `content.name` or
+        `content.source` is given; it then defaults to the content file name.
     CreateContentObjectTypePayload:
       type: object
       properties:
@@ -10969,6 +11227,7 @@ components:
             schema a generation time and save/update time.
         name:
           type: string
+          minLength: 1
           description: Human-readable name or title
         description:
           type: string
@@ -10986,13 +11245,17 @@ components:
       properties:
         name:
           type: string
+          minLength: 1
           description: Dashboard name (unique within store)
         summary:
           type: string
           description: Dashboard summary
         dataSource:
-          $ref: "#/components/schemas/DashboardDataSource"
-          description: Data source used to populate Vega `data.values`.
+          $ref: "#/components/schemas/DashboardSqlDataSource"
+          description: SQL data source used to populate Vega `data.values`. Its query,
+            limit and parameters are stored as the dashboard's own; a top-level
+            `query`, `queryLimit` or `queryParameters` sent alongside takes
+            precedence.
         query:
           type: string
           description: SQL query that returns all data for the dashboard. Deprecated
@@ -11012,16 +11275,33 @@ components:
         - name
         - spec
       additionalProperties: false
-      description: Payload for creating a new dashboard. Requires a data source and
-        spec (Vega-Lite).
+      if:
+        required:
+          - query
+      then:
+        properties:
+          query:
+            minLength: 1
+      else:
+        required:
+          - dataSource
+        properties:
+          dataSource:
+            properties:
+              query:
+                minLength: 1
+      description: Payload for creating a new dashboard. Requires a SQL data source,
+        as `dataSource` or `query`, and a Vega-Lite spec.
     CreateDashboardSnapshotPayload:
       type: object
       properties:
         name:
           type: string
+          minLength: 1
           description: Snapshot name (must be unique within dashboard)
         message:
           type: string
+          minLength: 1
           description: Snapshot description/message
       required:
         - name
@@ -11199,6 +11479,7 @@ components:
         client_type:
           $ref: "#/components/schemas/OAuthClientType"
         redirect_uris:
+          minItems: 1
           type: array
           items:
             type: string
@@ -11243,8 +11524,10 @@ components:
       properties:
         name:
           type: string
+          pattern: ^[a-z0-9][a-z0-9-]*[a-z0-9]$
         display_name:
           type: string
+          minLength: 1
         grant_type:
           type: string
           enum:
@@ -11256,6 +11539,7 @@ components:
           type: string
         client_id:
           type: string
+          minLength: 1
         client_secret:
           type: string
           description: Optional client secret for confidential clients. Will be encrypted
@@ -11280,6 +11564,7 @@ components:
       properties:
         name:
           type: string
+          minLength: 1
         description:
           type: string
         status:
@@ -11422,9 +11707,11 @@ components:
       properties:
         name:
           type: string
+          minLength: 1
           description: Snapshot name (must be unique within store)
         message:
           type: string
+          minLength: 1
           description: Snapshot description
       required:
         - name
@@ -11472,12 +11759,14 @@ components:
       type: object
       properties:
         tables:
+          minItems: 1
           type: array
           items:
             $ref: "#/components/schemas/CreateTablePayload"
           description: Table definitions to create
         message:
           type: string
+          minLength: 1
           description: Commit message
       required:
         - tables
@@ -11489,6 +11778,7 @@ components:
       properties:
         title:
           type: string
+          minLength: 1
         description:
           type: string
         assignee:
@@ -11511,6 +11801,7 @@ components:
       properties:
         name:
           type: string
+          minLength: 1
         description:
           type: string
         tags:
@@ -11575,6 +11866,8 @@ components:
       properties:
         name:
           type: string
+          minLength: 1
+          maxLength: 120
         enabled:
           type: boolean
         layout:
@@ -11591,8 +11884,12 @@ components:
           $ref: "#/components/schemas/ViewResultsConfiguration"
         description:
           type: string
+          maxLength: 4000
+          pattern: \S
         id:
           type: string
+          maxLength: 64
+          pattern: ^[a-z0-9]+(?:-[a-z0-9]+)*$
         version:
           $ref: "#/components/schemas/ViewExperienceSchemaVersion"
       required:
@@ -12279,6 +12576,23 @@ components:
         - deleted
         - failed
       additionalProperties: false
+    DashboardBulkIdsPayload:
+      type: object
+      additionalProperties:
+        type: array
+        items:
+          type: string
+      if: {}
+      then:
+        required:
+          - ids
+        properties:
+          ids:
+            minItems: 1
+            items:
+              pattern: ^[0-9a-fA-F]{24}$
+      description: The dashboards to act on, as an `ids` list of at least one
+        dashboard ID (24 hexadecimal characters).
     DashboardDataSource:
       oneOf:
         - $ref: "#/components/schemas/DashboardSqlDataSource"
@@ -13328,9 +13642,11 @@ components:
       properties:
         sql:
           type: string
+          minLength: 1
           description: SQL statement. Only UPDATE and DELETE statements are accepted.
         message:
           type: string
+          minLength: 1
           description: Commit message recorded on the resulting data store version.
         allow_full_table:
           type: boolean
@@ -14434,12 +14750,16 @@ components:
             compatibility.
         environment_id:
           type: string
+          minLength: 1
         environment_name:
           type: string
+          minLength: 1
         project_id:
           type: string
+          minLength: 1
         account_id:
           type: string
+          minLength: 1
       required:
         - account_id
         - environment_id
@@ -15358,8 +15678,14 @@ components:
           type: string
         offset:
           type: number
+          minimum: 0
+          maximum: 50000
+          multipleOf: 1
         limit:
           type: number
+          minimum: 1
+          maximum: 200
+          multipleOf: 1
       additionalProperties: false
     ExecuteWorkflowPayload:
       type: object
@@ -16226,6 +16552,18 @@ components:
       required:
         - query
       additionalProperties: false
+      if:
+        required:
+          - query
+      then:
+        properties:
+          query:
+            propertyNames:
+              pattern: ^(\$(and|or|nor)|[^$.\x00][^.\x00]*(\.[^$.\x00][^.\x00]*)*)$
+      description: "`query` is a Mongo filter. Its keys are dotted field paths or
+        `$and`, `$or` and `$nor`, and a condition is a literal or uses the
+        comparison operators, `$in`, `$nin`, `$all`, `$exists`, `$type`,
+        `$size`, `$regex`, `$not` and `$elemMatch`."
     ForwardEmailRequest:
       type: object
       properties:
@@ -16345,6 +16683,7 @@ components:
       properties:
         file:
           type: string
+          minLength: 1
         name:
           type: string
         disposition:
@@ -16394,6 +16733,7 @@ components:
       properties:
         name:
           type: string
+          minLength: 1
         id:
           type: string
         mime_type:
@@ -16936,6 +17276,7 @@ components:
           description: Import mode
         message:
           type: string
+          minLength: 1
           description: Commit message
       required:
         - tables
@@ -17856,6 +18197,7 @@ components:
           format: date-time
         name:
           type: string
+          minLength: 1
         description:
           type: string
         agent_runner_options:
@@ -19710,6 +20052,7 @@ components:
             real-time streaming.
         interaction:
           type: string
+          minLength: 1
           description: "The interaction name and suffixed by an optional tag or version
             separated from the name using a @ character If no version/tag part
             is specified then the latest version is used. Example:
@@ -21508,8 +21851,14 @@ components:
           type: string
         offset:
           type: number
+          minimum: 0
+          maximum: 50000
+          multipleOf: 1
         limit:
           type: number
+          minimum: 1
+          maximum: 200
+          multipleOf: 1
         configuration:
           $ref: "#/components/schemas/ViewExperienceConfiguration"
           description: The unsaved View configuration to validate and execute.
@@ -23367,6 +23716,7 @@ components:
             compatibility.
         project_id:
           type: string
+          minLength: 1
         account_id:
           type: string
       required:
@@ -23794,6 +24144,7 @@ components:
       properties:
         name:
           type: string
+          minLength: 1
         parent:
           type: string
         description:
@@ -23813,6 +24164,7 @@ components:
           $ref: "#/components/schemas/PromptRole"
         content:
           type: string
+          minLength: 1
         content_type:
           $ref: "#/components/schemas/TemplateType"
         inputSchema:
@@ -23992,6 +24344,7 @@ components:
       properties:
         sql:
           type: string
+          minLength: 1
           description: SQL query (SELECT only)
         params:
           type: object
@@ -24066,14 +24419,18 @@ components:
       type: object
       properties:
         queries:
+          minItems: 1
+          maxItems: 50
           type: array
           items:
             type: object
             properties:
               name:
                 type: string
+                minLength: 1
               sql:
                 type: string
+                minLength: 1
             required:
               - name
               - sql
@@ -24254,6 +24611,7 @@ components:
       properties:
         interaction:
           type: string
+          minLength: 1
         environment_id:
           type: string
         inference_profile:
@@ -24305,16 +24663,22 @@ components:
       properties:
         runId:
           type: string
+          minLength: 1
         workflowId:
           type: string
+          minLength: 1
         agentName:
           type: string
+          minLength: 1
         questions:
+          minItems: 1
           type: array
           items:
             type: string
         timeoutHours:
           type: number
+          exclusiveMinimum: 0
+          description: Hours before the question expires; more than 0. Defaults to 48.
         userChannels:
           type: array
           items:
@@ -25218,6 +25582,7 @@ components:
             real-time streaming.
         interaction:
           type: string
+          minLength: 1
           description: "The interaction name and suffixed by an optional tag or version
             separated from the name using a @ character If no version/tag part
             is specified then the latest version is used. Example:
@@ -25652,8 +26017,10 @@ components:
             compatibility.
         account_id:
           type: string
+          minLength: 1
         project_id:
           type: string
+          minLength: 1
         roles:
           type: array
           items:
@@ -25672,6 +26039,7 @@ components:
       properties:
         file:
           type: string
+          minLength: 1
           description: The file path (relative to bucket) or full URI
         metadata:
           $ref: "#/components/schemas/StringValueMap"
@@ -26713,6 +27081,7 @@ components:
             - agent
         run_id:
           type: string
+          minLength: 1
         node:
           type: string
         ask_id:
@@ -27417,6 +27786,9 @@ components:
             - "null"
           items:
             type: string
+          minItems: 1
+          description: "Tool names agents may use. An empty list is refused: send null to
+            remove the restriction."
       required:
         - tool_allowlist
       additionalProperties: false
@@ -27429,8 +27801,9 @@ components:
             - "null"
           items:
             type: string
-          description: Tool names agents may use. Null removes the restriction; omit to
-            leave the allowlist unchanged.
+          minItems: 1
+          description: Tool names agents may use, at least one. Null removes the
+            restriction; omit to leave the allowlist unchanged.
         tools_requiring_approval:
           type:
             - array
@@ -27465,6 +27838,7 @@ components:
           $ref: "#/components/schemas/AppOAuthClientConfig"
         name:
           type: string
+          minLength: 1
           description: The name of the app, used as the id in the system. Must be in kebab
             case (e.g. my-app).
         visibility:
@@ -27706,7 +28080,19 @@ components:
           type: boolean
           description: When true, membership is determined by `query`; when false, members
             are added explicitly
-      description: Fields to change on a collection. All optional.
+      if:
+        required:
+          - query
+      then:
+        properties:
+          query:
+            propertyNames:
+              pattern: ^(\$(and|or|nor)|[^$.\x00][^.\x00]*(\.[^$.\x00][^.\x00]*)*)$
+      description: Fields to change on a collection. All optional. `query` is a Mongo
+        filter. Its keys are dotted field paths or `$and`, `$or` and `$nor`, and
+        a condition is a literal or uses the comparison operators, `$in`,
+        `$nin`, `$all`, `$exists`, `$type`, `$size`, `$regex`, `$not` and
+        `$elemMatch`.
     UpdateContentObjectPayload:
       type: object
       properties:
@@ -27867,6 +28253,7 @@ components:
             schema a generation time and save/update time.
         name:
           type: string
+          minLength: 1
           description: Human-readable name or title
         description:
           type: string
@@ -27890,13 +28277,17 @@ components:
       properties:
         name:
           type: string
+          minLength: 1
           description: Dashboard name
         summary:
           type: string
           description: Dashboard summary
         dataSource:
-          $ref: "#/components/schemas/DashboardDataSource"
-          description: Data source used to populate Vega `data.values`.
+          $ref: "#/components/schemas/DashboardSqlDataSource"
+          description: SQL data source used to populate Vega `data.values`. Its query,
+            limit and parameters are stored as the dashboard's own; a top-level
+            `query`, `queryLimit` or `queryParameters` sent alongside takes
+            precedence.
         query:
           type: string
           description: SQL query that returns all data for the dashboard. Deprecated
@@ -28130,6 +28521,7 @@ components:
         client_name:
           type: string
         redirect_uris:
+          minItems: 1
           type: array
           items:
             type: string
@@ -28405,6 +28797,7 @@ components:
           description: Tables to drop
         message:
           type: string
+          minLength: 1
           description: Commit message (required)
       required:
         - message
@@ -28456,6 +28849,7 @@ components:
       properties:
         name:
           type: string
+          minLength: 1
         description:
           type: string
         tags:
@@ -28519,6 +28913,8 @@ components:
       properties:
         name:
           type: string
+          minLength: 1
+          maxLength: 120
         enabled:
           type: boolean
         layout:
@@ -28535,10 +28931,14 @@ components:
           $ref: "#/components/schemas/ViewResultsConfiguration"
         description:
           type: string
+          maxLength: 4000
+          pattern: \S
         version:
           $ref: "#/components/schemas/ViewExperienceSchemaVersion"
         revision:
           type: number
+          minimum: 1
+          multipleOf: 1
       required:
         - name
         - description
@@ -28563,6 +28963,7 @@ components:
       properties:
         name:
           type: string
+          minLength: 1
         description:
           type: string
         tags:
@@ -28608,6 +29009,7 @@ components:
       properties:
         name:
           type: string
+          minLength: 1
         description:
           type: string
         tags:
@@ -28718,10 +29120,12 @@ components:
           type: string
         app_id:
           type: string
+          pattern: \S
         app_name:
           type: string
         version_id:
           type: string
+          pattern: \S
         kind:
           $ref: "#/components/schemas/AppVersionKind"
         state:
@@ -29050,6 +29454,7 @@ components:
       properties:
         url:
           type: string
+          minLength: 1
       required:
         - url
       additionalProperties: false
@@ -30721,7 +31126,9 @@ components:
       properties:
         name:
           type: string
+          pattern: \S
         websites:
+          minItems: 1
           type: array
           items:
             $ref: "#/components/schemas/WebsiteCredentialWebsite"
@@ -30762,7 +31169,9 @@ components:
       properties:
         name:
           type: string
+          pattern: \S
         websites:
+          minItems: 1
           type: array
           items:
             $ref: "#/components/schemas/WebsiteCredentialWebsite"
@@ -30990,6 +31399,7 @@ components:
       properties:
         name:
           type: string
+          minLength: 1
         description:
           type: string
         tags:
@@ -31040,6 +31450,7 @@ components:
       properties:
         name:
           type: string
+          minLength: 1
         description:
           type: string
         tags:
@@ -32631,6 +33042,14 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^app(:|$)
+            description: The app content type, as `app:<app name>:<local id>`. Only the
+              `app` prefix is checked as a format; a reference without an app
+              name or local id is refused by the lookup, as forbidden or not
+              found.
+          description: The app content type, as `app:<app name>:<local id>`. Only the
+            `app` prefix is checked as a format; a reference without an app name
+            or local id is refused by the lookup, as forbidden or not found.
       responses:
         "200":
           description: The requested app content type.
@@ -32761,6 +33180,15 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^app(:|$)
+            description: The app rendering template, as `app:<app name>:<local id>`. Only
+              the `app` prefix is checked as a format; a reference without an
+              app name or local id is refused by the lookup, as forbidden or not
+              found.
+          description: The app rendering template, as `app:<app name>:<local id>`. Only
+            the `app` prefix is checked as a format; a reference without an app
+            name or local id is refused by the lookup, as forbidden or not
+            found.
       responses:
         "200":
           description: The requested rendering template.
@@ -32891,6 +33319,13 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^app(:|$)
+            description: The app process, as `app:<app name>:<local id>`. Only the `app`
+              prefix is checked as a format; a reference without an app name or
+              local id is refused by the lookup, as forbidden or not found.
+          description: The app process, as `app:<app name>:<local id>`. Only the `app`
+            prefix is checked as a format; a reference without an app name or
+            local id is refused by the lookup, as forbidden or not found.
       responses:
         "200":
           description: The requested app process definition.
@@ -33022,6 +33457,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^app:[A-Za-z0-9][A-Za-z0-9._@-]*:[A-Za-z0-9][A-Za-z0-9._:-]*$
+            description: The app View, as `app:<app name>:<local id>`.
+          description: The app View, as `app:<app name>:<local id>`.
       responses:
         "200":
           description: The requested app View definition.
@@ -35017,11 +35455,17 @@ paths:
           required: false
           schema:
             type: number
+            minimum: 1
+            maximum: 9007199254740991
+            multipleOf: 1
         - name: offset
           in: query
           required: false
           schema:
             type: number
+            minimum: 0
+            maximum: 9007199254740991
+            multipleOf: 1
         - name: prompt
           in: query
           required: false
@@ -35216,11 +35660,17 @@ paths:
           required: false
           schema:
             type: number
+            minimum: 1
+            maximum: 9007199254740991
+            multipleOf: 1
         - name: offset
           in: query
           required: false
           schema:
             type: number
+            minimum: 0
+            maximum: 9007199254740991
+            multipleOf: 1
         - name: prompt
           in: query
           required: false
@@ -37325,8 +37775,9 @@ paths:
             type: array
             items:
               type: string
-            description: Environment ids to filter by.
-          description: Environment ids to filter by.
+              pattern: ^[0-9a-fA-F]{24}$
+            description: Environment ids to filter by, as 24 hexadecimal characters.
+          description: Environment ids to filter by, as 24 hexadecimal characters.
           style: form
           explode: true
         - name: status
@@ -39515,7 +39966,8 @@ paths:
       summary: List audit trail events
       description: >-
         Lists audit trail events with optional filtering by project, resource,
-        principal, action, and time range.
+        principal, action, and time range. Without `from`, the list covers the 7
+        days before `to` (or now); a range cannot exceed 366 days.
 
 
         **Required permissions:** Any of `project:admin`, `account:admin`,
@@ -40246,6 +40698,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The delegation grant ID, as 24 hexadecimal characters.
+          description: The delegation grant ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: Success
@@ -40306,6 +40761,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The delegation grant ID, as 24 hexadecimal characters.
+          description: The delegation grant ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: Success
@@ -42105,6 +42563,22 @@ paths:
           required: true
           schema:
             type: string
+        - name: prefix
+          in: query
+          required: false
+          schema:
+            type: string
+            description: Directory to list, relative to the repository root. Defaults to the
+              root.
+          description: Directory to list, relative to the repository root. Defaults to the
+            root.
+        - name: ref
+          in: query
+          required: false
+          schema:
+            type: string
+            description: Branch, tag or commit. Defaults to the default branch.
+          description: Branch, tag or commit. Defaults to the default branch.
       responses:
         "200":
           description: Directory listing.
@@ -42174,6 +42648,21 @@ paths:
           required: true
           schema:
             type: string
+        - name: path
+          in: query
+          required: true
+          schema:
+            type: string
+            pattern: \S
+            description: Path of the file, relative to the repository root.
+          description: Path of the file, relative to the repository root.
+        - name: ref
+          in: query
+          required: false
+          schema:
+            type: string
+            description: Branch, tag or commit. Defaults to the default branch.
+          description: Branch, tag or commit. Defaults to the default branch.
       responses:
         "200":
           description: Raw file content.
@@ -42696,6 +43185,12 @@ paths:
         file: ../../apps/studio-server/src/api/apps.ts
         className: AppsResource
         methodName: createAppRepoBranch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateAppRepoBranchRequest"
     parameters:
       - name: x-api-version
         in: header
@@ -42725,6 +43220,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The app installation ID, as 24 hexadecimal characters.
+          description: The app installation ID, as 24 hexadecimal characters.
         - name: collectionId
           in: path
           required: true
@@ -42785,6 +43283,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The app installation ID, as 24 hexadecimal characters.
+          description: The app installation ID, as 24 hexadecimal characters.
         - name: collectionId
           in: path
           required: true
@@ -42839,6 +43340,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The app installation ID, as 24 hexadecimal characters.
+          description: The app installation ID, as 24 hexadecimal characters.
         - name: collectionId
           in: path
           required: true
@@ -43323,6 +43827,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The app version ID, as 24 hexadecimal characters.
+          description: The app version ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: The app version.
@@ -43377,6 +43884,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The app version ID, as 24 hexadecimal characters.
+          description: The app version ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: The app version deletion result.
@@ -43444,6 +43954,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The app version ID, as 24 hexadecimal characters.
+          description: The app version ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: Eligible launch targets.
@@ -43512,6 +44025,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The app version ID, as 24 hexadecimal characters.
+          description: The app version ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: The temporary version launch.
@@ -43585,6 +44101,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The app version ID, as 24 hexadecimal characters.
+          description: The app version ID, as 24 hexadecimal characters.
         - name: alias
           in: path
           required: true
@@ -43644,6 +44163,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The app version ID, as 24 hexadecimal characters.
+          description: The app version ID, as 24 hexadecimal characters.
         - name: alias
           in: path
           required: true
@@ -43714,6 +44236,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The app version ID, as 24 hexadecimal characters.
+          description: The app version ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: The promoted app version.
@@ -43781,6 +44306,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The app version ID, as 24 hexadecimal characters.
+          description: The app version ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: The started app rebuild workflow.
@@ -44520,6 +45048,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The app installation ID, as 24 hexadecimal characters.
+          description: The app installation ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: App uninstall result.
@@ -44642,15 +45173,17 @@ paths:
           required: false
           schema:
             type: string
-            description: App manifest name. One of `name` or `id` is required.
-          description: App manifest name. One of `name` or `id` is required.
+            description: App manifest name. At least one of `name` or `id` is required.
+          description: App manifest name. At least one of `name` or `id` is required.
         - name: id
           in: query
           required: false
           schema:
             type: string
-            description: App manifest id. One of `name` or `id` is required.
-          description: App manifest id. One of `name` or `id` is required.
+            description: App manifest id. At least one of `name` or `id` is required; it
+              wins over `name`.
+          description: App manifest id. At least one of `name` or `id` is required; it
+            wins over `name`.
       responses:
         "200":
           description: Projects for the app installation.
@@ -44715,6 +45248,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The app installation ID, as 24 hexadecimal characters.
+          description: The app installation ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: Tools for the app installation.
@@ -45019,6 +45555,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The app installation ID, as 24 hexadecimal characters.
+          description: The app installation ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: The app installation.
@@ -45328,6 +45867,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The app installation ID, as 24 hexadecimal characters.
+          description: The app installation ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: The updated installation.
@@ -45399,6 +45941,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The app installation ID, as 24 hexadecimal characters.
+          description: The app installation ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: The updated app installation.
@@ -45473,6 +46018,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The app installation ID, as 24 hexadecimal characters.
+          description: The app installation ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: The updated app installation.
@@ -46840,11 +47388,13 @@ paths:
           required: false
           schema:
             type: number
+            minimum: 0
         - name: offset
           in: query
           required: false
           schema:
             type: number
+            minimum: 0
         - name: sort_by
           in: query
           required: false
@@ -47264,6 +47814,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The OAuth provider ID, as 24 hexadecimal characters.
+          description: The OAuth provider ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: The requested OAuth provider.
@@ -47316,6 +47869,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The OAuth provider ID, as 24 hexadecimal characters.
+          description: The OAuth provider ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: The updated OAuth provider.
@@ -47374,6 +47930,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The OAuth provider ID, as 24 hexadecimal characters.
+          description: The OAuth provider ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: OAuth provider deletion result.
@@ -47435,6 +47994,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The OAuth provider ID, as 24 hexadecimal characters.
+          description: The OAuth provider ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: Authorization URL and state.
@@ -47558,6 +48120,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The OAuth provider ID, as 24 hexadecimal characters.
+          description: The OAuth provider ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: OAuth provider authentication status.
@@ -47624,6 +48189,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The OAuth provider ID, as 24 hexadecimal characters.
+          description: The OAuth provider ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: OAuth provider connection result.
@@ -47745,6 +48313,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The OAuth provider ID, as 24 hexadecimal characters.
+          description: The OAuth provider ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: OAuth provider disconnect result.
@@ -49353,6 +49924,7 @@ paths:
           required: false
           schema:
             type: number
+            minimum: 0
             description: "Maximum number of results (default: 50)"
           description: "Maximum number of results (default: 50)"
         - name: offset
@@ -49360,6 +49932,7 @@ paths:
           required: false
           schema:
             type: number
+            minimum: 0
             description: Offset for pagination
           description: Offset for pagination
         - name: sort
@@ -49451,6 +50024,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The agent run ID, as 24 hexadecimal characters.
+          description: The agent run ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: The requested agent or process run.
@@ -49506,6 +50082,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The agent run ID, as 24 hexadecimal characters.
+          description: The agent run ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: Termination confirmation.
@@ -49573,6 +50152,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The agent run ID, as 24 hexadecimal characters.
+          description: The agent run ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: The restarted agent run.
@@ -49646,6 +50228,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The agent run ID, as 24 hexadecimal characters.
+          description: The agent run ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: The forked agent run.
@@ -49711,6 +50296,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The agent run ID, as 24 hexadecimal characters.
+          description: The agent run ID, as 24 hexadecimal characters.
         - name: signalName
           in: path
           required: true
@@ -49797,6 +50385,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The agent run ID, as 24 hexadecimal characters.
+          description: The agent run ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: Allocation delivered to the run.
@@ -49870,6 +50461,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The agent run ID, as 24 hexadecimal characters.
+          description: The agent run ID, as 24 hexadecimal characters.
         - name: queryName
           in: path
           required: true
@@ -49945,6 +50539,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The agent run ID, as 24 hexadecimal characters.
+          description: The agent run ID, as 24 hexadecimal characters.
         - name: since
           in: query
           required: false
@@ -50003,6 +50600,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The agent run ID, as 24 hexadecimal characters.
+          description: The agent run ID, as 24 hexadecimal characters.
       responses:
         "201":
           description: Update publication status.
@@ -50078,6 +50678,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The agent run ID, as 24 hexadecimal characters.
+          description: The agent run ID, as 24 hexadecimal characters.
         - name: since
           in: query
           required: false
@@ -50146,6 +50749,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The agent run ID, as 24 hexadecimal characters.
+          description: The agent run ID, as 24 hexadecimal characters.
         - name: visibility
           in: query
           required: false
@@ -50225,6 +50831,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The agent run ID, as 24 hexadecimal characters.
+          description: The agent run ID, as 24 hexadecimal characters.
         - name: path
           in: path
           required: true
@@ -50287,6 +50896,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The agent run ID, as 24 hexadecimal characters.
+          description: The agent run ID, as 24 hexadecimal characters.
         - name: path
           in: path
           required: true
@@ -50368,6 +50980,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The agent run ID, as 24 hexadecimal characters.
+          description: The agent run ID, as 24 hexadecimal characters.
         - name: path
           in: path
           required: true
@@ -50452,6 +51067,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The agent run ID, as 24 hexadecimal characters.
+          description: The agent run ID, as 24 hexadecimal characters.
         - name: path
           in: path
           required: true
@@ -50531,6 +51149,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The agent run ID, as 24 hexadecimal characters.
+          description: The agent run ID, as 24 hexadecimal characters.
         - name: from
           in: query
           required: false
@@ -50621,6 +51242,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The agent run ID, as 24 hexadecimal characters.
+          description: The agent run ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: Child workflow run summaries.
@@ -50691,6 +51315,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The agent run ID, as 24 hexadecimal characters.
+          description: The agent run ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: Current process context.
@@ -50761,6 +51388,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The agent run ID, as 24 hexadecimal characters.
+          description: The agent run ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: Process node history.
@@ -50831,6 +51461,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The agent run ID, as 24 hexadecimal characters.
+          description: The agent run ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: Workflow signal result.
@@ -50906,6 +51539,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The agent run ID, as 24 hexadecimal characters.
+          description: The agent run ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: Workflow signal result.
@@ -50977,6 +51613,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The agent run ID, as 24 hexadecimal characters.
+          description: The agent run ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: Workflow signal result.
@@ -51053,6 +51692,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The agent run ID, as 24 hexadecimal characters.
+          description: The agent run ID, as 24 hexadecimal characters.
         - name: childWorkflowId
           in: path
           required: true
@@ -51148,6 +51790,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The agent run ID, as 24 hexadecimal characters.
+          description: The agent run ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: Server-sent workflow history events.
@@ -51209,6 +51854,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The agent run ID, as 24 hexadecimal characters.
+          description: The agent run ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: Whether the rating was recorded, replaced or disabled.
@@ -52704,6 +53352,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The process definition ID, as 24 hexadecimal characters.
+          description: The process definition ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: Process definition revisions.
@@ -52774,6 +53425,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The process definition ID, as 24 hexadecimal characters.
+          description: The process definition ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: Matching process test suites.
@@ -52824,6 +53478,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The process definition ID, as 24 hexadecimal characters.
+          description: The process definition ID, as 24 hexadecimal characters.
       responses:
         "201":
           description: Created process test suite.
@@ -52892,11 +53549,17 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The process definition ID, as 24 hexadecimal characters.
+          description: The process definition ID, as 24 hexadecimal characters.
         - name: suiteId
           in: path
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The process test suite ID, as 24 hexadecimal characters.
+          description: The process test suite ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: Updated process test suite.
@@ -52952,11 +53615,17 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The process definition ID, as 24 hexadecimal characters.
+          description: The process definition ID, as 24 hexadecimal characters.
         - name: suiteId
           in: path
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The process test suite ID, as 24 hexadecimal characters.
+          description: The process test suite ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: Process test suite deletion result.
@@ -53024,6 +53693,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The process definition ID, as 24 hexadecimal characters.
+          description: The process definition ID, as 24 hexadecimal characters.
       responses:
         "201":
           description: Started process test run.
@@ -53081,6 +53753,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The process definition ID, as 24 hexadecimal characters.
+          description: The process definition ID, as 24 hexadecimal characters.
         - name: limit
           in: query
           required: false
@@ -53153,11 +53828,17 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The process definition ID, as 24 hexadecimal characters.
+          description: The process definition ID, as 24 hexadecimal characters.
         - name: runId
           in: path
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The process test run ID, as 24 hexadecimal characters.
+          description: The process test run ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: Requested process test run.
@@ -53221,11 +53902,17 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The process definition ID, as 24 hexadecimal characters.
+          description: The process definition ID, as 24 hexadecimal characters.
         - name: runId
           in: path
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The process test run ID, as 24 hexadecimal characters.
+          description: The process test run ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: Cancelled process test run.
@@ -53293,6 +53980,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The process definition ID, as 24 hexadecimal characters.
+          description: The process definition ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: The requested process definition.
@@ -53351,6 +54041,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The process definition ID, as 24 hexadecimal characters.
+          description: The process definition ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: The updated draft process definition.
@@ -53411,6 +54104,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The process definition ID, as 24 hexadecimal characters.
+          description: The process definition ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: Process definition deletion result.
@@ -53481,6 +54177,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The process definition ID, as 24 hexadecimal characters.
+          description: The process definition ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: The published process definition.
@@ -53560,6 +54259,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The process definition ID, as 24 hexadecimal characters.
+          description: The process definition ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: The reverted draft process definition.
@@ -53709,6 +54411,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The process test run ID, as 24 hexadecimal characters.
+          description: The process test run ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: Requested process test run.
@@ -53766,6 +54471,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The process test run ID, as 24 hexadecimal characters.
+          description: The process test run ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: Process test run deletion result.
@@ -53828,6 +54536,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The process test run ID, as 24 hexadecimal characters.
+          description: The process test run ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: Cancelled process test run.
@@ -54044,6 +54755,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The task ID, as 24 hexadecimal characters.
+          description: The task ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: The requested task.
@@ -54097,6 +54811,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The task ID, as 24 hexadecimal characters.
+          description: The task ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: The updated task.
@@ -54155,6 +54872,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The task ID, as 24 hexadecimal characters.
+          description: The task ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: Task deletion result.
@@ -54219,6 +54939,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The task ID, as 24 hexadecimal characters.
+          description: The task ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: The completed task.
@@ -54289,6 +55012,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The task ID, as 24 hexadecimal characters.
+          description: The task ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: The cancelled task.
@@ -54685,6 +55411,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The content object export ID, as 24 hexadecimal characters.
+          description: The content object export ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: Deleted content object export artifact.
@@ -54752,11 +55481,19 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The content object export ID, as 24 hexadecimal characters.
+          description: The content object export ID, as 24 hexadecimal characters.
         - name: role
           in: path
           required: true
           schema:
             type: string
+            enum:
+              - data
+              - manifest
+            description: "The export file: its data or its manifest."
+          description: "The export file: its data or its manifest."
       responses:
         "200":
           description: Signed download URL metadata.
@@ -58721,6 +59458,7 @@ paths:
           required: true
           schema:
             type: string
+            minLength: 1
       responses:
         "200":
           description: Resolved file metadata.
@@ -59223,7 +59961,9 @@ paths:
       summary: Delete a file or file prefix
       description: >-
         Deletes a single file or, with `prefix=true`, all files under the
-        provided relative project path prefix.
+        provided relative project path prefix. The path must contain at least
+        one `/`, so a top-level object cannot be deleted; it may be sent
+        percent-encoded (`cache%2Fthumb.png`) or with literal slashes.
 
 
         **Required permissions:** Any of `content:write`, `content:delete`,
@@ -62796,6 +63536,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The import job ID, as 24 hexadecimal characters.
+          description: The import job ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: Import job status.
@@ -62999,6 +63742,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The data store version ID, as 24 hexadecimal characters.
+          description: The data store version ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: Rolled back data store.
@@ -63069,6 +63815,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The data store version ID, as 24 hexadecimal characters.
+          description: The data store version ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: Query result for the selected version.
@@ -63495,6 +64244,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The data store ID, as 24 hexadecimal characters.
+          description: The data store ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: Dashboards for the data store.
@@ -63547,6 +64299,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The data store ID, as 24 hexadecimal characters.
+          description: The data store ID, as 24 hexadecimal characters.
       responses:
         "201":
           description: The created dashboard.
@@ -63620,11 +64375,17 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The data store ID, as 24 hexadecimal characters.
+          description: The data store ID, as 24 hexadecimal characters.
         - name: dashboardId
           in: path
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The dashboard ID, as 24 hexadecimal characters.
+          description: The dashboard ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: The requested dashboard.
@@ -63677,11 +64438,17 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The data store ID, as 24 hexadecimal characters.
+          description: The data store ID, as 24 hexadecimal characters.
         - name: dashboardId
           in: path
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The dashboard ID, as 24 hexadecimal characters.
+          description: The dashboard ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: The updated dashboard.
@@ -63742,11 +64509,17 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The data store ID, as 24 hexadecimal characters.
+          description: The data store ID, as 24 hexadecimal characters.
         - name: dashboardId
           in: path
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The dashboard ID, as 24 hexadecimal characters.
+          description: The dashboard ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: Archived dashboard status.
@@ -63817,6 +64590,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The data store ID, as 24 hexadecimal characters.
+          description: The data store ID, as 24 hexadecimal characters.
       responses:
         "202":
           description: The export started; poll it until it completes.
@@ -63894,6 +64670,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The data store ID, as 24 hexadecimal characters.
+          description: The data store ID, as 24 hexadecimal characters.
         - name: exportId
           in: path
           required: true
@@ -63976,11 +64755,17 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The data store ID, as 24 hexadecimal characters.
+          description: The data store ID, as 24 hexadecimal characters.
         - name: dashboardId
           in: path
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The dashboard ID, as 24 hexadecimal characters.
+          description: The dashboard ID, as 24 hexadecimal characters.
       responses:
         "202":
           description: The export started; poll it until it completes.
@@ -64059,6 +64844,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The data store ID, as 24 hexadecimal characters.
+          description: The data store ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: Bulk archive result.
@@ -64097,7 +64885,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/StringArrayMap"
+              $ref: "#/components/schemas/DashboardBulkIdsPayload"
     parameters:
       - name: x-api-version
         in: header
@@ -64130,6 +64918,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The data store ID, as 24 hexadecimal characters.
+          description: The data store ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: Bulk delete result.
@@ -64168,7 +64959,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/StringArrayMap"
+              $ref: "#/components/schemas/DashboardBulkIdsPayload"
     parameters:
       - name: x-api-version
         in: header
@@ -64201,11 +64992,17 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The data store ID, as 24 hexadecimal characters.
+          description: The data store ID, as 24 hexadecimal characters.
         - name: dashboardId
           in: path
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The dashboard ID, as 24 hexadecimal characters.
+          description: The dashboard ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: Dashboard versions.
@@ -64258,11 +65055,17 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The data store ID, as 24 hexadecimal characters.
+          description: The data store ID, as 24 hexadecimal characters.
         - name: dashboardId
           in: path
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The dashboard ID, as 24 hexadecimal characters.
+          description: The dashboard ID, as 24 hexadecimal characters.
       responses:
         "201":
           description: Created dashboard snapshot.
@@ -64334,16 +65137,25 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The data store ID, as 24 hexadecimal characters.
+          description: The data store ID, as 24 hexadecimal characters.
         - name: dashboardId
           in: path
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The dashboard ID, as 24 hexadecimal characters.
+          description: The dashboard ID, as 24 hexadecimal characters.
         - name: versionId
           in: path
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The dashboard version ID, as 24 hexadecimal characters.
+          description: The dashboard version ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: Dashboard version details.
@@ -64409,16 +65221,25 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The data store ID, as 24 hexadecimal characters.
+          description: The data store ID, as 24 hexadecimal characters.
         - name: dashboardId
           in: path
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The dashboard ID, as 24 hexadecimal characters.
+          description: The dashboard ID, as 24 hexadecimal characters.
         - name: versionId
           in: path
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The dashboard version ID, as 24 hexadecimal characters.
+          description: The dashboard version ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: Promoted dashboard.
@@ -64490,11 +65311,17 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The data store ID, as 24 hexadecimal characters.
+          description: The data store ID, as 24 hexadecimal characters.
         - name: dashboardId
           in: path
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The dashboard ID, as 24 hexadecimal characters.
+          description: The dashboard ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: Dashboard versioning status.

@@ -48,7 +48,7 @@ class OAuthProvidersApi:
     @validate_call
     def authorize_o_auth_provider(
         self,
-        id: StrictStr,
+        id: Annotated[str, Field(strict=True, description="The OAuth provider ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -67,7 +67,7 @@ class OAuthProvidersApi:
 
         Starts the OAuth 2.0 authorization flow for the current user.
 
-        :param id: (required)
+        :param id: The OAuth provider ID, as 24 hexadecimal characters. (required)
         :type id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -121,7 +121,7 @@ class OAuthProvidersApi:
     @validate_call
     def authorize_o_auth_provider_with_http_info(
         self,
-        id: StrictStr,
+        id: Annotated[str, Field(strict=True, description="The OAuth provider ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -140,7 +140,7 @@ class OAuthProvidersApi:
 
         Starts the OAuth 2.0 authorization flow for the current user.
 
-        :param id: (required)
+        :param id: The OAuth provider ID, as 24 hexadecimal characters. (required)
         :type id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -194,7 +194,7 @@ class OAuthProvidersApi:
     @validate_call
     def authorize_o_auth_provider_without_preload_content(
         self,
-        id: StrictStr,
+        id: Annotated[str, Field(strict=True, description="The OAuth provider ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -213,7 +213,7 @@ class OAuthProvidersApi:
 
         Starts the OAuth 2.0 authorization flow for the current user.
 
-        :param id: (required)
+        :param id: The OAuth provider ID, as 24 hexadecimal characters. (required)
         :type id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -331,7 +331,7 @@ class OAuthProvidersApi:
     @validate_call
     def connect_o_auth_provider(
         self,
-        id: StrictStr,
+        id: Annotated[str, Field(strict=True, description="The OAuth provider ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -350,7 +350,7 @@ class OAuthProvidersApi:
 
         Tests and establishes a client credentials connection for an OAuth provider.  **Required permissions:** `project:settings_write`
 
-        :param id: (required)
+        :param id: The OAuth provider ID, as 24 hexadecimal characters. (required)
         :type id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -404,7 +404,7 @@ class OAuthProvidersApi:
     @validate_call
     def connect_o_auth_provider_with_http_info(
         self,
-        id: StrictStr,
+        id: Annotated[str, Field(strict=True, description="The OAuth provider ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -423,7 +423,7 @@ class OAuthProvidersApi:
 
         Tests and establishes a client credentials connection for an OAuth provider.  **Required permissions:** `project:settings_write`
 
-        :param id: (required)
+        :param id: The OAuth provider ID, as 24 hexadecimal characters. (required)
         :type id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -477,7 +477,7 @@ class OAuthProvidersApi:
     @validate_call
     def connect_o_auth_provider_without_preload_content(
         self,
-        id: StrictStr,
+        id: Annotated[str, Field(strict=True, description="The OAuth provider ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -496,7 +496,7 @@ class OAuthProvidersApi:
 
         Tests and establishes a client credentials connection for an OAuth provider.  **Required permissions:** `project:settings_write`
 
-        :param id: (required)
+        :param id: The OAuth provider ID, as 24 hexadecimal characters. (required)
         :type id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -910,7 +910,7 @@ class OAuthProvidersApi:
     @validate_call
     def delete_o_auth_provider(
         self,
-        id: StrictStr,
+        id: Annotated[str, Field(strict=True, description="The OAuth provider ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -929,7 +929,7 @@ class OAuthProvidersApi:
 
         Deletes an OAuth provider and associated secrets and tokens.  **Required permissions:** `project:admin`
 
-        :param id: (required)
+        :param id: The OAuth provider ID, as 24 hexadecimal characters. (required)
         :type id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -983,7 +983,7 @@ class OAuthProvidersApi:
     @validate_call
     def delete_o_auth_provider_with_http_info(
         self,
-        id: StrictStr,
+        id: Annotated[str, Field(strict=True, description="The OAuth provider ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -1002,7 +1002,7 @@ class OAuthProvidersApi:
 
         Deletes an OAuth provider and associated secrets and tokens.  **Required permissions:** `project:admin`
 
-        :param id: (required)
+        :param id: The OAuth provider ID, as 24 hexadecimal characters. (required)
         :type id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1056,7 +1056,7 @@ class OAuthProvidersApi:
     @validate_call
     def delete_o_auth_provider_without_preload_content(
         self,
-        id: StrictStr,
+        id: Annotated[str, Field(strict=True, description="The OAuth provider ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -1075,7 +1075,7 @@ class OAuthProvidersApi:
 
         Deletes an OAuth provider and associated secrets and tokens.  **Required permissions:** `project:admin`
 
-        :param id: (required)
+        :param id: The OAuth provider ID, as 24 hexadecimal characters. (required)
         :type id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1193,7 +1193,7 @@ class OAuthProvidersApi:
     @validate_call
     def disconnect_o_auth_provider(
         self,
-        id: StrictStr,
+        id: Annotated[str, Field(strict=True, description="The OAuth provider ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -1212,7 +1212,7 @@ class OAuthProvidersApi:
 
         Revokes and deletes stored tokens for an OAuth provider.
 
-        :param id: (required)
+        :param id: The OAuth provider ID, as 24 hexadecimal characters. (required)
         :type id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1266,7 +1266,7 @@ class OAuthProvidersApi:
     @validate_call
     def disconnect_o_auth_provider_with_http_info(
         self,
-        id: StrictStr,
+        id: Annotated[str, Field(strict=True, description="The OAuth provider ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -1285,7 +1285,7 @@ class OAuthProvidersApi:
 
         Revokes and deletes stored tokens for an OAuth provider.
 
-        :param id: (required)
+        :param id: The OAuth provider ID, as 24 hexadecimal characters. (required)
         :type id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1339,7 +1339,7 @@ class OAuthProvidersApi:
     @validate_call
     def disconnect_o_auth_provider_without_preload_content(
         self,
-        id: StrictStr,
+        id: Annotated[str, Field(strict=True, description="The OAuth provider ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -1358,7 +1358,7 @@ class OAuthProvidersApi:
 
         Revokes and deletes stored tokens for an OAuth provider.
 
-        :param id: (required)
+        :param id: The OAuth provider ID, as 24 hexadecimal characters. (required)
         :type id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1772,7 +1772,7 @@ class OAuthProvidersApi:
     @validate_call
     def get_o_auth_provider(
         self,
-        id: StrictStr,
+        id: Annotated[str, Field(strict=True, description="The OAuth provider ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -1791,7 +1791,7 @@ class OAuthProvidersApi:
 
         Retrieves a single OAuth provider with sensitive client secret data redacted.  **Required permissions:** `project:settings_write`
 
-        :param id: (required)
+        :param id: The OAuth provider ID, as 24 hexadecimal characters. (required)
         :type id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1845,7 +1845,7 @@ class OAuthProvidersApi:
     @validate_call
     def get_o_auth_provider_with_http_info(
         self,
-        id: StrictStr,
+        id: Annotated[str, Field(strict=True, description="The OAuth provider ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -1864,7 +1864,7 @@ class OAuthProvidersApi:
 
         Retrieves a single OAuth provider with sensitive client secret data redacted.  **Required permissions:** `project:settings_write`
 
-        :param id: (required)
+        :param id: The OAuth provider ID, as 24 hexadecimal characters. (required)
         :type id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1918,7 +1918,7 @@ class OAuthProvidersApi:
     @validate_call
     def get_o_auth_provider_without_preload_content(
         self,
-        id: StrictStr,
+        id: Annotated[str, Field(strict=True, description="The OAuth provider ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -1937,7 +1937,7 @@ class OAuthProvidersApi:
 
         Retrieves a single OAuth provider with sensitive client secret data redacted.  **Required permissions:** `project:settings_write`
 
-        :param id: (required)
+        :param id: The OAuth provider ID, as 24 hexadecimal characters. (required)
         :type id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -2055,7 +2055,7 @@ class OAuthProvidersApi:
     @validate_call
     def get_o_auth_provider_status(
         self,
-        id: StrictStr,
+        id: Annotated[str, Field(strict=True, description="The OAuth provider ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -2074,7 +2074,7 @@ class OAuthProvidersApi:
 
         Returns authentication status for the provider in the current project or user context.
 
-        :param id: (required)
+        :param id: The OAuth provider ID, as 24 hexadecimal characters. (required)
         :type id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -2128,7 +2128,7 @@ class OAuthProvidersApi:
     @validate_call
     def get_o_auth_provider_status_with_http_info(
         self,
-        id: StrictStr,
+        id: Annotated[str, Field(strict=True, description="The OAuth provider ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -2147,7 +2147,7 @@ class OAuthProvidersApi:
 
         Returns authentication status for the provider in the current project or user context.
 
-        :param id: (required)
+        :param id: The OAuth provider ID, as 24 hexadecimal characters. (required)
         :type id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -2201,7 +2201,7 @@ class OAuthProvidersApi:
     @validate_call
     def get_o_auth_provider_status_without_preload_content(
         self,
-        id: StrictStr,
+        id: Annotated[str, Field(strict=True, description="The OAuth provider ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -2220,7 +2220,7 @@ class OAuthProvidersApi:
 
         Returns authentication status for the provider in the current project or user context.
 
-        :param id: (required)
+        :param id: The OAuth provider ID, as 24 hexadecimal characters. (required)
         :type id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -2889,7 +2889,7 @@ class OAuthProvidersApi:
     @validate_call
     def update_o_auth_provider(
         self,
-        id: StrictStr,
+        id: Annotated[str, Field(strict=True, description="The OAuth provider ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_o_auth_provider_payload: UpdateOAuthProviderPayload,
         _request_timeout: Union[
@@ -2909,7 +2909,7 @@ class OAuthProvidersApi:
 
         Updates an existing OAuth provider.  **Required permissions:** `project:settings_write`
 
-        :param id: (required)
+        :param id: The OAuth provider ID, as 24 hexadecimal characters. (required)
         :type id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -2966,7 +2966,7 @@ class OAuthProvidersApi:
     @validate_call
     def update_o_auth_provider_with_http_info(
         self,
-        id: StrictStr,
+        id: Annotated[str, Field(strict=True, description="The OAuth provider ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_o_auth_provider_payload: UpdateOAuthProviderPayload,
         _request_timeout: Union[
@@ -2986,7 +2986,7 @@ class OAuthProvidersApi:
 
         Updates an existing OAuth provider.  **Required permissions:** `project:settings_write`
 
-        :param id: (required)
+        :param id: The OAuth provider ID, as 24 hexadecimal characters. (required)
         :type id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -3043,7 +3043,7 @@ class OAuthProvidersApi:
     @validate_call
     def update_o_auth_provider_without_preload_content(
         self,
-        id: StrictStr,
+        id: Annotated[str, Field(strict=True, description="The OAuth provider ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_o_auth_provider_payload: UpdateOAuthProviderPayload,
         _request_timeout: Union[
@@ -3063,7 +3063,7 @@ class OAuthProvidersApi:
 
         Updates an existing OAuth provider.  **Required permissions:** `project:settings_write`
 
-        :param id: (required)
+        :param id: The OAuth provider ID, as 24 hexadecimal characters. (required)
         :type id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str

@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, Optional
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.signing_algorithm import SigningAlgorithm
 from typing import Optional, Set
 from typing_extensions import Self
@@ -34,10 +35,10 @@ class AgentTokenRequest(BaseModel):
     continuation_token: Optional[StrictStr] = None
     audience: Optional[StrictStr] = None
     algorithm: Optional[SigningAlgorithm] = Field(default=None, description="Signing algorithm - defaults to ES256. Use RS256 for Azure AD compatibility.")
-    account_id: StrictStr
-    project_id: StrictStr
+    account_id: Annotated[str, Field(min_length=1, strict=True)]
+    project_id: Annotated[str, Field(min_length=1, strict=True)]
     name: Optional[StrictStr] = None
-    on_behalf_of: StrictStr = Field(description="User information.  The value of this field can be either:   - a signed Vertesia token used to verify the user context   - a user ID prefixed with `user:` to indicate the user on behalf of whom the agent is     acting.")
+    on_behalf_of: Annotated[str, Field(min_length=1, strict=True)] = Field(description="User information.  The value of this field can be either:   - a signed Vertesia token used to verify the user context   - a user ID prefixed with `user:` to indicate the user on behalf of whom the agent is     acting.")
     __properties: ClassVar[List[str]] = ["type", "delegation_grant_id", "delegation_policy_hash", "continuation_token", "audience", "algorithm", "account_id", "project_id", "name", "on_behalf_of"]
 
     @field_validator('type')

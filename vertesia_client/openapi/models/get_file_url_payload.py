@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr, field_validator
+from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, Optional
+from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -27,7 +28,7 @@ class GetFileUrlPayload(BaseModel):
     """
     GetFileUrlPayload
     """ # noqa: E501
-    file: StrictStr
+    file: Annotated[str, Field(min_length=1, strict=True)]
     name: Optional[StrictStr] = None
     disposition: Optional[StrictStr] = None
     __properties: ClassVar[List[str]] = ["file", "name", "disposition"]

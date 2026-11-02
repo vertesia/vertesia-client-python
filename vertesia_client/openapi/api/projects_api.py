@@ -923,7 +923,7 @@ class ProjectsApi:
     def get_project_app_process(
         self,
         project_id: StrictStr,
-        process_id: StrictStr,
+        process_id: Annotated[str, Field(strict=True, description="The app process, as `app:<app name>:<local id>`. Only the `app` prefix is checked as a format; a reference without an app name or local id is refused by the lookup, as forbidden or not found.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -944,7 +944,7 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
-        :param process_id: (required)
+        :param process_id: The app process, as `app:<app name>:<local id>`. Only the `app` prefix is checked as a format; a reference without an app name or local id is refused by the lookup, as forbidden or not found. (required)
         :type process_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1000,7 +1000,7 @@ class ProjectsApi:
     def get_project_app_process_with_http_info(
         self,
         project_id: StrictStr,
-        process_id: StrictStr,
+        process_id: Annotated[str, Field(strict=True, description="The app process, as `app:<app name>:<local id>`. Only the `app` prefix is checked as a format; a reference without an app name or local id is refused by the lookup, as forbidden or not found.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -1021,7 +1021,7 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
-        :param process_id: (required)
+        :param process_id: The app process, as `app:<app name>:<local id>`. Only the `app` prefix is checked as a format; a reference without an app name or local id is refused by the lookup, as forbidden or not found. (required)
         :type process_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1077,7 +1077,7 @@ class ProjectsApi:
     def get_project_app_process_without_preload_content(
         self,
         project_id: StrictStr,
-        process_id: StrictStr,
+        process_id: Annotated[str, Field(strict=True, description="The app process, as `app:<app name>:<local id>`. Only the `app` prefix is checked as a format; a reference without an app name or local id is refused by the lookup, as forbidden or not found.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -1098,7 +1098,7 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
-        :param process_id: (required)
+        :param process_id: The app process, as `app:<app name>:<local id>`. Only the `app` prefix is checked as a format; a reference without an app name or local id is refused by the lookup, as forbidden or not found. (required)
         :type process_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1221,7 +1221,7 @@ class ProjectsApi:
     def get_project_app_template(
         self,
         project_id: StrictStr,
-        template_id: StrictStr,
+        template_id: Annotated[str, Field(strict=True, description="The app rendering template, as `app:<app name>:<local id>`. Only the `app` prefix is checked as a format; a reference without an app name or local id is refused by the lookup, as forbidden or not found.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -1242,7 +1242,7 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
-        :param template_id: (required)
+        :param template_id: The app rendering template, as `app:<app name>:<local id>`. Only the `app` prefix is checked as a format; a reference without an app name or local id is refused by the lookup, as forbidden or not found. (required)
         :type template_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1298,7 +1298,7 @@ class ProjectsApi:
     def get_project_app_template_with_http_info(
         self,
         project_id: StrictStr,
-        template_id: StrictStr,
+        template_id: Annotated[str, Field(strict=True, description="The app rendering template, as `app:<app name>:<local id>`. Only the `app` prefix is checked as a format; a reference without an app name or local id is refused by the lookup, as forbidden or not found.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -1319,7 +1319,7 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
-        :param template_id: (required)
+        :param template_id: The app rendering template, as `app:<app name>:<local id>`. Only the `app` prefix is checked as a format; a reference without an app name or local id is refused by the lookup, as forbidden or not found. (required)
         :type template_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1375,7 +1375,7 @@ class ProjectsApi:
     def get_project_app_template_without_preload_content(
         self,
         project_id: StrictStr,
-        template_id: StrictStr,
+        template_id: Annotated[str, Field(strict=True, description="The app rendering template, as `app:<app name>:<local id>`. Only the `app` prefix is checked as a format; a reference without an app name or local id is refused by the lookup, as forbidden or not found.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -1396,7 +1396,7 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
-        :param template_id: (required)
+        :param template_id: The app rendering template, as `app:<app name>:<local id>`. Only the `app` prefix is checked as a format; a reference without an app name or local id is refused by the lookup, as forbidden or not found. (required)
         :type template_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1519,7 +1519,7 @@ class ProjectsApi:
     def get_project_app_type(
         self,
         project_id: StrictStr,
-        type_id: StrictStr,
+        type_id: Annotated[str, Field(strict=True, description="The app content type, as `app:<app name>:<local id>`. Only the `app` prefix is checked as a format; a reference without an app name or local id is refused by the lookup, as forbidden or not found.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -1540,7 +1540,7 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
-        :param type_id: (required)
+        :param type_id: The app content type, as `app:<app name>:<local id>`. Only the `app` prefix is checked as a format; a reference without an app name or local id is refused by the lookup, as forbidden or not found. (required)
         :type type_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1596,7 +1596,7 @@ class ProjectsApi:
     def get_project_app_type_with_http_info(
         self,
         project_id: StrictStr,
-        type_id: StrictStr,
+        type_id: Annotated[str, Field(strict=True, description="The app content type, as `app:<app name>:<local id>`. Only the `app` prefix is checked as a format; a reference without an app name or local id is refused by the lookup, as forbidden or not found.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -1617,7 +1617,7 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
-        :param type_id: (required)
+        :param type_id: The app content type, as `app:<app name>:<local id>`. Only the `app` prefix is checked as a format; a reference without an app name or local id is refused by the lookup, as forbidden or not found. (required)
         :type type_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1673,7 +1673,7 @@ class ProjectsApi:
     def get_project_app_type_without_preload_content(
         self,
         project_id: StrictStr,
-        type_id: StrictStr,
+        type_id: Annotated[str, Field(strict=True, description="The app content type, as `app:<app name>:<local id>`. Only the `app` prefix is checked as a format; a reference without an app name or local id is refused by the lookup, as forbidden or not found.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -1694,7 +1694,7 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
-        :param type_id: (required)
+        :param type_id: The app content type, as `app:<app name>:<local id>`. Only the `app` prefix is checked as a format; a reference without an app name or local id is refused by the lookup, as forbidden or not found. (required)
         :type type_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1817,7 +1817,7 @@ class ProjectsApi:
     def get_project_app_view(
         self,
         project_id: StrictStr,
-        view_id: StrictStr,
+        view_id: Annotated[str, Field(strict=True, description="The app View, as `app:<app name>:<local id>`.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -1838,7 +1838,7 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
-        :param view_id: (required)
+        :param view_id: The app View, as `app:<app name>:<local id>`. (required)
         :type view_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1894,7 +1894,7 @@ class ProjectsApi:
     def get_project_app_view_with_http_info(
         self,
         project_id: StrictStr,
-        view_id: StrictStr,
+        view_id: Annotated[str, Field(strict=True, description="The app View, as `app:<app name>:<local id>`.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -1915,7 +1915,7 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
-        :param view_id: (required)
+        :param view_id: The app View, as `app:<app name>:<local id>`. (required)
         :type view_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1971,7 +1971,7 @@ class ProjectsApi:
     def get_project_app_view_without_preload_content(
         self,
         project_id: StrictStr,
-        view_id: StrictStr,
+        view_id: Annotated[str, Field(strict=True, description="The app View, as `app:<app name>:<local id>`.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -1992,7 +1992,7 @@ class ProjectsApi:
 
         :param project_id: (required)
         :type project_id: str
-        :param view_id: (required)
+        :param view_id: The app View, as `app:<app name>:<local id>`. (required)
         :type view_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str

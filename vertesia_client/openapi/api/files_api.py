@@ -367,7 +367,7 @@ class FilesApi:
     ) -> DeleteFileResult:
         """Delete a file or file prefix
 
-        Deletes a single file or, with `prefix=true`, all files under the provided relative project path prefix.  **Required permissions:** Any of `content:write`, `content:delete`, `content:superadmin`
+        Deletes a single file or, with `prefix=true`, all files under the provided relative project path prefix. The path must contain at least one `/`, so a top-level object cannot be deleted; it may be sent percent-encoded (`cache%2Fthumb.png`) or with literal slashes.  **Required permissions:** Any of `content:write`, `content:delete`, `content:superadmin`
 
         :param path: (required)
         :type path: str
@@ -444,7 +444,7 @@ class FilesApi:
     ) -> ApiResponse[DeleteFileResult]:
         """Delete a file or file prefix
 
-        Deletes a single file or, with `prefix=true`, all files under the provided relative project path prefix.  **Required permissions:** Any of `content:write`, `content:delete`, `content:superadmin`
+        Deletes a single file or, with `prefix=true`, all files under the provided relative project path prefix. The path must contain at least one `/`, so a top-level object cannot be deleted; it may be sent percent-encoded (`cache%2Fthumb.png`) or with literal slashes.  **Required permissions:** Any of `content:write`, `content:delete`, `content:superadmin`
 
         :param path: (required)
         :type path: str
@@ -521,7 +521,7 @@ class FilesApi:
     ) -> RESTResponseType:
         """Delete a file or file prefix
 
-        Deletes a single file or, with `prefix=true`, all files under the provided relative project path prefix.  **Required permissions:** Any of `content:write`, `content:delete`, `content:superadmin`
+        Deletes a single file or, with `prefix=true`, all files under the provided relative project path prefix. The path must contain at least one `/`, so a top-level object cannot be deleted; it may be sent percent-encoded (`cache%2Fthumb.png`) or with literal slashes.  **Required permissions:** Any of `content:write`, `content:delete`, `content:superadmin`
 
         :param path: (required)
         :type path: str
@@ -1509,7 +1509,7 @@ class FilesApi:
     @validate_call
     def get_file_metadata(
         self,
-        file: StrictStr,
+        file: Annotated[str, Field(min_length=1, strict=True)],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -1583,7 +1583,7 @@ class FilesApi:
     @validate_call
     def get_file_metadata_with_http_info(
         self,
-        file: StrictStr,
+        file: Annotated[str, Field(min_length=1, strict=True)],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -1657,7 +1657,7 @@ class FilesApi:
     @validate_call
     def get_file_metadata_without_preload_content(
         self,
-        file: StrictStr,
+        file: Annotated[str, Field(min_length=1, strict=True)],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,

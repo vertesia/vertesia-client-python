@@ -15,7 +15,7 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
+from pydantic import Field, StrictBool, StrictStr, field_validator
 from typing import Any, Dict, List, Optional, Union
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.async_execution_payload import AsyncExecutionPayload
@@ -5431,8 +5431,8 @@ class InteractionsApi:
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         name: Optional[StrictStr] = None,
         status: Optional[List[StrictStr]] = None,
-        limit: Optional[Union[StrictFloat, StrictInt]] = None,
-        offset: Optional[Union[StrictFloat, StrictInt]] = None,
+        limit: Optional[Union[Annotated[float, Field(multiple_of=1, le=9007199254740991, strict=True, ge=1)], Annotated[int, Field(le=2147483647, strict=True, ge=1)]]] = None,
+        offset: Optional[Union[Annotated[float, Field(multiple_of=1, le=9007199254740991, strict=True, ge=0)], Annotated[int, Field(le=2147483647, strict=True, ge=0)]]] = None,
         prompt: Optional[StrictStr] = None,
         tags: Optional[List[StrictStr]] = None,
         version: Optional[StrictStr] = None,
@@ -5556,8 +5556,8 @@ class InteractionsApi:
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         name: Optional[StrictStr] = None,
         status: Optional[List[StrictStr]] = None,
-        limit: Optional[Union[StrictFloat, StrictInt]] = None,
-        offset: Optional[Union[StrictFloat, StrictInt]] = None,
+        limit: Optional[Union[Annotated[float, Field(multiple_of=1, le=9007199254740991, strict=True, ge=1)], Annotated[int, Field(le=2147483647, strict=True, ge=1)]]] = None,
+        offset: Optional[Union[Annotated[float, Field(multiple_of=1, le=9007199254740991, strict=True, ge=0)], Annotated[int, Field(le=2147483647, strict=True, ge=0)]]] = None,
         prompt: Optional[StrictStr] = None,
         tags: Optional[List[StrictStr]] = None,
         version: Optional[StrictStr] = None,
@@ -5681,8 +5681,8 @@ class InteractionsApi:
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         name: Optional[StrictStr] = None,
         status: Optional[List[StrictStr]] = None,
-        limit: Optional[Union[StrictFloat, StrictInt]] = None,
-        offset: Optional[Union[StrictFloat, StrictInt]] = None,
+        limit: Optional[Union[Annotated[float, Field(multiple_of=1, le=9007199254740991, strict=True, ge=1)], Annotated[int, Field(le=2147483647, strict=True, ge=1)]]] = None,
+        offset: Optional[Union[Annotated[float, Field(multiple_of=1, le=9007199254740991, strict=True, ge=0)], Annotated[int, Field(le=2147483647, strict=True, ge=0)]]] = None,
         prompt: Optional[StrictStr] = None,
         tags: Optional[List[StrictStr]] = None,
         version: Optional[StrictStr] = None,
@@ -6505,8 +6505,8 @@ class InteractionsApi:
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         name: Optional[StrictStr] = None,
         status: Optional[List[StrictStr]] = None,
-        limit: Optional[Union[StrictFloat, StrictInt]] = None,
-        offset: Optional[Union[StrictFloat, StrictInt]] = None,
+        limit: Optional[Union[Annotated[float, Field(multiple_of=1, le=9007199254740991, strict=True, ge=1)], Annotated[int, Field(le=2147483647, strict=True, ge=1)]]] = None,
+        offset: Optional[Union[Annotated[float, Field(multiple_of=1, le=9007199254740991, strict=True, ge=0)], Annotated[int, Field(le=2147483647, strict=True, ge=0)]]] = None,
         prompt: Optional[StrictStr] = None,
         tags: Optional[List[StrictStr]] = None,
         version: Optional[StrictStr] = None,
@@ -6630,8 +6630,8 @@ class InteractionsApi:
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         name: Optional[StrictStr] = None,
         status: Optional[List[StrictStr]] = None,
-        limit: Optional[Union[StrictFloat, StrictInt]] = None,
-        offset: Optional[Union[StrictFloat, StrictInt]] = None,
+        limit: Optional[Union[Annotated[float, Field(multiple_of=1, le=9007199254740991, strict=True, ge=1)], Annotated[int, Field(le=2147483647, strict=True, ge=1)]]] = None,
+        offset: Optional[Union[Annotated[float, Field(multiple_of=1, le=9007199254740991, strict=True, ge=0)], Annotated[int, Field(le=2147483647, strict=True, ge=0)]]] = None,
         prompt: Optional[StrictStr] = None,
         tags: Optional[List[StrictStr]] = None,
         version: Optional[StrictStr] = None,
@@ -6755,8 +6755,8 @@ class InteractionsApi:
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         name: Optional[StrictStr] = None,
         status: Optional[List[StrictStr]] = None,
-        limit: Optional[Union[StrictFloat, StrictInt]] = None,
-        offset: Optional[Union[StrictFloat, StrictInt]] = None,
+        limit: Optional[Union[Annotated[float, Field(multiple_of=1, le=9007199254740991, strict=True, ge=1)], Annotated[int, Field(le=2147483647, strict=True, ge=1)]]] = None,
+        offset: Optional[Union[Annotated[float, Field(multiple_of=1, le=9007199254740991, strict=True, ge=0)], Annotated[int, Field(le=2147483647, strict=True, ge=0)]]] = None,
         prompt: Optional[StrictStr] = None,
         tags: Optional[List[StrictStr]] = None,
         version: Optional[StrictStr] = None,

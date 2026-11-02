@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 from typing import Any, ClassVar, Dict, List
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.bulk_upload_urls_payload_files_inner import BulkUploadUrlsPayloadFilesInner
 from typing import Optional, Set
 from typing_extensions import Self
@@ -28,7 +29,7 @@ class BulkUploadUrlsPayload(BaseModel):
     """
     BulkUploadUrlsPayload
     """ # noqa: E501
-    files: List[BulkUploadUrlsPayloadFilesInner]
+    files: Annotated[List[BulkUploadUrlsPayloadFilesInner], Field(min_length=1, max_length=10000)]
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["files"]
 

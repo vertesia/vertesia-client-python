@@ -27,7 +27,7 @@ from pydantic_core import to_jsonable_python
 
 class ComplexCollectionSearchQuery(BaseModel):
     """
-    ComplexCollectionSearchQuery
+    `match` is a Mongo filter. Its keys are dotted field paths or `$and`, `$or` and `$nor`, and a condition is a literal or uses the comparison operators, `$in`, `$nin`, `$all`, `$exists`, `$type`, `$size`, `$regex`, `$not` and `$elemMatch`.
     """ # noqa: E501
     parent: Optional[StrictStr] = None
     dynamic: Optional[StrictBool] = None

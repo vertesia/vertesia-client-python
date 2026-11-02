@@ -27,7 +27,7 @@ from pydantic_core import to_jsonable_python
 
 class ComputeInteractionFacetPayload(BaseModel):
     """
-    ComputeInteractionFacetPayload
+    Each facet `name` is a Mongo field name: non-empty, without `.` or NUL, not starting with `$`, and not `total`. Each `field` is a dotted path of such names.
     """ # noqa: E501
     facets: List[FacetSpec]
     query: Optional[InteractionSearchQuery] = None

@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic import BaseModel, ConfigDict, Field
 from typing import Any, ClassVar, Dict
+from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -27,8 +28,8 @@ class CreateSnapshotPayload(BaseModel):
     """
     Payload for creating a named snapshot.
     """ # noqa: E501
-    name: StrictStr = Field(description="Snapshot name (must be unique within store)")
-    message: StrictStr = Field(description="Snapshot description")
+    name: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Snapshot name (must be unique within store)")
+    message: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Snapshot description")
     __properties: ClassVar[List[str]] = ["name", "message"]
 
     model_config = ConfigDict(

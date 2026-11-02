@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.app_access_control import AppAccessControl
 from vertesia_client.openapi.models.app_capabilities import AppCapabilities
 from vertesia_client.openapi.models.app_manifest_preview_screenshot import AppManifestPreviewScreenshot
@@ -40,7 +41,7 @@ class AppManifestData(BaseModel):
     parameters: Optional[Dict[str, McpConnectionParameter]] = Field(default=None, description="Shared MCP installation parameters available to every collection. Collection-local names must not overlap.")
     oauth_scopes: Optional[List[StrictStr]] = Field(default=None, description="Publisher-managed maximum OAuth scopes this app may request. App code and version promotion cannot expand this permission ceiling.")
     oauth_client: Optional[AppOAuthClientConfig] = None
-    name: StrictStr = Field(description="The name of the app, used as the id in the system. Must be in kebab case (e.g. my-app).")
+    name: Annotated[str, Field(min_length=1, strict=True)] = Field(description="The name of the app, used as the id in the system. Must be in kebab case (e.g. my-app).")
     visibility: StrictStr = Field(description="Visibility level of the app: - \"public\": visible to all accounts - \"private\": visible only to the owning account - \"vertesia\": visible only to Vertesia team members (any project)")
     title: StrictStr
     description: StrictStr

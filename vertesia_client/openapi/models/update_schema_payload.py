@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.create_table_payload import CreateTablePayload
 from vertesia_client.openapi.models.data_relationship import DataRelationship
 from typing import Optional, Set
@@ -33,7 +34,7 @@ class UpdateSchemaPayload(BaseModel):
     tables: Optional[List[CreateTablePayload]] = Field(default=None, description="Tables to create or update")
     relationships: Optional[List[DataRelationship]] = Field(default=None, description="Relationships to set")
     drop_tables: Optional[List[StrictStr]] = Field(default=None, description="Tables to drop")
-    message: StrictStr = Field(description="Commit message (required)")
+    message: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Commit message (required)")
     __properties: ClassVar[List[str]] = ["description", "tables", "relationships", "drop_tables", "message"]
 
     model_config = ConfigDict(

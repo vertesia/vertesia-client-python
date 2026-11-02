@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -27,17 +28,27 @@ class CreateOAuthProviderPayload(BaseModel):
     """
     Payload for creating an OAuth Provider. The client_secret is accepted as plaintext on create and stored encrypted.
     """ # noqa: E501
-    name: StrictStr
-    display_name: StrictStr
+    name: Annotated[str, Field(strict=True)]
+    display_name: Annotated[str, Field(min_length=1, strict=True)]
     grant_type: Optional[StrictStr] = None
     authorization_endpoint: Optional[StrictStr] = None
     token_endpoint: Optional[StrictStr] = None
-    client_id: StrictStr
+    client_id: Annotated[str, Field(min_length=1, strict=True)]
     client_secret: Optional[StrictStr] = Field(default=None, description="Optional client secret for confidential clients. Will be encrypted at rest and never returned in API responses.")
     default_scopes: Optional[List[StrictStr]] = None
     use_pkce: Optional[StrictBool] = None
     revocation_endpoint: Optional[StrictStr] = None
     __properties: ClassVar[List[str]] = ["name", "display_name", "grant_type", "authorization_endpoint", "token_endpoint", "client_id", "client_secret", "default_scopes", "use_pkce", "revocation_endpoint"]
+
+    @field_validator('name')
+    def name_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"^[a-z0-9][a-z0-9-]*[a-z0-9]$", value):
+            raise ValueError(r"must validate the regular expression /^[a-z0-9][a-z0-9-]*[a-z0-9]$/")
+        return value
 
     @field_validator('grant_type')
     def grant_type_validate_enum(cls, value):

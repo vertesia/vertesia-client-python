@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -27,7 +28,7 @@ class QueryPayload(BaseModel):
     """
     Payload for executing a query.
     """ # noqa: E501
-    sql: StrictStr = Field(description="SQL query (SELECT only)")
+    sql: Annotated[str, Field(min_length=1, strict=True)] = Field(description="SQL query (SELECT only)")
     params: Optional[Dict[str, Any]] = Field(default=None, description="Query parameters (for prepared statements)")
     limit: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Maximum rows to return")
     version_id: Optional[StrictStr] = Field(default=None, description="Query against a specific version (optional)")

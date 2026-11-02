@@ -964,7 +964,7 @@ class AuditTrailApi:
     ) -> AuditTrailResponse:
         """List audit trail events
 
-        Lists audit trail events with optional filtering by project, resource, principal, action, and time range.  **Required permissions:** Any of `project:admin`, `account:admin`, `audit:read`
+        Lists audit trail events with optional filtering by project, resource, principal, action, and time range. Without `from`, the list covers the 7 days before `to` (or now); a range cannot exceed 366 days.  **Required permissions:** Any of `project:admin`, `account:admin`, `audit:read`
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1081,7 +1081,7 @@ class AuditTrailApi:
     ) -> ApiResponse[AuditTrailResponse]:
         """List audit trail events
 
-        Lists audit trail events with optional filtering by project, resource, principal, action, and time range.  **Required permissions:** Any of `project:admin`, `account:admin`, `audit:read`
+        Lists audit trail events with optional filtering by project, resource, principal, action, and time range. Without `from`, the list covers the 7 days before `to` (or now); a range cannot exceed 366 days.  **Required permissions:** Any of `project:admin`, `account:admin`, `audit:read`
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1198,7 +1198,7 @@ class AuditTrailApi:
     ) -> RESTResponseType:
         """List audit trail events
 
-        Lists audit trail events with optional filtering by project, resource, principal, action, and time range.  **Required permissions:** Any of `project:admin`, `account:admin`, `audit:read`
+        Lists audit trail events with optional filtering by project, resource, principal, action, and time range. Without `from`, the list covers the 7 days before `to` (or now); a range cannot exceed 366 days.  **Required permissions:** Any of `project:admin`, `account:admin`, `audit:read`
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str

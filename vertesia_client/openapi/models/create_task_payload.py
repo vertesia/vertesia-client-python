@@ -18,8 +18,9 @@ import re  # noqa: F401
 import json
 
 from datetime import datetime
-from pydantic import BaseModel, ConfigDict, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.task_field import TaskField
 from vertesia_client.openapi.models.task_source import TaskSource
 from typing import Optional, Set
@@ -30,7 +31,7 @@ class CreateTaskPayload(BaseModel):
     """
     CreateTaskPayload
     """ # noqa: E501
-    title: StrictStr
+    title: Annotated[str, Field(min_length=1, strict=True)]
     description: Optional[StrictStr] = None
     assignee: Optional[StrictStr] = None
     fields: Optional[List[TaskField]] = None

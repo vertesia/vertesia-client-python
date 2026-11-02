@@ -20,6 +20,7 @@ import json
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.json_schema import JSONSchema
 from vertesia_client.openapi.models.prompt_role import PromptRole
 from vertesia_client.openapi.models.template_type import TemplateType
@@ -31,7 +32,7 @@ class PromptTemplateCreatePayload(BaseModel):
     """
     PromptTemplateCreatePayload
     """ # noqa: E501
-    name: StrictStr
+    name: Annotated[str, Field(min_length=1, strict=True)]
     parent: Optional[StrictStr] = None
     description: Optional[StrictStr] = None
     test_data: Optional[Dict[str, Any]] = None
@@ -39,7 +40,7 @@ class PromptTemplateCreatePayload(BaseModel):
     tags: Optional[List[StrictStr]] = None
     last_published_at: Optional[datetime] = None
     role: PromptRole
-    content: StrictStr
+    content: Annotated[str, Field(min_length=1, strict=True)]
     content_type: TemplateType
     input_schema: Optional[JSONSchema] = Field(default=None, alias="inputSchema")
     __properties: ClassVar[List[str]] = ["name", "parent", "description", "test_data", "script", "tags", "last_published_at", "role", "content", "content_type", "inputSchema"]

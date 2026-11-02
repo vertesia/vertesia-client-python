@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 from typing import Any, ClassVar, Dict, List
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.batch_query_payload_queries_inner import BatchQueryPayloadQueriesInner
 from typing import Optional, Set
 from typing_extensions import Self
@@ -28,7 +29,7 @@ class BatchQueryPayload(BaseModel):
     """
     BatchQueryPayload
     """ # noqa: E501
-    queries: List[BatchQueryPayloadQueriesInner]
+    queries: Annotated[List[BatchQueryPayloadQueriesInner], Field(min_length=1, max_length=20)]
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["queries"]
 

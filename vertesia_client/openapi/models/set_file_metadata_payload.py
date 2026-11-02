@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict
+from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -27,7 +28,7 @@ class SetFileMetadataPayload(BaseModel):
     """
     SetFileMetadataPayload
     """ # noqa: E501
-    file: StrictStr = Field(description="The file path (relative to bucket) or full URI")
+    file: Annotated[str, Field(min_length=1, strict=True)] = Field(description="The file path (relative to bucket) or full URI")
     metadata: Dict[str, StrictStr] = Field(description="Custom metadata key-value pairs to set on the file")
     __properties: ClassVar[List[str]] = ["file", "metadata"]
 

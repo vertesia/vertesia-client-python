@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr, field_validator
+from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, Optional
+from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -28,7 +29,7 @@ class TaskSource(BaseModel):
     TaskSource
     """ # noqa: E501
     type: StrictStr
-    run_id: StrictStr
+    run_id: Annotated[str, Field(min_length=1, strict=True)]
     node: Optional[StrictStr] = None
     ask_id: Optional[StrictStr] = None
     __properties: ClassVar[List[str]] = ["type", "run_id", "node", "ask_id"]

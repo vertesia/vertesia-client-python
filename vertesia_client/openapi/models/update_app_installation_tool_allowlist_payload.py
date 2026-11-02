@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -27,7 +28,7 @@ class UpdateAppInstallationToolAllowlistPayload(BaseModel):
     """
     UpdateAppInstallationToolAllowlistPayload
     """ # noqa: E501
-    tool_allowlist: Optional[List[StrictStr]]
+    tool_allowlist: Optional[Annotated[List[StrictStr], Field(min_length=1)]] = Field(description="Tool names agents may use. An empty list is refused: send null to remove the restriction.")
     __properties: ClassVar[List[str]] = ["tool_allowlist"]
 
     model_config = ConfigDict(

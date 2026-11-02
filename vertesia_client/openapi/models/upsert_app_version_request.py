@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.app_version_kind import AppVersionKind
 from vertesia_client.openapi.models.app_version_state import AppVersionState
 from vertesia_client.openapi.models.app_version_storage import AppVersionStorage
@@ -34,9 +35,9 @@ class UpsertAppVersionRequest(BaseModel):
     """ # noqa: E501
     record_id: Optional[StrictStr] = Field(default=None, description="Existing version record to update in place, used by reproducible rebuilds.")
     app: Optional[StrictStr] = None
-    app_id: StrictStr
+    app_id: Annotated[str, Field(strict=True)]
     app_name: Optional[StrictStr] = None
-    version_id: StrictStr
+    version_id: Annotated[str, Field(strict=True)]
     kind: AppVersionKind
     state: Optional[AppVersionState] = None
     target: Optional[AppVersionTarget] = None
@@ -61,6 +62,26 @@ class UpsertAppVersionRequest(BaseModel):
     expires_at: Optional[StrictStr] = None
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["record_id", "app", "app_id", "app_name", "version_id", "kind", "state", "target", "agent_run_id", "development_task_id", "build_workflow_id", "build_workflow_run_id", "sandbox_id", "title", "description", "storage", "source_commit", "urls", "manifest", "files", "file_count", "source_file_count", "screenshot_artifact", "checks", "built_at", "checked_at", "expires_at"]
+
+    @field_validator('app_id')
+    def app_id_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"\S", value):
+            raise ValueError(r"must validate the regular expression /\S/")
+        return value
+
+    @field_validator('version_id')
+    def version_id_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"\S", value):
+            raise ValueError(r"must validate the regular expression /\S/")
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,

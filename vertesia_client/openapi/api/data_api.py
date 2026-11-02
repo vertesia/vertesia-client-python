@@ -81,7 +81,7 @@ class DataApi:
     @validate_call
     def archive_dashboards_bulk(
         self,
-        store_id: StrictStr,
+        store_id: Annotated[str, Field(strict=True, description="The data store ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         request_body: Dict[str, List[StrictStr]],
         _request_timeout: Union[
@@ -101,7 +101,7 @@ class DataApi:
 
         Archives multiple dashboards in one request.  **Required permissions:** `content:delete`
 
-        :param store_id: (required)
+        :param store_id: The data store ID, as 24 hexadecimal characters. (required)
         :type store_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -158,7 +158,7 @@ class DataApi:
     @validate_call
     def archive_dashboards_bulk_with_http_info(
         self,
-        store_id: StrictStr,
+        store_id: Annotated[str, Field(strict=True, description="The data store ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         request_body: Dict[str, List[StrictStr]],
         _request_timeout: Union[
@@ -178,7 +178,7 @@ class DataApi:
 
         Archives multiple dashboards in one request.  **Required permissions:** `content:delete`
 
-        :param store_id: (required)
+        :param store_id: The data store ID, as 24 hexadecimal characters. (required)
         :type store_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -235,7 +235,7 @@ class DataApi:
     @validate_call
     def archive_dashboards_bulk_without_preload_content(
         self,
-        store_id: StrictStr,
+        store_id: Annotated[str, Field(strict=True, description="The data store ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         request_body: Dict[str, List[StrictStr]],
         _request_timeout: Union[
@@ -255,7 +255,7 @@ class DataApi:
 
         Archives multiple dashboards in one request.  **Required permissions:** `content:delete`
 
-        :param store_id: (required)
+        :param store_id: The data store ID, as 24 hexadecimal characters. (required)
         :type store_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -392,7 +392,7 @@ class DataApi:
     @validate_call
     def create_dashboard(
         self,
-        store_id: StrictStr,
+        store_id: Annotated[str, Field(strict=True, description="The data store ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_dashboard_payload: CreateDashboardPayload,
         _request_timeout: Union[
@@ -412,7 +412,7 @@ class DataApi:
 
         Creates a Vega-based dashboard linked to a data store.  **Required permissions:** `content:write`
 
-        :param store_id: (required)
+        :param store_id: The data store ID, as 24 hexadecimal characters. (required)
         :type store_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -470,7 +470,7 @@ class DataApi:
     @validate_call
     def create_dashboard_with_http_info(
         self,
-        store_id: StrictStr,
+        store_id: Annotated[str, Field(strict=True, description="The data store ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_dashboard_payload: CreateDashboardPayload,
         _request_timeout: Union[
@@ -490,7 +490,7 @@ class DataApi:
 
         Creates a Vega-based dashboard linked to a data store.  **Required permissions:** `content:write`
 
-        :param store_id: (required)
+        :param store_id: The data store ID, as 24 hexadecimal characters. (required)
         :type store_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -548,7 +548,7 @@ class DataApi:
     @validate_call
     def create_dashboard_without_preload_content(
         self,
-        store_id: StrictStr,
+        store_id: Annotated[str, Field(strict=True, description="The data store ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_dashboard_payload: CreateDashboardPayload,
         _request_timeout: Union[
@@ -568,7 +568,7 @@ class DataApi:
 
         Creates a Vega-based dashboard linked to a data store.  **Required permissions:** `content:write`
 
-        :param store_id: (required)
+        :param store_id: The data store ID, as 24 hexadecimal characters. (required)
         :type store_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -706,8 +706,8 @@ class DataApi:
     @validate_call
     def create_dashboard_snapshot(
         self,
-        store_id: StrictStr,
-        dashboard_id: StrictStr,
+        store_id: Annotated[str, Field(strict=True, description="The data store ID, as 24 hexadecimal characters.")],
+        dashboard_id: Annotated[str, Field(strict=True, description="The dashboard ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_dashboard_snapshot_payload: CreateDashboardSnapshotPayload,
         _request_timeout: Union[
@@ -727,9 +727,9 @@ class DataApi:
 
         Creates a named snapshot for the current dashboard version.  **Required permissions:** `content:write`
 
-        :param store_id: (required)
+        :param store_id: The data store ID, as 24 hexadecimal characters. (required)
         :type store_id: str
-        :param dashboard_id: (required)
+        :param dashboard_id: The dashboard ID, as 24 hexadecimal characters. (required)
         :type dashboard_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -787,8 +787,8 @@ class DataApi:
     @validate_call
     def create_dashboard_snapshot_with_http_info(
         self,
-        store_id: StrictStr,
-        dashboard_id: StrictStr,
+        store_id: Annotated[str, Field(strict=True, description="The data store ID, as 24 hexadecimal characters.")],
+        dashboard_id: Annotated[str, Field(strict=True, description="The dashboard ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_dashboard_snapshot_payload: CreateDashboardSnapshotPayload,
         _request_timeout: Union[
@@ -808,9 +808,9 @@ class DataApi:
 
         Creates a named snapshot for the current dashboard version.  **Required permissions:** `content:write`
 
-        :param store_id: (required)
+        :param store_id: The data store ID, as 24 hexadecimal characters. (required)
         :type store_id: str
-        :param dashboard_id: (required)
+        :param dashboard_id: The dashboard ID, as 24 hexadecimal characters. (required)
         :type dashboard_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -868,8 +868,8 @@ class DataApi:
     @validate_call
     def create_dashboard_snapshot_without_preload_content(
         self,
-        store_id: StrictStr,
-        dashboard_id: StrictStr,
+        store_id: Annotated[str, Field(strict=True, description="The data store ID, as 24 hexadecimal characters.")],
+        dashboard_id: Annotated[str, Field(strict=True, description="The dashboard ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         create_dashboard_snapshot_payload: CreateDashboardSnapshotPayload,
         _request_timeout: Union[
@@ -889,9 +889,9 @@ class DataApi:
 
         Creates a named snapshot for the current dashboard version.  **Required permissions:** `content:write`
 
-        :param store_id: (required)
+        :param store_id: The data store ID, as 24 hexadecimal characters. (required)
         :type store_id: str
-        :param dashboard_id: (required)
+        :param dashboard_id: The dashboard ID, as 24 hexadecimal characters. (required)
         :type dashboard_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -2233,8 +2233,8 @@ class DataApi:
     @validate_call
     def delete_dashboard(
         self,
-        store_id: StrictStr,
-        dashboard_id: StrictStr,
+        store_id: Annotated[str, Field(strict=True, description="The data store ID, as 24 hexadecimal characters.")],
+        dashboard_id: Annotated[str, Field(strict=True, description="The dashboard ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -2253,9 +2253,9 @@ class DataApi:
 
         Archives a dashboard.  **Required permissions:** `content:delete`
 
-        :param store_id: (required)
+        :param store_id: The data store ID, as 24 hexadecimal characters. (required)
         :type store_id: str
-        :param dashboard_id: (required)
+        :param dashboard_id: The dashboard ID, as 24 hexadecimal characters. (required)
         :type dashboard_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -2310,8 +2310,8 @@ class DataApi:
     @validate_call
     def delete_dashboard_with_http_info(
         self,
-        store_id: StrictStr,
-        dashboard_id: StrictStr,
+        store_id: Annotated[str, Field(strict=True, description="The data store ID, as 24 hexadecimal characters.")],
+        dashboard_id: Annotated[str, Field(strict=True, description="The dashboard ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -2330,9 +2330,9 @@ class DataApi:
 
         Archives a dashboard.  **Required permissions:** `content:delete`
 
-        :param store_id: (required)
+        :param store_id: The data store ID, as 24 hexadecimal characters. (required)
         :type store_id: str
-        :param dashboard_id: (required)
+        :param dashboard_id: The dashboard ID, as 24 hexadecimal characters. (required)
         :type dashboard_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -2387,8 +2387,8 @@ class DataApi:
     @validate_call
     def delete_dashboard_without_preload_content(
         self,
-        store_id: StrictStr,
-        dashboard_id: StrictStr,
+        store_id: Annotated[str, Field(strict=True, description="The data store ID, as 24 hexadecimal characters.")],
+        dashboard_id: Annotated[str, Field(strict=True, description="The dashboard ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -2407,9 +2407,9 @@ class DataApi:
 
         Archives a dashboard.  **Required permissions:** `content:delete`
 
-        :param store_id: (required)
+        :param store_id: The data store ID, as 24 hexadecimal characters. (required)
         :type store_id: str
-        :param dashboard_id: (required)
+        :param dashboard_id: The dashboard ID, as 24 hexadecimal characters. (required)
         :type dashboard_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -2531,7 +2531,7 @@ class DataApi:
     @validate_call
     def delete_dashboards_bulk(
         self,
-        store_id: StrictStr,
+        store_id: Annotated[str, Field(strict=True, description="The data store ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         request_body: Dict[str, List[StrictStr]],
         _request_timeout: Union[
@@ -2551,7 +2551,7 @@ class DataApi:
 
         Permanently deletes multiple dashboards in one request.  **Required permissions:** `content:delete`
 
-        :param store_id: (required)
+        :param store_id: The data store ID, as 24 hexadecimal characters. (required)
         :type store_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -2608,7 +2608,7 @@ class DataApi:
     @validate_call
     def delete_dashboards_bulk_with_http_info(
         self,
-        store_id: StrictStr,
+        store_id: Annotated[str, Field(strict=True, description="The data store ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         request_body: Dict[str, List[StrictStr]],
         _request_timeout: Union[
@@ -2628,7 +2628,7 @@ class DataApi:
 
         Permanently deletes multiple dashboards in one request.  **Required permissions:** `content:delete`
 
-        :param store_id: (required)
+        :param store_id: The data store ID, as 24 hexadecimal characters. (required)
         :type store_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -2685,7 +2685,7 @@ class DataApi:
     @validate_call
     def delete_dashboards_bulk_without_preload_content(
         self,
-        store_id: StrictStr,
+        store_id: Annotated[str, Field(strict=True, description="The data store ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         request_body: Dict[str, List[StrictStr]],
         _request_timeout: Union[
@@ -2705,7 +2705,7 @@ class DataApi:
 
         Permanently deletes multiple dashboards in one request.  **Required permissions:** `content:delete`
 
-        :param store_id: (required)
+        :param store_id: The data store ID, as 24 hexadecimal characters. (required)
         :type store_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -3423,8 +3423,8 @@ class DataApi:
     @validate_call
     def export_dashboard(
         self,
-        store_id: StrictStr,
-        dashboard_id: StrictStr,
+        store_id: Annotated[str, Field(strict=True, description="The data store ID, as 24 hexadecimal characters.")],
+        dashboard_id: Annotated[str, Field(strict=True, description="The dashboard ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         export_dashboard_payload: ExportDashboardPayload,
         _request_timeout: Union[
@@ -3444,9 +3444,9 @@ class DataApi:
 
         Starts rendering the saved dashboard to PNG with fresh query results, and returns the `running` export. Poll GET /data/{storeId}/dashboards/exports/{exportId} until it is `completed` or `failed`. Every export creates a new image, so earlier URLs keep showing what they were issued for. The dashboard's `last_rendered_at` is set once the image is uploaded.  **Required permissions:** `content:read`
 
-        :param store_id: (required)
+        :param store_id: The data store ID, as 24 hexadecimal characters. (required)
         :type store_id: str
-        :param dashboard_id: (required)
+        :param dashboard_id: The dashboard ID, as 24 hexadecimal characters. (required)
         :type dashboard_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -3507,8 +3507,8 @@ class DataApi:
     @validate_call
     def export_dashboard_with_http_info(
         self,
-        store_id: StrictStr,
-        dashboard_id: StrictStr,
+        store_id: Annotated[str, Field(strict=True, description="The data store ID, as 24 hexadecimal characters.")],
+        dashboard_id: Annotated[str, Field(strict=True, description="The dashboard ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         export_dashboard_payload: ExportDashboardPayload,
         _request_timeout: Union[
@@ -3528,9 +3528,9 @@ class DataApi:
 
         Starts rendering the saved dashboard to PNG with fresh query results, and returns the `running` export. Poll GET /data/{storeId}/dashboards/exports/{exportId} until it is `completed` or `failed`. Every export creates a new image, so earlier URLs keep showing what they were issued for. The dashboard's `last_rendered_at` is set once the image is uploaded.  **Required permissions:** `content:read`
 
-        :param store_id: (required)
+        :param store_id: The data store ID, as 24 hexadecimal characters. (required)
         :type store_id: str
-        :param dashboard_id: (required)
+        :param dashboard_id: The dashboard ID, as 24 hexadecimal characters. (required)
         :type dashboard_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -3591,8 +3591,8 @@ class DataApi:
     @validate_call
     def export_dashboard_without_preload_content(
         self,
-        store_id: StrictStr,
-        dashboard_id: StrictStr,
+        store_id: Annotated[str, Field(strict=True, description="The data store ID, as 24 hexadecimal characters.")],
+        dashboard_id: Annotated[str, Field(strict=True, description="The dashboard ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         export_dashboard_payload: ExportDashboardPayload,
         _request_timeout: Union[
@@ -3612,9 +3612,9 @@ class DataApi:
 
         Starts rendering the saved dashboard to PNG with fresh query results, and returns the `running` export. Poll GET /data/{storeId}/dashboards/exports/{exportId} until it is `completed` or `failed`. Every export creates a new image, so earlier URLs keep showing what they were issued for. The dashboard's `last_rendered_at` is set once the image is uploaded.  **Required permissions:** `content:read`
 
-        :param store_id: (required)
+        :param store_id: The data store ID, as 24 hexadecimal characters. (required)
         :type store_id: str
-        :param dashboard_id: (required)
+        :param dashboard_id: The dashboard ID, as 24 hexadecimal characters. (required)
         :type dashboard_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -3758,7 +3758,7 @@ class DataApi:
     @validate_call
     def export_dashboard_preview(
         self,
-        store_id: StrictStr,
+        store_id: Annotated[str, Field(strict=True, description="The data store ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         export_dashboard_preview_payload: ExportDashboardPreviewPayload,
         _request_timeout: Union[
@@ -3778,7 +3778,7 @@ class DataApi:
 
         Starts rendering the rows of a SQL query with a Vega-Lite spec as a PNG, and returns the `running` export. Poll GET /data/{storeId}/dashboards/exports/{exportId} until it is `completed`, with a signed URL to the image, or `failed`, with the reason. Nothing is saved: use it to check a dashboard before creating it.  **Required permissions:** `content:read`
 
-        :param store_id: (required)
+        :param store_id: The data store ID, as 24 hexadecimal characters. (required)
         :type store_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -3836,7 +3836,7 @@ class DataApi:
     @validate_call
     def export_dashboard_preview_with_http_info(
         self,
-        store_id: StrictStr,
+        store_id: Annotated[str, Field(strict=True, description="The data store ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         export_dashboard_preview_payload: ExportDashboardPreviewPayload,
         _request_timeout: Union[
@@ -3856,7 +3856,7 @@ class DataApi:
 
         Starts rendering the rows of a SQL query with a Vega-Lite spec as a PNG, and returns the `running` export. Poll GET /data/{storeId}/dashboards/exports/{exportId} until it is `completed`, with a signed URL to the image, or `failed`, with the reason. Nothing is saved: use it to check a dashboard before creating it.  **Required permissions:** `content:read`
 
-        :param store_id: (required)
+        :param store_id: The data store ID, as 24 hexadecimal characters. (required)
         :type store_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -3914,7 +3914,7 @@ class DataApi:
     @validate_call
     def export_dashboard_preview_without_preload_content(
         self,
-        store_id: StrictStr,
+        store_id: Annotated[str, Field(strict=True, description="The data store ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         export_dashboard_preview_payload: ExportDashboardPreviewPayload,
         _request_timeout: Union[
@@ -3934,7 +3934,7 @@ class DataApi:
 
         Starts rendering the rows of a SQL query with a Vega-Lite spec as a PNG, and returns the `running` export. Poll GET /data/{storeId}/dashboards/exports/{exportId} until it is `completed`, with a signed URL to the image, or `failed`, with the reason. Nothing is saved: use it to check a dashboard before creating it.  **Required permissions:** `content:read`
 
-        :param store_id: (required)
+        :param store_id: The data store ID, as 24 hexadecimal characters. (required)
         :type store_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -4072,8 +4072,8 @@ class DataApi:
     @validate_call
     def get_dashboard(
         self,
-        store_id: StrictStr,
-        dashboard_id: StrictStr,
+        store_id: Annotated[str, Field(strict=True, description="The data store ID, as 24 hexadecimal characters.")],
+        dashboard_id: Annotated[str, Field(strict=True, description="The dashboard ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -4092,9 +4092,9 @@ class DataApi:
 
         Retrieves a dashboard by ID.  **Required permissions:** `content:read`
 
-        :param store_id: (required)
+        :param store_id: The data store ID, as 24 hexadecimal characters. (required)
         :type store_id: str
-        :param dashboard_id: (required)
+        :param dashboard_id: The dashboard ID, as 24 hexadecimal characters. (required)
         :type dashboard_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -4149,8 +4149,8 @@ class DataApi:
     @validate_call
     def get_dashboard_with_http_info(
         self,
-        store_id: StrictStr,
-        dashboard_id: StrictStr,
+        store_id: Annotated[str, Field(strict=True, description="The data store ID, as 24 hexadecimal characters.")],
+        dashboard_id: Annotated[str, Field(strict=True, description="The dashboard ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -4169,9 +4169,9 @@ class DataApi:
 
         Retrieves a dashboard by ID.  **Required permissions:** `content:read`
 
-        :param store_id: (required)
+        :param store_id: The data store ID, as 24 hexadecimal characters. (required)
         :type store_id: str
-        :param dashboard_id: (required)
+        :param dashboard_id: The dashboard ID, as 24 hexadecimal characters. (required)
         :type dashboard_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -4226,8 +4226,8 @@ class DataApi:
     @validate_call
     def get_dashboard_without_preload_content(
         self,
-        store_id: StrictStr,
-        dashboard_id: StrictStr,
+        store_id: Annotated[str, Field(strict=True, description="The data store ID, as 24 hexadecimal characters.")],
+        dashboard_id: Annotated[str, Field(strict=True, description="The dashboard ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -4246,9 +4246,9 @@ class DataApi:
 
         Retrieves a dashboard by ID.  **Required permissions:** `content:read`
 
-        :param store_id: (required)
+        :param store_id: The data store ID, as 24 hexadecimal characters. (required)
         :type store_id: str
-        :param dashboard_id: (required)
+        :param dashboard_id: The dashboard ID, as 24 hexadecimal characters. (required)
         :type dashboard_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -4370,7 +4370,7 @@ class DataApi:
     @validate_call
     def get_dashboard_export(
         self,
-        store_id: StrictStr,
+        store_id: Annotated[str, Field(strict=True, description="The data store ID, as 24 hexadecimal characters.")],
         export_id: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
@@ -4390,7 +4390,7 @@ class DataApi:
 
         Returns the status of an export. A `completed` export carries a freshly signed URL to the image; a `failed` one carries the reason and whether starting it again may succeed.  **Required permissions:** `content:read`
 
-        :param store_id: (required)
+        :param store_id: The data store ID, as 24 hexadecimal characters. (required)
         :type store_id: str
         :param export_id: (required)
         :type export_id: str
@@ -4449,7 +4449,7 @@ class DataApi:
     @validate_call
     def get_dashboard_export_with_http_info(
         self,
-        store_id: StrictStr,
+        store_id: Annotated[str, Field(strict=True, description="The data store ID, as 24 hexadecimal characters.")],
         export_id: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
@@ -4469,7 +4469,7 @@ class DataApi:
 
         Returns the status of an export. A `completed` export carries a freshly signed URL to the image; a `failed` one carries the reason and whether starting it again may succeed.  **Required permissions:** `content:read`
 
-        :param store_id: (required)
+        :param store_id: The data store ID, as 24 hexadecimal characters. (required)
         :type store_id: str
         :param export_id: (required)
         :type export_id: str
@@ -4528,7 +4528,7 @@ class DataApi:
     @validate_call
     def get_dashboard_export_without_preload_content(
         self,
-        store_id: StrictStr,
+        store_id: Annotated[str, Field(strict=True, description="The data store ID, as 24 hexadecimal characters.")],
         export_id: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
@@ -4548,7 +4548,7 @@ class DataApi:
 
         Returns the status of an export. A `completed` export carries a freshly signed URL to the image; a `failed` one carries the reason and whether starting it again may succeed.  **Required permissions:** `content:read`
 
-        :param store_id: (required)
+        :param store_id: The data store ID, as 24 hexadecimal characters. (required)
         :type store_id: str
         :param export_id: (required)
         :type export_id: str
@@ -4674,9 +4674,9 @@ class DataApi:
     @validate_call
     def get_dashboard_version(
         self,
-        store_id: StrictStr,
-        dashboard_id: StrictStr,
-        version_id: StrictStr,
+        store_id: Annotated[str, Field(strict=True, description="The data store ID, as 24 hexadecimal characters.")],
+        dashboard_id: Annotated[str, Field(strict=True, description="The dashboard ID, as 24 hexadecimal characters.")],
+        version_id: Annotated[str, Field(strict=True, description="The dashboard version ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -4695,11 +4695,11 @@ class DataApi:
 
         Retrieves a specific dashboard version by ID.  **Required permissions:** `content:read`
 
-        :param store_id: (required)
+        :param store_id: The data store ID, as 24 hexadecimal characters. (required)
         :type store_id: str
-        :param dashboard_id: (required)
+        :param dashboard_id: The dashboard ID, as 24 hexadecimal characters. (required)
         :type dashboard_id: str
-        :param version_id: (required)
+        :param version_id: The dashboard version ID, as 24 hexadecimal characters. (required)
         :type version_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -4755,9 +4755,9 @@ class DataApi:
     @validate_call
     def get_dashboard_version_with_http_info(
         self,
-        store_id: StrictStr,
-        dashboard_id: StrictStr,
-        version_id: StrictStr,
+        store_id: Annotated[str, Field(strict=True, description="The data store ID, as 24 hexadecimal characters.")],
+        dashboard_id: Annotated[str, Field(strict=True, description="The dashboard ID, as 24 hexadecimal characters.")],
+        version_id: Annotated[str, Field(strict=True, description="The dashboard version ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -4776,11 +4776,11 @@ class DataApi:
 
         Retrieves a specific dashboard version by ID.  **Required permissions:** `content:read`
 
-        :param store_id: (required)
+        :param store_id: The data store ID, as 24 hexadecimal characters. (required)
         :type store_id: str
-        :param dashboard_id: (required)
+        :param dashboard_id: The dashboard ID, as 24 hexadecimal characters. (required)
         :type dashboard_id: str
-        :param version_id: (required)
+        :param version_id: The dashboard version ID, as 24 hexadecimal characters. (required)
         :type version_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -4836,9 +4836,9 @@ class DataApi:
     @validate_call
     def get_dashboard_version_without_preload_content(
         self,
-        store_id: StrictStr,
-        dashboard_id: StrictStr,
-        version_id: StrictStr,
+        store_id: Annotated[str, Field(strict=True, description="The data store ID, as 24 hexadecimal characters.")],
+        dashboard_id: Annotated[str, Field(strict=True, description="The dashboard ID, as 24 hexadecimal characters.")],
+        version_id: Annotated[str, Field(strict=True, description="The dashboard version ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -4857,11 +4857,11 @@ class DataApi:
 
         Retrieves a specific dashboard version by ID.  **Required permissions:** `content:read`
 
-        :param store_id: (required)
+        :param store_id: The data store ID, as 24 hexadecimal characters. (required)
         :type store_id: str
-        :param dashboard_id: (required)
+        :param dashboard_id: The dashboard ID, as 24 hexadecimal characters. (required)
         :type dashboard_id: str
-        :param version_id: (required)
+        :param version_id: The dashboard version ID, as 24 hexadecimal characters. (required)
         :type version_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -5271,7 +5271,7 @@ class DataApi:
     def get_data_store_import_status(
         self,
         store_id: StrictStr,
-        import_id: StrictStr,
+        import_id: Annotated[str, Field(strict=True, description="The import job ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -5292,7 +5292,7 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
-        :param import_id: (required)
+        :param import_id: The import job ID, as 24 hexadecimal characters. (required)
         :type import_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -5348,7 +5348,7 @@ class DataApi:
     def get_data_store_import_status_with_http_info(
         self,
         store_id: StrictStr,
-        import_id: StrictStr,
+        import_id: Annotated[str, Field(strict=True, description="The import job ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -5369,7 +5369,7 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
-        :param import_id: (required)
+        :param import_id: The import job ID, as 24 hexadecimal characters. (required)
         :type import_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -5425,7 +5425,7 @@ class DataApi:
     def get_data_store_import_status_without_preload_content(
         self,
         store_id: StrictStr,
-        import_id: StrictStr,
+        import_id: Annotated[str, Field(strict=True, description="The import job ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -5446,7 +5446,7 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
-        :param import_id: (required)
+        :param import_id: The import job ID, as 24 hexadecimal characters. (required)
         :type import_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -6486,8 +6486,8 @@ class DataApi:
     @validate_call
     def list_dashboard_versions(
         self,
-        store_id: StrictStr,
-        dashboard_id: StrictStr,
+        store_id: Annotated[str, Field(strict=True, description="The data store ID, as 24 hexadecimal characters.")],
+        dashboard_id: Annotated[str, Field(strict=True, description="The dashboard ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -6506,9 +6506,9 @@ class DataApi:
 
         Lists versions and snapshots for a dashboard.  **Required permissions:** `content:read`
 
-        :param store_id: (required)
+        :param store_id: The data store ID, as 24 hexadecimal characters. (required)
         :type store_id: str
-        :param dashboard_id: (required)
+        :param dashboard_id: The dashboard ID, as 24 hexadecimal characters. (required)
         :type dashboard_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -6563,8 +6563,8 @@ class DataApi:
     @validate_call
     def list_dashboard_versions_with_http_info(
         self,
-        store_id: StrictStr,
-        dashboard_id: StrictStr,
+        store_id: Annotated[str, Field(strict=True, description="The data store ID, as 24 hexadecimal characters.")],
+        dashboard_id: Annotated[str, Field(strict=True, description="The dashboard ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -6583,9 +6583,9 @@ class DataApi:
 
         Lists versions and snapshots for a dashboard.  **Required permissions:** `content:read`
 
-        :param store_id: (required)
+        :param store_id: The data store ID, as 24 hexadecimal characters. (required)
         :type store_id: str
-        :param dashboard_id: (required)
+        :param dashboard_id: The dashboard ID, as 24 hexadecimal characters. (required)
         :type dashboard_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -6640,8 +6640,8 @@ class DataApi:
     @validate_call
     def list_dashboard_versions_without_preload_content(
         self,
-        store_id: StrictStr,
-        dashboard_id: StrictStr,
+        store_id: Annotated[str, Field(strict=True, description="The data store ID, as 24 hexadecimal characters.")],
+        dashboard_id: Annotated[str, Field(strict=True, description="The dashboard ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -6660,9 +6660,9 @@ class DataApi:
 
         Lists versions and snapshots for a dashboard.  **Required permissions:** `content:read`
 
-        :param store_id: (required)
+        :param store_id: The data store ID, as 24 hexadecimal characters. (required)
         :type store_id: str
-        :param dashboard_id: (required)
+        :param dashboard_id: The dashboard ID, as 24 hexadecimal characters. (required)
         :type dashboard_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -6784,7 +6784,7 @@ class DataApi:
     @validate_call
     def list_dashboards(
         self,
-        store_id: StrictStr,
+        store_id: Annotated[str, Field(strict=True, description="The data store ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -6803,7 +6803,7 @@ class DataApi:
 
         Lists dashboards for a data store, optionally filtered by dashboard status.  **Required permissions:** `content:read`
 
-        :param store_id: (required)
+        :param store_id: The data store ID, as 24 hexadecimal characters. (required)
         :type store_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -6857,7 +6857,7 @@ class DataApi:
     @validate_call
     def list_dashboards_with_http_info(
         self,
-        store_id: StrictStr,
+        store_id: Annotated[str, Field(strict=True, description="The data store ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -6876,7 +6876,7 @@ class DataApi:
 
         Lists dashboards for a data store, optionally filtered by dashboard status.  **Required permissions:** `content:read`
 
-        :param store_id: (required)
+        :param store_id: The data store ID, as 24 hexadecimal characters. (required)
         :type store_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -6930,7 +6930,7 @@ class DataApi:
     @validate_call
     def list_dashboards_without_preload_content(
         self,
-        store_id: StrictStr,
+        store_id: Annotated[str, Field(strict=True, description="The data store ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -6949,7 +6949,7 @@ class DataApi:
 
         Lists dashboards for a data store, optionally filtered by dashboard status.  **Required permissions:** `content:read`
 
-        :param store_id: (required)
+        :param store_id: The data store ID, as 24 hexadecimal characters. (required)
         :type store_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -8529,9 +8529,9 @@ class DataApi:
     @validate_call
     def promote_dashboard_version(
         self,
-        store_id: StrictStr,
-        dashboard_id: StrictStr,
-        version_id: StrictStr,
+        store_id: Annotated[str, Field(strict=True, description="The data store ID, as 24 hexadecimal characters.")],
+        dashboard_id: Annotated[str, Field(strict=True, description="The dashboard ID, as 24 hexadecimal characters.")],
+        version_id: Annotated[str, Field(strict=True, description="The dashboard version ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         promote_dashboard_version_payload: PromoteDashboardVersionPayload,
         _request_timeout: Union[
@@ -8551,11 +8551,11 @@ class DataApi:
 
         Promotes an existing dashboard version to become the current dashboard.  **Required permissions:** `content:write`
 
-        :param store_id: (required)
+        :param store_id: The data store ID, as 24 hexadecimal characters. (required)
         :type store_id: str
-        :param dashboard_id: (required)
+        :param dashboard_id: The dashboard ID, as 24 hexadecimal characters. (required)
         :type dashboard_id: str
-        :param version_id: (required)
+        :param version_id: The dashboard version ID, as 24 hexadecimal characters. (required)
         :type version_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -8614,9 +8614,9 @@ class DataApi:
     @validate_call
     def promote_dashboard_version_with_http_info(
         self,
-        store_id: StrictStr,
-        dashboard_id: StrictStr,
-        version_id: StrictStr,
+        store_id: Annotated[str, Field(strict=True, description="The data store ID, as 24 hexadecimal characters.")],
+        dashboard_id: Annotated[str, Field(strict=True, description="The dashboard ID, as 24 hexadecimal characters.")],
+        version_id: Annotated[str, Field(strict=True, description="The dashboard version ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         promote_dashboard_version_payload: PromoteDashboardVersionPayload,
         _request_timeout: Union[
@@ -8636,11 +8636,11 @@ class DataApi:
 
         Promotes an existing dashboard version to become the current dashboard.  **Required permissions:** `content:write`
 
-        :param store_id: (required)
+        :param store_id: The data store ID, as 24 hexadecimal characters. (required)
         :type store_id: str
-        :param dashboard_id: (required)
+        :param dashboard_id: The dashboard ID, as 24 hexadecimal characters. (required)
         :type dashboard_id: str
-        :param version_id: (required)
+        :param version_id: The dashboard version ID, as 24 hexadecimal characters. (required)
         :type version_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -8699,9 +8699,9 @@ class DataApi:
     @validate_call
     def promote_dashboard_version_without_preload_content(
         self,
-        store_id: StrictStr,
-        dashboard_id: StrictStr,
-        version_id: StrictStr,
+        store_id: Annotated[str, Field(strict=True, description="The data store ID, as 24 hexadecimal characters.")],
+        dashboard_id: Annotated[str, Field(strict=True, description="The dashboard ID, as 24 hexadecimal characters.")],
+        version_id: Annotated[str, Field(strict=True, description="The dashboard version ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         promote_dashboard_version_payload: PromoteDashboardVersionPayload,
         _request_timeout: Union[
@@ -8721,11 +8721,11 @@ class DataApi:
 
         Promotes an existing dashboard version to become the current dashboard.  **Required permissions:** `content:write`
 
-        :param store_id: (required)
+        :param store_id: The data store ID, as 24 hexadecimal characters. (required)
         :type store_id: str
-        :param dashboard_id: (required)
+        :param dashboard_id: The dashboard ID, as 24 hexadecimal characters. (required)
         :type dashboard_id: str
-        :param version_id: (required)
+        :param version_id: The dashboard version ID, as 24 hexadecimal characters. (required)
         :type version_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -9493,7 +9493,7 @@ class DataApi:
     def query_data_store_version(
         self,
         store_id: StrictStr,
-        version_id: StrictStr,
+        version_id: Annotated[str, Field(strict=True, description="The data store version ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         query_payload: QueryPayload,
         _request_timeout: Union[
@@ -9515,7 +9515,7 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
-        :param version_id: (required)
+        :param version_id: The data store version ID, as 24 hexadecimal characters. (required)
         :type version_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -9574,7 +9574,7 @@ class DataApi:
     def query_data_store_version_with_http_info(
         self,
         store_id: StrictStr,
-        version_id: StrictStr,
+        version_id: Annotated[str, Field(strict=True, description="The data store version ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         query_payload: QueryPayload,
         _request_timeout: Union[
@@ -9596,7 +9596,7 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
-        :param version_id: (required)
+        :param version_id: The data store version ID, as 24 hexadecimal characters. (required)
         :type version_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -9655,7 +9655,7 @@ class DataApi:
     def query_data_store_version_without_preload_content(
         self,
         store_id: StrictStr,
-        version_id: StrictStr,
+        version_id: Annotated[str, Field(strict=True, description="The data store version ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         query_payload: QueryPayload,
         _request_timeout: Union[
@@ -9677,7 +9677,7 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
-        :param version_id: (required)
+        :param version_id: The data store version ID, as 24 hexadecimal characters. (required)
         :type version_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -9819,7 +9819,7 @@ class DataApi:
     def rollback_data_store_version(
         self,
         store_id: StrictStr,
-        version_id: StrictStr,
+        version_id: Annotated[str, Field(strict=True, description="The data store version ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -9840,7 +9840,7 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
-        :param version_id: (required)
+        :param version_id: The data store version ID, as 24 hexadecimal characters. (required)
         :type version_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -9896,7 +9896,7 @@ class DataApi:
     def rollback_data_store_version_with_http_info(
         self,
         store_id: StrictStr,
-        version_id: StrictStr,
+        version_id: Annotated[str, Field(strict=True, description="The data store version ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -9917,7 +9917,7 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
-        :param version_id: (required)
+        :param version_id: The data store version ID, as 24 hexadecimal characters. (required)
         :type version_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -9973,7 +9973,7 @@ class DataApi:
     def rollback_data_store_version_without_preload_content(
         self,
         store_id: StrictStr,
-        version_id: StrictStr,
+        version_id: Annotated[str, Field(strict=True, description="The data store version ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -9994,7 +9994,7 @@ class DataApi:
 
         :param store_id: (required)
         :type store_id: str
-        :param version_id: (required)
+        :param version_id: The data store version ID, as 24 hexadecimal characters. (required)
         :type version_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -10116,8 +10116,8 @@ class DataApi:
     @validate_call
     def set_dashboard_versioning(
         self,
-        store_id: StrictStr,
-        dashboard_id: StrictStr,
+        store_id: Annotated[str, Field(strict=True, description="The data store ID, as 24 hexadecimal characters.")],
+        dashboard_id: Annotated[str, Field(strict=True, description="The dashboard ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         dashboard_versioning_payload: DashboardVersioningPayload,
         _request_timeout: Union[
@@ -10137,9 +10137,9 @@ class DataApi:
 
         Enables or disables versioning for a dashboard.  **Required permissions:** `content:write`
 
-        :param store_id: (required)
+        :param store_id: The data store ID, as 24 hexadecimal characters. (required)
         :type store_id: str
-        :param dashboard_id: (required)
+        :param dashboard_id: The dashboard ID, as 24 hexadecimal characters. (required)
         :type dashboard_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -10197,8 +10197,8 @@ class DataApi:
     @validate_call
     def set_dashboard_versioning_with_http_info(
         self,
-        store_id: StrictStr,
-        dashboard_id: StrictStr,
+        store_id: Annotated[str, Field(strict=True, description="The data store ID, as 24 hexadecimal characters.")],
+        dashboard_id: Annotated[str, Field(strict=True, description="The dashboard ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         dashboard_versioning_payload: DashboardVersioningPayload,
         _request_timeout: Union[
@@ -10218,9 +10218,9 @@ class DataApi:
 
         Enables or disables versioning for a dashboard.  **Required permissions:** `content:write`
 
-        :param store_id: (required)
+        :param store_id: The data store ID, as 24 hexadecimal characters. (required)
         :type store_id: str
-        :param dashboard_id: (required)
+        :param dashboard_id: The dashboard ID, as 24 hexadecimal characters. (required)
         :type dashboard_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -10278,8 +10278,8 @@ class DataApi:
     @validate_call
     def set_dashboard_versioning_without_preload_content(
         self,
-        store_id: StrictStr,
-        dashboard_id: StrictStr,
+        store_id: Annotated[str, Field(strict=True, description="The data store ID, as 24 hexadecimal characters.")],
+        dashboard_id: Annotated[str, Field(strict=True, description="The dashboard ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         dashboard_versioning_payload: DashboardVersioningPayload,
         _request_timeout: Union[
@@ -10299,9 +10299,9 @@ class DataApi:
 
         Enables or disables versioning for a dashboard.  **Required permissions:** `content:write`
 
-        :param store_id: (required)
+        :param store_id: The data store ID, as 24 hexadecimal characters. (required)
         :type store_id: str
-        :param dashboard_id: (required)
+        :param dashboard_id: The dashboard ID, as 24 hexadecimal characters. (required)
         :type dashboard_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -10442,8 +10442,8 @@ class DataApi:
     @validate_call
     def update_dashboard(
         self,
-        store_id: StrictStr,
-        dashboard_id: StrictStr,
+        store_id: Annotated[str, Field(strict=True, description="The data store ID, as 24 hexadecimal characters.")],
+        dashboard_id: Annotated[str, Field(strict=True, description="The dashboard ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_dashboard_payload: UpdateDashboardPayload,
         _request_timeout: Union[
@@ -10463,9 +10463,9 @@ class DataApi:
 
         Updates a dashboard definition, query, or metadata.  **Required permissions:** `content:write`
 
-        :param store_id: (required)
+        :param store_id: The data store ID, as 24 hexadecimal characters. (required)
         :type store_id: str
-        :param dashboard_id: (required)
+        :param dashboard_id: The dashboard ID, as 24 hexadecimal characters. (required)
         :type dashboard_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -10524,8 +10524,8 @@ class DataApi:
     @validate_call
     def update_dashboard_with_http_info(
         self,
-        store_id: StrictStr,
-        dashboard_id: StrictStr,
+        store_id: Annotated[str, Field(strict=True, description="The data store ID, as 24 hexadecimal characters.")],
+        dashboard_id: Annotated[str, Field(strict=True, description="The dashboard ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_dashboard_payload: UpdateDashboardPayload,
         _request_timeout: Union[
@@ -10545,9 +10545,9 @@ class DataApi:
 
         Updates a dashboard definition, query, or metadata.  **Required permissions:** `content:write`
 
-        :param store_id: (required)
+        :param store_id: The data store ID, as 24 hexadecimal characters. (required)
         :type store_id: str
-        :param dashboard_id: (required)
+        :param dashboard_id: The dashboard ID, as 24 hexadecimal characters. (required)
         :type dashboard_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -10606,8 +10606,8 @@ class DataApi:
     @validate_call
     def update_dashboard_without_preload_content(
         self,
-        store_id: StrictStr,
-        dashboard_id: StrictStr,
+        store_id: Annotated[str, Field(strict=True, description="The data store ID, as 24 hexadecimal characters.")],
+        dashboard_id: Annotated[str, Field(strict=True, description="The dashboard ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_dashboard_payload: UpdateDashboardPayload,
         _request_timeout: Union[
@@ -10627,9 +10627,9 @@ class DataApi:
 
         Updates a dashboard definition, query, or metadata.  **Required permissions:** `content:write`
 
-        :param store_id: (required)
+        :param store_id: The data store ID, as 24 hexadecimal characters. (required)
         :type store_id: str
-        :param dashboard_id: (required)
+        :param dashboard_id: The dashboard ID, as 24 hexadecimal characters. (required)
         :type dashboard_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str

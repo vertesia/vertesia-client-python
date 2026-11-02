@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field
 from typing import Any, ClassVar, Dict, List
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.alter_table_operation import AlterTableOperation
 from typing import Optional, Set
 from typing_extensions import Self
@@ -28,7 +29,7 @@ class AlterTablePayload(BaseModel):
     """
     Payload for altering a table schema.
     """ # noqa: E501
-    changes: List[AlterTableOperation] = Field(description="List of schema changes to apply")
+    changes: Annotated[List[AlterTableOperation], Field(min_length=1)] = Field(description="List of schema changes to apply")
     __properties: ClassVar[List[str]] = ["changes"]
 
     model_config = ConfigDict(

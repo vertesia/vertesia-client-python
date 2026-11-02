@@ -31,7 +31,7 @@ class UpdateWorkflowDefinitionPayloadWithActivities(BaseModel):
     """
     UpdateWorkflowDefinitionPayloadWithActivities
     """ # noqa: E501
-    name: StrictStr
+    name: Annotated[str, Field(min_length=1, strict=True)]
     description: Optional[StrictStr] = None
     tags: Optional[List[StrictStr]] = None
     vars: Optional[Dict[str, Any]]

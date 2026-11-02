@@ -42,7 +42,7 @@ class AsyncConversationExecutionPayload(BaseModel):
     """
     AsyncConversationExecutionPayload
     """ # noqa: E501
-    interaction: StrictStr = Field(description="The interaction name and suffixed by an optional tag or version separated from the name using a @ character If no version/tag part is specified then the latest version is used. Example: ReviewContract, ReviewContract@draft, ReviewContract@1, ReviewContract@some-tag")
+    interaction: Annotated[str, Field(min_length=1, strict=True)] = Field(description="The interaction name and suffixed by an optional tag or version separated from the name using a @ character If no version/tag part is specified then the latest version is used. Example: ReviewContract, ReviewContract@draft, ReviewContract@1, ReviewContract@some-tag")
     title: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="Caller-provided conversation title.")
     topic: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="Caller-provided conversation topic. Suppresses automatic topic generation.")
     generate_topic: Optional[StrictBool] = Field(default=None, description="Whether to generate a conversation title and topic automatically. Defaults to true; a caller-provided topic always suppresses generation.")

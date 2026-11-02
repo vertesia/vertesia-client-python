@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.column_layout import ColumnLayout
 from typing import Optional, Set
 from typing_extensions import Self
@@ -26,7 +27,7 @@ from pydantic_core import to_jsonable_python
 
 class CreateCollectionPayload(BaseModel):
     """
-    CreateCollectionPayload
+    `query` is a Mongo filter. Its keys are dotted field paths or `$and`, `$or` and `$nor`, and a condition is a literal or uses the comparison operators, `$in`, `$nin`, `$all`, `$exists`, `$type`, `$size`, `$regex`, `$not` and `$elemMatch`.
     """ # noqa: E501
     description: Optional[StrictStr] = Field(default=None, description="Description of the collection and its purpose")
     skip_head_sync: Optional[StrictBool] = Field(default=None, description="When true the collection does not track and sync member HEAD revisions. Defaults to false.")
@@ -42,7 +43,7 @@ class CreateCollectionPayload(BaseModel):
     sensitivity: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="BLP sensitivity level for member documents")
     compartments: Optional[List[StrictStr]] = Field(default=None, description="Compartments for member documents")
     shared_root: Optional[StrictBool] = Field(default=None, description="Explicitly share this collection as a root of the project shared space (listable/readable by non-members via matching shared-content ABAC rules). This is the explicit API share flag — the sync never sets it.")
-    name: StrictStr = Field(description="Name of the collection")
+    name: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Name of the collection")
     dynamic: StrictBool = Field(description="When true, membership is determined by `query`; when false, members are added explicitly")
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["description", "skip_head_sync", "tags", "type", "query", "properties", "parent", "table_layout", "allowed_types", "updated_by", "shared_properties", "sensitivity", "compartments", "shared_root", "name", "dynamic"]

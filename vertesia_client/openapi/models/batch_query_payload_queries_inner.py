@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, Optional, Union
+from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -28,7 +29,7 @@ class BatchQueryPayloadQueriesInner(BaseModel):
     BatchQueryPayloadQueriesInner
     """ # noqa: E501
     name: StrictStr
-    sql: StrictStr
+    sql: Annotated[str, Field(min_length=1, strict=True)]
     limit: Optional[Union[StrictFloat, StrictInt]] = None
     __properties: ClassVar[List[str]] = ["name", "sql", "limit"]
 

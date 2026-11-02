@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.task_field import TaskField
 from vertesia_client.openapi.models.user_channel import UserChannel
 from typing import Optional, Set
@@ -29,11 +30,11 @@ class RegisterPendingAskRequest(BaseModel):
     """
     RegisterPendingAskRequest
     """ # noqa: E501
-    run_id: StrictStr = Field(alias="runId")
-    workflow_id: StrictStr = Field(alias="workflowId")
-    agent_name: StrictStr = Field(alias="agentName")
-    questions: List[StrictStr]
-    timeout_hours: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, alias="timeoutHours")
+    run_id: Annotated[str, Field(min_length=1, strict=True)] = Field(alias="runId")
+    workflow_id: Annotated[str, Field(min_length=1, strict=True)] = Field(alias="workflowId")
+    agent_name: Annotated[str, Field(min_length=1, strict=True)] = Field(alias="agentName")
+    questions: Annotated[List[StrictStr], Field(min_length=1)]
+    timeout_hours: Optional[Union[Annotated[float, Field(strict=True, gt=0)], Annotated[int, Field(strict=True, gt=0)]]] = Field(default=None, description="Hours before the question expires; more than 0. Defaults to 48.", alias="timeoutHours")
     user_channels: List[UserChannel] = Field(alias="userChannels")
     task_fields: Optional[List[TaskField]] = Field(default=None, alias="taskFields")
     request_id: Optional[StrictStr] = Field(default=None, alias="requestId")

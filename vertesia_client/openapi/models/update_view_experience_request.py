@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictBool, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.view_experience_layout import ViewExperienceLayout
 from vertesia_client.openapi.models.view_experience_schema_version import ViewExperienceSchemaVersion
 from vertesia_client.openapi.models.view_experience_scope import ViewExperienceScope
@@ -33,17 +34,27 @@ class UpdateViewExperienceRequest(BaseModel):
     """
     PUT uses full replacement so omitted optional configuration is removed.
     """ # noqa: E501
-    name: StrictStr
+    name: Annotated[str, Field(min_length=1, strict=True, max_length=120)]
     enabled: Optional[StrictBool] = None
     layout: Optional[ViewExperienceLayout] = None
     scope: Optional[ViewExperienceScope] = None
     navigation: Optional[List[ViewNavigationItem]] = None
     search: Optional[ViewSearchConfiguration] = None
     results: Optional[ViewResultsConfiguration] = None
-    description: StrictStr
+    description: Annotated[str, Field(strict=True, max_length=4000)]
     version: ViewExperienceSchemaVersion
-    revision: Union[StrictFloat, StrictInt]
+    revision: Union[Annotated[float, Field(multiple_of=1, strict=True, ge=1)], Annotated[int, Field(strict=True, ge=1)]]
     __properties: ClassVar[List[str]] = ["name", "enabled", "layout", "scope", "navigation", "search", "results", "description", "version", "revision"]
+
+    @field_validator('description')
+    def description_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"\S", value):
+            raise ValueError(r"must validate the regular expression /\S/")
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,

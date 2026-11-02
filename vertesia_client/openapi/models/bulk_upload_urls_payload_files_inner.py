@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, Optional
+from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -27,7 +28,7 @@ class BulkUploadUrlsPayloadFilesInner(BaseModel):
     """
     BulkUploadUrlsPayloadFilesInner
     """ # noqa: E501
-    name: StrictStr
+    name: Annotated[str, Field(min_length=1, strict=True)]
     mime_type: Optional[StrictStr] = None
     id: Optional[StrictStr] = None
     __properties: ClassVar[List[str]] = ["name", "mime_type", "id"]

@@ -26,7 +26,7 @@ from pydantic_core import to_jsonable_python
 
 class UpdateCollectionPayload(BaseModel):
     """
-    Fields to change on a collection. All optional.
+    Fields to change on a collection. All optional. `query` is a Mongo filter. Its keys are dotted field paths or `$and`, `$or` and `$nor`, and a condition is a literal or uses the comparison operators, `$in`, `$nin`, `$all`, `$exists`, `$type`, `$size`, `$regex`, `$not` and `$elemMatch`.
     """ # noqa: E501
     description: Optional[StrictStr] = Field(default=None, description="Description of the collection and its purpose")
     skip_head_sync: Optional[StrictBool] = Field(default=None, description="When true the collection does not track and sync member HEAD revisions. Defaults to false.")

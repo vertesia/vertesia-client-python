@@ -39,7 +39,7 @@ class CreateAgentRunPayload(BaseModel):
     """
     Payload to create and start a new agent run.
     """ # noqa: E501
-    interaction: StrictStr = Field(description="Interaction ID or code (e.g. \"sys:generic_question\").")
+    interaction: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Interaction ID or code (e.g. \"sys:generic_question\").")
     title: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="Caller-provided conversation title.")
     topic: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="Caller-provided conversation topic. Suppresses automatic topic generation.")
     generate_topic: Optional[StrictBool] = Field(default=None, description="Whether to generate a conversation title and topic automatically. Defaults to true; a caller-provided topic always suppresses generation.")

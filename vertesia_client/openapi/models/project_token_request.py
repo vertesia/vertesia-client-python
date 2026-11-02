@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, Optional
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.signing_algorithm import SigningAlgorithm
 from typing import Optional, Set
 from typing_extensions import Self
@@ -31,7 +32,7 @@ class ProjectTokenRequest(BaseModel):
     type: StrictStr
     audience: Optional[StrictStr] = None
     algorithm: Optional[SigningAlgorithm] = Field(default=None, description="Signing algorithm - defaults to ES256. Use RS256 for Azure AD compatibility.")
-    project_id: StrictStr
+    project_id: Annotated[str, Field(min_length=1, strict=True)]
     account_id: StrictStr
     __properties: ClassVar[List[str]] = ["type", "audience", "algorithm", "project_id", "account_id"]
 

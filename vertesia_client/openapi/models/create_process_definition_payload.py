@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.process_definition_body import ProcessDefinitionBody
 from vertesia_client.openapi.models.process_definition_status import ProcessDefinitionStatus
 from typing import Optional, Set
@@ -29,7 +30,7 @@ class CreateProcessDefinitionPayload(BaseModel):
     """
     CreateProcessDefinitionPayload
     """ # noqa: E501
-    name: StrictStr
+    name: Annotated[str, Field(min_length=1, strict=True)]
     description: Optional[StrictStr] = None
     status: Optional[ProcessDefinitionStatus] = Field(default=None, description="Deprecated: Process definitions are created as drafts. Use the publish endpoint to create immutable published versions.")
     version: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Deprecated: Version is server-owned. Use the publish endpoint to create the next version.")

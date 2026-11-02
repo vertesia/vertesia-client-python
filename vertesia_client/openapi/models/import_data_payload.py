@@ -32,7 +32,7 @@ class ImportDataPayload(BaseModel):
     import_id: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Optional client-generated Mongo ObjectId for idempotent retries. Generate once before submitting, then reuse with identical input. New IDs must be less than 24 hours old; existing jobs are returned without executing again, and reusing an ID with different input is rejected with 422. Poll GET /data/:storeId/import/:importId after a timeout.")
     tables: Dict[str, ImportTableData] = Field(description="Map of table name to data specification")
     mode: StrictStr = Field(description="Import mode")
-    message: StrictStr = Field(description="Commit message")
+    message: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Commit message")
     __properties: ClassVar[List[str]] = ["import_id", "tables", "mode", "message"]
 
     @field_validator('import_id')
