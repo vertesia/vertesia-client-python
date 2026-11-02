@@ -34,8 +34,8 @@ class RunSearchPayload(BaseModel):
     facets: Optional[List[FacetSpec]] = None
     limit_facets: Optional[StrictBool] = Field(default=None, description="If the facets should be limited to the current page of results. Defaults to false. When false, the facets are independent of the search results page.")
     query: Optional[RunSearchQuery] = None
-    limit: Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None
-    offset: Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None
+    limit: Optional[Union[Annotated[float, Field(multiple_of=1, le=9007199254740991, strict=True, ge=0)], Annotated[int, Field(le=2147483647, strict=True, ge=0)]]] = None
+    offset: Optional[Union[Annotated[float, Field(multiple_of=1, le=9007199254740991, strict=True, ge=0)], Annotated[int, Field(le=2147483647, strict=True, ge=0)]]] = None
     select: Optional[StrictStr] = None
     all_revisions: Optional[StrictBool] = None
     from_root: Optional[StrictStr] = None

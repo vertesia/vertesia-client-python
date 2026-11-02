@@ -34,8 +34,6 @@ class InteractionsExportPayloadVersionsInner(BaseModel):
     anyof_schema_1_validator: Optional[Union[StrictFloat, StrictInt]] = None
     # data type: str
     anyof_schema_2_validator: Optional[StrictStr] = None
-    # data type: str
-    anyof_schema_3_validator: Optional[StrictStr] = None
     if TYPE_CHECKING:
         actual_instance: Optional[Union[float, str]] = None
     else:
@@ -73,12 +71,6 @@ class InteractionsExportPayloadVersionsInner(BaseModel):
             return v
         except (ValidationError, ValueError) as e:
             error_messages.append(str(e))
-        # validate data type: str
-        try:
-            instance.anyof_schema_3_validator = v
-            return v
-        except (ValidationError, ValueError) as e:
-            error_messages.append(str(e))
         if error_messages:
             # no match
             raise ValueError("No match found when setting the actual_instance in InteractionsExportPayloadVersionsInner with anyOf schemas: float, str. Details: " + ", ".join(error_messages))
@@ -109,15 +101,6 @@ class InteractionsExportPayloadVersionsInner(BaseModel):
             instance.anyof_schema_2_validator = json.loads(json_str)
             # assign value to actual_instance
             instance.actual_instance = instance.anyof_schema_2_validator
-            return instance
-        except (ValidationError, ValueError) as e:
-            error_messages.append(str(e))
-        # deserialize data into str
-        try:
-            # validation
-            instance.anyof_schema_3_validator = json.loads(json_str)
-            # assign value to actual_instance
-            instance.actual_instance = instance.anyof_schema_3_validator
             return instance
         except (ValidationError, ValueError) as e:
             error_messages.append(str(e))

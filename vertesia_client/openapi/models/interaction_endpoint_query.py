@@ -30,8 +30,8 @@ class InteractionEndpointQuery(BaseModel):
     """
     The payload to query the interaction endpoints
     """ # noqa: E501
-    limit: Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None
-    offset: Optional[Union[Annotated[float, Field(multiple_of=1, strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None
+    limit: Optional[Union[Annotated[float, Field(multiple_of=1, le=9007199254740991, strict=True, ge=0)], Annotated[int, Field(le=2147483647, strict=True, ge=0)]]] = None
+    offset: Optional[Union[Annotated[float, Field(multiple_of=1, le=9007199254740991, strict=True, ge=0)], Annotated[int, Field(le=2147483647, strict=True, ge=0)]]] = None
     status: Optional[InteractionStatus] = None
     visibility: Optional[InteractionVisibility] = None
     version: Optional[Union[StrictFloat, StrictInt]] = None

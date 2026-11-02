@@ -9785,11 +9785,13 @@
           "limit": {
             "type": "number",
             "minimum": 0,
+            "maximum": 9007199254740991,
             "multipleOf": 1
           },
           "offset": {
             "type": "number",
             "minimum": 0,
+            "maximum": 9007199254740991,
             "multipleOf": 1
           },
           "name": {
@@ -22687,11 +22689,13 @@
           "limit": {
             "type": "number",
             "minimum": 0,
+            "maximum": 9007199254740991,
             "multipleOf": 1
           },
           "offset": {
             "type": "number",
             "minimum": 0,
+            "maximum": 9007199254740991,
             "multipleOf": 1
           },
           "status": {
@@ -23646,10 +23650,6 @@
                 {
                   "type": "string",
                   "const": "draft"
-                },
-                {
-                  "type": "string",
-                  "const": "latest"
                 }
               ]
             }
@@ -30281,12 +30281,14 @@
           "limit": {
             "type": "number",
             "minimum": 0,
+            "maximum": 9007199254740991,
             "multipleOf": 1,
             "description": "Maximum number of prompts to return. Defaults to 100."
           },
           "offset": {
             "type": "number",
             "minimum": 0,
+            "maximum": 9007199254740991,
             "multipleOf": 1,
             "description": "Number of prompts to skip."
           },
@@ -32408,11 +32410,13 @@
           "limit": {
             "type": "number",
             "minimum": 0,
+            "maximum": 9007199254740991,
             "multipleOf": 1
           },
           "offset": {
             "type": "number",
             "minimum": 0,
+            "maximum": 9007199254740991,
             "multipleOf": 1
           },
           "select": {
@@ -35227,6 +35231,7 @@
           }
         },
         "additionalProperties": false,
+        "minProperties": 1,
         "description": "Updates the tool allowlist and the tools requiring approval of an app installation in one atomic write."
       },
       "UpdateAppPayload": {
@@ -47883,6 +47888,7 @@
             "schema": {
               "type": "number",
               "minimum": 0,
+              "maximum": 9007199254740991,
               "multipleOf": 1,
               "description": "Maximum number of prompts to return. Defaults to 100."
             },
@@ -47895,6 +47901,7 @@
             "schema": {
               "type": "number",
               "minimum": 0,
+              "maximum": 9007199254740991,
               "multipleOf": 1,
               "description": "Number of prompts to skip."
             },
@@ -52285,6 +52292,7 @@
             "schema": {
               "type": "number",
               "minimum": 0,
+              "maximum": 9007199254740991,
               "multipleOf": 1,
               "description": "Pagination: number of items to return (default 50, max 200)"
             },
@@ -52297,6 +52305,7 @@
             "schema": {
               "type": "number",
               "minimum": 0,
+              "maximum": 9007199254740991,
               "multipleOf": 1,
               "description": "Pagination: offset"
             },
@@ -65869,6 +65878,7 @@
             "schema": {
               "type": "number",
               "minimum": 0,
+              "maximum": 9007199254740991,
               "multipleOf": 1,
               "description": "Maximum number of results (default: 50)"
             },
@@ -65881,6 +65891,7 @@
             "schema": {
               "type": "number",
               "minimum": 0,
+              "maximum": 9007199254740991,
               "multipleOf": 1,
               "description": "Offset for pagination"
             },
@@ -72847,6 +72858,7 @@
             "schema": {
               "type": "number",
               "minimum": 0,
+              "maximum": 9007199254740991,
               "multipleOf": 1
             }
           },
@@ -72857,6 +72869,7 @@
             "schema": {
               "type": "number",
               "minimum": 0,
+              "maximum": 9007199254740991,
               "multipleOf": 1
             }
           }
@@ -76448,6 +76461,7 @@
             "schema": {
               "type": "number",
               "minimum": 0,
+              "maximum": 9007199254740991,
               "multipleOf": 1
             }
           },
@@ -76458,6 +76472,7 @@
             "schema": {
               "type": "number",
               "minimum": 0,
+              "maximum": 9007199254740991,
               "multipleOf": 1
             }
           }
@@ -76579,6 +76594,7 @@
             "schema": {
               "type": "number",
               "minimum": 0,
+              "maximum": 9007199254740991,
               "multipleOf": 1
             }
           },
@@ -76589,6 +76605,7 @@
             "schema": {
               "type": "number",
               "minimum": 0,
+              "maximum": 9007199254740991,
               "multipleOf": 1
             }
           }
@@ -76710,6 +76727,7 @@
             "schema": {
               "type": "number",
               "minimum": 0,
+              "maximum": 9007199254740991,
               "multipleOf": 1
             }
           },
@@ -76720,6 +76738,7 @@
             "schema": {
               "type": "number",
               "minimum": 0,
+              "maximum": 9007199254740991,
               "multipleOf": 1
             }
           }
@@ -76841,6 +76860,7 @@
             "schema": {
               "type": "number",
               "minimum": 0,
+              "maximum": 9007199254740991,
               "multipleOf": 1
             }
           },
@@ -76851,6 +76871,7 @@
             "schema": {
               "type": "number",
               "minimum": 0,
+              "maximum": 9007199254740991,
               "multipleOf": 1
             }
           }
@@ -77075,6 +77096,7 @@
             "schema": {
               "type": "number",
               "minimum": 0,
+              "maximum": 9007199254740991,
               "multipleOf": 1
             }
           },
@@ -77085,6 +77107,7 @@
             "schema": {
               "type": "number",
               "minimum": 0,
+              "maximum": 9007199254740991,
               "multipleOf": 1
             }
           }
@@ -83630,6 +83653,7 @@
             "schema": {
               "type": "number",
               "minimum": 0,
+              "maximum": 9007199254740991,
               "multipleOf": 1
             }
           },
@@ -83640,6 +83664,7 @@
             "schema": {
               "type": "number",
               "minimum": 0,
+              "maximum": 9007199254740991,
               "multipleOf": 1
             }
           }
