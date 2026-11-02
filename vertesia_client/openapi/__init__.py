@@ -680,6 +680,8 @@ __all__ = [
     "InferenceProfileUsageEntry",
     "InheritedPropertyMetadata",
     "InitialToolCall",
+    "IntakeMediaAnalysisOverride",
+    "IntakeMediaAnalysisOverrides",
     "IntakePageScope",
     "IntakeVisionDetail",
     "IntakeVisionProfileSettingsMap",
@@ -1044,6 +1046,10 @@ __all__ = [
     "StripeBillingEnabled",
     "StripeBillingStatusResponse",
     "SubmitProcessTestRunPayload",
+    "SubscriptionWorkflowCatalog",
+    "SubscriptionWorkflowDefinition",
+    "SubscriptionWorkflowDefinitionSystemTargetsInner",
+    "SubscriptionWorkflowDefinitionTemplatesInner",
     "SuccessResponse",
     "SupervisedRunResponse",
     "SupportedEmbeddingTypes",
@@ -1931,6 +1937,8 @@ from vertesia_client.openapi.models.inference_profile_usage import InferenceProf
 from vertesia_client.openapi.models.inference_profile_usage_entry import InferenceProfileUsageEntry as InferenceProfileUsageEntry
 from vertesia_client.openapi.models.inherited_property_metadata import InheritedPropertyMetadata as InheritedPropertyMetadata
 from vertesia_client.openapi.models.initial_tool_call import InitialToolCall as InitialToolCall
+from vertesia_client.openapi.models.intake_media_analysis_override import IntakeMediaAnalysisOverride as IntakeMediaAnalysisOverride
+from vertesia_client.openapi.models.intake_media_analysis_overrides import IntakeMediaAnalysisOverrides as IntakeMediaAnalysisOverrides
 from vertesia_client.openapi.models.intake_page_scope import IntakePageScope as IntakePageScope
 from vertesia_client.openapi.models.intake_vision_detail import IntakeVisionDetail as IntakeVisionDetail
 from vertesia_client.openapi.models.intake_vision_profile_settings_map import IntakeVisionProfileSettingsMap as IntakeVisionProfileSettingsMap
@@ -2295,6 +2303,10 @@ from vertesia_client.openapi.models.stripe_billing_disabled import StripeBilling
 from vertesia_client.openapi.models.stripe_billing_enabled import StripeBillingEnabled as StripeBillingEnabled
 from vertesia_client.openapi.models.stripe_billing_status_response import StripeBillingStatusResponse as StripeBillingStatusResponse
 from vertesia_client.openapi.models.submit_process_test_run_payload import SubmitProcessTestRunPayload as SubmitProcessTestRunPayload
+from vertesia_client.openapi.models.subscription_workflow_catalog import SubscriptionWorkflowCatalog as SubscriptionWorkflowCatalog
+from vertesia_client.openapi.models.subscription_workflow_definition import SubscriptionWorkflowDefinition as SubscriptionWorkflowDefinition
+from vertesia_client.openapi.models.subscription_workflow_definition_system_targets_inner import SubscriptionWorkflowDefinitionSystemTargetsInner as SubscriptionWorkflowDefinitionSystemTargetsInner
+from vertesia_client.openapi.models.subscription_workflow_definition_templates_inner import SubscriptionWorkflowDefinitionTemplatesInner as SubscriptionWorkflowDefinitionTemplatesInner
 from vertesia_client.openapi.models.success_response import SuccessResponse as SuccessResponse
 from vertesia_client.openapi.models.supervised_run_response import SupervisedRunResponse as SupervisedRunResponse
 from vertesia_client.openapi.models.supported_embedding_types import SupportedEmbeddingTypes as SupportedEmbeddingTypes

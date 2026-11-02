@@ -24,25 +24,27 @@ from vertesia_client.openapi.models.content_type_intake_policy_identification im
 from vertesia_client.openapi.models.content_type_intake_policy_locate import ContentTypeIntakePolicyLocate
 from vertesia_client.openapi.models.content_type_intake_policy_text_conversion import ContentTypeIntakePolicyTextConversion
 from vertesia_client.openapi.models.embedding_type_enabled_map import EmbeddingTypeEnabledMap
+from vertesia_client.openapi.models.intake_media_analysis_overrides import IntakeMediaAnalysisOverrides
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
 class ContentTypeIntakePolicy(BaseModel):
     """
-    Per-content-type policy for the standard intake workflows.
+    Shared intake processing policy. Workflow parameters override content-type policy, which overrides project defaults. Omitted processing fields inherit from the next layer.
     """ # noqa: E501
-    mode: Optional[StrictStr] = Field(default=None, description="Intake orchestration mode for this type.")
+    media_analysis: Optional[IntakeMediaAnalysisOverrides] = Field(default=None, description="Media analysis defaults. Subscription settings override the content type, which overrides project defaults.")
+    mode: Optional[StrictStr] = Field(default=None, description="Intake orchestration: programmatic runs the standard processing pipeline; agentic delegates processing to the intake agent. Omit to inherit; platform default programmatic.")
     identification: Optional[ContentTypeIntakePolicyIdentification] = None
     locate: Optional[ContentTypeIntakePolicyLocate] = None
     text_conversion: Optional[ContentTypeIntakePolicyTextConversion] = None
     extraction: Optional[ContentTypeIntakePolicyExtraction] = None
     rendering_template: Optional[StrictStr] = Field(default=None, description="Handlebars template used to materialize extracted properties into object text.")
-    embeddings: Optional[EmbeddingTypeEnabledMap] = Field(default=None, description="Per-type embedding switches. Unspecified values inherit the project policy.")
+    embeddings: Optional[EmbeddingTypeEnabledMap] = Field(default=None, description="Embedding generation switches. Omitted fields inherit type/project policy; project embedding availability remains a hard limit.")
     generate_toc: Optional[StrictBool] = Field(default=None, description="Whether intake should generate a table of contents for matching documents.")
     default_view: Optional[StrictStr] = Field(default=None, description="Preferred first view for objects of this type.")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["mode", "identification", "locate", "text_conversion", "extraction", "rendering_template", "embeddings", "generate_toc", "default_view"]
+    __properties: ClassVar[List[str]] = ["media_analysis", "mode", "identification", "locate", "text_conversion", "extraction", "rendering_template", "embeddings", "generate_toc", "default_view"]
 
     @field_validator('mode')
     def mode_validate_enum(cls, value):
@@ -101,6 +103,9 @@ class ContentTypeIntakePolicy(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of media_analysis
+        if self.media_analysis:
+            _dict['media_analysis'] = self.media_analysis.to_dict()
         # override the default output from pydantic by calling `to_dict()` of identification
         if self.identification:
             _dict['identification'] = self.identification.to_dict()
@@ -133,6 +138,7 @@ class ContentTypeIntakePolicy(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "media_analysis": IntakeMediaAnalysisOverrides.from_dict(obj["media_analysis"]) if obj.get("media_analysis") is not None else None,
             "mode": obj.get("mode"),
             "identification": ContentTypeIntakePolicyIdentification.from_dict(obj["identification"]) if obj.get("identification") is not None else None,
             "locate": ContentTypeIntakePolicyLocate.from_dict(obj["locate"]) if obj.get("locate") is not None else None,

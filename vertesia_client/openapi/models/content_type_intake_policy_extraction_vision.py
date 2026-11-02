@@ -29,8 +29,8 @@ class ContentTypeIntakePolicyExtractionVision(BaseModel):
     """
     Vision evidence budget for visual extraction. Detail names reference platform profiles; the type never defines dpi/quality/resolution.
     """ # noqa: E501
-    default_detail: Optional[IntakeVisionDetail] = None
-    allowed_details: Optional[List[IntakeVisionDetail]] = None
+    default_detail: Optional[IntakeVisionDetail] = Field(default=None, description="Default visual evidence detail: low, standard, or high. References a platform/project rendering profile; default standard.")
+    allowed_details: Optional[List[IntakeVisionDetail]] = Field(default=None, description="Visual detail levels the evidence planner may choose. Omit to use the platform-supported levels.")
     max_image_tokens: Optional[Annotated[int, Field(le=2147483647, strict=True, ge=1)]] = Field(default=None, description="PRIMARY budget: estimated image tokens per extraction call. Default 16000.")
     max_payload_mb: Optional[Union[Annotated[float, Field(strict=True, ge=1)], Annotated[int, Field(strict=True, ge=1)]]] = Field(default=None, description="Transport guard in megabytes. Default 16.")
     max_pages_per_call: Optional[Annotated[int, Field(le=2147483647, strict=True, ge=1)]] = Field(default=None, description="Cap on page images per extraction call. Default 8.")

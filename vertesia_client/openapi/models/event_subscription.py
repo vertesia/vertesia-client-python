@@ -52,7 +52,7 @@ class EventSubscription(BaseModel):
     created_at: Optional[StrictStr] = None
     updated_at: Optional[StrictStr] = None
     migrated_from_workflow_rule_id: Optional[StrictStr] = None
-    overrides_system_subscription_id: Optional[StrictStr] = Field(default=None, description="System subscription ID replaced by this stored subscription. Set only for tenant-specific system overrides created by migrations or platform code.")
+    overrides_system_subscription_id: Optional[StrictStr] = Field(default=None, description="System subscription ID fully replaced by this stored project subscription. Disabling the replacement keeps the default suppressed; deleting it restores the default.")
     customer_override: Optional[StrictBool] = Field(default=None, description="True when this system subscription was created from a legacy customer override.")
     __properties: ClassVar[List[str]] = ["id", "name", "description", "account_id", "project_id", "scope", "filter", "target", "run_as_role", "is_system", "protected", "enabled", "priority", "app_installation_id", "app_id", "app_subscription_id", "created_by", "updated_by", "created_at", "updated_at", "migrated_from_workflow_rule_id", "overrides_system_subscription_id", "customer_override"]
 

@@ -26,15 +26,15 @@ from pydantic_core import to_jsonable_python
 
 class ContentTypeIntakePolicyExtractionVerification(BaseModel):
     """
-    ContentTypeIntakePolicyExtractionVerification
+    Reserved verification configuration. Standard Intake currently implements grounding.review instead of this pass.
     """ # noqa: E501
-    enabled: Optional[StrictBool] = None
-    model: Optional[StrictStr] = None
-    environment: Optional[StrictStr] = None
-    materiality: Optional[StrictStr] = None
-    threshold: Optional[Union[Annotated[float, Field(le=1, strict=True, ge=0)], Annotated[int, Field(le=1, strict=True, ge=0)]]] = None
-    max_retries: Optional[Annotated[int, Field(le=2147483647, strict=True, ge=0)]] = None
-    on_fail: Optional[StrictStr] = None
+    enabled: Optional[StrictBool] = Field(default=None, description="Reserved verification switch. Standard Intake does not currently execute this verification pass; use grounding.review for implemented grounded-extraction review.")
+    model: Optional[StrictStr] = Field(default=None, description="Reserved model name for the verification pass; not currently used by Standard Intake.")
+    environment: Optional[StrictStr] = Field(default=None, description="Reserved execution environment for the verification model; not currently used by Standard Intake.")
+    materiality: Optional[StrictStr] = Field(default=None, description="Reserved guidance describing which extraction discrepancies matter; not currently used by Standard Intake.")
+    threshold: Optional[Union[Annotated[float, Field(le=1, strict=True, ge=0)], Annotated[int, Field(le=1, strict=True, ge=0)]]] = Field(default=None, description="Reserved verification score threshold between 0 and 1; not currently used by Standard Intake.")
+    max_retries: Optional[Annotated[int, Field(le=2147483647, strict=True, ge=0)]] = Field(default=None, description="Reserved verification retry limit; not currently used by Standard Intake.")
+    on_fail: Optional[StrictStr] = Field(default=None, description="Reserved action for failed verification: flag or block. Not currently used by Standard Intake.")
     __properties: ClassVar[List[str]] = ["enabled", "model", "environment", "materiality", "threshold", "max_retries", "on_fail"]
 
     @field_validator('on_fail')

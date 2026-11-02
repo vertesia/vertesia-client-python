@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, Optional
 from typing import Optional, Set
 from typing_extensions import Self
@@ -25,10 +25,10 @@ from pydantic_core import to_jsonable_python
 
 class ContentTypeIntakePolicyTextConversionCustom(BaseModel):
     """
-    ContentTypeIntakePolicyTextConversionCustom
+    Custom conversion target, used with method: custom. Set interaction; agent conversion is not implemented.
     """ # noqa: E501
-    interaction: Optional[StrictStr] = None
-    agent: Optional[StrictStr] = None
+    interaction: Optional[StrictStr] = Field(default=None, description="Interaction ID or qualified name to use when method is custom.")
+    agent: Optional[StrictStr] = Field(default=None, description="Reserved custom-agent conversion target. Standard Intake currently supports custom.interaction only.")
     __properties: ClassVar[List[str]] = ["interaction", "agent"]
 
     model_config = ConfigDict(

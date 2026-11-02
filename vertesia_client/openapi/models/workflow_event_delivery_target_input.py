@@ -32,7 +32,7 @@ class WorkflowEventDeliveryTargetInput(BaseModel):
     endpoint: StrictStr
     workflow_class: Optional[StrictStr] = None
     task_queue: Optional[StrictStr] = None
-    vars: Optional[Dict[str, Any]] = None
+    vars: Optional[Dict[str, Any]] = Field(default=None, description="Workflow-specific variables. Known catalog workflows validate their own schema.")
     input_type: Optional[WorkflowRuleInputType] = None
     migrated_rule_name: Optional[StrictStr] = Field(default=None, description="Server-managed: ignored on write, echoed back from a read.")
     additional_properties: Dict[str, Any] = {}
@@ -90,11 +90,6 @@ class WorkflowEventDeliveryTargetInput(BaseModel):
         if self.additional_properties is not None:
             for _key, _value in self.additional_properties.items():
                 _dict[_key] = _value
-
-        # set to None if vars (nullable) is None
-        # and model_fields_set contains the field
-        if self.vars is None and "vars" in self.model_fields_set:
-            _dict['vars'] = None
 
         return _dict
 

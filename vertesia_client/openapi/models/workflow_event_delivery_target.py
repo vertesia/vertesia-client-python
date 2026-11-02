@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr, field_validator
+from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
 from vertesia_client.openapi.models.workflow_rule_input_type import WorkflowRuleInputType
 from typing import Optional, Set
@@ -32,7 +32,7 @@ class WorkflowEventDeliveryTarget(BaseModel):
     endpoint: StrictStr
     workflow_class: Optional[StrictStr] = None
     task_queue: Optional[StrictStr] = None
-    vars: Optional[Dict[str, Any]] = None
+    vars: Optional[Dict[str, Any]] = Field(default=None, description="Workflow-specific variables. Known catalog workflows validate their own schema.")
     input_type: Optional[WorkflowRuleInputType] = None
     migrated_rule_name: Optional[StrictStr] = None
     additional_properties: Dict[str, Any] = {}
@@ -90,11 +90,6 @@ class WorkflowEventDeliveryTarget(BaseModel):
         if self.additional_properties is not None:
             for _key, _value in self.additional_properties.items():
                 _dict[_key] = _value
-
-        # set to None if vars (nullable) is None
-        # and model_fields_set contains the field
-        if self.vars is None and "vars" in self.model_fields_set:
-            _dict['vars'] = None
 
         return _dict
 

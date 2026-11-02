@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, Optional
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.event_delivery_target_input import EventDeliveryTargetInput
 from vertesia_client.openapi.models.event_priority import EventPriority
 from vertesia_client.openapi.models.event_subscription_filter import EventSubscriptionFilter
@@ -32,6 +33,7 @@ class CreateEventSubscriptionPayload(BaseModel):
     CreateEventSubscriptionPayload
     """ # noqa: E501
     name: StrictStr
+    overrides_system_subscription_id: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Fully replace this code-defined system subscription in the current project. Only one replacement per system subscription is allowed. Disabling the replacement keeps the default suppressed; deleting it restores the default. Immutable after creation.")
     description: Optional[StrictStr] = None
     scope: Optional[StrictStr] = None
     filter: EventSubscriptionFilter
@@ -39,7 +41,20 @@ class CreateEventSubscriptionPayload(BaseModel):
     run_as_role: SystemRoles = Field(description="Identity the delivery runs as. Required at creation so a subscription never silently runs as the originating (possibly deleted) user. Use \"automation\" for the standard identity.")
     enabled: Optional[StrictBool] = None
     priority: Optional[EventPriority] = None
-    __properties: ClassVar[List[str]] = ["name", "description", "scope", "filter", "target", "run_as_role", "enabled", "priority"]
+    __properties: ClassVar[List[str]] = ["name", "overrides_system_subscription_id", "description", "scope", "filter", "target", "run_as_role", "enabled", "priority"]
+
+    @field_validator('overrides_system_subscription_id')
+    def overrides_system_subscription_id_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if value is None:
+            return value
+
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"\S", value):
+            raise ValueError(r"must validate the regular expression /\S/")
+        return value
 
     @field_validator('scope')
     def scope_validate_enum(cls, value):
@@ -107,6 +122,7 @@ class CreateEventSubscriptionPayload(BaseModel):
 
         _obj = cls.model_validate({
             "name": obj.get("name"),
+            "overrides_system_subscription_id": obj.get("overrides_system_subscription_id"),
             "description": obj.get("description"),
             "scope": obj.get("scope"),
             "filter": EventSubscriptionFilter.from_dict(obj["filter"]) if obj.get("filter") is not None else None,

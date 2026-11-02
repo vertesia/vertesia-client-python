@@ -33,14 +33,14 @@ class InteractionExecutionConfiguration(BaseModel):
     """
     InteractionExecutionConfiguration
     """ # noqa: E501
-    id: Optional[StrictStr] = None
+    id: Optional[StrictStr] = Field(default=None, description="Optional configuration identifier. Normally omit this when overriding intake settings.")
     inference_profile: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Select a project inference profile. Null bypasses profile defaults.")
     inherit_model_config: Optional[StrictBool] = Field(default=None, description="Treat the supplied environment, model and inference_profile as the caller's settings, inherited as a fallback: the interaction's bound or attached profile, or its own model, replaces them.")
-    environment: Optional[StrictStr] = None
-    model: Optional[StrictStr] = None
-    do_validate: Optional[StrictBool] = None
-    run_data: Optional[RunDataStorageLevel] = None
-    config_mode: Optional[ConfigModes] = Field(default=None, alias="configMode")
+    environment: Optional[StrictStr] = Field(default=None, description="Execution environment ID for the selected model. Supply with model to replace inherited profile routing.")
+    model: Optional[StrictStr] = Field(default=None, description="Model name within the execution environment. Changing model or profile drops inherited model options.")
+    do_validate: Optional[StrictBool] = Field(default=None, description="Validate the interaction output against its result schema. Omit to inherit validation settings.")
+    run_data: Optional[RunDataStorageLevel] = Field(default=None, description="Run-data storage level: controls which execution inputs and outputs are retained. Omit to inherit.")
+    config_mode: Optional[ConfigModes] = Field(default=None, description="How configuration combines with the interaction configuration. Normally omit to use the default merge behavior.", alias="configMode")
     model_options: Optional[ModelOptions] = None
     prompt_cache_key: Optional[StrictStr] = Field(default=None, description="Stable provider-side routing key for automatic prompt caching.")
     prompt_cache_mode: Optional[PromptCacheMode] = Field(default=None, description="Controls provider-side explicit caching: auto falls back safely, off disables it, and required surfaces cache preparation failures for diagnostics.")

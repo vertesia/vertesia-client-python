@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
 from typing_extensions import Self
@@ -27,9 +27,9 @@ class ContentTypeIntakePolicyIdentification(BaseModel):
     """
     Guidance used when selecting or creating this content type.
     """ # noqa: E501
-    guidance: Optional[StrictStr] = None
-    distinguish_from: Optional[StrictStr] = None
-    examples: Optional[List[StrictStr]] = None
+    guidance: Optional[StrictStr] = Field(default=None, description="Describe when this content type should be selected. This is type-identification metadata, not a workflow parameter.")
+    distinguish_from: Optional[StrictStr] = Field(default=None, description="Explain how to distinguish this type from similar types to improve type selection.")
+    examples: Optional[List[StrictStr]] = Field(default=None, description="Representative examples or identifying characteristics that help the type selector recognize this type.")
     __properties: ClassVar[List[str]] = ["guidance", "distinguish_from", "examples"]
 
     model_config = ConfigDict(

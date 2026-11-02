@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictBool
+from pydantic import BaseModel, ConfigDict, Field, StrictBool
 from typing import Any, ClassVar, Dict, Optional
 from typing import Optional, Set
 from typing_extensions import Self
@@ -27,9 +27,9 @@ class EmbeddingTypeEnabledMap(BaseModel):
     """
     EmbeddingTypeEnabledMap
     """ # noqa: E501
-    text: Optional[StrictBool] = None
-    image: Optional[StrictBool] = None
-    properties: Optional[StrictBool] = None
+    text: Optional[StrictBool] = Field(default=None, description="Generate embeddings from object text. False disables this step; true still requires text embeddings to be enabled in the project.")
+    image: Optional[StrictBool] = Field(default=None, description="Generate image embeddings when applicable. False disables this step; true still requires image embeddings to be enabled in the project.")
+    properties: Optional[StrictBool] = Field(default=None, description="Generate embeddings from extracted properties. False disables this step; true still requires property embeddings to be enabled in the project.")
     __properties: ClassVar[List[str]] = ["text", "image", "properties"]
 
     model_config = ConfigDict(

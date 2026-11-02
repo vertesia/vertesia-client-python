@@ -658,6 +658,8 @@ vertesia_client/openapi/models/inference_profile_usage.py
 vertesia_client/openapi/models/inference_profile_usage_entry.py
 vertesia_client/openapi/models/inherited_property_metadata.py
 vertesia_client/openapi/models/initial_tool_call.py
+vertesia_client/openapi/models/intake_media_analysis_override.py
+vertesia_client/openapi/models/intake_media_analysis_overrides.py
 vertesia_client/openapi/models/intake_page_scope.py
 vertesia_client/openapi/models/intake_vision_detail.py
 vertesia_client/openapi/models/intake_vision_profile_settings_map.py
@@ -1022,6 +1024,10 @@ vertesia_client/openapi/models/stripe_billing_disabled.py
 vertesia_client/openapi/models/stripe_billing_enabled.py
 vertesia_client/openapi/models/stripe_billing_status_response.py
 vertesia_client/openapi/models/submit_process_test_run_payload.py
+vertesia_client/openapi/models/subscription_workflow_catalog.py
+vertesia_client/openapi/models/subscription_workflow_definition.py
+vertesia_client/openapi/models/subscription_workflow_definition_system_targets_inner.py
+vertesia_client/openapi/models/subscription_workflow_definition_templates_inner.py
 vertesia_client/openapi/models/success_response.py
 vertesia_client/openapi/models/supervised_run_response.py
 vertesia_client/openapi/models/supported_embedding_types.py
