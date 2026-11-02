@@ -17,8 +17,8 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt
-from typing import Any, ClassVar, Dict, Union
+from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
+from typing import Any, ClassVar, Dict, Optional, Union
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -28,7 +28,8 @@ class RateLimitRequestResponse(BaseModel):
     RateLimitRequestResponse
     """ # noqa: E501
     delay_ms: Union[StrictFloat, StrictInt]
-    __properties: ClassVar[List[str]] = ["delay_ms"]
+    rate_limit_grant: Optional[StrictStr] = Field(default=None, description="Opaque token for the slot this request holds: admitted when `delay_ms` is 0, otherwise queued until the caller asks again after the delay. Once admitted, send it back unchanged as `workflow.rate_limit_id` when executing, so completion releases exactly this slot. Absent when the request holds no slot.")
+    __properties: ClassVar[List[str]] = ["delay_ms", "rate_limit_grant"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -81,7 +82,8 @@ class RateLimitRequestResponse(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "delay_ms": obj.get("delay_ms")
+            "delay_ms": obj.get("delay_ms"),
+            "rate_limit_grant": obj.get("rate_limit_grant")
         })
         return _obj
 
