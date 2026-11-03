@@ -60,9 +60,9 @@ class WorkflowRulesApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> WorkflowRule:
-        """Create a workflow rule
+        """(Deprecated) Create a workflow rule
 
-        Creates a new workflow rule or updates an existing one through the legacy upsert path.  **Required permissions:** `workflow:admin`
+        Workflow rules are deprecated; use event subscriptions instead. Creates a new workflow rule or updates an existing one through the legacy upsert path.  **Required permissions:** `workflow:admin`
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -89,6 +89,7 @@ class WorkflowRulesApi:
         :type _host_index: int, optional
         :return: Returns the result object.
         """ # noqa: E501
+        warnings.warn("POST /workflows/rules is deprecated.", DeprecationWarning)
 
         _param = self._create_workflow_rule_serialize(
             x_api_version=x_api_version,
@@ -133,9 +134,9 @@ class WorkflowRulesApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[WorkflowRule]:
-        """Create a workflow rule
+        """(Deprecated) Create a workflow rule
 
-        Creates a new workflow rule or updates an existing one through the legacy upsert path.  **Required permissions:** `workflow:admin`
+        Workflow rules are deprecated; use event subscriptions instead. Creates a new workflow rule or updates an existing one through the legacy upsert path.  **Required permissions:** `workflow:admin`
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -162,6 +163,7 @@ class WorkflowRulesApi:
         :type _host_index: int, optional
         :return: Returns the result object.
         """ # noqa: E501
+        warnings.warn("POST /workflows/rules is deprecated.", DeprecationWarning)
 
         _param = self._create_workflow_rule_serialize(
             x_api_version=x_api_version,
@@ -206,9 +208,9 @@ class WorkflowRulesApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Create a workflow rule
+        """(Deprecated) Create a workflow rule
 
-        Creates a new workflow rule or updates an existing one through the legacy upsert path.  **Required permissions:** `workflow:admin`
+        Workflow rules are deprecated; use event subscriptions instead. Creates a new workflow rule or updates an existing one through the legacy upsert path.  **Required permissions:** `workflow:admin`
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -235,6 +237,7 @@ class WorkflowRulesApi:
         :type _host_index: int, optional
         :return: Returns the result object.
         """ # noqa: E501
+        warnings.warn("POST /workflows/rules is deprecated.", DeprecationWarning)
 
         _param = self._create_workflow_rule_serialize(
             x_api_version=x_api_version,
@@ -356,9 +359,9 @@ class WorkflowRulesApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> DeleteCountResult:
-        """Delete a workflow rule
+        """(Deprecated) Delete a workflow rule
 
-        Deletes a workflow rule.  **Required permissions:** `workflow:admin`
+        Workflow rules are deprecated; use event subscriptions instead. Deletes a workflow rule.  **Required permissions:** `workflow:admin`
 
         :param rule_id: (required)
         :type rule_id: str
@@ -385,6 +388,7 @@ class WorkflowRulesApi:
         :type _host_index: int, optional
         :return: Returns the result object.
         """ # noqa: E501
+        warnings.warn("DELETE /workflows/rules/{ruleId} is deprecated.", DeprecationWarning)
 
         _param = self._delete_workflow_rule_serialize(
             rule_id=rule_id,
@@ -429,9 +433,9 @@ class WorkflowRulesApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[DeleteCountResult]:
-        """Delete a workflow rule
+        """(Deprecated) Delete a workflow rule
 
-        Deletes a workflow rule.  **Required permissions:** `workflow:admin`
+        Workflow rules are deprecated; use event subscriptions instead. Deletes a workflow rule.  **Required permissions:** `workflow:admin`
 
         :param rule_id: (required)
         :type rule_id: str
@@ -458,6 +462,7 @@ class WorkflowRulesApi:
         :type _host_index: int, optional
         :return: Returns the result object.
         """ # noqa: E501
+        warnings.warn("DELETE /workflows/rules/{ruleId} is deprecated.", DeprecationWarning)
 
         _param = self._delete_workflow_rule_serialize(
             rule_id=rule_id,
@@ -502,9 +507,9 @@ class WorkflowRulesApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Delete a workflow rule
+        """(Deprecated) Delete a workflow rule
 
-        Deletes a workflow rule.  **Required permissions:** `workflow:admin`
+        Workflow rules are deprecated; use event subscriptions instead. Deletes a workflow rule.  **Required permissions:** `workflow:admin`
 
         :param rule_id: (required)
         :type rule_id: str
@@ -531,6 +536,7 @@ class WorkflowRulesApi:
         :type _host_index: int, optional
         :return: Returns the result object.
         """ # noqa: E501
+        warnings.warn("DELETE /workflows/rules/{ruleId} is deprecated.", DeprecationWarning)
 
         _param = self._delete_workflow_rule_serialize(
             rule_id=rule_id,
@@ -639,9 +645,9 @@ class WorkflowRulesApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> WorkflowRule:
-        """Retrieve a workflow rule
+        """(Deprecated) Retrieve a workflow rule
 
-        Retrieves a workflow rule by ID.  **Required permissions:** Any of `workflow:read`, `workflow:admin`
+        Workflow rules are deprecated; use event subscriptions instead. Retrieves a workflow rule by ID.  **Required permissions:** Any of `workflow:read`, `workflow:admin`
 
         :param rule_id: (required)
         :type rule_id: str
@@ -668,6 +674,7 @@ class WorkflowRulesApi:
         :type _host_index: int, optional
         :return: Returns the result object.
         """ # noqa: E501
+        warnings.warn("GET /workflows/rules/{ruleId} is deprecated.", DeprecationWarning)
 
         _param = self._get_workflow_rule_serialize(
             rule_id=rule_id,
@@ -712,9 +719,9 @@ class WorkflowRulesApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[WorkflowRule]:
-        """Retrieve a workflow rule
+        """(Deprecated) Retrieve a workflow rule
 
-        Retrieves a workflow rule by ID.  **Required permissions:** Any of `workflow:read`, `workflow:admin`
+        Workflow rules are deprecated; use event subscriptions instead. Retrieves a workflow rule by ID.  **Required permissions:** Any of `workflow:read`, `workflow:admin`
 
         :param rule_id: (required)
         :type rule_id: str
@@ -741,6 +748,7 @@ class WorkflowRulesApi:
         :type _host_index: int, optional
         :return: Returns the result object.
         """ # noqa: E501
+        warnings.warn("GET /workflows/rules/{ruleId} is deprecated.", DeprecationWarning)
 
         _param = self._get_workflow_rule_serialize(
             rule_id=rule_id,
@@ -785,9 +793,9 @@ class WorkflowRulesApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Retrieve a workflow rule
+        """(Deprecated) Retrieve a workflow rule
 
-        Retrieves a workflow rule by ID.  **Required permissions:** Any of `workflow:read`, `workflow:admin`
+        Workflow rules are deprecated; use event subscriptions instead. Retrieves a workflow rule by ID.  **Required permissions:** Any of `workflow:read`, `workflow:admin`
 
         :param rule_id: (required)
         :type rule_id: str
@@ -814,6 +822,7 @@ class WorkflowRulesApi:
         :type _host_index: int, optional
         :return: Returns the result object.
         """ # noqa: E501
+        warnings.warn("GET /workflows/rules/{ruleId} is deprecated.", DeprecationWarning)
 
         _param = self._get_workflow_rule_serialize(
             rule_id=rule_id,
@@ -921,9 +930,9 @@ class WorkflowRulesApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> List[WorkflowRuleItem]:
-        """List workflow rules
+        """(Deprecated) List workflow rules
 
-        Lists workflow rules available in the current project.  **Required permissions:** Any of `workflow:read`, `workflow:admin`
+        Workflow rules are deprecated; use event subscriptions instead. Lists workflow rules available in the current project.  **Required permissions:** Any of `workflow:read`, `workflow:admin`
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -948,6 +957,7 @@ class WorkflowRulesApi:
         :type _host_index: int, optional
         :return: Returns the result object.
         """ # noqa: E501
+        warnings.warn("GET /workflows/rules is deprecated.", DeprecationWarning)
 
         _param = self._list_workflow_rules_serialize(
             x_api_version=x_api_version,
@@ -990,9 +1000,9 @@ class WorkflowRulesApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[List[WorkflowRuleItem]]:
-        """List workflow rules
+        """(Deprecated) List workflow rules
 
-        Lists workflow rules available in the current project.  **Required permissions:** Any of `workflow:read`, `workflow:admin`
+        Workflow rules are deprecated; use event subscriptions instead. Lists workflow rules available in the current project.  **Required permissions:** Any of `workflow:read`, `workflow:admin`
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1017,6 +1027,7 @@ class WorkflowRulesApi:
         :type _host_index: int, optional
         :return: Returns the result object.
         """ # noqa: E501
+        warnings.warn("GET /workflows/rules is deprecated.", DeprecationWarning)
 
         _param = self._list_workflow_rules_serialize(
             x_api_version=x_api_version,
@@ -1059,9 +1070,9 @@ class WorkflowRulesApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """List workflow rules
+        """(Deprecated) List workflow rules
 
-        Lists workflow rules available in the current project.  **Required permissions:** Any of `workflow:read`, `workflow:admin`
+        Workflow rules are deprecated; use event subscriptions instead. Lists workflow rules available in the current project.  **Required permissions:** Any of `workflow:read`, `workflow:admin`
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1086,6 +1097,7 @@ class WorkflowRulesApi:
         :type _host_index: int, optional
         :return: Returns the result object.
         """ # noqa: E501
+        warnings.warn("GET /workflows/rules is deprecated.", DeprecationWarning)
 
         _param = self._list_workflow_rules_serialize(
             x_api_version=x_api_version,
@@ -1191,9 +1203,9 @@ class WorkflowRulesApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> WorkflowRule:
-        """Update a workflow rule
+        """(Deprecated) Update a workflow rule
 
-        Updates an existing workflow rule.  **Required permissions:** `workflow:admin`
+        Workflow rules are deprecated; use event subscriptions instead. Updates an existing workflow rule.  **Required permissions:** `workflow:admin`
 
         :param rule_id: (required)
         :type rule_id: str
@@ -1222,6 +1234,7 @@ class WorkflowRulesApi:
         :type _host_index: int, optional
         :return: Returns the result object.
         """ # noqa: E501
+        warnings.warn("PUT /workflows/rules/{ruleId} is deprecated.", DeprecationWarning)
 
         _param = self._update_workflow_rule_serialize(
             rule_id=rule_id,
@@ -1269,9 +1282,9 @@ class WorkflowRulesApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[WorkflowRule]:
-        """Update a workflow rule
+        """(Deprecated) Update a workflow rule
 
-        Updates an existing workflow rule.  **Required permissions:** `workflow:admin`
+        Workflow rules are deprecated; use event subscriptions instead. Updates an existing workflow rule.  **Required permissions:** `workflow:admin`
 
         :param rule_id: (required)
         :type rule_id: str
@@ -1300,6 +1313,7 @@ class WorkflowRulesApi:
         :type _host_index: int, optional
         :return: Returns the result object.
         """ # noqa: E501
+        warnings.warn("PUT /workflows/rules/{ruleId} is deprecated.", DeprecationWarning)
 
         _param = self._update_workflow_rule_serialize(
             rule_id=rule_id,
@@ -1347,9 +1361,9 @@ class WorkflowRulesApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Update a workflow rule
+        """(Deprecated) Update a workflow rule
 
-        Updates an existing workflow rule.  **Required permissions:** `workflow:admin`
+        Workflow rules are deprecated; use event subscriptions instead. Updates an existing workflow rule.  **Required permissions:** `workflow:admin`
 
         :param rule_id: (required)
         :type rule_id: str
@@ -1378,6 +1392,7 @@ class WorkflowRulesApi:
         :type _host_index: int, optional
         :return: Returns the result object.
         """ # noqa: E501
+        warnings.warn("PUT /workflows/rules/{ruleId} is deprecated.", DeprecationWarning)
 
         _param = self._update_workflow_rule_serialize(
             rule_id=rule_id,

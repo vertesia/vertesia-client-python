@@ -690,9 +690,9 @@ class WorkflowRunsApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> List[WorkflowExecutionStartResult]:
-        """Execute a workflow rule
+        """(Deprecated) Execute a workflow rule
 
-        Executes a workflow through a configured workflow rule and returns the created run.  **Required permissions:** `workflow:run`
+        Workflow rules are deprecated; use event subscriptions instead. Executes a workflow through a configured workflow rule and returns the created run.  **Required permissions:** `workflow:run`
 
         :param rule_id: (required)
         :type rule_id: str
@@ -721,6 +721,7 @@ class WorkflowRunsApi:
         :type _host_index: int, optional
         :return: Returns the result object.
         """ # noqa: E501
+        warnings.warn("POST /workflows/rules/{ruleId}/execute is deprecated.", DeprecationWarning)
 
         _param = self._execute_workflow_rule_serialize(
             rule_id=rule_id,
@@ -767,9 +768,9 @@ class WorkflowRunsApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[List[WorkflowExecutionStartResult]]:
-        """Execute a workflow rule
+        """(Deprecated) Execute a workflow rule
 
-        Executes a workflow through a configured workflow rule and returns the created run.  **Required permissions:** `workflow:run`
+        Workflow rules are deprecated; use event subscriptions instead. Executes a workflow through a configured workflow rule and returns the created run.  **Required permissions:** `workflow:run`
 
         :param rule_id: (required)
         :type rule_id: str
@@ -798,6 +799,7 @@ class WorkflowRunsApi:
         :type _host_index: int, optional
         :return: Returns the result object.
         """ # noqa: E501
+        warnings.warn("POST /workflows/rules/{ruleId}/execute is deprecated.", DeprecationWarning)
 
         _param = self._execute_workflow_rule_serialize(
             rule_id=rule_id,
@@ -844,9 +846,9 @@ class WorkflowRunsApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Execute a workflow rule
+        """(Deprecated) Execute a workflow rule
 
-        Executes a workflow through a configured workflow rule and returns the created run.  **Required permissions:** `workflow:run`
+        Workflow rules are deprecated; use event subscriptions instead. Executes a workflow through a configured workflow rule and returns the created run.  **Required permissions:** `workflow:run`
 
         :param rule_id: (required)
         :type rule_id: str
@@ -875,6 +877,7 @@ class WorkflowRunsApi:
         :type _host_index: int, optional
         :return: Returns the result object.
         """ # noqa: E501
+        warnings.warn("POST /workflows/rules/{ruleId}/execute is deprecated.", DeprecationWarning)
 
         _param = self._execute_workflow_rule_serialize(
             rule_id=rule_id,
@@ -1664,9 +1667,9 @@ class WorkflowRunsApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ListWorkflowRunsResponse:
-        """List runs for a workflow rule
+        """(Deprecated) List runs for a workflow rule
 
-        Lists workflow runs started from a specific workflow rule.  **Required permissions:** Any of `workflow:read`, `workflow:admin`
+        Workflow rules are deprecated; use event subscriptions instead. Lists workflow runs started from a specific workflow rule.  **Required permissions:** Any of `workflow:read`, `workflow:admin`
 
         :param rule_id: (required)
         :type rule_id: str
@@ -1693,6 +1696,7 @@ class WorkflowRunsApi:
         :type _host_index: int, optional
         :return: Returns the result object.
         """ # noqa: E501
+        warnings.warn("GET /workflows/rules/{ruleId}/runs is deprecated.", DeprecationWarning)
 
         _param = self._list_workflow_rule_runs_serialize(
             rule_id=rule_id,
@@ -1737,9 +1741,9 @@ class WorkflowRunsApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[ListWorkflowRunsResponse]:
-        """List runs for a workflow rule
+        """(Deprecated) List runs for a workflow rule
 
-        Lists workflow runs started from a specific workflow rule.  **Required permissions:** Any of `workflow:read`, `workflow:admin`
+        Workflow rules are deprecated; use event subscriptions instead. Lists workflow runs started from a specific workflow rule.  **Required permissions:** Any of `workflow:read`, `workflow:admin`
 
         :param rule_id: (required)
         :type rule_id: str
@@ -1766,6 +1770,7 @@ class WorkflowRunsApi:
         :type _host_index: int, optional
         :return: Returns the result object.
         """ # noqa: E501
+        warnings.warn("GET /workflows/rules/{ruleId}/runs is deprecated.", DeprecationWarning)
 
         _param = self._list_workflow_rule_runs_serialize(
             rule_id=rule_id,
@@ -1810,9 +1815,9 @@ class WorkflowRunsApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """List runs for a workflow rule
+        """(Deprecated) List runs for a workflow rule
 
-        Lists workflow runs started from a specific workflow rule.  **Required permissions:** Any of `workflow:read`, `workflow:admin`
+        Workflow rules are deprecated; use event subscriptions instead. Lists workflow runs started from a specific workflow rule.  **Required permissions:** Any of `workflow:read`, `workflow:admin`
 
         :param rule_id: (required)
         :type rule_id: str
@@ -1839,6 +1844,7 @@ class WorkflowRunsApi:
         :type _host_index: int, optional
         :return: Returns the result object.
         """ # noqa: E501
+        warnings.warn("GET /workflows/rules/{ruleId}/runs is deprecated.", DeprecationWarning)
 
         _param = self._list_workflow_rule_runs_serialize(
             rule_id=rule_id,

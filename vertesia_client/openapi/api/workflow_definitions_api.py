@@ -61,9 +61,9 @@ class WorkflowDefinitionsApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> DSLWorkflowDefinitionResponse:
-        """Create a workflow definition
+        """(Deprecated) Create a workflow definition
 
-        Creates a new DSL workflow definition or updates an existing one through the legacy upsert path.  **Required permissions:** `workflow:admin`
+        Workflow definitions are deprecated. Creates a new DSL workflow definition or updates an existing one through the legacy upsert path.  **Required permissions:** `workflow:admin`
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -90,6 +90,7 @@ class WorkflowDefinitionsApi:
         :type _host_index: int, optional
         :return: Returns the result object.
         """ # noqa: E501
+        warnings.warn("POST /workflows/definitions is deprecated.", DeprecationWarning)
 
         _param = self._create_workflow_definition_serialize(
             x_api_version=x_api_version,
@@ -134,9 +135,9 @@ class WorkflowDefinitionsApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[DSLWorkflowDefinitionResponse]:
-        """Create a workflow definition
+        """(Deprecated) Create a workflow definition
 
-        Creates a new DSL workflow definition or updates an existing one through the legacy upsert path.  **Required permissions:** `workflow:admin`
+        Workflow definitions are deprecated. Creates a new DSL workflow definition or updates an existing one through the legacy upsert path.  **Required permissions:** `workflow:admin`
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -163,6 +164,7 @@ class WorkflowDefinitionsApi:
         :type _host_index: int, optional
         :return: Returns the result object.
         """ # noqa: E501
+        warnings.warn("POST /workflows/definitions is deprecated.", DeprecationWarning)
 
         _param = self._create_workflow_definition_serialize(
             x_api_version=x_api_version,
@@ -207,9 +209,9 @@ class WorkflowDefinitionsApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Create a workflow definition
+        """(Deprecated) Create a workflow definition
 
-        Creates a new DSL workflow definition or updates an existing one through the legacy upsert path.  **Required permissions:** `workflow:admin`
+        Workflow definitions are deprecated. Creates a new DSL workflow definition or updates an existing one through the legacy upsert path.  **Required permissions:** `workflow:admin`
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -236,6 +238,7 @@ class WorkflowDefinitionsApi:
         :type _host_index: int, optional
         :return: Returns the result object.
         """ # noqa: E501
+        warnings.warn("POST /workflows/definitions is deprecated.", DeprecationWarning)
 
         _param = self._create_workflow_definition_serialize(
             x_api_version=x_api_version,
@@ -357,9 +360,9 @@ class WorkflowDefinitionsApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> DeleteCountResult:
-        """Delete a workflow definition
+        """(Deprecated) Delete a workflow definition
 
-        Deletes a DSL workflow definition.  **Required permissions:** `workflow:admin`
+        Workflow definitions are deprecated. Deletes a DSL workflow definition.  **Required permissions:** `workflow:admin`
 
         :param workflow_id: (required)
         :type workflow_id: str
@@ -386,6 +389,7 @@ class WorkflowDefinitionsApi:
         :type _host_index: int, optional
         :return: Returns the result object.
         """ # noqa: E501
+        warnings.warn("DELETE /workflows/definitions/{workflowId} is deprecated.", DeprecationWarning)
 
         _param = self._delete_workflow_definition_serialize(
             workflow_id=workflow_id,
@@ -430,9 +434,9 @@ class WorkflowDefinitionsApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[DeleteCountResult]:
-        """Delete a workflow definition
+        """(Deprecated) Delete a workflow definition
 
-        Deletes a DSL workflow definition.  **Required permissions:** `workflow:admin`
+        Workflow definitions are deprecated. Deletes a DSL workflow definition.  **Required permissions:** `workflow:admin`
 
         :param workflow_id: (required)
         :type workflow_id: str
@@ -459,6 +463,7 @@ class WorkflowDefinitionsApi:
         :type _host_index: int, optional
         :return: Returns the result object.
         """ # noqa: E501
+        warnings.warn("DELETE /workflows/definitions/{workflowId} is deprecated.", DeprecationWarning)
 
         _param = self._delete_workflow_definition_serialize(
             workflow_id=workflow_id,
@@ -503,9 +508,9 @@ class WorkflowDefinitionsApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Delete a workflow definition
+        """(Deprecated) Delete a workflow definition
 
-        Deletes a DSL workflow definition.  **Required permissions:** `workflow:admin`
+        Workflow definitions are deprecated. Deletes a DSL workflow definition.  **Required permissions:** `workflow:admin`
 
         :param workflow_id: (required)
         :type workflow_id: str
@@ -532,6 +537,7 @@ class WorkflowDefinitionsApi:
         :type _host_index: int, optional
         :return: Returns the result object.
         """ # noqa: E501
+        warnings.warn("DELETE /workflows/definitions/{workflowId} is deprecated.", DeprecationWarning)
 
         _param = self._delete_workflow_definition_serialize(
             workflow_id=workflow_id,
@@ -640,9 +646,9 @@ class WorkflowDefinitionsApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> DSLWorkflowDefinitionResponse:
-        """Retrieve a workflow definition
+        """(Deprecated) Retrieve a workflow definition
 
-        Retrieves a DSL workflow definition by ID.  **Required permissions:** Any of `workflow:read`, `workflow:admin`
+        Workflow definitions are deprecated. Retrieves a DSL workflow definition by ID.  **Required permissions:** Any of `workflow:read`, `workflow:admin`
 
         :param workflow_id: (required)
         :type workflow_id: str
@@ -669,6 +675,7 @@ class WorkflowDefinitionsApi:
         :type _host_index: int, optional
         :return: Returns the result object.
         """ # noqa: E501
+        warnings.warn("GET /workflows/definitions/{workflowId} is deprecated.", DeprecationWarning)
 
         _param = self._get_workflow_definition_serialize(
             workflow_id=workflow_id,
@@ -713,9 +720,9 @@ class WorkflowDefinitionsApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[DSLWorkflowDefinitionResponse]:
-        """Retrieve a workflow definition
+        """(Deprecated) Retrieve a workflow definition
 
-        Retrieves a DSL workflow definition by ID.  **Required permissions:** Any of `workflow:read`, `workflow:admin`
+        Workflow definitions are deprecated. Retrieves a DSL workflow definition by ID.  **Required permissions:** Any of `workflow:read`, `workflow:admin`
 
         :param workflow_id: (required)
         :type workflow_id: str
@@ -742,6 +749,7 @@ class WorkflowDefinitionsApi:
         :type _host_index: int, optional
         :return: Returns the result object.
         """ # noqa: E501
+        warnings.warn("GET /workflows/definitions/{workflowId} is deprecated.", DeprecationWarning)
 
         _param = self._get_workflow_definition_serialize(
             workflow_id=workflow_id,
@@ -786,9 +794,9 @@ class WorkflowDefinitionsApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Retrieve a workflow definition
+        """(Deprecated) Retrieve a workflow definition
 
-        Retrieves a DSL workflow definition by ID.  **Required permissions:** Any of `workflow:read`, `workflow:admin`
+        Workflow definitions are deprecated. Retrieves a DSL workflow definition by ID.  **Required permissions:** Any of `workflow:read`, `workflow:admin`
 
         :param workflow_id: (required)
         :type workflow_id: str
@@ -815,6 +823,7 @@ class WorkflowDefinitionsApi:
         :type _host_index: int, optional
         :return: Returns the result object.
         """ # noqa: E501
+        warnings.warn("GET /workflows/definitions/{workflowId} is deprecated.", DeprecationWarning)
 
         _param = self._get_workflow_definition_serialize(
             workflow_id=workflow_id,
@@ -1190,9 +1199,9 @@ class WorkflowDefinitionsApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> List[WorkflowDefinitionRef]:
-        """List workflow definitions
+        """(Deprecated) List workflow definitions
 
-        Lists DSL workflow definitions in the current project.  **Required permissions:** Any of `workflow:read`, `workflow:admin`
+        Workflow definitions are deprecated. Lists DSL workflow definitions in the current project.  **Required permissions:** Any of `workflow:read`, `workflow:admin`
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1217,6 +1226,7 @@ class WorkflowDefinitionsApi:
         :type _host_index: int, optional
         :return: Returns the result object.
         """ # noqa: E501
+        warnings.warn("GET /workflows/definitions is deprecated.", DeprecationWarning)
 
         _param = self._list_workflow_definitions_serialize(
             x_api_version=x_api_version,
@@ -1259,9 +1269,9 @@ class WorkflowDefinitionsApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[List[WorkflowDefinitionRef]]:
-        """List workflow definitions
+        """(Deprecated) List workflow definitions
 
-        Lists DSL workflow definitions in the current project.  **Required permissions:** Any of `workflow:read`, `workflow:admin`
+        Workflow definitions are deprecated. Lists DSL workflow definitions in the current project.  **Required permissions:** Any of `workflow:read`, `workflow:admin`
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1286,6 +1296,7 @@ class WorkflowDefinitionsApi:
         :type _host_index: int, optional
         :return: Returns the result object.
         """ # noqa: E501
+        warnings.warn("GET /workflows/definitions is deprecated.", DeprecationWarning)
 
         _param = self._list_workflow_definitions_serialize(
             x_api_version=x_api_version,
@@ -1328,9 +1339,9 @@ class WorkflowDefinitionsApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """List workflow definitions
+        """(Deprecated) List workflow definitions
 
-        Lists DSL workflow definitions in the current project.  **Required permissions:** Any of `workflow:read`, `workflow:admin`
+        Workflow definitions are deprecated. Lists DSL workflow definitions in the current project.  **Required permissions:** Any of `workflow:read`, `workflow:admin`
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1355,6 +1366,7 @@ class WorkflowDefinitionsApi:
         :type _host_index: int, optional
         :return: Returns the result object.
         """ # noqa: E501
+        warnings.warn("GET /workflows/definitions is deprecated.", DeprecationWarning)
 
         _param = self._list_workflow_definitions_serialize(
             x_api_version=x_api_version,
@@ -1460,9 +1472,9 @@ class WorkflowDefinitionsApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> DSLWorkflowDefinitionResponse:
-        """Update a workflow definition
+        """(Deprecated) Update a workflow definition
 
-        Updates an existing DSL workflow definition.  **Required permissions:** `workflow:admin`
+        Workflow definitions are deprecated. Updates an existing DSL workflow definition.  **Required permissions:** `workflow:admin`
 
         :param workflow_id: (required)
         :type workflow_id: str
@@ -1491,6 +1503,7 @@ class WorkflowDefinitionsApi:
         :type _host_index: int, optional
         :return: Returns the result object.
         """ # noqa: E501
+        warnings.warn("PUT /workflows/definitions/{workflowId} is deprecated.", DeprecationWarning)
 
         _param = self._update_workflow_definition_serialize(
             workflow_id=workflow_id,
@@ -1538,9 +1551,9 @@ class WorkflowDefinitionsApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[DSLWorkflowDefinitionResponse]:
-        """Update a workflow definition
+        """(Deprecated) Update a workflow definition
 
-        Updates an existing DSL workflow definition.  **Required permissions:** `workflow:admin`
+        Workflow definitions are deprecated. Updates an existing DSL workflow definition.  **Required permissions:** `workflow:admin`
 
         :param workflow_id: (required)
         :type workflow_id: str
@@ -1569,6 +1582,7 @@ class WorkflowDefinitionsApi:
         :type _host_index: int, optional
         :return: Returns the result object.
         """ # noqa: E501
+        warnings.warn("PUT /workflows/definitions/{workflowId} is deprecated.", DeprecationWarning)
 
         _param = self._update_workflow_definition_serialize(
             workflow_id=workflow_id,
@@ -1616,9 +1630,9 @@ class WorkflowDefinitionsApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Update a workflow definition
+        """(Deprecated) Update a workflow definition
 
-        Updates an existing DSL workflow definition.  **Required permissions:** `workflow:admin`
+        Workflow definitions are deprecated. Updates an existing DSL workflow definition.  **Required permissions:** `workflow:admin`
 
         :param workflow_id: (required)
         :type workflow_id: str
@@ -1647,6 +1661,7 @@ class WorkflowDefinitionsApi:
         :type _host_index: int, optional
         :return: Returns the result object.
         """ # noqa: E501
+        warnings.warn("PUT /workflows/definitions/{workflowId} is deprecated.", DeprecationWarning)
 
         _param = self._update_workflow_definition_serialize(
             workflow_id=workflow_id,

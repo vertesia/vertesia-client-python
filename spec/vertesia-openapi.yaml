@@ -58126,10 +58126,13 @@ paths:
       tags:
         - Workflow Rules
       summary: List workflow rules
-      description: |-
-        Lists workflow rules available in the current project.
+      description: >-
+        Workflow rules are deprecated; use event subscriptions instead. Lists
+        workflow rules available in the current project.
+
 
         **Required permissions:** Any of `workflow:read`, `workflow:admin`
+      deprecated: true
       security:
         - bearerAuth: []
         - OAuth2:
@@ -58177,11 +58180,13 @@ paths:
         - Workflow Rules
       summary: Create a workflow rule
       description: >-
-        Creates a new workflow rule or updates an existing one through the
-        legacy upsert path.
+        Workflow rules are deprecated; use event subscriptions instead. Creates
+        a new workflow rule or updates an existing one through the legacy upsert
+        path.
 
 
         **Required permissions:** `workflow:admin`
+      deprecated: true
       security:
         - bearerAuth: []
         - OAuth2:
@@ -58244,10 +58249,13 @@ paths:
       tags:
         - Workflow Definitions
       summary: List workflow definitions
-      description: |-
-        Lists DSL workflow definitions in the current project.
+      description: >-
+        Workflow definitions are deprecated. Lists DSL workflow definitions in
+        the current project.
+
 
         **Required permissions:** Any of `workflow:read`, `workflow:admin`
+      deprecated: true
       security:
         - bearerAuth: []
         - OAuth2:
@@ -58295,11 +58303,12 @@ paths:
         - Workflow Definitions
       summary: Create a workflow definition
       description: >-
-        Creates a new DSL workflow definition or updates an existing one through
-        the legacy upsert path.
+        Workflow definitions are deprecated. Creates a new DSL workflow
+        definition or updates an existing one through the legacy upsert path.
 
 
         **Required permissions:** `workflow:admin`
+      deprecated: true
       security:
         - bearerAuth: []
         - OAuth2:
@@ -59056,10 +59065,13 @@ paths:
       tags:
         - Workflow Rules
       summary: Update a workflow rule
-      description: |-
-        Updates an existing workflow rule.
+      description: >-
+        Workflow rules are deprecated; use event subscriptions instead. Updates
+        an existing workflow rule.
+
 
         **Required permissions:** `workflow:admin`
+      deprecated: true
       security:
         - bearerAuth: []
         - OAuth2:
@@ -59116,10 +59128,13 @@ paths:
       tags:
         - Workflow Rules
       summary: Retrieve a workflow rule
-      description: |-
+      description: >-
+        Workflow rules are deprecated; use event subscriptions instead.
         Retrieves a workflow rule by ID.
 
+
         **Required permissions:** Any of `workflow:read`, `workflow:admin`
+      deprecated: true
       security:
         - bearerAuth: []
         - OAuth2:
@@ -59171,10 +59186,13 @@ paths:
       tags:
         - Workflow Rules
       summary: Delete a workflow rule
-      description: |-
-        Deletes a workflow rule.
+      description: >-
+        Workflow rules are deprecated; use event subscriptions instead. Deletes
+        a workflow rule.
+
 
         **Required permissions:** `workflow:admin`
+      deprecated: true
       security:
         - bearerAuth: []
         - OAuth2:
@@ -59237,11 +59255,13 @@ paths:
         - Workflow Runs
       summary: Execute a workflow rule
       description: >-
-        Executes a workflow through a configured workflow rule and returns the
-        created run.
+        Workflow rules are deprecated; use event subscriptions instead. Executes
+        a workflow through a configured workflow rule and returns the created
+        run.
 
 
         **Required permissions:** `workflow:run`
+      deprecated: true
       security:
         - bearerAuth: []
         - OAuth2:
@@ -59309,10 +59329,13 @@ paths:
       tags:
         - Workflow Runs
       summary: List runs for a workflow rule
-      description: |-
-        Lists workflow runs started from a specific workflow rule.
+      description: >-
+        Workflow rules are deprecated; use event subscriptions instead. Lists
+        workflow runs started from a specific workflow rule.
+
 
         **Required permissions:** Any of `workflow:read`, `workflow:admin`
+      deprecated: true
       security:
         - bearerAuth: []
         - OAuth2:
@@ -59377,10 +59400,13 @@ paths:
       tags:
         - Workflow Definitions
       summary: Retrieve a workflow definition
-      description: |-
-        Retrieves a DSL workflow definition by ID.
+      description: >-
+        Workflow definitions are deprecated. Retrieves a DSL workflow definition
+        by ID.
+
 
         **Required permissions:** Any of `workflow:read`, `workflow:admin`
+      deprecated: true
       security:
         - bearerAuth: []
         - OAuth2:
@@ -59432,10 +59458,13 @@ paths:
       tags:
         - Workflow Definitions
       summary: Update a workflow definition
-      description: |-
-        Updates an existing DSL workflow definition.
+      description: >-
+        Workflow definitions are deprecated. Updates an existing DSL workflow
+        definition.
+
 
         **Required permissions:** `workflow:admin`
+      deprecated: true
       security:
         - bearerAuth: []
         - OAuth2:
@@ -59493,9 +59522,10 @@ paths:
         - Workflow Definitions
       summary: Delete a workflow definition
       description: |-
-        Deletes a DSL workflow definition.
+        Workflow definitions are deprecated. Deletes a DSL workflow definition.
 
         **Required permissions:** `workflow:admin`
+      deprecated: true
       security:
         - bearerAuth: []
         - OAuth2:
@@ -66084,11 +66114,12 @@ tags:
     description: Task endpoints manage durable human tasks used by process runs and
       agent asks.
   - name: Workflow Definitions
-    description: Workflow definitions describe reusable DSL workflows and their
-      activity graph.
+    description: Deprecated. Workflow definitions describe reusable DSL workflows
+      and their activity graph.
   - name: Workflow Rules
-    description: Workflow rules bind named endpoints and execution defaults to
-      workflow definitions so they can be triggered consistently.
+    description: Deprecated; use event subscriptions instead. Workflow rules bind
+      named endpoints and execution defaults to workflow definitions so they can
+      be triggered consistently.
   - name: Workflow Runs
     description: Workflow run endpoints start workflows, inspect execution state,
       stream updates, and apply runtime actions such as signaling or
