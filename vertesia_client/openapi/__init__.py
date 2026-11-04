@@ -236,6 +236,7 @@ __all__ = [
     "AppWidgetInfo",
     "AskUserWebhookConfiguration",
     "AskUserWebhookConfigurationInput",
+    "AssignableRoleName",
     "AsyncCompletionMode",
     "AsyncCompletionOptions",
     "AsyncConversationExecutionPayload",
@@ -452,6 +453,7 @@ __all__ = [
     "CreateUserPayload",
     "CreateViewExperienceRequest",
     "CreateWorkflowRulePayload",
+    "CustomRoleDefinition",
     "DSLActivityOptions",
     "DSLActivitySpec",
     "DSLActivityStep",
@@ -1121,6 +1123,7 @@ __all__ = [
     "UpdateCollectionPayload",
     "UpdateContentObjectPayload",
     "UpdateContentObjectTypePayload",
+    "UpdateCustomRolePayload",
     "UpdateDashboardPayload",
     "UpdateEmailRouteRequest",
     "UpdateEmailRouteResponse",
@@ -1502,6 +1505,7 @@ from vertesia_client.openapi.models.app_version_urls import AppVersionUrls as Ap
 from vertesia_client.openapi.models.app_widget_info import AppWidgetInfo as AppWidgetInfo
 from vertesia_client.openapi.models.ask_user_webhook_configuration import AskUserWebhookConfiguration as AskUserWebhookConfiguration
 from vertesia_client.openapi.models.ask_user_webhook_configuration_input import AskUserWebhookConfigurationInput as AskUserWebhookConfigurationInput
+from vertesia_client.openapi.models.assignable_role_name import AssignableRoleName as AssignableRoleName
 from vertesia_client.openapi.models.async_completion_mode import AsyncCompletionMode as AsyncCompletionMode
 from vertesia_client.openapi.models.async_completion_options import AsyncCompletionOptions as AsyncCompletionOptions
 from vertesia_client.openapi.models.async_conversation_execution_payload import AsyncConversationExecutionPayload as AsyncConversationExecutionPayload
@@ -1718,6 +1722,7 @@ from vertesia_client.openapi.models.create_user_group_payload import CreateUserG
 from vertesia_client.openapi.models.create_user_payload import CreateUserPayload as CreateUserPayload
 from vertesia_client.openapi.models.create_view_experience_request import CreateViewExperienceRequest as CreateViewExperienceRequest
 from vertesia_client.openapi.models.create_workflow_rule_payload import CreateWorkflowRulePayload as CreateWorkflowRulePayload
+from vertesia_client.openapi.models.custom_role_definition import CustomRoleDefinition as CustomRoleDefinition
 from vertesia_client.openapi.models.dsl_activity_options import DSLActivityOptions as DSLActivityOptions
 from vertesia_client.openapi.models.dsl_activity_spec import DSLActivitySpec as DSLActivitySpec
 from vertesia_client.openapi.models.dsl_activity_step import DSLActivityStep as DSLActivityStep
@@ -2387,6 +2392,7 @@ from vertesia_client.openapi.models.update_app_payload import UpdateAppPayload a
 from vertesia_client.openapi.models.update_collection_payload import UpdateCollectionPayload as UpdateCollectionPayload
 from vertesia_client.openapi.models.update_content_object_payload import UpdateContentObjectPayload as UpdateContentObjectPayload
 from vertesia_client.openapi.models.update_content_object_type_payload import UpdateContentObjectTypePayload as UpdateContentObjectTypePayload
+from vertesia_client.openapi.models.update_custom_role_payload import UpdateCustomRolePayload as UpdateCustomRolePayload
 from vertesia_client.openapi.models.update_dashboard_payload import UpdateDashboardPayload as UpdateDashboardPayload
 from vertesia_client.openapi.models.update_email_route_request import UpdateEmailRouteRequest as UpdateEmailRouteRequest
 from vertesia_client.openapi.models.update_email_route_response import UpdateEmailRouteResponse as UpdateEmailRouteResponse

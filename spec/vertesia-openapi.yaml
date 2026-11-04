@@ -86,11 +86,12 @@ components:
         role:
           type: string
           description: "Role name. Typed as `string` because role names now span multiple
-            partitions: `SystemRoles` enum values for system-domain roles, and
-            bare strings for ABAC-domain roles (e.g. `'content:reader'`,
-            `'content:writer'`, `'content:manager'`, `'agent_runs:reader'`).
-            Mongoose schema validates the value against the registered role
-            catalog via `getAllRoleNames()`."
+            partitions: `SystemRoles` enum values for system-domain roles,
+            c:<name> for account-defined custom roles, and bare strings for
+            ABAC-domain roles (e.g. `'content:reader'`, `'content:writer'`,
+            `'content:manager'`, `'agent_runs:reader'`). Mongoose schema
+            validates syntax; assignment checks resolve custom names in the
+            current account. Custom roles cannot be used in ResourceSets."
         resource_type:
           $ref: "#/components/schemas/AccessControlResourceType"
         resource:
@@ -128,11 +129,12 @@ components:
         role:
           type: string
           description: "Role name. Typed as `string` because role names now span multiple
-            partitions: `SystemRoles` enum values for system-domain roles, and
-            bare strings for ABAC-domain roles (e.g. `'content:reader'`,
-            `'content:writer'`, `'content:manager'`, `'agent_runs:reader'`).
-            Mongoose schema validates the value against the registered role
-            catalog via `getAllRoleNames()`."
+            partitions: `SystemRoles` enum values for system-domain roles,
+            c:<name> for account-defined custom roles, and bare strings for
+            ABAC-domain roles (e.g. `'content:reader'`, `'content:writer'`,
+            `'content:manager'`, `'agent_runs:reader'`). Mongoose schema
+            validates syntax; assignment checks resolve custom names in the
+            current account. Custom roles cannot be used in ResourceSets."
         resource_type:
           $ref: "#/components/schemas/AccessControlResourceType"
         resource:
@@ -231,11 +233,12 @@ components:
         role:
           type: string
           description: "Role name. Typed as `string` because role names now span multiple
-            partitions: `SystemRoles` enum values for system-domain roles, and
-            bare strings for ABAC-domain roles (e.g. `'content:reader'`,
-            `'content:writer'`, `'content:manager'`, `'agent_runs:reader'`).
-            Mongoose schema validates the value against the registered role
-            catalog via `getAllRoleNames()`."
+            partitions: `SystemRoles` enum values for system-domain roles,
+            c:<name> for account-defined custom roles, and bare strings for
+            ABAC-domain roles (e.g. `'content:reader'`, `'content:writer'`,
+            `'content:manager'`, `'agent_runs:reader'`). Mongoose schema
+            validates syntax; assignment checks resolve custom names in the
+            current account. Custom roles cannot be used in ResourceSets."
         resource_type:
           $ref: "#/components/schemas/AccessControlResourceType"
         resource:
@@ -2447,7 +2450,7 @@ components:
         type:
           $ref: "#/components/schemas/ApiKeyTypes"
         role:
-          $ref: "#/components/schemas/SystemRoles"
+          $ref: "#/components/schemas/AssignableRoleName"
         maskedValue:
           type: string
         can_retrieve_value:
@@ -2541,7 +2544,7 @@ components:
         type:
           $ref: "#/components/schemas/ApiKeyTypes"
         role:
-          $ref: "#/components/schemas/SystemRoles"
+          $ref: "#/components/schemas/AssignableRoleName"
         maskedValue:
           type: string
         can_retrieve_value:
@@ -5044,6 +5047,14 @@ components:
       additionalProperties: false
       description: Configuration for ask_user webhook notifications. Sends webhooks
         when agents call ask_user and when users respond.
+    AssignableRoleName:
+      anyOf:
+        - $ref: "#/components/schemas/SystemRoles"
+        - type: string
+          maxLength: 66
+          pattern: ^c:[a-z][a-z0-9]*(?:_[a-z0-9]+)*$
+      description: Built-in system role or account-local c:<name> reference. ABAC
+        roles are excluded.
     AsyncCompletionMode:
       type: string
       enum:
@@ -10887,7 +10898,7 @@ components:
         name:
           type: string
         role:
-          $ref: "#/components/schemas/SystemRoles"
+          $ref: "#/components/schemas/AssignableRoleName"
         type:
           $ref: "#/components/schemas/ApiKeyTypes"
         expires_at:
@@ -11269,6 +11280,8 @@ components:
       required:
         - name
       additionalProperties: false
+    CreateCustomRolePayload:
+      $ref: "#/components/schemas/CustomRoleDefinition"
     CreateDashboardPayload:
       type: object
       properties:
@@ -11982,6 +11995,44 @@ components:
         - endpoint
         - name
       additionalProperties: false
+    CustomRoleDefinition:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 64
+          pattern: ^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$
+          description: "Immutable snake_case name without the c: prefix. References in
+            ACEs and tokens use c:<name>."
+        title:
+          type: string
+          minLength: 1
+          maxLength: 120
+        description:
+          type: string
+          maxLength: 1000
+        base_roles:
+          type: array
+          items:
+            $ref: "#/components/schemas/AssignableRoleName"
+          description: Roles whose permissions are inherited, in addition to permissions
+            below. Use built-in system role names or c:<name> references in this
+            account. Cycles and ABAC roles are not allowed. Changes to a base
+            role apply to newly minted tokens.
+        permissions:
+          maxItems: 49
+          type: array
+          items:
+            $ref: "#/components/schemas/Permission"
+      required:
+        - name
+        - title
+        - permissions
+      additionalProperties: false
+    CustomRoleDefinitionArray:
+      type: array
+      items:
+        $ref: "#/components/schemas/CustomRoleDefinition"
     DSLActivityOptions:
       type: object
       properties:
@@ -19057,7 +19108,7 @@ components:
         email:
           type: string
         role:
-          $ref: "#/components/schemas/SystemRoles"
+          $ref: "#/components/schemas/AssignableRoleName"
       required:
         - email
         - role
@@ -21799,6 +21850,10 @@ components:
         - task:manage
         - iam:impersonate
         - studio:access
+    PermissionArray:
+      type: array
+      items:
+        $ref: "#/components/schemas/Permission"
     Plan:
       type: object
       properties:
@@ -27776,7 +27831,7 @@ components:
         name:
           type: string
         role:
-          $ref: "#/components/schemas/SystemRoles"
+          $ref: "#/components/schemas/AssignableRoleName"
         enabled:
           type: boolean
         scim_provisioning:
@@ -28310,6 +28365,30 @@ components:
       additionalProperties: false
       description: Fields to change on a content object type. Only fields present are
         written; expected_edit_revision prevents overwriting a concurrent edit.
+    UpdateCustomRolePayload:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 120
+        description:
+          type: string
+          maxLength: 1000
+        base_roles:
+          type: array
+          items:
+            $ref: "#/components/schemas/AssignableRoleName"
+          description: Roles whose permissions are inherited, in addition to permissions
+            below. Use built-in system role names or c:<name> references in this
+            account. Cycles and ABAC roles are not allowed. Changes to a base
+            role apply to newly minted tokens.
+        permissions:
+          maxItems: 49
+          type: array
+          items:
+            $ref: "#/components/schemas/Permission"
+      additionalProperties: false
     UpdateDashboardPayload:
       type: object
       properties:
@@ -29397,7 +29476,7 @@ components:
         email:
           type: string
         role:
-          $ref: "#/components/schemas/SystemRoles"
+          $ref: "#/components/schemas/AssignableRoleName"
         account:
           $ref: "#/components/schemas/AccountRef"
         project:
@@ -39635,6 +39714,274 @@ paths:
       x-vertesia-source:
         file: ../../apps/studio-server/src/api/account-apikeys.ts
         className: AccountApiKeysResource
+        methodName: delete
+    parameters:
+      - name: x-api-version
+        in: header
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          pattern: \S
+          example: "20260803"
+        description: Required Vertesia API version header. Use `20260803` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /account/roles:
+    get:
+      operationId: ListCustomRoles
+      summary: List custom roles in the current account
+      description: "**Required permissions:** Any of `account:member`, `account:read`"
+      security:
+        - bearerAuth: []
+        - OAuth2:
+            - account:member
+        - OAuth2:
+            - account:read
+      parameters: []
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomRoleDefinitionArray"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - account:member
+        - account:read
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/account-roles.ts
+        className: AccountRolesResource
+        methodName: list
+    post:
+      operationId: CreateCustomRole
+      summary: Create an account-local custom role
+      security:
+        - bearerAuth: []
+        - OAuth2: []
+      parameters: []
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomRoleDefinition"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions: []
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/account-roles.ts
+        className: AccountRolesResource
+        methodName: create
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateCustomRolePayload"
+    parameters:
+      - name: x-api-version
+        in: header
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          pattern: \S
+          example: "20260803"
+        description: Required Vertesia API version header. Use `20260803` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /account/roles/permissions:
+    get:
+      operationId: ListCustomRolePermissions
+      summary: List permissions available to custom roles
+      description: "**Required permissions:** Any of `account:member`, `account:read`"
+      security:
+        - bearerAuth: []
+        - OAuth2:
+            - account:member
+        - OAuth2:
+            - account:read
+      parameters: []
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PermissionArray"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - account:member
+        - account:read
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/account-roles.ts
+        className: AccountRolesResource
+        methodName: permissions
+    parameters:
+      - name: x-api-version
+        in: header
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          pattern: \S
+          example: "20260803"
+        description: Required Vertesia API version header. Use `20260803` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /account/roles/{name}:
+    put:
+      operationId: UpdateCustomRole
+      summary: Update a custom role; changes apply to newly minted tokens
+      security:
+        - bearerAuth: []
+        - OAuth2: []
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomRoleDefinition"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions: []
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/account-roles.ts
+        className: AccountRolesResource
+        methodName: update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateCustomRolePayload"
+    delete:
+      operationId: DeleteCustomRole
+      summary: Delete a custom role that is neither assigned nor inherited
+      security:
+        - bearerAuth: []
+        - OAuth2: []
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteOperationResult"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions: []
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/account-roles.ts
+        className: AccountRolesResource
         methodName: delete
     parameters:
       - name: x-api-version

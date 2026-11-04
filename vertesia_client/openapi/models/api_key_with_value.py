@@ -21,8 +21,8 @@ from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from vertesia_client.openapi.models.api_key_types import ApiKeyTypes
+from vertesia_client.openapi.models.assignable_role_name import AssignableRoleName
 from vertesia_client.openapi.models.project_ref import ProjectRef
-from vertesia_client.openapi.models.system_roles import SystemRoles
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -34,7 +34,7 @@ class ApiKeyWithValue(BaseModel):
     id: StrictStr
     name: StrictStr
     type: ApiKeyTypes
-    role: SystemRoles
+    role: AssignableRoleName
     masked_value: Optional[StrictStr] = Field(default=None, alias="maskedValue")
     can_retrieve_value: Optional[StrictBool] = None
     account: StrictStr
@@ -94,6 +94,9 @@ class ApiKeyWithValue(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of role
+        if self.role:
+            _dict['role'] = self.role.to_dict()
         # override the default output from pydantic by calling `to_dict()` of project
         if self.project:
             _dict['project'] = self.project.to_dict()
@@ -117,7 +120,7 @@ class ApiKeyWithValue(BaseModel):
             "id": obj.get("id"),
             "name": obj.get("name"),
             "type": obj.get("type"),
-            "role": obj.get("role"),
+            "role": AssignableRoleName.from_dict(obj["role"]) if obj.get("role") is not None else None,
             "maskedValue": obj.get("maskedValue"),
             "can_retrieve_value": obj.get("can_retrieve_value"),
             "account": obj.get("account"),

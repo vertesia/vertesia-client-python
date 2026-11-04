@@ -30,7 +30,7 @@ class ACEUpdatePayload(BaseModel):
     """
     ACEUpdatePayload
     """ # noqa: E501
-    role: Optional[StrictStr] = Field(default=None, description="Role name. Typed as `string` because role names now span multiple partitions: `SystemRoles` enum values for system-domain roles, and bare strings for ABAC-domain roles (e.g. `'content:reader'`, `'content:writer'`, `'content:manager'`, `'agent_runs:reader'`). Mongoose schema validates the value against the registered role catalog via `getAllRoleNames()`.")
+    role: Optional[StrictStr] = Field(default=None, description="Role name. Typed as `string` because role names now span multiple partitions: `SystemRoles` enum values for system-domain roles, c:<name> for account-defined custom roles, and bare strings for ABAC-domain roles (e.g. `'content:reader'`, `'content:writer'`, `'content:manager'`, `'agent_runs:reader'`). Mongoose schema validates syntax; assignment checks resolve custom names in the current account. Custom roles cannot be used in ResourceSets.")
     resource_type: Optional[AccessControlResourceType] = None
     resource: Optional[StrictStr] = None
     principal_type: Optional[AccessControlPrincipalType] = None

@@ -214,6 +214,7 @@ vertesia_client/openapi/models/app_version_urls.py
 vertesia_client/openapi/models/app_widget_info.py
 vertesia_client/openapi/models/ask_user_webhook_configuration.py
 vertesia_client/openapi/models/ask_user_webhook_configuration_input.py
+vertesia_client/openapi/models/assignable_role_name.py
 vertesia_client/openapi/models/async_completion_mode.py
 vertesia_client/openapi/models/async_completion_options.py
 vertesia_client/openapi/models/async_conversation_execution_payload.py
@@ -430,6 +431,7 @@ vertesia_client/openapi/models/create_user_group_payload.py
 vertesia_client/openapi/models/create_user_payload.py
 vertesia_client/openapi/models/create_view_experience_request.py
 vertesia_client/openapi/models/create_workflow_rule_payload.py
+vertesia_client/openapi/models/custom_role_definition.py
 vertesia_client/openapi/models/dashboard.py
 vertesia_client/openapi/models/dashboard_archive_result.py
 vertesia_client/openapi/models/dashboard_bulk_archive_result.py
@@ -1099,6 +1101,7 @@ vertesia_client/openapi/models/update_app_payload.py
 vertesia_client/openapi/models/update_collection_payload.py
 vertesia_client/openapi/models/update_content_object_payload.py
 vertesia_client/openapi/models/update_content_object_type_payload.py
+vertesia_client/openapi/models/update_custom_role_payload.py
 vertesia_client/openapi/models/update_dashboard_payload.py
 vertesia_client/openapi/models/update_email_route_request.py
 vertesia_client/openapi/models/update_email_route_response.py

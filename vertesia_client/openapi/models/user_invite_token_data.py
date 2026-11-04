@@ -20,8 +20,8 @@ import json
 from pydantic import BaseModel, ConfigDict, StrictStr
 from typing import Any, ClassVar, Dict, Optional
 from vertesia_client.openapi.models.account_ref import AccountRef
+from vertesia_client.openapi.models.assignable_role_name import AssignableRoleName
 from vertesia_client.openapi.models.project_ref import ProjectRef
-from vertesia_client.openapi.models.system_roles import SystemRoles
 from vertesia_client.openapi.models.user_ref import UserRef
 from typing import Optional, Set
 from typing_extensions import Self
@@ -32,7 +32,7 @@ class UserInviteTokenData(BaseModel):
     UserInviteTokenData
     """ # noqa: E501
     email: StrictStr
-    role: SystemRoles
+    role: AssignableRoleName
     account: AccountRef
     project: Optional[ProjectRef] = None
     invited_by: UserRef
@@ -77,6 +77,9 @@ class UserInviteTokenData(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of role
+        if self.role:
+            _dict['role'] = self.role.to_dict()
         # override the default output from pydantic by calling `to_dict()` of account
         if self.account:
             _dict['account'] = self.account.to_dict()
@@ -99,7 +102,7 @@ class UserInviteTokenData(BaseModel):
 
         _obj = cls.model_validate({
             "email": obj.get("email"),
-            "role": obj.get("role"),
+            "role": AssignableRoleName.from_dict(obj["role"]) if obj.get("role") is not None else None,
             "account": AccountRef.from_dict(obj["account"]) if obj.get("account") is not None else None,
             "project": ProjectRef.from_dict(obj["project"]) if obj.get("project") is not None else None,
             "invited_by": UserRef.from_dict(obj["invited_by"]) if obj.get("invited_by") is not None else None

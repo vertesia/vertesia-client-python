@@ -19,7 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
-from vertesia_client.openapi.models.system_roles import SystemRoles
+from vertesia_client.openapi.models.assignable_role_name import AssignableRoleName
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -29,7 +29,7 @@ class UpdateApiKeyPayload(BaseModel):
     UpdateApiKeyPayload
     """ # noqa: E501
     name: Optional[StrictStr] = None
-    role: Optional[SystemRoles] = None
+    role: Optional[AssignableRoleName] = None
     enabled: Optional[StrictBool] = None
     scim_provisioning: Optional[StrictBool] = Field(default=None, description="Organization-wide SCIM provisioning credential. Only account administrators may create or manage these keys. May be enabled by account administrators on existing keys; disable or delete to revoke access.")
     properties: Optional[Dict[str, Any]] = Field(default=None, description="Custom properties for dynamic permission matching (PrincipalSet / $principal. conditions)")
@@ -79,6 +79,9 @@ class UpdateApiKeyPayload(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of role
+        if self.role:
+            _dict['role'] = self.role.to_dict()
         # puts key-value pairs in additional_properties in the top level
         if self.additional_properties is not None:
             for _key, _value in self.additional_properties.items():
@@ -97,7 +100,7 @@ class UpdateApiKeyPayload(BaseModel):
 
         _obj = cls.model_validate({
             "name": obj.get("name"),
-            "role": obj.get("role"),
+            "role": AssignableRoleName.from_dict(obj["role"]) if obj.get("role") is not None else None,
             "enabled": obj.get("enabled"),
             "scim_provisioning": obj.get("scim_provisioning"),
             "properties": obj.get("properties"),

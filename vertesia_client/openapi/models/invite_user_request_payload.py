@@ -19,7 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, StrictStr
 from typing import Any, ClassVar, Dict
-from vertesia_client.openapi.models.system_roles import SystemRoles
+from vertesia_client.openapi.models.assignable_role_name import AssignableRoleName
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -29,7 +29,7 @@ class InviteUserRequestPayload(BaseModel):
     InviteUserRequestPayload
     """ # noqa: E501
     email: StrictStr
-    role: SystemRoles
+    role: AssignableRoleName
     __properties: ClassVar[List[str]] = ["email", "role"]
 
     model_config = ConfigDict(
@@ -71,6 +71,9 @@ class InviteUserRequestPayload(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of role
+        if self.role:
+            _dict['role'] = self.role.to_dict()
         return _dict
 
     @classmethod
@@ -84,7 +87,7 @@ class InviteUserRequestPayload(BaseModel):
 
         _obj = cls.model_validate({
             "email": obj.get("email"),
-            "role": obj.get("role")
+            "role": AssignableRoleName.from_dict(obj["role"]) if obj.get("role") is not None else None
         })
         return _obj
 
