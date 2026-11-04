@@ -1270,6 +1270,12 @@ __all__ = [
     "WorkflowSearchAttributeValueInner",
     "WorkflowTask",
     "WorkflowUpdatePublishResponse",
+    "WorkflowUsageClass",
+    "WorkflowUsageClassActualStarts",
+    "WorkflowUsageClassBacklog",
+    "WorkflowUsageClassOccupancy",
+    "WorkflowUsageClassStartWindow",
+    "WorkflowUsageStanding",
     "XAIGrokImageOptions",
 ]
 
@@ -2530,5 +2536,11 @@ from vertesia_client.openapi.models.workflow_run_with_details import WorkflowRun
 from vertesia_client.openapi.models.workflow_search_attribute_value_inner import WorkflowSearchAttributeValueInner as WorkflowSearchAttributeValueInner
 from vertesia_client.openapi.models.workflow_task import WorkflowTask as WorkflowTask
 from vertesia_client.openapi.models.workflow_update_publish_response import WorkflowUpdatePublishResponse as WorkflowUpdatePublishResponse
+from vertesia_client.openapi.models.workflow_usage_class import WorkflowUsageClass as WorkflowUsageClass
+from vertesia_client.openapi.models.workflow_usage_class_actual_starts import WorkflowUsageClassActualStarts as WorkflowUsageClassActualStarts
+from vertesia_client.openapi.models.workflow_usage_class_backlog import WorkflowUsageClassBacklog as WorkflowUsageClassBacklog
+from vertesia_client.openapi.models.workflow_usage_class_occupancy import WorkflowUsageClassOccupancy as WorkflowUsageClassOccupancy
+from vertesia_client.openapi.models.workflow_usage_class_start_window import WorkflowUsageClassStartWindow as WorkflowUsageClassStartWindow
+from vertesia_client.openapi.models.workflow_usage_standing import WorkflowUsageStanding as WorkflowUsageStanding
 from vertesia_client.openapi.models.xai_grok_image_options import XAIGrokImageOptions as XAIGrokImageOptions
 

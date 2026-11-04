@@ -1248,6 +1248,12 @@ vertesia_client/openapi/models/workflow_run_with_details.py
 vertesia_client/openapi/models/workflow_search_attribute_value_inner.py
 vertesia_client/openapi/models/workflow_task.py
 vertesia_client/openapi/models/workflow_update_publish_response.py
+vertesia_client/openapi/models/workflow_usage_class.py
+vertesia_client/openapi/models/workflow_usage_class_actual_starts.py
+vertesia_client/openapi/models/workflow_usage_class_backlog.py
+vertesia_client/openapi/models/workflow_usage_class_occupancy.py
+vertesia_client/openapi/models/workflow_usage_class_start_window.py
+vertesia_client/openapi/models/workflow_usage_standing.py
 vertesia_client/openapi/models/xai_grok_image_options.py
 vertesia_client/openapi/py.typed
 vertesia_client/openapi/rest.py

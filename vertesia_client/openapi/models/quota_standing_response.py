@@ -18,10 +18,11 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
-from typing import Any, ClassVar, Dict, List
+from typing import Any, ClassVar, Dict, List, Optional
 from vertesia_client.openapi.models.quota_standing_resource import QuotaStandingResource
 from vertesia_client.openapi.models.quota_standing_response_admission import QuotaStandingResponseAdmission
 from vertesia_client.openapi.models.quota_standing_response_llm import QuotaStandingResponseLlm
+from vertesia_client.openapi.models.workflow_usage_standing import WorkflowUsageStanding
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -30,6 +31,7 @@ class QuotaStandingResponse(BaseModel):
     """
     QuotaStandingResponse
     """ # noqa: E501
+    workflow_usage: Optional[WorkflowUsageStanding] = None
     tenant_id: StrictStr
     available: StrictBool = Field(description="False when the limiter store (Redis) was unavailable, so `api`/`admission` are empty because standing could not be read — NOT because there are no limits. Limiters fail open in this case.")
     base_tier: StrictStr = Field(description="Deployment base tier (env QUOTA_BASE_TIER); `default` = the static limits stand.")
@@ -38,7 +40,7 @@ class QuotaStandingResponse(BaseModel):
     admission: QuotaStandingResponseAdmission
     llm: QuotaStandingResponseLlm
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["tenant_id", "available", "base_tier", "effective_tier", "api", "admission", "llm"]
+    __properties: ClassVar[List[str]] = ["workflow_usage", "tenant_id", "available", "base_tier", "effective_tier", "api", "admission", "llm"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -81,6 +83,9 @@ class QuotaStandingResponse(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of workflow_usage
+        if self.workflow_usage:
+            _dict['workflow_usage'] = self.workflow_usage.to_dict()
         # override the default output from pydantic by calling `to_dict()` of each item in api (list)
         _items = []
         if self.api:
@@ -111,6 +116,7 @@ class QuotaStandingResponse(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "workflow_usage": WorkflowUsageStanding.from_dict(obj["workflow_usage"]) if obj.get("workflow_usage") is not None else None,
             "tenant_id": obj.get("tenant_id"),
             "available": obj.get("available"),
             "base_tier": obj.get("base_tier"),
