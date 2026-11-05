@@ -2,22 +2,22 @@
     "test.yaml": {
         "jobs": [
             {
-                "name": "^Python 3\\.11$",
+                "name": "^Python oldest$",
                 "steps": [
                     "Run Ruff checks",
                     "Check Ruff formatting",
                     "Run unit tests"
                 ],
-                "example": "Python 3.11"
+                "example": "Python oldest"
             },
             {
-                "name": "^Python 3\\.x$",
+                "name": "^Python latest$",
                 "steps": [
                     "Run Ruff checks",
                     "Check Ruff formatting",
                     "Run unit tests"
                 ],
-                "example": "Python 3.x"
+                "example": "Python latest"
             }
         ]
     },

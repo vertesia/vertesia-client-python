@@ -38,11 +38,11 @@
       "parameters": {
         "required_status_checks": [
           {
-            "context": "Python 3.11",
+            "context": "Python oldest",
             "integration_id": 15368
           },
           {
-            "context": "Python 3.x",
+            "context": "Python latest",
             "integration_id": 15368
           },
           {
