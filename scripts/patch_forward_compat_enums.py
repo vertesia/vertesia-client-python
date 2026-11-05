@@ -91,7 +91,7 @@ def union_literal_schemas(schemas: dict) -> dict:
             values = [definition.get("const") for definition in definitions]
             if not all(isinstance(value, str) for value in values) or len(set(values)) != len(values):
                 continue
-            for name, definition in zip(names, definitions):
+            for name, definition in zip(names, definitions, strict=True):
                 tagged.setdefault(name, {"properties": {}})["properties"][field] = definition
     return tagged
 

@@ -20,7 +20,8 @@ jobs:
       VERTESIA_LIVE_TESTS: "0"
     strategy:
       matrix:
-        python-version: ["3.9", "3.12"]
+        # The oldest Python that still gets security fixes, kept in step with requires-python, and the latest stable.
+        python-version: ["3.11", "3.x"]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
