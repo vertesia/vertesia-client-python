@@ -18,7 +18,7 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
-from typing import Any, ClassVar, Dict, Optional
+from typing import Any, ClassVar, Dict, List, Optional
 from vertesia_client.openapi.models.markdown_rendition_format import MarkdownRenditionFormat
 from vertesia_client.openapi.models.workflow_execution_status import WorkflowExecutionStatus
 from typing import Optional, Set
@@ -36,7 +36,8 @@ class RenderMarkdownStatusResponse(BaseModel):
     download_url: Optional[StrictStr] = Field(default=None, description="Download URL for completed output")
     file_uri: Optional[StrictStr] = Field(default=None, description="File URI in storage for completed output")
     error: Optional[StrictStr] = Field(default=None, description="Error details for failed/terminated runs")
-    __properties: ClassVar[List[str]] = ["workflow_id", "workflow_run_id", "status", "format", "download_url", "file_uri", "error"]
+    warnings: Optional[List[StrictStr]] = Field(default=None, description="Content left out of a completed output, such as an image that was not embedded")
+    __properties: ClassVar[List[str]] = ["workflow_id", "workflow_run_id", "status", "format", "download_url", "file_uri", "error", "warnings"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -105,7 +106,8 @@ class RenderMarkdownStatusResponse(BaseModel):
             "format": obj.get("format"),
             "download_url": obj.get("download_url"),
             "file_uri": obj.get("file_uri"),
-            "error": obj.get("error")
+            "error": obj.get("error"),
+            "warnings": obj.get("warnings")
         })
         return _obj
 
