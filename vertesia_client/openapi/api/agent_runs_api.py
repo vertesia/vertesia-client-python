@@ -8539,6 +8539,7 @@ class AgentRunsApi:
         self,
         agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        reason: Annotated[Optional[StrictStr], Field(description="Why the run is being terminated. Takes precedence over a `reason` in the body.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -8560,6 +8561,8 @@ class AgentRunsApi:
         :type agent_run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
+        :param reason: Why the run is being terminated. Takes precedence over a `reason` in the body.
+        :type reason: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -8585,6 +8588,7 @@ class AgentRunsApi:
         _param = self._terminate_agent_run_serialize(
             agent_run_id=agent_run_id,
             x_api_version=x_api_version,
+            reason=reason,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -8612,6 +8616,7 @@ class AgentRunsApi:
         self,
         agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        reason: Annotated[Optional[StrictStr], Field(description="Why the run is being terminated. Takes precedence over a `reason` in the body.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -8633,6 +8638,8 @@ class AgentRunsApi:
         :type agent_run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
+        :param reason: Why the run is being terminated. Takes precedence over a `reason` in the body.
+        :type reason: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -8658,6 +8665,7 @@ class AgentRunsApi:
         _param = self._terminate_agent_run_serialize(
             agent_run_id=agent_run_id,
             x_api_version=x_api_version,
+            reason=reason,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -8685,6 +8693,7 @@ class AgentRunsApi:
         self,
         agent_run_id: Annotated[str, Field(strict=True, description="The agent run ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        reason: Annotated[Optional[StrictStr], Field(description="Why the run is being terminated. Takes precedence over a `reason` in the body.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -8706,6 +8715,8 @@ class AgentRunsApi:
         :type agent_run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
+        :param reason: Why the run is being terminated. Takes precedence over a `reason` in the body.
+        :type reason: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -8731,6 +8742,7 @@ class AgentRunsApi:
         _param = self._terminate_agent_run_serialize(
             agent_run_id=agent_run_id,
             x_api_version=x_api_version,
+            reason=reason,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -8753,6 +8765,7 @@ class AgentRunsApi:
         self,
         agent_run_id,
         x_api_version,
+        reason,
         _request_auth,
         _content_type,
         _headers,
@@ -8777,6 +8790,10 @@ class AgentRunsApi:
         if agent_run_id is not None:
             _path_params['agentRunId'] = agent_run_id
         # process the query parameters
+        if reason is not None:
+            
+            _query_params.append(('reason', reason))
+            
         # process the header parameters
         if x_api_version is not None:
             _header_params['x-api-version'] = x_api_version

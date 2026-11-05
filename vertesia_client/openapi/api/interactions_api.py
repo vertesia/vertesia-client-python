@@ -668,6 +668,7 @@ class InteractionsApi:
         self,
         interaction_id: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        cascade: Annotated[Optional[StrictBool], Field(description="Set to true on a draft to also delete its published versions. A cascade never deletes a version's draft, sibling versions, or forks.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -689,6 +690,8 @@ class InteractionsApi:
         :type interaction_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
+        :param cascade: Set to true on a draft to also delete its published versions. A cascade never deletes a version's draft, sibling versions, or forks.
+        :type cascade: bool
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -714,6 +717,7 @@ class InteractionsApi:
         _param = self._delete_interaction_serialize(
             interaction_id=interaction_id,
             x_api_version=x_api_version,
+            cascade=cascade,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -741,6 +745,7 @@ class InteractionsApi:
         self,
         interaction_id: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        cascade: Annotated[Optional[StrictBool], Field(description="Set to true on a draft to also delete its published versions. A cascade never deletes a version's draft, sibling versions, or forks.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -762,6 +767,8 @@ class InteractionsApi:
         :type interaction_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
+        :param cascade: Set to true on a draft to also delete its published versions. A cascade never deletes a version's draft, sibling versions, or forks.
+        :type cascade: bool
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -787,6 +794,7 @@ class InteractionsApi:
         _param = self._delete_interaction_serialize(
             interaction_id=interaction_id,
             x_api_version=x_api_version,
+            cascade=cascade,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -814,6 +822,7 @@ class InteractionsApi:
         self,
         interaction_id: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        cascade: Annotated[Optional[StrictBool], Field(description="Set to true on a draft to also delete its published versions. A cascade never deletes a version's draft, sibling versions, or forks.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -835,6 +844,8 @@ class InteractionsApi:
         :type interaction_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
+        :param cascade: Set to true on a draft to also delete its published versions. A cascade never deletes a version's draft, sibling versions, or forks.
+        :type cascade: bool
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -860,6 +871,7 @@ class InteractionsApi:
         _param = self._delete_interaction_serialize(
             interaction_id=interaction_id,
             x_api_version=x_api_version,
+            cascade=cascade,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -882,6 +894,7 @@ class InteractionsApi:
         self,
         interaction_id,
         x_api_version,
+        cascade,
         _request_auth,
         _content_type,
         _headers,
@@ -906,6 +919,10 @@ class InteractionsApi:
         if interaction_id is not None:
             _path_params['interactionId'] = interaction_id
         # process the query parameters
+        if cascade is not None:
+            
+            _query_params.append(('cascade', cascade))
+            
         # process the header parameters
         if x_api_version is not None:
             _header_params['x-api-version'] = x_api_version

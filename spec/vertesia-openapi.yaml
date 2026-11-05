@@ -36627,6 +36627,16 @@ paths:
           required: true
           schema:
             type: string
+        - name: cascade
+          in: query
+          required: false
+          schema:
+            type: boolean
+            description: Set to true on a draft to also delete its published versions. A
+              cascade never deletes a version's draft, sibling versions, or
+              forks.
+          description: Set to true on a draft to also delete its published versions. A
+            cascade never deletes a version's draft, sibling versions, or forks.
       responses:
         "200":
           description: Interaction deletion result.
@@ -43426,6 +43436,40 @@ paths:
           required: true
           schema:
             type: string
+        - name: path
+          in: query
+          required: false
+          schema:
+            type: string
+            description: Only list commits that changed this file, relative to the
+              repository root.
+          description: Only list commits that changed this file, relative to the
+            repository root.
+        - name: ref
+          in: query
+          required: false
+          schema:
+            type: string
+            description: Branch, tag or commit to start from. Defaults to the default
+              branch.
+          description: Branch, tag or commit to start from. Defaults to the default branch.
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: number
+            minimum: 0
+            maximum: 9007199254740991
+            multipleOf: 1
+            description: Maximum number of commits in the page.
+          description: Maximum number of commits in the page.
+        - name: cursor
+          in: query
+          required: false
+          schema:
+            type: string
+            description: The `next_cursor` of the previous page.
+          description: The `next_cursor` of the previous page.
       responses:
         "200":
           description: Repository commit history.
@@ -45540,6 +45584,17 @@ paths:
           required: true
           schema:
             type: string
+        - name: confirm
+          in: query
+          required: false
+          schema:
+            type: boolean
+            description: "Set to true to delete the app. When omitted or false this is a dry
+              run: nothing is removed, and the response describes what the
+              cascade would remove."
+          description: "Set to true to delete the app. When omitted or false this is a dry
+            run: nothing is removed, and the response describes what the cascade
+            would remove."
       responses:
         "200":
           description: App deletion result, or the dry-run preview.
@@ -50712,6 +50767,15 @@ paths:
             pattern: ^[0-9a-fA-F]{24}$
             description: The agent run ID, as 24 hexadecimal characters.
           description: The agent run ID, as 24 hexadecimal characters.
+        - name: reason
+          in: query
+          required: false
+          schema:
+            type: string
+            description: Why the run is being terminated. Takes precedence over a `reason`
+              in the body.
+          description: Why the run is being terminated. Takes precedence over a `reason`
+            in the body.
       responses:
         "200":
           description: Termination confirmation.
@@ -63659,6 +63723,17 @@ paths:
           required: true
           schema:
             type: string
+        - name: format
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - full
+              - ai
+            description: "`ai` returns a condensed schema for AI context. Defaults to
+              `full`."
+          description: "`ai` returns a condensed schema for AI context. Defaults to `full`."
       responses:
         "200":
           description: Current data store schema.
@@ -63784,6 +63859,16 @@ paths:
           required: true
           schema:
             type: string
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: number
+            minimum: 0
+            maximum: 9007199254740991
+            multipleOf: 1
+            description: Maximum number of versions to return. Defaults to 50.
+          description: Maximum number of versions to return. Defaults to 50.
       responses:
         "200":
           description: Schema version history.
@@ -64612,6 +64697,15 @@ paths:
           required: true
           schema:
             type: string
+        - name: version_id
+          in: query
+          required: false
+          schema:
+            type: string
+            description: The stored version or snapshot to download. Defaults to the current
+              database.
+          description: The stored version or snapshot to download. Defaults to the current
+            database.
       responses:
         "200":
           description: Signed download URL and version metadata.
@@ -64968,6 +65062,17 @@ paths:
             pattern: ^[0-9a-fA-F]{24}$
             description: The data store ID, as 24 hexadecimal characters.
           description: The data store ID, as 24 hexadecimal characters.
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - active
+              - archived
+            description: Only list dashboards with this status. Defaults to `active`.
+          description: Only list dashboards with this status. Defaults to `active`.
+          style: form
       responses:
         "200":
           description: Dashboards for the data store.
@@ -65724,6 +65829,23 @@ paths:
             pattern: ^[0-9a-fA-F]{24}$
             description: The dashboard ID, as 24 hexadecimal characters.
           description: The dashboard ID, as 24 hexadecimal characters.
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: number
+            minimum: 0
+            maximum: 9007199254740991
+            multipleOf: 1
+            description: Maximum number of versions to return. Defaults to 50.
+          description: Maximum number of versions to return. Defaults to 50.
+        - name: snapshots_only
+          in: query
+          required: false
+          schema:
+            type: boolean
+            description: Only list named snapshots.
+          description: Only list named snapshots.
       responses:
         "200":
           description: Dashboard versions.

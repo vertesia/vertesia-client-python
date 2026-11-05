@@ -15,7 +15,7 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import Field, StrictBytes, StrictStr, field_validator
+from pydantic import Field, StrictBool, StrictBytes, StrictStr, field_validator
 from typing import Any, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.agent_run_response import AgentRunResponse
@@ -1592,6 +1592,7 @@ class AppsApi:
         self,
         id: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        confirm: Annotated[Optional[StrictBool], Field(description="Set to true to delete the app. When omitted or false this is a dry run: nothing is removed, and the response describes what the cascade would remove.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1613,6 +1614,8 @@ class AppsApi:
         :type id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
+        :param confirm: Set to true to delete the app. When omitted or false this is a dry run: nothing is removed, and the response describes what the cascade would remove.
+        :type confirm: bool
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1638,6 +1641,7 @@ class AppsApi:
         _param = self._delete_app_serialize(
             id=id,
             x_api_version=x_api_version,
+            confirm=confirm,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1665,6 +1669,7 @@ class AppsApi:
         self,
         id: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        confirm: Annotated[Optional[StrictBool], Field(description="Set to true to delete the app. When omitted or false this is a dry run: nothing is removed, and the response describes what the cascade would remove.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1686,6 +1691,8 @@ class AppsApi:
         :type id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
+        :param confirm: Set to true to delete the app. When omitted or false this is a dry run: nothing is removed, and the response describes what the cascade would remove.
+        :type confirm: bool
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1711,6 +1718,7 @@ class AppsApi:
         _param = self._delete_app_serialize(
             id=id,
             x_api_version=x_api_version,
+            confirm=confirm,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1738,6 +1746,7 @@ class AppsApi:
         self,
         id: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        confirm: Annotated[Optional[StrictBool], Field(description="Set to true to delete the app. When omitted or false this is a dry run: nothing is removed, and the response describes what the cascade would remove.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1759,6 +1768,8 @@ class AppsApi:
         :type id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
+        :param confirm: Set to true to delete the app. When omitted or false this is a dry run: nothing is removed, and the response describes what the cascade would remove.
+        :type confirm: bool
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1784,6 +1795,7 @@ class AppsApi:
         _param = self._delete_app_serialize(
             id=id,
             x_api_version=x_api_version,
+            confirm=confirm,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1806,6 +1818,7 @@ class AppsApi:
         self,
         id,
         x_api_version,
+        confirm,
         _request_auth,
         _content_type,
         _headers,
@@ -1830,6 +1843,10 @@ class AppsApi:
         if id is not None:
             _path_params['id'] = id
         # process the query parameters
+        if confirm is not None:
+            
+            _query_params.append(('confirm', confirm))
+            
         # process the header parameters
         if x_api_version is not None:
             _header_params['x-api-version'] = x_api_version
@@ -5998,6 +6015,10 @@ class AppsApi:
         self,
         id: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        path: Annotated[Optional[StrictStr], Field(description="Only list commits that changed this file, relative to the repository root.")] = None,
+        ref: Annotated[Optional[StrictStr], Field(description="Branch, tag or commit to start from. Defaults to the default branch.")] = None,
+        limit: Annotated[Optional[Union[Annotated[float, Field(multiple_of=1, le=9007199254740991, strict=True, ge=0)], Annotated[int, Field(le=2147483647, strict=True, ge=0)]]], Field(description="Maximum number of commits in the page.")] = None,
+        cursor: Annotated[Optional[StrictStr], Field(description="The `next_cursor` of the previous page.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -6019,6 +6040,14 @@ class AppsApi:
         :type id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
+        :param path: Only list commits that changed this file, relative to the repository root.
+        :type path: str
+        :param ref: Branch, tag or commit to start from. Defaults to the default branch.
+        :type ref: str
+        :param limit: Maximum number of commits in the page.
+        :type limit: float
+        :param cursor: The `next_cursor` of the previous page.
+        :type cursor: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -6044,6 +6073,10 @@ class AppsApi:
         _param = self._get_app_repo_commits_serialize(
             id=id,
             x_api_version=x_api_version,
+            path=path,
+            ref=ref,
+            limit=limit,
+            cursor=cursor,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -6071,6 +6104,10 @@ class AppsApi:
         self,
         id: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        path: Annotated[Optional[StrictStr], Field(description="Only list commits that changed this file, relative to the repository root.")] = None,
+        ref: Annotated[Optional[StrictStr], Field(description="Branch, tag or commit to start from. Defaults to the default branch.")] = None,
+        limit: Annotated[Optional[Union[Annotated[float, Field(multiple_of=1, le=9007199254740991, strict=True, ge=0)], Annotated[int, Field(le=2147483647, strict=True, ge=0)]]], Field(description="Maximum number of commits in the page.")] = None,
+        cursor: Annotated[Optional[StrictStr], Field(description="The `next_cursor` of the previous page.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -6092,6 +6129,14 @@ class AppsApi:
         :type id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
+        :param path: Only list commits that changed this file, relative to the repository root.
+        :type path: str
+        :param ref: Branch, tag or commit to start from. Defaults to the default branch.
+        :type ref: str
+        :param limit: Maximum number of commits in the page.
+        :type limit: float
+        :param cursor: The `next_cursor` of the previous page.
+        :type cursor: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -6117,6 +6162,10 @@ class AppsApi:
         _param = self._get_app_repo_commits_serialize(
             id=id,
             x_api_version=x_api_version,
+            path=path,
+            ref=ref,
+            limit=limit,
+            cursor=cursor,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -6144,6 +6193,10 @@ class AppsApi:
         self,
         id: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        path: Annotated[Optional[StrictStr], Field(description="Only list commits that changed this file, relative to the repository root.")] = None,
+        ref: Annotated[Optional[StrictStr], Field(description="Branch, tag or commit to start from. Defaults to the default branch.")] = None,
+        limit: Annotated[Optional[Union[Annotated[float, Field(multiple_of=1, le=9007199254740991, strict=True, ge=0)], Annotated[int, Field(le=2147483647, strict=True, ge=0)]]], Field(description="Maximum number of commits in the page.")] = None,
+        cursor: Annotated[Optional[StrictStr], Field(description="The `next_cursor` of the previous page.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -6165,6 +6218,14 @@ class AppsApi:
         :type id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
+        :param path: Only list commits that changed this file, relative to the repository root.
+        :type path: str
+        :param ref: Branch, tag or commit to start from. Defaults to the default branch.
+        :type ref: str
+        :param limit: Maximum number of commits in the page.
+        :type limit: float
+        :param cursor: The `next_cursor` of the previous page.
+        :type cursor: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -6190,6 +6251,10 @@ class AppsApi:
         _param = self._get_app_repo_commits_serialize(
             id=id,
             x_api_version=x_api_version,
+            path=path,
+            ref=ref,
+            limit=limit,
+            cursor=cursor,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -6212,6 +6277,10 @@ class AppsApi:
         self,
         id,
         x_api_version,
+        path,
+        ref,
+        limit,
+        cursor,
         _request_auth,
         _content_type,
         _headers,
@@ -6236,6 +6305,22 @@ class AppsApi:
         if id is not None:
             _path_params['id'] = id
         # process the query parameters
+        if path is not None:
+            
+            _query_params.append(('path', path))
+            
+        if ref is not None:
+            
+            _query_params.append(('ref', ref))
+            
+        if limit is not None:
+            
+            _query_params.append(('limit', limit))
+            
+        if cursor is not None:
+            
+            _query_params.append(('cursor', cursor))
+            
         # process the header parameters
         if x_api_version is not None:
             _header_params['x-api-version'] = x_api_version
