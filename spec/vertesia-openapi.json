@@ -67495,7 +67495,7 @@
           "Agent Runs"
         ],
         "summary": "List agent runs",
-        "description": "Lists agent runs with filters for ID, status, interaction, starter, date range, schedule, type, pagination cursor or offset, and sort order.\n\n**Required permissions:** Any of `agent_run:read`, `workflow:run`",
+        "description": "Lists agent runs with filters for ID, status, interaction, starter, date range, schedule, type, pagination cursor or offset, and sort order. Process runs are listed with an empty `process_state.node_history`; `process_state.node_history_ref.count` gives the number of entries, and `GET /agents/{agentRunId}/history` returns them.\n\n**Required permissions:** Any of `agent_run:read`, `workflow:run`",
         "security": [
           {
             "bearerAuth": []

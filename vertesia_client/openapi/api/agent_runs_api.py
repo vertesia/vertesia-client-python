@@ -5001,7 +5001,7 @@ class AgentRunsApi:
     ) -> ListAgentRunsResponse:
         """List agent runs
 
-        Lists agent runs with filters for ID, status, interaction, starter, date range, schedule, type, pagination cursor or offset, and sort order.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
+        Lists agent runs with filters for ID, status, interaction, starter, date range, schedule, type, pagination cursor or offset, and sort order. Process runs are listed with an empty `process_state.node_history`; `process_state.node_history_ref.count` gives the number of entries, and `GET /agents/{agentRunId}/history` returns them.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -5146,7 +5146,7 @@ class AgentRunsApi:
     ) -> ApiResponse[ListAgentRunsResponse]:
         """List agent runs
 
-        Lists agent runs with filters for ID, status, interaction, starter, date range, schedule, type, pagination cursor or offset, and sort order.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
+        Lists agent runs with filters for ID, status, interaction, starter, date range, schedule, type, pagination cursor or offset, and sort order. Process runs are listed with an empty `process_state.node_history`; `process_state.node_history_ref.count` gives the number of entries, and `GET /agents/{agentRunId}/history` returns them.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -5291,7 +5291,7 @@ class AgentRunsApi:
     ) -> RESTResponseType:
         """List agent runs
 
-        Lists agent runs with filters for ID, status, interaction, starter, date range, schedule, type, pagination cursor or offset, and sort order.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
+        Lists agent runs with filters for ID, status, interaction, starter, date range, schedule, type, pagination cursor or offset, and sort order. Process runs are listed with an empty `process_state.node_history`; `process_state.node_history_ref.count` gives the number of entries, and `GET /agents/{agentRunId}/history` returns them.  **Required permissions:** Any of `agent_run:read`, `workflow:run`
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
