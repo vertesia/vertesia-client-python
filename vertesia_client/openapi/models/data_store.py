@@ -44,10 +44,11 @@ class DataStore(BaseModel):
     storage_bytes: Union[StrictFloat, StrictInt] = Field(description="Storage size in bytes")
     last_import_at: Optional[StrictStr] = Field(default=None, description="Last import timestamp")
     version_count: Union[StrictFloat, StrictInt] = Field(description="Number of versions stored")
+    current_version: Optional[StrictStr] = Field(default=None, description="ID of the version this store serves. Automatic version records expire, so this version can be missing from the version list while its data stays readable. Absent on a store not written to since immutable versions were introduced.")
     var_schema: DataSchema = Field(description="Complete schema definition", alias="schema")
     gcs_bucket: StrictStr = Field(description="GCS bucket name")
     gcs_path: StrictStr = Field(description="Path prefix within the bucket")
-    __properties: ClassVar[List[str]] = ["id", "name", "description", "tags", "updated_by", "created_by", "created_at", "updated_at", "status", "schema_version", "table_count", "total_rows", "storage_bytes", "last_import_at", "version_count", "schema", "gcs_bucket", "gcs_path"]
+    __properties: ClassVar[List[str]] = ["id", "name", "description", "tags", "updated_by", "created_by", "created_at", "updated_at", "status", "schema_version", "table_count", "total_rows", "storage_bytes", "last_import_at", "version_count", "current_version", "schema", "gcs_bucket", "gcs_path"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -118,6 +119,7 @@ class DataStore(BaseModel):
             "storage_bytes": obj.get("storage_bytes"),
             "last_import_at": obj.get("last_import_at"),
             "version_count": obj.get("version_count"),
+            "current_version": obj.get("current_version"),
             "schema": DataSchema.from_dict(obj["schema"]) if obj.get("schema") is not None else None,
             "gcs_bucket": obj.get("gcs_bucket"),
             "gcs_path": obj.get("gcs_path")
