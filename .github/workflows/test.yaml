@@ -14,13 +14,19 @@ permissions:
 
 jobs:
   test:
-    name: Python ${{ matrix.python-version }}
-    runs-on: ubuntu-latest
+    name: Python ${{ matrix.role }}
+    # Later Ubuntu images have no Python 3.9 build, and this line still supports it.
+    runs-on: ubuntu-24.04
     env:
       VERTESIA_LIVE_TESTS: "0"
     strategy:
       matrix:
-        python-version: ["3.9", "3.12"]
+        # Required checks name the roles, so moving a version needs no ruleset or policy change.
+        include:
+          - role: oldest
+            python-version: "3.9"
+          - role: latest
+            python-version: "3.12"
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
