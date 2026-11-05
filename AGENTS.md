@@ -106,14 +106,13 @@ the user explicitly asks and provides an appropriate environment.
 
 ## Python Style
 
-- Support Python `>=3.9`.
+- Support Python `>=3.11`, the oldest release that still gets security fixes.
 - Keep line length at 120 characters.
 - Ruff checks use `E`, `F`, `I`, `UP`, and `B`.
 - `vertesia_client/openapi/` is excluded from Ruff because it is generated.
 - Prefer the standard library for facade logic unless a dependency is already
   part of the package contract.
-- Keep imports and typing compatible with Python 3.9. This repo already uses
-  `from __future__ import annotations` where newer typing syntax is needed.
+- Keep imports and typing compatible with Python 3.11.
 
 ## Client Design Notes
 
@@ -164,7 +163,7 @@ uvx zizmor@1.24.1 --no-exit-codes --persona=auditor .github
 ## Dependency Updates
 
 Runtime dependencies live in `pyproject.toml`. There is no committed Python lock
-file. Keep dependency bounds compatible with Python 3.9 and avoid broad major
+file. Keep dependency bounds compatible with Python 3.11 and avoid broad major
 version changes unless the user asks for that risk.
 
 Dependabot also manages GitHub Actions updates. When updating workflow action

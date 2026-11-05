@@ -14,13 +14,19 @@ permissions:
 
 jobs:
   test:
-    name: Python ${{ matrix.python-version }}
+    name: Python ${{ matrix.role }}
     runs-on: ubuntu-latest
     env:
       VERTESIA_LIVE_TESTS: "0"
     strategy:
       matrix:
-        python-version: ["3.9", "3.12"]
+        # Required checks name the roles, so moving a version needs no ruleset or policy change.
+        include:
+          # The oldest Python that still gets security fixes, kept in step with requires-python.
+          - role: oldest
+            python-version: "3.11"
+          - role: latest
+            python-version: "3.x"
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
