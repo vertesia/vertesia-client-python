@@ -807,6 +807,7 @@ vertesia_client/openapi/models/parallel_failure_policy.py
 vertesia_client/openapi/models/pdf_rendering_metadata.py
 vertesia_client/openapi/models/pending_activity.py
 vertesia_client/openapi/models/pending_ask_data.py
+vertesia_client/openapi/models/pending_ask_delivery.py
 vertesia_client/openapi/models/pending_ask_status.py
 vertesia_client/openapi/models/pending_mcp_connection.py
 vertesia_client/openapi/models/pending_tool_approval_results.py

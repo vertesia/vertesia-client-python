@@ -952,6 +952,7 @@ class PendingAsksApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "ResolvePendingAskResponse",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -1029,6 +1030,7 @@ class PendingAsksApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "ResolvePendingAskResponse",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -1106,6 +1108,7 @@ class PendingAsksApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "ResolvePendingAskResponse",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }

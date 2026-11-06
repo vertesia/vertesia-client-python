@@ -767,6 +767,7 @@ from vertesia_client.openapi.models.parallel_failure_policy import ParallelFailu
 from vertesia_client.openapi.models.pdf_rendering_metadata import PdfRenderingMetadata
 from vertesia_client.openapi.models.pending_activity import PendingActivity
 from vertesia_client.openapi.models.pending_ask_data import PendingAskData
+from vertesia_client.openapi.models.pending_ask_delivery import PendingAskDelivery
 from vertesia_client.openapi.models.pending_ask_status import PendingAskStatus
 from vertesia_client.openapi.models.pending_mcp_connection import PendingMcpConnection
 from vertesia_client.openapi.models.pending_tool_approval_results import PendingToolApprovalResults

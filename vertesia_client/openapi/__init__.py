@@ -829,6 +829,7 @@ __all__ = [
     "PdfRenderingMetadata",
     "PendingActivity",
     "PendingAskData",
+    "PendingAskDelivery",
     "PendingAskStatus",
     "PendingMcpConnection",
     "PendingToolApprovalResults",
@@ -2098,6 +2099,7 @@ from vertesia_client.openapi.models.parallel_failure_policy import ParallelFailu
 from vertesia_client.openapi.models.pdf_rendering_metadata import PdfRenderingMetadata as PdfRenderingMetadata
 from vertesia_client.openapi.models.pending_activity import PendingActivity as PendingActivity
 from vertesia_client.openapi.models.pending_ask_data import PendingAskData as PendingAskData
+from vertesia_client.openapi.models.pending_ask_delivery import PendingAskDelivery as PendingAskDelivery
 from vertesia_client.openapi.models.pending_ask_status import PendingAskStatus as PendingAskStatus
 from vertesia_client.openapi.models.pending_mcp_connection import PendingMcpConnection as PendingMcpConnection
 from vertesia_client.openapi.models.pending_tool_approval_results import PendingToolApprovalResults as PendingToolApprovalResults

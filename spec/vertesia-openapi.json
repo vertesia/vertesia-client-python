@@ -27849,6 +27849,14 @@
         ],
         "additionalProperties": false
       },
+      "PendingAskDelivery": {
+        "type": "string",
+        "enum": [
+          "deliver",
+          "already_delivered"
+        ],
+        "description": "What the server does with the response. `deliver` sends it to the waiting agent, which then records the resolution itself. `already_delivered` states that the agent has the response, so the server records the resolution and closes the task that backs the question. When omitted, the server only records the resolution: the agent keeps waiting and the task stays open."
+      },
       "PendingAskStatus": {
         "type": "string",
         "enum": [
@@ -32410,6 +32418,9 @@
         "properties": {
           "response": {
             "type": "string"
+          },
+          "delivery": {
+            "$ref": "#/components/schemas/PendingAskDelivery"
           }
         },
         "required": [
@@ -84727,6 +84738,9 @@
                 }
               }
             }
+          },
+          "409": {
+            "description": "With `delivery: deliver`, the question is closed or its run has ended."
           },
           "500": {
             "description": "Internal server error.",

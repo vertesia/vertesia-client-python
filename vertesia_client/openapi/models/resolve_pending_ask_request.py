@@ -18,7 +18,8 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, StrictStr
-from typing import Any, ClassVar, Dict
+from typing import Any, ClassVar, Dict, Optional
+from vertesia_client.openapi.models.pending_ask_delivery import PendingAskDelivery
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -28,7 +29,8 @@ class ResolvePendingAskRequest(BaseModel):
     ResolvePendingAskRequest
     """ # noqa: E501
     response: StrictStr
-    __properties: ClassVar[List[str]] = ["response"]
+    delivery: Optional[PendingAskDelivery] = None
+    __properties: ClassVar[List[str]] = ["response", "delivery"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -81,7 +83,8 @@ class ResolvePendingAskRequest(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "response": obj.get("response")
+            "response": obj.get("response"),
+            "delivery": obj.get("delivery")
         })
         return _obj
 
