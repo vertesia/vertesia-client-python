@@ -32,7 +32,8 @@ class ForwardEmailRequestEmail(BaseModel):
     text: StrictStr
     html: Optional[StrictStr] = None
     message_id: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["from", "subject", "text", "html", "message_id"]
+    in_reply_to: Optional[StrictStr] = Field(default=None, description="The email's In-Reply-To header. When it names an email that asked an agent prompt, the reply answers only that prompt.")
+    __properties: ClassVar[List[str]] = ["from", "subject", "text", "html", "message_id", "in_reply_to"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -89,7 +90,8 @@ class ForwardEmailRequestEmail(BaseModel):
             "subject": obj.get("subject"),
             "text": obj.get("text"),
             "html": obj.get("html"),
-            "message_id": obj.get("message_id")
+            "message_id": obj.get("message_id"),
+            "in_reply_to": obj.get("in_reply_to")
         })
         return _obj
 

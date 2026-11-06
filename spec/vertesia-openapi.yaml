@@ -16666,6 +16666,10 @@ components:
               type: string
             message_id:
               type: string
+            in_reply_to:
+              type: string
+              description: The email's In-Reply-To header. When it names an email that asked
+                an agent prompt, the reply answers only that prompt.
           required:
             - from
             - text
@@ -26055,6 +26059,10 @@ components:
           type: array
           items:
             type: string
+        request_id:
+          type: string
+          description: The agent prompt this email asks. A reply to the email then answers
+            only that prompt, not a newer one.
       required:
         - to_email
         - subject

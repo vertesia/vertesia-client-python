@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
 from typing_extensions import Self
@@ -36,7 +36,8 @@ class SendEmailRequest(BaseModel):
     route_key: Optional[StrictStr] = None
     in_reply_to: Optional[StrictStr] = None
     references: Optional[List[StrictStr]] = None
-    __properties: ClassVar[List[str]] = ["to_email", "subject", "body", "agent_name", "from_name", "run_id", "route_key", "in_reply_to", "references"]
+    request_id: Optional[StrictStr] = Field(default=None, description="The agent prompt this email asks. A reply to the email then answers only that prompt, not a newer one.")
+    __properties: ClassVar[List[str]] = ["to_email", "subject", "body", "agent_name", "from_name", "run_id", "route_key", "in_reply_to", "references", "request_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -97,7 +98,8 @@ class SendEmailRequest(BaseModel):
             "run_id": obj.get("run_id"),
             "route_key": obj.get("route_key"),
             "in_reply_to": obj.get("in_reply_to"),
-            "references": obj.get("references")
+            "references": obj.get("references"),
+            "request_id": obj.get("request_id")
         })
         return _obj
 
