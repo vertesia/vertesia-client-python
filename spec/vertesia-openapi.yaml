@@ -55515,6 +55515,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Task"
+        "409":
+          description: The update closes a task that a running process is waiting on.
         "500":
           description: Internal server error.
           content:
@@ -55620,10 +55622,9 @@ paths:
       tags:
         - Tasks
       summary: Complete a task
-      description: Completes a durable task and, for agent ask tasks, signals the
-        backing workflow with the submitted result. Process `human_task` nodes
-        should be resumed through `POST /agents/{agentRunId}/answer-task`
-        instead of this endpoint.
+      description: Completes a durable task and signals the backing agent or process
+        workflow with the submitted result. Answers 409 when the task was
+        already given a different answer or its run has ended.
       security:
         - bearerAuth: []
         - OAuth2: []
@@ -55643,6 +55644,9 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Task"
+        "409":
+          description: The task was already completed or given a different answer, or its
+            run has ended.
         "500":
           description: Internal server error.
           content:
@@ -55692,8 +55696,11 @@ paths:
       tags:
         - Tasks
       summary: Cancel a task
-      description: |-
-        Cancels a pending or in-progress durable task.
+      description: >-
+        Cancels a pending or in-progress durable task. Answers 409 while a
+        running process is waiting on the task: answer the task, advance the
+        run, or cancel the run instead.
+
 
         **Required permissions:** `task:manage`
       security:

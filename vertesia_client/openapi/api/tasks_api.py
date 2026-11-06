@@ -62,7 +62,7 @@ class TasksApi:
     ) -> Task:
         """Cancel a task
 
-        Cancels a pending or in-progress durable task.  **Required permissions:** `task:manage`
+        Cancels a pending or in-progress durable task. Answers 409 while a running process is waiting on the task: answer the task, advance the run, or cancel the run instead.  **Required permissions:** `task:manage`
 
         :param task_id: The task ID, as 24 hexadecimal characters. (required)
         :type task_id: str
@@ -135,7 +135,7 @@ class TasksApi:
     ) -> ApiResponse[Task]:
         """Cancel a task
 
-        Cancels a pending or in-progress durable task.  **Required permissions:** `task:manage`
+        Cancels a pending or in-progress durable task. Answers 409 while a running process is waiting on the task: answer the task, advance the run, or cancel the run instead.  **Required permissions:** `task:manage`
 
         :param task_id: The task ID, as 24 hexadecimal characters. (required)
         :type task_id: str
@@ -208,7 +208,7 @@ class TasksApi:
     ) -> RESTResponseType:
         """Cancel a task
 
-        Cancels a pending or in-progress durable task.  **Required permissions:** `task:manage`
+        Cancels a pending or in-progress durable task. Answers 409 while a running process is waiting on the task: answer the task, advance the run, or cancel the run instead.  **Required permissions:** `task:manage`
 
         :param task_id: The task ID, as 24 hexadecimal characters. (required)
         :type task_id: str
@@ -346,7 +346,7 @@ class TasksApi:
     ) -> Task:
         """Complete a task
 
-        Completes a durable task and, for agent ask tasks, signals the backing workflow with the submitted result. Process `human_task` nodes should be resumed through `POST /agents/{agentRunId}/answer-task` instead of this endpoint.
+        Completes a durable task and signals the backing agent or process workflow with the submitted result. Answers 409 when the task was already given a different answer or its run has ended.
 
         :param task_id: The task ID, as 24 hexadecimal characters. (required)
         :type task_id: str
@@ -388,6 +388,7 @@ class TasksApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "Task",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -423,7 +424,7 @@ class TasksApi:
     ) -> ApiResponse[Task]:
         """Complete a task
 
-        Completes a durable task and, for agent ask tasks, signals the backing workflow with the submitted result. Process `human_task` nodes should be resumed through `POST /agents/{agentRunId}/answer-task` instead of this endpoint.
+        Completes a durable task and signals the backing agent or process workflow with the submitted result. Answers 409 when the task was already given a different answer or its run has ended.
 
         :param task_id: The task ID, as 24 hexadecimal characters. (required)
         :type task_id: str
@@ -465,6 +466,7 @@ class TasksApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "Task",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -500,7 +502,7 @@ class TasksApi:
     ) -> RESTResponseType:
         """Complete a task
 
-        Completes a durable task and, for agent ask tasks, signals the backing workflow with the submitted result. Process `human_task` nodes should be resumed through `POST /agents/{agentRunId}/answer-task` instead of this endpoint.
+        Completes a durable task and signals the backing agent or process workflow with the submitted result. Answers 409 when the task was already given a different answer or its run has ended.
 
         :param task_id: The task ID, as 24 hexadecimal characters. (required)
         :type task_id: str
@@ -542,6 +544,7 @@ class TasksApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "Task",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -1932,6 +1935,7 @@ class TasksApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "Task",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -2009,6 +2013,7 @@ class TasksApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "Task",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -2086,6 +2091,7 @@ class TasksApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "Task",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
