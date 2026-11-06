@@ -20,6 +20,7 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, Optional, Union
 from typing_extensions import Annotated
+from vertesia_client.openapi.models.open_ai_image_svg_options import OpenAiImageSvgOptions
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -40,7 +41,11 @@ class OpenAiGptImageOptions(BaseModel):
     moderation: Optional[StrictStr] = None
     input_fidelity: Optional[StrictStr] = None
     partial_images: Optional[Union[StrictFloat, StrictInt]] = None
-    __properties: ClassVar[List[str]] = ["_option_id", "size", "width", "height", "image_quality", "background", "output_format", "n", "output_compression", "moderation", "input_fidelity", "partial_images"]
+    complexity: Optional[StrictStr] = None
+    frame_count: Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]] = None
+    frame_duration_ms: Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]] = None
+    svg: Optional[OpenAiImageSvgOptions] = None
+    __properties: ClassVar[List[str]] = ["_option_id", "size", "width", "height", "image_quality", "background", "output_format", "n", "output_compression", "moderation", "input_fidelity", "partial_images", "complexity", "frame_count", "frame_duration_ms", "svg"]
 
     @field_validator('option_id')
     def option_id_validate_enum(cls, value):
@@ -90,6 +95,14 @@ class OpenAiGptImageOptions(BaseModel):
 
         return value
 
+    @field_validator('complexity')
+    def complexity_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        return value
+
     model_config = ConfigDict(
         validate_by_name=True,
         validate_by_alias=True,
@@ -129,6 +142,9 @@ class OpenAiGptImageOptions(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of svg
+        if self.svg:
+            _dict['svg'] = self.svg.to_dict()
         return _dict
 
     @classmethod
@@ -152,7 +168,11 @@ class OpenAiGptImageOptions(BaseModel):
             "output_compression": obj.get("output_compression"),
             "moderation": obj.get("moderation"),
             "input_fidelity": obj.get("input_fidelity"),
-            "partial_images": obj.get("partial_images")
+            "partial_images": obj.get("partial_images"),
+            "complexity": obj.get("complexity"),
+            "frame_count": obj.get("frame_count"),
+            "frame_duration_ms": obj.get("frame_duration_ms"),
+            "svg": OpenAiImageSvgOptions.from_dict(obj["svg"]) if obj.get("svg") is not None else None
         })
         return _obj
 

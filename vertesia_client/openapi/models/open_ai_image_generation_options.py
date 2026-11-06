@@ -40,8 +40,11 @@ class OpenAiImageGenerationOptions(BaseModel):
     moderation: Optional[StrictStr] = None
     input_fidelity: Optional[StrictStr] = None
     partial_images: Optional[Union[StrictFloat, StrictInt]] = None
+    complexity: Optional[StrictStr] = None
+    frame_count: Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]] = None
+    frame_duration_ms: Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]] = None
     input_image_mask: Optional[OpenAiImageGenerationMask] = None
-    __properties: ClassVar[List[str]] = ["model", "force", "action", "size", "quality", "background", "output_format", "output_compression", "moderation", "input_fidelity", "partial_images", "input_image_mask"]
+    __properties: ClassVar[List[str]] = ["model", "force", "action", "size", "quality", "background", "output_format", "output_compression", "moderation", "input_fidelity", "partial_images", "complexity", "frame_count", "frame_duration_ms", "input_image_mask"]
 
     @field_validator('action')
     def action_validate_enum(cls, value):
@@ -85,6 +88,14 @@ class OpenAiImageGenerationOptions(BaseModel):
 
     @field_validator('input_fidelity')
     def input_fidelity_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        return value
+
+    @field_validator('complexity')
+    def complexity_validate_enum(cls, value):
         """Validates the enum"""
         if value is None:
             return value
@@ -156,6 +167,9 @@ class OpenAiImageGenerationOptions(BaseModel):
             "moderation": obj.get("moderation"),
             "input_fidelity": obj.get("input_fidelity"),
             "partial_images": obj.get("partial_images"),
+            "complexity": obj.get("complexity"),
+            "frame_count": obj.get("frame_count"),
+            "frame_duration_ms": obj.get("frame_duration_ms"),
             "input_image_mask": OpenAiImageGenerationMask.from_dict(obj["input_image_mask"]) if obj.get("input_image_mask") is not None else None
         })
         return _obj

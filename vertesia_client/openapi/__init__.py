@@ -817,6 +817,8 @@ __all__ = [
     "OpenAiGptImageOptions",
     "OpenAiImageGenerationMask",
     "OpenAiImageGenerationOptions",
+    "OpenAiImageSvgOptions",
+    "OpenAiImageSvgOptionsReasoning",
     "OpenAiSpeechOptions",
     "OpenAiTextOptions",
     "OpenAiThinkingOptions",
@@ -2087,6 +2089,8 @@ from vertesia_client.openapi.models.open_ai_dalle_options import OpenAiDalleOpti
 from vertesia_client.openapi.models.open_ai_gpt_image_options import OpenAiGptImageOptions as OpenAiGptImageOptions
 from vertesia_client.openapi.models.open_ai_image_generation_mask import OpenAiImageGenerationMask as OpenAiImageGenerationMask
 from vertesia_client.openapi.models.open_ai_image_generation_options import OpenAiImageGenerationOptions as OpenAiImageGenerationOptions
+from vertesia_client.openapi.models.open_ai_image_svg_options import OpenAiImageSvgOptions as OpenAiImageSvgOptions
+from vertesia_client.openapi.models.open_ai_image_svg_options_reasoning import OpenAiImageSvgOptionsReasoning as OpenAiImageSvgOptionsReasoning
 from vertesia_client.openapi.models.open_ai_speech_options import OpenAiSpeechOptions as OpenAiSpeechOptions
 from vertesia_client.openapi.models.open_ai_text_options import OpenAiTextOptions as OpenAiTextOptions
 from vertesia_client.openapi.models.open_ai_thinking_options import OpenAiThinkingOptions as OpenAiThinkingOptions
