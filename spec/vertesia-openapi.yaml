@@ -55575,8 +55575,11 @@ paths:
       tags:
         - Tasks
       summary: Delete a task
-      description: |-
-        Deletes a durable task by id.
+      description: >-
+        Deletes a durable task by id. Answers 409 while the answer to an agent
+        question is being delivered, or while a running process is waiting on
+        it: answer the task, or cancel the run first.
+
 
         **Required permissions:** `task:manage`
       security:
@@ -55599,6 +55602,9 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/DeleteCountResult"
+        "409":
+          description: An answer is being delivered, or a running process is waiting on
+            the task.
         "500":
           description: Internal server error.
           content:

@@ -955,7 +955,7 @@ class TasksApi:
     ) -> DeleteCountResult:
         """Delete a task
 
-        Deletes a durable task by id.  **Required permissions:** `task:manage`
+        Deletes a durable task by id. Answers 409 while the answer to an agent question is being delivered, or while a running process is waiting on it: answer the task, or cancel the run first.  **Required permissions:** `task:manage`
 
         :param task_id: The task ID, as 24 hexadecimal characters. (required)
         :type task_id: str
@@ -994,6 +994,7 @@ class TasksApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "DeleteCountResult",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -1028,7 +1029,7 @@ class TasksApi:
     ) -> ApiResponse[DeleteCountResult]:
         """Delete a task
 
-        Deletes a durable task by id.  **Required permissions:** `task:manage`
+        Deletes a durable task by id. Answers 409 while the answer to an agent question is being delivered, or while a running process is waiting on it: answer the task, or cancel the run first.  **Required permissions:** `task:manage`
 
         :param task_id: The task ID, as 24 hexadecimal characters. (required)
         :type task_id: str
@@ -1067,6 +1068,7 @@ class TasksApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "DeleteCountResult",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -1101,7 +1103,7 @@ class TasksApi:
     ) -> RESTResponseType:
         """Delete a task
 
-        Deletes a durable task by id.  **Required permissions:** `task:manage`
+        Deletes a durable task by id. Answers 409 while the answer to an agent question is being delivered, or while a running process is waiting on it: answer the task, or cancel the run first.  **Required permissions:** `task:manage`
 
         :param task_id: The task ID, as 24 hexadecimal characters. (required)
         :type task_id: str
@@ -1140,6 +1142,7 @@ class TasksApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "DeleteCountResult",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
