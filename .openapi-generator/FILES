@@ -54,6 +54,8 @@ vertesia_client/openapi/configuration.py
 vertesia_client/openapi/exceptions.py
 vertesia_client/openapi/models/__init__.py
 vertesia_client/openapi/models/abac_scope.py
+vertesia_client/openapi/models/abort_upload_session_payload.py
+vertesia_client/openapi/models/abort_upload_session_response.py
 vertesia_client/openapi/models/access_control_entry.py
 vertesia_client/openapi/models/access_control_principal_type.py
 vertesia_client/openapi/models/access_control_resource_type.py
@@ -257,6 +259,7 @@ vertesia_client/openapi/models/audit_usage_response.py
 vertesia_client/openapi/models/auth_token_response.py
 vertesia_client/openapi/models/autonomous_run_response.py
 vertesia_client/openapi/models/aws_configuration.py
+vertesia_client/openapi/models/azure_block_blob_upload_session.py
 vertesia_client/openapi/models/azure_foundry_chat_options.py
 vertesia_client/openapi/models/batch_query_payload.py
 vertesia_client/openapi/models/batch_query_payload_queries_inner.py
@@ -308,6 +311,9 @@ vertesia_client/openapi/models/collection_status.py
 vertesia_client/openapi/models/column_layout.py
 vertesia_client/openapi/models/compact_message.py
 vertesia_client/openapi/models/complete_task_payload.py
+vertesia_client/openapi/models/complete_upload_session_payload.py
+vertesia_client/openapi/models/complete_upload_session_response.py
+vertesia_client/openapi/models/completed_upload_part.py
 vertesia_client/openapi/models/completion_result.py
 vertesia_client/openapi/models/complex_collection_search_query.py
 vertesia_client/openapi/models/complex_search_payload.py
@@ -427,6 +433,7 @@ vertesia_client/openapi/models/create_snapshot_payload.py
 vertesia_client/openapi/models/create_table_payload.py
 vertesia_client/openapi/models/create_tables_payload.py
 vertesia_client/openapi/models/create_task_payload.py
+vertesia_client/openapi/models/create_upload_session_payload.py
 vertesia_client/openapi/models/create_user_group_payload.py
 vertesia_client/openapi/models/create_user_payload.py
 vertesia_client/openapi/models/create_view_experience_request.py
@@ -615,6 +622,7 @@ vertesia_client/openapi/models/forward_email_request.py
 vertesia_client/openapi/models/forward_email_request_attachments_inner.py
 vertesia_client/openapi/models/forward_email_request_email.py
 vertesia_client/openapi/models/forward_email_response.py
+vertesia_client/openapi/models/gcs_resumable_upload_session.py
 vertesia_client/openapi/models/generate_test_data_payload.py
 vertesia_client/openapi/models/generation_run_metadata.py
 vertesia_client/openapi/models/generic_command_response.py
@@ -623,6 +631,7 @@ vertesia_client/openapi/models/get_file_url_response.py
 vertesia_client/openapi/models/get_model_prices_from_parameter.py
 vertesia_client/openapi/models/get_model_prices_to_parameter.py
 vertesia_client/openapi/models/get_rendition_response.py
+vertesia_client/openapi/models/get_upload_part_urls_payload.py
 vertesia_client/openapi/models/get_upload_url_payload.py
 vertesia_client/openapi/models/github_configuration.py
 vertesia_client/openapi/models/github_configuration_input.py
@@ -986,6 +995,7 @@ vertesia_client/openapi/models/run_search_query.py
 vertesia_client/openapi/models/run_source.py
 vertesia_client/openapi/models/run_source_types.py
 vertesia_client/openapi/models/run_type.py
+vertesia_client/openapi/models/s3_multipart_upload_session.py
 vertesia_client/openapi/models/schema_ref.py
 vertesia_client/openapi/models/score_aggregation_types.py
 vertesia_client/openapi/models/search_agent_runs_response.py
@@ -1130,6 +1140,9 @@ vertesia_client/openapi/models/update_workflow_definition_payload.py
 vertesia_client/openapi/models/update_workflow_definition_payload_with_activities.py
 vertesia_client/openapi/models/update_workflow_definition_payload_with_steps.py
 vertesia_client/openapi/models/update_workflow_rule_payload.py
+vertesia_client/openapi/models/upload_part_url.py
+vertesia_client/openapi/models/upload_part_urls_response.py
+vertesia_client/openapi/models/upload_session.py
 vertesia_client/openapi/models/upsert_app_version_request.py
 vertesia_client/openapi/models/used_skill.py
 vertesia_client/openapi/models/user.py

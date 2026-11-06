@@ -284,6 +284,41 @@
           "task"
         ]
       },
+      "AbortUploadSessionPayload": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The session id."
+          },
+          "upload_id": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "id",
+          "upload_id"
+        ],
+        "additionalProperties": false
+      },
+      "AbortUploadSessionResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "aborted": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "aborted"
+        ],
+        "additionalProperties": false
+      },
       "AccessControlEntry": {
         "type": "object",
         "properties": {
@@ -8119,6 +8154,43 @@
         ],
         "additionalProperties": false
       },
+      "AzureBlockBlobUploadSession": {
+        "type": "object",
+        "properties": {
+          "protocol": {
+            "type": "string",
+            "const": "azure_block_blob"
+          },
+          "id": {
+            "type": "string",
+            "description": "Storage URI of the file being uploaded."
+          },
+          "path": {
+            "type": "string"
+          },
+          "mime_type": {
+            "type": "string"
+          },
+          "part_size": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991,
+            "description": "Bytes per part to start with. GCS chunks are this size. S3 parts and Azure blocks may be larger, to keep within the 10,000 parts S3 allows and the 50,000 blocks Azure does."
+          },
+          "url": {
+            "type": "string",
+            "description": "Azure Blob SAS URL allowing Put Block and Put Block List on the blob."
+          }
+        },
+        "required": [
+          "protocol",
+          "id",
+          "path",
+          "part_size",
+          "url"
+        ],
+        "additionalProperties": false
+      },
       "AzureFoundryChatOptions": {
         "type": "object",
         "properties": {
@@ -9817,6 +9889,73 @@
         },
         "required": [
           "result"
+        ],
+        "additionalProperties": false
+      },
+      "CompleteUploadSessionPayload": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The session id."
+          },
+          "upload_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "parts": {
+            "minItems": 1,
+            "maxItems": 10000,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CompletedUploadPart"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "upload_id",
+          "parts"
+        ],
+        "additionalProperties": false
+      },
+      "CompleteUploadSessionResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "etag": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "path"
+        ],
+        "additionalProperties": false
+      },
+      "CompletedUploadPart": {
+        "type": "object",
+        "properties": {
+          "part_number": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10000
+          },
+          "etag": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The ETag S3 returned for the part."
+          }
+        },
+        "required": [
+          "part_number",
+          "etag"
         ],
         "additionalProperties": false
       },
@@ -14847,6 +14986,26 @@
           "source"
         ],
         "additionalProperties": false
+      },
+      "CreateUploadSessionPayload": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "id": {
+            "type": "string"
+          },
+          "mime_type": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "additionalProperties": false,
+        "description": "Starts an upload of a file too large for a single signed PUT."
       },
       "CreateUserGroupPayload": {
         "type": "object",
@@ -21156,6 +21315,43 @@
         ],
         "additionalProperties": false
       },
+      "GcsResumableUploadSession": {
+        "type": "object",
+        "properties": {
+          "protocol": {
+            "type": "string",
+            "const": "gcs_resumable"
+          },
+          "id": {
+            "type": "string",
+            "description": "Storage URI of the file being uploaded."
+          },
+          "path": {
+            "type": "string"
+          },
+          "mime_type": {
+            "type": "string"
+          },
+          "part_size": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991,
+            "description": "Bytes per part to start with. GCS chunks are this size. S3 parts and Azure blocks may be larger, to keep within the 10,000 parts S3 allows and the 50,000 blocks Azure does."
+          },
+          "url": {
+            "type": "string",
+            "description": "Google Cloud Storage resumable upload session URI. Send the parts with Content-Range; the last one completes the object."
+          }
+        },
+        "required": [
+          "protocol",
+          "id",
+          "path",
+          "part_size",
+          "url"
+        ],
+        "additionalProperties": false
+      },
       "GenerateTestDataPayload": {
         "type": "object",
         "properties": {
@@ -21297,6 +21493,36 @@
         },
         "required": [
           "status"
+        ],
+        "additionalProperties": false
+      },
+      "GetUploadPartUrlsPayload": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The session id."
+          },
+          "upload_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "part_numbers": {
+            "minItems": 1,
+            "maxItems": 100,
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 10000
+            }
+          }
+        },
+        "required": [
+          "id",
+          "upload_id",
+          "part_numbers"
         ],
         "additionalProperties": false
       },
@@ -33318,6 +33544,43 @@
         ],
         "description": "Public-facing runtime mode."
       },
+      "S3MultipartUploadSession": {
+        "type": "object",
+        "properties": {
+          "protocol": {
+            "type": "string",
+            "const": "s3_multipart"
+          },
+          "id": {
+            "type": "string",
+            "description": "Storage URI of the file being uploaded."
+          },
+          "path": {
+            "type": "string"
+          },
+          "mime_type": {
+            "type": "string"
+          },
+          "part_size": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991,
+            "description": "Bytes per part to start with. GCS chunks are this size. S3 parts and Azure blocks may be larger, to keep within the 10,000 parts S3 allows and the 50,000 blocks Azure does."
+          },
+          "upload_id": {
+            "type": "string",
+            "description": "S3 multipart upload ID. Sign part URLs, then complete or abort the upload with it."
+          }
+        },
+        "required": [
+          "protocol",
+          "id",
+          "path",
+          "part_size",
+          "upload_id"
+        ],
+        "additionalProperties": false
+      },
       "SchemaRef": {
         "type": "object",
         "properties": {
@@ -37627,6 +37890,65 @@
           }
         },
         "description": "Fields to change on a workflow rule. All optional."
+      },
+      "UploadPartUrl": {
+        "type": "object",
+        "properties": {
+          "part_number": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10000
+          },
+          "url": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "part_number",
+          "url"
+        ],
+        "additionalProperties": false
+      },
+      "UploadPartUrlsResponse": {
+        "type": "object",
+        "properties": {
+          "parts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UploadPartUrl"
+            }
+          }
+        },
+        "required": [
+          "parts"
+        ],
+        "additionalProperties": false
+      },
+      "UploadSession": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/GcsResumableUploadSession"
+          },
+          {
+            "$ref": "#/components/schemas/AzureBlockBlobUploadSession"
+          },
+          {
+            "$ref": "#/components/schemas/S3MultipartUploadSession"
+          }
+        ],
+        "discriminator": {
+          "propertyName": "protocol",
+          "mapping": {
+            "gcs_resumable": "#/components/schemas/GcsResumableUploadSession",
+            "azure_block_blob": "#/components/schemas/AzureBlockBlobUploadSession",
+            "s3_multipart": "#/components/schemas/S3MultipartUploadSession"
+          }
+        },
+        "type": "object",
+        "required": [
+          "protocol"
+        ],
+        "description": "How to send a file in parts to its storage."
       },
       "UpsertAppVersionRequest": {
         "type": "object",
@@ -82356,6 +82678,390 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/BulkUploadUrlsPayload"
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "x-api-version",
+          "in": "header",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S",
+            "example": "20260803"
+          },
+          "description": "Required Vertesia API version header. Use `20260803` for the current stable API shape.",
+          "x-vertesia-global-header": true
+        }
+      ]
+    },
+    "/files/upload-sessions": {
+      "post": {
+        "operationId": "CreateFileUploadSession",
+        "tags": [
+          "Files"
+        ],
+        "summary": "Start an upload in parts",
+        "description": "Starts an upload of a file too large for a single signed PUT, using the storage provider's own resumable or multipart protocol. The response names the protocol and how to send the parts.\n\n**Required permissions:** `content:write`",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OAuth2": [
+              "content:write"
+            ]
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "How to send the file in parts.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UploadSession"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [
+          "content:write"
+        ],
+        "x-vertesia-source": {
+          "file": "../../apps/zeno-server/src/api/files.ts",
+          "className": "FilesResource",
+          "methodName": "createUploadSession"
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUploadSessionPayload"
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "x-api-version",
+          "in": "header",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S",
+            "example": "20260803"
+          },
+          "description": "Required Vertesia API version header. Use `20260803` for the current stable API shape.",
+          "x-vertesia-global-header": true
+        }
+      ]
+    },
+    "/files/upload-sessions/parts": {
+      "post": {
+        "operationId": "GetFileUploadPartUrls",
+        "tags": [
+          "Files"
+        ],
+        "summary": "Sign part URLs for an S3 multipart upload",
+        "description": "Returns a signed PUT URL for each requested part of an `s3_multipart` upload session. Each response carries the ETag that completing the upload needs.\n\n**Required permissions:** `content:write`",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OAuth2": [
+              "content:write"
+            ]
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "A signed URL for each requested part.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UploadPartUrlsResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [
+          "content:write"
+        ],
+        "x-vertesia-source": {
+          "file": "../../apps/zeno-server/src/api/files.ts",
+          "className": "FilesResource",
+          "methodName": "getUploadPartUrls"
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetUploadPartUrlsPayload"
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "x-api-version",
+          "in": "header",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S",
+            "example": "20260803"
+          },
+          "description": "Required Vertesia API version header. Use `20260803` for the current stable API shape.",
+          "x-vertesia-global-header": true
+        }
+      ]
+    },
+    "/files/upload-sessions/complete": {
+      "post": {
+        "operationId": "CompleteFileUploadSession",
+        "tags": [
+          "Files"
+        ],
+        "summary": "Complete an S3 multipart upload",
+        "description": "Assembles the uploaded parts of an `s3_multipart` upload session into the file.\n\n**Required permissions:** `content:write`",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OAuth2": [
+              "content:write"
+            ]
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "The completed file.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompleteUploadSessionResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [
+          "content:write"
+        ],
+        "x-vertesia-source": {
+          "file": "../../apps/zeno-server/src/api/files.ts",
+          "className": "FilesResource",
+          "methodName": "completeUploadSession"
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompleteUploadSessionPayload"
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "x-api-version",
+          "in": "header",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S",
+            "example": "20260803"
+          },
+          "description": "Required Vertesia API version header. Use `20260803` for the current stable API shape.",
+          "x-vertesia-global-header": true
+        }
+      ]
+    },
+    "/files/upload-sessions/abort": {
+      "post": {
+        "operationId": "AbortFileUploadSession",
+        "tags": [
+          "Files"
+        ],
+        "summary": "Abort an S3 multipart upload",
+        "description": "Discards an unfinished `s3_multipart` upload session and the parts it holds.\n\n**Required permissions:** `content:write`",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OAuth2": [
+              "content:write"
+            ]
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "The upload was discarded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AbortUploadSessionResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [
+          "content:write"
+        ],
+        "x-vertesia-source": {
+          "file": "../../apps/zeno-server/src/api/files.ts",
+          "className": "FilesResource",
+          "methodName": "abortUploadSession"
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AbortUploadSessionPayload"
               }
             }
           }

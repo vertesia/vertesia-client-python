@@ -18,6 +18,8 @@ from vertesia_client.openapi.models.ace_update_payload import ACEUpdatePayload
 from vertesia_client.openapi.models.ai_model import AIModel
 from vertesia_client.openapi.models.ai_model_status import AIModelStatus
 from vertesia_client.openapi.models.abac_scope import AbacScope
+from vertesia_client.openapi.models.abort_upload_session_payload import AbortUploadSessionPayload
+from vertesia_client.openapi.models.abort_upload_session_response import AbortUploadSessionResponse
 from vertesia_client.openapi.models.access_control_entry import AccessControlEntry
 from vertesia_client.openapi.models.access_control_principal_type import AccessControlPrincipalType
 from vertesia_client.openapi.models.access_control_resource_type import AccessControlResourceType
@@ -217,6 +219,7 @@ from vertesia_client.openapi.models.audit_usage_response import AuditUsageRespon
 from vertesia_client.openapi.models.auth_token_response import AuthTokenResponse
 from vertesia_client.openapi.models.autonomous_run_response import AutonomousRunResponse
 from vertesia_client.openapi.models.aws_configuration import AwsConfiguration
+from vertesia_client.openapi.models.azure_block_blob_upload_session import AzureBlockBlobUploadSession
 from vertesia_client.openapi.models.azure_foundry_chat_options import AzureFoundryChatOptions
 from vertesia_client.openapi.models.batch_query_payload import BatchQueryPayload
 from vertesia_client.openapi.models.batch_query_payload_queries_inner import BatchQueryPayloadQueriesInner
@@ -268,6 +271,9 @@ from vertesia_client.openapi.models.collection_status import CollectionStatus
 from vertesia_client.openapi.models.column_layout import ColumnLayout
 from vertesia_client.openapi.models.compact_message import CompactMessage
 from vertesia_client.openapi.models.complete_task_payload import CompleteTaskPayload
+from vertesia_client.openapi.models.complete_upload_session_payload import CompleteUploadSessionPayload
+from vertesia_client.openapi.models.complete_upload_session_response import CompleteUploadSessionResponse
+from vertesia_client.openapi.models.completed_upload_part import CompletedUploadPart
 from vertesia_client.openapi.models.completion_result import CompletionResult
 from vertesia_client.openapi.models.complex_collection_search_query import ComplexCollectionSearchQuery
 from vertesia_client.openapi.models.complex_search_payload import ComplexSearchPayload
@@ -387,6 +393,7 @@ from vertesia_client.openapi.models.create_snapshot_payload import CreateSnapsho
 from vertesia_client.openapi.models.create_table_payload import CreateTablePayload
 from vertesia_client.openapi.models.create_tables_payload import CreateTablesPayload
 from vertesia_client.openapi.models.create_task_payload import CreateTaskPayload
+from vertesia_client.openapi.models.create_upload_session_payload import CreateUploadSessionPayload
 from vertesia_client.openapi.models.create_user_group_payload import CreateUserGroupPayload
 from vertesia_client.openapi.models.create_user_payload import CreateUserPayload
 from vertesia_client.openapi.models.create_view_experience_request import CreateViewExperienceRequest
@@ -575,6 +582,7 @@ from vertesia_client.openapi.models.forward_email_request import ForwardEmailReq
 from vertesia_client.openapi.models.forward_email_request_attachments_inner import ForwardEmailRequestAttachmentsInner
 from vertesia_client.openapi.models.forward_email_request_email import ForwardEmailRequestEmail
 from vertesia_client.openapi.models.forward_email_response import ForwardEmailResponse
+from vertesia_client.openapi.models.gcs_resumable_upload_session import GcsResumableUploadSession
 from vertesia_client.openapi.models.generate_test_data_payload import GenerateTestDataPayload
 from vertesia_client.openapi.models.generation_run_metadata import GenerationRunMetadata
 from vertesia_client.openapi.models.generic_command_response import GenericCommandResponse
@@ -583,6 +591,7 @@ from vertesia_client.openapi.models.get_file_url_response import GetFileUrlRespo
 from vertesia_client.openapi.models.get_model_prices_from_parameter import GetModelPricesFromParameter
 from vertesia_client.openapi.models.get_model_prices_to_parameter import GetModelPricesToParameter
 from vertesia_client.openapi.models.get_rendition_response import GetRenditionResponse
+from vertesia_client.openapi.models.get_upload_part_urls_payload import GetUploadPartUrlsPayload
 from vertesia_client.openapi.models.get_upload_url_payload import GetUploadUrlPayload
 from vertesia_client.openapi.models.github_configuration import GithubConfiguration
 from vertesia_client.openapi.models.github_configuration_input import GithubConfigurationInput
@@ -946,6 +955,7 @@ from vertesia_client.openapi.models.run_search_query import RunSearchQuery
 from vertesia_client.openapi.models.run_source import RunSource
 from vertesia_client.openapi.models.run_source_types import RunSourceTypes
 from vertesia_client.openapi.models.run_type import RunType
+from vertesia_client.openapi.models.s3_multipart_upload_session import S3MultipartUploadSession
 from vertesia_client.openapi.models.schema_ref import SchemaRef
 from vertesia_client.openapi.models.score_aggregation_types import ScoreAggregationTypes
 from vertesia_client.openapi.models.search_agent_runs_response import SearchAgentRunsResponse
@@ -1090,6 +1100,9 @@ from vertesia_client.openapi.models.update_workflow_definition_payload import Up
 from vertesia_client.openapi.models.update_workflow_definition_payload_with_activities import UpdateWorkflowDefinitionPayloadWithActivities
 from vertesia_client.openapi.models.update_workflow_definition_payload_with_steps import UpdateWorkflowDefinitionPayloadWithSteps
 from vertesia_client.openapi.models.update_workflow_rule_payload import UpdateWorkflowRulePayload
+from vertesia_client.openapi.models.upload_part_url import UploadPartUrl
+from vertesia_client.openapi.models.upload_part_urls_response import UploadPartUrlsResponse
+from vertesia_client.openapi.models.upload_session import UploadSession
 from vertesia_client.openapi.models.upsert_app_version_request import UpsertAppVersionRequest
 from vertesia_client.openapi.models.used_skill import UsedSkill
 from vertesia_client.openapi.models.user import User

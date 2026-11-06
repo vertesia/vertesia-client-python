@@ -80,6 +80,8 @@ __all__ = [
     "AIModel",
     "AIModelStatus",
     "AbacScope",
+    "AbortUploadSessionPayload",
+    "AbortUploadSessionResponse",
     "AccessControlEntry",
     "AccessControlPrincipalType",
     "AccessControlResourceType",
@@ -279,6 +281,7 @@ __all__ = [
     "AuthTokenResponse",
     "AutonomousRunResponse",
     "AwsConfiguration",
+    "AzureBlockBlobUploadSession",
     "AzureFoundryChatOptions",
     "BatchQueryPayload",
     "BatchQueryPayloadQueriesInner",
@@ -330,6 +333,9 @@ __all__ = [
     "ColumnLayout",
     "CompactMessage",
     "CompleteTaskPayload",
+    "CompleteUploadSessionPayload",
+    "CompleteUploadSessionResponse",
+    "CompletedUploadPart",
     "CompletionResult",
     "ComplexCollectionSearchQuery",
     "ComplexSearchPayload",
@@ -449,6 +455,7 @@ __all__ = [
     "CreateTablePayload",
     "CreateTablesPayload",
     "CreateTaskPayload",
+    "CreateUploadSessionPayload",
     "CreateUserGroupPayload",
     "CreateUserPayload",
     "CreateViewExperienceRequest",
@@ -637,6 +644,7 @@ __all__ = [
     "ForwardEmailRequestAttachmentsInner",
     "ForwardEmailRequestEmail",
     "ForwardEmailResponse",
+    "GcsResumableUploadSession",
     "GenerateTestDataPayload",
     "GenerationRunMetadata",
     "GenericCommandResponse",
@@ -645,6 +653,7 @@ __all__ = [
     "GetModelPricesFromParameter",
     "GetModelPricesToParameter",
     "GetRenditionResponse",
+    "GetUploadPartUrlsPayload",
     "GetUploadUrlPayload",
     "GithubConfiguration",
     "GithubConfigurationInput",
@@ -1008,6 +1017,7 @@ __all__ = [
     "RunSource",
     "RunSourceTypes",
     "RunType",
+    "S3MultipartUploadSession",
     "SchemaRef",
     "ScoreAggregationTypes",
     "SearchAgentRunsResponse",
@@ -1152,6 +1162,9 @@ __all__ = [
     "UpdateWorkflowDefinitionPayloadWithActivities",
     "UpdateWorkflowDefinitionPayloadWithSteps",
     "UpdateWorkflowRulePayload",
+    "UploadPartUrl",
+    "UploadPartUrlsResponse",
+    "UploadSession",
     "UpsertAppVersionRequest",
     "UsedSkill",
     "User",
@@ -1352,6 +1365,8 @@ from vertesia_client.openapi.models.ace_update_payload import ACEUpdatePayload a
 from vertesia_client.openapi.models.ai_model import AIModel as AIModel
 from vertesia_client.openapi.models.ai_model_status import AIModelStatus as AIModelStatus
 from vertesia_client.openapi.models.abac_scope import AbacScope as AbacScope
+from vertesia_client.openapi.models.abort_upload_session_payload import AbortUploadSessionPayload as AbortUploadSessionPayload
+from vertesia_client.openapi.models.abort_upload_session_response import AbortUploadSessionResponse as AbortUploadSessionResponse
 from vertesia_client.openapi.models.access_control_entry import AccessControlEntry as AccessControlEntry
 from vertesia_client.openapi.models.access_control_principal_type import AccessControlPrincipalType as AccessControlPrincipalType
 from vertesia_client.openapi.models.access_control_resource_type import AccessControlResourceType as AccessControlResourceType
@@ -1551,6 +1566,7 @@ from vertesia_client.openapi.models.audit_usage_response import AuditUsageRespon
 from vertesia_client.openapi.models.auth_token_response import AuthTokenResponse as AuthTokenResponse
 from vertesia_client.openapi.models.autonomous_run_response import AutonomousRunResponse as AutonomousRunResponse
 from vertesia_client.openapi.models.aws_configuration import AwsConfiguration as AwsConfiguration
+from vertesia_client.openapi.models.azure_block_blob_upload_session import AzureBlockBlobUploadSession as AzureBlockBlobUploadSession
 from vertesia_client.openapi.models.azure_foundry_chat_options import AzureFoundryChatOptions as AzureFoundryChatOptions
 from vertesia_client.openapi.models.batch_query_payload import BatchQueryPayload as BatchQueryPayload
 from vertesia_client.openapi.models.batch_query_payload_queries_inner import BatchQueryPayloadQueriesInner as BatchQueryPayloadQueriesInner
@@ -1602,6 +1618,9 @@ from vertesia_client.openapi.models.collection_status import CollectionStatus as
 from vertesia_client.openapi.models.column_layout import ColumnLayout as ColumnLayout
 from vertesia_client.openapi.models.compact_message import CompactMessage as CompactMessage
 from vertesia_client.openapi.models.complete_task_payload import CompleteTaskPayload as CompleteTaskPayload
+from vertesia_client.openapi.models.complete_upload_session_payload import CompleteUploadSessionPayload as CompleteUploadSessionPayload
+from vertesia_client.openapi.models.complete_upload_session_response import CompleteUploadSessionResponse as CompleteUploadSessionResponse
+from vertesia_client.openapi.models.completed_upload_part import CompletedUploadPart as CompletedUploadPart
 from vertesia_client.openapi.models.completion_result import CompletionResult as CompletionResult
 from vertesia_client.openapi.models.complex_collection_search_query import ComplexCollectionSearchQuery as ComplexCollectionSearchQuery
 from vertesia_client.openapi.models.complex_search_payload import ComplexSearchPayload as ComplexSearchPayload
@@ -1721,6 +1740,7 @@ from vertesia_client.openapi.models.create_snapshot_payload import CreateSnapsho
 from vertesia_client.openapi.models.create_table_payload import CreateTablePayload as CreateTablePayload
 from vertesia_client.openapi.models.create_tables_payload import CreateTablesPayload as CreateTablesPayload
 from vertesia_client.openapi.models.create_task_payload import CreateTaskPayload as CreateTaskPayload
+from vertesia_client.openapi.models.create_upload_session_payload import CreateUploadSessionPayload as CreateUploadSessionPayload
 from vertesia_client.openapi.models.create_user_group_payload import CreateUserGroupPayload as CreateUserGroupPayload
 from vertesia_client.openapi.models.create_user_payload import CreateUserPayload as CreateUserPayload
 from vertesia_client.openapi.models.create_view_experience_request import CreateViewExperienceRequest as CreateViewExperienceRequest
@@ -1909,6 +1929,7 @@ from vertesia_client.openapi.models.forward_email_request import ForwardEmailReq
 from vertesia_client.openapi.models.forward_email_request_attachments_inner import ForwardEmailRequestAttachmentsInner as ForwardEmailRequestAttachmentsInner
 from vertesia_client.openapi.models.forward_email_request_email import ForwardEmailRequestEmail as ForwardEmailRequestEmail
 from vertesia_client.openapi.models.forward_email_response import ForwardEmailResponse as ForwardEmailResponse
+from vertesia_client.openapi.models.gcs_resumable_upload_session import GcsResumableUploadSession as GcsResumableUploadSession
 from vertesia_client.openapi.models.generate_test_data_payload import GenerateTestDataPayload as GenerateTestDataPayload
 from vertesia_client.openapi.models.generation_run_metadata import GenerationRunMetadata as GenerationRunMetadata
 from vertesia_client.openapi.models.generic_command_response import GenericCommandResponse as GenericCommandResponse
@@ -1917,6 +1938,7 @@ from vertesia_client.openapi.models.get_file_url_response import GetFileUrlRespo
 from vertesia_client.openapi.models.get_model_prices_from_parameter import GetModelPricesFromParameter as GetModelPricesFromParameter
 from vertesia_client.openapi.models.get_model_prices_to_parameter import GetModelPricesToParameter as GetModelPricesToParameter
 from vertesia_client.openapi.models.get_rendition_response import GetRenditionResponse as GetRenditionResponse
+from vertesia_client.openapi.models.get_upload_part_urls_payload import GetUploadPartUrlsPayload as GetUploadPartUrlsPayload
 from vertesia_client.openapi.models.get_upload_url_payload import GetUploadUrlPayload as GetUploadUrlPayload
 from vertesia_client.openapi.models.github_configuration import GithubConfiguration as GithubConfiguration
 from vertesia_client.openapi.models.github_configuration_input import GithubConfigurationInput as GithubConfigurationInput
@@ -2280,6 +2302,7 @@ from vertesia_client.openapi.models.run_search_query import RunSearchQuery as Ru
 from vertesia_client.openapi.models.run_source import RunSource as RunSource
 from vertesia_client.openapi.models.run_source_types import RunSourceTypes as RunSourceTypes
 from vertesia_client.openapi.models.run_type import RunType as RunType
+from vertesia_client.openapi.models.s3_multipart_upload_session import S3MultipartUploadSession as S3MultipartUploadSession
 from vertesia_client.openapi.models.schema_ref import SchemaRef as SchemaRef
 from vertesia_client.openapi.models.score_aggregation_types import ScoreAggregationTypes as ScoreAggregationTypes
 from vertesia_client.openapi.models.search_agent_runs_response import SearchAgentRunsResponse as SearchAgentRunsResponse
@@ -2424,6 +2447,9 @@ from vertesia_client.openapi.models.update_workflow_definition_payload import Up
 from vertesia_client.openapi.models.update_workflow_definition_payload_with_activities import UpdateWorkflowDefinitionPayloadWithActivities as UpdateWorkflowDefinitionPayloadWithActivities
 from vertesia_client.openapi.models.update_workflow_definition_payload_with_steps import UpdateWorkflowDefinitionPayloadWithSteps as UpdateWorkflowDefinitionPayloadWithSteps
 from vertesia_client.openapi.models.update_workflow_rule_payload import UpdateWorkflowRulePayload as UpdateWorkflowRulePayload
+from vertesia_client.openapi.models.upload_part_url import UploadPartUrl as UploadPartUrl
+from vertesia_client.openapi.models.upload_part_urls_response import UploadPartUrlsResponse as UploadPartUrlsResponse
+from vertesia_client.openapi.models.upload_session import UploadSession as UploadSession
 from vertesia_client.openapi.models.upsert_app_version_request import UpsertAppVersionRequest as UpsertAppVersionRequest
 from vertesia_client.openapi.models.used_skill import UsedSkill as UsedSkill
 from vertesia_client.openapi.models.user import User as User
