@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -27,10 +28,20 @@ class WebsiteCredentialWebsite(BaseModel):
     """
     WebsiteCredentialWebsite
     """ # noqa: E501
-    host: StrictStr = Field(description="Hostname this credential is allowed on. Subdomains match.")
+    host: Annotated[str, Field(strict=True)] = Field(description="Hostname this credential is allowed on, or a URL to take it from. Subdomains match. A value no hostname can be read from is refused.")
     login_url: Optional[StrictStr] = Field(default=None, description="Optional login URL used by agents as a hint.")
     allowed_origins: Optional[List[StrictStr]] = Field(default=None, description="Optional narrower origin allowlist for this credential.")
     __properties: ClassVar[List[str]] = ["host", "login_url", "allowed_origins"]
+
+    @field_validator('host')
+    def host_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"\S", value):
+            raise ValueError(r"must validate the regular expression /\S/")
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,

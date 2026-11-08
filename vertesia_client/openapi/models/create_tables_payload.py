@@ -27,10 +27,11 @@ from pydantic_core import to_jsonable_python
 
 class CreateTablesPayload(BaseModel):
     """
-    Payload for creating multiple tables atomically.
+    CreateTablesPayload
     """ # noqa: E501
     tables: Annotated[List[CreateTablePayload], Field(min_length=1)] = Field(description="Table definitions to create")
     message: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Commit message")
+    additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["tables", "message"]
 
     model_config = ConfigDict(
@@ -63,8 +64,10 @@ class CreateTablesPayload(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -79,6 +82,11 @@ class CreateTablesPayload(BaseModel):
                 if _item_tables:
                     _items.append(_item_tables.to_dict())
             _dict['tables'] = _items
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
         return _dict
 
     @classmethod
@@ -94,6 +102,11 @@ class CreateTablesPayload(BaseModel):
             "tables": [CreateTablePayload.from_dict(_item) for _item in obj["tables"]] if obj.get("tables") is not None else None,
             "message": obj.get("message")
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 

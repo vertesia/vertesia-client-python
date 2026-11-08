@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
 from typing import Optional, Set
@@ -30,8 +30,8 @@ class CreateUserGroupPayload(BaseModel):
     """ # noqa: E501
     name: Annotated[str, Field(min_length=1, strict=True)]
     description: Optional[StrictStr] = None
-    tags: Optional[List[StrictStr]] = None
-    allowed_projects: Optional[List[StrictStr]] = Field(default=None, description="Restrict the new group to the given projects (empty/absent = org-wide).")
+    tags: Optional[List[Annotated[str, Field(min_length=1, strict=True)]]] = None
+    allowed_projects: Optional[List[Annotated[str, Field(strict=True)]]] = Field(default=None, description="Restrict the new group to the given projects (empty/absent = org-wide).")
     __properties: ClassVar[List[str]] = ["name", "description", "tags", "allowed_projects"]
 
     model_config = ConfigDict(

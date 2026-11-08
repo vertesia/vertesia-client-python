@@ -44,7 +44,7 @@ class ToolsApi:
     @validate_call
     def inspect_project_tool(
         self,
-        tool_name: StrictStr,
+        tool_name: Annotated[str, Field(strict=True, description="The tool name; it must not be blank.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         context: Optional[StrictStr] = None,
         _request_timeout: Union[
@@ -64,7 +64,7 @@ class ToolsApi:
 
         **Required permissions:** `account:member`
 
-        :param tool_name: (required)
+        :param tool_name: The tool name; it must not be blank. (required)
         :type tool_name: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -121,7 +121,7 @@ class ToolsApi:
     @validate_call
     def inspect_project_tool_with_http_info(
         self,
-        tool_name: StrictStr,
+        tool_name: Annotated[str, Field(strict=True, description="The tool name; it must not be blank.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         context: Optional[StrictStr] = None,
         _request_timeout: Union[
@@ -141,7 +141,7 @@ class ToolsApi:
 
         **Required permissions:** `account:member`
 
-        :param tool_name: (required)
+        :param tool_name: The tool name; it must not be blank. (required)
         :type tool_name: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -198,7 +198,7 @@ class ToolsApi:
     @validate_call
     def inspect_project_tool_without_preload_content(
         self,
-        tool_name: StrictStr,
+        tool_name: Annotated[str, Field(strict=True, description="The tool name; it must not be blank.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         context: Optional[StrictStr] = None,
         _request_timeout: Union[
@@ -218,7 +218,7 @@ class ToolsApi:
 
         **Required permissions:** `account:member`
 
-        :param tool_name: (required)
+        :param tool_name: The tool name; it must not be blank. (required)
         :type tool_name: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str

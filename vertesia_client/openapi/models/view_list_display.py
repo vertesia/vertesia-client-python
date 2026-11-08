@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr, field_validator
+from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.view_result_field import ViewResultField
 from vertesia_client.openapi.models.view_result_media import ViewResultMedia
 from typing import Optional, Set
@@ -29,10 +30,10 @@ class ViewListDisplay(BaseModel):
     """
     ViewListDisplay
     """ # noqa: E501
-    id: StrictStr
-    label: StrictStr
-    renderer: Optional[StrictStr] = None
-    page_size: Optional[Union[StrictFloat, StrictInt]] = None
+    id: Annotated[str, Field(min_length=1, strict=True, max_length=64)]
+    label: Annotated[str, Field(min_length=1, strict=True, max_length=120)]
+    renderer: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=120)]] = None
+    page_size: Optional[Union[Annotated[float, Field(multiple_of=1, le=200, strict=True, ge=1)], Annotated[int, Field(le=200, strict=True, ge=1)]]] = None
     type: StrictStr
     title: ViewResultField
     subtitle: Optional[List[ViewResultField]] = None
@@ -40,6 +41,16 @@ class ViewListDisplay(BaseModel):
     media: Optional[ViewResultMedia] = None
     badges: Optional[List[ViewResultField]] = None
     __properties: ClassVar[List[str]] = ["id", "label", "renderer", "page_size", "type", "title", "subtitle", "description", "media", "badges"]
+
+    @field_validator('id')
+    def id_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"^[a-z][a-z0-9_-]*$", value):
+            raise ValueError(r"must validate the regular expression /^[a-z][a-z0-9_-]*$/")
+        return value
 
     @field_validator('type')
     def type_validate_enum(cls, value):

@@ -28,10 +28,20 @@ class GetFileUrlPayload(BaseModel):
     """
     GetFileUrlPayload
     """ # noqa: E501
-    file: Annotated[str, Field(min_length=1, strict=True)]
+    file: Annotated[str, Field(strict=True)] = Field(description="The file path (relative to bucket) or full URI. It must not be blank or contain control characters.")
     name: Optional[StrictStr] = None
     disposition: Optional[StrictStr] = None
     __properties: ClassVar[List[str]] = ["file", "name", "disposition"]
+
+    @field_validator('file')
+    def file_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"^[\u0020\u00a0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000\ufeff]*[^\u0000-\u001f\u007f\u0020\u00a0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000\ufeff][^\u0000-\u001f\u007f]*$", value):
+            raise ValueError(r"must validate the regular expression /^[\u0020\u00a0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000\ufeff]*[^\u0000-\u001f\u007f\u0020\u00a0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000\ufeff][^\u0000-\u001f\u007f]*$/")
+        return value
 
     @field_validator('disposition')
     def disposition_validate_enum(cls, value):

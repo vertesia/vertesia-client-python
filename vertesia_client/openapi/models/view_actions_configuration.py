@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.view_action_configuration import ViewActionConfiguration
 from typing import Optional, Set
 from typing_extensions import Self
@@ -29,8 +30,8 @@ class ViewActionsConfiguration(BaseModel):
     ViewActionsConfiguration
     """ # noqa: E501
     include_defaults: Optional[StrictBool] = Field(default=None, description="Include the standard content export and delete actions. Defaults to true when selection is enabled.")
-    exclude_defaults: Optional[List[StrictStr]] = Field(default=None, description="Hide individual standard actions while keeping the remaining defaults.")
-    items: Optional[List[ViewActionConfiguration]] = None
+    exclude_defaults: Optional[Annotated[List[StrictStr], Field(max_length=2)]] = Field(default=None, description="Hide individual standard actions while keeping the remaining defaults.")
+    items: Optional[Annotated[List[ViewActionConfiguration], Field(max_length=30)]] = None
     __properties: ClassVar[List[str]] = ["include_defaults", "exclude_defaults", "items"]
 
     @field_validator('exclude_defaults')

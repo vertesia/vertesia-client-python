@@ -289,6 +289,7 @@ vertesia_client/openapi/models/bulk_object_create_result_objects_inner.py
 vertesia_client/openapi/models/bulk_object_delete_result.py
 vertesia_client/openapi/models/bulk_object_update_result.py
 vertesia_client/openapi/models/bulk_operation_payload.py
+vertesia_client/openapi/models/bulk_operation_payload_params.py
 vertesia_client/openapi/models/bulk_operation_response.py
 vertesia_client/openapi/models/bulk_operation_result.py
 vertesia_client/openapi/models/bulk_revoke_o_auth_grants_payload.py
@@ -404,6 +405,7 @@ vertesia_client/openapi/models/cost_time_series_point.py
 vertesia_client/openapi/models/count_result.py
 vertesia_client/openapi/models/create_account_api_key_payload.py
 vertesia_client/openapi/models/create_agent_run_payload.py
+vertesia_client/openapi/models/create_agent_run_payload_all_of_content_type.py
 vertesia_client/openapi/models/create_api_key_payload.py
 vertesia_client/openapi/models/create_app_repo_branch_request.py
 vertesia_client/openapi/models/create_app_version_launch_request.py
@@ -682,6 +684,7 @@ vertesia_client/openapi/models/interaction.py
 vertesia_client/openapi/models/interaction_configuration_record.py
 vertesia_client/openapi/models/interaction_configuration_result.py
 vertesia_client/openapi/models/interaction_create_payload.py
+vertesia_client/openapi/models/interaction_create_payload_environment.py
 vertesia_client/openapi/models/interaction_endpoint.py
 vertesia_client/openapi/models/interaction_endpoint_query.py
 vertesia_client/openapi/models/interaction_environment.py

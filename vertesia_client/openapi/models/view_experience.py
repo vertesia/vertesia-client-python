@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictBool, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.view_experience_layout import ViewExperienceLayout
 from vertesia_client.openapi.models.view_experience_schema_version import ViewExperienceSchemaVersion
 from vertesia_client.openapi.models.view_experience_scope import ViewExperienceScope
@@ -37,7 +38,7 @@ class ViewExperience(BaseModel):
     enabled: Optional[StrictBool] = None
     layout: Optional[ViewExperienceLayout] = None
     scope: Optional[ViewExperienceScope] = None
-    navigation: Optional[List[ViewNavigationItem]] = None
+    navigation: Optional[Annotated[List[ViewNavigationItem], Field(max_length=20)]] = None
     search: Optional[ViewSearchConfiguration] = None
     results: Optional[ViewResultsConfiguration] = None
     description: StrictStr

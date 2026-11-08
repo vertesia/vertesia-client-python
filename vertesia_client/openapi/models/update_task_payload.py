@@ -18,8 +18,9 @@ import re  # noqa: F401
 import json
 
 from datetime import datetime
-from pydantic import BaseModel, ConfigDict, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.durable_task_status import DurableTaskStatus
 from vertesia_client.openapi.models.task_field import TaskField
 from typing import Optional, Set
@@ -30,13 +31,14 @@ class UpdateTaskPayload(BaseModel):
     """
     UpdateTaskPayload
     """ # noqa: E501
-    title: Optional[StrictStr] = None
+    fields: Optional[List[TaskField]] = None
+    title: Optional[Annotated[str, Field(min_length=1, strict=True)]] = None
     description: Optional[StrictStr] = None
     status: Optional[DurableTaskStatus] = None
     assignee: Optional[StrictStr] = None
-    fields: Optional[List[TaskField]] = None
     due_at: Optional[datetime] = None
-    __properties: ClassVar[List[str]] = ["title", "description", "status", "assignee", "fields", "due_at"]
+    additional_properties: Dict[str, Any] = {}
+    __properties: ClassVar[List[str]] = ["fields", "title", "description", "status", "assignee", "due_at"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -68,8 +70,10 @@ class UpdateTaskPayload(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -84,6 +88,11 @@ class UpdateTaskPayload(BaseModel):
                 if _item_fields:
                     _items.append(_item_fields.to_dict())
             _dict['fields'] = _items
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
         # set to None if assignee (nullable) is None
         # and model_fields_set contains the field
         if self.assignee is None and "assignee" in self.model_fields_set:
@@ -106,13 +115,18 @@ class UpdateTaskPayload(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "fields": [TaskField.from_dict(_item) for _item in obj["fields"]] if obj.get("fields") is not None else None,
             "title": obj.get("title"),
             "description": obj.get("description"),
             "status": obj.get("status"),
             "assignee": obj.get("assignee"),
-            "fields": [TaskField.from_dict(_item) for _item in obj["fields"]] if obj.get("fields") is not None else None,
             "due_at": obj.get("due_at")
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 

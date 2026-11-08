@@ -27,7 +27,7 @@ from pydantic_core import to_jsonable_python
 
 class CostAnalyticsQuery(BaseModel):
     """
-    CostAnalyticsQuery
+    `from` and `to` are ISO 8601 date-times or epoch milliseconds, within years 1 to 9999. The window from `from` to `to` (now when absent) may span at most 366 days.
     """ # noqa: E501
     var_from: Optional[GetModelPricesFromParameter] = Field(default=None, alias="from")
     to: Optional[GetModelPricesToParameter] = None

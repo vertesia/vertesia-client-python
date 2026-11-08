@@ -46,8 +46,8 @@ class CostsApi:
     def export_cost_data(
         self,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
-        var_from: Annotated[Optional[StrictStr], Field(description="Start time (ISO string or epoch ms)")] = None,
-        to: Annotated[Optional[StrictStr], Field(description="End time (ISO string or epoch ms)")] = None,
+        var_from: Annotated[Optional[Annotated[str, Field(strict=True)]], Field(description="Start time (ISO string or epoch ms)")] = None,
+        to: Annotated[Optional[Annotated[str, Field(strict=True)]], Field(description="End time (ISO string or epoch ms)")] = None,
         scope: Annotated[Optional[StrictStr], Field(description="Scope: 'project' (default, current project) or 'org' (all projects in account)")] = None,
         project_id: Annotated[Optional[StrictStr], Field(description="Filter by project ID (optional, for org scope)")] = None,
         workflow_id: Annotated[Optional[StrictStr], Field(description="Filter by workflow / agent run ID")] = None,
@@ -136,8 +136,8 @@ class CostsApi:
     def export_cost_data_with_http_info(
         self,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
-        var_from: Annotated[Optional[StrictStr], Field(description="Start time (ISO string or epoch ms)")] = None,
-        to: Annotated[Optional[StrictStr], Field(description="End time (ISO string or epoch ms)")] = None,
+        var_from: Annotated[Optional[Annotated[str, Field(strict=True)]], Field(description="Start time (ISO string or epoch ms)")] = None,
+        to: Annotated[Optional[Annotated[str, Field(strict=True)]], Field(description="End time (ISO string or epoch ms)")] = None,
         scope: Annotated[Optional[StrictStr], Field(description="Scope: 'project' (default, current project) or 'org' (all projects in account)")] = None,
         project_id: Annotated[Optional[StrictStr], Field(description="Filter by project ID (optional, for org scope)")] = None,
         workflow_id: Annotated[Optional[StrictStr], Field(description="Filter by workflow / agent run ID")] = None,
@@ -226,8 +226,8 @@ class CostsApi:
     def export_cost_data_without_preload_content(
         self,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
-        var_from: Annotated[Optional[StrictStr], Field(description="Start time (ISO string or epoch ms)")] = None,
-        to: Annotated[Optional[StrictStr], Field(description="End time (ISO string or epoch ms)")] = None,
+        var_from: Annotated[Optional[Annotated[str, Field(strict=True)]], Field(description="Start time (ISO string or epoch ms)")] = None,
+        to: Annotated[Optional[Annotated[str, Field(strict=True)]], Field(description="End time (ISO string or epoch ms)")] = None,
         scope: Annotated[Optional[StrictStr], Field(description="Scope: 'project' (default, current project) or 'org' (all projects in account)")] = None,
         project_id: Annotated[Optional[StrictStr], Field(description="Filter by project ID (optional, for org scope)")] = None,
         workflow_id: Annotated[Optional[StrictStr], Field(description="Filter by workflow / agent run ID")] = None,
@@ -700,8 +700,8 @@ class CostsApi:
     def get_model_prices(
         self,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
-        var_from: Annotated[Optional[StrictStr], Field(description="Start time (ISO string or epoch ms)")] = None,
-        to: Annotated[Optional[StrictStr], Field(description="End time (ISO string or epoch ms)")] = None,
+        var_from: Annotated[Optional[Annotated[str, Field(strict=True)]], Field(description="Start time (ISO string or epoch ms)")] = None,
+        to: Annotated[Optional[Annotated[str, Field(strict=True)]], Field(description="End time (ISO string or epoch ms)")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -778,8 +778,8 @@ class CostsApi:
     def get_model_prices_with_http_info(
         self,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
-        var_from: Annotated[Optional[StrictStr], Field(description="Start time (ISO string or epoch ms)")] = None,
-        to: Annotated[Optional[StrictStr], Field(description="End time (ISO string or epoch ms)")] = None,
+        var_from: Annotated[Optional[Annotated[str, Field(strict=True)]], Field(description="Start time (ISO string or epoch ms)")] = None,
+        to: Annotated[Optional[Annotated[str, Field(strict=True)]], Field(description="End time (ISO string or epoch ms)")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -856,8 +856,8 @@ class CostsApi:
     def get_model_prices_without_preload_content(
         self,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
-        var_from: Annotated[Optional[StrictStr], Field(description="Start time (ISO string or epoch ms)")] = None,
-        to: Annotated[Optional[StrictStr], Field(description="End time (ISO string or epoch ms)")] = None,
+        var_from: Annotated[Optional[Annotated[str, Field(strict=True)]], Field(description="Start time (ISO string or epoch ms)")] = None,
+        to: Annotated[Optional[Annotated[str, Field(strict=True)]], Field(description="End time (ISO string or epoch ms)")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],

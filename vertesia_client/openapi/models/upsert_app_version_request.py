@@ -33,7 +33,7 @@ class UpsertAppVersionRequest(BaseModel):
     """
     UpsertAppVersionRequest
     """ # noqa: E501
-    record_id: Optional[StrictStr] = Field(default=None, description="Existing version record to update in place, used by reproducible rebuilds.")
+    record_id: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Existing version record to update in place, used by reproducible rebuilds, as 24 hexadecimal characters.")
     app: Optional[StrictStr] = None
     app_id: Annotated[str, Field(strict=True)]
     app_name: Optional[StrictStr] = None
@@ -62,6 +62,19 @@ class UpsertAppVersionRequest(BaseModel):
     expires_at: Optional[StrictStr] = None
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["record_id", "app", "app_id", "app_name", "version_id", "kind", "state", "target", "agent_run_id", "development_task_id", "build_workflow_id", "build_workflow_run_id", "sandbox_id", "title", "description", "storage", "source_commit", "urls", "manifest", "files", "file_count", "source_file_count", "screenshot_artifact", "checks", "built_at", "checked_at", "expires_at"]
+
+    @field_validator('record_id')
+    def record_id_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if value is None:
+            return value
+
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"^(?:[0-9a-fA-F]{24})?$", value):
+            raise ValueError(r"must validate the regular expression /^(?:[0-9a-fA-F]{24})?$/")
+        return value
 
     @field_validator('app_id')
     def app_id_validate_regular_expression(cls, value):

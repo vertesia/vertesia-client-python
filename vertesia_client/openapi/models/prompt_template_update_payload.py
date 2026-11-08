@@ -18,7 +18,7 @@ import re  # noqa: F401
 import json
 
 from datetime import datetime
-from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.json_schema import JSONSchema
@@ -34,13 +34,13 @@ class PromptTemplateUpdatePayload(BaseModel):
     PromptTemplateUpdatePayload
     """ # noqa: E501
     role: Optional[PromptRole] = None
-    content: Optional[StrictStr] = None
+    content: Optional[Annotated[str, Field(min_length=1, strict=True)]] = None
     content_type: Optional[TemplateType] = None
     input_schema: Optional[JSONSchema] = Field(default=None, alias="inputSchema")
-    name: Optional[StrictStr] = None
+    name: Optional[Annotated[str, Field(min_length=1, strict=True)]] = None
     status: Optional[PromptStatus] = None
     version: Optional[Union[StrictFloat, StrictInt]] = None
-    parent: Optional[StrictStr] = None
+    parent: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="The ID of the prompt this one derives from, as 24 hexadecimal characters.")
     description: Optional[StrictStr] = None
     test_data: Optional[Dict[str, Any]] = None
     script: Optional[StrictStr] = None
@@ -48,6 +48,19 @@ class PromptTemplateUpdatePayload(BaseModel):
     last_published_at: Optional[datetime] = None
     expected_edit_revision: Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=1)]] = Field(default=None, description="Edit revision returned by the last read. Stale revisions are rejected with HTTP 409. Omit for legacy last-write-wins behavior.")
     __properties: ClassVar[List[str]] = ["role", "content", "content_type", "inputSchema", "name", "status", "version", "parent", "description", "test_data", "script", "tags", "last_published_at", "expected_edit_revision"]
+
+    @field_validator('parent')
+    def parent_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if value is None:
+            return value
+
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"^[a-fA-F0-9]{24}$", value):
+            raise ValueError(r"must validate the regular expression /^[a-fA-F0-9]{24}$/")
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,

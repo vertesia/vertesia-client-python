@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, Optional
+from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -28,7 +29,7 @@ class ViewResultMedia(BaseModel):
     ViewResultMedia
     """ # noqa: E501
     source: StrictStr
-    var_field: Optional[StrictStr] = Field(default=None, alias="field")
+    var_field: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=160)]] = Field(default=None, alias="field")
     fit: Optional[StrictStr] = None
     fallback: Optional[StrictStr] = None
     __properties: ClassVar[List[str]] = ["source", "field", "fit", "fallback"]
@@ -36,6 +37,19 @@ class ViewResultMedia(BaseModel):
     @field_validator('source')
     def source_validate_enum(cls, value):
         """Validates the enum"""
+        return value
+
+    @field_validator('var_field')
+    def var_field_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if value is None:
+            return value
+
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"^[A-Za-z0-9_]+(?:\.[A-Za-z0-9_]+)*$", value):
+            raise ValueError(r"must validate the regular expression /^[A-Za-z0-9_]+(?:\.[A-Za-z0-9_]+)*$/")
         return value
 
     @field_validator('fit')

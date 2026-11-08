@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.column_layout import ColumnLayout
 from vertesia_client.openapi.models.complex_search_query import ComplexSearchQuery
 from typing import Optional, Set
@@ -27,13 +28,23 @@ from pydantic_core import to_jsonable_python
 
 class ExportPropertiesPayload(BaseModel):
     """
-    ExportPropertiesPayload
+    Each `table_layout` column reads its `field` as a dotted path of non-empty field names, none starting with `$`, except an `objectLink` column, which exports the object title.
     """ # noqa: E501
     object_ids: List[StrictStr] = Field(alias="objectIds")
-    type: StrictStr
+    type: Annotated[str, Field(strict=True)] = Field(description="The export format: `JSON` or `CSV`.")
     query: Optional[ComplexSearchQuery] = None
     table_layout: Optional[List[ColumnLayout]] = None
     __properties: ClassVar[List[str]] = ["objectIds", "type", "query", "table_layout"]
+
+    @field_validator('type')
+    def type_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"^(?:JSON|CSV)$", value):
+            raise ValueError(r"must validate the regular expression /^(?:JSON|CSV)$/")
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,

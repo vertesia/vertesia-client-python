@@ -17,27 +17,24 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional, Union
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.process_definition_body import ProcessDefinitionBody
-from vertesia_client.openapi.models.process_definition_status import ProcessDefinitionStatus
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
 class UpdateProcessDefinitionPayload(BaseModel):
     """
-    UpdateProcessDefinitionPayload
+    A draft edit. `status` and `version` are server-owned: use the publish, archive and revert endpoints.
     """ # noqa: E501
     expected_edit_revision: Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=1)]] = Field(default=None, description="Edit revision returned by the last read. Stale revisions are rejected with HTTP 409. Omit for legacy last-write-wins behavior.")
-    name: Optional[StrictStr] = None
+    name: Optional[Annotated[str, Field(min_length=1, strict=True)]] = None
     description: Optional[StrictStr] = None
-    status: Optional[ProcessDefinitionStatus] = Field(default=None, description="Deprecated: Status is server-owned. Use publish/archive endpoints instead of updating it directly.")
-    version: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Deprecated: Version is server-owned. Use the publish endpoint to create the next version.")
     tags: Optional[List[StrictStr]] = None
     definition: Optional[ProcessDefinitionBody] = None
-    __properties: ClassVar[List[str]] = ["expected_edit_revision", "name", "description", "status", "version", "tags", "definition"]
+    __properties: ClassVar[List[str]] = ["expected_edit_revision", "name", "description", "tags", "definition"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -96,8 +93,6 @@ class UpdateProcessDefinitionPayload(BaseModel):
             "expected_edit_revision": obj.get("expected_edit_revision"),
             "name": obj.get("name"),
             "description": obj.get("description"),
-            "status": obj.get("status"),
-            "version": obj.get("version"),
             "tags": obj.get("tags"),
             "definition": ProcessDefinitionBody.from_dict(obj["definition"]) if obj.get("definition") is not None else None
         })

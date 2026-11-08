@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, field_validator
 from typing import Any, ClassVar, Dict, Optional, Union
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.view_result_field_format import ViewResultFieldFormat
 from typing import Optional, Set
 from typing_extensions import Self
@@ -28,14 +29,37 @@ class ViewTableColumn(BaseModel):
     """
     ViewTableColumn
     """ # noqa: E501
-    var_field: StrictStr = Field(alias="field")
-    label: Optional[StrictStr] = None
+    var_field: Annotated[str, Field(min_length=1, strict=True, max_length=160)] = Field(alias="field")
+    label: Optional[Annotated[str, Field(strict=True, max_length=120)]] = None
     format: Optional[ViewResultFieldFormat] = None
-    fallback: Optional[StrictStr] = None
-    width: Optional[Union[StrictFloat, StrictInt]] = None
+    fallback: Optional[Annotated[str, Field(strict=True, max_length=240)]] = None
+    width: Optional[Union[Annotated[float, Field(multiple_of=1, le=2000, strict=True, ge=40)], Annotated[int, Field(le=2000, strict=True, ge=40)]]] = None
     sortable: Optional[StrictBool] = None
-    sort_option: Optional[StrictStr] = None
+    sort_option: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=64)]] = None
     __properties: ClassVar[List[str]] = ["field", "label", "format", "fallback", "width", "sortable", "sort_option"]
+
+    @field_validator('var_field')
+    def var_field_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"^[A-Za-z0-9_]+(?:\.[A-Za-z0-9_]+)*$", value):
+            raise ValueError(r"must validate the regular expression /^[A-Za-z0-9_]+(?:\.[A-Za-z0-9_]+)*$/")
+        return value
+
+    @field_validator('sort_option')
+    def sort_option_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if value is None:
+            return value
+
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"^[a-z][a-z0-9_-]*$", value):
+            raise ValueError(r"must validate the regular expression /^[a-z][a-z0-9_-]*$/")
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,

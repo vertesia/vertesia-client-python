@@ -26,12 +26,12 @@ from pydantic_core import to_jsonable_python
 
 class UpdateApiKeyPayload(BaseModel):
     """
-    UpdateApiKeyPayload
+    No key of `properties`, at any depth, may contain a NUL character.
     """ # noqa: E501
     name: Optional[StrictStr] = None
     role: Optional[AssignableRoleName] = None
     enabled: Optional[StrictBool] = None
-    scim_provisioning: Optional[StrictBool] = Field(default=None, description="Organization-wide SCIM provisioning credential. Only account administrators may create or manage these keys. May be enabled by account administrators on existing keys; disable or delete to revoke access.")
+    scim_provisioning: Optional[StrictBool] = Field(default=None, description="Enables SCIM provisioning on an existing admin key. Only `true` is accepted: disable or delete the key to revoke it.")
     properties: Optional[Dict[str, Any]] = Field(default=None, description="Custom properties for dynamic permission matching (PrincipalSet / $principal. conditions)")
     clearance: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="BLP clearance level — the maximum document sensitivity the key can access")
     compartments: Optional[List[StrictStr]] = Field(default=None, description="Compartments the key belongs to — restricts access to matching documents")

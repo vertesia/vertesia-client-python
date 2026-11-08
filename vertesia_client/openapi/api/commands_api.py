@@ -322,7 +322,7 @@ class CommandsApi:
     @validate_call
     def disable_project_embeddings(
         self,
-        type: StrictStr,
+        type: Annotated[StrictStr, Field(description="The embedding type: `text`, `image` or `properties`.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -341,7 +341,7 @@ class CommandsApi:
 
         Disables embeddings for the selected embedding type in the current project.  **Required permissions:** `project:settings_write`
 
-        :param type: (required)
+        :param type: The embedding type: `text`, `image` or `properties`. (required)
         :type type: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -378,6 +378,7 @@ class CommandsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "GenericCommandResponse",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -395,7 +396,7 @@ class CommandsApi:
     @validate_call
     def disable_project_embeddings_with_http_info(
         self,
-        type: StrictStr,
+        type: Annotated[StrictStr, Field(description="The embedding type: `text`, `image` or `properties`.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -414,7 +415,7 @@ class CommandsApi:
 
         Disables embeddings for the selected embedding type in the current project.  **Required permissions:** `project:settings_write`
 
-        :param type: (required)
+        :param type: The embedding type: `text`, `image` or `properties`. (required)
         :type type: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -451,6 +452,7 @@ class CommandsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "GenericCommandResponse",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -468,7 +470,7 @@ class CommandsApi:
     @validate_call
     def disable_project_embeddings_without_preload_content(
         self,
-        type: StrictStr,
+        type: Annotated[StrictStr, Field(description="The embedding type: `text`, `image` or `properties`.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -487,7 +489,7 @@ class CommandsApi:
 
         Disables embeddings for the selected embedding type in the current project.  **Required permissions:** `project:settings_write`
 
-        :param type: (required)
+        :param type: The embedding type: `text`, `image` or `properties`. (required)
         :type type: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -524,6 +526,7 @@ class CommandsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "GenericCommandResponse",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -1144,7 +1147,7 @@ class CommandsApi:
     @validate_call
     def enable_project_embeddings(
         self,
-        type: StrictStr,
+        type: Annotated[StrictStr, Field(description="The embedding type: `text`, `image` or `properties`.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         project_configuration_embedding_enable_payload: ProjectConfigurationEmbeddingEnablePayload,
         _request_timeout: Union[
@@ -1164,7 +1167,7 @@ class CommandsApi:
 
         Validates and enables embeddings for the selected embedding type using the provided environment and model configuration.  **Required permissions:** `project:settings_write`
 
-        :param type: (required)
+        :param type: The embedding type: `text`, `image` or `properties`. (required)
         :type type: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1204,6 +1207,7 @@ class CommandsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "GenericCommandResponse",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -1221,7 +1225,7 @@ class CommandsApi:
     @validate_call
     def enable_project_embeddings_with_http_info(
         self,
-        type: StrictStr,
+        type: Annotated[StrictStr, Field(description="The embedding type: `text`, `image` or `properties`.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         project_configuration_embedding_enable_payload: ProjectConfigurationEmbeddingEnablePayload,
         _request_timeout: Union[
@@ -1241,7 +1245,7 @@ class CommandsApi:
 
         Validates and enables embeddings for the selected embedding type using the provided environment and model configuration.  **Required permissions:** `project:settings_write`
 
-        :param type: (required)
+        :param type: The embedding type: `text`, `image` or `properties`. (required)
         :type type: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1281,6 +1285,7 @@ class CommandsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "GenericCommandResponse",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -1298,7 +1303,7 @@ class CommandsApi:
     @validate_call
     def enable_project_embeddings_without_preload_content(
         self,
-        type: StrictStr,
+        type: Annotated[StrictStr, Field(description="The embedding type: `text`, `image` or `properties`.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         project_configuration_embedding_enable_payload: ProjectConfigurationEmbeddingEnablePayload,
         _request_timeout: Union[
@@ -1318,7 +1323,7 @@ class CommandsApi:
 
         Validates and enables embeddings for the selected embedding type using the provided environment and model configuration.  **Required permissions:** `project:settings_write`
 
-        :param type: (required)
+        :param type: The embedding type: `text`, `image` or `properties`. (required)
         :type type: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1358,6 +1363,7 @@ class CommandsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "GenericCommandResponse",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -1723,7 +1729,7 @@ class CommandsApi:
     @validate_call
     def get_embedding_command_status(
         self,
-        type: StrictStr,
+        type: Annotated[StrictStr, Field(description="The embedding type: `text`, `image` or `properties`.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -1742,7 +1748,7 @@ class CommandsApi:
 
         Returns embedding configuration and indexing status for the selected embedding type in the current project.  **Required permissions:** `project:settings_write`
 
-        :param type: (required)
+        :param type: The embedding type: `text`, `image` or `properties`. (required)
         :type type: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1796,7 +1802,7 @@ class CommandsApi:
     @validate_call
     def get_embedding_command_status_with_http_info(
         self,
-        type: StrictStr,
+        type: Annotated[StrictStr, Field(description="The embedding type: `text`, `image` or `properties`.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -1815,7 +1821,7 @@ class CommandsApi:
 
         Returns embedding configuration and indexing status for the selected embedding type in the current project.  **Required permissions:** `project:settings_write`
 
-        :param type: (required)
+        :param type: The embedding type: `text`, `image` or `properties`. (required)
         :type type: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1869,7 +1875,7 @@ class CommandsApi:
     @validate_call
     def get_embedding_command_status_without_preload_content(
         self,
-        type: StrictStr,
+        type: Annotated[StrictStr, Field(description="The embedding type: `text`, `image` or `properties`.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -1888,7 +1894,7 @@ class CommandsApi:
 
         Returns embedding configuration and indexing status for the selected embedding type in the current project.  **Required permissions:** `project:settings_write`
 
-        :param type: (required)
+        :param type: The embedding type: `text`, `image` or `properties`. (required)
         :type type: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -2810,7 +2816,7 @@ class CommandsApi:
     @validate_call
     def recalculate_project_embeddings(
         self,
-        type: StrictStr,
+        type: Annotated[StrictStr, Field(description="The embedding type: `text`, `image` or `properties`.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         mode: Annotated[Optional[StrictStr], Field(description="Force synchronous per-object recalculation. When omitted, batch inference is used when supported.")] = None,
         force: Annotated[Optional[StrictBool], Field(description="Recalculate all eligible objects, including current embeddings. Token limits still apply; existing renditions are reused.")] = None,
@@ -2831,7 +2837,7 @@ class CommandsApi:
 
         Queues recalculation for missing or outdated embeddings, or all eligible objects with force=true. Uses batch inference when supported unless mode=sync is specified. Token limits still apply and existing renditions are reused.  **Required permissions:** `project:admin`
 
-        :param type: (required)
+        :param type: The embedding type: `text`, `image` or `properties`. (required)
         :type type: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -2874,6 +2880,7 @@ class CommandsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "GenericCommandResponse",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -2891,7 +2898,7 @@ class CommandsApi:
     @validate_call
     def recalculate_project_embeddings_with_http_info(
         self,
-        type: StrictStr,
+        type: Annotated[StrictStr, Field(description="The embedding type: `text`, `image` or `properties`.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         mode: Annotated[Optional[StrictStr], Field(description="Force synchronous per-object recalculation. When omitted, batch inference is used when supported.")] = None,
         force: Annotated[Optional[StrictBool], Field(description="Recalculate all eligible objects, including current embeddings. Token limits still apply; existing renditions are reused.")] = None,
@@ -2912,7 +2919,7 @@ class CommandsApi:
 
         Queues recalculation for missing or outdated embeddings, or all eligible objects with force=true. Uses batch inference when supported unless mode=sync is specified. Token limits still apply and existing renditions are reused.  **Required permissions:** `project:admin`
 
-        :param type: (required)
+        :param type: The embedding type: `text`, `image` or `properties`. (required)
         :type type: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -2955,6 +2962,7 @@ class CommandsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "GenericCommandResponse",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -2972,7 +2980,7 @@ class CommandsApi:
     @validate_call
     def recalculate_project_embeddings_without_preload_content(
         self,
-        type: StrictStr,
+        type: Annotated[StrictStr, Field(description="The embedding type: `text`, `image` or `properties`.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         mode: Annotated[Optional[StrictStr], Field(description="Force synchronous per-object recalculation. When omitted, batch inference is used when supported.")] = None,
         force: Annotated[Optional[StrictBool], Field(description="Recalculate all eligible objects, including current embeddings. Token limits still apply; existing renditions are reused.")] = None,
@@ -2993,7 +3001,7 @@ class CommandsApi:
 
         Queues recalculation for missing or outdated embeddings, or all eligible objects with force=true. Uses batch inference when supported unless mode=sync is specified. Token limits still apply and existing renditions are reused.  **Required permissions:** `project:admin`
 
-        :param type: (required)
+        :param type: The embedding type: `text`, `image` or `properties`. (required)
         :type type: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -3036,6 +3044,7 @@ class CommandsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "GenericCommandResponse",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }

@@ -44,8 +44,8 @@ class UserGroupsApi:
     @validate_call
     def add_user_group_member(
         self,
-        group_id: StrictStr,
-        user_id: StrictStr,
+        group_id: Annotated[str, Field(strict=True, description="The user group ID, as 24 hexadecimal characters.")],
+        user_id: Annotated[str, Field(strict=True, description="The user ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -64,9 +64,9 @@ class UserGroupsApi:
 
         Adds a user to a user group.  **Required permissions:** Any of `account:admin`, `account:group:manage`
 
-        :param group_id: (required)
+        :param group_id: The user group ID, as 24 hexadecimal characters. (required)
         :type group_id: str
-        :param user_id: (required)
+        :param user_id: The user ID, as 24 hexadecimal characters. (required)
         :type user_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -121,8 +121,8 @@ class UserGroupsApi:
     @validate_call
     def add_user_group_member_with_http_info(
         self,
-        group_id: StrictStr,
-        user_id: StrictStr,
+        group_id: Annotated[str, Field(strict=True, description="The user group ID, as 24 hexadecimal characters.")],
+        user_id: Annotated[str, Field(strict=True, description="The user ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -141,9 +141,9 @@ class UserGroupsApi:
 
         Adds a user to a user group.  **Required permissions:** Any of `account:admin`, `account:group:manage`
 
-        :param group_id: (required)
+        :param group_id: The user group ID, as 24 hexadecimal characters. (required)
         :type group_id: str
-        :param user_id: (required)
+        :param user_id: The user ID, as 24 hexadecimal characters. (required)
         :type user_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -198,8 +198,8 @@ class UserGroupsApi:
     @validate_call
     def add_user_group_member_without_preload_content(
         self,
-        group_id: StrictStr,
-        user_id: StrictStr,
+        group_id: Annotated[str, Field(strict=True, description="The user group ID, as 24 hexadecimal characters.")],
+        user_id: Annotated[str, Field(strict=True, description="The user ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -218,9 +218,9 @@ class UserGroupsApi:
 
         Adds a user to a user group.  **Required permissions:** Any of `account:admin`, `account:group:manage`
 
-        :param group_id: (required)
+        :param group_id: The user group ID, as 24 hexadecimal characters. (required)
         :type group_id: str
-        :param user_id: (required)
+        :param user_id: The user ID, as 24 hexadecimal characters. (required)
         :type user_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1209,7 +1209,7 @@ class UserGroupsApi:
         tags: Optional[List[StrictStr]] = None,
         limit: Optional[Union[StrictFloat, StrictInt]] = None,
         offset: Optional[Union[StrictFloat, StrictInt]] = None,
-        project: Optional[StrictStr] = None,
+        project: Optional[Annotated[str, Field(strict=True)]] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1298,7 +1298,7 @@ class UserGroupsApi:
         tags: Optional[List[StrictStr]] = None,
         limit: Optional[Union[StrictFloat, StrictInt]] = None,
         offset: Optional[Union[StrictFloat, StrictInt]] = None,
-        project: Optional[StrictStr] = None,
+        project: Optional[Annotated[str, Field(strict=True)]] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1387,7 +1387,7 @@ class UserGroupsApi:
         tags: Optional[List[StrictStr]] = None,
         limit: Optional[Union[StrictFloat, StrictInt]] = None,
         offset: Optional[Union[StrictFloat, StrictInt]] = None,
-        project: Optional[StrictStr] = None,
+        project: Optional[Annotated[str, Field(strict=True)]] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1558,8 +1558,8 @@ class UserGroupsApi:
     @validate_call
     def remove_user_group_member(
         self,
-        group_id: StrictStr,
-        user_id: StrictStr,
+        group_id: Annotated[str, Field(strict=True, description="The user group ID, as 24 hexadecimal characters.")],
+        user_id: Annotated[str, Field(strict=True, description="The user ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -1578,9 +1578,9 @@ class UserGroupsApi:
 
         Removes a user from a user group.  **Required permissions:** Any of `account:admin`, `account:group:manage`
 
-        :param group_id: (required)
+        :param group_id: The user group ID, as 24 hexadecimal characters. (required)
         :type group_id: str
-        :param user_id: (required)
+        :param user_id: The user ID, as 24 hexadecimal characters. (required)
         :type user_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1635,8 +1635,8 @@ class UserGroupsApi:
     @validate_call
     def remove_user_group_member_with_http_info(
         self,
-        group_id: StrictStr,
-        user_id: StrictStr,
+        group_id: Annotated[str, Field(strict=True, description="The user group ID, as 24 hexadecimal characters.")],
+        user_id: Annotated[str, Field(strict=True, description="The user ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -1655,9 +1655,9 @@ class UserGroupsApi:
 
         Removes a user from a user group.  **Required permissions:** Any of `account:admin`, `account:group:manage`
 
-        :param group_id: (required)
+        :param group_id: The user group ID, as 24 hexadecimal characters. (required)
         :type group_id: str
-        :param user_id: (required)
+        :param user_id: The user ID, as 24 hexadecimal characters. (required)
         :type user_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1712,8 +1712,8 @@ class UserGroupsApi:
     @validate_call
     def remove_user_group_member_without_preload_content(
         self,
-        group_id: StrictStr,
-        user_id: StrictStr,
+        group_id: Annotated[str, Field(strict=True, description="The user group ID, as 24 hexadecimal characters.")],
+        user_id: Annotated[str, Field(strict=True, description="The user ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -1732,9 +1732,9 @@ class UserGroupsApi:
 
         Removes a user from a user group.  **Required permissions:** Any of `account:admin`, `account:group:manage`
 
-        :param group_id: (required)
+        :param group_id: The user group ID, as 24 hexadecimal characters. (required)
         :type group_id: str
-        :param user_id: (required)
+        :param user_id: The user ID, as 24 hexadecimal characters. (required)
         :type user_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -2124,7 +2124,7 @@ class UserGroupsApi:
     @validate_call
     def update_user_group(
         self,
-        group_id: StrictStr,
+        group_id: Annotated[str, Field(strict=True, description="The user group ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_user_group_payload: UpdateUserGroupPayload,
         _request_timeout: Union[
@@ -2144,7 +2144,7 @@ class UserGroupsApi:
 
         Updates a user group by ID.  **Required permissions:** Any of `account:admin`, `account:group:manage`
 
-        :param group_id: (required)
+        :param group_id: The user group ID, as 24 hexadecimal characters. (required)
         :type group_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -2201,7 +2201,7 @@ class UserGroupsApi:
     @validate_call
     def update_user_group_with_http_info(
         self,
-        group_id: StrictStr,
+        group_id: Annotated[str, Field(strict=True, description="The user group ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_user_group_payload: UpdateUserGroupPayload,
         _request_timeout: Union[
@@ -2221,7 +2221,7 @@ class UserGroupsApi:
 
         Updates a user group by ID.  **Required permissions:** Any of `account:admin`, `account:group:manage`
 
-        :param group_id: (required)
+        :param group_id: The user group ID, as 24 hexadecimal characters. (required)
         :type group_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -2278,7 +2278,7 @@ class UserGroupsApi:
     @validate_call
     def update_user_group_without_preload_content(
         self,
-        group_id: StrictStr,
+        group_id: Annotated[str, Field(strict=True, description="The user group ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_user_group_payload: UpdateUserGroupPayload,
         _request_timeout: Union[
@@ -2298,7 +2298,7 @@ class UserGroupsApi:
 
         Updates a user group by ID.  **Required permissions:** Any of `account:admin`, `account:group:manage`
 
-        :param group_id: (required)
+        :param group_id: The user group ID, as 24 hexadecimal characters. (required)
         :type group_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str

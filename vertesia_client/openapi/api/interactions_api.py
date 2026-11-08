@@ -966,7 +966,7 @@ class InteractionsApi:
     @validate_call
     def delete_interaction_configuration(
         self,
-        interaction_id: StrictStr,
+        interaction_id: Annotated[str, Field(strict=True, max_length=300, description="The code interaction, as `sys:<name>` or `app:<app name>:<local id>`, at most 300 characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -985,7 +985,7 @@ class InteractionsApi:
 
         **Required permissions:** `project:settings_write`
 
-        :param interaction_id: (required)
+        :param interaction_id: The code interaction, as `sys:<name>` or `app:<app name>:<local id>`, at most 300 characters. (required)
         :type interaction_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1039,7 +1039,7 @@ class InteractionsApi:
     @validate_call
     def delete_interaction_configuration_with_http_info(
         self,
-        interaction_id: StrictStr,
+        interaction_id: Annotated[str, Field(strict=True, max_length=300, description="The code interaction, as `sys:<name>` or `app:<app name>:<local id>`, at most 300 characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -1058,7 +1058,7 @@ class InteractionsApi:
 
         **Required permissions:** `project:settings_write`
 
-        :param interaction_id: (required)
+        :param interaction_id: The code interaction, as `sys:<name>` or `app:<app name>:<local id>`, at most 300 characters. (required)
         :type interaction_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1112,7 +1112,7 @@ class InteractionsApi:
     @validate_call
     def delete_interaction_configuration_without_preload_content(
         self,
-        interaction_id: StrictStr,
+        interaction_id: Annotated[str, Field(strict=True, max_length=300, description="The code interaction, as `sys:<name>` or `app:<app name>:<local id>`, at most 300 characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -1131,7 +1131,7 @@ class InteractionsApi:
 
         **Required permissions:** `project:settings_write`
 
-        :param interaction_id: (required)
+        :param interaction_id: The code interaction, as `sys:<name>` or `app:<app name>:<local id>`, at most 300 characters. (required)
         :type interaction_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -3733,7 +3733,7 @@ class InteractionsApi:
     @validate_call
     def get_interaction_configuration(
         self,
-        interaction_id: StrictStr,
+        interaction_id: Annotated[str, Field(strict=True, max_length=300, description="The code interaction, as `sys:<name>` or `app:<app name>:<local id>`, at most 300 characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -3751,7 +3751,7 @@ class InteractionsApi:
         """Get saved code interaction configuration
 
 
-        :param interaction_id: (required)
+        :param interaction_id: The code interaction, as `sys:<name>` or `app:<app name>:<local id>`, at most 300 characters. (required)
         :type interaction_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -3805,7 +3805,7 @@ class InteractionsApi:
     @validate_call
     def get_interaction_configuration_with_http_info(
         self,
-        interaction_id: StrictStr,
+        interaction_id: Annotated[str, Field(strict=True, max_length=300, description="The code interaction, as `sys:<name>` or `app:<app name>:<local id>`, at most 300 characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -3823,7 +3823,7 @@ class InteractionsApi:
         """Get saved code interaction configuration
 
 
-        :param interaction_id: (required)
+        :param interaction_id: The code interaction, as `sys:<name>` or `app:<app name>:<local id>`, at most 300 characters. (required)
         :type interaction_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -3877,7 +3877,7 @@ class InteractionsApi:
     @validate_call
     def get_interaction_configuration_without_preload_content(
         self,
-        interaction_id: StrictStr,
+        interaction_id: Annotated[str, Field(strict=True, max_length=300, description="The code interaction, as `sys:<name>` or `app:<app name>:<local id>`, at most 300 characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -3895,7 +3895,7 @@ class InteractionsApi:
         """Get saved code interaction configuration
 
 
-        :param interaction_id: (required)
+        :param interaction_id: The code interaction, as `sys:<name>` or `app:<app name>:<local id>`, at most 300 characters. (required)
         :type interaction_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -5447,12 +5447,12 @@ class InteractionsApi:
         self,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         name: Optional[StrictStr] = None,
-        status: Optional[List[StrictStr]] = None,
+        status: Annotated[Optional[List[Annotated[str, Field(strict=True)]]], Field(description="Filter by status: draft, published, archived, code, unknown. Each value may list several, separated by commas.")] = None,
         limit: Optional[Union[Annotated[float, Field(multiple_of=1, le=9007199254740991, strict=True, ge=1)], Annotated[int, Field(le=2147483647, strict=True, ge=1)]]] = None,
         offset: Optional[Union[Annotated[float, Field(multiple_of=1, le=9007199254740991, strict=True, ge=0)], Annotated[int, Field(le=2147483647, strict=True, ge=0)]]] = None,
         prompt: Optional[StrictStr] = None,
         tags: Optional[List[StrictStr]] = None,
-        version: Optional[StrictStr] = None,
+        version: Annotated[Optional[Annotated[str, Field(strict=True)]], Field(description="Filter by version number. Must start with an integer.")] = None,
         model: Optional[StrictStr] = None,
         environment: Optional[StrictStr] = None,
         is_agent: Optional[StrictBool] = None,
@@ -5481,7 +5481,7 @@ class InteractionsApi:
         :type x_api_version: str
         :param name:
         :type name: str
-        :param status:
+        :param status: Filter by status: draft, published, archived, code, unknown. Each value may list several, separated by commas.
         :type status: List[str]
         :param limit:
         :type limit: float
@@ -5491,7 +5491,7 @@ class InteractionsApi:
         :type prompt: str
         :param tags:
         :type tags: List[str]
-        :param version:
+        :param version: Filter by version number. Must start with an integer.
         :type version: str
         :param model:
         :type model: str
@@ -5572,12 +5572,12 @@ class InteractionsApi:
         self,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         name: Optional[StrictStr] = None,
-        status: Optional[List[StrictStr]] = None,
+        status: Annotated[Optional[List[Annotated[str, Field(strict=True)]]], Field(description="Filter by status: draft, published, archived, code, unknown. Each value may list several, separated by commas.")] = None,
         limit: Optional[Union[Annotated[float, Field(multiple_of=1, le=9007199254740991, strict=True, ge=1)], Annotated[int, Field(le=2147483647, strict=True, ge=1)]]] = None,
         offset: Optional[Union[Annotated[float, Field(multiple_of=1, le=9007199254740991, strict=True, ge=0)], Annotated[int, Field(le=2147483647, strict=True, ge=0)]]] = None,
         prompt: Optional[StrictStr] = None,
         tags: Optional[List[StrictStr]] = None,
-        version: Optional[StrictStr] = None,
+        version: Annotated[Optional[Annotated[str, Field(strict=True)]], Field(description="Filter by version number. Must start with an integer.")] = None,
         model: Optional[StrictStr] = None,
         environment: Optional[StrictStr] = None,
         is_agent: Optional[StrictBool] = None,
@@ -5606,7 +5606,7 @@ class InteractionsApi:
         :type x_api_version: str
         :param name:
         :type name: str
-        :param status:
+        :param status: Filter by status: draft, published, archived, code, unknown. Each value may list several, separated by commas.
         :type status: List[str]
         :param limit:
         :type limit: float
@@ -5616,7 +5616,7 @@ class InteractionsApi:
         :type prompt: str
         :param tags:
         :type tags: List[str]
-        :param version:
+        :param version: Filter by version number. Must start with an integer.
         :type version: str
         :param model:
         :type model: str
@@ -5697,12 +5697,12 @@ class InteractionsApi:
         self,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         name: Optional[StrictStr] = None,
-        status: Optional[List[StrictStr]] = None,
+        status: Annotated[Optional[List[Annotated[str, Field(strict=True)]]], Field(description="Filter by status: draft, published, archived, code, unknown. Each value may list several, separated by commas.")] = None,
         limit: Optional[Union[Annotated[float, Field(multiple_of=1, le=9007199254740991, strict=True, ge=1)], Annotated[int, Field(le=2147483647, strict=True, ge=1)]]] = None,
         offset: Optional[Union[Annotated[float, Field(multiple_of=1, le=9007199254740991, strict=True, ge=0)], Annotated[int, Field(le=2147483647, strict=True, ge=0)]]] = None,
         prompt: Optional[StrictStr] = None,
         tags: Optional[List[StrictStr]] = None,
-        version: Optional[StrictStr] = None,
+        version: Annotated[Optional[Annotated[str, Field(strict=True)]], Field(description="Filter by version number. Must start with an integer.")] = None,
         model: Optional[StrictStr] = None,
         environment: Optional[StrictStr] = None,
         is_agent: Optional[StrictBool] = None,
@@ -5731,7 +5731,7 @@ class InteractionsApi:
         :type x_api_version: str
         :param name:
         :type name: str
-        :param status:
+        :param status: Filter by status: draft, published, archived, code, unknown. Each value may list several, separated by commas.
         :type status: List[str]
         :param limit:
         :type limit: float
@@ -5741,7 +5741,7 @@ class InteractionsApi:
         :type prompt: str
         :param tags:
         :type tags: List[str]
-        :param version:
+        :param version: Filter by version number. Must start with an integer.
         :type version: str
         :param model:
         :type model: str
@@ -6521,12 +6521,12 @@ class InteractionsApi:
         self,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         name: Optional[StrictStr] = None,
-        status: Optional[List[StrictStr]] = None,
+        status: Annotated[Optional[List[Annotated[str, Field(strict=True)]]], Field(description="Filter by status: draft, published, archived, code, unknown. Each value may list several, separated by commas.")] = None,
         limit: Optional[Union[Annotated[float, Field(multiple_of=1, le=9007199254740991, strict=True, ge=1)], Annotated[int, Field(le=2147483647, strict=True, ge=1)]]] = None,
         offset: Optional[Union[Annotated[float, Field(multiple_of=1, le=9007199254740991, strict=True, ge=0)], Annotated[int, Field(le=2147483647, strict=True, ge=0)]]] = None,
         prompt: Optional[StrictStr] = None,
         tags: Optional[List[StrictStr]] = None,
-        version: Optional[StrictStr] = None,
+        version: Annotated[Optional[Annotated[str, Field(strict=True)]], Field(description="Filter by version number. Must start with an integer.")] = None,
         model: Optional[StrictStr] = None,
         environment: Optional[StrictStr] = None,
         is_agent: Optional[StrictBool] = None,
@@ -6555,7 +6555,7 @@ class InteractionsApi:
         :type x_api_version: str
         :param name:
         :type name: str
-        :param status:
+        :param status: Filter by status: draft, published, archived, code, unknown. Each value may list several, separated by commas.
         :type status: List[str]
         :param limit:
         :type limit: float
@@ -6565,7 +6565,7 @@ class InteractionsApi:
         :type prompt: str
         :param tags:
         :type tags: List[str]
-        :param version:
+        :param version: Filter by version number. Must start with an integer.
         :type version: str
         :param model:
         :type model: str
@@ -6646,12 +6646,12 @@ class InteractionsApi:
         self,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         name: Optional[StrictStr] = None,
-        status: Optional[List[StrictStr]] = None,
+        status: Annotated[Optional[List[Annotated[str, Field(strict=True)]]], Field(description="Filter by status: draft, published, archived, code, unknown. Each value may list several, separated by commas.")] = None,
         limit: Optional[Union[Annotated[float, Field(multiple_of=1, le=9007199254740991, strict=True, ge=1)], Annotated[int, Field(le=2147483647, strict=True, ge=1)]]] = None,
         offset: Optional[Union[Annotated[float, Field(multiple_of=1, le=9007199254740991, strict=True, ge=0)], Annotated[int, Field(le=2147483647, strict=True, ge=0)]]] = None,
         prompt: Optional[StrictStr] = None,
         tags: Optional[List[StrictStr]] = None,
-        version: Optional[StrictStr] = None,
+        version: Annotated[Optional[Annotated[str, Field(strict=True)]], Field(description="Filter by version number. Must start with an integer.")] = None,
         model: Optional[StrictStr] = None,
         environment: Optional[StrictStr] = None,
         is_agent: Optional[StrictBool] = None,
@@ -6680,7 +6680,7 @@ class InteractionsApi:
         :type x_api_version: str
         :param name:
         :type name: str
-        :param status:
+        :param status: Filter by status: draft, published, archived, code, unknown. Each value may list several, separated by commas.
         :type status: List[str]
         :param limit:
         :type limit: float
@@ -6690,7 +6690,7 @@ class InteractionsApi:
         :type prompt: str
         :param tags:
         :type tags: List[str]
-        :param version:
+        :param version: Filter by version number. Must start with an integer.
         :type version: str
         :param model:
         :type model: str
@@ -6771,12 +6771,12 @@ class InteractionsApi:
         self,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         name: Optional[StrictStr] = None,
-        status: Optional[List[StrictStr]] = None,
+        status: Annotated[Optional[List[Annotated[str, Field(strict=True)]]], Field(description="Filter by status: draft, published, archived, code, unknown. Each value may list several, separated by commas.")] = None,
         limit: Optional[Union[Annotated[float, Field(multiple_of=1, le=9007199254740991, strict=True, ge=1)], Annotated[int, Field(le=2147483647, strict=True, ge=1)]]] = None,
         offset: Optional[Union[Annotated[float, Field(multiple_of=1, le=9007199254740991, strict=True, ge=0)], Annotated[int, Field(le=2147483647, strict=True, ge=0)]]] = None,
         prompt: Optional[StrictStr] = None,
         tags: Optional[List[StrictStr]] = None,
-        version: Optional[StrictStr] = None,
+        version: Annotated[Optional[Annotated[str, Field(strict=True)]], Field(description="Filter by version number. Must start with an integer.")] = None,
         model: Optional[StrictStr] = None,
         environment: Optional[StrictStr] = None,
         is_agent: Optional[StrictBool] = None,
@@ -6805,7 +6805,7 @@ class InteractionsApi:
         :type x_api_version: str
         :param name:
         :type name: str
-        :param status:
+        :param status: Filter by status: draft, published, archived, code, unknown. Each value may list several, separated by commas.
         :type status: List[str]
         :param limit:
         :type limit: float
@@ -6815,7 +6815,7 @@ class InteractionsApi:
         :type prompt: str
         :param tags:
         :type tags: List[str]
-        :param version:
+        :param version: Filter by version number. Must start with an integer.
         :type version: str
         :param model:
         :type model: str
@@ -9226,7 +9226,7 @@ class InteractionsApi:
     @validate_call
     def update_interaction_configuration(
         self,
-        interaction_id: StrictStr,
+        interaction_id: Annotated[str, Field(strict=True, max_length=300, description="The code interaction, as `sys:<name>` or `app:<app name>:<local id>`, at most 300 characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_interaction_configuration_payload: UpdateInteractionConfigurationPayload,
         _request_timeout: Union[
@@ -9246,7 +9246,7 @@ class InteractionsApi:
 
         **Required permissions:** `project:settings_write`
 
-        :param interaction_id: (required)
+        :param interaction_id: The code interaction, as `sys:<name>` or `app:<app name>:<local id>`, at most 300 characters. (required)
         :type interaction_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -9303,7 +9303,7 @@ class InteractionsApi:
     @validate_call
     def update_interaction_configuration_with_http_info(
         self,
-        interaction_id: StrictStr,
+        interaction_id: Annotated[str, Field(strict=True, max_length=300, description="The code interaction, as `sys:<name>` or `app:<app name>:<local id>`, at most 300 characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_interaction_configuration_payload: UpdateInteractionConfigurationPayload,
         _request_timeout: Union[
@@ -9323,7 +9323,7 @@ class InteractionsApi:
 
         **Required permissions:** `project:settings_write`
 
-        :param interaction_id: (required)
+        :param interaction_id: The code interaction, as `sys:<name>` or `app:<app name>:<local id>`, at most 300 characters. (required)
         :type interaction_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -9380,7 +9380,7 @@ class InteractionsApi:
     @validate_call
     def update_interaction_configuration_without_preload_content(
         self,
-        interaction_id: StrictStr,
+        interaction_id: Annotated[str, Field(strict=True, max_length=300, description="The code interaction, as `sys:<name>` or `app:<app name>:<local id>`, at most 300 characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         update_interaction_configuration_payload: UpdateInteractionConfigurationPayload,
         _request_timeout: Union[
@@ -9400,7 +9400,7 @@ class InteractionsApi:
 
         **Required permissions:** `project:settings_write`
 
-        :param interaction_id: (required)
+        :param interaction_id: The code interaction, as `sys:<name>` or `app:<app name>:<local id>`, at most 300 characters. (required)
         :type interaction_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str

@@ -17,11 +17,10 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.process_definition_body import ProcessDefinitionBody
-from vertesia_client.openapi.models.process_definition_status import ProcessDefinitionStatus
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -32,11 +31,27 @@ class CreateProcessDefinitionPayload(BaseModel):
     """ # noqa: E501
     name: Annotated[str, Field(min_length=1, strict=True)]
     description: Optional[StrictStr] = None
-    status: Optional[ProcessDefinitionStatus] = Field(default=None, description="Deprecated: Process definitions are created as drafts. Use the publish endpoint to create immutable published versions.")
-    version: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Deprecated: Version is server-owned. Use the publish endpoint to create the next version.")
+    status: Optional[StrictStr] = Field(default=None, description="Deprecated: Process definitions are created as drafts, so only `draft` is accepted. Use the publish endpoint to create immutable published versions.")
+    version: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Deprecated: Version is server-owned, so only `1` is accepted. Use the publish endpoint to create the next version.")
     tags: Optional[List[StrictStr]] = None
     definition: ProcessDefinitionBody
     __properties: ClassVar[List[str]] = ["name", "description", "status", "version", "tags", "definition"]
+
+    @field_validator('status')
+    def status_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        return value
+
+    @field_validator('version')
+    def version_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,

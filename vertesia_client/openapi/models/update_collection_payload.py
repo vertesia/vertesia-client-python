@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.column_layout import ColumnLayout
 from typing import Optional, Set
 from typing_extensions import Self
@@ -42,7 +43,7 @@ class UpdateCollectionPayload(BaseModel):
     sensitivity: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="BLP sensitivity level for member documents")
     compartments: Optional[List[StrictStr]] = Field(default=None, description="Compartments for member documents")
     shared_root: Optional[StrictBool] = Field(default=None, description="Explicitly share this collection as a root of the project shared space (listable/readable by non-members via matching shared-content ABAC rules). This is the explicit API share flag — the sync never sets it.")
-    name: Optional[StrictStr] = Field(default=None, description="Name of the collection")
+    name: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="Name of the collection")
     dynamic: Optional[StrictBool] = Field(default=None, description="When true, membership is determined by `query`; when false, members are added explicitly")
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["description", "skip_head_sync", "tags", "type", "query", "properties", "parent", "table_layout", "allowed_types", "updated_by", "shared_properties", "sensitivity", "compartments", "shared_root", "name", "dynamic"]

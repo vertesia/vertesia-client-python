@@ -17,17 +17,18 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
 class ExportContentObjectsFilter(BaseModel):
     """
-    Bounded filters supported by the bulk content object export API.
+    Bounded filters supported by the bulk content object export API. The date bounds are ISO date-times or `YYYY-MM-DD` dates.
     """ # noqa: E501
-    types: Optional[List[StrictStr]] = None
+    types: Optional[List[Annotated[str, Field(strict=True)]]] = Field(default=None, description="Content types to export: `Document` for untyped objects, a stored type ID (24 hexadecimal characters), or an in-code type ID such as `sys:Document`.")
     created_from: Optional[StrictStr] = None
     created_to: Optional[StrictStr] = None
     updated_from: Optional[StrictStr] = None

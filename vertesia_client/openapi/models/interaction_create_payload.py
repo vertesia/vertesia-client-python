@@ -23,7 +23,7 @@ from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.agent_runner_options import AgentRunnerOptions
 from vertesia_client.openapi.models.cache_policy import CachePolicy
-from vertesia_client.openapi.models.interaction_environment import InteractionEnvironment
+from vertesia_client.openapi.models.interaction_create_payload_environment import InteractionCreatePayloadEnvironment
 from vertesia_client.openapi.models.interaction_prompt_segment_input import InteractionPromptSegmentInput
 from vertesia_client.openapi.models.interaction_result_schema import InteractionResultSchema
 from vertesia_client.openapi.models.interaction_status import InteractionStatus
@@ -49,7 +49,7 @@ class InteractionCreatePayload(BaseModel):
     description: Optional[StrictStr] = None
     agent_runner_options: Optional[AgentRunnerOptions] = None
     result_schema: Optional[InteractionResultSchema] = None
-    environment: Optional[InteractionEnvironment] = None
+    environment: Optional[InteractionCreatePayloadEnvironment] = None
     model: Optional[StrictStr] = None
     model_options: Optional[ModelOptions] = None
     inference_profile: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="MongoDB ObjectId of the inference profile.")
@@ -164,7 +164,7 @@ class InteractionCreatePayload(BaseModel):
             "description": obj.get("description"),
             "agent_runner_options": AgentRunnerOptions.from_dict(obj["agent_runner_options"]) if obj.get("agent_runner_options") is not None else None,
             "result_schema": InteractionResultSchema.from_dict(obj["result_schema"]) if obj.get("result_schema") is not None else None,
-            "environment": InteractionEnvironment.from_dict(obj["environment"]) if obj.get("environment") is not None else None,
+            "environment": InteractionCreatePayloadEnvironment.from_dict(obj["environment"]) if obj.get("environment") is not None else None,
             "model": obj.get("model"),
             "model_options": ModelOptions.from_dict(obj["model_options"]) if obj.get("model_options") is not None else None,
             "inference_profile": obj.get("inference_profile"),

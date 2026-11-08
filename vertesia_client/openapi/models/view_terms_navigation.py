@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, Optional, Union
+from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -27,17 +28,27 @@ class ViewTermsNavigation(BaseModel):
     """
     ViewTermsNavigation
     """ # noqa: E501
-    id: StrictStr
-    label: StrictStr
+    id: Annotated[str, Field(min_length=1, strict=True, max_length=64)]
+    label: Annotated[str, Field(min_length=1, strict=True, max_length=120)]
     presentation: Optional[StrictStr] = None
     multi_select: Optional[StrictBool] = None
-    order: Optional[Union[StrictFloat, StrictInt]] = None
-    renderer: Optional[StrictStr] = None
+    order: Optional[Union[Annotated[float, Field(multiple_of=1, strict=True)], Annotated[int, Field(strict=True)]]] = None
+    renderer: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=120)]] = None
     source: StrictStr
-    var_field: StrictStr = Field(alias="field")
-    size: Optional[Union[StrictFloat, StrictInt]] = None
+    var_field: Annotated[str, Field(min_length=1, strict=True, max_length=160)] = Field(alias="field")
+    size: Optional[Union[Annotated[float, Field(multiple_of=1, le=500, strict=True, ge=1)], Annotated[int, Field(le=500, strict=True, ge=1)]]] = None
     sort: Optional[StrictStr] = None
     __properties: ClassVar[List[str]] = ["id", "label", "presentation", "multi_select", "order", "renderer", "source", "field", "size", "sort"]
+
+    @field_validator('id')
+    def id_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"^[a-z][a-z0-9_-]*$", value):
+            raise ValueError(r"must validate the regular expression /^[a-z][a-z0-9_-]*$/")
+        return value
 
     @field_validator('presentation')
     def presentation_validate_enum(cls, value):
@@ -52,6 +63,16 @@ class ViewTermsNavigation(BaseModel):
         """Validates the enum"""
         if value is not None and value != 'terms':
             raise ValueError('Expected source to be terms')
+        return value
+
+    @field_validator('var_field')
+    def var_field_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"^[A-Za-z0-9_]+(?:\.[A-Za-z0-9_]+)*$", value):
+            raise ValueError(r"must validate the regular expression /^[A-Za-z0-9_]+(?:\.[A-Za-z0-9_]+)*$/")
         return value
 
     @field_validator('sort')

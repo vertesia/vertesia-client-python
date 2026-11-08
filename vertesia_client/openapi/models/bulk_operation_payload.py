@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List
+from vertesia_client.openapi.models.bulk_operation_payload_params import BulkOperationPayloadParams
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -28,8 +29,8 @@ class BulkOperationPayload(BaseModel):
     BulkOperationPayload
     """ # noqa: E501
     name: StrictStr = Field(description="The operation name")
-    ids: List[StrictStr] = Field(description="The IDs of the objects to operate on")
-    params: Dict[str, Any] = Field(description="The operation parameters. `create` takes the objects to create as `objects`, 1 to 10000.")
+    ids: List[StrictStr] = Field(description="The IDs of the objects to operate on, each an object ID. `create` ignores them: it makes new objects.")
+    params: BulkOperationPayloadParams
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["name", "ids", "params"]
 
@@ -79,6 +80,9 @@ class BulkOperationPayload(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of params
+        if self.params:
+            _dict['params'] = self.params.to_dict()
         # puts key-value pairs in additional_properties in the top level
         if self.additional_properties is not None:
             for _key, _value in self.additional_properties.items():
@@ -98,7 +102,7 @@ class BulkOperationPayload(BaseModel):
         _obj = cls.model_validate({
             "name": obj.get("name"),
             "ids": obj.get("ids"),
-            "params": obj.get("params")
+            "params": BulkOperationPayloadParams.from_dict(obj["params"]) if obj.get("params") is not None else None
         })
         # store additional fields in additional_properties
         for _key in obj.keys():

@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictBool, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, field_validator
 from typing import Any, ClassVar, Dict, Optional
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.view_action_placement import ViewActionPlacement
 from vertesia_client.openapi.models.view_action_selection_requirement import ViewActionSelectionRequirement
 from typing import Optional, Set
@@ -29,15 +30,35 @@ class ViewActionConfiguration(BaseModel):
     """
     Declarative action exposed by a View. The handler name is resolved by the embedding application; persisted configuration never contains executable code.
     """ # noqa: E501
-    id: StrictStr
-    label: StrictStr
-    handler: StrictStr
+    id: Annotated[str, Field(min_length=1, strict=True, max_length=64)]
+    label: Annotated[str, Field(min_length=1, strict=True, max_length=120)]
+    handler: Annotated[str, Field(min_length=1, strict=True, max_length=64)]
     placement: Optional[ViewActionPlacement] = None
     requires_selection: Optional[ViewActionSelectionRequirement] = None
     destructive: Optional[StrictBool] = None
     confirm: Optional[StrictBool] = None
     params: Optional[Dict[str, Any]] = None
     __properties: ClassVar[List[str]] = ["id", "label", "handler", "placement", "requires_selection", "destructive", "confirm", "params"]
+
+    @field_validator('id')
+    def id_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"^[a-z][a-z0-9_-]*$", value):
+            raise ValueError(r"must validate the regular expression /^[a-z][a-z0-9_-]*$/")
+        return value
+
+    @field_validator('handler')
+    def handler_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"^[a-z][a-z0-9_-]*$", value):
+            raise ValueError(r"must validate the regular expression /^[a-z][a-z0-9_-]*$/")
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,

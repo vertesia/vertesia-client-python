@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool
 from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -27,9 +28,9 @@ class ViewExperienceScope(BaseModel):
     """
     ViewExperienceScope
     """ # noqa: E501
-    type_ids: Optional[List[StrictStr]] = None
-    locations: Optional[List[StrictStr]] = None
-    collection_ids: Optional[List[StrictStr]] = None
+    type_ids: Optional[Annotated[List[Annotated[str, Field(min_length=1, strict=True)]], Field(max_length=100)]] = None
+    locations: Optional[Annotated[List[Annotated[str, Field(min_length=1, strict=True)]], Field(max_length=100)]] = None
+    collection_ids: Optional[Annotated[List[Annotated[str, Field(min_length=1, strict=True)]], Field(max_length=100)]] = None
     include_collection_descendants: Optional[StrictBool] = None
     fixed_filter: Optional[Dict[str, Any]] = Field(default=None, description="An author-provided Elasticsearch query subtree validated by the View runtime.")
     head_only: Optional[StrictBool] = None

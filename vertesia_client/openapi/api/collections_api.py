@@ -1529,7 +1529,7 @@ class CollectionsApi:
         collection_id: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         status: Optional[StrictStr] = None,
-        type: Optional[StrictStr] = None,
+        type: Annotated[Optional[Annotated[str, Field(strict=True)]], Field(description="Only list members of this stored content type, by its ID (24 hexadecimal characters).")] = None,
         limit: Optional[Union[Annotated[float, Field(multiple_of=1, le=9007199254740991, strict=True, ge=0)], Annotated[int, Field(le=2147483647, strict=True, ge=0)]]] = None,
         offset: Optional[Union[Annotated[float, Field(multiple_of=1, le=9007199254740991, strict=True, ge=0)], Annotated[int, Field(le=2147483647, strict=True, ge=0)]]] = None,
         _request_timeout: Union[
@@ -1555,7 +1555,7 @@ class CollectionsApi:
         :type x_api_version: str
         :param status:
         :type status: str
-        :param type:
+        :param type: Only list members of this stored content type, by its ID (24 hexadecimal characters).
         :type type: str
         :param limit:
         :type limit: float
@@ -1618,7 +1618,7 @@ class CollectionsApi:
         collection_id: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         status: Optional[StrictStr] = None,
-        type: Optional[StrictStr] = None,
+        type: Annotated[Optional[Annotated[str, Field(strict=True)]], Field(description="Only list members of this stored content type, by its ID (24 hexadecimal characters).")] = None,
         limit: Optional[Union[Annotated[float, Field(multiple_of=1, le=9007199254740991, strict=True, ge=0)], Annotated[int, Field(le=2147483647, strict=True, ge=0)]]] = None,
         offset: Optional[Union[Annotated[float, Field(multiple_of=1, le=9007199254740991, strict=True, ge=0)], Annotated[int, Field(le=2147483647, strict=True, ge=0)]]] = None,
         _request_timeout: Union[
@@ -1644,7 +1644,7 @@ class CollectionsApi:
         :type x_api_version: str
         :param status:
         :type status: str
-        :param type:
+        :param type: Only list members of this stored content type, by its ID (24 hexadecimal characters).
         :type type: str
         :param limit:
         :type limit: float
@@ -1707,7 +1707,7 @@ class CollectionsApi:
         collection_id: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         status: Optional[StrictStr] = None,
-        type: Optional[StrictStr] = None,
+        type: Annotated[Optional[Annotated[str, Field(strict=True)]], Field(description="Only list members of this stored content type, by its ID (24 hexadecimal characters).")] = None,
         limit: Optional[Union[Annotated[float, Field(multiple_of=1, le=9007199254740991, strict=True, ge=0)], Annotated[int, Field(le=2147483647, strict=True, ge=0)]]] = None,
         offset: Optional[Union[Annotated[float, Field(multiple_of=1, le=9007199254740991, strict=True, ge=0)], Annotated[int, Field(le=2147483647, strict=True, ge=0)]]] = None,
         _request_timeout: Union[
@@ -1733,7 +1733,7 @@ class CollectionsApi:
         :type x_api_version: str
         :param status:
         :type status: str
-        :param type:
+        :param type: Only list members of this stored content type, by its ID (24 hexadecimal characters).
         :type type: str
         :param limit:
         :type limit: float
@@ -4296,7 +4296,7 @@ class CollectionsApi:
         self,
         collection_id: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
-        request_body: Dict[str, List[StrictStr]],
+        request_body: Dict[str, List[Annotated[str, Field(strict=True)]]],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4373,7 +4373,7 @@ class CollectionsApi:
         self,
         collection_id: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
-        request_body: Dict[str, List[StrictStr]],
+        request_body: Dict[str, List[Annotated[str, Field(strict=True)]]],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4450,7 +4450,7 @@ class CollectionsApi:
         self,
         collection_id: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
-        request_body: Dict[str, List[StrictStr]],
+        request_body: Dict[str, List[Annotated[str, Field(strict=True)]]],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],

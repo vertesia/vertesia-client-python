@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.execution_run_status import ExecutionRunStatus
 from typing import Optional, Set
 from typing_extensions import Self
@@ -33,13 +34,13 @@ class RunSearchQuery(BaseModel):
     limit: Optional[Union[StrictFloat, StrictInt]] = None
     offset: Optional[Union[StrictFloat, StrictInt]] = None
     interaction: Optional[StrictStr] = None
-    environment: Optional[StrictStr] = None
+    environment: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Environment id, as 24 hexadecimal characters. An empty string applies no filter.")
     model: Optional[StrictStr] = None
     tags: Optional[List[StrictStr]] = None
     exclude_tags: Optional[List[StrictStr]] = Field(default=None, description="Tags to exclude. Runs carrying any of these tags are filtered out of the results, counts, and facet buckets. Combined with `tags` (which requires all of the listed tags) as an additional `$nin` constraint on the same field.")
     query: Optional[StrictStr] = None
     default_query_path: Optional[StrictStr] = None
-    parent: Optional[List[StrictStr]] = None
+    parent: Optional[List[Annotated[str, Field(strict=True)]]] = Field(default=None, description="Parent run ids, as 24 hexadecimal characters. The legacy value `false` selects root runs, like `is_root`; it cannot be combined with a parent id.")
     is_root: Optional[StrictBool] = None
     object: Optional[StrictStr] = None
     start: Optional[StrictStr] = None
@@ -48,9 +49,22 @@ class RunSearchQuery(BaseModel):
     created_by: Optional[StrictStr] = None
     workflow_run_ids: Optional[List[StrictStr]] = None
     workflow_ids: Optional[List[StrictStr]] = None
-    run_ids: Optional[List[StrictStr]] = None
+    run_ids: Optional[List[Annotated[str, Field(strict=True)]]] = Field(default=None, description="Run ids, as 24 hexadecimal characters.")
     is_agent: Optional[StrictBool] = None
     __properties: ClassVar[List[str]] = ["name", "status", "limit", "offset", "interaction", "environment", "model", "tags", "exclude_tags", "query", "default_query_path", "parent", "is_root", "object", "start", "end", "finish_reason", "created_by", "workflow_run_ids", "workflow_ids", "run_ids", "is_agent"]
+
+    @field_validator('environment')
+    def environment_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if value is None:
+            return value
+
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"^(?:[a-fA-F0-9]{24})?$", value):
+            raise ValueError(r"must validate the regular expression /^(?:[a-fA-F0-9]{24})?$/")
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,

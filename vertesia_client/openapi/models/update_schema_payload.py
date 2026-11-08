@@ -28,14 +28,15 @@ from pydantic_core import to_jsonable_python
 
 class UpdateSchemaPayload(BaseModel):
     """
-    Payload for AI-driven bulk schema updates.
+    UpdateSchemaPayload
     """ # noqa: E501
+    relationships: Optional[List[DataRelationship]] = Field(default=None, description="Relationships to set")
     description: Optional[StrictStr] = Field(default=None, description="Updated schema description")
     tables: Optional[List[CreateTablePayload]] = Field(default=None, description="Tables to create or update")
-    relationships: Optional[List[DataRelationship]] = Field(default=None, description="Relationships to set")
-    drop_tables: Optional[List[StrictStr]] = Field(default=None, description="Tables to drop")
+    drop_tables: Optional[List[Annotated[str, Field(min_length=1, strict=True)]]] = Field(default=None, description="Tables to drop. A name that matches no table is ignored.")
     message: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Commit message (required)")
-    __properties: ClassVar[List[str]] = ["description", "tables", "relationships", "drop_tables", "message"]
+    additional_properties: Dict[str, Any] = {}
+    __properties: ClassVar[List[str]] = ["relationships", "description", "tables", "drop_tables", "message"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -67,8 +68,10 @@ class UpdateSchemaPayload(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -76,13 +79,6 @@ class UpdateSchemaPayload(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of each item in tables (list)
-        _items = []
-        if self.tables:
-            for _item_tables in self.tables:
-                if _item_tables:
-                    _items.append(_item_tables.to_dict())
-            _dict['tables'] = _items
         # override the default output from pydantic by calling `to_dict()` of each item in relationships (list)
         _items = []
         if self.relationships:
@@ -90,6 +86,18 @@ class UpdateSchemaPayload(BaseModel):
                 if _item_relationships:
                     _items.append(_item_relationships.to_dict())
             _dict['relationships'] = _items
+        # override the default output from pydantic by calling `to_dict()` of each item in tables (list)
+        _items = []
+        if self.tables:
+            for _item_tables in self.tables:
+                if _item_tables:
+                    _items.append(_item_tables.to_dict())
+            _dict['tables'] = _items
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
         return _dict
 
     @classmethod
@@ -102,12 +110,17 @@ class UpdateSchemaPayload(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "relationships": [DataRelationship.from_dict(_item) for _item in obj["relationships"]] if obj.get("relationships") is not None else None,
             "description": obj.get("description"),
             "tables": [CreateTablePayload.from_dict(_item) for _item in obj["tables"]] if obj.get("tables") is not None else None,
-            "relationships": [DataRelationship.from_dict(_item) for _item in obj["relationships"]] if obj.get("relationships") is not None else None,
             "drop_tables": obj.get("drop_tables"),
             "message": obj.get("message")
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 

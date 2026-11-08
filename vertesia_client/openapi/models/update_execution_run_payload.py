@@ -18,18 +18,16 @@ import re  # noqa: F401
 import json
 
 from datetime import datetime
-from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.account_ref import AccountRef
-from vertesia_client.openapi.models.execution_environment_ref import ExecutionEnvironmentRef
 from vertesia_client.openapi.models.execution_run_evaluation import ExecutionRunEvaluation
-from vertesia_client.openapi.models.execution_run_parent import ExecutionRunParent
 from vertesia_client.openapi.models.execution_run_status import ExecutionRunStatus
 from vertesia_client.openapi.models.execution_run_workflow import ExecutionRunWorkflow
 from vertesia_client.openapi.models.execution_token_usage import ExecutionTokenUsage
 from vertesia_client.openapi.models.interaction_execution_configuration import InteractionExecutionConfiguration
 from vertesia_client.openapi.models.interaction_execution_error import InteractionExecutionError
-from vertesia_client.openapi.models.interaction_ref import InteractionRef
 from vertesia_client.openapi.models.json_schema import JSONSchema
 from vertesia_client.openapi.models.modalities import Modalities
 from vertesia_client.openapi.models.project_ref import ProjectRef
@@ -44,10 +42,10 @@ class UpdateExecutionRunPayload(BaseModel):
     UpdateExecutionRunPayload
     """ # noqa: E501
     id: Optional[StrictStr] = None
-    parent: Optional[ExecutionRunParent] = None
+    parent: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Only used by runs that were created by a virtual run to point toward the virtual run parent. The parent run ID, as 24 hexadecimal characters.")
     evaluation: Optional[ExecutionRunEvaluation] = None
     tags: Optional[List[StrictStr]] = None
-    environment: Optional[ExecutionEnvironmentRef] = Field(default=None, description="Environment reference - populated with full object in API responses")
+    environment: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="The environment ID, as 24 hexadecimal characters.")
     model_id: Optional[StrictStr] = Field(default=None, alias="modelId")
     result_schema: Optional[JSONSchema] = None
     ttl: Optional[Union[StrictFloat, StrictInt]] = None
@@ -69,9 +67,48 @@ class UpdateExecutionRunPayload(BaseModel):
     created_by: Optional[StrictStr] = None
     updated_by: Optional[StrictStr] = None
     workflow: Optional[ExecutionRunWorkflow] = Field(default=None, description="The Vertesia Workflow related to this Interaction Run.  This is only set when the interaction is executed as part of a workflow.")
-    interaction: Optional[InteractionRef] = None
+    interaction: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="The interaction ID, as 24 hexadecimal characters.")
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["id", "parent", "evaluation", "tags", "environment", "modelId", "result_schema", "ttl", "status", "finish_reason", "prompt", "token_use", "prompt_cache_diagnostics", "chunks", "execution_time", "created_at", "updated_at", "account", "project", "config", "error", "source", "output_modality", "created_by", "updated_by", "workflow", "interaction"]
+
+    @field_validator('parent')
+    def parent_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if value is None:
+            return value
+
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"^[0-9a-fA-F]{24}$", value):
+            raise ValueError(r"must validate the regular expression /^[0-9a-fA-F]{24}$/")
+        return value
+
+    @field_validator('environment')
+    def environment_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if value is None:
+            return value
+
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"^[0-9a-fA-F]{24}$", value):
+            raise ValueError(r"must validate the regular expression /^[0-9a-fA-F]{24}$/")
+        return value
+
+    @field_validator('interaction')
+    def interaction_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if value is None:
+            return value
+
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"^[0-9a-fA-F]{24}$", value):
+            raise ValueError(r"must validate the regular expression /^[0-9a-fA-F]{24}$/")
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -114,15 +151,9 @@ class UpdateExecutionRunPayload(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of parent
-        if self.parent:
-            _dict['parent'] = self.parent.to_dict()
         # override the default output from pydantic by calling `to_dict()` of evaluation
         if self.evaluation:
             _dict['evaluation'] = self.evaluation.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of environment
-        if self.environment:
-            _dict['environment'] = self.environment.to_dict()
         # override the default output from pydantic by calling `to_dict()` of result_schema
         if self.result_schema:
             _dict['result_schema'] = self.result_schema.to_dict()
@@ -154,9 +185,6 @@ class UpdateExecutionRunPayload(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of workflow
         if self.workflow:
             _dict['workflow'] = self.workflow.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of interaction
-        if self.interaction:
-            _dict['interaction'] = self.interaction.to_dict()
         # puts key-value pairs in additional_properties in the top level
         if self.additional_properties is not None:
             for _key, _value in self.additional_properties.items():
@@ -180,10 +208,10 @@ class UpdateExecutionRunPayload(BaseModel):
 
         _obj = cls.model_validate({
             "id": obj.get("id"),
-            "parent": ExecutionRunParent.from_dict(obj["parent"]) if obj.get("parent") is not None else None,
+            "parent": obj.get("parent"),
             "evaluation": ExecutionRunEvaluation.from_dict(obj["evaluation"]) if obj.get("evaluation") is not None else None,
             "tags": obj.get("tags"),
-            "environment": ExecutionEnvironmentRef.from_dict(obj["environment"]) if obj.get("environment") is not None else None,
+            "environment": obj.get("environment"),
             "modelId": obj.get("modelId"),
             "result_schema": JSONSchema.from_dict(obj["result_schema"]) if obj.get("result_schema") is not None else None,
             "ttl": obj.get("ttl"),
@@ -205,7 +233,7 @@ class UpdateExecutionRunPayload(BaseModel):
             "created_by": obj.get("created_by"),
             "updated_by": obj.get("updated_by"),
             "workflow": ExecutionRunWorkflow.from_dict(obj["workflow"]) if obj.get("workflow") is not None else None,
-            "interaction": InteractionRef.from_dict(obj["interaction"]) if obj.get("interaction") is not None else None
+            "interaction": obj.get("interaction")
         })
         # store additional fields in additional_properties
         for _key in obj.keys():

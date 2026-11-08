@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool
 from typing import Any, ClassVar, Dict, Optional, Union
+from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -27,10 +28,10 @@ class AgenticViewRerankConfiguration(BaseModel):
     """
     AgenticViewRerankConfiguration
     """ # noqa: E501
-    interaction: Optional[StrictStr] = Field(default=None, description="Interaction used only for candidate reranking. Defaults to sys:ContentSearchReranker.")
-    max_candidates: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Maximum candidates from the current result page sent to the model.")
+    interaction: Optional[Annotated[str, Field(strict=True, max_length=200)]] = Field(default=None, description="Interaction used only for candidate reranking. Defaults to sys:ContentSearchReranker.")
+    max_candidates: Optional[Union[Annotated[float, Field(multiple_of=1, le=50, strict=True, ge=2)], Annotated[int, Field(le=50, strict=True, ge=2)]]] = Field(default=None, description="Maximum candidates from the current result page sent to the model.")
     include_why_match: Optional[StrictBool] = Field(default=None, description="Ask the model for a short per-result explanation. Defaults to true.")
-    timeout_ms: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Reranking-stage timeout.")
+    timeout_ms: Optional[Union[Annotated[float, Field(multiple_of=1, le=60000, strict=True, ge=1000)], Annotated[int, Field(le=60000, strict=True, ge=1000)]]] = Field(default=None, description="Reranking-stage timeout.")
     __properties: ClassVar[List[str]] = ["interaction", "max_candidates", "include_why_match", "timeout_ms"]
 
     model_config = ConfigDict(

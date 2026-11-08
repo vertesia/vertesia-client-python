@@ -2405,7 +2405,7 @@ class FilesApi:
     @validate_call
     def get_file_metadata(
         self,
-        file: Annotated[str, Field(min_length=1, strict=True)],
+        file: Annotated[str, Field(strict=True, description="The file path (relative to bucket) or full URI. It must not be blank or contain control characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -2424,7 +2424,7 @@ class FilesApi:
 
         Retrieves metadata for a file by relative project path or fully qualified storage URI.  **Required permissions:** `content:read`
 
-        :param file: (required)
+        :param file: The file path (relative to bucket) or full URI. It must not be blank or contain control characters. (required)
         :type file: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -2479,7 +2479,7 @@ class FilesApi:
     @validate_call
     def get_file_metadata_with_http_info(
         self,
-        file: Annotated[str, Field(min_length=1, strict=True)],
+        file: Annotated[str, Field(strict=True, description="The file path (relative to bucket) or full URI. It must not be blank or contain control characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -2498,7 +2498,7 @@ class FilesApi:
 
         Retrieves metadata for a file by relative project path or fully qualified storage URI.  **Required permissions:** `content:read`
 
-        :param file: (required)
+        :param file: The file path (relative to bucket) or full URI. It must not be blank or contain control characters. (required)
         :type file: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -2553,7 +2553,7 @@ class FilesApi:
     @validate_call
     def get_file_metadata_without_preload_content(
         self,
-        file: Annotated[str, Field(min_length=1, strict=True)],
+        file: Annotated[str, Field(strict=True, description="The file path (relative to bucket) or full URI. It must not be blank or contain control characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -2572,7 +2572,7 @@ class FilesApi:
 
         Retrieves metadata for a file by relative project path or fully qualified storage URI.  **Required permissions:** `content:read`
 
-        :param file: (required)
+        :param file: The file path (relative to bucket) or full URI. It must not be blank or contain control characters. (required)
         :type file: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str

@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -34,7 +35,7 @@ class CreateUserPayload(BaseModel):
     clearance: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="BLP clearance level — determines max document sensitivity the user can access")
     compartments: Optional[List[StrictStr]] = Field(default=None, description="Compartments the user belongs to — restricts access to documents in matching compartments")
     email: StrictStr = Field(description="The address the user signs in with. Matched case-insensitively against existing users, so repeating a request returns the same user.")
-    groups: Optional[List[StrictStr]] = Field(default=None, description="IDs of groups of the current account to add the user to.")
+    groups: Optional[List[Annotated[str, Field(strict=True)]]] = Field(default=None, description="IDs of groups of the current account to add the user to.")
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["name", "language", "phone", "properties", "clearance", "compartments", "email", "groups"]
 

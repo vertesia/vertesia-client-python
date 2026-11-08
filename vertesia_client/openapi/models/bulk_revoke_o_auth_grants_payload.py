@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.o_auth_grant_sort_field import OAuthGrantSortField
 from vertesia_client.openapi.models.o_auth_grant_sort_order import OAuthGrantSortOrder
 from typing import Optional, Set
@@ -29,9 +30,9 @@ class BulkRevokeOAuthGrantsPayload(BaseModel):
     """
     BulkRevokeOAuthGrantsPayload
     """ # noqa: E501
-    account_id: Optional[StrictStr] = None
-    project_id: Optional[StrictStr] = None
-    user_id: Optional[StrictStr] = None
+    account_id: Optional[Annotated[str, Field(strict=True)]] = None
+    project_id: Optional[Annotated[str, Field(strict=True)]] = None
+    user_id: Optional[Annotated[str, Field(strict=True)]] = None
     client_id: Optional[StrictStr] = None
     resource: Optional[StrictStr] = None
     status: Optional[StrictStr] = None
@@ -42,6 +43,45 @@ class BulkRevokeOAuthGrantsPayload(BaseModel):
     grant_ids: Optional[List[StrictStr]] = None
     include_consent: Optional[StrictBool] = None
     __properties: ClassVar[List[str]] = ["account_id", "project_id", "user_id", "client_id", "resource", "status", "limit", "offset", "sort_by", "sort_order", "grant_ids", "include_consent"]
+
+    @field_validator('account_id')
+    def account_id_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if value is None:
+            return value
+
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"^(?:[0-9a-fA-F]{24})?$", value):
+            raise ValueError(r"must validate the regular expression /^(?:[0-9a-fA-F]{24})?$/")
+        return value
+
+    @field_validator('project_id')
+    def project_id_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if value is None:
+            return value
+
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"^(?:[0-9a-fA-F]{24})?$", value):
+            raise ValueError(r"must validate the regular expression /^(?:[0-9a-fA-F]{24})?$/")
+        return value
+
+    @field_validator('user_id')
+    def user_id_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if value is None:
+            return value
+
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"^(?:[0-9a-fA-F]{24})?$", value):
+            raise ValueError(r"must validate the regular expression /^(?:[0-9a-fA-F]{24})?$/")
+        return value
 
     @field_validator('status')
     def status_validate_enum(cls, value):

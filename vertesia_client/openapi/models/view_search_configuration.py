@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr, field_validator
+from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.agentic_view_search_configuration import AgenticViewSearchConfiguration
 from vertesia_client.openapi.models.view_key_term_definition import ViewKeyTermDefinition
 from vertesia_client.openapi.models.view_search_field_definition import ViewSearchFieldDefinition
@@ -30,11 +31,11 @@ class ViewSearchConfiguration(BaseModel):
     """
     ViewSearchConfiguration
     """ # noqa: E501
-    renderer: Optional[StrictStr] = None
+    renderer: Optional[Annotated[str, Field(strict=True, max_length=120)]] = None
     mode: Optional[StrictStr] = None
-    placeholder: Optional[StrictStr] = None
-    fields: Optional[List[ViewSearchFieldDefinition]] = None
-    key_terms: Optional[List[ViewKeyTermDefinition]] = None
+    placeholder: Optional[Annotated[str, Field(strict=True, max_length=240)]] = None
+    fields: Optional[Annotated[List[ViewSearchFieldDefinition], Field(max_length=50)]] = None
+    key_terms: Optional[Annotated[List[ViewKeyTermDefinition], Field(max_length=50)]] = None
     agentic: Optional[AgenticViewSearchConfiguration] = None
     __properties: ClassVar[List[str]] = ["renderer", "mode", "placeholder", "fields", "key_terms", "agentic"]
 

@@ -29,7 +29,7 @@ class CollectionChildrenUpdatePayload(BaseModel):
     CollectionChildrenUpdatePayload
     """ # noqa: E501
     action: StrictStr
-    children: Annotated[List[StrictStr], Field(min_length=1)]
+    children: Annotated[List[Annotated[str, Field(strict=True)]], Field(min_length=1)] = Field(description="IDs of the child collections to add or remove, as 24 hexadecimal characters.")
     __properties: ClassVar[List[str]] = ["action", "children"]
 
     @field_validator('action')

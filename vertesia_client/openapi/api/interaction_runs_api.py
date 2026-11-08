@@ -930,10 +930,10 @@ class InteractionRunsApi:
         offset: Annotated[Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=0)]], Field(description="Number of runs to skip.")] = None,
         interaction: Annotated[Optional[List[StrictStr]], Field(description="Interaction ids, or in-code interaction names, to filter by.")] = None,
         model: Annotated[Optional[List[StrictStr]], Field(description="Model ids to filter by.")] = None,
-        environment: Annotated[Optional[List[Annotated[str, Field(strict=True)]]], Field(description="Environment ids to filter by, as 24 hexadecimal characters.")] = None,
+        environment: Annotated[Optional[List[Annotated[str, Field(strict=True)]]], Field(description="Environment ids to filter by, as 24 hexadecimal characters; each value may list several, separated by commas.")] = None,
         status: Annotated[Optional[List[StrictStr]], Field(description="Run statuses to filter by.")] = None,
         tag: Annotated[Optional[List[StrictStr]], Field(description="Run tags to filter by.")] = None,
-        parent: Annotated[Optional[List[StrictStr]], Field(description="Parent run ids to filter by. Mutually exclusive with `is_root=true`.")] = None,
+        parent: Annotated[Optional[List[Annotated[str, Field(strict=True)]]], Field(description="Parent run ids to filter by, as 24 hexadecimal characters; each value may list several, separated by commas. The legacy value `false` selects root runs. Mutually exclusive with `is_root=true`.")] = None,
         is_root: Annotated[Optional[StrictBool], Field(description="Return only runs that have no parent. Mutually exclusive with `parent`.")] = None,
         workflow_run_ids: Annotated[Optional[List[StrictStr]], Field(description="Temporal workflow run ids.")] = None,
         workflow_ids: Annotated[Optional[List[StrictStr]], Field(description="Temporal workflow ids.")] = None,
@@ -964,13 +964,13 @@ class InteractionRunsApi:
         :type interaction: List[str]
         :param model: Model ids to filter by.
         :type model: List[str]
-        :param environment: Environment ids to filter by, as 24 hexadecimal characters.
+        :param environment: Environment ids to filter by, as 24 hexadecimal characters; each value may list several, separated by commas.
         :type environment: List[str]
         :param status: Run statuses to filter by.
         :type status: List[str]
         :param tag: Run tags to filter by.
         :type tag: List[str]
-        :param parent: Parent run ids to filter by. Mutually exclusive with `is_root=true`.
+        :param parent: Parent run ids to filter by, as 24 hexadecimal characters; each value may list several, separated by commas. The legacy value `false` selects root runs. Mutually exclusive with `is_root=true`.
         :type parent: List[str]
         :param is_root: Return only runs that have no parent. Mutually exclusive with `parent`.
         :type is_root: bool
@@ -1043,10 +1043,10 @@ class InteractionRunsApi:
         offset: Annotated[Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=0)]], Field(description="Number of runs to skip.")] = None,
         interaction: Annotated[Optional[List[StrictStr]], Field(description="Interaction ids, or in-code interaction names, to filter by.")] = None,
         model: Annotated[Optional[List[StrictStr]], Field(description="Model ids to filter by.")] = None,
-        environment: Annotated[Optional[List[Annotated[str, Field(strict=True)]]], Field(description="Environment ids to filter by, as 24 hexadecimal characters.")] = None,
+        environment: Annotated[Optional[List[Annotated[str, Field(strict=True)]]], Field(description="Environment ids to filter by, as 24 hexadecimal characters; each value may list several, separated by commas.")] = None,
         status: Annotated[Optional[List[StrictStr]], Field(description="Run statuses to filter by.")] = None,
         tag: Annotated[Optional[List[StrictStr]], Field(description="Run tags to filter by.")] = None,
-        parent: Annotated[Optional[List[StrictStr]], Field(description="Parent run ids to filter by. Mutually exclusive with `is_root=true`.")] = None,
+        parent: Annotated[Optional[List[Annotated[str, Field(strict=True)]]], Field(description="Parent run ids to filter by, as 24 hexadecimal characters; each value may list several, separated by commas. The legacy value `false` selects root runs. Mutually exclusive with `is_root=true`.")] = None,
         is_root: Annotated[Optional[StrictBool], Field(description="Return only runs that have no parent. Mutually exclusive with `parent`.")] = None,
         workflow_run_ids: Annotated[Optional[List[StrictStr]], Field(description="Temporal workflow run ids.")] = None,
         workflow_ids: Annotated[Optional[List[StrictStr]], Field(description="Temporal workflow ids.")] = None,
@@ -1077,13 +1077,13 @@ class InteractionRunsApi:
         :type interaction: List[str]
         :param model: Model ids to filter by.
         :type model: List[str]
-        :param environment: Environment ids to filter by, as 24 hexadecimal characters.
+        :param environment: Environment ids to filter by, as 24 hexadecimal characters; each value may list several, separated by commas.
         :type environment: List[str]
         :param status: Run statuses to filter by.
         :type status: List[str]
         :param tag: Run tags to filter by.
         :type tag: List[str]
-        :param parent: Parent run ids to filter by. Mutually exclusive with `is_root=true`.
+        :param parent: Parent run ids to filter by, as 24 hexadecimal characters; each value may list several, separated by commas. The legacy value `false` selects root runs. Mutually exclusive with `is_root=true`.
         :type parent: List[str]
         :param is_root: Return only runs that have no parent. Mutually exclusive with `parent`.
         :type is_root: bool
@@ -1156,10 +1156,10 @@ class InteractionRunsApi:
         offset: Annotated[Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=0)]], Field(description="Number of runs to skip.")] = None,
         interaction: Annotated[Optional[List[StrictStr]], Field(description="Interaction ids, or in-code interaction names, to filter by.")] = None,
         model: Annotated[Optional[List[StrictStr]], Field(description="Model ids to filter by.")] = None,
-        environment: Annotated[Optional[List[Annotated[str, Field(strict=True)]]], Field(description="Environment ids to filter by, as 24 hexadecimal characters.")] = None,
+        environment: Annotated[Optional[List[Annotated[str, Field(strict=True)]]], Field(description="Environment ids to filter by, as 24 hexadecimal characters; each value may list several, separated by commas.")] = None,
         status: Annotated[Optional[List[StrictStr]], Field(description="Run statuses to filter by.")] = None,
         tag: Annotated[Optional[List[StrictStr]], Field(description="Run tags to filter by.")] = None,
-        parent: Annotated[Optional[List[StrictStr]], Field(description="Parent run ids to filter by. Mutually exclusive with `is_root=true`.")] = None,
+        parent: Annotated[Optional[List[Annotated[str, Field(strict=True)]]], Field(description="Parent run ids to filter by, as 24 hexadecimal characters; each value may list several, separated by commas. The legacy value `false` selects root runs. Mutually exclusive with `is_root=true`.")] = None,
         is_root: Annotated[Optional[StrictBool], Field(description="Return only runs that have no parent. Mutually exclusive with `parent`.")] = None,
         workflow_run_ids: Annotated[Optional[List[StrictStr]], Field(description="Temporal workflow run ids.")] = None,
         workflow_ids: Annotated[Optional[List[StrictStr]], Field(description="Temporal workflow ids.")] = None,
@@ -1190,13 +1190,13 @@ class InteractionRunsApi:
         :type interaction: List[str]
         :param model: Model ids to filter by.
         :type model: List[str]
-        :param environment: Environment ids to filter by, as 24 hexadecimal characters.
+        :param environment: Environment ids to filter by, as 24 hexadecimal characters; each value may list several, separated by commas.
         :type environment: List[str]
         :param status: Run statuses to filter by.
         :type status: List[str]
         :param tag: Run tags to filter by.
         :type tag: List[str]
-        :param parent: Parent run ids to filter by. Mutually exclusive with `is_root=true`.
+        :param parent: Parent run ids to filter by, as 24 hexadecimal characters; each value may list several, separated by commas. The legacy value `false` selects root runs. Mutually exclusive with `is_root=true`.
         :type parent: List[str]
         :param is_root: Return only runs that have no parent. Mutually exclusive with `parent`.
         :type is_root: bool

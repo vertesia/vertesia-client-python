@@ -3095,7 +3095,7 @@ class ObjectsApi:
     def get_content_objects_export_status(
         self,
         workflow_id: StrictStr,
-        run_id: StrictStr,
+        run_id: Annotated[str, Field(strict=True, description="The run ID of the export workflow, a UUID.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -3116,7 +3116,7 @@ class ObjectsApi:
 
         :param workflow_id: (required)
         :type workflow_id: str
-        :param run_id: (required)
+        :param run_id: The run ID of the export workflow, a UUID. (required)
         :type run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -3172,7 +3172,7 @@ class ObjectsApi:
     def get_content_objects_export_status_with_http_info(
         self,
         workflow_id: StrictStr,
-        run_id: StrictStr,
+        run_id: Annotated[str, Field(strict=True, description="The run ID of the export workflow, a UUID.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -3193,7 +3193,7 @@ class ObjectsApi:
 
         :param workflow_id: (required)
         :type workflow_id: str
-        :param run_id: (required)
+        :param run_id: The run ID of the export workflow, a UUID. (required)
         :type run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -3249,7 +3249,7 @@ class ObjectsApi:
     def get_content_objects_export_status_without_preload_content(
         self,
         workflow_id: StrictStr,
-        run_id: StrictStr,
+        run_id: Annotated[str, Field(strict=True, description="The run ID of the export workflow, a UUID.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -3270,7 +3270,7 @@ class ObjectsApi:
 
         :param workflow_id: (required)
         :type workflow_id: str
-        :param run_id: (required)
+        :param run_id: The run ID of the export workflow, a UUID. (required)
         :type run_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str

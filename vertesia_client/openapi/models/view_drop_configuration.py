@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr, field_validator
+from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.view_upload_drop_parameters import ViewUploadDropParameters
 from typing import Optional, Set
 from typing_extensions import Self
@@ -29,7 +30,7 @@ class ViewDropConfiguration(BaseModel):
     A declarative result-area drop target. Stored JSON supports the built-in upload action only.
     """ # noqa: E501
     handler: StrictStr
-    accept: Optional[List[StrictStr]] = None
+    accept: Optional[Annotated[List[StrictStr], Field(min_length=1, max_length=1)]] = None
     params: Optional[ViewUploadDropParameters] = None
     __properties: ClassVar[List[str]] = ["handler", "accept", "params"]
 

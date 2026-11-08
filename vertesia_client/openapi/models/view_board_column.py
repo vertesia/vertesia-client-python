@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field
 from typing import Any, ClassVar, Dict, Optional, Union
+from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -27,9 +28,9 @@ class ViewBoardColumn(BaseModel):
     """
     ViewBoardColumn
     """ # noqa: E501
-    value: StrictStr
-    label: StrictStr
-    order: Optional[Union[StrictFloat, StrictInt]] = None
+    value: Annotated[str, Field(min_length=1, strict=True)]
+    label: Annotated[str, Field(min_length=1, strict=True, max_length=120)]
+    order: Optional[Union[Annotated[float, Field(multiple_of=1, strict=True)], Annotated[int, Field(strict=True)]]] = None
     __properties: ClassVar[List[str]] = ["value", "label", "order"]
 
     model_config = ConfigDict(

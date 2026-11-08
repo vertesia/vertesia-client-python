@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing_extensions import Annotated
 from typing import Optional, Set
@@ -30,11 +30,11 @@ class UpdateUserGroupPayload(BaseModel):
     """ # noqa: E501
     name: Annotated[str, Field(min_length=1, strict=True)]
     description: Optional[StrictStr] = None
-    tags: Optional[List[StrictStr]] = None
+    tags: Optional[List[Annotated[str, Field(min_length=1, strict=True)]]] = None
     properties: Optional[Dict[str, Any]] = Field(default=None, description="Custom properties for dynamic permission matching")
     clearance: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="BLP clearance level — merged with user clearance using max()")
     compartments: Optional[List[StrictStr]] = Field(default=None, description="Compartments — merged with user compartments using array union")
-    allowed_projects: Optional[List[StrictStr]] = Field(default=None, description="Projects this group is allowed to be used in. When empty or absent the group is org-wide (usable in any project). When set, the group may only be used to grant permissions in the listed projects.")
+    allowed_projects: Optional[List[Annotated[str, Field(strict=True)]]] = Field(default=None, description="Projects this group is allowed to be used in, as project IDs. When empty or absent the group is org-wide.")
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["name", "description", "tags", "properties", "clearance", "compartments", "allowed_projects"]
 

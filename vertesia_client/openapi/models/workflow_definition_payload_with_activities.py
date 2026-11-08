@@ -38,7 +38,7 @@ class WorkflowDefinitionPayloadWithActivities(BaseModel):
     options: Optional[DSLActivityOptions] = None
     result: Optional[StrictStr] = None
     debug_mode: Optional[StrictBool] = None
-    id: Optional[StrictStr] = Field(default=None, description="Legacy upsert: update this definition instead of creating a new one.")
+    id: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Legacy upsert: update this definition instead of creating a new one, as 24 hexadecimal characters.")
     created_at: Optional[StrictStr] = Field(default=None, description="Legacy upsert: ignored, the stored value wins.")
     updated_at: Optional[StrictStr] = Field(default=None, description="Legacy upsert: the value the definition was read with, for conflict detection.")
     steps: Optional[List[DSLWorkflowStep]] = None
@@ -46,6 +46,19 @@ class WorkflowDefinitionPayloadWithActivities(BaseModel):
     spec_format: StrictStr
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["name", "description", "tags", "vars", "options", "result", "debug_mode", "id", "created_at", "updated_at", "steps", "activities", "spec_format"]
+
+    @field_validator('id')
+    def id_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if value is None:
+            return value
+
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"^[0-9a-fA-F]{24}$", value):
+            raise ValueError(r"must validate the regular expression /^[0-9a-fA-F]{24}$/")
+        return value
 
     @field_validator('spec_format')
     def spec_format_validate_enum(cls, value):

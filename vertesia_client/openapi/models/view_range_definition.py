@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, field_validator
 from typing import Any, ClassVar, Dict, Optional, Union
+from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -27,11 +28,21 @@ class ViewRangeDefinition(BaseModel):
     """
     ViewRangeDefinition
     """ # noqa: E501
-    id: StrictStr
-    label: StrictStr
+    id: Annotated[str, Field(min_length=1, strict=True, max_length=64)]
+    label: Annotated[str, Field(min_length=1, strict=True, max_length=120)]
     var_from: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, alias="from")
     to: Optional[Union[StrictFloat, StrictInt]] = None
     __properties: ClassVar[List[str]] = ["id", "label", "from", "to"]
+
+    @field_validator('id')
+    def id_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"^[a-z][a-z0-9_-]*$", value):
+            raise ValueError(r"must validate the regular expression /^[a-z][a-z0-9_-]*$/")
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,

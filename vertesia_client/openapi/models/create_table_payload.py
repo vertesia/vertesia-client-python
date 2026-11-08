@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.data_column import DataColumn
 from vertesia_client.openapi.models.data_foreign_key import DataForeignKey
 from vertesia_client.openapi.models.data_index import DataIndex
@@ -31,7 +32,7 @@ class CreateTablePayload(BaseModel):
     """
     Payload for creating a new table.
     """ # noqa: E501
-    name: StrictStr = Field(description="Table name")
+    name: Annotated[str, Field(strict=True, max_length=64)] = Field(description="Table name: a SQL identifier of letters, digits and underscores, starting with a letter or underscore, at most 64 characters, and not a reserved SQL keyword.")
     description: Optional[StrictStr] = Field(default=None, description="Table description")
     columns: List[DataColumn] = Field(description="Column definitions (at least one required)")
     foreign_keys: Optional[List[DataForeignKey]] = Field(default=None, description="Foreign key constraints")
@@ -39,6 +40,16 @@ class CreateTablePayload(BaseModel):
     semantic_type: Optional[DataTableSemanticType] = Field(default=None, description="Semantic type")
     tags: Optional[List[StrictStr]] = Field(default=None, description="Tags")
     __properties: ClassVar[List[str]] = ["name", "description", "columns", "foreign_keys", "indexes", "semantic_type", "tags"]
+
+    @field_validator('name')
+    def name_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"^[a-zA-Z_][a-zA-Z0-9_]*$", value):
+            raise ValueError(r"must validate the regular expression /^[a-zA-Z_][a-zA-Z0-9_]*$/")
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,

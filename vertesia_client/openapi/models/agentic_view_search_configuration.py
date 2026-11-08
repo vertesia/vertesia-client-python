@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field
 from typing import Any, ClassVar, Dict, Optional, Union
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.agentic_view_rerank_configuration import AgenticViewRerankConfiguration
 from vertesia_client.openapi.models.view_agentic_execution_configuration import ViewAgenticExecutionConfiguration
 from vertesia_client.openapi.models.view_agentic_search_mode import ViewAgenticSearchMode
@@ -30,12 +31,12 @@ class AgenticViewSearchConfiguration(BaseModel):
     """
     AgenticViewSearchConfiguration
     """ # noqa: E501
-    interaction: Optional[StrictStr] = None
+    interaction: Optional[Annotated[str, Field(strict=True, max_length=200)]] = None
     config: Optional[ViewAgenticExecutionConfiguration] = None
-    instructions: Optional[StrictStr] = Field(default=None, description="View-specific guidance for Elasticsearch query planning.")
+    instructions: Optional[Annotated[str, Field(strict=True, max_length=4000)]] = Field(default=None, description="View-specific guidance for Elasticsearch query planning.")
     mode: Optional[ViewAgenticSearchMode] = Field(default=None, description="Generate only Elasticsearch DSL, or generate DSL plus a safe ephemeral result presentation.")
-    timeout_ms: Optional[Union[StrictFloat, StrictInt]] = None
-    minimum_confidence: Optional[Union[StrictFloat, StrictInt]] = None
+    timeout_ms: Optional[Union[Annotated[float, Field(multiple_of=1, le=60000, strict=True, ge=1000)], Annotated[int, Field(le=60000, strict=True, ge=1000)]]] = None
+    minimum_confidence: Optional[Union[Annotated[float, Field(le=1, strict=True, ge=0)], Annotated[int, Field(le=1, strict=True, ge=0)]]] = None
     rerank: Optional[AgenticViewRerankConfiguration] = Field(default=None, description="Optional second stage that reorders an authorized candidate page using the same model configuration.")
     __properties: ClassVar[List[str]] = ["interaction", "config", "instructions", "mode", "timeout_ms", "minimum_confidence", "rerank"]
 

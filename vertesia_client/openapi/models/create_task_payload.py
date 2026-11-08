@@ -31,13 +31,14 @@ class CreateTaskPayload(BaseModel):
     """
     CreateTaskPayload
     """ # noqa: E501
+    fields: Optional[List[TaskField]] = None
     title: Annotated[str, Field(min_length=1, strict=True)]
     description: Optional[StrictStr] = None
     assignee: Optional[StrictStr] = None
-    fields: Optional[List[TaskField]] = None
     source: TaskSource
     due_at: Optional[datetime] = None
-    __properties: ClassVar[List[str]] = ["title", "description", "assignee", "fields", "source", "due_at"]
+    additional_properties: Dict[str, Any] = {}
+    __properties: ClassVar[List[str]] = ["fields", "title", "description", "assignee", "source", "due_at"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -69,8 +70,10 @@ class CreateTaskPayload(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -88,6 +91,11 @@ class CreateTaskPayload(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of source
         if self.source:
             _dict['source'] = self.source.to_dict()
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
         return _dict
 
     @classmethod
@@ -100,13 +108,18 @@ class CreateTaskPayload(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "fields": [TaskField.from_dict(_item) for _item in obj["fields"]] if obj.get("fields") is not None else None,
             "title": obj.get("title"),
             "description": obj.get("description"),
             "assignee": obj.get("assignee"),
-            "fields": [TaskField.from_dict(_item) for _item in obj["fields"]] if obj.get("fields") is not None else None,
             "source": TaskSource.from_dict(obj["source"]) if obj.get("source") is not None else None,
             "due_at": obj.get("due_at")
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 

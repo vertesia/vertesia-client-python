@@ -6559,6 +6559,7 @@ class AgentRunsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "AgentRun",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -6636,6 +6637,7 @@ class AgentRunsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "AgentRun",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -6713,6 +6715,7 @@ class AgentRunsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "AgentRun",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -7136,7 +7139,7 @@ class AgentRunsApi:
         since: Annotated[Optional[datetime], Field(description="Only return runs started after this date")] = None,
         until: Annotated[Optional[datetime], Field(description="Only return runs started at or before this date")] = None,
         limit: Annotated[Optional[Union[Annotated[float, Field(strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]], Field(description="Maximum number of results (default: 50)")] = None,
-        offset: Annotated[Optional[Union[Annotated[float, Field(strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]], Field(description="Offset for pagination")] = None,
+        offset: Annotated[Optional[Union[Annotated[float, Field(strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]], Field(description="Offset for pagination. `offset` plus `limit` (capped at 200, 50 when omitted) must be at most 10000.")] = None,
         sort: Annotated[Optional[List[StrictStr]], Field(description="Multi-field sort. Each item has the form `field` or `field:order`, where   field is one of: `started_at`, `updated_at`   order is one of: `asc`, `desc` (default: `desc`) The first item is the primary sort; subsequent items are tie-breakers. Example: `['updated_at:desc', 'started_at:asc']`. Defaults to `['started_at:desc']` when omitted.")] = None,
         _request_timeout: Union[
             None,
@@ -7179,7 +7182,7 @@ class AgentRunsApi:
         :type until: datetime
         :param limit: Maximum number of results (default: 50)
         :type limit: float
-        :param offset: Offset for pagination
+        :param offset: Offset for pagination. `offset` plus `limit` (capped at 200, 50 when omitted) must be at most 10000.
         :type offset: float
         :param sort: Multi-field sort. Each item has the form `field` or `field:order`, where   field is one of: `started_at`, `updated_at`   order is one of: `asc`, `desc` (default: `desc`) The first item is the primary sort; subsequent items are tie-breakers. Example: `['updated_at:desc', 'started_at:asc']`. Defaults to `['started_at:desc']` when omitted.
         :type sort: List[str]
@@ -7257,7 +7260,7 @@ class AgentRunsApi:
         since: Annotated[Optional[datetime], Field(description="Only return runs started after this date")] = None,
         until: Annotated[Optional[datetime], Field(description="Only return runs started at or before this date")] = None,
         limit: Annotated[Optional[Union[Annotated[float, Field(strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]], Field(description="Maximum number of results (default: 50)")] = None,
-        offset: Annotated[Optional[Union[Annotated[float, Field(strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]], Field(description="Offset for pagination")] = None,
+        offset: Annotated[Optional[Union[Annotated[float, Field(strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]], Field(description="Offset for pagination. `offset` plus `limit` (capped at 200, 50 when omitted) must be at most 10000.")] = None,
         sort: Annotated[Optional[List[StrictStr]], Field(description="Multi-field sort. Each item has the form `field` or `field:order`, where   field is one of: `started_at`, `updated_at`   order is one of: `asc`, `desc` (default: `desc`) The first item is the primary sort; subsequent items are tie-breakers. Example: `['updated_at:desc', 'started_at:asc']`. Defaults to `['started_at:desc']` when omitted.")] = None,
         _request_timeout: Union[
             None,
@@ -7300,7 +7303,7 @@ class AgentRunsApi:
         :type until: datetime
         :param limit: Maximum number of results (default: 50)
         :type limit: float
-        :param offset: Offset for pagination
+        :param offset: Offset for pagination. `offset` plus `limit` (capped at 200, 50 when omitted) must be at most 10000.
         :type offset: float
         :param sort: Multi-field sort. Each item has the form `field` or `field:order`, where   field is one of: `started_at`, `updated_at`   order is one of: `asc`, `desc` (default: `desc`) The first item is the primary sort; subsequent items are tie-breakers. Example: `['updated_at:desc', 'started_at:asc']`. Defaults to `['started_at:desc']` when omitted.
         :type sort: List[str]
@@ -7378,7 +7381,7 @@ class AgentRunsApi:
         since: Annotated[Optional[datetime], Field(description="Only return runs started after this date")] = None,
         until: Annotated[Optional[datetime], Field(description="Only return runs started at or before this date")] = None,
         limit: Annotated[Optional[Union[Annotated[float, Field(strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]], Field(description="Maximum number of results (default: 50)")] = None,
-        offset: Annotated[Optional[Union[Annotated[float, Field(strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]], Field(description="Offset for pagination")] = None,
+        offset: Annotated[Optional[Union[Annotated[float, Field(strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]], Field(description="Offset for pagination. `offset` plus `limit` (capped at 200, 50 when omitted) must be at most 10000.")] = None,
         sort: Annotated[Optional[List[StrictStr]], Field(description="Multi-field sort. Each item has the form `field` or `field:order`, where   field is one of: `started_at`, `updated_at`   order is one of: `asc`, `desc` (default: `desc`) The first item is the primary sort; subsequent items are tie-breakers. Example: `['updated_at:desc', 'started_at:asc']`. Defaults to `['started_at:desc']` when omitted.")] = None,
         _request_timeout: Union[
             None,
@@ -7421,7 +7424,7 @@ class AgentRunsApi:
         :type until: datetime
         :param limit: Maximum number of results (default: 50)
         :type limit: float
-        :param offset: Offset for pagination
+        :param offset: Offset for pagination. `offset` plus `limit` (capped at 200, 50 when omitted) must be at most 10000.
         :type offset: float
         :param sort: Multi-field sort. Each item has the form `field` or `field:order`, where   field is one of: `started_at`, `updated_at`   order is one of: `asc`, `desc` (default: `desc`) The first item is the primary sort; subsequent items are tie-breakers. Example: `['updated_at:desc', 'started_at:asc']`. Defaults to `['started_at:desc']` when omitted.
         :type sort: List[str]

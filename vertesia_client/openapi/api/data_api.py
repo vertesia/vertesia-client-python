@@ -770,6 +770,7 @@ class DataApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '201': "DashboardVersionItem",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -851,6 +852,7 @@ class DataApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '201': "DashboardVersionItem",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -932,6 +934,7 @@ class DataApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '201': "DashboardVersionItem",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -3505,7 +3508,7 @@ class DataApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '202': "DashboardExport",
             '404': None,
-            '422': None,
+            '409': None,
             '500': "ErrorResponse",
             '503': None,
             '4XX': "ErrorResponse",
@@ -3589,7 +3592,7 @@ class DataApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '202': "DashboardExport",
             '404': None,
-            '422': None,
+            '409': None,
             '500': "ErrorResponse",
             '503': None,
             '4XX': "ErrorResponse",
@@ -3673,7 +3676,7 @@ class DataApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '202': "DashboardExport",
             '404': None,
-            '422': None,
+            '409': None,
             '500': "ErrorResponse",
             '503': None,
             '4XX': "ErrorResponse",
@@ -8699,6 +8702,7 @@ class DataApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "Dashboard",
+            '404': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -8784,6 +8788,7 @@ class DataApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "Dashboard",
+            '404': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -8869,6 +8874,7 @@ class DataApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "Dashboard",
+            '404': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -10608,6 +10614,7 @@ class DataApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "Dashboard",
+            '404': None,
             '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
@@ -10690,6 +10697,7 @@ class DataApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "Dashboard",
+            '404': None,
             '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
@@ -10772,6 +10780,7 @@ class DataApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "Dashboard",
+            '404': None,
             '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",

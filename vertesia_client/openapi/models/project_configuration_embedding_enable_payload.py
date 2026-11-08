@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, Optional, Union
+from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -27,7 +28,7 @@ class ProjectConfigurationEmbeddingEnablePayload(BaseModel):
     """
     ProjectConfigurationEmbeddingEnablePayload
     """ # noqa: E501
-    environment: StrictStr
+    environment: Annotated[str, Field(min_length=1, strict=True)] = Field(description="The environment that runs the embedding model.")
     max_tokens: Optional[Union[StrictFloat, StrictInt]] = None
     model: Optional[StrictStr] = None
     __properties: ClassVar[List[str]] = ["environment", "max_tokens", "model"]

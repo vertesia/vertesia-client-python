@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 from typing import Any, ClassVar, Dict, List
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.view_sort_clause import ViewSortClause
 from typing import Optional, Set
 from typing_extensions import Self
@@ -28,10 +29,20 @@ class ViewSortOption(BaseModel):
     """
     ViewSortOption
     """ # noqa: E501
-    id: StrictStr
-    label: StrictStr
-    sort: List[ViewSortClause]
+    id: Annotated[str, Field(min_length=1, strict=True, max_length=64)]
+    label: Annotated[str, Field(min_length=1, strict=True, max_length=120)]
+    sort: Annotated[List[ViewSortClause], Field(min_length=1)]
     __properties: ClassVar[List[str]] = ["id", "label", "sort"]
+
+    @field_validator('id')
+    def id_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"^[a-z][a-z0-9_-]*$", value):
+            raise ValueError(r"must validate the regular expression /^[a-z][a-z0-9_-]*$/")
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,

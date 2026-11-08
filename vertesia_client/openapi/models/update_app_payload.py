@@ -45,7 +45,7 @@ class UpdateAppPayload(BaseModel):
     visibility: StrictStr = Field(description="Visibility level of the app: - \"public\": visible to all accounts - \"private\": visible only to the owning account - \"vertesia\": visible only to Vertesia team members (any project)")
     title: StrictStr
     description: StrictStr
-    publisher: StrictStr
+    publisher: Annotated[str, Field(min_length=1, strict=True)] = Field(description="The publisher of the app. Must not be empty.")
     icon: Optional[StrictStr] = Field(default=None, description="A svg icon for the app.")
     color: Optional[StrictStr] = Field(default=None, description="A color name to be used as the color of the app card (e.g. blue, red, green, etc.) If not specified a random color will be picked.")
     preview_screenshot: Optional[AppManifestPreviewScreenshot] = None

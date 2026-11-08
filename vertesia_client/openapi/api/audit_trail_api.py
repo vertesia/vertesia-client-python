@@ -1243,8 +1243,8 @@ class AuditTrailApi:
         effective_principal_id: Annotated[Optional[StrictStr], Field(description="Filter by delegated/direct effective principal ref (matches effective_principal_id column).")] = None,
         has_effective_principal: Annotated[Optional[StrictBool], Field(description="Filter by whether an event has an effective principal ref.")] = None,
         project_id: Annotated[Optional[StrictStr], Field(description="Filter by project ID. Honoured only for account-scoped principals; a project-scoped principal always reads its own project.")] = None,
-        var_from: Annotated[Optional[StrictStr], Field(description="Start time (ISO string)")] = None,
-        to: Annotated[Optional[StrictStr], Field(description="End time (ISO string)")] = None,
+        var_from: Annotated[Optional[Annotated[str, Field(strict=True)]], Field(description="Start time: an ISO 8601 date or date-time, such as 2026-01-31 or 2026-01-31T12:00:00Z. Empty means no bound.")] = None,
+        to: Annotated[Optional[Annotated[str, Field(strict=True)]], Field(description="End time: an ISO 8601 date or date-time, such as 2026-01-31 or 2026-01-31T12:00:00Z. Empty means no bound.")] = None,
         limit: Annotated[Optional[Union[Annotated[float, Field(multiple_of=1, le=9007199254740991, strict=True, ge=0)], Annotated[int, Field(le=2147483647, strict=True, ge=0)]]], Field(description="Pagination: number of items to return (default 50, max 200)")] = None,
         offset: Annotated[Optional[Union[Annotated[float, Field(multiple_of=1, le=9007199254740991, strict=True, ge=0)], Annotated[int, Field(le=2147483647, strict=True, ge=0)]]], Field(description="Pagination: offset")] = None,
         _request_timeout: Union[
@@ -1282,9 +1282,9 @@ class AuditTrailApi:
         :type has_effective_principal: bool
         :param project_id: Filter by project ID. Honoured only for account-scoped principals; a project-scoped principal always reads its own project.
         :type project_id: str
-        :param var_from: Start time (ISO string)
+        :param var_from: Start time: an ISO 8601 date or date-time, such as 2026-01-31 or 2026-01-31T12:00:00Z. Empty means no bound.
         :type var_from: str
-        :param to: End time (ISO string)
+        :param to: End time: an ISO 8601 date or date-time, such as 2026-01-31 or 2026-01-31T12:00:00Z. Empty means no bound.
         :type to: str
         :param limit: Pagination: number of items to return (default 50, max 200)
         :type limit: float
@@ -1360,8 +1360,8 @@ class AuditTrailApi:
         effective_principal_id: Annotated[Optional[StrictStr], Field(description="Filter by delegated/direct effective principal ref (matches effective_principal_id column).")] = None,
         has_effective_principal: Annotated[Optional[StrictBool], Field(description="Filter by whether an event has an effective principal ref.")] = None,
         project_id: Annotated[Optional[StrictStr], Field(description="Filter by project ID. Honoured only for account-scoped principals; a project-scoped principal always reads its own project.")] = None,
-        var_from: Annotated[Optional[StrictStr], Field(description="Start time (ISO string)")] = None,
-        to: Annotated[Optional[StrictStr], Field(description="End time (ISO string)")] = None,
+        var_from: Annotated[Optional[Annotated[str, Field(strict=True)]], Field(description="Start time: an ISO 8601 date or date-time, such as 2026-01-31 or 2026-01-31T12:00:00Z. Empty means no bound.")] = None,
+        to: Annotated[Optional[Annotated[str, Field(strict=True)]], Field(description="End time: an ISO 8601 date or date-time, such as 2026-01-31 or 2026-01-31T12:00:00Z. Empty means no bound.")] = None,
         limit: Annotated[Optional[Union[Annotated[float, Field(multiple_of=1, le=9007199254740991, strict=True, ge=0)], Annotated[int, Field(le=2147483647, strict=True, ge=0)]]], Field(description="Pagination: number of items to return (default 50, max 200)")] = None,
         offset: Annotated[Optional[Union[Annotated[float, Field(multiple_of=1, le=9007199254740991, strict=True, ge=0)], Annotated[int, Field(le=2147483647, strict=True, ge=0)]]], Field(description="Pagination: offset")] = None,
         _request_timeout: Union[
@@ -1399,9 +1399,9 @@ class AuditTrailApi:
         :type has_effective_principal: bool
         :param project_id: Filter by project ID. Honoured only for account-scoped principals; a project-scoped principal always reads its own project.
         :type project_id: str
-        :param var_from: Start time (ISO string)
+        :param var_from: Start time: an ISO 8601 date or date-time, such as 2026-01-31 or 2026-01-31T12:00:00Z. Empty means no bound.
         :type var_from: str
-        :param to: End time (ISO string)
+        :param to: End time: an ISO 8601 date or date-time, such as 2026-01-31 or 2026-01-31T12:00:00Z. Empty means no bound.
         :type to: str
         :param limit: Pagination: number of items to return (default 50, max 200)
         :type limit: float
@@ -1477,8 +1477,8 @@ class AuditTrailApi:
         effective_principal_id: Annotated[Optional[StrictStr], Field(description="Filter by delegated/direct effective principal ref (matches effective_principal_id column).")] = None,
         has_effective_principal: Annotated[Optional[StrictBool], Field(description="Filter by whether an event has an effective principal ref.")] = None,
         project_id: Annotated[Optional[StrictStr], Field(description="Filter by project ID. Honoured only for account-scoped principals; a project-scoped principal always reads its own project.")] = None,
-        var_from: Annotated[Optional[StrictStr], Field(description="Start time (ISO string)")] = None,
-        to: Annotated[Optional[StrictStr], Field(description="End time (ISO string)")] = None,
+        var_from: Annotated[Optional[Annotated[str, Field(strict=True)]], Field(description="Start time: an ISO 8601 date or date-time, such as 2026-01-31 or 2026-01-31T12:00:00Z. Empty means no bound.")] = None,
+        to: Annotated[Optional[Annotated[str, Field(strict=True)]], Field(description="End time: an ISO 8601 date or date-time, such as 2026-01-31 or 2026-01-31T12:00:00Z. Empty means no bound.")] = None,
         limit: Annotated[Optional[Union[Annotated[float, Field(multiple_of=1, le=9007199254740991, strict=True, ge=0)], Annotated[int, Field(le=2147483647, strict=True, ge=0)]]], Field(description="Pagination: number of items to return (default 50, max 200)")] = None,
         offset: Annotated[Optional[Union[Annotated[float, Field(multiple_of=1, le=9007199254740991, strict=True, ge=0)], Annotated[int, Field(le=2147483647, strict=True, ge=0)]]], Field(description="Pagination: offset")] = None,
         _request_timeout: Union[
@@ -1516,9 +1516,9 @@ class AuditTrailApi:
         :type has_effective_principal: bool
         :param project_id: Filter by project ID. Honoured only for account-scoped principals; a project-scoped principal always reads its own project.
         :type project_id: str
-        :param var_from: Start time (ISO string)
+        :param var_from: Start time: an ISO 8601 date or date-time, such as 2026-01-31 or 2026-01-31T12:00:00Z. Empty means no bound.
         :type var_from: str
-        :param to: End time (ISO string)
+        :param to: End time: an ISO 8601 date or date-time, such as 2026-01-31 or 2026-01-31T12:00:00Z. Empty means no bound.
         :type to: str
         :param limit: Pagination: number of items to return (default 50, max 200)
         :type limit: float

@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictBool, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool
 from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.view_experience_layout import ViewExperienceLayout
 from vertesia_client.openapi.models.view_experience_scope import ViewExperienceScope
 from vertesia_client.openapi.models.view_navigation_item import ViewNavigationItem
@@ -32,12 +33,12 @@ class ViewExperienceConfiguration(BaseModel):
     """
     ViewExperienceConfiguration
     """ # noqa: E501
-    name: StrictStr
-    description: Optional[StrictStr] = None
+    name: Annotated[str, Field(min_length=1, strict=True, max_length=120)]
+    description: Optional[Annotated[str, Field(strict=True, max_length=4000)]] = None
     enabled: Optional[StrictBool] = None
     layout: Optional[ViewExperienceLayout] = None
     scope: Optional[ViewExperienceScope] = None
-    navigation: Optional[List[ViewNavigationItem]] = None
+    navigation: Optional[Annotated[List[ViewNavigationItem], Field(max_length=20)]] = None
     search: Optional[ViewSearchConfiguration] = None
     results: Optional[ViewResultsConfiguration] = None
     __properties: ClassVar[List[str]] = ["name", "description", "enabled", "layout", "scope", "navigation", "search", "results"]

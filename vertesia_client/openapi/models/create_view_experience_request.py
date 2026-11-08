@@ -38,7 +38,7 @@ class CreateViewExperienceRequest(BaseModel):
     enabled: Optional[StrictBool] = None
     layout: Optional[ViewExperienceLayout] = None
     scope: Optional[ViewExperienceScope] = None
-    navigation: Optional[List[ViewNavigationItem]] = None
+    navigation: Optional[Annotated[List[ViewNavigationItem], Field(max_length=20)]] = None
     search: Optional[ViewSearchConfiguration] = None
     results: Optional[ViewResultsConfiguration] = None
     description: Annotated[str, Field(strict=True, max_length=4000)]

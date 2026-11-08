@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool
 from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.audit_action import AuditAction
 from vertesia_client.openapi.models.audit_aggregation_detail_filter import AuditAggregationDetailFilter
 from vertesia_client.openapi.models.event_category import EventCategory
@@ -30,13 +31,13 @@ class AuditAggregationFilter(BaseModel):
     """
     AuditAggregationFilter
     """ # noqa: E501
-    actions: Optional[List[AuditAction]] = None
-    resource_types: Optional[List[StrictStr]] = Field(default=None, alias="resourceTypes")
-    event_categories: Optional[List[EventCategory]] = Field(default=None, alias="eventCategories")
-    providers: Optional[List[StrictStr]] = None
-    principal_types: Optional[List[StrictStr]] = Field(default=None, description="Restrict events to top-level actor categories such as user or apikey.", alias="principalTypes")
+    actions: Optional[Annotated[List[AuditAction], Field(max_length=50)]] = None
+    resource_types: Optional[Annotated[List[Annotated[str, Field(min_length=1, strict=True, max_length=256)]], Field(max_length=50)]] = Field(default=None, alias="resourceTypes")
+    event_categories: Optional[Annotated[List[EventCategory], Field(max_length=50)]] = Field(default=None, alias="eventCategories")
+    providers: Optional[Annotated[List[Annotated[str, Field(min_length=1, strict=True, max_length=256)]], Field(max_length=50)]] = None
+    principal_types: Optional[Annotated[List[Annotated[str, Field(min_length=1, strict=True, max_length=256)]], Field(max_length=50)]] = Field(default=None, description="Restrict events to top-level actor categories such as user or apikey.", alias="principalTypes")
     success: Optional[StrictBool] = None
-    details: Optional[List[AuditAggregationDetailFilter]] = None
+    details: Optional[Annotated[List[AuditAggregationDetailFilter], Field(max_length=10)]] = None
     __properties: ClassVar[List[str]] = ["actions", "resourceTypes", "eventCategories", "providers", "principalTypes", "success", "details"]
 
     model_config = ConfigDict(

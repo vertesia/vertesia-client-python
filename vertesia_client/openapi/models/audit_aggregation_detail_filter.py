@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic import BaseModel, ConfigDict, Field
 from typing import Any, ClassVar, Dict, List
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.audit_aggregation_detail_field import AuditAggregationDetailField
 from typing import Optional, Set
 from typing_extensions import Self
@@ -29,7 +30,7 @@ class AuditAggregationDetailFilter(BaseModel):
     AuditAggregationDetailFilter
     """ # noqa: E501
     var_field: AuditAggregationDetailField = Field(alias="field")
-    values: List[StrictStr]
+    values: Annotated[List[Annotated[str, Field(min_length=1, strict=True, max_length=256)]], Field(min_length=1, max_length=50)]
     __properties: ClassVar[List[str]] = ["field", "values"]
 
     model_config = ConfigDict(

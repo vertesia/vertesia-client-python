@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictBool, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, Optional
+from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -27,11 +28,21 @@ class ICreateProjectPayload(BaseModel):
     """
     ICreateProjectPayload
     """ # noqa: E501
-    name: StrictStr
-    namespace: StrictStr
+    name: Annotated[str, Field(min_length=1, strict=True)]
+    namespace: Annotated[str, Field(strict=True)] = Field(description="Letters, digits, `-`, `_`, `[` and `]`. Must not be the namespace of another project, which the server answers with a 409.")
     description: Optional[StrictStr] = None
     auto_config: Optional[StrictBool] = None
     __properties: ClassVar[List[str]] = ["name", "namespace", "description", "auto_config"]
+
+    @field_validator('namespace')
+    def namespace_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"^[a-zA-Z0-9_[\]-]+$", value):
+            raise ValueError(r"must validate the regular expression /^[a-zA-Z0-9_[\]-]+$/")
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,

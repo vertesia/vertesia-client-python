@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictBool, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.view_actions_configuration import ViewActionsConfiguration
 from vertesia_client.openapi.models.view_display_configuration import ViewDisplayConfiguration
 from vertesia_client.openapi.models.view_drop_configuration import ViewDropConfiguration
@@ -32,15 +33,38 @@ class ViewResultsConfiguration(BaseModel):
     """
     ViewResultsConfiguration
     """ # noqa: E501
-    default_display: StrictStr
+    default_display: Annotated[str, Field(min_length=1, strict=True, max_length=64)]
     allow_display_switch: Optional[StrictBool] = None
-    displays: List[ViewDisplayConfiguration]
-    default_sort: Optional[StrictStr] = None
+    displays: Annotated[List[ViewDisplayConfiguration], Field(min_length=1, max_length=10)]
+    default_sort: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=64)]] = None
     sort_options: Optional[List[ViewSortOption]] = None
     selection: Optional[ViewSelectionConfiguration] = None
     actions: Optional[ViewActionsConfiguration] = None
     drop: Optional[ViewDropConfiguration] = None
     __properties: ClassVar[List[str]] = ["default_display", "allow_display_switch", "displays", "default_sort", "sort_options", "selection", "actions", "drop"]
+
+    @field_validator('default_display')
+    def default_display_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"^[a-z][a-z0-9_-]*$", value):
+            raise ValueError(r"must validate the regular expression /^[a-z][a-z0-9_-]*$/")
+        return value
+
+    @field_validator('default_sort')
+    def default_sort_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if value is None:
+            return value
+
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"^[a-z][a-z0-9_-]*$", value):
+            raise ValueError(r"must validate the regular expression /^[a-z][a-z0-9_-]*$/")
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,

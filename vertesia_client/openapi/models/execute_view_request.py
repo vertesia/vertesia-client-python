@@ -26,14 +26,14 @@ from pydantic_core import to_jsonable_python
 
 class ExecuteViewRequest(BaseModel):
     """
-    ExecuteViewRequest
+    The keys of `key_terms`, `navigation` and `navigation_queries` are group ids: a lowercase letter, then lowercase letters, digits, `_` or `-`. `key_terms` holds at most 50 groups and `navigation` at most 20, each of at most 100 values of at most 1,000 characters, and the two hold at most 1,000 values in total. `navigation_queries` holds at most 20 queries of at most 200 characters.
     """ # noqa: E501
-    query: Optional[StrictStr] = None
+    query: Optional[Annotated[str, Field(strict=True, max_length=4000)]] = None
     key_terms: Optional[Dict[str, List[StrictStr]]] = None
     navigation: Optional[Dict[str, List[StrictStr]]] = None
     navigation_queries: Optional[Dict[str, StrictStr]] = Field(default=None, description="Server-side text filters for large navigation sources, keyed by navigation id.")
-    display: Optional[StrictStr] = None
-    sort: Optional[StrictStr] = None
+    display: Optional[Annotated[str, Field(strict=True, max_length=64)]] = None
+    sort: Optional[Annotated[str, Field(strict=True, max_length=64)]] = None
     offset: Optional[Union[Annotated[float, Field(multiple_of=1, le=50000, strict=True, ge=0)], Annotated[int, Field(le=50000, strict=True, ge=0)]]] = None
     limit: Optional[Union[Annotated[float, Field(multiple_of=1, le=200, strict=True, ge=1)], Annotated[int, Field(le=200, strict=True, ge=1)]]] = None
     __properties: ClassVar[List[str]] = ["query", "key_terms", "navigation", "navigation_queries", "display", "sort", "offset", "limit"]

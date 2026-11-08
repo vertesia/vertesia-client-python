@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict
+from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -28,7 +29,7 @@ class UpdateAgentArtifactContentPayload(BaseModel):
     Conditional text update for an agent artifact.
     """ # noqa: E501
     content: StrictStr
-    generation: StrictStr
+    generation: Annotated[str, Field(min_length=1, strict=True)] = Field(description="The blob generation the content was read at, as returned by the read.")
     __properties: ClassVar[List[str]] = ["content", "generation"]
 
     model_config = ConfigDict(

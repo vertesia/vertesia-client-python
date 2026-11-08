@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -27,17 +28,30 @@ class UpdateOAuthProviderPayload(BaseModel):
     """
     Payload for updating an OAuth Provider. All fields are optional — only provided fields are updated. To clear the client_secret, set it to an empty string.
     """ # noqa: E501
-    name: Optional[StrictStr] = None
-    display_name: Optional[StrictStr] = None
+    name: Optional[Annotated[str, Field(strict=True)]] = None
+    display_name: Optional[Annotated[str, Field(min_length=1, strict=True)]] = None
     grant_type: Optional[StrictStr] = None
     authorization_endpoint: Optional[StrictStr] = None
     token_endpoint: Optional[StrictStr] = None
-    client_id: Optional[StrictStr] = None
+    client_id: Optional[Annotated[str, Field(min_length=1, strict=True)]] = None
     client_secret: Optional[StrictStr] = Field(default=None, description="Optional client secret for confidential clients. Will be encrypted at rest and never returned in API responses.")
     default_scopes: Optional[List[StrictStr]] = None
     use_pkce: Optional[StrictBool] = None
     revocation_endpoint: Optional[StrictStr] = None
     __properties: ClassVar[List[str]] = ["name", "display_name", "grant_type", "authorization_endpoint", "token_endpoint", "client_id", "client_secret", "default_scopes", "use_pkce", "revocation_endpoint"]
+
+    @field_validator('name')
+    def name_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if value is None:
+            return value
+
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"^[a-z0-9][a-z0-9-]*[a-z0-9]$", value):
+            raise ValueError(r"must validate the regular expression /^[a-z0-9][a-z0-9-]*[a-z0-9]$/")
+        return value
 
     @field_validator('grant_type')
     def grant_type_validate_enum(cls, value):

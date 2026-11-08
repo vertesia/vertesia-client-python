@@ -27,7 +27,7 @@ class RevertProcessDefinitionPayload(BaseModel):
     """
     RevertProcessDefinitionPayload
     """ # noqa: E501
-    confirmed: StrictBool = Field(description="Required explicit confirmation from the caller.")
+    confirmed: StrictBool = Field(description="Required explicit confirmation from the caller: only `true` is accepted.")
     comment: Optional[StrictStr] = Field(default=None, description="Optional note explaining why this version is being restored as the draft.")
     __properties: ClassVar[List[str]] = ["confirmed", "comment"]
 

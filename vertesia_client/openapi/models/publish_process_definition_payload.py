@@ -28,7 +28,7 @@ class PublishProcessDefinitionPayload(BaseModel):
     """
     PublishProcessDefinitionPayload
     """ # noqa: E501
-    confirmed: StrictBool = Field(description="Required explicit confirmation from the caller.")
+    confirmed: StrictBool = Field(description="Required explicit confirmation from the caller: only `true` is accepted.")
     tags: Optional[List[StrictStr]] = Field(default=None, description="Optional tags to merge into the published revision.")
     label: Optional[StrictStr] = Field(default=None, description="Optional human-readable revision label.")
     comment: Optional[StrictStr] = Field(default=None, description="Optional publish note.")

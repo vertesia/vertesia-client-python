@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict
+from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -27,9 +28,19 @@ class ViewSortClause(BaseModel):
     """
     ViewSortClause
     """ # noqa: E501
-    var_field: StrictStr = Field(alias="field")
+    var_field: Annotated[str, Field(min_length=1, strict=True, max_length=160)] = Field(alias="field")
     order: StrictStr
     __properties: ClassVar[List[str]] = ["field", "order"]
+
+    @field_validator('var_field')
+    def var_field_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"^[A-Za-z0-9_]+(?:\.[A-Za-z0-9_]+)*$", value):
+            raise ValueError(r"must validate the regular expression /^[A-Za-z0-9_]+(?:\.[A-Za-z0-9_]+)*$/")
+        return value
 
     @field_validator('order')
     def order_validate_enum(cls, value):

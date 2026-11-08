@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, Optional
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.view_search_field_type import ViewSearchFieldType
 from typing import Optional, Set
 from typing_extensions import Self
@@ -28,13 +29,36 @@ class ViewKeyTermDefinition(BaseModel):
     """
     ViewKeyTermDefinition
     """ # noqa: E501
-    id: StrictStr
-    label: StrictStr
-    var_field: Optional[StrictStr] = Field(default=None, alias="field")
+    id: Annotated[str, Field(min_length=1, strict=True, max_length=64)]
+    label: Annotated[str, Field(min_length=1, strict=True, max_length=120)]
+    var_field: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=160)]] = Field(default=None, alias="field")
     type: ViewSearchFieldType
     multiple: Optional[StrictBool] = None
     operator: Optional[StrictStr] = None
     __properties: ClassVar[List[str]] = ["id", "label", "field", "type", "multiple", "operator"]
+
+    @field_validator('id')
+    def id_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"^[a-z][a-z0-9_-]*$", value):
+            raise ValueError(r"must validate the regular expression /^[a-z][a-z0-9_-]*$/")
+        return value
+
+    @field_validator('var_field')
+    def var_field_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if value is None:
+            return value
+
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"^[A-Za-z0-9_]+(?:\.[A-Za-z0-9_]+)*$", value):
+            raise ValueError(r"must validate the regular expression /^[A-Za-z0-9_]+(?:\.[A-Za-z0-9_]+)*$/")
+        return value
 
     @field_validator('operator')
     def operator_validate_enum(cls, value):

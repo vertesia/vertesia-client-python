@@ -29,7 +29,7 @@ class CollectionMembersUpdatePayload(BaseModel):
     CollectionMembersUpdatePayload
     """ # noqa: E501
     action: StrictStr
-    members: Annotated[List[StrictStr], Field(min_length=1)]
+    members: Annotated[List[Annotated[str, Field(strict=True)]], Field(min_length=1)] = Field(description="IDs of the content objects to add or remove, as 24 hexadecimal characters.")
     __properties: ClassVar[List[str]] = ["action", "members"]
 
     @field_validator('action')

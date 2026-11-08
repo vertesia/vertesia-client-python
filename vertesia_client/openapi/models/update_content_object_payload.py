@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.content_embedding_map import ContentEmbeddingMap
 from vertesia_client.openapi.models.content_object_status import ContentObjectStatus
 from vertesia_client.openapi.models.content_object_user_permissions import ContentObjectUserPermissions
@@ -34,7 +35,7 @@ from pydantic_core import to_jsonable_python
 
 class UpdateContentObjectPayload(BaseModel):
     """
-    When creating from an uploaded file the content should be an URL to the uploaded file
+    When creating from an uploaded file the content should be an URL to the uploaded file. `content.type`, the MIME type of the file, is required with a non-empty `content.source`.
     """ # noqa: E501
     text: Optional[StrictStr] = None
     text_etag: Optional[StrictStr] = None
@@ -47,10 +48,10 @@ class UpdateContentObjectPayload(BaseModel):
     compartments: Optional[List[StrictStr]] = Field(default=None, description="Compartments — set directly or inherited from collections (union across collections).")
     shared_root: Optional[StrictBool] = Field(default=None, description="Explicitly share this document as a root of the project shared space (readable by non-members via matching shared-content ABAC rules). This is the explicit API share flag — the sync never sets it.")
     inherited_properties: Optional[List[InheritedPropertyMetadata]] = Field(default=None, description="Inherited properties metadata - tracks which properties were inherited from parent collections. Used to display readonly inherited properties in the UI and enable incremental sync optimization.")
-    parent: Optional[StrictStr] = None
+    parent: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="ID of the parent object (container or folder), as 24 hexadecimal characters.")
     location: Optional[StrictStr] = Field(default=None, description="An optional path based location for the object")
     status: Optional[ContentObjectStatus] = Field(default=None, description="Object status. - created: the object was created and is being processed - processing: the object is being processed - completed: the object was processed and is ready to use - failed: the object processing failed - archived: the object was archived and is no longer available")
-    content: Optional[ContentSource] = Field(default=None, description="Content source information, typically a link to an object store")
+    content: Optional[ContentSource] = Field(default=None, description="Content source information. A non-empty `source` is a `gs://`, `s3://` or `az://` URI of the file (a bucket then a non-empty object path), and `type`, its MIME type, is then required.")
     external_id: Optional[StrictStr] = Field(default=None, description="External identifier for integration with other systems")
     properties: Optional[Dict[str, Any]] = Field(default=None, description="The object properties. This is a JSON object that describes the object, matching the object type schema")
     metadata: Optional[Dict[str, Any]] = Field(default=None, description="Technical metadata of the object")
@@ -70,6 +71,19 @@ class UpdateContentObjectPayload(BaseModel):
     generation_run_info: Optional[GenerationRunMetadata] = None
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["text", "text_etag", "embeddings", "parts", "parts_etag", "transcript", "security", "sensitivity", "compartments", "shared_root", "inherited_properties", "parent", "location", "status", "content", "external_id", "properties", "metadata", "tokens", "revision", "is_deleted", "is_locked", "score", "user_permissions", "name", "description", "tags", "updated_by", "created_by", "id", "type", "generation_run_info"]
+
+    @field_validator('parent')
+    def parent_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if value is None:
+            return value
+
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"^[0-9a-fA-F]{24}$", value):
+            raise ValueError(r"must validate the regular expression /^[0-9a-fA-F]{24}$/")
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,

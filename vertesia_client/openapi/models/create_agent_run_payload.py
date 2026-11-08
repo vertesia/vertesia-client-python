@@ -37,8 +37,9 @@ from pydantic_core import to_jsonable_python
 
 class CreateAgentRunPayload(BaseModel):
     """
-    Payload to create and start a new agent run.
+    CreateAgentRunPayload
     """ # noqa: E501
+    content_type: Optional[ContentObjectTypeRef] = Field(default=None, description="Content type linked to this run — defines the schema for `properties`")
     interaction: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Interaction ID or code (e.g. \"sys:generic_question\").")
     title: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="Caller-provided conversation title.")
     topic: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="Caller-provided conversation topic. Suppresses automatic topic generation.")
@@ -55,7 +56,6 @@ class CreateAgentRunPayload(BaseModel):
     excluded_tools: Optional[List[StrictStr]] = Field(default=None, description="Hard denylist of tool names: never exposed to the model, refused at execution time.")
     collection_id: Optional[StrictStr] = Field(default=None, description="Scoped collection (if any)")
     disabled_mcp_collections: Optional[List[StrictStr]] = Field(default=None, description="Denylist of MCP tool-collection ids deactivated for this run. `undefined`/empty means all installed/connected MCP collections are active (back-compat, and new servers stay active by default). Listed collections are excluded even if connected.")
-    content_type: Optional[ContentObjectTypeRef] = Field(default=None, description="Content type linked to this run — defines the schema for `properties`")
     visibility: Optional[ConversationVisibility] = Field(default=None, description="Conversation visibility")
     tags: Optional[List[StrictStr]] = Field(default=None, description="User-defined or system tags for categorization")
     categories: Optional[List[StrictStr]] = Field(default=None, description="Categories for organizing runs (e.g. \"support\", \"analysis\", \"generation\")")
@@ -76,7 +76,7 @@ class CreateAgentRunPayload(BaseModel):
     started_by: Optional[StrictStr] = Field(default=None, description="Principal ref of the user who initiated the run (for server-to-server forwarding)")
     idempotency_key: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=256)]] = Field(default=None, description="Client-chosen key, unique per intended run, that makes this request safe to retry. A repeat of the request with the same key and the same body returns the agent run the first request started instead of starting another. Reusing a key with a different body is rejected with 422, and a repeat that arrives while the first request is still starting the run may be answered with 503 and `Retry-After`. Keys are scoped to the project and stay bound to their run for as long as it exists; once the run is deleted, the same key starts a new one.")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["interaction", "title", "topic", "generate_topic", "generate_lessons", "evaluate", "data", "config", "interactive", "tool_approval_mode", "tool_names", "initial_skills", "initial_tool_calls", "excluded_tools", "collection_id", "disabled_mcp_collections", "content_type", "visibility", "tags", "categories", "properties", "source", "schedule_id", "source_type", "type", "search_scope", "user_channels", "checkpoint_tokens", "checkpoint", "budget", "max_iterations", "final_verification", "notify_endpoints", "debug_mode", "started_by", "idempotency_key"]
+    __properties: ClassVar[List[str]] = ["content_type", "interaction", "title", "topic", "generate_topic", "generate_lessons", "evaluate", "data", "config", "interactive", "tool_approval_mode", "tool_names", "initial_skills", "initial_tool_calls", "excluded_tools", "collection_id", "disabled_mcp_collections", "visibility", "tags", "categories", "properties", "source", "schedule_id", "source_type", "type", "search_scope", "user_channels", "checkpoint_tokens", "checkpoint", "budget", "max_iterations", "final_verification", "notify_endpoints", "debug_mode", "started_by", "idempotency_key"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -119,6 +119,9 @@ class CreateAgentRunPayload(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of content_type
+        if self.content_type:
+            _dict['content_type'] = self.content_type.to_dict()
         # override the default output from pydantic by calling `to_dict()` of config
         if self.config:
             _dict['config'] = self.config.to_dict()
@@ -129,9 +132,6 @@ class CreateAgentRunPayload(BaseModel):
                 if _item_initial_tool_calls:
                     _items.append(_item_initial_tool_calls.to_dict())
             _dict['initial_tool_calls'] = _items
-        # override the default output from pydantic by calling `to_dict()` of content_type
-        if self.content_type:
-            _dict['content_type'] = self.content_type.to_dict()
         # override the default output from pydantic by calling `to_dict()` of source
         if self.source:
             _dict['source'] = self.source.to_dict()
@@ -165,6 +165,7 @@ class CreateAgentRunPayload(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "content_type": ContentObjectTypeRef.from_dict(obj["content_type"]) if obj.get("content_type") is not None else None,
             "interaction": obj.get("interaction"),
             "title": obj.get("title"),
             "topic": obj.get("topic"),
@@ -181,7 +182,6 @@ class CreateAgentRunPayload(BaseModel):
             "excluded_tools": obj.get("excluded_tools"),
             "collection_id": obj.get("collection_id"),
             "disabled_mcp_collections": obj.get("disabled_mcp_collections"),
-            "content_type": ContentObjectTypeRef.from_dict(obj["content_type"]) if obj.get("content_type") is not None else None,
             "visibility": obj.get("visibility"),
             "tags": obj.get("tags"),
             "categories": obj.get("categories"),

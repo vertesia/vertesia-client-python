@@ -311,6 +311,7 @@ __all__ = [
     "BulkObjectDeleteResult",
     "BulkObjectUpdateResult",
     "BulkOperationPayload",
+    "BulkOperationPayloadParams",
     "BulkOperationResponse",
     "BulkOperationResult",
     "BulkRevokeOAuthGrantsPayload",
@@ -426,6 +427,7 @@ __all__ = [
     "CountResult",
     "CreateAccountApiKeyPayload",
     "CreateAgentRunPayload",
+    "CreateAgentRunPayloadAllOfContentType",
     "CreateApiKeyPayload",
     "CreateAppRepoBranchRequest",
     "CreateAppVersionLaunchRequest",
@@ -704,6 +706,7 @@ __all__ = [
     "InteractionConfigurationRecord",
     "InteractionConfigurationResult",
     "InteractionCreatePayload",
+    "InteractionCreatePayloadEnvironment",
     "InteractionEndpoint",
     "InteractionEndpointQuery",
     "InteractionEnvironment",
@@ -1596,6 +1599,7 @@ from vertesia_client.openapi.models.bulk_object_create_result_objects_inner impo
 from vertesia_client.openapi.models.bulk_object_delete_result import BulkObjectDeleteResult as BulkObjectDeleteResult
 from vertesia_client.openapi.models.bulk_object_update_result import BulkObjectUpdateResult as BulkObjectUpdateResult
 from vertesia_client.openapi.models.bulk_operation_payload import BulkOperationPayload as BulkOperationPayload
+from vertesia_client.openapi.models.bulk_operation_payload_params import BulkOperationPayloadParams as BulkOperationPayloadParams
 from vertesia_client.openapi.models.bulk_operation_response import BulkOperationResponse as BulkOperationResponse
 from vertesia_client.openapi.models.bulk_operation_result import BulkOperationResult as BulkOperationResult
 from vertesia_client.openapi.models.bulk_revoke_o_auth_grants_payload import BulkRevokeOAuthGrantsPayload as BulkRevokeOAuthGrantsPayload
@@ -1711,6 +1715,7 @@ from vertesia_client.openapi.models.cost_time_series_point import CostTimeSeries
 from vertesia_client.openapi.models.count_result import CountResult as CountResult
 from vertesia_client.openapi.models.create_account_api_key_payload import CreateAccountApiKeyPayload as CreateAccountApiKeyPayload
 from vertesia_client.openapi.models.create_agent_run_payload import CreateAgentRunPayload as CreateAgentRunPayload
+from vertesia_client.openapi.models.create_agent_run_payload_all_of_content_type import CreateAgentRunPayloadAllOfContentType as CreateAgentRunPayloadAllOfContentType
 from vertesia_client.openapi.models.create_api_key_payload import CreateApiKeyPayload as CreateApiKeyPayload
 from vertesia_client.openapi.models.create_app_repo_branch_request import CreateAppRepoBranchRequest as CreateAppRepoBranchRequest
 from vertesia_client.openapi.models.create_app_version_launch_request import CreateAppVersionLaunchRequest as CreateAppVersionLaunchRequest
@@ -1989,6 +1994,7 @@ from vertesia_client.openapi.models.interaction import Interaction as Interactio
 from vertesia_client.openapi.models.interaction_configuration_record import InteractionConfigurationRecord as InteractionConfigurationRecord
 from vertesia_client.openapi.models.interaction_configuration_result import InteractionConfigurationResult as InteractionConfigurationResult
 from vertesia_client.openapi.models.interaction_create_payload import InteractionCreatePayload as InteractionCreatePayload
+from vertesia_client.openapi.models.interaction_create_payload_environment import InteractionCreatePayloadEnvironment as InteractionCreatePayloadEnvironment
 from vertesia_client.openapi.models.interaction_endpoint import InteractionEndpoint as InteractionEndpoint
 from vertesia_client.openapi.models.interaction_endpoint_query import InteractionEndpointQuery as InteractionEndpointQuery
 from vertesia_client.openapi.models.interaction_environment import InteractionEnvironment as InteractionEnvironment

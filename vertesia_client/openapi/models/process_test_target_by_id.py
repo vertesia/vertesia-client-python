@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, Optional
+from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -27,9 +28,19 @@ class ProcessTestTargetById(BaseModel):
     """
     ProcessTestTargetById
     """ # noqa: E501
-    id: StrictStr
-    app_version: Optional[StrictStr] = None
+    id: Annotated[str, Field(strict=True)] = Field(description="An in-code process id, `app:<app>:<process>` or `sys:<process>`. A stored process definition is tested through `POST /processes/{processId}/test-runs`.")
+    app_version: Optional[StrictStr] = Field(default=None, description="Only for an `app:` id.")
     __properties: ClassVar[List[str]] = ["id", "app_version"]
+
+    @field_validator('id')
+    def id_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"^(app|sys):", value):
+            raise ValueError(r"must validate the regular expression /^(app|sys):/")
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,

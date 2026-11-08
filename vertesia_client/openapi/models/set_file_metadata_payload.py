@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict
 from typing_extensions import Annotated
 from typing import Optional, Set
@@ -28,9 +28,19 @@ class SetFileMetadataPayload(BaseModel):
     """
     SetFileMetadataPayload
     """ # noqa: E501
-    file: Annotated[str, Field(min_length=1, strict=True)] = Field(description="The file path (relative to bucket) or full URI")
+    file: Annotated[str, Field(strict=True)] = Field(description="The file path (relative to bucket) or full URI. It must not be blank or contain control characters.")
     metadata: Dict[str, StrictStr] = Field(description="Custom metadata key-value pairs to set on the file")
     __properties: ClassVar[List[str]] = ["file", "metadata"]
+
+    @field_validator('file')
+    def file_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"^[\u0020\u00a0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000\ufeff]*[^\u0000-\u001f\u007f\u0020\u00a0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000\ufeff][^\u0000-\u001f\u007f]*$", value):
+            raise ValueError(r"must validate the regular expression /^[\u0020\u00a0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000\ufeff]*[^\u0000-\u001f\u007f\u0020\u00a0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000\ufeff][^\u0000-\u001f\u007f]*$/")
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,

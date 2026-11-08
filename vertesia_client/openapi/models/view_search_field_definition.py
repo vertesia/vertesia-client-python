@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr, field_validator
+from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, Optional, Union
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.view_search_field_type import ViewSearchFieldType
 from typing import Optional, Set
 from typing_extensions import Self
@@ -28,12 +29,22 @@ class ViewSearchFieldDefinition(BaseModel):
     """
     A mapped Elasticsearch field that a View may use for query planning and deterministic full-text fallback.
     """ # noqa: E501
-    var_field: StrictStr = Field(alias="field")
-    description: Optional[StrictStr] = Field(default=None, description="Meaning of the field for query planners, for example \"Full OCR text\".")
+    var_field: Annotated[str, Field(min_length=1, strict=True, max_length=160)] = Field(alias="field")
+    description: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=500)]] = Field(default=None, description="Meaning of the field for query planners, for example \"Full OCR text\".")
     type: Optional[ViewSearchFieldType] = Field(default=None, description="Mapping hint used only when the active index mapping does not expose a type.")
     mode: Optional[StrictStr] = Field(default=None, description="`full_text` enables scoring text queries, `exact` limits the field to structured operators, and `auto` derives behavior from the mapped type.")
-    boost: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Relative boost when this field participates in multi-field text search.")
+    boost: Optional[Union[Annotated[float, Field(le=20, strict=True, ge=0.1)], Annotated[int, Field(le=20, strict=True, ge=1)]]] = Field(default=None, description="Relative boost when this field participates in multi-field text search.")
     __properties: ClassVar[List[str]] = ["field", "description", "type", "mode", "boost"]
+
+    @field_validator('var_field')
+    def var_field_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"^[A-Za-z0-9_]+(?:\.[A-Za-z0-9_]+)*$", value):
+            raise ValueError(r"must validate the regular expression /^[A-Za-z0-9_]+(?:\.[A-Za-z0-9_]+)*$/")
+        return value
 
     @field_validator('mode')
     def mode_validate_enum(cls, value):

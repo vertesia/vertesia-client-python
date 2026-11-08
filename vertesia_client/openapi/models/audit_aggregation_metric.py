@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, Optional
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.audit_aggregation_distinct_field import AuditAggregationDistinctField
 from vertesia_client.openapi.models.audit_aggregation_operation import AuditAggregationOperation
 from typing import Optional, Set
@@ -29,12 +30,22 @@ class AuditAggregationMetric(BaseModel):
     """
     AuditAggregationMetric
     """ # noqa: E501
-    id: StrictStr = Field(description="Stable key used in response rows. Must contain only letters, numbers, underscores, or hyphens.")
+    id: Annotated[str, Field(strict=True)] = Field(description="Stable key used in response rows: 1 to 64 letters, numbers, underscores, or hyphens, unique within the query.")
     operation: AuditAggregationOperation
     var_field: Optional[AuditAggregationDistinctField] = Field(default=None, description="Required for count_distinct.", alias="field")
-    meter_category: Optional[StrictStr] = Field(default=None, description="Required for meter operations.", alias="meterCategory")
-    meter_type: Optional[StrictStr] = Field(default=None, description="Required for meter operations.", alias="meterType")
+    meter_category: Optional[StrictStr] = Field(default=None, description="Required for sum_meter and average_meter, as 1 to 128 characters.", alias="meterCategory")
+    meter_type: Optional[StrictStr] = Field(default=None, description="Required for sum_meter and average_meter, as 1 to 128 characters.", alias="meterType")
     __properties: ClassVar[List[str]] = ["id", "operation", "field", "meterCategory", "meterType"]
+
+    @field_validator('id')
+    def id_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"^[A-Za-z0-9_-]{1,64}$", value):
+            raise ValueError(r"must validate the regular expression /^[A-Za-z0-9_-]{1,64}$/")
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,

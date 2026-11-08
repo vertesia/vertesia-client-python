@@ -52,7 +52,7 @@ class WorkflowRunsApi:
         self,
         workflow_id: StrictStr,
         run_id: StrictStr,
-        action: StrictStr,
+        action: Annotated[StrictStr, Field(description="The action to apply: `cancel` asks the run to stop, `terminate` stops it at once.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -75,7 +75,7 @@ class WorkflowRunsApi:
         :type workflow_id: str
         :param run_id: (required)
         :type run_id: str
-        :param action: (required)
+        :param action: The action to apply: `cancel` asks the run to stop, `terminate` stops it at once. (required)
         :type action: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -133,7 +133,7 @@ class WorkflowRunsApi:
         self,
         workflow_id: StrictStr,
         run_id: StrictStr,
-        action: StrictStr,
+        action: Annotated[StrictStr, Field(description="The action to apply: `cancel` asks the run to stop, `terminate` stops it at once.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -156,7 +156,7 @@ class WorkflowRunsApi:
         :type workflow_id: str
         :param run_id: (required)
         :type run_id: str
-        :param action: (required)
+        :param action: The action to apply: `cancel` asks the run to stop, `terminate` stops it at once. (required)
         :type action: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -214,7 +214,7 @@ class WorkflowRunsApi:
         self,
         workflow_id: StrictStr,
         run_id: StrictStr,
-        action: StrictStr,
+        action: Annotated[StrictStr, Field(description="The action to apply: `cancel` asks the run to stop, `terminate` stops it at once.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -237,7 +237,7 @@ class WorkflowRunsApi:
         :type workflow_id: str
         :param run_id: (required)
         :type run_id: str
-        :param action: (required)
+        :param action: The action to apply: `cancel` asks the run to stop, `terminate` stops it at once. (required)
         :type action: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str

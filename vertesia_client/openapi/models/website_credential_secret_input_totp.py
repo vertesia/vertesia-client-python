@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr, field_validator
+from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, Optional, Union
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.website_credential_totp_algorithm import WebsiteCredentialTotpAlgorithm
 from typing import Optional, Set
 from typing_extensions import Self
@@ -28,13 +29,23 @@ class WebsiteCredentialSecretInputTotp(BaseModel):
     """
     WebsiteCredentialSecretInputTotp
     """ # noqa: E501
-    seed: StrictStr
+    seed: Annotated[str, Field(strict=True)] = Field(description="The base32 TOTP seed (`A`-`Z`, `2`-`7`, any case). Whitespace, `=` and `-` are ignored.")
     algorithm: Optional[WebsiteCredentialTotpAlgorithm] = None
     digits: Optional[Union[StrictFloat, StrictInt]] = None
     period: Optional[Union[StrictFloat, StrictInt]] = None
     issuer: Optional[StrictStr] = None
     account: Optional[StrictStr] = None
     __properties: ClassVar[List[str]] = ["seed", "algorithm", "digits", "period", "issuer", "account"]
+
+    @field_validator('seed')
+    def seed_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"^[\sA-Za-z2-7=-]*[A-Za-z2-7][\sA-Za-z2-7=-]*$", value):
+            raise ValueError(r"must validate the regular expression /^[\sA-Za-z2-7=-]*[A-Za-z2-7][\sA-Za-z2-7=-]*$/")
+        return value
 
     @field_validator('digits')
     def digits_validate_enum(cls, value):

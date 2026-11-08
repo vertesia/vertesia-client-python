@@ -28,7 +28,7 @@ from pydantic_core import to_jsonable_python
 
 class CreateApiKeyPayload(BaseModel):
     """
-    CreateApiKeyPayload
+    A SCIM provisioning key (`scim_provisioning: true`) takes the `admin` role. A custom `c:<name>` role must be defined in the account. No key of `properties`, at any depth, may contain a NUL character.
     """ # noqa: E501
     name: StrictStr
     role: AssignableRoleName

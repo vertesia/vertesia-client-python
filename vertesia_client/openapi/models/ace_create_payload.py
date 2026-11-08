@@ -28,7 +28,7 @@ from pydantic_core import to_jsonable_python
 
 class ACECreatePayload(BaseModel):
     """
-    ACECreatePayload
+    On a `project` entry, `resource` is the project ID, as 24 hexadecimal characters. `role` is a built-in role name or the `c:<name>` reference of a custom role defined in the account.
     """ # noqa: E501
     role: StrictStr = Field(description="Role name. Typed as `string` because role names now span multiple partitions: `SystemRoles` enum values for system-domain roles, c:<name> for account-defined custom roles, and bare strings for ABAC-domain roles (e.g. `'content:reader'`, `'content:writer'`, `'content:manager'`, `'agent_runs:reader'`). Mongoose schema validates syntax; assignment checks resolve custom names in the current account. Custom roles cannot be used in ResourceSets.")
     resource_type: AccessControlResourceType

@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictBool, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, field_validator
 from typing import Any, ClassVar, Dict, Optional
+from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -27,12 +28,25 @@ class ViewUploadDropParameters(BaseModel):
     """
     ViewUploadDropParameters
     """ # noqa: E501
-    type_id: Optional[StrictStr] = None
-    collection_id: Optional[StrictStr] = None
-    location: Optional[StrictStr] = None
+    type_id: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=200)]] = None
+    collection_id: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=200)]] = None
+    location: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=2000)]] = None
     properties: Optional[Dict[str, Any]] = None
     allow_folders: Optional[StrictBool] = None
     __properties: ClassVar[List[str]] = ["type_id", "collection_id", "location", "properties", "allow_folders"]
+
+    @field_validator('location')
+    def location_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if value is None:
+            return value
+
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"^\/", value):
+            raise ValueError(r"must validate the regular expression /^\//")
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,

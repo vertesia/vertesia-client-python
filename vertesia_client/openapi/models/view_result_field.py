@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 from typing import Any, ClassVar, Dict, Optional
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.view_result_field_format import ViewResultFieldFormat
 from typing import Optional, Set
 from typing_extensions import Self
@@ -28,11 +29,21 @@ class ViewResultField(BaseModel):
     """
     ViewResultField
     """ # noqa: E501
-    var_field: StrictStr = Field(alias="field")
-    label: Optional[StrictStr] = None
+    var_field: Annotated[str, Field(min_length=1, strict=True, max_length=160)] = Field(alias="field")
+    label: Optional[Annotated[str, Field(strict=True, max_length=120)]] = None
     format: Optional[ViewResultFieldFormat] = None
-    fallback: Optional[StrictStr] = None
+    fallback: Optional[Annotated[str, Field(strict=True, max_length=240)]] = None
     __properties: ClassVar[List[str]] = ["field", "label", "format", "fallback"]
+
+    @field_validator('var_field')
+    def var_field_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"^[A-Za-z0-9_]+(?:\.[A-Za-z0-9_]+)*$", value):
+            raise ValueError(r"must validate the regular expression /^[A-Za-z0-9_]+(?:\.[A-Za-z0-9_]+)*$/")
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,
