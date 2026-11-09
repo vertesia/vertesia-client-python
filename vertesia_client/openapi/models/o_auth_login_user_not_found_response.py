@@ -34,6 +34,8 @@ class OAuthLoginUserNotFoundResponse(BaseModel):
     @field_validator('error')
     def error_validate_enum(cls, value):
         """Validates the enum"""
+        if value is not None and value != 'user_not_found':
+            raise ValueError('Expected error to be user_not_found')
         return value
 
     model_config = ConfigDict(

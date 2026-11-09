@@ -21430,6 +21430,21 @@ components:
         consent_url:
           type: string
       additionalProperties: false
+    OAuthLoginNotFoundResponse:
+      oneOf:
+        - $ref: "#/components/schemas/OAuthLoginUserNotFoundResponse"
+        - $ref: "#/components/schemas/OAuthLoginRequestNotFoundResponse"
+      discriminator:
+        propertyName: error
+        mapping:
+          user_not_found: "#/components/schemas/OAuthLoginUserNotFoundResponse"
+          not_found: "#/components/schemas/OAuthLoginRequestNotFoundResponse"
+      type: object
+      required:
+        - error
+      description: "Why a login could not complete: `user_not_found` when the user
+        must be provisioned before retrying, `not_found` when the authorization
+        request cannot be completed."
     OAuthLoginPayload:
       type: object
       properties:
@@ -21443,6 +21458,20 @@ components:
       required:
         - id_token
       additionalProperties: false
+    OAuthLoginRequestNotFoundResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          const: not_found
+        message:
+          type: string
+      required:
+        - error
+        - message
+      additionalProperties: false
+      description: The authorization request, or the client it was issued for, does
+        not exist or is no longer available.
     OAuthLoginUserNotFoundResponse:
       type: object
       properties:
@@ -68909,11 +68938,12 @@ paths:
               schema:
                 $ref: "#/components/schemas/OAuthLoginDecisionResponse"
         "404":
-          description: The user must be provisioned before retrying login.
+          description: The user must be provisioned before retrying login, or the
+            authorization request cannot be completed.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/OAuthLoginUserNotFoundResponse"
+                $ref: "#/components/schemas/OAuthLoginNotFoundResponse"
         "500":
           description: Internal server error.
           content:

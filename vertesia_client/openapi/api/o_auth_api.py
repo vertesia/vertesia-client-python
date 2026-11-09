@@ -362,7 +362,7 @@ class OAuthApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "OAuthLoginDecisionResponse",
-            '404': "OAuthLoginUserNotFoundResponse",
+            '404': "OAuthLoginNotFoundResponse",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -435,7 +435,7 @@ class OAuthApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "OAuthLoginDecisionResponse",
-            '404': "OAuthLoginUserNotFoundResponse",
+            '404': "OAuthLoginNotFoundResponse",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -508,7 +508,7 @@ class OAuthApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "OAuthLoginDecisionResponse",
-            '404': "OAuthLoginUserNotFoundResponse",
+            '404': "OAuthLoginNotFoundResponse",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }

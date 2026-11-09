@@ -811,7 +811,9 @@ __all__ = [
     "OAuthGrantStatus",
     "OAuthGrantType",
     "OAuthLoginDecisionResponse",
+    "OAuthLoginNotFoundResponse",
     "OAuthLoginPayload",
+    "OAuthLoginRequestNotFoundResponse",
     "OAuthLoginUserNotFoundResponse",
     "OAuthMetadataResponse",
     "OAuthProjectBindingMode",
@@ -2102,7 +2104,9 @@ from vertesia_client.openapi.models.o_auth_grant_sort_order import OAuthGrantSor
 from vertesia_client.openapi.models.o_auth_grant_status import OAuthGrantStatus as OAuthGrantStatus
 from vertesia_client.openapi.models.o_auth_grant_type import OAuthGrantType as OAuthGrantType
 from vertesia_client.openapi.models.o_auth_login_decision_response import OAuthLoginDecisionResponse as OAuthLoginDecisionResponse
+from vertesia_client.openapi.models.o_auth_login_not_found_response import OAuthLoginNotFoundResponse as OAuthLoginNotFoundResponse
 from vertesia_client.openapi.models.o_auth_login_payload import OAuthLoginPayload as OAuthLoginPayload
+from vertesia_client.openapi.models.o_auth_login_request_not_found_response import OAuthLoginRequestNotFoundResponse as OAuthLoginRequestNotFoundResponse
 from vertesia_client.openapi.models.o_auth_login_user_not_found_response import OAuthLoginUserNotFoundResponse as OAuthLoginUserNotFoundResponse
 from vertesia_client.openapi.models.o_auth_metadata_response import OAuthMetadataResponse as OAuthMetadataResponse
 from vertesia_client.openapi.models.o_auth_project_binding_mode import OAuthProjectBindingMode as OAuthProjectBindingMode

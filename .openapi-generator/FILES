@@ -789,7 +789,9 @@ vertesia_client/openapi/models/o_auth_grant_sort_order.py
 vertesia_client/openapi/models/o_auth_grant_status.py
 vertesia_client/openapi/models/o_auth_grant_type.py
 vertesia_client/openapi/models/o_auth_login_decision_response.py
+vertesia_client/openapi/models/o_auth_login_not_found_response.py
 vertesia_client/openapi/models/o_auth_login_payload.py
+vertesia_client/openapi/models/o_auth_login_request_not_found_response.py
 vertesia_client/openapi/models/o_auth_login_user_not_found_response.py
 vertesia_client/openapi/models/o_auth_metadata_response.py
 vertesia_client/openapi/models/o_auth_project_binding_mode.py
