@@ -300,6 +300,9 @@ vertesia_client/openapi/models/cache_policy.py
 vertesia_client/openapi/models/cancel_event_delivery_intents_payload.py
 vertesia_client/openapi/models/cancel_event_delivery_intents_response.py
 vertesia_client/openapi/models/catalog_interaction_ref.py
+vertesia_client/openapi/models/catalog_search_interaction_ref.py
+vertesia_client/openapi/models/catalog_search_result.py
+vertesia_client/openapi/models/catalog_tag_count.py
 vertesia_client/openapi/models/child_workflow_task.py
 vertesia_client/openapi/models/collection.py
 vertesia_client/openapi/models/collection_children_update_payload.py

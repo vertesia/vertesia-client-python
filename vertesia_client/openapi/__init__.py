@@ -322,6 +322,9 @@ __all__ = [
     "CancelEventDeliveryIntentsPayload",
     "CancelEventDeliveryIntentsResponse",
     "CatalogInteractionRef",
+    "CatalogSearchInteractionRef",
+    "CatalogSearchResult",
+    "CatalogTagCount",
     "ChildWorkflowTask",
     "Collection",
     "CollectionChildrenUpdatePayload",
@@ -1610,6 +1613,9 @@ from vertesia_client.openapi.models.cache_policy import CachePolicy as CachePoli
 from vertesia_client.openapi.models.cancel_event_delivery_intents_payload import CancelEventDeliveryIntentsPayload as CancelEventDeliveryIntentsPayload
 from vertesia_client.openapi.models.cancel_event_delivery_intents_response import CancelEventDeliveryIntentsResponse as CancelEventDeliveryIntentsResponse
 from vertesia_client.openapi.models.catalog_interaction_ref import CatalogInteractionRef as CatalogInteractionRef
+from vertesia_client.openapi.models.catalog_search_interaction_ref import CatalogSearchInteractionRef as CatalogSearchInteractionRef
+from vertesia_client.openapi.models.catalog_search_result import CatalogSearchResult as CatalogSearchResult
+from vertesia_client.openapi.models.catalog_tag_count import CatalogTagCount as CatalogTagCount
 from vertesia_client.openapi.models.child_workflow_task import ChildWorkflowTask as ChildWorkflowTask
 from vertesia_client.openapi.models.collection import Collection as Collection
 from vertesia_client.openapi.models.collection_children_update_payload import CollectionChildrenUpdatePayload as CollectionChildrenUpdatePayload

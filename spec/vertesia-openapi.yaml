@@ -7645,6 +7645,111 @@ components:
       type: array
       items:
         $ref: "#/components/schemas/CatalogInteractionRef"
+    CatalogSearchInteractionRef:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - sys
+            - app
+            - stored
+            - draft
+          description: The type of interaction
+        id:
+          type: string
+          description: the interaction id that can be used to execute the interaction.
+        name:
+          type: string
+          description: The interaction name which identify the interaction in the provider
+            interaction list. For the stored interactions this is the same as
+            the endpoint property. For other types of interactions this is the
+            local name of the interaction.
+        version:
+          type: number
+          description: Only applies for stored interactions. The version of the
+            interaction. Undefined for non stored interactions
+        published:
+          type: boolean
+          description: Only applies for stored interactions. Whether the interaction is
+            published or not.
+        tags:
+          type: array
+          items:
+            type: string
+          description: The tags associated with the interaction.
+        agent_runner_options:
+          $ref: "#/components/schemas/AgentRunnerOptions"
+          description: Agent Runner configuration options.
+        title:
+          type: string
+          description: The name of the interaction. For display purposes only.
+        description:
+          type: string
+          description: Optional description of the interaction.
+        model:
+          type: string
+          description: Only applies for stored interactions. The default model.
+        prompts:
+          type: array
+          items:
+            $ref: "#/components/schemas/PromptSegmentRef_PromptTemplateRef"
+          description: Only applies for stored interactions. The prompt segments.
+        updated_at:
+          type: string
+          format: date-time
+          description: Only applies for stored interactions. The last update time.
+        inference_profile:
+          $ref: "#/components/schemas/InferenceProfileId"
+          description: Only applies for in-code interactions. The inference profile the
+            interaction pins; runs of one that pins none use the project
+            default.
+      required:
+        - type
+        - id
+        - name
+        - tags
+        - title
+      description: "An interaction found by a catalog search: a stored, a system or an
+        app interaction."
+    CatalogSearchResult:
+      type: object
+      properties:
+        total:
+          type: integer
+          minimum: -9007199254740991
+          maximum: 9007199254740991
+          description: The number of matching interactions.
+        tags:
+          type: array
+          items:
+            $ref: "#/components/schemas/CatalogTagCount"
+          description: The tags of the matching interactions with their counts, most
+            frequent first.
+        interactions:
+          type: array
+          items:
+            $ref: "#/components/schemas/CatalogSearchInteractionRef"
+          description: The matching interactions. Stored interactions are listed most
+            recently updated first; in-code interactions in the order their
+            source defines them.
+      required:
+        - total
+        - tags
+        - interactions
+    CatalogTagCount:
+      type: object
+      properties:
+        tag:
+          type: string
+        count:
+          type: integer
+          minimum: -9007199254740991
+          maximum: 9007199254740991
+          description: The number of matching interactions that carry the tag.
+      required:
+        - tag
+        - count
     ChildWorkflowTask:
       type: object
       properties:
@@ -36768,6 +36873,603 @@ paths:
         file: ../../apps/studio-server/src/api/interaction-catalog.ts
         className: InteractionCatalogResource
         methodName: listStoredInteractions
+    parameters:
+      - name: x-api-version
+        in: header
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          pattern: \S
+          example: "20260803"
+        description: Required Vertesia API version header. Use `20260803` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /interactions/catalog/agents/stored:
+    get:
+      operationId: ListCatalogStoredAgents
+      tags:
+        - Interactions
+      summary: List stored catalog agents
+      description: >-
+        Searches the stored agents of the project, in their draft version.
+        Agents are the interactions configured with
+        `agent_runner_options.is_agent`. Returns the matching agents with their
+        tag counts and total.
+
+
+        **Required permissions:** `interaction:read`
+      security:
+        - bearerAuth: []
+        - OAuth2:
+            - interaction:read
+      parameters:
+        - name: name
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: tags
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+        - name: model
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: prompt
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: is_sub_agent
+          in: query
+          required: false
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: Matching stored agents.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CatalogSearchResult"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - interaction:read
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/interaction-catalog.ts
+        className: InteractionCatalogResource
+        methodName: listStoredAgents
+    parameters:
+      - name: x-api-version
+        in: header
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          pattern: \S
+          example: "20260803"
+        description: Required Vertesia API version header. Use `20260803` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /interactions/catalog/agents/system:
+    get:
+      operationId: ListCatalogSystemAgents
+      tags:
+        - Interactions
+      summary: List system catalog agents
+      description: >-
+        Searches the system agents, which are defined in code by the platform.
+        Agents are the interactions configured with
+        `agent_runner_options.is_agent`. Returns the matching agents with their
+        tag counts and total. `model` and `prompt` only match stored agents.
+
+
+        **Required permissions:** `interaction:read`
+      security:
+        - bearerAuth: []
+        - OAuth2:
+            - interaction:read
+      parameters:
+        - name: name
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: tags
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+        - name: model
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: prompt
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: is_sub_agent
+          in: query
+          required: false
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: Matching system agents.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CatalogSearchResult"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - interaction:read
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/interaction-catalog.ts
+        className: InteractionCatalogResource
+        methodName: listSystemAgents
+    parameters:
+      - name: x-api-version
+        in: header
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          pattern: \S
+          example: "20260803"
+        description: Required Vertesia API version header. Use `20260803` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /interactions/catalog/agents/apps/{appName}:
+    get:
+      operationId: ListCatalogAppAgents
+      tags:
+        - Interactions
+      summary: List app catalog agents
+      description: >-
+        Searches the agents provided by an app, which is asked for its
+        interactions. Agents are the interactions configured with
+        `agent_runner_options.is_agent`. Returns the matching agents with their
+        tag counts and total. `model` and `prompt` only match stored agents.
+
+
+        **Required permissions:** `interaction:read`
+      security:
+        - bearerAuth: []
+        - OAuth2:
+            - interaction:read
+      parameters:
+        - name: appName
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: tags
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+        - name: model
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: prompt
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: is_sub_agent
+          in: query
+          required: false
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: Matching agents of the app.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CatalogSearchResult"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - interaction:read
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/interaction-catalog.ts
+        className: InteractionCatalogResource
+        methodName: listAppAgents
+    parameters:
+      - name: x-api-version
+        in: header
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          pattern: \S
+          example: "20260803"
+        description: Required Vertesia API version header. Use `20260803` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /interactions/catalog/calls/stored:
+    get:
+      operationId: ListCatalogStoredCalls
+      tags:
+        - Interactions
+      summary: List stored catalog calls
+      description: >-
+        Searches the stored calls of the project, in their draft version. Calls
+        are the interactions that are not agents: basic, tool and skill calls.
+        Returns the matching calls with their tag counts and total.
+
+
+        **Required permissions:** `interaction:read`
+      security:
+        - bearerAuth: []
+        - OAuth2:
+            - interaction:read
+      parameters:
+        - name: name
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: tags
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+        - name: model
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: prompt
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: is_basic
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: is_tool
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: is_skill
+          in: query
+          required: false
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: Matching stored calls.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CatalogSearchResult"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - interaction:read
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/interaction-catalog.ts
+        className: InteractionCatalogResource
+        methodName: listStoredCalls
+    parameters:
+      - name: x-api-version
+        in: header
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          pattern: \S
+          example: "20260803"
+        description: Required Vertesia API version header. Use `20260803` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /interactions/catalog/calls/system:
+    get:
+      operationId: ListCatalogSystemCalls
+      tags:
+        - Interactions
+      summary: List system catalog calls
+      description: >-
+        Searches the system calls, which are defined in code by the platform.
+        Calls are the interactions that are not agents: basic, tool and skill
+        calls. Returns the matching calls with their tag counts and total.
+        `model` and `prompt` only match stored calls.
+
+
+        **Required permissions:** `interaction:read`
+      security:
+        - bearerAuth: []
+        - OAuth2:
+            - interaction:read
+      parameters:
+        - name: name
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: tags
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+        - name: model
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: prompt
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: is_basic
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: is_tool
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: is_skill
+          in: query
+          required: false
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: Matching system calls.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CatalogSearchResult"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - interaction:read
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/interaction-catalog.ts
+        className: InteractionCatalogResource
+        methodName: listSystemCalls
+    parameters:
+      - name: x-api-version
+        in: header
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          pattern: \S
+          example: "20260803"
+        description: Required Vertesia API version header. Use `20260803` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /interactions/catalog/calls/apps/{appName}:
+    get:
+      operationId: ListCatalogAppCalls
+      tags:
+        - Interactions
+      summary: List app catalog calls
+      description: >-
+        Searches the calls provided by an app, which is asked for its
+        interactions. Calls are the interactions that are not agents: basic,
+        tool and skill calls. Returns the matching calls with their tag counts
+        and total. `model` and `prompt` only match stored calls.
+
+
+        **Required permissions:** `interaction:read`
+      security:
+        - bearerAuth: []
+        - OAuth2:
+            - interaction:read
+      parameters:
+        - name: appName
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: tags
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+        - name: model
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: prompt
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: is_basic
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: is_tool
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: is_skill
+          in: query
+          required: false
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: Matching calls of the app.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CatalogSearchResult"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - interaction:read
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/interaction-catalog.ts
+        className: InteractionCatalogResource
+        methodName: listAppCalls
     parameters:
       - name: x-api-version
         in: header
