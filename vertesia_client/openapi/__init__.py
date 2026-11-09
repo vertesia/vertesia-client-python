@@ -145,14 +145,14 @@ __all__ = [
     "AllocateAgentRunBudgetPayload",
     "AllocateAgentRunBudgetPayloadAnyOf",
     "AllocateAgentRunBudgetPayloadAnyOf1",
+    "AlterTableAddColumnOperation",
+    "AlterTableAddForeignKeyOperation",
+    "AlterTableDropColumnOperation",
+    "AlterTableDropForeignKeyOperation",
+    "AlterTableModifyColumnOperation",
     "AlterTableOperation",
-    "AlterTableOperationOneOf",
-    "AlterTableOperationOneOf1",
-    "AlterTableOperationOneOf2",
-    "AlterTableOperationOneOf3",
-    "AlterTableOperationOneOf4",
-    "AlterTableOperationOneOf5",
     "AlterTablePayload",
+    "AlterTableRenameColumnOperation",
     "AnalyticsAxis",
     "AnswerProcessTaskPayload",
     "AnthropicClaudeOptions",
@@ -482,10 +482,10 @@ __all__ = [
     "DashboardBulkArchiveResult",
     "DashboardBulkDeleteResult",
     "DashboardDataSource",
+    "DashboardElasticsearchAggregationBucketsMapping",
     "DashboardElasticsearchDsl",
+    "DashboardElasticsearchHitsMapping",
     "DashboardElasticsearchResultMapping",
-    "DashboardElasticsearchResultMappingOneOf",
-    "DashboardElasticsearchResultMappingOneOf1",
     "DashboardExport",
     "DashboardExportError",
     "DashboardExportStatus",
@@ -1264,6 +1264,7 @@ __all__ = [
     "WebsiteCredentialTotpMetadata",
     "WebsiteCredentialWebsite",
     "WorkflowActionResponse",
+    "WorkflowAgentHistory",
     "WorkflowAncestor",
     "WorkflowDefinitionPayload",
     "WorkflowDefinitionPayloadWithActivities",
@@ -1271,16 +1272,14 @@ __all__ = [
     "WorkflowDefinitionRef",
     "WorkflowEventDeliveryTarget",
     "WorkflowEventDeliveryTargetInput",
+    "WorkflowEventsHistory",
     "WorkflowExecutionStartResult",
     "WorkflowExecutionStatus",
+    "WorkflowFilesInput",
     "WorkflowHistory",
-    "WorkflowHistoryOneOf",
-    "WorkflowHistoryOneOf1",
-    "WorkflowHistoryOneOf2",
     "WorkflowInput",
     "WorkflowInputFile",
-    "WorkflowInputOneOf",
-    "WorkflowInputOneOf1",
+    "WorkflowObjectIdsInput",
     "WorkflowRule",
     "WorkflowRuleInputType",
     "WorkflowRuleItem",
@@ -1294,6 +1293,7 @@ __all__ = [
     "WorkflowRunWithDetails",
     "WorkflowSearchAttributeValueInner",
     "WorkflowTask",
+    "WorkflowTasksHistory",
     "WorkflowUpdatePublishResponse",
     "WorkflowUsageClass",
     "WorkflowUsageClassActualStarts",
@@ -1436,14 +1436,14 @@ from vertesia_client.openapi.models.aggregated_tool import AggregatedTool as Agg
 from vertesia_client.openapi.models.allocate_agent_run_budget_payload import AllocateAgentRunBudgetPayload as AllocateAgentRunBudgetPayload
 from vertesia_client.openapi.models.allocate_agent_run_budget_payload_any_of import AllocateAgentRunBudgetPayloadAnyOf as AllocateAgentRunBudgetPayloadAnyOf
 from vertesia_client.openapi.models.allocate_agent_run_budget_payload_any_of1 import AllocateAgentRunBudgetPayloadAnyOf1 as AllocateAgentRunBudgetPayloadAnyOf1
+from vertesia_client.openapi.models.alter_table_add_column_operation import AlterTableAddColumnOperation as AlterTableAddColumnOperation
+from vertesia_client.openapi.models.alter_table_add_foreign_key_operation import AlterTableAddForeignKeyOperation as AlterTableAddForeignKeyOperation
+from vertesia_client.openapi.models.alter_table_drop_column_operation import AlterTableDropColumnOperation as AlterTableDropColumnOperation
+from vertesia_client.openapi.models.alter_table_drop_foreign_key_operation import AlterTableDropForeignKeyOperation as AlterTableDropForeignKeyOperation
+from vertesia_client.openapi.models.alter_table_modify_column_operation import AlterTableModifyColumnOperation as AlterTableModifyColumnOperation
 from vertesia_client.openapi.models.alter_table_operation import AlterTableOperation as AlterTableOperation
-from vertesia_client.openapi.models.alter_table_operation_one_of import AlterTableOperationOneOf as AlterTableOperationOneOf
-from vertesia_client.openapi.models.alter_table_operation_one_of1 import AlterTableOperationOneOf1 as AlterTableOperationOneOf1
-from vertesia_client.openapi.models.alter_table_operation_one_of2 import AlterTableOperationOneOf2 as AlterTableOperationOneOf2
-from vertesia_client.openapi.models.alter_table_operation_one_of3 import AlterTableOperationOneOf3 as AlterTableOperationOneOf3
-from vertesia_client.openapi.models.alter_table_operation_one_of4 import AlterTableOperationOneOf4 as AlterTableOperationOneOf4
-from vertesia_client.openapi.models.alter_table_operation_one_of5 import AlterTableOperationOneOf5 as AlterTableOperationOneOf5
 from vertesia_client.openapi.models.alter_table_payload import AlterTablePayload as AlterTablePayload
+from vertesia_client.openapi.models.alter_table_rename_column_operation import AlterTableRenameColumnOperation as AlterTableRenameColumnOperation
 from vertesia_client.openapi.models.analytics_axis import AnalyticsAxis as AnalyticsAxis
 from vertesia_client.openapi.models.answer_process_task_payload import AnswerProcessTaskPayload as AnswerProcessTaskPayload
 from vertesia_client.openapi.models.anthropic_claude_options import AnthropicClaudeOptions as AnthropicClaudeOptions
@@ -1773,10 +1773,10 @@ from vertesia_client.openapi.models.dashboard_archive_result import DashboardArc
 from vertesia_client.openapi.models.dashboard_bulk_archive_result import DashboardBulkArchiveResult as DashboardBulkArchiveResult
 from vertesia_client.openapi.models.dashboard_bulk_delete_result import DashboardBulkDeleteResult as DashboardBulkDeleteResult
 from vertesia_client.openapi.models.dashboard_data_source import DashboardDataSource as DashboardDataSource
+from vertesia_client.openapi.models.dashboard_elasticsearch_aggregation_buckets_mapping import DashboardElasticsearchAggregationBucketsMapping as DashboardElasticsearchAggregationBucketsMapping
 from vertesia_client.openapi.models.dashboard_elasticsearch_dsl import DashboardElasticsearchDsl as DashboardElasticsearchDsl
+from vertesia_client.openapi.models.dashboard_elasticsearch_hits_mapping import DashboardElasticsearchHitsMapping as DashboardElasticsearchHitsMapping
 from vertesia_client.openapi.models.dashboard_elasticsearch_result_mapping import DashboardElasticsearchResultMapping as DashboardElasticsearchResultMapping
-from vertesia_client.openapi.models.dashboard_elasticsearch_result_mapping_one_of import DashboardElasticsearchResultMappingOneOf as DashboardElasticsearchResultMappingOneOf
-from vertesia_client.openapi.models.dashboard_elasticsearch_result_mapping_one_of1 import DashboardElasticsearchResultMappingOneOf1 as DashboardElasticsearchResultMappingOneOf1
 from vertesia_client.openapi.models.dashboard_export import DashboardExport as DashboardExport
 from vertesia_client.openapi.models.dashboard_export_error import DashboardExportError as DashboardExportError
 from vertesia_client.openapi.models.dashboard_export_status import DashboardExportStatus as DashboardExportStatus
@@ -2555,6 +2555,7 @@ from vertesia_client.openapi.models.website_credential_totp_algorithm import Web
 from vertesia_client.openapi.models.website_credential_totp_metadata import WebsiteCredentialTotpMetadata as WebsiteCredentialTotpMetadata
 from vertesia_client.openapi.models.website_credential_website import WebsiteCredentialWebsite as WebsiteCredentialWebsite
 from vertesia_client.openapi.models.workflow_action_response import WorkflowActionResponse as WorkflowActionResponse
+from vertesia_client.openapi.models.workflow_agent_history import WorkflowAgentHistory as WorkflowAgentHistory
 from vertesia_client.openapi.models.workflow_ancestor import WorkflowAncestor as WorkflowAncestor
 from vertesia_client.openapi.models.workflow_definition_payload import WorkflowDefinitionPayload as WorkflowDefinitionPayload
 from vertesia_client.openapi.models.workflow_definition_payload_with_activities import WorkflowDefinitionPayloadWithActivities as WorkflowDefinitionPayloadWithActivities
@@ -2562,16 +2563,14 @@ from vertesia_client.openapi.models.workflow_definition_payload_with_steps impor
 from vertesia_client.openapi.models.workflow_definition_ref import WorkflowDefinitionRef as WorkflowDefinitionRef
 from vertesia_client.openapi.models.workflow_event_delivery_target import WorkflowEventDeliveryTarget as WorkflowEventDeliveryTarget
 from vertesia_client.openapi.models.workflow_event_delivery_target_input import WorkflowEventDeliveryTargetInput as WorkflowEventDeliveryTargetInput
+from vertesia_client.openapi.models.workflow_events_history import WorkflowEventsHistory as WorkflowEventsHistory
 from vertesia_client.openapi.models.workflow_execution_start_result import WorkflowExecutionStartResult as WorkflowExecutionStartResult
 from vertesia_client.openapi.models.workflow_execution_status import WorkflowExecutionStatus as WorkflowExecutionStatus
+from vertesia_client.openapi.models.workflow_files_input import WorkflowFilesInput as WorkflowFilesInput
 from vertesia_client.openapi.models.workflow_history import WorkflowHistory as WorkflowHistory
-from vertesia_client.openapi.models.workflow_history_one_of import WorkflowHistoryOneOf as WorkflowHistoryOneOf
-from vertesia_client.openapi.models.workflow_history_one_of1 import WorkflowHistoryOneOf1 as WorkflowHistoryOneOf1
-from vertesia_client.openapi.models.workflow_history_one_of2 import WorkflowHistoryOneOf2 as WorkflowHistoryOneOf2
 from vertesia_client.openapi.models.workflow_input import WorkflowInput as WorkflowInput
 from vertesia_client.openapi.models.workflow_input_file import WorkflowInputFile as WorkflowInputFile
-from vertesia_client.openapi.models.workflow_input_one_of import WorkflowInputOneOf as WorkflowInputOneOf
-from vertesia_client.openapi.models.workflow_input_one_of1 import WorkflowInputOneOf1 as WorkflowInputOneOf1
+from vertesia_client.openapi.models.workflow_object_ids_input import WorkflowObjectIdsInput as WorkflowObjectIdsInput
 from vertesia_client.openapi.models.workflow_rule import WorkflowRule as WorkflowRule
 from vertesia_client.openapi.models.workflow_rule_input_type import WorkflowRuleInputType as WorkflowRuleInputType
 from vertesia_client.openapi.models.workflow_rule_item import WorkflowRuleItem as WorkflowRuleItem
@@ -2585,6 +2584,7 @@ from vertesia_client.openapi.models.workflow_run_updates_response import Workflo
 from vertesia_client.openapi.models.workflow_run_with_details import WorkflowRunWithDetails as WorkflowRunWithDetails
 from vertesia_client.openapi.models.workflow_search_attribute_value_inner import WorkflowSearchAttributeValueInner as WorkflowSearchAttributeValueInner
 from vertesia_client.openapi.models.workflow_task import WorkflowTask as WorkflowTask
+from vertesia_client.openapi.models.workflow_tasks_history import WorkflowTasksHistory as WorkflowTasksHistory
 from vertesia_client.openapi.models.workflow_update_publish_response import WorkflowUpdatePublishResponse as WorkflowUpdatePublishResponse
 from vertesia_client.openapi.models.workflow_usage_class import WorkflowUsageClass as WorkflowUsageClass
 from vertesia_client.openapi.models.workflow_usage_class_actual_starts import WorkflowUsageClassActualStarts as WorkflowUsageClassActualStarts

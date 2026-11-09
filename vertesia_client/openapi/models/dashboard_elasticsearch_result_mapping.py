@@ -17,24 +17,24 @@ import json
 import pprint
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, ValidationError, field_validator
 from typing import Any, List, Optional
-from vertesia_client.openapi.models.dashboard_elasticsearch_result_mapping_one_of import DashboardElasticsearchResultMappingOneOf
-from vertesia_client.openapi.models.dashboard_elasticsearch_result_mapping_one_of1 import DashboardElasticsearchResultMappingOneOf1
+from vertesia_client.openapi.models.dashboard_elasticsearch_aggregation_buckets_mapping import DashboardElasticsearchAggregationBucketsMapping
+from vertesia_client.openapi.models.dashboard_elasticsearch_hits_mapping import DashboardElasticsearchHitsMapping
 from pydantic import StrictStr, Field
 from typing import Union, List, Set, Optional, Dict
 from typing_extensions import Literal, Self
 
-DASHBOARDELASTICSEARCHRESULTMAPPING_ONE_OF_SCHEMAS = ["DashboardElasticsearchResultMappingOneOf", "DashboardElasticsearchResultMappingOneOf1"]
+DASHBOARDELASTICSEARCHRESULTMAPPING_ONE_OF_SCHEMAS = ["DashboardElasticsearchAggregationBucketsMapping", "DashboardElasticsearchHitsMapping"]
 
 class DashboardElasticsearchResultMapping(BaseModel):
     """
     How an Elasticsearch DSL result should be converted into Vega rows.
     """
-    # data type: DashboardElasticsearchResultMappingOneOf
-    oneof_schema_1_validator: Optional[DashboardElasticsearchResultMappingOneOf] = None
-    # data type: DashboardElasticsearchResultMappingOneOf1
-    oneof_schema_2_validator: Optional[DashboardElasticsearchResultMappingOneOf1] = None
-    actual_instance: Optional[Union[DashboardElasticsearchResultMappingOneOf, DashboardElasticsearchResultMappingOneOf1]] = None
-    one_of_schemas: Set[str] = { "DashboardElasticsearchResultMappingOneOf", "DashboardElasticsearchResultMappingOneOf1" }
+    # data type: DashboardElasticsearchHitsMapping
+    oneof_schema_1_validator: Optional[DashboardElasticsearchHitsMapping] = None
+    # data type: DashboardElasticsearchAggregationBucketsMapping
+    oneof_schema_2_validator: Optional[DashboardElasticsearchAggregationBucketsMapping] = None
+    actual_instance: Optional[Union[DashboardElasticsearchAggregationBucketsMapping, DashboardElasticsearchHitsMapping]] = None
+    one_of_schemas: Set[str] = { "DashboardElasticsearchAggregationBucketsMapping", "DashboardElasticsearchHitsMapping" }
 
     model_config = ConfigDict(
         validate_assignment=True,
@@ -60,22 +60,22 @@ class DashboardElasticsearchResultMapping(BaseModel):
         instance = DashboardElasticsearchResultMapping.model_construct()
         error_messages = []
         match = 0
-        # validate data type: DashboardElasticsearchResultMappingOneOf
-        if not isinstance(v, DashboardElasticsearchResultMappingOneOf):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `DashboardElasticsearchResultMappingOneOf`")
+        # validate data type: DashboardElasticsearchHitsMapping
+        if not isinstance(v, DashboardElasticsearchHitsMapping):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `DashboardElasticsearchHitsMapping`")
         else:
             match += 1
-        # validate data type: DashboardElasticsearchResultMappingOneOf1
-        if not isinstance(v, DashboardElasticsearchResultMappingOneOf1):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `DashboardElasticsearchResultMappingOneOf1`")
+        # validate data type: DashboardElasticsearchAggregationBucketsMapping
+        if not isinstance(v, DashboardElasticsearchAggregationBucketsMapping):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `DashboardElasticsearchAggregationBucketsMapping`")
         else:
             match += 1
         if match > 1:
             # more than 1 match
-            raise ValueError("Multiple matches found when setting `actual_instance` in DashboardElasticsearchResultMapping with oneOf schemas: DashboardElasticsearchResultMappingOneOf, DashboardElasticsearchResultMappingOneOf1. Details: " + ", ".join(error_messages))
+            raise ValueError("Multiple matches found when setting `actual_instance` in DashboardElasticsearchResultMapping with oneOf schemas: DashboardElasticsearchAggregationBucketsMapping, DashboardElasticsearchHitsMapping. Details: " + ", ".join(error_messages))
         elif match == 0:
             # no match
-            raise ValueError("No match found when setting `actual_instance` in DashboardElasticsearchResultMapping with oneOf schemas: DashboardElasticsearchResultMappingOneOf, DashboardElasticsearchResultMappingOneOf1. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when setting `actual_instance` in DashboardElasticsearchResultMapping with oneOf schemas: DashboardElasticsearchAggregationBucketsMapping, DashboardElasticsearchHitsMapping. Details: " + ", ".join(error_messages))
         else:
             return v
 
@@ -90,25 +90,25 @@ class DashboardElasticsearchResultMapping(BaseModel):
         error_messages = []
         match = 0
 
-        # deserialize data into DashboardElasticsearchResultMappingOneOf
+        # deserialize data into DashboardElasticsearchHitsMapping
         try:
-            instance.actual_instance = DashboardElasticsearchResultMappingOneOf.from_json(json_str)
+            instance.actual_instance = DashboardElasticsearchHitsMapping.from_json(json_str)
             match += 1
         except (ValidationError, ValueError) as e:
             error_messages.append(str(e))
-        # deserialize data into DashboardElasticsearchResultMappingOneOf1
+        # deserialize data into DashboardElasticsearchAggregationBucketsMapping
         try:
-            instance.actual_instance = DashboardElasticsearchResultMappingOneOf1.from_json(json_str)
+            instance.actual_instance = DashboardElasticsearchAggregationBucketsMapping.from_json(json_str)
             match += 1
         except (ValidationError, ValueError) as e:
             error_messages.append(str(e))
 
         if match > 1:
             # more than 1 match
-            raise ValueError("Multiple matches found when deserializing the JSON string into DashboardElasticsearchResultMapping with oneOf schemas: DashboardElasticsearchResultMappingOneOf, DashboardElasticsearchResultMappingOneOf1. Details: " + ", ".join(error_messages))
+            raise ValueError("Multiple matches found when deserializing the JSON string into DashboardElasticsearchResultMapping with oneOf schemas: DashboardElasticsearchAggregationBucketsMapping, DashboardElasticsearchHitsMapping. Details: " + ", ".join(error_messages))
         elif match == 0:
             # no match
-            raise ValueError("No match found when deserializing the JSON string into DashboardElasticsearchResultMapping with oneOf schemas: DashboardElasticsearchResultMappingOneOf, DashboardElasticsearchResultMappingOneOf1. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when deserializing the JSON string into DashboardElasticsearchResultMapping with oneOf schemas: DashboardElasticsearchAggregationBucketsMapping, DashboardElasticsearchHitsMapping. Details: " + ", ".join(error_messages))
         else:
             return instance
 
@@ -122,7 +122,7 @@ class DashboardElasticsearchResultMapping(BaseModel):
         else:
             return json.dumps(self.actual_instance)
 
-    def to_dict(self) -> Optional[Union[Dict[str, Any], DashboardElasticsearchResultMappingOneOf, DashboardElasticsearchResultMappingOneOf1]]:
+    def to_dict(self) -> Optional[Union[Dict[str, Any], DashboardElasticsearchAggregationBucketsMapping, DashboardElasticsearchHitsMapping]]:
         """Returns the dict representation of the actual instance"""
         if self.actual_instance is None:
             return None

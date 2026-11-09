@@ -17,24 +17,24 @@ import json
 import pprint
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, ValidationError, field_validator
 from typing import Any, List, Optional
-from vertesia_client.openapi.models.workflow_input_one_of import WorkflowInputOneOf
-from vertesia_client.openapi.models.workflow_input_one_of1 import WorkflowInputOneOf1
+from vertesia_client.openapi.models.workflow_files_input import WorkflowFilesInput
+from vertesia_client.openapi.models.workflow_object_ids_input import WorkflowObjectIdsInput
 from pydantic import StrictStr, Field
 from typing import Union, List, Set, Optional, Dict
 from typing_extensions import Literal, Self
 
-WORKFLOWINPUT_ONE_OF_SCHEMAS = ["WorkflowInputOneOf", "WorkflowInputOneOf1"]
+WORKFLOWINPUT_ONE_OF_SCHEMAS = ["WorkflowFilesInput", "WorkflowObjectIdsInput"]
 
 class WorkflowInput(BaseModel):
     """
     WorkflowInput
     """
-    # data type: WorkflowInputOneOf
-    oneof_schema_1_validator: Optional[WorkflowInputOneOf] = None
-    # data type: WorkflowInputOneOf1
-    oneof_schema_2_validator: Optional[WorkflowInputOneOf1] = None
-    actual_instance: Optional[Union[WorkflowInputOneOf, WorkflowInputOneOf1]] = None
-    one_of_schemas: Set[str] = { "WorkflowInputOneOf", "WorkflowInputOneOf1" }
+    # data type: WorkflowObjectIdsInput
+    oneof_schema_1_validator: Optional[WorkflowObjectIdsInput] = None
+    # data type: WorkflowFilesInput
+    oneof_schema_2_validator: Optional[WorkflowFilesInput] = None
+    actual_instance: Optional[Union[WorkflowFilesInput, WorkflowObjectIdsInput]] = None
+    one_of_schemas: Set[str] = { "WorkflowFilesInput", "WorkflowObjectIdsInput" }
 
     model_config = ConfigDict(
         validate_assignment=True,
@@ -60,22 +60,22 @@ class WorkflowInput(BaseModel):
         instance = WorkflowInput.model_construct()
         error_messages = []
         match = 0
-        # validate data type: WorkflowInputOneOf
-        if not isinstance(v, WorkflowInputOneOf):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `WorkflowInputOneOf`")
+        # validate data type: WorkflowObjectIdsInput
+        if not isinstance(v, WorkflowObjectIdsInput):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `WorkflowObjectIdsInput`")
         else:
             match += 1
-        # validate data type: WorkflowInputOneOf1
-        if not isinstance(v, WorkflowInputOneOf1):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `WorkflowInputOneOf1`")
+        # validate data type: WorkflowFilesInput
+        if not isinstance(v, WorkflowFilesInput):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `WorkflowFilesInput`")
         else:
             match += 1
         if match > 1:
             # more than 1 match
-            raise ValueError("Multiple matches found when setting `actual_instance` in WorkflowInput with oneOf schemas: WorkflowInputOneOf, WorkflowInputOneOf1. Details: " + ", ".join(error_messages))
+            raise ValueError("Multiple matches found when setting `actual_instance` in WorkflowInput with oneOf schemas: WorkflowFilesInput, WorkflowObjectIdsInput. Details: " + ", ".join(error_messages))
         elif match == 0:
             # no match
-            raise ValueError("No match found when setting `actual_instance` in WorkflowInput with oneOf schemas: WorkflowInputOneOf, WorkflowInputOneOf1. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when setting `actual_instance` in WorkflowInput with oneOf schemas: WorkflowFilesInput, WorkflowObjectIdsInput. Details: " + ", ".join(error_messages))
         else:
             return v
 
@@ -90,25 +90,25 @@ class WorkflowInput(BaseModel):
         error_messages = []
         match = 0
 
-        # deserialize data into WorkflowInputOneOf
+        # deserialize data into WorkflowObjectIdsInput
         try:
-            instance.actual_instance = WorkflowInputOneOf.from_json(json_str)
+            instance.actual_instance = WorkflowObjectIdsInput.from_json(json_str)
             match += 1
         except (ValidationError, ValueError) as e:
             error_messages.append(str(e))
-        # deserialize data into WorkflowInputOneOf1
+        # deserialize data into WorkflowFilesInput
         try:
-            instance.actual_instance = WorkflowInputOneOf1.from_json(json_str)
+            instance.actual_instance = WorkflowFilesInput.from_json(json_str)
             match += 1
         except (ValidationError, ValueError) as e:
             error_messages.append(str(e))
 
         if match > 1:
             # more than 1 match
-            raise ValueError("Multiple matches found when deserializing the JSON string into WorkflowInput with oneOf schemas: WorkflowInputOneOf, WorkflowInputOneOf1. Details: " + ", ".join(error_messages))
+            raise ValueError("Multiple matches found when deserializing the JSON string into WorkflowInput with oneOf schemas: WorkflowFilesInput, WorkflowObjectIdsInput. Details: " + ", ".join(error_messages))
         elif match == 0:
             # no match
-            raise ValueError("No match found when deserializing the JSON string into WorkflowInput with oneOf schemas: WorkflowInputOneOf, WorkflowInputOneOf1. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when deserializing the JSON string into WorkflowInput with oneOf schemas: WorkflowFilesInput, WorkflowObjectIdsInput. Details: " + ", ".join(error_messages))
         else:
             return instance
 
@@ -122,7 +122,7 @@ class WorkflowInput(BaseModel):
         else:
             return json.dumps(self.actual_instance)
 
-    def to_dict(self) -> Optional[Union[Dict[str, Any], WorkflowInputOneOf, WorkflowInputOneOf1]]:
+    def to_dict(self) -> Optional[Union[Dict[str, Any], WorkflowFilesInput, WorkflowObjectIdsInput]]:
         """Returns the dict representation of the actual instance"""
         if self.actual_instance is None:
             return None

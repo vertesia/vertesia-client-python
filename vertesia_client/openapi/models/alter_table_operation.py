@@ -17,36 +17,36 @@ import json
 import pprint
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, ValidationError, field_validator
 from typing import Any, List, Optional
-from vertesia_client.openapi.models.alter_table_operation_one_of import AlterTableOperationOneOf
-from vertesia_client.openapi.models.alter_table_operation_one_of1 import AlterTableOperationOneOf1
-from vertesia_client.openapi.models.alter_table_operation_one_of2 import AlterTableOperationOneOf2
-from vertesia_client.openapi.models.alter_table_operation_one_of3 import AlterTableOperationOneOf3
-from vertesia_client.openapi.models.alter_table_operation_one_of4 import AlterTableOperationOneOf4
-from vertesia_client.openapi.models.alter_table_operation_one_of5 import AlterTableOperationOneOf5
+from vertesia_client.openapi.models.alter_table_add_column_operation import AlterTableAddColumnOperation
+from vertesia_client.openapi.models.alter_table_add_foreign_key_operation import AlterTableAddForeignKeyOperation
+from vertesia_client.openapi.models.alter_table_drop_column_operation import AlterTableDropColumnOperation
+from vertesia_client.openapi.models.alter_table_drop_foreign_key_operation import AlterTableDropForeignKeyOperation
+from vertesia_client.openapi.models.alter_table_modify_column_operation import AlterTableModifyColumnOperation
+from vertesia_client.openapi.models.alter_table_rename_column_operation import AlterTableRenameColumnOperation
 from pydantic import StrictStr, Field
 from typing import Union, List, Set, Optional, Dict
 from typing_extensions import Literal, Self
 
-ALTERTABLEOPERATION_ONE_OF_SCHEMAS = ["AlterTableOperationOneOf", "AlterTableOperationOneOf1", "AlterTableOperationOneOf2", "AlterTableOperationOneOf3", "AlterTableOperationOneOf4", "AlterTableOperationOneOf5"]
+ALTERTABLEOPERATION_ONE_OF_SCHEMAS = ["AlterTableAddColumnOperation", "AlterTableAddForeignKeyOperation", "AlterTableDropColumnOperation", "AlterTableDropForeignKeyOperation", "AlterTableModifyColumnOperation", "AlterTableRenameColumnOperation"]
 
 class AlterTableOperation(BaseModel):
     """
     AlterTableOperation
     """
-    # data type: AlterTableOperationOneOf
-    oneof_schema_1_validator: Optional[AlterTableOperationOneOf] = None
-    # data type: AlterTableOperationOneOf1
-    oneof_schema_2_validator: Optional[AlterTableOperationOneOf1] = None
-    # data type: AlterTableOperationOneOf2
-    oneof_schema_3_validator: Optional[AlterTableOperationOneOf2] = None
-    # data type: AlterTableOperationOneOf3
-    oneof_schema_4_validator: Optional[AlterTableOperationOneOf3] = None
-    # data type: AlterTableOperationOneOf4
-    oneof_schema_5_validator: Optional[AlterTableOperationOneOf4] = None
-    # data type: AlterTableOperationOneOf5
-    oneof_schema_6_validator: Optional[AlterTableOperationOneOf5] = None
-    actual_instance: Optional[Union[AlterTableOperationOneOf, AlterTableOperationOneOf1, AlterTableOperationOneOf2, AlterTableOperationOneOf3, AlterTableOperationOneOf4, AlterTableOperationOneOf5]] = None
-    one_of_schemas: Set[str] = { "AlterTableOperationOneOf", "AlterTableOperationOneOf1", "AlterTableOperationOneOf2", "AlterTableOperationOneOf3", "AlterTableOperationOneOf4", "AlterTableOperationOneOf5" }
+    # data type: AlterTableAddColumnOperation
+    oneof_schema_1_validator: Optional[AlterTableAddColumnOperation] = None
+    # data type: AlterTableDropColumnOperation
+    oneof_schema_2_validator: Optional[AlterTableDropColumnOperation] = None
+    # data type: AlterTableRenameColumnOperation
+    oneof_schema_3_validator: Optional[AlterTableRenameColumnOperation] = None
+    # data type: AlterTableModifyColumnOperation
+    oneof_schema_4_validator: Optional[AlterTableModifyColumnOperation] = None
+    # data type: AlterTableAddForeignKeyOperation
+    oneof_schema_5_validator: Optional[AlterTableAddForeignKeyOperation] = None
+    # data type: AlterTableDropForeignKeyOperation
+    oneof_schema_6_validator: Optional[AlterTableDropForeignKeyOperation] = None
+    actual_instance: Optional[Union[AlterTableAddColumnOperation, AlterTableAddForeignKeyOperation, AlterTableDropColumnOperation, AlterTableDropForeignKeyOperation, AlterTableModifyColumnOperation, AlterTableRenameColumnOperation]] = None
+    one_of_schemas: Set[str] = { "AlterTableAddColumnOperation", "AlterTableAddForeignKeyOperation", "AlterTableDropColumnOperation", "AlterTableDropForeignKeyOperation", "AlterTableModifyColumnOperation", "AlterTableRenameColumnOperation" }
 
     model_config = ConfigDict(
         validate_assignment=True,
@@ -72,42 +72,42 @@ class AlterTableOperation(BaseModel):
         instance = AlterTableOperation.model_construct()
         error_messages = []
         match = 0
-        # validate data type: AlterTableOperationOneOf
-        if not isinstance(v, AlterTableOperationOneOf):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `AlterTableOperationOneOf`")
+        # validate data type: AlterTableAddColumnOperation
+        if not isinstance(v, AlterTableAddColumnOperation):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `AlterTableAddColumnOperation`")
         else:
             match += 1
-        # validate data type: AlterTableOperationOneOf1
-        if not isinstance(v, AlterTableOperationOneOf1):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `AlterTableOperationOneOf1`")
+        # validate data type: AlterTableDropColumnOperation
+        if not isinstance(v, AlterTableDropColumnOperation):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `AlterTableDropColumnOperation`")
         else:
             match += 1
-        # validate data type: AlterTableOperationOneOf2
-        if not isinstance(v, AlterTableOperationOneOf2):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `AlterTableOperationOneOf2`")
+        # validate data type: AlterTableRenameColumnOperation
+        if not isinstance(v, AlterTableRenameColumnOperation):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `AlterTableRenameColumnOperation`")
         else:
             match += 1
-        # validate data type: AlterTableOperationOneOf3
-        if not isinstance(v, AlterTableOperationOneOf3):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `AlterTableOperationOneOf3`")
+        # validate data type: AlterTableModifyColumnOperation
+        if not isinstance(v, AlterTableModifyColumnOperation):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `AlterTableModifyColumnOperation`")
         else:
             match += 1
-        # validate data type: AlterTableOperationOneOf4
-        if not isinstance(v, AlterTableOperationOneOf4):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `AlterTableOperationOneOf4`")
+        # validate data type: AlterTableAddForeignKeyOperation
+        if not isinstance(v, AlterTableAddForeignKeyOperation):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `AlterTableAddForeignKeyOperation`")
         else:
             match += 1
-        # validate data type: AlterTableOperationOneOf5
-        if not isinstance(v, AlterTableOperationOneOf5):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `AlterTableOperationOneOf5`")
+        # validate data type: AlterTableDropForeignKeyOperation
+        if not isinstance(v, AlterTableDropForeignKeyOperation):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `AlterTableDropForeignKeyOperation`")
         else:
             match += 1
         if match > 1:
             # more than 1 match
-            raise ValueError("Multiple matches found when setting `actual_instance` in AlterTableOperation with oneOf schemas: AlterTableOperationOneOf, AlterTableOperationOneOf1, AlterTableOperationOneOf2, AlterTableOperationOneOf3, AlterTableOperationOneOf4, AlterTableOperationOneOf5. Details: " + ", ".join(error_messages))
+            raise ValueError("Multiple matches found when setting `actual_instance` in AlterTableOperation with oneOf schemas: AlterTableAddColumnOperation, AlterTableAddForeignKeyOperation, AlterTableDropColumnOperation, AlterTableDropForeignKeyOperation, AlterTableModifyColumnOperation, AlterTableRenameColumnOperation. Details: " + ", ".join(error_messages))
         elif match == 0:
             # no match
-            raise ValueError("No match found when setting `actual_instance` in AlterTableOperation with oneOf schemas: AlterTableOperationOneOf, AlterTableOperationOneOf1, AlterTableOperationOneOf2, AlterTableOperationOneOf3, AlterTableOperationOneOf4, AlterTableOperationOneOf5. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when setting `actual_instance` in AlterTableOperation with oneOf schemas: AlterTableAddColumnOperation, AlterTableAddForeignKeyOperation, AlterTableDropColumnOperation, AlterTableDropForeignKeyOperation, AlterTableModifyColumnOperation, AlterTableRenameColumnOperation. Details: " + ", ".join(error_messages))
         else:
             return v
 
@@ -122,49 +122,49 @@ class AlterTableOperation(BaseModel):
         error_messages = []
         match = 0
 
-        # deserialize data into AlterTableOperationOneOf
+        # deserialize data into AlterTableAddColumnOperation
         try:
-            instance.actual_instance = AlterTableOperationOneOf.from_json(json_str)
+            instance.actual_instance = AlterTableAddColumnOperation.from_json(json_str)
             match += 1
         except (ValidationError, ValueError) as e:
             error_messages.append(str(e))
-        # deserialize data into AlterTableOperationOneOf1
+        # deserialize data into AlterTableDropColumnOperation
         try:
-            instance.actual_instance = AlterTableOperationOneOf1.from_json(json_str)
+            instance.actual_instance = AlterTableDropColumnOperation.from_json(json_str)
             match += 1
         except (ValidationError, ValueError) as e:
             error_messages.append(str(e))
-        # deserialize data into AlterTableOperationOneOf2
+        # deserialize data into AlterTableRenameColumnOperation
         try:
-            instance.actual_instance = AlterTableOperationOneOf2.from_json(json_str)
+            instance.actual_instance = AlterTableRenameColumnOperation.from_json(json_str)
             match += 1
         except (ValidationError, ValueError) as e:
             error_messages.append(str(e))
-        # deserialize data into AlterTableOperationOneOf3
+        # deserialize data into AlterTableModifyColumnOperation
         try:
-            instance.actual_instance = AlterTableOperationOneOf3.from_json(json_str)
+            instance.actual_instance = AlterTableModifyColumnOperation.from_json(json_str)
             match += 1
         except (ValidationError, ValueError) as e:
             error_messages.append(str(e))
-        # deserialize data into AlterTableOperationOneOf4
+        # deserialize data into AlterTableAddForeignKeyOperation
         try:
-            instance.actual_instance = AlterTableOperationOneOf4.from_json(json_str)
+            instance.actual_instance = AlterTableAddForeignKeyOperation.from_json(json_str)
             match += 1
         except (ValidationError, ValueError) as e:
             error_messages.append(str(e))
-        # deserialize data into AlterTableOperationOneOf5
+        # deserialize data into AlterTableDropForeignKeyOperation
         try:
-            instance.actual_instance = AlterTableOperationOneOf5.from_json(json_str)
+            instance.actual_instance = AlterTableDropForeignKeyOperation.from_json(json_str)
             match += 1
         except (ValidationError, ValueError) as e:
             error_messages.append(str(e))
 
         if match > 1:
             # more than 1 match
-            raise ValueError("Multiple matches found when deserializing the JSON string into AlterTableOperation with oneOf schemas: AlterTableOperationOneOf, AlterTableOperationOneOf1, AlterTableOperationOneOf2, AlterTableOperationOneOf3, AlterTableOperationOneOf4, AlterTableOperationOneOf5. Details: " + ", ".join(error_messages))
+            raise ValueError("Multiple matches found when deserializing the JSON string into AlterTableOperation with oneOf schemas: AlterTableAddColumnOperation, AlterTableAddForeignKeyOperation, AlterTableDropColumnOperation, AlterTableDropForeignKeyOperation, AlterTableModifyColumnOperation, AlterTableRenameColumnOperation. Details: " + ", ".join(error_messages))
         elif match == 0:
             # no match
-            raise ValueError("No match found when deserializing the JSON string into AlterTableOperation with oneOf schemas: AlterTableOperationOneOf, AlterTableOperationOneOf1, AlterTableOperationOneOf2, AlterTableOperationOneOf3, AlterTableOperationOneOf4, AlterTableOperationOneOf5. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when deserializing the JSON string into AlterTableOperation with oneOf schemas: AlterTableAddColumnOperation, AlterTableAddForeignKeyOperation, AlterTableDropColumnOperation, AlterTableDropForeignKeyOperation, AlterTableModifyColumnOperation, AlterTableRenameColumnOperation. Details: " + ", ".join(error_messages))
         else:
             return instance
 
@@ -178,7 +178,7 @@ class AlterTableOperation(BaseModel):
         else:
             return json.dumps(self.actual_instance)
 
-    def to_dict(self) -> Optional[Union[Dict[str, Any], AlterTableOperationOneOf, AlterTableOperationOneOf1, AlterTableOperationOneOf2, AlterTableOperationOneOf3, AlterTableOperationOneOf4, AlterTableOperationOneOf5]]:
+    def to_dict(self) -> Optional[Union[Dict[str, Any], AlterTableAddColumnOperation, AlterTableAddForeignKeyOperation, AlterTableDropColumnOperation, AlterTableDropForeignKeyOperation, AlterTableModifyColumnOperation, AlterTableRenameColumnOperation]]:
         """Returns the dict representation of the actual instance"""
         if self.actual_instance is None:
             return None

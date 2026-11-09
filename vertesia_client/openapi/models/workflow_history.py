@@ -17,27 +17,27 @@ import json
 import pprint
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, ValidationError, field_validator
 from typing import Any, List, Optional
-from vertesia_client.openapi.models.workflow_history_one_of import WorkflowHistoryOneOf
-from vertesia_client.openapi.models.workflow_history_one_of1 import WorkflowHistoryOneOf1
-from vertesia_client.openapi.models.workflow_history_one_of2 import WorkflowHistoryOneOf2
+from vertesia_client.openapi.models.workflow_agent_history import WorkflowAgentHistory
+from vertesia_client.openapi.models.workflow_events_history import WorkflowEventsHistory
+from vertesia_client.openapi.models.workflow_tasks_history import WorkflowTasksHistory
 from pydantic import StrictStr, Field
 from typing import Union, List, Set, Optional, Dict
 from typing_extensions import Literal, Self
 
-WORKFLOWHISTORY_ONE_OF_SCHEMAS = ["WorkflowHistoryOneOf", "WorkflowHistoryOneOf1", "WorkflowHistoryOneOf2"]
+WORKFLOWHISTORY_ONE_OF_SCHEMAS = ["WorkflowAgentHistory", "WorkflowEventsHistory", "WorkflowTasksHistory"]
 
 class WorkflowHistory(BaseModel):
     """
     WorkflowHistory
     """
-    # data type: WorkflowHistoryOneOf
-    oneof_schema_1_validator: Optional[WorkflowHistoryOneOf] = None
-    # data type: WorkflowHistoryOneOf1
-    oneof_schema_2_validator: Optional[WorkflowHistoryOneOf1] = None
-    # data type: WorkflowHistoryOneOf2
-    oneof_schema_3_validator: Optional[WorkflowHistoryOneOf2] = None
-    actual_instance: Optional[Union[WorkflowHistoryOneOf, WorkflowHistoryOneOf1, WorkflowHistoryOneOf2]] = None
-    one_of_schemas: Set[str] = { "WorkflowHistoryOneOf", "WorkflowHistoryOneOf1", "WorkflowHistoryOneOf2" }
+    # data type: WorkflowEventsHistory
+    oneof_schema_1_validator: Optional[WorkflowEventsHistory] = None
+    # data type: WorkflowTasksHistory
+    oneof_schema_2_validator: Optional[WorkflowTasksHistory] = None
+    # data type: WorkflowAgentHistory
+    oneof_schema_3_validator: Optional[WorkflowAgentHistory] = None
+    actual_instance: Optional[Union[WorkflowAgentHistory, WorkflowEventsHistory, WorkflowTasksHistory]] = None
+    one_of_schemas: Set[str] = { "WorkflowAgentHistory", "WorkflowEventsHistory", "WorkflowTasksHistory" }
 
     model_config = ConfigDict(
         validate_assignment=True,
@@ -63,27 +63,27 @@ class WorkflowHistory(BaseModel):
         instance = WorkflowHistory.model_construct()
         error_messages = []
         match = 0
-        # validate data type: WorkflowHistoryOneOf
-        if not isinstance(v, WorkflowHistoryOneOf):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `WorkflowHistoryOneOf`")
+        # validate data type: WorkflowEventsHistory
+        if not isinstance(v, WorkflowEventsHistory):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `WorkflowEventsHistory`")
         else:
             match += 1
-        # validate data type: WorkflowHistoryOneOf1
-        if not isinstance(v, WorkflowHistoryOneOf1):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `WorkflowHistoryOneOf1`")
+        # validate data type: WorkflowTasksHistory
+        if not isinstance(v, WorkflowTasksHistory):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `WorkflowTasksHistory`")
         else:
             match += 1
-        # validate data type: WorkflowHistoryOneOf2
-        if not isinstance(v, WorkflowHistoryOneOf2):
-            error_messages.append(f"Error! Input type `{type(v)}` is not `WorkflowHistoryOneOf2`")
+        # validate data type: WorkflowAgentHistory
+        if not isinstance(v, WorkflowAgentHistory):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `WorkflowAgentHistory`")
         else:
             match += 1
         if match > 1:
             # more than 1 match
-            raise ValueError("Multiple matches found when setting `actual_instance` in WorkflowHistory with oneOf schemas: WorkflowHistoryOneOf, WorkflowHistoryOneOf1, WorkflowHistoryOneOf2. Details: " + ", ".join(error_messages))
+            raise ValueError("Multiple matches found when setting `actual_instance` in WorkflowHistory with oneOf schemas: WorkflowAgentHistory, WorkflowEventsHistory, WorkflowTasksHistory. Details: " + ", ".join(error_messages))
         elif match == 0:
             # no match
-            raise ValueError("No match found when setting `actual_instance` in WorkflowHistory with oneOf schemas: WorkflowHistoryOneOf, WorkflowHistoryOneOf1, WorkflowHistoryOneOf2. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when setting `actual_instance` in WorkflowHistory with oneOf schemas: WorkflowAgentHistory, WorkflowEventsHistory, WorkflowTasksHistory. Details: " + ", ".join(error_messages))
         else:
             return v
 
@@ -98,31 +98,31 @@ class WorkflowHistory(BaseModel):
         error_messages = []
         match = 0
 
-        # deserialize data into WorkflowHistoryOneOf
+        # deserialize data into WorkflowEventsHistory
         try:
-            instance.actual_instance = WorkflowHistoryOneOf.from_json(json_str)
+            instance.actual_instance = WorkflowEventsHistory.from_json(json_str)
             match += 1
         except (ValidationError, ValueError) as e:
             error_messages.append(str(e))
-        # deserialize data into WorkflowHistoryOneOf1
+        # deserialize data into WorkflowTasksHistory
         try:
-            instance.actual_instance = WorkflowHistoryOneOf1.from_json(json_str)
+            instance.actual_instance = WorkflowTasksHistory.from_json(json_str)
             match += 1
         except (ValidationError, ValueError) as e:
             error_messages.append(str(e))
-        # deserialize data into WorkflowHistoryOneOf2
+        # deserialize data into WorkflowAgentHistory
         try:
-            instance.actual_instance = WorkflowHistoryOneOf2.from_json(json_str)
+            instance.actual_instance = WorkflowAgentHistory.from_json(json_str)
             match += 1
         except (ValidationError, ValueError) as e:
             error_messages.append(str(e))
 
         if match > 1:
             # more than 1 match
-            raise ValueError("Multiple matches found when deserializing the JSON string into WorkflowHistory with oneOf schemas: WorkflowHistoryOneOf, WorkflowHistoryOneOf1, WorkflowHistoryOneOf2. Details: " + ", ".join(error_messages))
+            raise ValueError("Multiple matches found when deserializing the JSON string into WorkflowHistory with oneOf schemas: WorkflowAgentHistory, WorkflowEventsHistory, WorkflowTasksHistory. Details: " + ", ".join(error_messages))
         elif match == 0:
             # no match
-            raise ValueError("No match found when deserializing the JSON string into WorkflowHistory with oneOf schemas: WorkflowHistoryOneOf, WorkflowHistoryOneOf1, WorkflowHistoryOneOf2. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when deserializing the JSON string into WorkflowHistory with oneOf schemas: WorkflowAgentHistory, WorkflowEventsHistory, WorkflowTasksHistory. Details: " + ", ".join(error_messages))
         else:
             return instance
 
@@ -136,7 +136,7 @@ class WorkflowHistory(BaseModel):
         else:
             return json.dumps(self.actual_instance)
 
-    def to_dict(self) -> Optional[Union[Dict[str, Any], WorkflowHistoryOneOf, WorkflowHistoryOneOf1, WorkflowHistoryOneOf2]]:
+    def to_dict(self) -> Optional[Union[Dict[str, Any], WorkflowAgentHistory, WorkflowEventsHistory, WorkflowTasksHistory]]:
         """Returns the dict representation of the actual instance"""
         if self.actual_instance is None:
             return None
