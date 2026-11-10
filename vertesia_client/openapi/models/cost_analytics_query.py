@@ -31,7 +31,7 @@ class CostAnalyticsQuery(BaseModel):
     """ # noqa: E501
     var_from: Optional[GetModelPricesFromParameter] = Field(default=None, alias="from")
     to: Optional[GetModelPricesToParameter] = None
-    group_by: Optional[StrictStr] = Field(default=None, description="Group results by this dimension. `agent_run` groups by root agent run, including the calls of its sub-agents; `workflow_run` groups by Temporal workflow run, which separates each sub-agent.")
+    group_by: Optional[StrictStr] = Field(default=None, description="Group results by this dimension. `agent_run` groups by root agent run, including the calls of its sub-agents; `workflow_run` groups by Temporal workflow run, which separates each sub-agent. `source` groups by what the calls were spent on: `agent`, `process` (with its agents), `intake`, `workflow` (any other workflow), `search` (query embeddings) or `interaction` (calls outside a workflow). Calls recorded before source tracking can also read `agent_or_process` or `embedding` (an embedding of unknown purpose).")
     resolution: Optional[StrictStr] = Field(default=None, description="Time series resolution")
     model: Optional[StrictStr] = Field(default=None, description="Filter by model pattern")
     environment_id: Optional[StrictStr] = Field(default=None, description="Filter by environment ID")

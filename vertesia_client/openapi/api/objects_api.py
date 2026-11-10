@@ -47,6 +47,7 @@ from vertesia_client.openapi.models.grounded_extraction_request import GroundedE
 from vertesia_client.openapi.models.grounded_extraction_result_response import GroundedExtractionResultResponse
 from vertesia_client.openapi.models.list_content_object_exports_response import ListContentObjectExportsResponse
 from vertesia_client.openapi.models.list_workflow_runs_response import ListWorkflowRunsResponse
+from vertesia_client.openapi.models.object_intake_cost_response import ObjectIntakeCostResponse
 from vertesia_client.openapi.models.object_search_response import ObjectSearchResponse
 from vertesia_client.openapi.models.projected_content_object_api_response import ProjectedContentObjectApiResponse
 from vertesia_client.openapi.models.set_object_embeddings_response import SetObjectEmbeddingsResponse
@@ -4804,6 +4805,305 @@ class ObjectsApi:
         return self.api_client.param_serialize(
             method='GET',
             resource_path='/objects/{objectId}/embeddings/{type}',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def get_object_intake_cost(
+        self,
+        object_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        limit: Annotated[Optional[Annotated[int, Field(le=200, strict=True, ge=1)]], Field(description="Most recent intake runs to list (default 50). Totals always cover every run.")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ObjectIntakeCostResponse:
+        """Get content object intake cost
+
+        Returns the LLM and embedding cost of the intake workflows that processed a content object, per run and in total. For the latest version of a document it covers every version the caller can read; for an earlier version, that version alone. Costs are what the provider billed when it reported an amount, else list-price estimates.  **Required permissions:** `content:read`, and any of `billing:read`, `account:billing`
+
+        :param object_id: (required)
+        :type object_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
+        :param limit: Most recent intake runs to list (default 50). Totals always cover every run.
+        :type limit: int
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._get_object_intake_cost_serialize(
+            object_id=object_id,
+            x_api_version=x_api_version,
+            limit=limit,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "ObjectIntakeCostResponse",
+            '500': "ErrorResponse",
+            '4XX': "ErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def get_object_intake_cost_with_http_info(
+        self,
+        object_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        limit: Annotated[Optional[Annotated[int, Field(le=200, strict=True, ge=1)]], Field(description="Most recent intake runs to list (default 50). Totals always cover every run.")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[ObjectIntakeCostResponse]:
+        """Get content object intake cost
+
+        Returns the LLM and embedding cost of the intake workflows that processed a content object, per run and in total. For the latest version of a document it covers every version the caller can read; for an earlier version, that version alone. Costs are what the provider billed when it reported an amount, else list-price estimates.  **Required permissions:** `content:read`, and any of `billing:read`, `account:billing`
+
+        :param object_id: (required)
+        :type object_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
+        :param limit: Most recent intake runs to list (default 50). Totals always cover every run.
+        :type limit: int
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._get_object_intake_cost_serialize(
+            object_id=object_id,
+            x_api_version=x_api_version,
+            limit=limit,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "ObjectIntakeCostResponse",
+            '500': "ErrorResponse",
+            '4XX': "ErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def get_object_intake_cost_without_preload_content(
+        self,
+        object_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        limit: Annotated[Optional[Annotated[int, Field(le=200, strict=True, ge=1)]], Field(description="Most recent intake runs to list (default 50). Totals always cover every run.")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Get content object intake cost
+
+        Returns the LLM and embedding cost of the intake workflows that processed a content object, per run and in total. For the latest version of a document it covers every version the caller can read; for an earlier version, that version alone. Costs are what the provider billed when it reported an amount, else list-price estimates.  **Required permissions:** `content:read`, and any of `billing:read`, `account:billing`
+
+        :param object_id: (required)
+        :type object_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
+        :param limit: Most recent intake runs to list (default 50). Totals always cover every run.
+        :type limit: int
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._get_object_intake_cost_serialize(
+            object_id=object_id,
+            x_api_version=x_api_version,
+            limit=limit,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "ObjectIntakeCostResponse",
+            '500': "ErrorResponse",
+            '4XX': "ErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _get_object_intake_cost_serialize(
+        self,
+        object_id,
+        x_api_version,
+        limit,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if object_id is not None:
+            _path_params['objectId'] = object_id
+        # process the query parameters
+        if limit is not None:
+            
+            _query_params.append(('limit', limit))
+            
+        # process the header parameters
+        if x_api_version is not None:
+            _header_params['x-api-version'] = x_api_version
+        # process the form parameters
+        # process the body parameter
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'bearerAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='GET',
+            resource_path='/objects/{objectId}/intake-cost',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,

@@ -635,6 +635,8 @@ vertesia_client/openapi/models/generation_run_metadata.py
 vertesia_client/openapi/models/generic_command_response.py
 vertesia_client/openapi/models/get_file_url_payload.py
 vertesia_client/openapi/models/get_file_url_response.py
+vertesia_client/openapi/models/get_intake_cost_summary_from_parameter.py
+vertesia_client/openapi/models/get_intake_cost_summary_to_parameter.py
 vertesia_client/openapi/models/get_model_prices_from_parameter.py
 vertesia_client/openapi/models/get_model_prices_to_parameter.py
 vertesia_client/openapi/models/get_rendition_response.py
@@ -679,9 +681,19 @@ vertesia_client/openapi/models/inference_profile_usage.py
 vertesia_client/openapi/models/inference_profile_usage_entry.py
 vertesia_client/openapi/models/inherited_property_metadata.py
 vertesia_client/openapi/models/initial_tool_call.py
+vertesia_client/openapi/models/intake_cost_by_content_nature.py
+vertesia_client/openapi/models/intake_cost_by_content_type.py
+vertesia_client/openapi/models/intake_cost_by_outcome.py
+vertesia_client/openapi/models/intake_cost_document.py
+vertesia_client/openapi/models/intake_cost_per_page.py
+vertesia_client/openapi/models/intake_cost_summary_response.py
+vertesia_client/openapi/models/intake_cost_time_point.py
+vertesia_client/openapi/models/intake_cost_totals.py
+vertesia_client/openapi/models/intake_cost_version.py
 vertesia_client/openapi/models/intake_media_analysis_override.py
 vertesia_client/openapi/models/intake_media_analysis_overrides.py
 vertesia_client/openapi/models/intake_page_scope.py
+vertesia_client/openapi/models/intake_run_cost.py
 vertesia_client/openapi/models/intake_vision_detail.py
 vertesia_client/openapi/models/intake_vision_profile_settings_map.py
 vertesia_client/openapi/models/intake_vision_profile_settings_update.py
@@ -818,6 +830,7 @@ vertesia_client/openapi/models/o_auth_provider_exchange_payload.py
 vertesia_client/openapi/models/o_auth_registration_source.py
 vertesia_client/openapi/models/o_auth_response_type.py
 vertesia_client/openapi/models/o_auth_token_endpoint_auth_method.py
+vertesia_client/openapi/models/object_intake_cost_response.py
 vertesia_client/openapi/models/object_search_response.py
 vertesia_client/openapi/models/oidc_federation_connection.py
 vertesia_client/openapi/models/oidc_federation_connection_payload.py

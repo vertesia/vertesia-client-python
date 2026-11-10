@@ -5160,7 +5160,7 @@ class AppsApi:
     ) -> AppInstanceAvailability:
         """Check whether additional MCP app instances are enabled for this project
 
-        **Required permissions:** `account:member`
+        **Required permissions:** `account:member`, and `app:manage`
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -5229,7 +5229,7 @@ class AppsApi:
     ) -> ApiResponse[AppInstanceAvailability]:
         """Check whether additional MCP app instances are enabled for this project
 
-        **Required permissions:** `account:member`
+        **Required permissions:** `account:member`, and `app:manage`
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -5298,7 +5298,7 @@ class AppsApi:
     ) -> RESTResponseType:
         """Check whether additional MCP app instances are enabled for this project
 
-        **Required permissions:** `account:member`
+        **Required permissions:** `account:member`, and `app:manage`
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str

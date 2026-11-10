@@ -657,6 +657,8 @@ __all__ = [
     "GenericCommandResponse",
     "GetFileUrlPayload",
     "GetFileUrlResponse",
+    "GetIntakeCostSummaryFromParameter",
+    "GetIntakeCostSummaryToParameter",
     "GetModelPricesFromParameter",
     "GetModelPricesToParameter",
     "GetRenditionResponse",
@@ -701,9 +703,19 @@ __all__ = [
     "InferenceProfileUsageEntry",
     "InheritedPropertyMetadata",
     "InitialToolCall",
+    "IntakeCostByContentNature",
+    "IntakeCostByContentType",
+    "IntakeCostByOutcome",
+    "IntakeCostDocument",
+    "IntakeCostPerPage",
+    "IntakeCostSummaryResponse",
+    "IntakeCostTimePoint",
+    "IntakeCostTotals",
+    "IntakeCostVersion",
     "IntakeMediaAnalysisOverride",
     "IntakeMediaAnalysisOverrides",
     "IntakePageScope",
+    "IntakeRunCost",
     "IntakeVisionDetail",
     "IntakeVisionProfileSettingsMap",
     "IntakeVisionProfileSettingsUpdate",
@@ -840,6 +852,7 @@ __all__ = [
     "OAuthRegistrationSource",
     "OAuthResponseType",
     "OAuthTokenEndpointAuthMethod",
+    "ObjectIntakeCostResponse",
     "ObjectSearchResponse",
     "OidcFederationConnection",
     "OidcFederationConnectionPayload",
@@ -1965,6 +1978,8 @@ from vertesia_client.openapi.models.generation_run_metadata import GenerationRun
 from vertesia_client.openapi.models.generic_command_response import GenericCommandResponse as GenericCommandResponse
 from vertesia_client.openapi.models.get_file_url_payload import GetFileUrlPayload as GetFileUrlPayload
 from vertesia_client.openapi.models.get_file_url_response import GetFileUrlResponse as GetFileUrlResponse
+from vertesia_client.openapi.models.get_intake_cost_summary_from_parameter import GetIntakeCostSummaryFromParameter as GetIntakeCostSummaryFromParameter
+from vertesia_client.openapi.models.get_intake_cost_summary_to_parameter import GetIntakeCostSummaryToParameter as GetIntakeCostSummaryToParameter
 from vertesia_client.openapi.models.get_model_prices_from_parameter import GetModelPricesFromParameter as GetModelPricesFromParameter
 from vertesia_client.openapi.models.get_model_prices_to_parameter import GetModelPricesToParameter as GetModelPricesToParameter
 from vertesia_client.openapi.models.get_rendition_response import GetRenditionResponse as GetRenditionResponse
@@ -2009,9 +2024,19 @@ from vertesia_client.openapi.models.inference_profile_usage import InferenceProf
 from vertesia_client.openapi.models.inference_profile_usage_entry import InferenceProfileUsageEntry as InferenceProfileUsageEntry
 from vertesia_client.openapi.models.inherited_property_metadata import InheritedPropertyMetadata as InheritedPropertyMetadata
 from vertesia_client.openapi.models.initial_tool_call import InitialToolCall as InitialToolCall
+from vertesia_client.openapi.models.intake_cost_by_content_nature import IntakeCostByContentNature as IntakeCostByContentNature
+from vertesia_client.openapi.models.intake_cost_by_content_type import IntakeCostByContentType as IntakeCostByContentType
+from vertesia_client.openapi.models.intake_cost_by_outcome import IntakeCostByOutcome as IntakeCostByOutcome
+from vertesia_client.openapi.models.intake_cost_document import IntakeCostDocument as IntakeCostDocument
+from vertesia_client.openapi.models.intake_cost_per_page import IntakeCostPerPage as IntakeCostPerPage
+from vertesia_client.openapi.models.intake_cost_summary_response import IntakeCostSummaryResponse as IntakeCostSummaryResponse
+from vertesia_client.openapi.models.intake_cost_time_point import IntakeCostTimePoint as IntakeCostTimePoint
+from vertesia_client.openapi.models.intake_cost_totals import IntakeCostTotals as IntakeCostTotals
+from vertesia_client.openapi.models.intake_cost_version import IntakeCostVersion as IntakeCostVersion
 from vertesia_client.openapi.models.intake_media_analysis_override import IntakeMediaAnalysisOverride as IntakeMediaAnalysisOverride
 from vertesia_client.openapi.models.intake_media_analysis_overrides import IntakeMediaAnalysisOverrides as IntakeMediaAnalysisOverrides
 from vertesia_client.openapi.models.intake_page_scope import IntakePageScope as IntakePageScope
+from vertesia_client.openapi.models.intake_run_cost import IntakeRunCost as IntakeRunCost
 from vertesia_client.openapi.models.intake_vision_detail import IntakeVisionDetail as IntakeVisionDetail
 from vertesia_client.openapi.models.intake_vision_profile_settings_map import IntakeVisionProfileSettingsMap as IntakeVisionProfileSettingsMap
 from vertesia_client.openapi.models.intake_vision_profile_settings_update import IntakeVisionProfileSettingsUpdate as IntakeVisionProfileSettingsUpdate
@@ -2148,6 +2173,7 @@ from vertesia_client.openapi.models.o_auth_provider_exchange_payload import OAut
 from vertesia_client.openapi.models.o_auth_registration_source import OAuthRegistrationSource as OAuthRegistrationSource
 from vertesia_client.openapi.models.o_auth_response_type import OAuthResponseType as OAuthResponseType
 from vertesia_client.openapi.models.o_auth_token_endpoint_auth_method import OAuthTokenEndpointAuthMethod as OAuthTokenEndpointAuthMethod
+from vertesia_client.openapi.models.object_intake_cost_response import ObjectIntakeCostResponse as ObjectIntakeCostResponse
 from vertesia_client.openapi.models.object_search_response import ObjectSearchResponse as ObjectSearchResponse
 from vertesia_client.openapi.models.oidc_federation_connection import OidcFederationConnection as OidcFederationConnection
 from vertesia_client.openapi.models.oidc_federation_connection_payload import OidcFederationConnectionPayload as OidcFederationConnectionPayload
