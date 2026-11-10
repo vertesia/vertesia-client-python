@@ -41,6 +41,7 @@ __all__ = [
     "InferenceProfilesApi",
     "InteractionRunsApi",
     "InteractionsApi",
+    "NotificationsApi",
     "OAuthApi",
     "OAuthClientsApi",
     "OAuthGrantsApi",
@@ -236,6 +237,7 @@ __all__ = [
     "AppVersionTarget",
     "AppVersionUrls",
     "AppWidgetInfo",
+    "ArchiveNotificationsPayload",
     "AskUserWebhookConfiguration",
     "AskUserWebhookConfigurationInput",
     "AssignableRoleName",
@@ -754,6 +756,7 @@ __all__ = [
     "ListContentObjectExportsResponse",
     "ListEventDeliveriesPayload",
     "ListEventDeliveriesResponse",
+    "ListNotificationsResponse",
     "ListPendingAsksResponse",
     "ListSecretsResponse",
     "ListWorkflowRunsPayload",
@@ -766,6 +769,8 @@ __all__ = [
     "MCPToolAnnotations",
     "MCPToolCollectionObject",
     "MagicPdfConfiguration",
+    "MarkAllNotificationsReadPayload",
+    "MarkNotificationsReadPayload",
     "MarkdownRenditionFormat",
     "McpApiKeyCredential",
     "McpApiKeyStatus",
@@ -794,6 +799,16 @@ __all__ = [
     "NodeDefinitionBranchesInner",
     "NodeDefinitionCollect",
     "NodeHistoryEntry",
+    "Notification",
+    "NotificationCategory",
+    "NotificationChannelPreferences",
+    "NotificationCounts",
+    "NotificationKind",
+    "NotificationOccurrenceAck",
+    "NotificationPayload",
+    "NotificationPreferences",
+    "NotificationRef",
+    "NotificationUpdateResult",
     "NovaCanvasOptions",
     "OAuthAuthStatus",
     "OAuthAuthorizeResponse",
@@ -1330,6 +1345,7 @@ from vertesia_client.openapi.api.files_api import FilesApi as FilesApi
 from vertesia_client.openapi.api.inference_profiles_api import InferenceProfilesApi as InferenceProfilesApi
 from vertesia_client.openapi.api.interaction_runs_api import InteractionRunsApi as InteractionRunsApi
 from vertesia_client.openapi.api.interactions_api import InteractionsApi as InteractionsApi
+from vertesia_client.openapi.api.notifications_api import NotificationsApi as NotificationsApi
 from vertesia_client.openapi.api.o_auth_api import OAuthApi as OAuthApi
 from vertesia_client.openapi.api.o_auth_clients_api import OAuthClientsApi as OAuthClientsApi
 from vertesia_client.openapi.api.o_auth_grants_api import OAuthGrantsApi as OAuthGrantsApi
@@ -1529,6 +1545,7 @@ from vertesia_client.openapi.models.app_version_storage import AppVersionStorage
 from vertesia_client.openapi.models.app_version_target import AppVersionTarget as AppVersionTarget
 from vertesia_client.openapi.models.app_version_urls import AppVersionUrls as AppVersionUrls
 from vertesia_client.openapi.models.app_widget_info import AppWidgetInfo as AppWidgetInfo
+from vertesia_client.openapi.models.archive_notifications_payload import ArchiveNotificationsPayload as ArchiveNotificationsPayload
 from vertesia_client.openapi.models.ask_user_webhook_configuration import AskUserWebhookConfiguration as AskUserWebhookConfiguration
 from vertesia_client.openapi.models.ask_user_webhook_configuration_input import AskUserWebhookConfigurationInput as AskUserWebhookConfigurationInput
 from vertesia_client.openapi.models.assignable_role_name import AssignableRoleName as AssignableRoleName
@@ -2047,6 +2064,7 @@ from vertesia_client.openapi.models.list_agent_runs_response import ListAgentRun
 from vertesia_client.openapi.models.list_content_object_exports_response import ListContentObjectExportsResponse as ListContentObjectExportsResponse
 from vertesia_client.openapi.models.list_event_deliveries_payload import ListEventDeliveriesPayload as ListEventDeliveriesPayload
 from vertesia_client.openapi.models.list_event_deliveries_response import ListEventDeliveriesResponse as ListEventDeliveriesResponse
+from vertesia_client.openapi.models.list_notifications_response import ListNotificationsResponse as ListNotificationsResponse
 from vertesia_client.openapi.models.list_pending_asks_response import ListPendingAsksResponse as ListPendingAsksResponse
 from vertesia_client.openapi.models.list_secrets_response import ListSecretsResponse as ListSecretsResponse
 from vertesia_client.openapi.models.list_workflow_runs_payload import ListWorkflowRunsPayload as ListWorkflowRunsPayload
@@ -2059,6 +2077,8 @@ from vertesia_client.openapi.models.mcpo_auth_config import MCPOAuthConfig as MC
 from vertesia_client.openapi.models.mcp_tool_annotations import MCPToolAnnotations as MCPToolAnnotations
 from vertesia_client.openapi.models.mcp_tool_collection_object import MCPToolCollectionObject as MCPToolCollectionObject
 from vertesia_client.openapi.models.magic_pdf_configuration import MagicPdfConfiguration as MagicPdfConfiguration
+from vertesia_client.openapi.models.mark_all_notifications_read_payload import MarkAllNotificationsReadPayload as MarkAllNotificationsReadPayload
+from vertesia_client.openapi.models.mark_notifications_read_payload import MarkNotificationsReadPayload as MarkNotificationsReadPayload
 from vertesia_client.openapi.models.markdown_rendition_format import MarkdownRenditionFormat as MarkdownRenditionFormat
 from vertesia_client.openapi.models.mcp_api_key_credential import McpApiKeyCredential as McpApiKeyCredential
 from vertesia_client.openapi.models.mcp_api_key_status import McpApiKeyStatus as McpApiKeyStatus
@@ -2087,6 +2107,16 @@ from vertesia_client.openapi.models.node_definition import NodeDefinition as Nod
 from vertesia_client.openapi.models.node_definition_branches_inner import NodeDefinitionBranchesInner as NodeDefinitionBranchesInner
 from vertesia_client.openapi.models.node_definition_collect import NodeDefinitionCollect as NodeDefinitionCollect
 from vertesia_client.openapi.models.node_history_entry import NodeHistoryEntry as NodeHistoryEntry
+from vertesia_client.openapi.models.notification import Notification as Notification
+from vertesia_client.openapi.models.notification_category import NotificationCategory as NotificationCategory
+from vertesia_client.openapi.models.notification_channel_preferences import NotificationChannelPreferences as NotificationChannelPreferences
+from vertesia_client.openapi.models.notification_counts import NotificationCounts as NotificationCounts
+from vertesia_client.openapi.models.notification_kind import NotificationKind as NotificationKind
+from vertesia_client.openapi.models.notification_occurrence_ack import NotificationOccurrenceAck as NotificationOccurrenceAck
+from vertesia_client.openapi.models.notification_payload import NotificationPayload as NotificationPayload
+from vertesia_client.openapi.models.notification_preferences import NotificationPreferences as NotificationPreferences
+from vertesia_client.openapi.models.notification_ref import NotificationRef as NotificationRef
+from vertesia_client.openapi.models.notification_update_result import NotificationUpdateResult as NotificationUpdateResult
 from vertesia_client.openapi.models.nova_canvas_options import NovaCanvasOptions as NovaCanvasOptions
 from vertesia_client.openapi.models.o_auth_auth_status import OAuthAuthStatus as OAuthAuthStatus
 from vertesia_client.openapi.models.o_auth_authorize_response import OAuthAuthorizeResponse as OAuthAuthorizeResponse

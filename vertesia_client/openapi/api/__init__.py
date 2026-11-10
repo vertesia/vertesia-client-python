@@ -24,6 +24,7 @@ from vertesia_client.openapi.api.files_api import FilesApi
 from vertesia_client.openapi.api.inference_profiles_api import InferenceProfilesApi
 from vertesia_client.openapi.api.interaction_runs_api import InteractionRunsApi
 from vertesia_client.openapi.api.interactions_api import InteractionsApi
+from vertesia_client.openapi.api.notifications_api import NotificationsApi
 from vertesia_client.openapi.api.o_auth_api import OAuthApi
 from vertesia_client.openapi.api.o_auth_clients_api import OAuthClientsApi
 from vertesia_client.openapi.api.o_auth_grants_api import OAuthGrantsApi

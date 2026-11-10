@@ -62,7 +62,7 @@ class TasksApi:
     ) -> Task:
         """Cancel a task
 
-        Cancels a pending or in-progress durable task. Answers 409 while a running process is waiting on the task: answer the task, advance the run, or cancel the run instead.  **Required permissions:** `task:manage`
+        Cancels a pending or in-progress durable task. Answers 409 while a running process is waiting on the task: answer the task, advance the run, or cancel the run instead. Needs `task:manage`, except for a tool approval task (`source.node: tool_approval`), which a caller with `workflow:run` that may control the task's agent run can cancel: the run does so when it stops waiting on the prompt.
 
         :param task_id: The task ID, as 24 hexadecimal characters. (required)
         :type task_id: str
@@ -135,7 +135,7 @@ class TasksApi:
     ) -> ApiResponse[Task]:
         """Cancel a task
 
-        Cancels a pending or in-progress durable task. Answers 409 while a running process is waiting on the task: answer the task, advance the run, or cancel the run instead.  **Required permissions:** `task:manage`
+        Cancels a pending or in-progress durable task. Answers 409 while a running process is waiting on the task: answer the task, advance the run, or cancel the run instead. Needs `task:manage`, except for a tool approval task (`source.node: tool_approval`), which a caller with `workflow:run` that may control the task's agent run can cancel: the run does so when it stops waiting on the prompt.
 
         :param task_id: The task ID, as 24 hexadecimal characters. (required)
         :type task_id: str
@@ -208,7 +208,7 @@ class TasksApi:
     ) -> RESTResponseType:
         """Cancel a task
 
-        Cancels a pending or in-progress durable task. Answers 409 while a running process is waiting on the task: answer the task, advance the run, or cancel the run instead.  **Required permissions:** `task:manage`
+        Cancels a pending or in-progress durable task. Answers 409 while a running process is waiting on the task: answer the task, advance the run, or cancel the run instead. Needs `task:manage`, except for a tool approval task (`source.node: tool_approval`), which a caller with `workflow:run` that may control the task's agent run can cancel: the run does so when it stops waiting on the prompt.
 
         :param task_id: The task ID, as 24 hexadecimal characters. (required)
         :type task_id: str
@@ -346,7 +346,7 @@ class TasksApi:
     ) -> Task:
         """Complete a task
 
-        Completes a durable task and signals the backing agent or process workflow with the submitted result. Answers 409 when the task was already given a different answer or its run has ended.
+        Completes a durable task and signals the backing agent or process workflow with the submitted result. Answers 409 when the task was already given a different answer or its run has ended. A tool approval task (`source.node: tool_approval`) takes `{ decision, feedback? }` where decision is `allow_once`, `allow_for_run`, `deny` or `deny_with_feedback` (which needs feedback); completing it again with the same decision returns the task without signalling the run twice.
 
         :param task_id: The task ID, as 24 hexadecimal characters. (required)
         :type task_id: str
@@ -424,7 +424,7 @@ class TasksApi:
     ) -> ApiResponse[Task]:
         """Complete a task
 
-        Completes a durable task and signals the backing agent or process workflow with the submitted result. Answers 409 when the task was already given a different answer or its run has ended.
+        Completes a durable task and signals the backing agent or process workflow with the submitted result. Answers 409 when the task was already given a different answer or its run has ended. A tool approval task (`source.node: tool_approval`) takes `{ decision, feedback? }` where decision is `allow_once`, `allow_for_run`, `deny` or `deny_with_feedback` (which needs feedback); completing it again with the same decision returns the task without signalling the run twice.
 
         :param task_id: The task ID, as 24 hexadecimal characters. (required)
         :type task_id: str
@@ -502,7 +502,7 @@ class TasksApi:
     ) -> RESTResponseType:
         """Complete a task
 
-        Completes a durable task and signals the backing agent or process workflow with the submitted result. Answers 409 when the task was already given a different answer or its run has ended.
+        Completes a durable task and signals the backing agent or process workflow with the submitted result. Answers 409 when the task was already given a different answer or its run has ended. A tool approval task (`source.node: tool_approval`) takes `{ decision, feedback? }` where decision is `allow_once`, `allow_for_run`, `deny` or `deny_with_feedback` (which needs feedback); completing it again with the same decision returns the task without signalling the run twice.
 
         :param task_id: The task ID, as 24 hexadecimal characters. (required)
         :type task_id: str
@@ -659,7 +659,7 @@ class TasksApi:
     ) -> Task:
         """Create a task
 
-        Creates a durable human task for a process or agent run. Callers must have `workflow:run` or `task:manage`.
+        Creates a durable human task for a process or agent run. Callers must have `workflow:run` or `task:manage`. A `source.request_key` makes the call idempotent: when a task with that key already exists in the project it is returned with status 200 instead of creating another.
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -697,6 +697,7 @@ class TasksApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
+            '200': "Task",
             '201': "Task",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
@@ -732,7 +733,7 @@ class TasksApi:
     ) -> ApiResponse[Task]:
         """Create a task
 
-        Creates a durable human task for a process or agent run. Callers must have `workflow:run` or `task:manage`.
+        Creates a durable human task for a process or agent run. Callers must have `workflow:run` or `task:manage`. A `source.request_key` makes the call idempotent: when a task with that key already exists in the project it is returned with status 200 instead of creating another.
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -770,6 +771,7 @@ class TasksApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
+            '200': "Task",
             '201': "Task",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
@@ -805,7 +807,7 @@ class TasksApi:
     ) -> RESTResponseType:
         """Create a task
 
-        Creates a durable human task for a process or agent run. Callers must have `workflow:run` or `task:manage`.
+        Creates a durable human task for a process or agent run. Callers must have `workflow:run` or `task:manage`. A `source.request_key` makes the call idempotent: when a task with that key already exists in the project it is returned with status 200 instead of creating another.
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -843,6 +845,7 @@ class TasksApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
+            '200': "Task",
             '201': "Task",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",

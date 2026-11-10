@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictBool
-from typing import Any, ClassVar, Dict
+from pydantic import BaseModel, ConfigDict, Field, StrictBool
+from typing import Any, ClassVar, Dict, Optional
+from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -28,7 +29,8 @@ class WorkflowUpdatePublishResponse(BaseModel):
     WorkflowUpdatePublishResponse
     """ # noqa: E501
     success: StrictBool
-    __properties: ClassVar[List[str]] = ["success"]
+    timestamp: Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]] = Field(default=None, description="The `timestamp` the published update carries in the run stream, in epoch milliseconds. Absent from servers that predate it.")
+    __properties: ClassVar[List[str]] = ["success", "timestamp"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -81,7 +83,8 @@ class WorkflowUpdatePublishResponse(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "success": obj.get("success")
+            "success": obj.get("success"),
+            "timestamp": obj.get("timestamp")
         })
         return _obj
 

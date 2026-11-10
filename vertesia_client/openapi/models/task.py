@@ -18,8 +18,9 @@ import re  # noqa: F401
 import json
 
 from datetime import datetime
-from pydantic import BaseModel, ConfigDict, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.durable_task_status import DurableTaskStatus
 from vertesia_client.openapi.models.task_field import TaskField
 from vertesia_client.openapi.models.task_source import TaskSource
@@ -42,11 +43,13 @@ class Task(BaseModel):
     result: Optional[Dict[str, Any]] = None
     source: TaskSource
     due_at: Optional[datetime] = None
+    assignment_rev: Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]] = Field(default=None, description="Assignment revision: 1 at creation, incremented every time the assignee changes.")
+    assigned_at: Optional[datetime] = Field(default=None, description="When the current assignment revision started.")
     created_at: datetime
     completed_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["id", "account", "project", "title", "description", "status", "assignee", "fields", "result", "source", "due_at", "created_at", "completed_at", "updated_at"]
+    __properties: ClassVar[List[str]] = ["id", "account", "project", "title", "description", "status", "assignee", "fields", "result", "source", "due_at", "assignment_rev", "assigned_at", "created_at", "completed_at", "updated_at"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -132,6 +135,8 @@ class Task(BaseModel):
             "result": obj.get("result"),
             "source": TaskSource.from_dict(obj["source"]) if obj.get("source") is not None else None,
             "due_at": obj.get("due_at"),
+            "assignment_rev": obj.get("assignment_rev"),
+            "assigned_at": obj.get("assigned_at"),
             "created_at": obj.get("created_at"),
             "completed_at": obj.get("completed_at"),
             "updated_at": obj.get("updated_at")

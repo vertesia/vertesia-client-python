@@ -32,7 +32,10 @@ class TaskSource(BaseModel):
     run_id: Annotated[str, Field(min_length=1, strict=True)]
     node: Optional[StrictStr] = None
     ask_id: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["type", "run_id", "node", "ask_id"]
+    request_key: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=512)]] = Field(default=None, description="Stable key of the agent request this task answers (`<run_id>:<tool_use_id>`). Unique in the project: creating a task whose source repeats an existing request key returns that task instead of creating a second one.")
+    request_id: Optional[StrictStr] = Field(default=None, description="Tool-use id of the agent request (the REQUEST_INPUT message) this task answers.")
+    approval_key: Optional[StrictStr] = Field(default=None, description="For a tool approval task, the approval key (`tool_name:target`) the decision applies to.")
+    __properties: ClassVar[List[str]] = ["type", "run_id", "node", "ask_id", "request_key", "request_id", "approval_key"]
 
     @field_validator('type')
     def type_validate_enum(cls, value):
@@ -93,7 +96,10 @@ class TaskSource(BaseModel):
             "type": obj.get("type"),
             "run_id": obj.get("run_id"),
             "node": obj.get("node"),
-            "ask_id": obj.get("ask_id")
+            "ask_id": obj.get("ask_id"),
+            "request_key": obj.get("request_key"),
+            "request_id": obj.get("request_id"),
+            "approval_key": obj.get("approval_key")
         })
         return _obj
 
