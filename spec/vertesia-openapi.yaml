@@ -39180,7 +39180,13 @@ paths:
         Without `newName`, a fork into another project keeps the source name;
         otherwise, or when that endpoint is taken, it gets the first of `<name>
         (fork)`, `<name> (fork 2)`, ... whose endpoint is free in the target
-        project.
+        project. A copy keeps its environment and model when the target project
+        can use that environment. Otherwise it keeps the model in another
+        environment of the target project that enables it, or takes the target
+        project's default model: its agent default for an agent, then its base
+        default. A copy into another project gets the environment, model and
+        options of its source's inference profile, because profiles belong to
+        their project.
 
 
         **Required permissions:** `interaction:write`
@@ -39201,6 +39207,9 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Interaction"
+        "400":
+          description: The copy needs a default environment, and the target project has
+            none.
         "409":
           description: The endpoint derived from `newName` is already used in the target
             project.
