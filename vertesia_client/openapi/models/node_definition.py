@@ -17,11 +17,13 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.branch_join_policy import BranchJoinPolicy
 from vertesia_client.openapi.models.human_task_definition import HumanTaskDefinition
 from vertesia_client.openapi.models.json_schema import JSONSchema
+from vertesia_client.openapi.models.model_options import ModelOptions
 from vertesia_client.openapi.models.node_definition_collect import NodeDefinitionCollect
 from vertesia_client.openapi.models.parallel_failure_policy import ParallelFailurePolicy
 from vertesia_client.openapi.models.process_agent_execution_policy import ProcessAgentExecutionPolicy
@@ -63,7 +65,10 @@ class NodeDefinition(BaseModel):
     initial_skills: Optional[List[StrictStr]] = Field(default=None, description="Builtin system skills activated before the agent node's first model turn.")
     excluded_tools: Optional[List[StrictStr]] = Field(default=None, description="Execution-time tool denylist for the agent node's child conversation.")
     agent_policy: Optional[ProcessAgentExecutionPolicy] = Field(default=None, description="Declarative successful-tool phases and completion behavior for this agent node. The Process owns this policy; the child conversation enforces it generically.")
-    model: Optional[StrictStr] = Field(default=None, description="Model id override for this node. If unset, falls back to the process run's `config.model`, then to the project's default. Useful when a specific node needs heavier reasoning (e.g. Opus for legal flagging) while the rest of the process uses a cheaper default.")
+    inference_profile: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Inference profile for this node, which supplies its environment, model and model options. Do not combine with `environment`, `model` or `model_options`. A node that selects nothing uses the process run config, then the process definition, then the interaction or agent defaults.")
+    environment: Optional[StrictStr] = Field(default=None, description="Environment id for this node. Set it together with `model`, or alone to use the environment default model. Useful when one node needs heavier reasoning (e.g. Opus for legal flagging) while the rest of the process uses a cheaper default.")
+    model: Optional[StrictStr] = Field(default=None, description="Model id for this node, in `environment`. A model without an environment is accepted only in definitions saved before environments were required; saving one is rejected.")
+    model_options: Optional[ModelOptions] = Field(default=None, description="Model options for this node's `environment` and `model`.")
     task: Optional[HumanTaskDefinition] = None
     foreach: Optional[StrictStr] = None
     var_as: Optional[StrictStr] = Field(default=None, alias="as")
@@ -76,7 +81,20 @@ class NodeDefinition(BaseModel):
     branches: Optional[List[NodeDefinitionBranchesInner]] = None
     metadata: Optional[Dict[str, Any]] = None
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["type", "tool", "script", "timeout", "interaction", "process", "process_definition", "process_version", "run_type", "returns", "result_schema", "prompt", "input", "inherit_context", "config", "title", "description", "human_description", "writes", "skippable", "max_retries", "transitions", "tools", "initial_skills", "excluded_tools", "agent_policy", "model", "task", "foreach", "as", "item_id", "node", "max_concurrency", "collect", "failure_policy", "join", "branches", "metadata"]
+    __properties: ClassVar[List[str]] = ["type", "tool", "script", "timeout", "interaction", "process", "process_definition", "process_version", "run_type", "returns", "result_schema", "prompt", "input", "inherit_context", "config", "title", "description", "human_description", "writes", "skippable", "max_retries", "transitions", "tools", "initial_skills", "excluded_tools", "agent_policy", "inference_profile", "environment", "model", "model_options", "task", "foreach", "as", "item_id", "node", "max_concurrency", "collect", "failure_policy", "join", "branches", "metadata"]
+
+    @field_validator('inference_profile')
+    def inference_profile_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if value is None:
+            return value
+
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"^[a-fA-F0-9]{24}$", value):
+            raise ValueError(r"must validate the regular expression /^[a-fA-F0-9]{24}$/")
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -138,6 +156,9 @@ class NodeDefinition(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of agent_policy
         if self.agent_policy:
             _dict['agent_policy'] = self.agent_policy.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of model_options
+        if self.model_options:
+            _dict['model_options'] = self.model_options.to_dict()
         # override the default output from pydantic by calling `to_dict()` of task
         if self.task:
             _dict['task'] = self.task.to_dict()
@@ -207,7 +228,10 @@ class NodeDefinition(BaseModel):
             "initial_skills": obj.get("initial_skills"),
             "excluded_tools": obj.get("excluded_tools"),
             "agent_policy": ProcessAgentExecutionPolicy.from_dict(obj["agent_policy"]) if obj.get("agent_policy") is not None else None,
+            "inference_profile": obj.get("inference_profile"),
+            "environment": obj.get("environment"),
             "model": obj.get("model"),
+            "model_options": ModelOptions.from_dict(obj["model_options"]) if obj.get("model_options") is not None else None,
             "task": HumanTaskDefinition.from_dict(obj["task"]) if obj.get("task") is not None else None,
             "foreach": obj.get("foreach"),
             "as": obj.get("as"),

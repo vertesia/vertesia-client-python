@@ -31,10 +31,10 @@ class ProcessRunConfig(BaseModel):
     """
     ProcessRunConfig
     """ # noqa: E501
-    inference_profile: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Run-level inference profile ID for process LLM nodes and the supervisor. Explicit model settings retain precedence.")
-    environment: Optional[StrictStr] = Field(default=None, description="Execution environment id used by Process LLM nodes and the supervisor.")
-    model: Optional[StrictStr] = None
-    model_options: Optional[ModelOptions] = Field(default=None, description="Validated model options applied to Process LLM nodes and the supervisor.")
+    inference_profile: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Run-level inference profile ID for process LLM nodes and the supervisor. Do not combine with `environment`, `model` or `model_options`. A node selection takes precedence; this run selection takes precedence over the process definition.")
+    environment: Optional[StrictStr] = Field(default=None, description="Run-level environment id for process LLM nodes and the supervisor, set with `model` or alone. A node selection takes precedence; this run selection takes precedence over the process definition.")
+    model: Optional[StrictStr] = Field(default=None, description="Run-level model id, in `environment`.")
+    model_options: Optional[ModelOptions] = Field(default=None, description="Run-level model options for `environment` and `model`.")
     user_message: Optional[StrictStr] = Field(default=None, description="Free-form message from the user when starting a run. Passed to the orchestrator LLM in supervised mode; stored on the run regardless so programmatic runs retain the intent that triggered them.")
     budget: Optional[AgentBudgetConfiguration] = Field(default=None, description="Token budget shared by the whole run: agent nodes, interaction nodes, nested processes and, when the run is managed by an agent run, that agent run. Agent nodes and nested processes start with what is left of it. When it runs out the process stops scheduling nodes and lets running agent nodes write a final summary. A run managed by an interactive agent run then pauses (`budget.awaiting_allocation`) until more budget is added through that agent run, and retries the interrupted node; any other run ends failed with `terminal_reason` `token_budget_exhausted`. This is a soft limit, not a spending cap.")
     process_workstream_monitor: Optional[ProcessRunConfigProcessWorkstreamMonitor] = None

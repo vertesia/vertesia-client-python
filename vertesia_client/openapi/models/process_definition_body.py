@@ -17,8 +17,10 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, Optional
+from typing_extensions import Annotated
+from vertesia_client.openapi.models.model_options import ModelOptions
 from vertesia_client.openapi.models.process_context_definition import ProcessContextDefinition
 from vertesia_client.openapi.models.process_definition_format_version import ProcessDefinitionFormatVersion
 from vertesia_client.openapi.models.process_resources_definition import ProcessResourcesDefinition
@@ -34,12 +36,28 @@ class ProcessDefinitionBody(BaseModel):
     process: StrictStr
     description: Optional[StrictStr] = None
     initial: StrictStr
-    model: Optional[StrictStr] = None
+    inference_profile: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Default inference profile for the LLM nodes and supervisor of this process. Do not combine with `environment`, `model` or `model_options`. A process run config selection and a node selection take precedence.")
+    environment: Optional[StrictStr] = Field(default=None, description="Default environment id for the LLM nodes and supervisor of this process, set with `model` or alone.")
+    model: Optional[StrictStr] = Field(default=None, description="Default model id, in `environment`. A model without an environment is accepted only in definitions saved before environments were required; saving one is rejected.")
+    model_options: Optional[ModelOptions] = Field(default=None, description="Default model options for `environment` and `model`.")
     resources: Optional[ProcessResourcesDefinition] = None
     context: ProcessContextDefinition
     nodes: Dict[str, NodeDefinition]
     metadata: Optional[Dict[str, Any]] = None
-    __properties: ClassVar[List[str]] = ["format_version", "process", "description", "initial", "model", "resources", "context", "nodes", "metadata"]
+    __properties: ClassVar[List[str]] = ["format_version", "process", "description", "initial", "inference_profile", "environment", "model", "model_options", "resources", "context", "nodes", "metadata"]
+
+    @field_validator('inference_profile')
+    def inference_profile_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if value is None:
+            return value
+
+        if not isinstance(value, str):
+            value = str(value)
+
+        if not re.match(r"^[a-fA-F0-9]{24}$", value):
+            raise ValueError(r"must validate the regular expression /^[a-fA-F0-9]{24}$/")
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -80,6 +98,9 @@ class ProcessDefinitionBody(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of model_options
+        if self.model_options:
+            _dict['model_options'] = self.model_options.to_dict()
         # override the default output from pydantic by calling `to_dict()` of resources
         if self.resources:
             _dict['resources'] = self.resources.to_dict()
@@ -109,7 +130,10 @@ class ProcessDefinitionBody(BaseModel):
             "process": obj.get("process"),
             "description": obj.get("description"),
             "initial": obj.get("initial"),
+            "inference_profile": obj.get("inference_profile"),
+            "environment": obj.get("environment"),
             "model": obj.get("model"),
+            "model_options": ModelOptions.from_dict(obj["model_options"]) if obj.get("model_options") is not None else None,
             "resources": ProcessResourcesDefinition.from_dict(obj["resources"]) if obj.get("resources") is not None else None,
             "context": ProcessContextDefinition.from_dict(obj["context"]) if obj.get("context") is not None else None,
             "nodes": dict(
