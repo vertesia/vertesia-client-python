@@ -56359,7 +56359,7 @@
           "API Keys"
         ],
         "summary": "List API keys",
-        "description": "Lists API keys for the current project or, for account administrators, across accessible projects in the account.\n\n**Required permissions:** `api_key:read`",
+        "description": "Lists API keys for the current project or, for account administrators, across all projects in the account.\n\n**Required permissions:** `api_key:read`",
         "security": [
           {
             "bearerAuth": []

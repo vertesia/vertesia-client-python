@@ -42796,7 +42796,7 @@ paths:
       summary: List API keys
       description: >-
         Lists API keys for the current project or, for account administrators,
-        across accessible projects in the account.
+        across all projects in the account.
 
 
         **Required permissions:** `api_key:read`

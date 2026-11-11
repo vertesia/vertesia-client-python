@@ -1205,7 +1205,7 @@ class APIKeysApi:
     ) -> List[ApiKey]:
         """List API keys
 
-        Lists API keys for the current project or, for account administrators, across accessible projects in the account.  **Required permissions:** `api_key:read`
+        Lists API keys for the current project or, for account administrators, across all projects in the account.  **Required permissions:** `api_key:read`
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1278,7 +1278,7 @@ class APIKeysApi:
     ) -> ApiResponse[List[ApiKey]]:
         """List API keys
 
-        Lists API keys for the current project or, for account administrators, across accessible projects in the account.  **Required permissions:** `api_key:read`
+        Lists API keys for the current project or, for account administrators, across all projects in the account.  **Required permissions:** `api_key:read`
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1351,7 +1351,7 @@ class APIKeysApi:
     ) -> RESTResponseType:
         """List API keys
 
-        Lists API keys for the current project or, for account administrators, across accessible projects in the account.  **Required permissions:** `api_key:read`
+        Lists API keys for the current project or, for account administrators, across all projects in the account.  **Required permissions:** `api_key:read`
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
