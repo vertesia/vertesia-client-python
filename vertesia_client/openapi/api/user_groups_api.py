@@ -1225,7 +1225,7 @@ class UserGroupsApi:
     ) -> List[UserGroup]:
         """List user groups
 
-        Lists user groups in the current account. Pass `project` to return only groups usable in that project (org-wide groups plus groups restricted to it).  **Required permissions:** Any of `account:read`, `account:group:read`
+        Lists user groups in the current account. Pass `project` to return only groups usable in that project (org-wide groups plus groups restricted to it). A caller whose `account:read` or `account:group:read` comes from a project role only gets the groups usable in its selected project.  **Required permissions:** Any of `account:read`, `account:group:read`
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1314,7 +1314,7 @@ class UserGroupsApi:
     ) -> ApiResponse[List[UserGroup]]:
         """List user groups
 
-        Lists user groups in the current account. Pass `project` to return only groups usable in that project (org-wide groups plus groups restricted to it).  **Required permissions:** Any of `account:read`, `account:group:read`
+        Lists user groups in the current account. Pass `project` to return only groups usable in that project (org-wide groups plus groups restricted to it). A caller whose `account:read` or `account:group:read` comes from a project role only gets the groups usable in its selected project.  **Required permissions:** Any of `account:read`, `account:group:read`
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1403,7 +1403,7 @@ class UserGroupsApi:
     ) -> RESTResponseType:
         """List user groups
 
-        Lists user groups in the current account. Pass `project` to return only groups usable in that project (org-wide groups plus groups restricted to it).  **Required permissions:** Any of `account:read`, `account:group:read`
+        Lists user groups in the current account. Pass `project` to return only groups usable in that project (org-wide groups plus groups restricted to it). A caller whose `account:read` or `account:group:read` comes from a project role only gets the groups usable in its selected project.  **Required permissions:** Any of `account:read`, `account:group:read`
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
