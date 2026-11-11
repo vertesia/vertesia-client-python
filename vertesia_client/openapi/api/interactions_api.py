@@ -11187,7 +11187,7 @@ class InteractionsApi:
     ) -> Interaction:
         """Update an interaction
 
-        Updates mutable fields on a draft interaction, such as prompts, model configuration, tags, schemas, and agent runner options.  **Required permissions:** `interaction:write`
+        Updates mutable fields on a draft interaction, such as prompts, model configuration, tags, schemas, and agent runner options. A published or archived version accepts only `description` and `tags`, and its tags cannot gain or lose `agent`, `tool` or `skill`: its behaviour is fixed once published, so publish a new version from the draft instead.  **Required permissions:** `interaction:write`
 
         :param interaction_id: (required)
         :type interaction_id: str
@@ -11266,7 +11266,7 @@ class InteractionsApi:
     ) -> ApiResponse[Interaction]:
         """Update an interaction
 
-        Updates mutable fields on a draft interaction, such as prompts, model configuration, tags, schemas, and agent runner options.  **Required permissions:** `interaction:write`
+        Updates mutable fields on a draft interaction, such as prompts, model configuration, tags, schemas, and agent runner options. A published or archived version accepts only `description` and `tags`, and its tags cannot gain or lose `agent`, `tool` or `skill`: its behaviour is fixed once published, so publish a new version from the draft instead.  **Required permissions:** `interaction:write`
 
         :param interaction_id: (required)
         :type interaction_id: str
@@ -11345,7 +11345,7 @@ class InteractionsApi:
     ) -> RESTResponseType:
         """Update an interaction
 
-        Updates mutable fields on a draft interaction, such as prompts, model configuration, tags, schemas, and agent runner options.  **Required permissions:** `interaction:write`
+        Updates mutable fields on a draft interaction, such as prompts, model configuration, tags, schemas, and agent runner options. A published or archived version accepts only `description` and `tags`, and its tags cannot gain or lose `agent`, `tool` or `skill`: its behaviour is fixed once published, so publish a new version from the draft instead.  **Required permissions:** `interaction:write`
 
         :param interaction_id: (required)
         :type interaction_id: str

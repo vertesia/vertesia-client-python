@@ -25476,17 +25476,8 @@
             "maximum": 9007199254740991,
             "description": "Edit revision returned by the last read. Stale revisions are rejected with HTTP 409. Omit for legacy last-write-wins behavior."
           },
-          "status": {
-            "$ref": "#/components/schemas/InteractionStatus"
-          },
-          "parent": {
-            "type": "string"
-          },
           "visibility": {
             "$ref": "#/components/schemas/InteractionVisibility"
-          },
-          "version": {
-            "type": "number"
           },
           "test_data": {
             "$ref": "#/components/schemas/JSONObject"
@@ -25509,10 +25500,6 @@
             "items": {
               "$ref": "#/components/schemas/InteractionPromptSegmentInput"
             }
-          },
-          "last_published_at": {
-            "type": "string",
-            "format": "date-time"
           },
           "name": {
             "type": "string"
@@ -51470,7 +51457,7 @@
           "Interactions"
         ],
         "summary": "Update an interaction",
-        "description": "Updates mutable fields on a draft interaction, such as prompts, model configuration, tags, schemas, and agent runner options.\n\n**Required permissions:** `interaction:write`",
+        "description": "Updates mutable fields on a draft interaction, such as prompts, model configuration, tags, schemas, and agent runner options. A published or archived version accepts only `description` and `tags`, and its tags cannot gain or lose `agent`, `tool` or `skill`: its behaviour is fixed once published, so publish a new version from the draft instead.\n\n**Required permissions:** `interaction:write`",
         "security": [
           {
             "bearerAuth": []
@@ -51506,7 +51493,7 @@
             "description": "A prompt segment references a prompt template that is not in the project."
           },
           "409": {
-            "description": "The interaction was changed after the caller read it, the requested endpoint is already used by another interaction in the project, or the endpoint of a published interaction would change."
+            "description": "The interaction was changed after the caller read it, the requested endpoint is already used by another interaction in the project, the endpoint of a published interaction would change, or the payload changes a field other than `description` or `tags`, or adds or removes an `agent`, `tool` or `skill` tag, on a published or archived version."
           },
           "500": {
             "description": "Internal server error.",
@@ -58486,7 +58473,7 @@
           "Access Control Entries"
         ],
         "summary": "Create an access control entry",
-        "description": "Creates a new access control entry for an account, project, or application resource.\n\n**Required permissions:** Any of `account:admin`, `account:membership:manage`",
+        "description": "Creates an access control entry for an account, project, or application resource. If the principal already has an entry on that resource, it is replaced, including its role and expiry. Without `expires_at` the entry does not expire, even if the one it replaces did; an empty string means the same. To change only some fields of an existing entry, use `PUT /iam/aces/{aceId}`.\n\n**Required permissions:** Any of `account:admin`, `account:membership:manage`",
         "security": [
           {
             "bearerAuth": []

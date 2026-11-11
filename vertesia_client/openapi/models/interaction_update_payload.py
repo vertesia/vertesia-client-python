@@ -17,9 +17,8 @@ import pprint
 import re  # noqa: F401
 import json
 
-from datetime import datetime
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator
-from typing import Any, ClassVar, Dict, List, Optional, Union
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr, field_validator
+from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.agent_runner_options import AgentRunnerOptions
 from vertesia_client.openapi.models.async_conversation_execution_payload_result_schema import AsyncConversationExecutionPayloadResultSchema
@@ -27,7 +26,6 @@ from vertesia_client.openapi.models.cache_policy import CachePolicy
 from vertesia_client.openapi.models.interaction_environment import InteractionEnvironment
 from vertesia_client.openapi.models.interaction_prompt_segment_input import InteractionPromptSegmentInput
 from vertesia_client.openapi.models.interaction_result_schema import InteractionResultSchema
-from vertesia_client.openapi.models.interaction_status import InteractionStatus
 from vertesia_client.openapi.models.interaction_visibility import InteractionVisibility
 from vertesia_client.openapi.models.modalities import Modalities
 from vertesia_client.openapi.models.model_options import ModelOptions
@@ -41,15 +39,11 @@ class InteractionUpdatePayload(BaseModel):
     InteractionUpdatePayload
     """ # noqa: E501
     expected_edit_revision: Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=1)]] = Field(default=None, description="Edit revision returned by the last read. Stale revisions are rejected with HTTP 409. Omit for legacy last-write-wins behavior.")
-    status: Optional[InteractionStatus] = None
-    parent: Optional[StrictStr] = None
     visibility: Optional[InteractionVisibility] = None
-    version: Optional[Union[StrictFloat, StrictInt]] = None
     test_data: Optional[Dict[str, Any]] = None
     interaction_schema: Optional[InteractionResultSchema] = None
     cache_policy: Optional[CachePolicy] = None
     prompts: Optional[List[InteractionPromptSegmentInput]] = None
-    last_published_at: Optional[datetime] = None
     name: Optional[StrictStr] = None
     endpoint: Optional[StrictStr] = None
     description: Optional[StrictStr] = None
@@ -63,7 +57,7 @@ class InteractionUpdatePayload(BaseModel):
     restriction: Optional[RunDataStorageLevel] = None
     output_modality: Optional[Modalities] = Field(default=None, description="Deprecated: This is deprecated. Use CompletionResult.type information instead.")
     result_schema: Optional[AsyncConversationExecutionPayloadResultSchema] = None
-    __properties: ClassVar[List[str]] = ["expected_edit_revision", "status", "parent", "visibility", "version", "test_data", "interaction_schema", "cache_policy", "prompts", "last_published_at", "name", "endpoint", "description", "tags", "agent_runner_options", "environment", "model", "model_options", "inference_profile", "store_media_results", "restriction", "output_modality", "result_schema"]
+    __properties: ClassVar[List[str]] = ["expected_edit_revision", "visibility", "test_data", "interaction_schema", "cache_policy", "prompts", "name", "endpoint", "description", "tags", "agent_runner_options", "environment", "model", "model_options", "inference_profile", "store_media_results", "restriction", "output_modality", "result_schema"]
 
     @field_validator('inference_profile')
     def inference_profile_validate_regular_expression(cls, value):
@@ -165,15 +159,11 @@ class InteractionUpdatePayload(BaseModel):
 
         _obj = cls.model_validate({
             "expected_edit_revision": obj.get("expected_edit_revision"),
-            "status": obj.get("status"),
-            "parent": obj.get("parent"),
             "visibility": obj.get("visibility"),
-            "version": obj.get("version"),
             "test_data": obj.get("test_data"),
             "interaction_schema": InteractionResultSchema.from_dict(obj["interaction_schema"]) if obj.get("interaction_schema") is not None else None,
             "cache_policy": CachePolicy.from_dict(obj["cache_policy"]) if obj.get("cache_policy") is not None else None,
             "prompts": [InteractionPromptSegmentInput.from_dict(_item) for _item in obj["prompts"]] if obj.get("prompts") is not None else None,
-            "last_published_at": obj.get("last_published_at"),
             "name": obj.get("name"),
             "endpoint": obj.get("endpoint"),
             "description": obj.get("description"),
