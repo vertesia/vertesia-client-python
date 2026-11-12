@@ -8968,6 +8968,78 @@
         "type": "string",
         "format": "binary"
       },
+      "BoxContentSource": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "oauth_provider_id": {
+            "type": "string",
+            "description": "The project's OAuth provider (grant type `client_credentials`) that issues the system's tokens."
+          },
+          "location_root": {
+            "type": "string",
+            "description": "The `location` under which the source folder's tree is reproduced, e.g. `/sharepoint/legal`."
+          },
+          "collection_id": {
+            "type": "string",
+            "description": "Collection that synced documents are added to, if any."
+          },
+          "sync": {
+            "$ref": "#/components/schemas/ContentSourceSyncSettings"
+          },
+          "created_by": {
+            "type": "string"
+          },
+          "updated_by": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "type": {
+            "type": "string",
+            "const": "box"
+          },
+          "folder_id": {
+            "type": "string",
+            "description": "The Box folder ID."
+          },
+          "folder_name": {
+            "type": "string",
+            "description": "The Box folder name when the source was created."
+          },
+          "folder_path": {
+            "type": "string",
+            "description": "The Box folder path when the source was created."
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "oauth_provider_id",
+          "location_root",
+          "sync",
+          "type",
+          "folder_id",
+          "folder_name",
+          "folder_path"
+        ],
+        "additionalProperties": false,
+        "description": "A Box folder. Synced documents reference their file in Box (`box://<source_id>/<file_id>`) instead of a copy."
+      },
       "BranchDefinition": {
         "type": "object",
         "properties": {
@@ -12430,6 +12502,269 @@
         },
         "additionalProperties": false
       },
+      "ContentSourceReport": {
+        "type": "object",
+        "properties": {
+          "round_id": {
+            "type": "string"
+          },
+          "entries": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ContentSourceReportEntry"
+            }
+          },
+          "next_cursor": {
+            "type": "string",
+            "description": "Present when more entries follow."
+          }
+        },
+        "required": [
+          "round_id",
+          "entries"
+        ],
+        "additionalProperties": false,
+        "description": "A page of the files a sync round created, updated, deleted, skipped or failed. Unchanged files are only counted, in the round's `counts`. A round still running has a partial report."
+      },
+      "ContentSourceReportAction": {
+        "type": "string",
+        "enum": [
+          "created",
+          "updated",
+          "deleted",
+          "skipped",
+          "failed"
+        ],
+        "description": "What a sync round did with a file."
+      },
+      "ContentSourceReportEntry": {
+        "type": "object",
+        "properties": {
+          "action": {
+            "$ref": "#/components/schemas/ContentSourceReportAction"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "file",
+              "folder"
+            ],
+            "description": "`folder` only for a folder that could not be listed, with its `error`."
+          },
+          "item_id": {
+            "type": "string",
+            "description": "The file's or folder's ID in the external system."
+          },
+          "name": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string",
+            "description": "The folder's path below the source's folder; empty for the source's folder itself."
+          },
+          "object_id": {
+            "type": "string",
+            "description": "The document of the file."
+          },
+          "changes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "name",
+                "location",
+                "content"
+              ]
+            },
+            "description": "`updated`: what changed. `content` means the file is processed again."
+          },
+          "reason": {
+            "type": "string",
+            "description": "`skipped`: why the file is not synced (`package`, `not_a_file`, `too_large`, `unsupported_type`). `deleted`: `file_deleted` (deleted, moved out or no longer synced) or `duplicate`."
+          },
+          "error": {
+            "type": "string",
+            "description": "`failed`: why."
+          }
+        },
+        "required": [
+          "action",
+          "kind",
+          "item_id",
+          "name"
+        ],
+        "additionalProperties": false,
+        "description": "A file a sync round created, updated, deleted, skipped or failed."
+      },
+      "ContentSourceStatus": {
+        "type": "object",
+        "properties": {
+          "state": {
+            "type": "string",
+            "enum": [
+              "not_started",
+              "running",
+              "waiting",
+              "stopped"
+            ],
+            "description": "`waiting` between syncs, `running` during one, `stopped` when its credentials were refused or the source is being deleted."
+          },
+          "current_round": {
+            "$ref": "#/components/schemas/ContentSourceSyncRound"
+          },
+          "last_round": {
+            "$ref": "#/components/schemas/ContentSourceSyncRound"
+          },
+          "recent_rounds": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ContentSourceSyncRound"
+            },
+            "description": "The last 10 finished rounds, newest first. Their reports are kept; older ones are deleted."
+          },
+          "cursor_taken_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the change cursor in use was taken."
+          },
+          "next_sync_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "error": {
+            "type": "string",
+            "description": "Why the sync is stopped."
+          }
+        },
+        "required": [
+          "state"
+        ],
+        "additionalProperties": false,
+        "description": "A content source's sync state."
+      },
+      "ContentSourceSyncCounts": {
+        "type": "object",
+        "properties": {
+          "listed": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991,
+            "description": "Files listed or reported as changed."
+          },
+          "created": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "updated": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "unchanged": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "deleted": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "skipped": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991,
+            "description": "Files that are not synced (unsupported types, packages)."
+          },
+          "failed": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "listed",
+          "created",
+          "updated",
+          "unchanged",
+          "deleted",
+          "skipped",
+          "failed"
+        ],
+        "additionalProperties": false
+      },
+      "ContentSourceSyncRound": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Identifies the round's report, read with `GET /content-sources/{id}/rounds/{roundId}/report`. Absent on rounds that started before reports existed."
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "import",
+              "update"
+            ],
+            "description": "`import` lists the whole folder; `update` reads the changes since the previous sync."
+          },
+          "started_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "finished_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "counts": {
+            "$ref": "#/components/schemas/ContentSourceSyncCounts"
+          },
+          "skipped_by_reason": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer",
+              "minimum": -9007199254740991,
+              "maximum": 9007199254740991
+            },
+            "description": "The skipped files by reason: `package`, `not_a_file`, `too_large`, `unsupported_type`, or another reason a system reports."
+          },
+          "swept": {
+            "type": "boolean",
+            "description": "Whether an import ended by deleting the documents of files no longer listed."
+          },
+          "error": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "kind",
+          "started_at",
+          "counts"
+        ],
+        "additionalProperties": false
+      },
+      "ContentSourceSyncSettings": {
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "type": "boolean",
+            "description": "Whether the source syncs on its own every `interval_minutes`."
+          },
+          "interval_minutes": {
+            "type": "integer",
+            "minimum": 15,
+            "maximum": 10080,
+            "description": "Minutes between two scheduled syncs, from one scheduled time to the next."
+          }
+        },
+        "required": [
+          "enabled",
+          "interval_minutes"
+        ],
+        "additionalProperties": false,
+        "description": "When the source syncs. A source with scheduled sync disabled still syncs on `POST /content-sources/{id}/sync`."
+      },
       "ContentTypeEditingPolicy": {
         "type": "object",
         "properties": {
@@ -14193,6 +14528,54 @@
         "additionalProperties": false,
         "description": "Opaque launch selector and App Gateway URL for an advanced app-version launch."
       },
+      "CreateBoxContentSourcePayload": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "description": "Unique within the project."
+          },
+          "description": {
+            "type": "string"
+          },
+          "oauth_provider_id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "An OAuth provider of this project with grant type `client_credentials` for the system."
+          },
+          "location_root": {
+            "type": "string",
+            "description": "The `location` root for synced documents. Defaults to `/<type>/<name>`."
+          },
+          "collection_id": {
+            "type": "string",
+            "description": "A collection to add synced documents to."
+          },
+          "sync": {
+            "$ref": "#/components/schemas/ContentSourceSyncSettings",
+            "description": "Defaults to scheduled sync disabled, every 60 minutes once enabled."
+          },
+          "type": {
+            "type": "string",
+            "const": "box"
+          },
+          "folder_id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The Box folder ID, shared with the Box app's service account."
+          }
+        },
+        "required": [
+          "name",
+          "oauth_provider_id",
+          "type",
+          "folder_id"
+        ],
+        "additionalProperties": false,
+        "description": "Registers a Box source. The OAuth provider uses Box's client credentials grant, with the token parameters `box_subject_type` and `box_subject_id`."
+      },
       "CreateCollectionPayload": {
         "type": "object",
         "properties": {
@@ -14373,7 +14756,7 @@
           },
           "content": {
             "$ref": "#/components/schemas/ContentSource",
-            "description": "Content source information. A non-empty `source` is a `gs://`, `s3://` or `az://` URI of the file (a bucket then a non-empty object path), and `type`, its MIME type, is then required."
+            "description": "Content source information. A non-empty `source` is a `gs://`, `s3://` or `az://` URI of the file (a bucket then a non-empty object path), or a `sharepoint://` or `box://` `<source_id>/<item_id>` URI of a file in a registered content source, and `type`, its MIME type, is then required."
           },
           "external_id": {
             "type": "string",
@@ -14542,7 +14925,7 @@
                     "minLength": 1
                   },
                   "source": {
-                    "pattern": "^(?:gs|s3|az)://[^/]+/.+"
+                    "pattern": "^(?:gs|s3|az|sharepoint|box)://[^/]+/.+"
                   }
                 }
               }
@@ -14578,7 +14961,7 @@
                     "minLength": 1
                   },
                   "source": {
-                    "pattern": "^(?:gs|s3|az)://[^/]+/.+"
+                    "pattern": "^(?:gs|s3|az|sharepoint|box)://[^/]+/.+"
                   }
                 }
               }
@@ -14640,6 +15023,28 @@
           "name"
         ],
         "additionalProperties": false
+      },
+      "CreateContentSourcePayload": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/CreateSharePointContentSourcePayload"
+          },
+          {
+            "$ref": "#/components/schemas/CreateBoxContentSourcePayload"
+          }
+        ],
+        "discriminator": {
+          "propertyName": "type",
+          "mapping": {
+            "sharepoint": "#/components/schemas/CreateSharePointContentSourcePayload",
+            "box": "#/components/schemas/CreateBoxContentSourcePayload"
+          }
+        },
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "description": "Registers a content source. The server checks the folder with the system before saving, answers 409 when the name is already used in the project, then starts the first sync."
       },
       "CreateCustomRolePayload": {
         "$ref": "#/components/schemas/CustomRoleDefinition"
@@ -15092,6 +15497,13 @@
           },
           "revocation_endpoint": {
             "type": "string"
+          },
+          "token_params": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Extra parameters added to the URL-encoded body of every client_credentials token request for this provider, after the standard ones (e.g. Box's box_subject_type and box_subject_id). Only used for the client_credentials grant. At most 10 entries; keys match ^[A-Za-z][A-Za-z0-9_.-]{0,63}$; values are at most 512 characters; grant_type, client_id, client_secret, scope, client_assertion and client_assertion_type are reserved. Not secret: returned as stored. On update, an empty object clears them."
           }
         },
         "required": [
@@ -15297,6 +15709,63 @@
           "metadata"
         ],
         "additionalProperties": false
+      },
+      "CreateSharePointContentSourcePayload": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "description": "Unique within the project."
+          },
+          "description": {
+            "type": "string"
+          },
+          "oauth_provider_id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "An OAuth provider of this project with grant type `client_credentials` for the system."
+          },
+          "location_root": {
+            "type": "string",
+            "description": "The `location` root for synced documents. Defaults to `/<type>/<name>`."
+          },
+          "collection_id": {
+            "type": "string",
+            "description": "A collection to add synced documents to."
+          },
+          "sync": {
+            "$ref": "#/components/schemas/ContentSourceSyncSettings",
+            "description": "Defaults to scheduled sync disabled, every 60 minutes once enabled."
+          },
+          "type": {
+            "type": "string",
+            "const": "sharepoint"
+          },
+          "site_url": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The SharePoint site URL, e.g. `https://contoso.sharepoint.com/sites/legal`."
+          },
+          "library_name": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The document library name. Defaults to the site’s default library."
+          },
+          "folder_path": {
+            "type": "string",
+            "description": "A folder inside the library, e.g. `Contracts/2026`. Defaults to the whole library."
+          }
+        },
+        "required": [
+          "name",
+          "oauth_provider_id",
+          "type",
+          "site_url"
+        ],
+        "additionalProperties": false,
+        "description": "Registers a SharePoint source. The OAuth provider authenticates against Microsoft Entra ID with the scope `https://graph.microsoft.com/.default`."
       },
       "CreateSnapshotPayload": {
         "type": "object",
@@ -21699,6 +22168,34 @@
         ],
         "additionalProperties": false,
         "description": "A prompt template reduced to the input schema an export carries."
+      },
+      "ExternalContentSource": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/SharePointContentSource"
+          },
+          {
+            "$ref": "#/components/schemas/BoxContentSource"
+          }
+        ],
+        "discriminator": {
+          "propertyName": "type",
+          "mapping": {
+            "sharepoint": "#/components/schemas/SharePointContentSource",
+            "box": "#/components/schemas/BoxContentSource"
+          }
+        },
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "description": "A folder of an external content system whose files are synced into the project without copies."
+      },
+      "ExternalContentSourceArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/ExternalContentSource"
+        }
       },
       "ExternalizedToolInputRef": {
         "type": "object",
@@ -28409,6 +28906,13 @@
           "revocation_endpoint": {
             "type": "string",
             "description": "Optional OAuth 2.0 revocation endpoint URL."
+          },
+          "token_params": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Extra parameters added to the URL-encoded body of every client_credentials token request for this provider, after the standard ones (e.g. Box's box_subject_type and box_subject_id). Only used for the client_credentials grant. At most 10 entries; keys match ^[A-Za-z][A-Za-z0-9_.-]{0,63}$; values are at most 512 characters; grant_type, client_id, client_secret, scope, client_assertion and client_assertion_type are reserved. Not secret: returned as stored. On update, an empty object clears them."
           },
           "created_at": {
             "type": "string"
@@ -35717,6 +36221,93 @@
         "additionalProperties": false,
         "description": "Payload for storing the extracted text of a content object as a text artifact."
       },
+      "SharePointContentSource": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "oauth_provider_id": {
+            "type": "string",
+            "description": "The project's OAuth provider (grant type `client_credentials`) that issues the system's tokens."
+          },
+          "location_root": {
+            "type": "string",
+            "description": "The `location` under which the source folder's tree is reproduced, e.g. `/sharepoint/legal`."
+          },
+          "collection_id": {
+            "type": "string",
+            "description": "Collection that synced documents are added to, if any."
+          },
+          "sync": {
+            "$ref": "#/components/schemas/ContentSourceSyncSettings"
+          },
+          "created_by": {
+            "type": "string"
+          },
+          "updated_by": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "type": {
+            "type": "string",
+            "const": "sharepoint"
+          },
+          "site_url": {
+            "type": "string",
+            "description": "The SharePoint site URL the source was created from."
+          },
+          "site_id": {
+            "type": "string",
+            "description": "The Microsoft Graph site ID."
+          },
+          "drive_id": {
+            "type": "string",
+            "description": "The Microsoft Graph drive ID of the document library."
+          },
+          "library_name": {
+            "type": "string",
+            "description": "The document library name."
+          },
+          "folder_path": {
+            "type": "string",
+            "description": "The folder synced, relative to the library root. Empty for the whole library."
+          },
+          "folder_item_id": {
+            "type": "string",
+            "description": "The Microsoft Graph item ID of the synced folder."
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "oauth_provider_id",
+          "location_root",
+          "sync",
+          "type",
+          "site_url",
+          "site_id",
+          "drive_id",
+          "library_name",
+          "folder_path",
+          "folder_item_id"
+        ],
+        "additionalProperties": false,
+        "description": "A SharePoint Online document library, or a folder in one. Synced documents reference their file in SharePoint (`sharepoint://<source_id>/<item_id>`) instead of a copy."
+      },
       "SignalAgentPayload": {
         "type": "object",
         "additionalProperties": true,
@@ -36810,6 +37401,16 @@
           "virtual_mediator",
           "test"
         ]
+      },
+      "SyncContentSourcePayload": {
+        "type": "object",
+        "properties": {
+          "full": {
+            "type": "boolean",
+            "description": "List the whole folder again and delete the documents of files that no longer exist, instead of reading only the changes."
+          }
+        },
+        "additionalProperties": false
       },
       "SystemDefaults": {
         "type": "object",
@@ -38319,7 +38920,7 @@
           },
           "content": {
             "$ref": "#/components/schemas/ContentSource",
-            "description": "Content source information. A non-empty `source` is a `gs://`, `s3://` or `az://` URI of the file (a bucket then a non-empty object path), and `type`, its MIME type, is then required."
+            "description": "Content source information. A non-empty `source` is a `gs://`, `s3://` or `az://` URI of the file (a bucket then a non-empty object path), or a `sharepoint://` or `box://` `<source_id>/<item_id>` URI of a file in a registered content source, and `type`, its MIME type, is then required."
           },
           "external_id": {
             "type": "string",
@@ -38433,7 +39034,7 @@
                   "minLength": 1
                 },
                 "source": {
-                  "pattern": "^(?:gs|s3|az)://[^/]+/.+"
+                  "pattern": "^(?:gs|s3|az|sharepoint|box)://[^/]+/.+"
                 }
               }
             }
@@ -38498,6 +39099,24 @@
         },
         "additionalProperties": false,
         "description": "Fields to change on a content object type. Only fields present are written; expected_edit_revision prevents overwriting a concurrent edit."
+      },
+      "UpdateContentSourcePayload": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "description": {
+            "type": "string"
+          },
+          "sync": {
+            "$ref": "#/components/schemas/ContentSourceSyncSettings"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Changes the name, description or sync settings. Saving sync settings also hands the sync your credentials, which restarts a sync stopped because its previous credentials were refused."
       },
       "UpdateCustomRolePayload": {
         "type": "object",
@@ -39022,6 +39641,13 @@
           },
           "revocation_endpoint": {
             "type": "string"
+          },
+          "token_params": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Extra parameters added to the URL-encoded body of every client_credentials token request for this provider, after the standard ones (e.g. Box's box_subject_type and box_subject_id). Only used for the client_credentials grant. At most 10 entries; keys match ^[A-Za-z][A-Za-z0-9_.-]{0,63}$; values are at most 512 characters; grant_type, client_id, client_secret, scope, client_assertion and client_assertion_type are reserved. Not secret: returned as stored. On update, an empty object clears them."
           }
         },
         "additionalProperties": false,
@@ -85683,6 +86309,775 @@
           "file": "../../apps/zeno-server/src/api/workflows.ts",
           "className": "WorkflowDefinitionResource",
           "methodName": "doDelete"
+        }
+      },
+      "parameters": [
+        {
+          "name": "x-api-version",
+          "in": "header",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S",
+            "example": "20260803"
+          },
+          "description": "Required Vertesia API version header. Use `20260803` for the current stable API shape.",
+          "x-vertesia-global-header": true
+        }
+      ]
+    },
+    "/content-sources": {
+      "get": {
+        "operationId": "ListContentSources",
+        "tags": [
+          "Content Sources"
+        ],
+        "summary": "List content sources",
+        "description": "**Required permissions:** `project:settings_write`",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OAuth2": [
+              "project:settings_write"
+            ]
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Content sources of the current project.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExternalContentSourceArray"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [
+          "project:settings_write"
+        ],
+        "x-vertesia-source": {
+          "file": "../../apps/zeno-server/src/api/content-sources.ts",
+          "className": "ContentSourcesResource",
+          "methodName": "listSources"
+        }
+      },
+      "post": {
+        "operationId": "CreateContentSource",
+        "tags": [
+          "Content Sources"
+        ],
+        "summary": "Register a content source",
+        "description": "Checks the folder with its system (SharePoint or Box) through the OAuth provider, registers the source and starts its first sync, an import of the whole folder. Answers 400 when the system refuses the configuration, 409 when the name is taken, and 503 with `Retry-After` when the system is throttling or unavailable.\n\n**Required permissions:** `project:settings_write`",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OAuth2": [
+              "project:settings_write"
+            ]
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "The registered content source.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExternalContentSource"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [
+          "project:settings_write"
+        ],
+        "x-vertesia-source": {
+          "file": "../../apps/zeno-server/src/api/content-sources.ts",
+          "className": "ContentSourcesResource",
+          "methodName": "createSource"
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateContentSourcePayload"
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "x-api-version",
+          "in": "header",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S",
+            "example": "20260803"
+          },
+          "description": "Required Vertesia API version header. Use `20260803` for the current stable API shape.",
+          "x-vertesia-global-header": true
+        }
+      ]
+    },
+    "/content-sources/{sourceId}": {
+      "get": {
+        "operationId": "GetContentSource",
+        "tags": [
+          "Content Sources"
+        ],
+        "summary": "Retrieve a content source",
+        "description": "**Required permissions:** `project:settings_write`",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OAuth2": [
+              "project:settings_write"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "sourceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The requested content source.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExternalContentSource"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [
+          "project:settings_write"
+        ],
+        "x-vertesia-source": {
+          "file": "../../apps/zeno-server/src/api/content-sources.ts",
+          "className": "ContentSourceResource",
+          "methodName": "getSource"
+        }
+      },
+      "put": {
+        "operationId": "UpdateContentSource",
+        "tags": [
+          "Content Sources"
+        ],
+        "summary": "Update a content source",
+        "description": "Changes the name, description or sync settings. Saving sync settings also hands the sync your credentials, which restarts a sync stopped because its previous credentials were refused.\n\n**Required permissions:** `project:settings_write`",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OAuth2": [
+              "project:settings_write"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "sourceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The updated content source.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExternalContentSource"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [
+          "project:settings_write"
+        ],
+        "x-vertesia-source": {
+          "file": "../../apps/zeno-server/src/api/content-sources.ts",
+          "className": "ContentSourceResource",
+          "methodName": "updateSource"
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateContentSourcePayload"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "DeleteContentSource",
+        "tags": [
+          "Content Sources"
+        ],
+        "summary": "Delete a content source",
+        "description": "Stops the sync and removes the source. Synced documents are kept, but their files can no longer be read.\n\n**Required permissions:** `project:settings_write`",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OAuth2": [
+              "project:settings_write"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "sourceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The number of sources deleted.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteCountResult"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [
+          "project:settings_write"
+        ],
+        "x-vertesia-source": {
+          "file": "../../apps/zeno-server/src/api/content-sources.ts",
+          "className": "ContentSourceResource",
+          "methodName": "deleteSource"
+        }
+      },
+      "parameters": [
+        {
+          "name": "x-api-version",
+          "in": "header",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S",
+            "example": "20260803"
+          },
+          "description": "Required Vertesia API version header. Use `20260803` for the current stable API shape.",
+          "x-vertesia-global-header": true
+        }
+      ]
+    },
+    "/content-sources/{sourceId}/sync": {
+      "post": {
+        "operationId": "SyncContentSource",
+        "tags": [
+          "Content Sources"
+        ],
+        "summary": "Sync a content source now",
+        "description": "Starts a sync round without waiting for the schedule: an update round that reads the changes, or, with `full`, an import that lists the whole folder and deletes the documents of files that no longer exist. Also hands the sync your credentials, which restarts a sync stopped because its credentials were refused.\n\n**Required permissions:** `project:settings_write`",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OAuth2": [
+              "project:settings_write"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "sourceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The sync status once the request was received.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContentSourceStatus"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [
+          "project:settings_write"
+        ],
+        "x-vertesia-source": {
+          "file": "../../apps/zeno-server/src/api/content-sources.ts",
+          "className": "ContentSourceResource",
+          "methodName": "syncSource"
+        },
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SyncContentSourcePayload"
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "x-api-version",
+          "in": "header",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S",
+            "example": "20260803"
+          },
+          "description": "Required Vertesia API version header. Use `20260803` for the current stable API shape.",
+          "x-vertesia-global-header": true
+        }
+      ]
+    },
+    "/content-sources/{sourceId}/status": {
+      "get": {
+        "operationId": "GetContentSourceStatus",
+        "tags": [
+          "Content Sources"
+        ],
+        "summary": "Get a content source's sync status",
+        "description": "**Required permissions:** `project:settings_write`",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OAuth2": [
+              "project:settings_write"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "sourceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The source's sync status.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContentSourceStatus"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [
+          "project:settings_write"
+        ],
+        "x-vertesia-source": {
+          "file": "../../apps/zeno-server/src/api/content-sources.ts",
+          "className": "ContentSourceResource",
+          "methodName": "getStatus"
+        }
+      },
+      "parameters": [
+        {
+          "name": "x-api-version",
+          "in": "header",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S",
+            "example": "20260803"
+          },
+          "description": "Required Vertesia API version header. Use `20260803` for the current stable API shape.",
+          "x-vertesia-global-header": true
+        }
+      ]
+    },
+    "/content-sources/{sourceId}/rounds/{roundId}/report": {
+      "get": {
+        "operationId": "GetContentSourceRoundReport",
+        "tags": [
+          "Content Sources"
+        ],
+        "summary": "Get a sync round's report",
+        "description": "Pages through the files a sync round created, updated, deleted, skipped or failed, optionally of one action. Round IDs are in the status's `recent_rounds`; the reports of older rounds are deleted. An unknown round has an empty report.\n\n**Required permissions:** `project:settings_write`",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OAuth2": [
+              "project:settings_write"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "sourceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "roundId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "action",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "created",
+                "updated",
+                "deleted",
+                "skipped",
+                "failed"
+              ],
+              "description": "Only the entries of this action."
+            },
+            "description": "Only the entries of this action.",
+            "style": "form"
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "The `next_cursor` of the previous page."
+            },
+            "description": "The `next_cursor` of the previous page."
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000,
+              "description": "Entries per page; 200 when absent."
+            },
+            "description": "Entries per page; 200 when absent."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A page of the round report.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContentSourceReport"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [
+          "project:settings_write"
+        ],
+        "x-vertesia-source": {
+          "file": "../../apps/zeno-server/src/api/content-sources.ts",
+          "className": "ContentSourceResource",
+          "methodName": "getRoundReport"
         }
       },
       "parameters": [

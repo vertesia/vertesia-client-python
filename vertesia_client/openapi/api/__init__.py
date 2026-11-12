@@ -12,6 +12,7 @@ from vertesia_client.openapi.api.collections_api import CollectionsApi
 from vertesia_client.openapi.api.commands_api import CommandsApi
 from vertesia_client.openapi.api.content_object_types_api import ContentObjectTypesApi
 from vertesia_client.openapi.api.content_query_api import ContentQueryApi
+from vertesia_client.openapi.api.content_sources_api import ContentSourcesApi
 from vertesia_client.openapi.api.costs_api import CostsApi
 from vertesia_client.openapi.api.data_api import DataApi
 from vertesia_client.openapi.api.delegation_grants_api import DelegationGrantsApi
