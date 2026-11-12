@@ -26,7 +26,7 @@ from pydantic_core import to_jsonable_python
 
 class UpdateOAuthProviderPayload(BaseModel):
     """
-    Payload for updating an OAuth Provider. All fields are optional — only provided fields are updated. To clear the client_secret, set it to an empty string.
+    Payload for updating an OAuth Provider. All fields are optional — only provided fields are updated. To clear the client_secret, private_key or certificate, set it to an empty string.
     """ # noqa: E501
     name: Optional[Annotated[str, Field(strict=True)]] = None
     display_name: Optional[Annotated[str, Field(min_length=1, strict=True)]] = None
@@ -35,10 +35,14 @@ class UpdateOAuthProviderPayload(BaseModel):
     token_endpoint: Optional[StrictStr] = None
     client_id: Optional[Annotated[str, Field(min_length=1, strict=True)]] = None
     client_secret: Optional[StrictStr] = Field(default=None, description="Optional client secret for confidential clients. Will be encrypted at rest and never returned in API responses.")
+    token_endpoint_auth_method: Optional[StrictStr] = Field(default=None, description="How Vertesia authenticates to the token endpoint (RFC 7591 names). - 'client_secret_post': the client_secret in the request body (default). - 'private_key_jwt': a JWT client assertion signed with the private key (RFC 7523). client_credentials grant only.")
+    token_endpoint_auth_signing_alg: Optional[StrictStr] = Field(default=None, description="The JWS algorithm that signs the client assertion of private_key_jwt. Defaults to RS256 for an RSA key and ES256 for a P-256 key. Microsoft Entra ID recommends PS256.")
+    private_key: Optional[StrictStr] = Field(default=None, description="PEM private key (PKCS#8 or PKCS#1) that signs the client assertion of private_key_jwt: RSA of 2048 bits or more, or EC P-256. Encrypted at rest and never returned in API responses.")
+    certificate: Optional[StrictStr] = Field(default=None, description="PEM X.509 certificate of the private key, as uploaded to the provider (for example a Microsoft Entra app registration). Its public key must match the private key.")
     default_scopes: Optional[List[StrictStr]] = None
     use_pkce: Optional[StrictBool] = None
     revocation_endpoint: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["name", "display_name", "grant_type", "authorization_endpoint", "token_endpoint", "client_id", "client_secret", "default_scopes", "use_pkce", "revocation_endpoint"]
+    __properties: ClassVar[List[str]] = ["name", "display_name", "grant_type", "authorization_endpoint", "token_endpoint", "client_id", "client_secret", "token_endpoint_auth_method", "token_endpoint_auth_signing_alg", "private_key", "certificate", "default_scopes", "use_pkce", "revocation_endpoint"]
 
     @field_validator('name')
     def name_validate_regular_expression(cls, value):
@@ -55,6 +59,22 @@ class UpdateOAuthProviderPayload(BaseModel):
 
     @field_validator('grant_type')
     def grant_type_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        return value
+
+    @field_validator('token_endpoint_auth_method')
+    def token_endpoint_auth_method_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        return value
+
+    @field_validator('token_endpoint_auth_signing_alg')
+    def token_endpoint_auth_signing_alg_validate_enum(cls, value):
         """Validates the enum"""
         if value is None:
             return value
@@ -119,6 +139,10 @@ class UpdateOAuthProviderPayload(BaseModel):
             "token_endpoint": obj.get("token_endpoint"),
             "client_id": obj.get("client_id"),
             "client_secret": obj.get("client_secret"),
+            "token_endpoint_auth_method": obj.get("token_endpoint_auth_method"),
+            "token_endpoint_auth_signing_alg": obj.get("token_endpoint_auth_signing_alg"),
+            "private_key": obj.get("private_key"),
+            "certificate": obj.get("certificate"),
             "default_scopes": obj.get("default_scopes"),
             "use_pkce": obj.get("use_pkce"),
             "revocation_endpoint": obj.get("revocation_endpoint")

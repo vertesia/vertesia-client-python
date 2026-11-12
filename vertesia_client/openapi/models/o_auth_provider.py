@@ -35,16 +35,36 @@ class OAuthProvider(BaseModel):
     token_endpoint: Optional[StrictStr] = Field(default=None, description="The OAuth 2.0 token endpoint URL. Optional when endpoints are discovered via .well-known (e.g. MCP servers).")
     client_id: StrictStr = Field(description="The OAuth client ID (always required).")
     has_client_secret: Optional[StrictBool] = Field(default=None, description="Whether a client_secret is configured (never exposes the actual secret).")
+    token_endpoint_auth_method: Optional[StrictStr] = Field(default=None, description="How Vertesia authenticates to the token endpoint (RFC 7591 names). - 'client_secret_post': the client_secret in the request body (default). - 'private_key_jwt': a JWT client assertion signed with the private key (RFC 7523). client_credentials grant only.")
+    token_endpoint_auth_signing_alg: Optional[StrictStr] = Field(default=None, description="The JWS algorithm that signs the client assertion of private_key_jwt. Defaults to RS256 for an RSA key and ES256 for a P-256 key. Microsoft Entra ID recommends PS256.")
+    has_private_key: Optional[StrictBool] = Field(default=None, description="Whether a private key for private_key_jwt is configured (never exposes the key).")
+    certificate: Optional[StrictStr] = Field(default=None, description="The PEM X.509 certificate of the private key. Public. When set, the client assertion names it with an x5t#S256 header (RFC 7515 §4.1.8).")
     default_scopes: Optional[List[StrictStr]] = Field(default=None, description="Default scopes to request during authorization.")
     use_pkce: StrictBool = Field(description="Whether to use PKCE (Proof Key for Code Exchange) in the authorization flow. Only applies to authorization_code flow. Defaults to true.")
     revocation_endpoint: Optional[StrictStr] = Field(default=None, description="Optional OAuth 2.0 revocation endpoint URL.")
     created_at: StrictStr
     updated_at: StrictStr
     id: StrictStr
-    __properties: ClassVar[List[str]] = ["name", "display_name", "project", "grant_type", "authorization_endpoint", "token_endpoint", "client_id", "has_client_secret", "default_scopes", "use_pkce", "revocation_endpoint", "created_at", "updated_at", "id"]
+    __properties: ClassVar[List[str]] = ["name", "display_name", "project", "grant_type", "authorization_endpoint", "token_endpoint", "client_id", "has_client_secret", "token_endpoint_auth_method", "token_endpoint_auth_signing_alg", "has_private_key", "certificate", "default_scopes", "use_pkce", "revocation_endpoint", "created_at", "updated_at", "id"]
 
     @field_validator('grant_type')
     def grant_type_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        return value
+
+    @field_validator('token_endpoint_auth_method')
+    def token_endpoint_auth_method_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        return value
+
+    @field_validator('token_endpoint_auth_signing_alg')
+    def token_endpoint_auth_signing_alg_validate_enum(cls, value):
         """Validates the enum"""
         if value is None:
             return value
@@ -110,6 +130,10 @@ class OAuthProvider(BaseModel):
             "token_endpoint": obj.get("token_endpoint"),
             "client_id": obj.get("client_id"),
             "has_client_secret": obj.get("has_client_secret"),
+            "token_endpoint_auth_method": obj.get("token_endpoint_auth_method"),
+            "token_endpoint_auth_signing_alg": obj.get("token_endpoint_auth_signing_alg"),
+            "has_private_key": obj.get("has_private_key"),
+            "certificate": obj.get("certificate"),
             "default_scopes": obj.get("default_scopes"),
             "use_pkce": obj.get("use_pkce"),
             "revocation_endpoint": obj.get("revocation_endpoint"),
