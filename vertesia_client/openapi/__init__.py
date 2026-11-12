@@ -29,6 +29,7 @@ __all__ = [
     "CommandsApi",
     "ContentObjectTypesApi",
     "ContentQueryApi",
+    "ContentSourcesApi",
     "CostsApi",
     "DataApi",
     "DelegationGrantsApi",
@@ -301,6 +302,7 @@ __all__ = [
     "BedrockNovaOptions",
     "BedrockPalmyraOptions",
     "BillingMethod",
+    "BoxContentSource",
     "BranchDefinition",
     "BranchJoinPolicy",
     "BranchNodeBranchDefinition",
@@ -397,6 +399,13 @@ __all__ = [
     "ContentQueryResultColumnsInner",
     "ContentQueryResultHitsInner",
     "ContentSource",
+    "ContentSourceReport",
+    "ContentSourceReportAction",
+    "ContentSourceReportEntry",
+    "ContentSourceStatus",
+    "ContentSourceSyncCounts",
+    "ContentSourceSyncRound",
+    "ContentSourceSyncSettings",
     "ContentTypeEditingPolicy",
     "ContentTypeExtractionGroundingPolicy",
     "ContentTypeExtractionGroundingReviewPolicy",
@@ -437,10 +446,12 @@ __all__ = [
     "CreateAppRepoBranchRequest",
     "CreateAppVersionLaunchRequest",
     "CreateAppVersionLaunchResponse",
+    "CreateBoxContentSourcePayload",
     "CreateCollectionPayload",
     "CreateContentObjectPayload",
     "CreateContentObjectPayloadTokens",
     "CreateContentObjectTypePayload",
+    "CreateContentSourcePayload",
     "CreateDashboardPayload",
     "CreateDashboardSnapshotPayload",
     "CreateDataStorePayload",
@@ -458,6 +469,7 @@ __all__ = [
     "CreateProcessTestSuitePayload",
     "CreateRunPayload",
     "CreateSecretRequest",
+    "CreateSharePointContentSourcePayload",
     "CreateSnapshotPayload",
     "CreateTablePayload",
     "CreateTablesPayload",
@@ -638,6 +650,7 @@ __all__ = [
     "ExportPropertiesPayload",
     "ExportPropertiesResponse",
     "ExportedPromptTemplateRef",
+    "ExternalContentSource",
     "ExternalizedToolInputRef",
     "ExtractAppVersionGitRefTypeBranchTagCommit",
     "FacetSpec",
@@ -1074,6 +1087,7 @@ __all__ = [
     "SetMcpApiKeyRequest",
     "SetObjectEmbeddingsResponse",
     "SetObjectTextPayload",
+    "SharePointContentSource",
     "SignalAgentResponse",
     "SignalEventProperties",
     "SignalEventPropertiesSender",
@@ -1118,6 +1132,7 @@ __all__ = [
     "SupportedIntegrationsResend",
     "SupportedIntegrationsSerper",
     "SupportedProviders",
+    "SyncContentSourcePayload",
     "SystemDefaults",
     "SystemRoleDefinition",
     "SystemRoles",
@@ -1172,6 +1187,7 @@ __all__ = [
     "UpdateCollectionPayload",
     "UpdateContentObjectPayload",
     "UpdateContentObjectTypePayload",
+    "UpdateContentSourcePayload",
     "UpdateCustomRolePayload",
     "UpdateDashboardPayload",
     "UpdateEmailRouteRequest",
@@ -1346,6 +1362,7 @@ from vertesia_client.openapi.api.collections_api import CollectionsApi as Collec
 from vertesia_client.openapi.api.commands_api import CommandsApi as CommandsApi
 from vertesia_client.openapi.api.content_object_types_api import ContentObjectTypesApi as ContentObjectTypesApi
 from vertesia_client.openapi.api.content_query_api import ContentQueryApi as ContentQueryApi
+from vertesia_client.openapi.api.content_sources_api import ContentSourcesApi as ContentSourcesApi
 from vertesia_client.openapi.api.costs_api import CostsApi as CostsApi
 from vertesia_client.openapi.api.data_api import DataApi as DataApi
 from vertesia_client.openapi.api.delegation_grants_api import DelegationGrantsApi as DelegationGrantsApi
@@ -1622,6 +1639,7 @@ from vertesia_client.openapi.models.bedrock_mistral_options import BedrockMistra
 from vertesia_client.openapi.models.bedrock_nova_options import BedrockNovaOptions as BedrockNovaOptions
 from vertesia_client.openapi.models.bedrock_palmyra_options import BedrockPalmyraOptions as BedrockPalmyraOptions
 from vertesia_client.openapi.models.billing_method import BillingMethod as BillingMethod
+from vertesia_client.openapi.models.box_content_source import BoxContentSource as BoxContentSource
 from vertesia_client.openapi.models.branch_definition import BranchDefinition as BranchDefinition
 from vertesia_client.openapi.models.branch_join_policy import BranchJoinPolicy as BranchJoinPolicy
 from vertesia_client.openapi.models.branch_node_branch_definition import BranchNodeBranchDefinition as BranchNodeBranchDefinition
@@ -1718,6 +1736,13 @@ from vertesia_client.openapi.models.content_query_result import ContentQueryResu
 from vertesia_client.openapi.models.content_query_result_columns_inner import ContentQueryResultColumnsInner as ContentQueryResultColumnsInner
 from vertesia_client.openapi.models.content_query_result_hits_inner import ContentQueryResultHitsInner as ContentQueryResultHitsInner
 from vertesia_client.openapi.models.content_source import ContentSource as ContentSource
+from vertesia_client.openapi.models.content_source_report import ContentSourceReport as ContentSourceReport
+from vertesia_client.openapi.models.content_source_report_action import ContentSourceReportAction as ContentSourceReportAction
+from vertesia_client.openapi.models.content_source_report_entry import ContentSourceReportEntry as ContentSourceReportEntry
+from vertesia_client.openapi.models.content_source_status import ContentSourceStatus as ContentSourceStatus
+from vertesia_client.openapi.models.content_source_sync_counts import ContentSourceSyncCounts as ContentSourceSyncCounts
+from vertesia_client.openapi.models.content_source_sync_round import ContentSourceSyncRound as ContentSourceSyncRound
+from vertesia_client.openapi.models.content_source_sync_settings import ContentSourceSyncSettings as ContentSourceSyncSettings
 from vertesia_client.openapi.models.content_type_editing_policy import ContentTypeEditingPolicy as ContentTypeEditingPolicy
 from vertesia_client.openapi.models.content_type_extraction_grounding_policy import ContentTypeExtractionGroundingPolicy as ContentTypeExtractionGroundingPolicy
 from vertesia_client.openapi.models.content_type_extraction_grounding_review_policy import ContentTypeExtractionGroundingReviewPolicy as ContentTypeExtractionGroundingReviewPolicy
@@ -1758,10 +1783,12 @@ from vertesia_client.openapi.models.create_api_key_payload import CreateApiKeyPa
 from vertesia_client.openapi.models.create_app_repo_branch_request import CreateAppRepoBranchRequest as CreateAppRepoBranchRequest
 from vertesia_client.openapi.models.create_app_version_launch_request import CreateAppVersionLaunchRequest as CreateAppVersionLaunchRequest
 from vertesia_client.openapi.models.create_app_version_launch_response import CreateAppVersionLaunchResponse as CreateAppVersionLaunchResponse
+from vertesia_client.openapi.models.create_box_content_source_payload import CreateBoxContentSourcePayload as CreateBoxContentSourcePayload
 from vertesia_client.openapi.models.create_collection_payload import CreateCollectionPayload as CreateCollectionPayload
 from vertesia_client.openapi.models.create_content_object_payload import CreateContentObjectPayload as CreateContentObjectPayload
 from vertesia_client.openapi.models.create_content_object_payload_tokens import CreateContentObjectPayloadTokens as CreateContentObjectPayloadTokens
 from vertesia_client.openapi.models.create_content_object_type_payload import CreateContentObjectTypePayload as CreateContentObjectTypePayload
+from vertesia_client.openapi.models.create_content_source_payload import CreateContentSourcePayload as CreateContentSourcePayload
 from vertesia_client.openapi.models.create_dashboard_payload import CreateDashboardPayload as CreateDashboardPayload
 from vertesia_client.openapi.models.create_dashboard_snapshot_payload import CreateDashboardSnapshotPayload as CreateDashboardSnapshotPayload
 from vertesia_client.openapi.models.create_data_store_payload import CreateDataStorePayload as CreateDataStorePayload
@@ -1779,6 +1806,7 @@ from vertesia_client.openapi.models.create_process_run_with_definition_payload i
 from vertesia_client.openapi.models.create_process_test_suite_payload import CreateProcessTestSuitePayload as CreateProcessTestSuitePayload
 from vertesia_client.openapi.models.create_run_payload import CreateRunPayload as CreateRunPayload
 from vertesia_client.openapi.models.create_secret_request import CreateSecretRequest as CreateSecretRequest
+from vertesia_client.openapi.models.create_share_point_content_source_payload import CreateSharePointContentSourcePayload as CreateSharePointContentSourcePayload
 from vertesia_client.openapi.models.create_snapshot_payload import CreateSnapshotPayload as CreateSnapshotPayload
 from vertesia_client.openapi.models.create_table_payload import CreateTablePayload as CreateTablePayload
 from vertesia_client.openapi.models.create_tables_payload import CreateTablesPayload as CreateTablesPayload
@@ -1959,6 +1987,7 @@ from vertesia_client.openapi.models.export_dashboard_preview_payload import Expo
 from vertesia_client.openapi.models.export_properties_payload import ExportPropertiesPayload as ExportPropertiesPayload
 from vertesia_client.openapi.models.export_properties_response import ExportPropertiesResponse as ExportPropertiesResponse
 from vertesia_client.openapi.models.exported_prompt_template_ref import ExportedPromptTemplateRef as ExportedPromptTemplateRef
+from vertesia_client.openapi.models.external_content_source import ExternalContentSource as ExternalContentSource
 from vertesia_client.openapi.models.externalized_tool_input_ref import ExternalizedToolInputRef as ExternalizedToolInputRef
 from vertesia_client.openapi.models.extract_app_version_git_ref_type_branch_tag_commit import ExtractAppVersionGitRefTypeBranchTagCommit as ExtractAppVersionGitRefTypeBranchTagCommit
 from vertesia_client.openapi.models.facet_spec import FacetSpec as FacetSpec
@@ -2395,6 +2424,7 @@ from vertesia_client.openapi.models.set_file_metadata_payload import SetFileMeta
 from vertesia_client.openapi.models.set_mcp_api_key_request import SetMcpApiKeyRequest as SetMcpApiKeyRequest
 from vertesia_client.openapi.models.set_object_embeddings_response import SetObjectEmbeddingsResponse as SetObjectEmbeddingsResponse
 from vertesia_client.openapi.models.set_object_text_payload import SetObjectTextPayload as SetObjectTextPayload
+from vertesia_client.openapi.models.share_point_content_source import SharePointContentSource as SharePointContentSource
 from vertesia_client.openapi.models.signal_agent_response import SignalAgentResponse as SignalAgentResponse
 from vertesia_client.openapi.models.signal_event_properties import SignalEventProperties as SignalEventProperties
 from vertesia_client.openapi.models.signal_event_properties_sender import SignalEventPropertiesSender as SignalEventPropertiesSender
@@ -2439,6 +2469,7 @@ from vertesia_client.openapi.models.supported_integrations_magic_pdf import Supp
 from vertesia_client.openapi.models.supported_integrations_resend import SupportedIntegrationsResend as SupportedIntegrationsResend
 from vertesia_client.openapi.models.supported_integrations_serper import SupportedIntegrationsSerper as SupportedIntegrationsSerper
 from vertesia_client.openapi.models.supported_providers import SupportedProviders as SupportedProviders
+from vertesia_client.openapi.models.sync_content_source_payload import SyncContentSourcePayload as SyncContentSourcePayload
 from vertesia_client.openapi.models.system_defaults import SystemDefaults as SystemDefaults
 from vertesia_client.openapi.models.system_role_definition import SystemRoleDefinition as SystemRoleDefinition
 from vertesia_client.openapi.models.system_roles import SystemRoles as SystemRoles
@@ -2493,6 +2524,7 @@ from vertesia_client.openapi.models.update_app_payload import UpdateAppPayload a
 from vertesia_client.openapi.models.update_collection_payload import UpdateCollectionPayload as UpdateCollectionPayload
 from vertesia_client.openapi.models.update_content_object_payload import UpdateContentObjectPayload as UpdateContentObjectPayload
 from vertesia_client.openapi.models.update_content_object_type_payload import UpdateContentObjectTypePayload as UpdateContentObjectTypePayload
+from vertesia_client.openapi.models.update_content_source_payload import UpdateContentSourcePayload as UpdateContentSourcePayload
 from vertesia_client.openapi.models.update_custom_role_payload import UpdateCustomRolePayload as UpdateCustomRolePayload
 from vertesia_client.openapi.models.update_dashboard_payload import UpdateDashboardPayload as UpdateDashboardPayload
 from vertesia_client.openapi.models.update_email_route_request import UpdateEmailRouteRequest as UpdateEmailRouteRequest

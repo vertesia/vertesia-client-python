@@ -11,6 +11,7 @@ vertesia_client/openapi/api/collections_api.py
 vertesia_client/openapi/api/commands_api.py
 vertesia_client/openapi/api/content_object_types_api.py
 vertesia_client/openapi/api/content_query_api.py
+vertesia_client/openapi/api/content_sources_api.py
 vertesia_client/openapi/api/costs_api.py
 vertesia_client/openapi/api/data_api.py
 vertesia_client/openapi/api/default_api.py
@@ -279,6 +280,7 @@ vertesia_client/openapi/models/bedrock_mistral_options.py
 vertesia_client/openapi/models/bedrock_nova_options.py
 vertesia_client/openapi/models/bedrock_palmyra_options.py
 vertesia_client/openapi/models/billing_method.py
+vertesia_client/openapi/models/box_content_source.py
 vertesia_client/openapi/models/branch_definition.py
 vertesia_client/openapi/models/branch_join_policy.py
 vertesia_client/openapi/models/branch_node_branch_definition.py
@@ -375,6 +377,13 @@ vertesia_client/openapi/models/content_query_result.py
 vertesia_client/openapi/models/content_query_result_columns_inner.py
 vertesia_client/openapi/models/content_query_result_hits_inner.py
 vertesia_client/openapi/models/content_source.py
+vertesia_client/openapi/models/content_source_report.py
+vertesia_client/openapi/models/content_source_report_action.py
+vertesia_client/openapi/models/content_source_report_entry.py
+vertesia_client/openapi/models/content_source_status.py
+vertesia_client/openapi/models/content_source_sync_counts.py
+vertesia_client/openapi/models/content_source_sync_round.py
+vertesia_client/openapi/models/content_source_sync_settings.py
 vertesia_client/openapi/models/content_type_editing_policy.py
 vertesia_client/openapi/models/content_type_extraction_grounding_policy.py
 vertesia_client/openapi/models/content_type_extraction_grounding_review_policy.py
@@ -415,10 +424,12 @@ vertesia_client/openapi/models/create_api_key_payload.py
 vertesia_client/openapi/models/create_app_repo_branch_request.py
 vertesia_client/openapi/models/create_app_version_launch_request.py
 vertesia_client/openapi/models/create_app_version_launch_response.py
+vertesia_client/openapi/models/create_box_content_source_payload.py
 vertesia_client/openapi/models/create_collection_payload.py
 vertesia_client/openapi/models/create_content_object_payload.py
 vertesia_client/openapi/models/create_content_object_payload_tokens.py
 vertesia_client/openapi/models/create_content_object_type_payload.py
+vertesia_client/openapi/models/create_content_source_payload.py
 vertesia_client/openapi/models/create_dashboard_payload.py
 vertesia_client/openapi/models/create_dashboard_snapshot_payload.py
 vertesia_client/openapi/models/create_data_store_payload.py
@@ -436,6 +447,7 @@ vertesia_client/openapi/models/create_process_run_with_definition_payload.py
 vertesia_client/openapi/models/create_process_test_suite_payload.py
 vertesia_client/openapi/models/create_run_payload.py
 vertesia_client/openapi/models/create_secret_request.py
+vertesia_client/openapi/models/create_share_point_content_source_payload.py
 vertesia_client/openapi/models/create_snapshot_payload.py
 vertesia_client/openapi/models/create_table_payload.py
 vertesia_client/openapi/models/create_tables_payload.py
@@ -616,6 +628,7 @@ vertesia_client/openapi/models/export_dashboard_preview_payload.py
 vertesia_client/openapi/models/export_properties_payload.py
 vertesia_client/openapi/models/export_properties_response.py
 vertesia_client/openapi/models/exported_prompt_template_ref.py
+vertesia_client/openapi/models/external_content_source.py
 vertesia_client/openapi/models/externalized_tool_input_ref.py
 vertesia_client/openapi/models/extract_app_version_git_ref_type_branch_tag_commit.py
 vertesia_client/openapi/models/facet_spec.py
@@ -1052,6 +1065,7 @@ vertesia_client/openapi/models/set_file_metadata_payload.py
 vertesia_client/openapi/models/set_mcp_api_key_request.py
 vertesia_client/openapi/models/set_object_embeddings_response.py
 vertesia_client/openapi/models/set_object_text_payload.py
+vertesia_client/openapi/models/share_point_content_source.py
 vertesia_client/openapi/models/signal_agent_response.py
 vertesia_client/openapi/models/signal_event_properties.py
 vertesia_client/openapi/models/signal_event_properties_sender.py
@@ -1096,6 +1110,7 @@ vertesia_client/openapi/models/supported_integrations_magic_pdf.py
 vertesia_client/openapi/models/supported_integrations_resend.py
 vertesia_client/openapi/models/supported_integrations_serper.py
 vertesia_client/openapi/models/supported_providers.py
+vertesia_client/openapi/models/sync_content_source_payload.py
 vertesia_client/openapi/models/system_defaults.py
 vertesia_client/openapi/models/system_role_definition.py
 vertesia_client/openapi/models/system_roles.py
@@ -1150,6 +1165,7 @@ vertesia_client/openapi/models/update_app_payload.py
 vertesia_client/openapi/models/update_collection_payload.py
 vertesia_client/openapi/models/update_content_object_payload.py
 vertesia_client/openapi/models/update_content_object_type_payload.py
+vertesia_client/openapi/models/update_content_source_payload.py
 vertesia_client/openapi/models/update_custom_role_payload.py
 vertesia_client/openapi/models/update_dashboard_payload.py
 vertesia_client/openapi/models/update_email_route_request.py

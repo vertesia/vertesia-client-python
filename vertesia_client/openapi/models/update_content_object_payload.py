@@ -51,7 +51,7 @@ class UpdateContentObjectPayload(BaseModel):
     parent: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="ID of the parent object (container or folder), as 24 hexadecimal characters.")
     location: Optional[StrictStr] = Field(default=None, description="An optional path based location for the object")
     status: Optional[ContentObjectStatus] = Field(default=None, description="Object status. - created: the object was created and is being processed - processing: the object is being processed - completed: the object was processed and is ready to use - failed: the object processing failed - archived: the object was archived and is no longer available")
-    content: Optional[ContentSource] = Field(default=None, description="Content source information. A non-empty `source` is a `gs://`, `s3://` or `az://` URI of the file (a bucket then a non-empty object path), and `type`, its MIME type, is then required.")
+    content: Optional[ContentSource] = Field(default=None, description="Content source information. A non-empty `source` is a `gs://`, `s3://` or `az://` URI of the file (a bucket then a non-empty object path), or a `sharepoint://` or `box://` `<source_id>/<item_id>` URI of a file in a registered content source, and `type`, its MIME type, is then required.")
     external_id: Optional[StrictStr] = Field(default=None, description="External identifier for integration with other systems")
     properties: Optional[Dict[str, Any]] = Field(default=None, description="The object properties. This is a JSON object that describes the object, matching the object type schema")
     metadata: Optional[Dict[str, Any]] = Field(default=None, description="Technical metadata of the object")

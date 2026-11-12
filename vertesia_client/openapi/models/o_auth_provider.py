@@ -38,10 +38,11 @@ class OAuthProvider(BaseModel):
     default_scopes: Optional[List[StrictStr]] = Field(default=None, description="Default scopes to request during authorization.")
     use_pkce: StrictBool = Field(description="Whether to use PKCE (Proof Key for Code Exchange) in the authorization flow. Only applies to authorization_code flow. Defaults to true.")
     revocation_endpoint: Optional[StrictStr] = Field(default=None, description="Optional OAuth 2.0 revocation endpoint URL.")
+    token_params: Optional[Dict[str, StrictStr]] = Field(default=None, description="Extra parameters added to the URL-encoded body of every client_credentials token request for this provider, after the standard ones (e.g. Box's box_subject_type and box_subject_id). Only used for the client_credentials grant. At most 10 entries; keys match ^[A-Za-z][A-Za-z0-9_.-]{0,63}$; values are at most 512 characters; grant_type, client_id, client_secret, scope, client_assertion and client_assertion_type are reserved. Not secret: returned as stored. On update, an empty object clears them.")
     created_at: StrictStr
     updated_at: StrictStr
     id: StrictStr
-    __properties: ClassVar[List[str]] = ["name", "display_name", "project", "grant_type", "authorization_endpoint", "token_endpoint", "client_id", "has_client_secret", "default_scopes", "use_pkce", "revocation_endpoint", "created_at", "updated_at", "id"]
+    __properties: ClassVar[List[str]] = ["name", "display_name", "project", "grant_type", "authorization_endpoint", "token_endpoint", "client_id", "has_client_secret", "default_scopes", "use_pkce", "revocation_endpoint", "token_params", "created_at", "updated_at", "id"]
 
     @field_validator('grant_type')
     def grant_type_validate_enum(cls, value):
@@ -113,6 +114,7 @@ class OAuthProvider(BaseModel):
             "default_scopes": obj.get("default_scopes"),
             "use_pkce": obj.get("use_pkce"),
             "revocation_endpoint": obj.get("revocation_endpoint"),
+            "token_params": obj.get("token_params"),
             "created_at": obj.get("created_at"),
             "updated_at": obj.get("updated_at"),
             "id": obj.get("id")

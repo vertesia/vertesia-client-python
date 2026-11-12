@@ -38,7 +38,8 @@ class UpdateOAuthProviderPayload(BaseModel):
     default_scopes: Optional[List[StrictStr]] = None
     use_pkce: Optional[StrictBool] = None
     revocation_endpoint: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["name", "display_name", "grant_type", "authorization_endpoint", "token_endpoint", "client_id", "client_secret", "default_scopes", "use_pkce", "revocation_endpoint"]
+    token_params: Optional[Dict[str, StrictStr]] = Field(default=None, description="Extra parameters added to the URL-encoded body of every client_credentials token request for this provider, after the standard ones (e.g. Box's box_subject_type and box_subject_id). Only used for the client_credentials grant. At most 10 entries; keys match ^[A-Za-z][A-Za-z0-9_.-]{0,63}$; values are at most 512 characters; grant_type, client_id, client_secret, scope, client_assertion and client_assertion_type are reserved. Not secret: returned as stored. On update, an empty object clears them.")
+    __properties: ClassVar[List[str]] = ["name", "display_name", "grant_type", "authorization_endpoint", "token_endpoint", "client_id", "client_secret", "default_scopes", "use_pkce", "revocation_endpoint", "token_params"]
 
     @field_validator('name')
     def name_validate_regular_expression(cls, value):
@@ -121,7 +122,8 @@ class UpdateOAuthProviderPayload(BaseModel):
             "client_secret": obj.get("client_secret"),
             "default_scopes": obj.get("default_scopes"),
             "use_pkce": obj.get("use_pkce"),
-            "revocation_endpoint": obj.get("revocation_endpoint")
+            "revocation_endpoint": obj.get("revocation_endpoint"),
+            "token_params": obj.get("token_params")
         })
         return _obj
 
