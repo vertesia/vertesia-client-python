@@ -999,6 +999,7 @@ components:
             - received
             - consumed
             - failed
+      additionalProperties: true
     AgentMessageType:
       type: number
       enum:
@@ -15286,6 +15287,7 @@ components:
           type: boolean
         output_format:
           $ref: "#/components/schemas/DocProcessorOutputFormat"
+      additionalProperties: true
     DocumentProcessingPhase:
       type: string
       enum:
@@ -17018,6 +17020,7 @@ components:
         default_headers:
           $ref: "#/components/schemas/StringValueMap"
           description: Custom HTTP headers sent by OpenAI-compatible environments.
+      additionalProperties: true
     ExecutionEnvironmentUpdatePayload:
       type: object
       properties:
@@ -20753,6 +20756,7 @@ components:
           type: array
           items:
             type: string
+      additionalProperties: true
     JSONSchemaProperties:
       type: object
       additionalProperties:
@@ -29815,6 +29819,7 @@ components:
             $ref: "#/components/schemas/AgentResourceReference"
           description: Resources this tool created/updated/deleted, surfaced as deep links
             in the UI.
+      additionalProperties: true
       description: Metadata a tool executor may attach to its result. Kept as an open
         record for forward compatibility while typing the fields the runtime
         interprets.
