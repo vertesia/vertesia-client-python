@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -40,13 +41,14 @@ class OAuthProvider(BaseModel):
     has_private_key: Optional[StrictBool] = Field(default=None, description="Whether a private key for private_key_jwt is configured (never exposes the key).")
     certificate: Optional[StrictStr] = Field(default=None, description="The PEM X.509 certificate of the private key. Public. When set, the client assertion names it with an x5t#S256 header (RFC 7515 §4.1.8).")
     default_scopes: Optional[List[StrictStr]] = Field(default=None, description="Default scopes to request during authorization.")
+    allowed_scopes: Optional[List[Annotated[str, Field(min_length=1, strict=True)]]] = Field(default=None, description="Scopes a token request may ask for instead of default_scopes (POST /oauth-providers/{id}/token with a scope), in addition to default_scopes, which are always allowed. Only used for the client_credentials grant. Set by the provider admin: a caller cannot request a scope outside this list and default_scopes. On update, an empty array clears it.")
     use_pkce: StrictBool = Field(description="Whether to use PKCE (Proof Key for Code Exchange) in the authorization flow. Only applies to authorization_code flow. Defaults to true.")
     revocation_endpoint: Optional[StrictStr] = Field(default=None, description="Optional OAuth 2.0 revocation endpoint URL.")
     token_params: Optional[Dict[str, StrictStr]] = Field(default=None, description="Extra parameters added to the URL-encoded body of every client_credentials token request for this provider, after the standard ones (e.g. Box's box_subject_type and box_subject_id). Only used for the client_credentials grant. At most 10 entries; keys match ^[A-Za-z][A-Za-z0-9_.-]{0,63}$; values are at most 512 characters; grant_type, client_id, client_secret, scope, client_assertion and client_assertion_type are reserved. Not secret: returned as stored. On update, an empty object clears them.")
     created_at: StrictStr
     updated_at: StrictStr
     id: StrictStr
-    __properties: ClassVar[List[str]] = ["name", "display_name", "project", "grant_type", "authorization_endpoint", "token_endpoint", "client_id", "has_client_secret", "token_endpoint_auth_method", "token_endpoint_auth_signing_alg", "has_private_key", "certificate", "default_scopes", "use_pkce", "revocation_endpoint", "token_params", "created_at", "updated_at", "id"]
+    __properties: ClassVar[List[str]] = ["name", "display_name", "project", "grant_type", "authorization_endpoint", "token_endpoint", "client_id", "has_client_secret", "token_endpoint_auth_method", "token_endpoint_auth_signing_alg", "has_private_key", "certificate", "default_scopes", "allowed_scopes", "use_pkce", "revocation_endpoint", "token_params", "created_at", "updated_at", "id"]
 
     @field_validator('grant_type')
     def grant_type_validate_enum(cls, value):
@@ -136,6 +138,7 @@ class OAuthProvider(BaseModel):
             "has_private_key": obj.get("has_private_key"),
             "certificate": obj.get("certificate"),
             "default_scopes": obj.get("default_scopes"),
+            "allowed_scopes": obj.get("allowed_scopes"),
             "use_pkce": obj.get("use_pkce"),
             "revocation_endpoint": obj.get("revocation_endpoint"),
             "token_params": obj.get("token_params"),

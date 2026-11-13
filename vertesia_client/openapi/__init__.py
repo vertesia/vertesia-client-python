@@ -862,6 +862,7 @@ __all__ = [
     "OAuthProviderAuthStatus",
     "OAuthProviderAuthorizeResponse",
     "OAuthProviderExchangePayload",
+    "OAuthProviderTokenRequest",
     "OAuthRegistrationSource",
     "OAuthResponseType",
     "OAuthTokenEndpointAuthMethod",
@@ -2199,6 +2200,7 @@ from vertesia_client.openapi.models.o_auth_provider_access_token_response import
 from vertesia_client.openapi.models.o_auth_provider_auth_status import OAuthProviderAuthStatus as OAuthProviderAuthStatus
 from vertesia_client.openapi.models.o_auth_provider_authorize_response import OAuthProviderAuthorizeResponse as OAuthProviderAuthorizeResponse
 from vertesia_client.openapi.models.o_auth_provider_exchange_payload import OAuthProviderExchangePayload as OAuthProviderExchangePayload
+from vertesia_client.openapi.models.o_auth_provider_token_request import OAuthProviderTokenRequest as OAuthProviderTokenRequest
 from vertesia_client.openapi.models.o_auth_registration_source import OAuthRegistrationSource as OAuthRegistrationSource
 from vertesia_client.openapi.models.o_auth_response_type import OAuthResponseType as OAuthResponseType
 from vertesia_client.openapi.models.o_auth_token_endpoint_auth_method import OAuthTokenEndpointAuthMethod as OAuthTokenEndpointAuthMethod

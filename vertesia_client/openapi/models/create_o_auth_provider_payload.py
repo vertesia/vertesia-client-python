@@ -40,10 +40,11 @@ class CreateOAuthProviderPayload(BaseModel):
     private_key: Optional[StrictStr] = Field(default=None, description="PEM private key (PKCS#8 or PKCS#1) that signs the client assertion of private_key_jwt: RSA of 2048 bits or more, or EC P-256. Encrypted at rest and never returned in API responses.")
     certificate: Optional[StrictStr] = Field(default=None, description="PEM X.509 certificate of the private key, as uploaded to the provider (for example a Microsoft Entra app registration). Its public key must match the private key.")
     default_scopes: Optional[List[StrictStr]] = None
+    allowed_scopes: Optional[List[Annotated[str, Field(min_length=1, strict=True)]]] = Field(default=None, description="Scopes a token request may ask for instead of default_scopes (POST /oauth-providers/{id}/token with a scope), in addition to default_scopes, which are always allowed. Only used for the client_credentials grant. Set by the provider admin: a caller cannot request a scope outside this list and default_scopes. On update, an empty array clears it.")
     use_pkce: Optional[StrictBool] = None
     revocation_endpoint: Optional[StrictStr] = None
     token_params: Optional[Dict[str, StrictStr]] = Field(default=None, description="Extra parameters added to the URL-encoded body of every client_credentials token request for this provider, after the standard ones (e.g. Box's box_subject_type and box_subject_id). Only used for the client_credentials grant. At most 10 entries; keys match ^[A-Za-z][A-Za-z0-9_.-]{0,63}$; values are at most 512 characters; grant_type, client_id, client_secret, scope, client_assertion and client_assertion_type are reserved. Not secret: returned as stored. On update, an empty object clears them.")
-    __properties: ClassVar[List[str]] = ["name", "display_name", "grant_type", "authorization_endpoint", "token_endpoint", "client_id", "client_secret", "token_endpoint_auth_method", "token_endpoint_auth_signing_alg", "private_key", "certificate", "default_scopes", "use_pkce", "revocation_endpoint", "token_params"]
+    __properties: ClassVar[List[str]] = ["name", "display_name", "grant_type", "authorization_endpoint", "token_endpoint", "client_id", "client_secret", "token_endpoint_auth_method", "token_endpoint_auth_signing_alg", "private_key", "certificate", "default_scopes", "allowed_scopes", "use_pkce", "revocation_endpoint", "token_params"]
 
     @field_validator('name')
     def name_validate_regular_expression(cls, value):
@@ -142,6 +143,7 @@ class CreateOAuthProviderPayload(BaseModel):
             "private_key": obj.get("private_key"),
             "certificate": obj.get("certificate"),
             "default_scopes": obj.get("default_scopes"),
+            "allowed_scopes": obj.get("allowed_scopes"),
             "use_pkce": obj.get("use_pkce"),
             "revocation_endpoint": obj.get("revocation_endpoint"),
             "token_params": obj.get("token_params")

@@ -840,6 +840,7 @@ vertesia_client/openapi/models/o_auth_provider_access_token_response.py
 vertesia_client/openapi/models/o_auth_provider_auth_status.py
 vertesia_client/openapi/models/o_auth_provider_authorize_response.py
 vertesia_client/openapi/models/o_auth_provider_exchange_payload.py
+vertesia_client/openapi/models/o_auth_provider_token_request.py
 vertesia_client/openapi/models/o_auth_registration_source.py
 vertesia_client/openapi/models/o_auth_response_type.py
 vertesia_client/openapi/models/o_auth_token_endpoint_auth_method.py

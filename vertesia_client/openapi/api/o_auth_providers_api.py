@@ -16,7 +16,7 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
 from pydantic import Field, StrictStr, field_validator
-from typing import List
+from typing import List, Optional
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.create_o_auth_provider_payload import CreateOAuthProviderPayload
 from vertesia_client.openapi.models.o_auth_provider import OAuthProvider
@@ -24,6 +24,7 @@ from vertesia_client.openapi.models.o_auth_provider_access_token_response import
 from vertesia_client.openapi.models.o_auth_provider_auth_status import OAuthProviderAuthStatus
 from vertesia_client.openapi.models.o_auth_provider_authorize_response import OAuthProviderAuthorizeResponse
 from vertesia_client.openapi.models.o_auth_provider_exchange_payload import OAuthProviderExchangePayload
+from vertesia_client.openapi.models.o_auth_provider_token_request import OAuthProviderTokenRequest
 from vertesia_client.openapi.models.success_response import SuccessResponse
 from vertesia_client.openapi.models.update_o_auth_provider_payload import UpdateOAuthProviderPayload
 
@@ -2340,6 +2341,7 @@ class OAuthProvidersApi:
         self,
         id: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        o_auth_provider_token_request: Optional[OAuthProviderTokenRequest] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2355,12 +2357,14 @@ class OAuthProvidersApi:
     ) -> OAuthProviderAccessTokenResponse:
         """Get an OAuth provider token
 
-        Returns an access token for the configured OAuth provider.
+        Returns an access token for the configured OAuth provider. A client_credentials provider can be asked for a scope other than its default_scopes, from its allowed_scopes; the token of each scope set is cached apart.
 
         :param id: (required)
         :type id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
+        :param o_auth_provider_token_request:
+        :type o_auth_provider_token_request: OAuthProviderTokenRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2386,6 +2390,7 @@ class OAuthProvidersApi:
         _param = self._get_o_auth_provider_token_serialize(
             id=id,
             x_api_version=x_api_version,
+            o_auth_provider_token_request=o_auth_provider_token_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2413,6 +2418,7 @@ class OAuthProvidersApi:
         self,
         id: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        o_auth_provider_token_request: Optional[OAuthProviderTokenRequest] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2428,12 +2434,14 @@ class OAuthProvidersApi:
     ) -> ApiResponse[OAuthProviderAccessTokenResponse]:
         """Get an OAuth provider token
 
-        Returns an access token for the configured OAuth provider.
+        Returns an access token for the configured OAuth provider. A client_credentials provider can be asked for a scope other than its default_scopes, from its allowed_scopes; the token of each scope set is cached apart.
 
         :param id: (required)
         :type id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
+        :param o_auth_provider_token_request:
+        :type o_auth_provider_token_request: OAuthProviderTokenRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2459,6 +2467,7 @@ class OAuthProvidersApi:
         _param = self._get_o_auth_provider_token_serialize(
             id=id,
             x_api_version=x_api_version,
+            o_auth_provider_token_request=o_auth_provider_token_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2486,6 +2495,7 @@ class OAuthProvidersApi:
         self,
         id: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        o_auth_provider_token_request: Optional[OAuthProviderTokenRequest] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2501,12 +2511,14 @@ class OAuthProvidersApi:
     ) -> RESTResponseType:
         """Get an OAuth provider token
 
-        Returns an access token for the configured OAuth provider.
+        Returns an access token for the configured OAuth provider. A client_credentials provider can be asked for a scope other than its default_scopes, from its allowed_scopes; the token of each scope set is cached apart.
 
         :param id: (required)
         :type id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
+        :param o_auth_provider_token_request:
+        :type o_auth_provider_token_request: OAuthProviderTokenRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2532,6 +2544,7 @@ class OAuthProvidersApi:
         _param = self._get_o_auth_provider_token_serialize(
             id=id,
             x_api_version=x_api_version,
+            o_auth_provider_token_request=o_auth_provider_token_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2554,6 +2567,7 @@ class OAuthProvidersApi:
         self,
         id,
         x_api_version,
+        o_auth_provider_token_request,
         _request_auth,
         _content_type,
         _headers,
@@ -2583,6 +2597,8 @@ class OAuthProvidersApi:
             _header_params['x-api-version'] = x_api_version
         # process the form parameters
         # process the body parameter
+        if o_auth_provider_token_request is not None:
+            _body_params = o_auth_provider_token_request
 
 
         # set the HTTP header `Accept`
@@ -2593,6 +2609,19 @@ class OAuthProvidersApi:
                 ]
             )
 
+        # set the HTTP header `Content-Type`
+        if _content_type:
+            _header_params['Content-Type'] = _content_type
+        else:
+            _default_content_type = (
+                self.api_client.select_header_content_type(
+                    [
+                        'application/json'
+                    ]
+                )
+            )
+            if _default_content_type is not None:
+                _header_params['Content-Type'] = _default_content_type
 
         # authentication setting
         _auth_settings: List[str] = [
