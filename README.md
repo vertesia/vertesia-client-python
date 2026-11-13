@@ -165,6 +165,19 @@ compatibility as well: standalone generated enum classes preserve the raw
 unknown value, and inline enum validators do not reject values that already
 match the underlying JSON type.
 
+A union variant added by a newer server is kept as the JSON value it was
+received as: `actual_instance` and `raw` return it, and `to_dict()` / `to_json()`
+write it back unchanged. `raw` is `None` for a known variant. A union with a
+published discriminator does this only for a discriminator value it does not
+know; a known value must decode into its branch, and a missing one is an error.
+
+`ModelOptions` and `McpConnectionParameter` are `anyOf` unions whose branches
+carry a literal tag (`_option_id`, `type`; optional in `ModelOptions`). A tag
+selects its branch, and a branch is used only when it writes every received
+property back with the same value, so options merged from several model
+families are not lost.
+`scripts/patch_forward_compat_enums.py` applies these rules after generation.
+
 ### Generated API version headers
 
 The high-level client supplies required generated `x_api_version` arguments from its configured API version before validation, including calls with positional payloads. A per-call `x_api_version` keyword overrides that default. Raw generated clients still require the declared arguments.
