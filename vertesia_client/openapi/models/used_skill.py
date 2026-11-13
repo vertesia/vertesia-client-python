@@ -32,7 +32,8 @@ class UsedSkill(BaseModel):
     language: Optional[StrictStr] = Field(default=None, description="Programming language (e.g., \"python\")")
     packages: Optional[List[StrictStr]] = Field(default=None, description="Required packages (e.g., [\"pandas\", \"numpy\"])")
     system_packages: Optional[List[StrictStr]] = Field(default=None, description="System-level packages to install via sudo apt-get (e.g., [\"poppler-utils\"])")
-    __properties: ClassVar[List[str]] = ["name", "src", "language", "packages", "system_packages"]
+    content_digest: Optional[StrictStr] = Field(default=None, description="Digest of the instructions the skill returned when it was first loaded in the run, to tell skill versions apart. Absent on skills tracked before the digest existed.")
+    __properties: ClassVar[List[str]] = ["name", "src", "language", "packages", "system_packages", "content_digest"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -89,7 +90,8 @@ class UsedSkill(BaseModel):
             "src": obj.get("src"),
             "language": obj.get("language"),
             "packages": obj.get("packages"),
-            "system_packages": obj.get("system_packages")
+            "system_packages": obj.get("system_packages"),
+            "content_digest": obj.get("content_digest")
         })
         return _obj
 

@@ -10788,6 +10788,12 @@ components:
           type: string
           description: LLM stop reason from the latest call (e.g., "stop", "length",
             "tool_use")
+        llm_attempt:
+          type: integer
+          minimum: -9007199254740991
+          maximum: 9007199254740991
+          description: Attempt number of the activity that made the latest LLM call. Above
+            1, the call was retried after a failed attempt.
         agent_run_id:
           type: string
           description: "The AgentRun ID (MongoDB _id) that owns this conversation. Used
@@ -27487,6 +27493,11 @@ components:
         resolved:
           $ref: "#/components/schemas/ResolvedRuntimeConfig"
           description: The resolved runtime configuration
+        prompt_hash:
+          type: string
+          description: Digest of the interaction's prompt segments and their template
+            content. It changes whenever what the model is told changes,
+            including on a draft whose version number stays the same.
       required:
         - id
         - name
@@ -30063,6 +30074,12 @@ components:
         - circuit_breaker
         - no_visible_answer
         - answer_in_tool_preamble
+        - response_cut_off
+        - llm_retried
+        - unknown_tool
+        - invalid_tool_arguments
+        - context_near_full
+        - checkpoint_forced
       description: Reason behind an evaluation severity.
     TurnTerminalType:
       type: string
@@ -31873,6 +31890,11 @@ components:
             type: string
           description: System-level packages to install via sudo apt-get (e.g.,
             ["poppler-utils"])
+        content_digest:
+          type: string
+          description: Digest of the instructions the skill returned when it was first
+            loaded in the run, to tell skill versions apart. Absent on skills
+            tracked before the digest existed.
       required:
         - name
         - src
@@ -53932,6 +53954,12 @@ paths:
                 - circuit_breaker
                 - no_visible_answer
                 - answer_in_tool_preamble
+                - response_cut_off
+                - llm_retried
+                - unknown_tool
+                - invalid_tool_arguments
+                - context_near_full
+                - checkpoint_forced
               description: Reason behind an evaluation severity.
             description: Filter by evaluation flag (any of)
           description: Filter by evaluation flag (any of)

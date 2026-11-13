@@ -37,7 +37,8 @@ class ResolvedInteractionExecutionInfo(BaseModel):
     tags: List[StrictStr] = Field(description="The interaction tags (can include version tags like \"production\", \"staging\")")
     agent_runner_options: Optional[AgentRunnerOptions] = Field(default=None, description="Agent runner configuration (tool_names opt-ins, is_agent, is_tool, etc.). Included on resolve so non-UI callers (worker activities) can pick up the interaction's defaults without a second retrieve round-trip — and so in-code interactions (sys:, app:) which have no Mongo document work the same as stored ones.")
     resolved: ResolvedRuntimeConfig = Field(description="The resolved runtime configuration")
-    __properties: ClassVar[List[str]] = ["id", "name", "version", "status", "tags", "agent_runner_options", "resolved"]
+    prompt_hash: Optional[StrictStr] = Field(default=None, description="Digest of the interaction's prompt segments and their template content. It changes whenever what the model is told changes, including on a draft whose version number stays the same.")
+    __properties: ClassVar[List[str]] = ["id", "name", "version", "status", "tags", "agent_runner_options", "resolved", "prompt_hash"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -102,7 +103,8 @@ class ResolvedInteractionExecutionInfo(BaseModel):
             "status": obj.get("status"),
             "tags": obj.get("tags"),
             "agent_runner_options": AgentRunnerOptions.from_dict(obj["agent_runner_options"]) if obj.get("agent_runner_options") is not None else None,
-            "resolved": ResolvedRuntimeConfig.from_dict(obj["resolved"]) if obj.get("resolved") is not None else None
+            "resolved": ResolvedRuntimeConfig.from_dict(obj["resolved"]) if obj.get("resolved") is not None else None,
+            "prompt_hash": obj.get("prompt_hash")
         })
         return _obj
 

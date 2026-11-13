@@ -40,6 +40,12 @@ class TurnEvaluationFlag(str, Enum):
     CIRCUIT_BREAKER = 'circuit_breaker'
     NO_VISIBLE_ANSWER = 'no_visible_answer'
     ANSWER_IN_TOOL_PREAMBLE = 'answer_in_tool_preamble'
+    RESPONSE_CUT_OFF = 'response_cut_off'
+    LLM_RETRIED = 'llm_retried'
+    UNKNOWN_TOOL = 'unknown_tool'
+    INVALID_TOOL_ARGUMENTS = 'invalid_tool_arguments'
+    CONTEXT_NEAR_FULL = 'context_near_full'
+    CHECKPOINT_FORCED = 'checkpoint_forced'
 
     @classmethod
     def _missing_(cls, value: object) -> Self:

@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing_extensions import Annotated
 from vertesia_client.openapi.models.agent_budget_configuration import AgentBudgetConfiguration
 from vertesia_client.openapi.models.agent_tool_approval_mode import AgentToolApprovalMode
 from vertesia_client.openapi.models.completion_result import CompletionResult
@@ -85,11 +86,12 @@ class ConversationState(BaseModel):
     pending_mcp_connections: Optional[List[PendingMcpConnection]] = Field(default=None, description="MCP servers that are active (not disabled) and accessible to the user but not yet OAuth-connected. Surfaced to the agent (via discover_tools) so it can offer to connect.")
     active_activity_group_id: Optional[StrictStr] = Field(default=None, description="Current activity group ID for internal tool-execution progress messages. All updates emitted during one tool-execution cycle should share this ID.")
     finish_reason: Optional[StrictStr] = Field(default=None, description="LLM stop reason from the latest call (e.g., \"stop\", \"length\", \"tool_use\")")
+    llm_attempt: Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]] = Field(default=None, description="Attempt number of the activity that made the latest LLM call. Above 1, the call was retried after a failed attempt.")
     agent_run_id: Optional[StrictStr] = Field(default=None, description="The AgentRun ID (MongoDB _id) that owns this conversation. Used for artifact storage paths: agents/{agent_run_id}/ Undefined for legacy workflows started before the AgentRun system.")
     launch_id: Optional[StrictStr] = Field(default=None, description="For workstreams: the launch ID assigned by the parent workflow. When set, artifacts are stored under agents/{agent_run_id}/workstreams/{launch_id}/ to consolidate all artifacts under the parent agent run.")
     app_version: Optional[StrictStr] = Field(default=None, description="The exact app version this run is pinned to, derived from the `@version` on the started interaction ref / the `x-vertesia-app-version` header at start. Persisted on the state so it survives resume, and applied to the activity client (`withAppVersion`) so every app-owned ref the run resolves — interactions, types, processes, tools — targets this version instead of the current/promoted one. Undefined → current/promoted. Resolution-time only; never a stored capability-ref version.")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["run", "environment", "options", "tool_use", "tool_approval_mode", "tool_approval_grants", "pending_tool_approval_results", "latest_user_message", "tool_input_refs", "output", "token_usage", "parent", "ancestors", "task_id", "plan", "debug", "strip_options", "conversation_artifacts_base_url", "tool_reference", "tool_catalog_storage_id", "active_tool_names", "pinned_tool_names", "used_skills", "streaming_enabled", "checkpoint_threshold", "checkpoint_tokens", "budget", "user_channels", "resolvedInteraction", "end_conversation", "unlocked_tools", "latest_activity_id", "latest_streaming_id", "skill_instructions_delivered", "initialization_call_ids", "disabled_mcp_collections", "pending_mcp_connections", "active_activity_group_id", "finish_reason", "agent_run_id", "launch_id", "app_version"]
+    __properties: ClassVar[List[str]] = ["run", "environment", "options", "tool_use", "tool_approval_mode", "tool_approval_grants", "pending_tool_approval_results", "latest_user_message", "tool_input_refs", "output", "token_usage", "parent", "ancestors", "task_id", "plan", "debug", "strip_options", "conversation_artifacts_base_url", "tool_reference", "tool_catalog_storage_id", "active_tool_names", "pinned_tool_names", "used_skills", "streaming_enabled", "checkpoint_threshold", "checkpoint_tokens", "budget", "user_channels", "resolvedInteraction", "end_conversation", "unlocked_tools", "latest_activity_id", "latest_streaming_id", "skill_instructions_delivered", "initialization_call_ids", "disabled_mcp_collections", "pending_mcp_connections", "active_activity_group_id", "finish_reason", "llm_attempt", "agent_run_id", "launch_id", "app_version"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -289,6 +291,7 @@ class ConversationState(BaseModel):
             "pending_mcp_connections": [PendingMcpConnection.from_dict(_item) for _item in obj["pending_mcp_connections"]] if obj.get("pending_mcp_connections") is not None else None,
             "active_activity_group_id": obj.get("active_activity_group_id"),
             "finish_reason": obj.get("finish_reason"),
+            "llm_attempt": obj.get("llm_attempt"),
             "agent_run_id": obj.get("agent_run_id"),
             "launch_id": obj.get("launch_id"),
             "app_version": obj.get("app_version")
