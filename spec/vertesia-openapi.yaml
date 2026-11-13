@@ -2511,6 +2511,8 @@ components:
           enum:
             - 5m
             - 1h
+        native_compaction:
+          type: boolean
         speed:
           type: string
           enum:
@@ -6883,6 +6885,8 @@ components:
           enum:
             - 5m
             - 1h
+        native_compaction:
+          type: boolean
         service_tier:
           type: string
           minLength: 1
@@ -7062,6 +7066,8 @@ components:
           enum:
             - 5m
             - 1h
+        native_compaction:
+          type: boolean
       additionalProperties: false
     BedrockMantleResponsesOptions:
       type: object
@@ -23401,6 +23407,8 @@ components:
             - 12h
             - in_memory
             - 24h
+        native_compaction:
+          type: boolean
         extra_body:
           type: object
           additionalProperties: true
@@ -23464,6 +23472,8 @@ components:
             - 12h
             - in_memory
             - 24h
+        native_compaction:
+          type: boolean
         extra_body:
           type: object
           additionalProperties: true
@@ -32165,6 +32175,8 @@ components:
           enum:
             - 5m
             - 1h
+        native_compaction:
+          type: boolean
       additionalProperties: false
     VertexAIGeminiOmniVideoOptions:
       type: object

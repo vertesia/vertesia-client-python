@@ -3082,6 +3082,9 @@
               "1h"
             ]
           },
+          "native_compaction": {
+            "type": "boolean"
+          },
           "speed": {
             "type": "string",
             "enum": [
@@ -8533,6 +8536,9 @@
               "1h"
             ]
           },
+          "native_compaction": {
+            "type": "boolean"
+          },
           "service_tier": {
             "type": "string",
             "minLength": 1,
@@ -8776,6 +8782,9 @@
               "5m",
               "1h"
             ]
+          },
+          "native_compaction": {
+            "type": "boolean"
           }
         },
         "additionalProperties": false
@@ -29825,6 +29834,9 @@
               "24h"
             ]
           },
+          "native_compaction": {
+            "type": "boolean"
+          },
           "extra_body": {
             "type": "object",
             "additionalProperties": true,
@@ -29907,6 +29919,9 @@
               "in_memory",
               "24h"
             ]
+          },
+          "native_compaction": {
+            "type": "boolean"
           },
           "extra_body": {
             "type": "object",
@@ -41174,6 +41189,9 @@
               "5m",
               "1h"
             ]
+          },
+          "native_compaction": {
+            "type": "boolean"
           }
         },
         "additionalProperties": false

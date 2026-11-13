@@ -43,9 +43,10 @@ class OpenAiThinkingOptions(BaseModel):
     include_thoughts: Optional[StrictBool] = None
     service_tier: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="Provider-defined processing tier. Unknown non-empty values are preserved for forward compatibility.")
     cache_ttl: Optional[StrictStr] = None
+    native_compaction: Optional[StrictBool] = None
     extra_body: Optional[Dict[str, Any]] = Field(default=None, description="Additional provider-specific fields merged into the OpenAI-compatible request body.")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["_option_id", "image_generation", "max_tokens", "tool_choice", "stop_sequence", "effort", "reasoning_effort", "reasoning_context", "verbosity", "image_detail", "include_thoughts", "service_tier", "cache_ttl", "extra_body"]
+    __properties: ClassVar[List[str]] = ["_option_id", "image_generation", "max_tokens", "tool_choice", "stop_sequence", "effort", "reasoning_effort", "reasoning_context", "verbosity", "image_detail", "include_thoughts", "service_tier", "cache_ttl", "native_compaction", "extra_body"]
 
     @field_validator('option_id')
     def option_id_validate_enum(cls, value):
@@ -169,6 +170,7 @@ class OpenAiThinkingOptions(BaseModel):
             "include_thoughts": obj.get("include_thoughts"),
             "service_tier": obj.get("service_tier"),
             "cache_ttl": obj.get("cache_ttl"),
+            "native_compaction": obj.get("native_compaction"),
             "extra_body": obj.get("extra_body")
         })
         # store additional fields in additional_properties

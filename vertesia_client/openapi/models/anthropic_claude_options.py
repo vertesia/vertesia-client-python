@@ -39,8 +39,9 @@ class AnthropicClaudeOptions(BaseModel):
     include_thoughts: Optional[StrictBool] = None
     cache_enabled: Optional[StrictBool] = None
     cache_ttl: Optional[StrictStr] = None
+    native_compaction: Optional[StrictBool] = None
     speed: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["_option_id", "max_tokens", "temperature", "top_p", "top_k", "stop_sequence", "effort", "thinking_mode", "thinking_budget_tokens", "include_thoughts", "cache_enabled", "cache_ttl", "speed"]
+    __properties: ClassVar[List[str]] = ["_option_id", "max_tokens", "temperature", "top_p", "top_k", "stop_sequence", "effort", "thinking_mode", "thinking_budget_tokens", "include_thoughts", "cache_enabled", "cache_ttl", "native_compaction", "speed"]
 
     @field_validator('option_id')
     def option_id_validate_enum(cls, value):
@@ -145,6 +146,7 @@ class AnthropicClaudeOptions(BaseModel):
             "include_thoughts": obj.get("include_thoughts"),
             "cache_enabled": obj.get("cache_enabled"),
             "cache_ttl": obj.get("cache_ttl"),
+            "native_compaction": obj.get("native_compaction"),
             "speed": obj.get("speed")
         })
         return _obj
