@@ -1142,6 +1142,8 @@ vertesia_client/openapi/models/tool_reference.py
 vertesia_client/openapi/models/tool_result.py
 vertesia_client/openapi/models/tool_result_meta.py
 vertesia_client/openapi/models/tool_source.py
+vertesia_client/openapi/models/tool_token_usage.py
+vertesia_client/openapi/models/tool_usage.py
 vertesia_client/openapi/models/tool_use.py
 vertesia_client/openapi/models/tool_validation_result.py
 vertesia_client/openapi/models/tool_validation_result_collisions_inner.py

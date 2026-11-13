@@ -1100,6 +1100,8 @@ from vertesia_client.openapi.models.tool_reference import ToolReference
 from vertesia_client.openapi.models.tool_result import ToolResult
 from vertesia_client.openapi.models.tool_result_meta import ToolResultMeta
 from vertesia_client.openapi.models.tool_source import ToolSource
+from vertesia_client.openapi.models.tool_token_usage import ToolTokenUsage
+from vertesia_client.openapi.models.tool_usage import ToolUsage
 from vertesia_client.openapi.models.tool_use import ToolUse
 from vertesia_client.openapi.models.tool_validation_result import ToolValidationResult
 from vertesia_client.openapi.models.tool_validation_result_collisions_inner import ToolValidationResultCollisionsInner

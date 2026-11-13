@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt
 from typing import Any, ClassVar, Dict, Optional, Union
+from vertesia_client.openapi.models.tool_usage import ToolUsage
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -33,10 +34,12 @@ class ExecutionTokenUsage(BaseModel):
     prompt_cached: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Number of input tokens read from prompt cache (discounted rate).")
     prompt_cache_write: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Number of input tokens written to prompt cache.")
     prompt_cache_write_1h: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Of `prompt_cache_write`, the tokens written with a one-hour cache lifetime, when the provider reports it. The remainder used the default (five-minute) lifetime.")
+    prompt_cache_write_12h: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Of `prompt_cache_write`, the tokens written with a 12-hour cache retention, when the provider reports it (OpenAI). The remainder used the default (30-minute) retention.")
     prompt_new: Optional[Union[StrictFloat, StrictInt]] = None
     result_image: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Of `result`, the tokens of generated images, when the provider reports them. Image output is priced separately from text output.")
     provider_cost_usd: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Amount the provider reported charging for this request, in USD, when the provider returns it (e.g. OpenRouter). Absent for bring-your-own-key requests.")
-    __properties: ClassVar[List[str]] = ["prompt", "result", "total", "prompt_cached", "prompt_cache_write", "prompt_cache_write_1h", "prompt_new", "result_image", "provider_cost_usd"]
+    tool_usage: Optional[ToolUsage] = None
+    __properties: ClassVar[List[str]] = ["prompt", "result", "total", "prompt_cached", "prompt_cache_write", "prompt_cache_write_1h", "prompt_cache_write_12h", "prompt_new", "result_image", "provider_cost_usd", "tool_usage"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -77,6 +80,9 @@ class ExecutionTokenUsage(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of tool_usage
+        if self.tool_usage:
+            _dict['tool_usage'] = self.tool_usage.to_dict()
         return _dict
 
     @classmethod
@@ -95,9 +101,11 @@ class ExecutionTokenUsage(BaseModel):
             "prompt_cached": obj.get("prompt_cached"),
             "prompt_cache_write": obj.get("prompt_cache_write"),
             "prompt_cache_write_1h": obj.get("prompt_cache_write_1h"),
+            "prompt_cache_write_12h": obj.get("prompt_cache_write_12h"),
             "prompt_new": obj.get("prompt_new"),
             "result_image": obj.get("result_image"),
-            "provider_cost_usd": obj.get("provider_cost_usd")
+            "provider_cost_usd": obj.get("provider_cost_usd"),
+            "tool_usage": ToolUsage.from_dict(obj["tool_usage"]) if obj.get("tool_usage") is not None else None
         })
         return _obj
 

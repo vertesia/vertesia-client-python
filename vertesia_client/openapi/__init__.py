@@ -1164,6 +1164,8 @@ __all__ = [
     "ToolResult",
     "ToolResultMeta",
     "ToolSource",
+    "ToolTokenUsage",
+    "ToolUsage",
     "ToolUse",
     "ToolValidationResult",
     "ToolValidationResultCollisionsInner",
@@ -2502,6 +2504,8 @@ from vertesia_client.openapi.models.tool_reference import ToolReference as ToolR
 from vertesia_client.openapi.models.tool_result import ToolResult as ToolResult
 from vertesia_client.openapi.models.tool_result_meta import ToolResultMeta as ToolResultMeta
 from vertesia_client.openapi.models.tool_source import ToolSource as ToolSource
+from vertesia_client.openapi.models.tool_token_usage import ToolTokenUsage as ToolTokenUsage
+from vertesia_client.openapi.models.tool_usage import ToolUsage as ToolUsage
 from vertesia_client.openapi.models.tool_use import ToolUse as ToolUse
 from vertesia_client.openapi.models.tool_validation_result import ToolValidationResult as ToolValidationResult
 from vertesia_client.openapi.models.tool_validation_result_collisions_inner import ToolValidationResultCollisionsInner as ToolValidationResultCollisionsInner

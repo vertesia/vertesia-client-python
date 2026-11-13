@@ -30,6 +30,7 @@ class ThinkingLevel(str, Enum):
     MEDIUM = 'MEDIUM'
     LOW = 'LOW'
     MINIMAL = 'MINIMAL'
+    XHIGH = 'XHIGH'
     THINKING_LEVEL_UNSPECIFIED = 'THINKING_LEVEL_UNSPECIFIED'
 
     @classmethod

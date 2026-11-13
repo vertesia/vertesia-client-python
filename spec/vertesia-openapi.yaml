@@ -17394,6 +17394,11 @@ components:
           description: Of `prompt_cache_write`, the tokens written with a one-hour cache
             lifetime, when the provider reports it. The remainder used the
             default (five-minute) lifetime.
+        prompt_cache_write_12h:
+          type: number
+          description: Of `prompt_cache_write`, the tokens written with a 12-hour cache
+            retention, when the provider reports it (OpenAI). The remainder used
+            the default (30-minute) retention.
         prompt_new:
           type: number
         result_image:
@@ -17405,6 +17410,8 @@ components:
           description: Amount the provider reported charging for this request, in USD,
             when the provider returns it (e.g. OpenRouter). Absent for
             bring-your-own-key requests.
+        tool_usage:
+          $ref: "#/components/schemas/ToolUsage"
       additionalProperties: false
     ExportContentObjectsFilter:
       type: object
@@ -29569,6 +29576,7 @@ components:
         - MEDIUM
         - LOW
         - MINIMAL
+        - XHIGH
         - THINKING_LEVEL_UNSPECIFIED
     ThoughtsResult:
       type: object
@@ -29846,6 +29854,41 @@ components:
         the source. They are identified universally by the `learn_` prefix in
         the tool name. This matches how the runtime registry stores them and
         avoids splitting one logical origin into two sources.
+    ToolTokenUsage:
+      type: object
+      properties:
+        model:
+          type: string
+        prompt:
+          type: number
+        prompt_cached:
+          type: number
+        result:
+          type: number
+        result_image:
+          type: number
+          description: Of `result`, the tokens of generated images, when the provider
+            reports them.
+        total:
+          type: number
+    ToolUsage:
+      type: object
+      properties:
+        image_generation:
+          $ref: "#/components/schemas/ToolTokenUsage"
+          description: Tokens of the hosted image generation tool (OpenAI Responses
+            `tool_usage.image_gen`).
+        web_search_requests:
+          type: number
+          description: Billable web search requests (OpenAI Responses
+            `tool_usage.web_search`).
+        svg:
+          $ref: "#/components/schemas/ToolTokenUsage"
+          description: Tokens of the model that authored SVG output (OpenAI Images API
+            `svg_usage`).
+      description: "Usage billed apart from the main model: hosted tools and auxiliary
+        models. Not included in `prompt`, `result` or `total`. A tool with no
+        reported usage is absent."
     ToolUse:
       type: object
       properties:
@@ -32180,6 +32223,11 @@ components:
           enum:
             - 5m
             - 1h
+        speed:
+          type: string
+          enum:
+            - standard
+            - fast
         native_compaction:
           type: boolean
       additionalProperties: false
@@ -32197,6 +32245,7 @@ components:
             - reference_to_video
             - edit
             - extend
+            - upscale
         aspect_ratio:
           type: string
           enum:
@@ -32205,7 +32254,7 @@ components:
         duration_seconds:
           type: integer
           minimum: 3
-          maximum: 10
+          maximum: 15
         resolution:
           type: string
           enum:
@@ -32213,6 +32262,10 @@ components:
             - 720p
             - 1080p
             - 4k
+        seed:
+          type: integer
+          minimum: -9007199254740991
+          maximum: 9007199254740991
       additionalProperties: false
     VertexAIGeminiOptions:
       type: object
@@ -32245,6 +32298,7 @@ components:
             - low
             - medium
             - high
+            - xhigh
         include_thoughts:
           type: boolean
         thinking_budget_tokens:
