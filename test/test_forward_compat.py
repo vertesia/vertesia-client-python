@@ -144,6 +144,20 @@ class ForwardCompatibilityTest(unittest.TestCase):
             self.assert_kept_raw(copied, body)
             self.assertEqual(copied.model_dump()["actual_instance"], body)
 
+        # Edits of a copy's contents keep it raw, on every supported pydantic version.
+        nested = {"type": "speech", "value": {"uri": "gs://a"}}
+        for copied in (
+            CompletionResult.from_dict(nested).model_copy(deep=True),
+            copy.deepcopy(CompletionResult.from_dict(nested)),
+        ):
+            copied.actual_instance["value"]["uri"] = "gs://b"
+            edited = {"type": "speech", "value": {"uri": "gs://b"}}
+            self.assertEqual(copied.raw, edited)
+            with warnings.catch_warnings():
+                warnings.simplefilter("error")
+                self.assertEqual(copied.model_dump()["actual_instance"], edited)
+            self.assertEqual(copied.to_dict(), edited)
+
         # Assigning a known variant replaces the raw one.
         copied = result.model_copy(deep=True)
         copied.actual_instance = TextResult(type="text", value="a")

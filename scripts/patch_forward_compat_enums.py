@@ -118,22 +118,25 @@ def union_literal_schemas(schemas: dict) -> dict:
 
 
 UNION_MEMBERS = '''\
-    # A variant added by a newer server, kept as received. Set only by _from_raw().
-    _raw: object = None
+    # Whether actual_instance is a variant added by a newer server, kept as received. Set only by
+    # _from_raw(), and cleared when actual_instance is assigned. A flag rather than a comparison with
+    # the received value, so that the variant stays raw in a copy and after an edit of its contents.
+    _is_raw: bool = False
 
-    def _holds_raw(self, value: object) -> bool:
-        # By value, not identity: some pydantic versions copy actual_instance and _raw separately.
-        return self._raw is not None and type(value) is type(self._raw) and value == self._raw
+    def __setattr__(self, name: str, value: object) -> None:
+        super().__setattr__(name, value)
+        if name == "actual_instance":
+            self._is_raw = False
 
     @property
     def raw(self) -> object:
         """A variant added by a newer server, as it was received, or None for a known variant."""
-        return self.actual_instance if self._holds_raw(self.actual_instance) else None
+        return self.actual_instance if self._is_raw else None
 
     @classmethod
     def _from_raw(cls, value: object) -> Self:
         instance = cls.model_construct(actual_instance=value)
-        instance._raw = value
+        instance._is_raw = True
         return instance
 
     @staticmethod
@@ -151,7 +154,7 @@ UNION_MEMBERS = '''\
     @field_serializer("actual_instance", mode="wrap")
     def _serialize_actual_instance(self, value: object, handler: Callable[[object], object]) -> object:
         # A raw variant is none of the declared types: write it as received, without a warning.
-        return value if self._holds_raw(value) else handler(value)
+        return value if self._is_raw else handler(value)
 
 '''
 
