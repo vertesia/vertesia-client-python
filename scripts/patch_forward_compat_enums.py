@@ -121,10 +121,14 @@ UNION_MEMBERS = '''\
     # A variant added by a newer server, kept as received. Set only by _from_raw().
     _raw: object = None
 
+    def _holds_raw(self, value: object) -> bool:
+        # By value, not identity: some pydantic versions copy actual_instance and _raw separately.
+        return self._raw is not None and type(value) is type(self._raw) and value == self._raw
+
     @property
     def raw(self) -> object:
         """A variant added by a newer server, as it was received, or None for a known variant."""
-        return self.actual_instance if self._raw is not None and self._raw is self.actual_instance else None
+        return self.actual_instance if self._holds_raw(self.actual_instance) else None
 
     @classmethod
     def _from_raw(cls, value: object) -> Self:
@@ -147,7 +151,7 @@ UNION_MEMBERS = '''\
     @field_serializer("actual_instance", mode="wrap")
     def _serialize_actual_instance(self, value: object, handler: Callable[[object], object]) -> object:
         # A raw variant is none of the declared types: write it as received, without a warning.
-        return value if value is not None and value is self._raw else handler(value)
+        return value if self._holds_raw(value) else handler(value)
 
 '''
 

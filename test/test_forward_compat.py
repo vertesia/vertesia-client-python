@@ -4,6 +4,7 @@ A newer server can add a property, an enum value or a union variant without a br
 cases depend on scripts/patch_forward_compat_enums.py, which the Test workflow runs before these tests.
 """
 
+import copy
 import json
 import unittest
 import warnings
@@ -135,6 +136,19 @@ class ForwardCompatibilityTest(unittest.TestCase):
         self.assertIsNone(claude.raw)
         secret = McpConnectionParameter.from_json('{"type": "secret", "title": "k"}')
         self.assertIsInstance(secret.actual_instance, McpSecretParameter)
+
+    def test_copies_keep_the_raw_variant(self):
+        body = {"type": "speech", "value": "x"}
+        result = CompletionResult.from_dict(body)
+        for copied in (result.model_copy(), result.model_copy(deep=True), copy.deepcopy(result)):
+            self.assert_kept_raw(copied, body)
+            self.assertEqual(copied.model_dump()["actual_instance"], body)
+
+        # Assigning a known variant replaces the raw one.
+        copied = result.model_copy(deep=True)
+        copied.actual_instance = TextResult(type="text", value="a")
+        self.assertIsNone(copied.raw)
+        self.assertEqual(copied.to_dict(), {"type": "text", "value": "a"})
 
     def test_unknown_undiscriminated_variant_is_kept_raw(self):
         body = {"loop": {"over": "items"}, "node": 7}
