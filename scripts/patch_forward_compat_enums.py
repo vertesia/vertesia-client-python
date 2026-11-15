@@ -6,10 +6,15 @@ an unknown value as received. A union keeps an unknown variant as the JSON value
 (`actual_instance` and `raw` return it, `to_dict`/`to_json` write it back) instead of failing the
 whole response. A union with a published discriminator dispatches on it: a known value must decode
 into its branch, an unknown value is kept raw, and a missing value is an error.
+
+A newer server can also loosen a value constraint, such as a pattern, a numeric range, a string length or a list
+size. Models do not check those constraints, so a response using the new room still decodes, and they leave them
+to the server for requests: a constraint copied into a released client can only be stale. Types are still checked.
 """
 
 from __future__ import annotations
 
+import ast
 import json
 import re
 from pathlib import Path
@@ -46,6 +51,50 @@ def patch_standalone_enum(text: str) -> str:
 
 def patch_inline_enum_validators(text: str) -> str:
     return INLINE_ENUM_VALIDATOR_RE.sub(r"\n\g<indent>return value", text)
+
+
+# Field() arguments that check a value against the spec, not its type. `strict` stays: a string is still a string.
+VALUE_CONSTRAINTS = frozenset(
+    {"ge", "gt", "le", "lt", "multiple_of", "min_length", "max_length", "pattern", "max_digits", "decimal_places"}
+)
+
+PATTERN_VALIDATOR_RE = re.compile(
+    r"\n    @field_validator\('\w+'\)"
+    r"\n    def \w+_validate_regular_expression\(cls, value\):"
+    r'\n        """Validates the regular expression"""\n'
+    # The body, up to the method's own `return value`: lines of a deeper block are indented further.
+    r"(?:(?:        .*)?\n)*?"
+    r"        return value\n"
+)
+
+
+def patch_value_constraints(text: str) -> str:
+    """Remove the spec's value constraints from a generated model: Field() bounds and lengths, and patterns."""
+    text = PATTERN_VALIDATOR_RE.sub("", text)
+    if "Field(" not in text:
+        return text
+    lines = text.splitlines(keepends=True)
+    starts = [0]
+    for line in lines:
+        starts.append(starts[-1] + len(line))
+
+    def offset(lineno: int, column: int) -> int:
+        # ast columns count UTF-8 bytes, and descriptions can hold other characters than ASCII.
+        return starts[lineno - 1] + len(lines[lineno - 1].encode()[:column].decode())
+
+    edits = []
+    for node in ast.walk(ast.parse(text)):
+        if not (isinstance(node, ast.Call) and isinstance(node.func, ast.Name) and node.func.id == "Field"):
+            continue
+        if not any(keyword.arg in VALUE_CONSTRAINTS for keyword in node.keywords):
+            continue
+        kept = [ast.get_source_segment(text, argument) for argument in node.args]
+        kept += [ast.get_source_segment(text, k) for k in node.keywords if k.arg not in VALUE_CONSTRAINTS]
+        start, end = offset(node.lineno, node.col_offset), offset(node.end_lineno, node.end_col_offset)
+        edits.append((start, end, "Field(" + ", ".join(kept) + ")"))
+    for start, end, replacement in sorted(edits, reverse=True):
+        text = text[:start] + replacement + text[end:]
+    return text
 
 
 def patch_client_headers(text: str) -> str:
@@ -254,10 +303,11 @@ def main() -> None:
         original = path.read_text()
         updated = patch_schema_constants(patch_inline_enum_validators(patch_standalone_enum(original)), schemas)
         updated = patch_union_fallback(updated, discriminators, lossless)
+        updated = patch_value_constraints(updated)
         if updated != original:
             path.write_text(updated)
             changed += 1
-    print(f"Patched {changed} generated model files for forward-compatible enums and unions.")
+    print(f"Patched {changed} generated model files for forward-compatible enums, unions and value constraints.")
 
 
 if __name__ == "__main__":

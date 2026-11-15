@@ -178,6 +178,19 @@ carry a literal tag (`_option_id`, `type`; optional in `ModelOptions`). A tag
 selects its branch, and a branch is used only when it writes every received
 property back with the same value, so options merged from several model
 families are not lost.
+
+Models check types but not the value constraints of the API specification
+(`pattern`, `minimum` / `maximum`, `minLength` / `maxLength`, `minItems` /
+`maxItems`, `multipleOf`). A newer server can widen them, for example raise a
+maximum from 10 to 15, and an older client still decodes the responses that use
+the new room and writes them back unchanged. A string field still requires a
+string, and an integer field an integer. Models you build for a request are not
+checked against those constraints either: the server validates each request
+against its own, current, rules and answers `400` with the reason, while a copy
+of the rules in a released client could only be older and would reject values
+the server accepts. Operation parameters (path and query) keep the checks the
+generator emits.
+
 `scripts/patch_forward_compat_enums.py` applies these rules after generation.
 
 ### Generated API version headers
