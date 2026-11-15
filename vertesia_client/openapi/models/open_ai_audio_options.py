@@ -36,9 +36,8 @@ class OpenAiAudioOptions(BaseModel):
     @field_validator('option_id')
     def option_id_validate_enum(cls, value):
         """Validates the enum"""
-        if value is None:
-            return value
-
+        if value is not None and value != 'openai-audio':
+            raise ValueError('Expected _option_id to be openai-audio')
         return value
 
     @field_validator('response_format')

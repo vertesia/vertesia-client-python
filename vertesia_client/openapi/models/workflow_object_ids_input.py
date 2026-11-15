@@ -34,6 +34,8 @@ class WorkflowObjectIdsInput(BaseModel):
     @field_validator('input_type')
     def input_type_validate_enum(cls, value):
         """Validates the enum"""
+        if value is not None and value != 'objectIds':
+            raise ValueError('Expected inputType to be objectIds')
         return value
 
     model_config = ConfigDict(

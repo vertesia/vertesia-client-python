@@ -61,9 +61,8 @@ class VertexAIGeminiOptions(BaseModel):
     @field_validator('option_id')
     def option_id_validate_enum(cls, value):
         """Validates the enum"""
-        if value is None:
-            return value
-
+        if value is not None and value != 'vertexai-gemini':
+            raise ValueError('Expected _option_id to be vertexai-gemini')
         return value
 
     @field_validator('effort')

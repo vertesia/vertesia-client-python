@@ -42,9 +42,8 @@ class AzureFoundryChatOptions(BaseModel):
     @field_validator('option_id')
     def option_id_validate_enum(cls, value):
         """Validates the enum"""
-        if value is None:
-            return value
-
+        if value is not None and value != 'azure-foundry-chat':
+            raise ValueError('Expected _option_id to be azure-foundry-chat')
         return value
 
     @field_validator('image_detail')

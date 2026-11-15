@@ -39,9 +39,8 @@ class XAIGrokImageOptions(BaseModel):
     @field_validator('option_id')
     def option_id_validate_enum(cls, value):
         """Validates the enum"""
-        if value is None:
-            return value
-
+        if value is not None and value != 'xai-grok-image':
+            raise ValueError('Expected _option_id to be xai-grok-image')
         return value
 
     @field_validator('aspect_ratio')

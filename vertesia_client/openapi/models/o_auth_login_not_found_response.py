@@ -14,6 +14,8 @@
 
 from __future__ import annotations
 import json
+from collections.abc import Callable
+from pydantic import field_serializer
 import pprint
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, ValidationError, field_validator
 from typing import Any, List, Optional
@@ -79,38 +81,65 @@ class OAuthLoginNotFoundResponse(BaseModel):
         else:
             return v
 
+    # The variant added by a newer server, kept as received. Set only by _from_raw(). actual_instance is
+    # raw while it is still this object: an edit of its contents keeps it raw, and any replacement makes
+    # the union typed again, whether assigned, passed to model_copy(update=...) or constructed.
+    _raw: object = None
+
+    def _holds_raw(self, value: object) -> bool:
+        return self._raw is not None and value is self._raw
+
+    def __deepcopy__(self, memo: dict[int, object] | None = None) -> Self:
+        # One memo for actual_instance and _raw, so that a copy's _raw is its own actual_instance.
+        # pydantic before 2.14 copies them with separate memos in model_copy(deep=True).
+        return super().__deepcopy__({} if memo is None else memo)
+
+    @property
+    def raw(self) -> object:
+        """A variant added by a newer server, as it was received, or None for a known variant."""
+        return self.actual_instance if self._holds_raw(self.actual_instance) else None
+
+    @classmethod
+    def _from_raw(cls, value: object) -> Self:
+        instance = cls.model_construct(actual_instance=value)
+        instance._raw = value
+        return instance
+
+    @staticmethod
+    def _check_lossless(json_str: str, variant: object) -> None:
+        # The first branch that validates can drop or rewrite received properties, for example options
+        # merged from several families: then the next branch is tried, and the payload is kept raw if
+        # no branch writes back every received property unchanged.
+        received = json.loads(json_str)
+        written = variant.to_dict() if hasattr(variant, "to_dict") else variant
+        if isinstance(received, dict) and isinstance(written, dict):
+            for key, value in received.items():
+                if key not in written or written[key] != value:
+                    raise ValueError(f"The variant would not keep `{key}`")
+
+    @field_serializer("actual_instance", mode="wrap")
+    def _serialize_actual_instance(self, value: object, handler: Callable[[object], object]) -> object:
+        # A raw variant is none of the declared types: write it as received, without a warning.
+        return value if self._holds_raw(value) else handler(value)
+
     @classmethod
     def from_dict(cls, obj: Union[str, Dict[str, Any]]) -> Self:
         return cls.from_json(json.dumps(obj))
 
     @classmethod
     def from_json(cls, json_str: str) -> Self:
-        """Returns the object represented by the json string"""
-        instance = cls.model_construct()
-        error_messages = []
-        match = 0
-
-        # deserialize data into OAuthLoginUserNotFoundResponse
-        try:
-            instance.actual_instance = OAuthLoginUserNotFoundResponse.from_json(json_str)
-            match += 1
-        except (ValidationError, ValueError) as e:
-            error_messages.append(str(e))
-        # deserialize data into OAuthLoginRequestNotFoundResponse
-        try:
-            instance.actual_instance = OAuthLoginRequestNotFoundResponse.from_json(json_str)
-            match += 1
-        except (ValidationError, ValueError) as e:
-            error_messages.append(str(e))
-
-        if match > 1:
-            # more than 1 match
-            raise ValueError("Multiple matches found when deserializing the JSON string into OAuthLoginNotFoundResponse with oneOf schemas: OAuthLoginRequestNotFoundResponse, OAuthLoginUserNotFoundResponse. Details: " + ", ".join(error_messages))
-        elif match == 0:
-            # no match
-            raise ValueError("No match found when deserializing the JSON string into OAuthLoginNotFoundResponse with oneOf schemas: OAuthLoginRequestNotFoundResponse, OAuthLoginUserNotFoundResponse. Details: " + ", ".join(error_messages))
-        else:
+        """Returns the object represented by the json string, dispatched on `error`"""
+        data = json.loads(json_str)
+        tag = data.get('error') if isinstance(data, dict) else None
+        branches = {'user_not_found': OAuthLoginUserNotFoundResponse, 'not_found': OAuthLoginRequestNotFoundResponse}
+        if isinstance(tag, str) and tag in branches:
+            instance = cls.model_construct()
+            instance.actual_instance = branches[tag].from_json(json_str)
             return instance
+        if isinstance(tag, str) and tag:
+            # A variant added by a newer server: keep it as received.
+            return cls._from_raw(data)
+        raise ValueError("Missing `error` when deserializing the JSON string into OAuthLoginNotFoundResponse: " + json_str)
 
     def to_json(self) -> str:
         """Returns the JSON representation of the actual instance"""

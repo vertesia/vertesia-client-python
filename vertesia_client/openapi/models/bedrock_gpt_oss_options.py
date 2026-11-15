@@ -42,9 +42,8 @@ class BedrockGptOssOptions(BaseModel):
     @field_validator('option_id')
     def option_id_validate_enum(cls, value):
         """Validates the enum"""
-        if value is None:
-            return value
-
+        if value is not None and value != 'bedrock-gpt-oss':
+            raise ValueError('Expected _option_id to be bedrock-gpt-oss')
         return value
 
     @field_validator('reasoning_effort')

@@ -48,9 +48,8 @@ class MistralTextOptions(BaseModel):
     @field_validator('option_id')
     def option_id_validate_enum(cls, value):
         """Validates the enum"""
-        if value is None:
-            return value
-
+        if value is not None and value != 'mistral-text':
+            raise ValueError('Expected _option_id to be mistral-text')
         return value
 
     @field_validator('tool_choice')

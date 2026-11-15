@@ -47,9 +47,8 @@ class BedrockClaudeOptions(BaseModel):
     @field_validator('option_id')
     def option_id_validate_enum(cls, value):
         """Validates the enum"""
-        if value is None:
-            return value
-
+        if value is not None and value != 'bedrock-claude':
+            raise ValueError('Expected _option_id to be bedrock-claude')
         return value
 
     @field_validator('thinking_mode')

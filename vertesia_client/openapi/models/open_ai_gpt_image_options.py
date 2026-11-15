@@ -50,9 +50,8 @@ class OpenAiGptImageOptions(BaseModel):
     @field_validator('option_id')
     def option_id_validate_enum(cls, value):
         """Validates the enum"""
-        if value is None:
-            return value
-
+        if value is not None and value != 'openai-gpt-image':
+            raise ValueError('Expected _option_id to be openai-gpt-image')
         return value
 
     @field_validator('image_quality')
