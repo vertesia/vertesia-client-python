@@ -158,6 +158,16 @@ class ForwardCompatibilityTest(unittest.TestCase):
                 self.assertEqual(copied.model_dump()["actual_instance"], edited)
             self.assertEqual(copied.to_dict(), edited)
 
+        # Any replacement of the raw variant makes the union typed, also those that bypass assignment.
+        text = TextResult(type="text", value="a")
+        for replaced in (
+            result.model_copy(update={"actual_instance": text}),
+            result.model_copy(update={"actual_instance": text}, deep=True),
+            CompletionResult.model_construct(actual_instance=text),
+        ):
+            self.assertIsNone(replaced.raw)
+            self.assertEqual(replaced.to_dict(), {"type": "text", "value": "a"})
+
         # Assigning a known variant replaces the raw one.
         copied = result.model_copy(deep=True)
         copied.actual_instance = TextResult(type="text", value="a")

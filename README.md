@@ -168,8 +168,8 @@ match the underlying JSON type.
 A union variant added by a newer server is kept as the JSON value it was
 received as: `actual_instance` and `raw` return it, and `to_dict()` / `to_json()`
 write it back unchanged. `raw` is `None` for a known variant. The variant stays
-raw in a copy and after an edit of its contents, until a value is assigned to
-`actual_instance`. A union with a
+raw in a copy and after an edit of its contents, until `actual_instance` is
+replaced, by assignment or by `model_copy(update=...)`. A union with a
 published discriminator does this only for a discriminator value it does not
 know; a known value must decode into its branch, and a missing one is an error.
 

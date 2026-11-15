@@ -118,25 +118,28 @@ def union_literal_schemas(schemas: dict) -> dict:
 
 
 UNION_MEMBERS = '''\
-    # Whether actual_instance is a variant added by a newer server, kept as received. Set only by
-    # _from_raw(), and cleared when actual_instance is assigned. A flag rather than a comparison with
-    # the received value, so that the variant stays raw in a copy and after an edit of its contents.
-    _is_raw: bool = False
+    # The variant added by a newer server, kept as received. Set only by _from_raw(). actual_instance is
+    # raw while it is still this object: an edit of its contents keeps it raw, and any replacement makes
+    # the union typed again, whether assigned, passed to model_copy(update=...) or constructed.
+    _raw: object = None
 
-    def __setattr__(self, name: str, value: object) -> None:
-        super().__setattr__(name, value)
-        if name == "actual_instance":
-            self._is_raw = False
+    def _holds_raw(self, value: object) -> bool:
+        return self._raw is not None and value is self._raw
+
+    def __deepcopy__(self, memo: dict[int, object] | None = None) -> Self:
+        # One memo for actual_instance and _raw, so that a copy's _raw is its own actual_instance.
+        # pydantic before 2.14 copies them with separate memos in model_copy(deep=True).
+        return super().__deepcopy__({} if memo is None else memo)
 
     @property
     def raw(self) -> object:
         """A variant added by a newer server, as it was received, or None for a known variant."""
-        return self.actual_instance if self._is_raw else None
+        return self.actual_instance if self._holds_raw(self.actual_instance) else None
 
     @classmethod
     def _from_raw(cls, value: object) -> Self:
         instance = cls.model_construct(actual_instance=value)
-        instance._is_raw = True
+        instance._raw = value
         return instance
 
     @staticmethod
@@ -154,7 +157,7 @@ UNION_MEMBERS = '''\
     @field_serializer("actual_instance", mode="wrap")
     def _serialize_actual_instance(self, value: object, handler: Callable[[object], object]) -> object:
         # A raw variant is none of the declared types: write it as received, without a warning.
-        return value if self._is_raw else handler(value)
+        return value if self._holds_raw(value) else handler(value)
 
 '''
 
