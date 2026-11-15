@@ -65,8 +65,9 @@ class GeneratedCompatibilityTest(unittest.TestCase):
                 )
                 self.assertIsInstance(response.actual_instance, model)
                 self.assertEqual(response.actual_instance.ref_type, tag)
-        with self.assertRaises(ValueError):
-            ContentObjectTypeRef.from_dict({"ref_type": "unknown", "id": "type-1", "name": "Test type"})
+        # A reference type added by a newer server is kept as received.
+        future = {"ref_type": "unknown", "id": "type-1", "name": "Test type"}
+        self.assertEqual(ContentObjectTypeRef.from_dict(future).raw, future)
 
     def test_unknown_standalone_enum_values_are_preserved(self):
         value = AccountType("future-account-type")
