@@ -44,8 +44,10 @@ class AIModel(BaseModel):
     input_modalities: Optional[List[StrictStr]] = None
     output_modalities: Optional[List[StrictStr]] = None
     tool_support: Optional[StrictBool] = None
+    deprecation_date: Optional[StrictStr] = None
+    retirement_date: Optional[StrictStr] = None
     environment: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["id", "name", "provider", "description", "version", "type", "tags", "owner", "status", "can_stream", "is_custom", "is_multimodal", "input_modalities", "output_modalities", "tool_support", "environment"]
+    __properties: ClassVar[List[str]] = ["id", "name", "provider", "description", "version", "type", "tags", "owner", "status", "can_stream", "is_custom", "is_multimodal", "input_modalities", "output_modalities", "tool_support", "deprecation_date", "retirement_date", "environment"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -113,6 +115,8 @@ class AIModel(BaseModel):
             "input_modalities": obj.get("input_modalities"),
             "output_modalities": obj.get("output_modalities"),
             "tool_support": obj.get("tool_support"),
+            "deprecation_date": obj.get("deprecation_date"),
+            "retirement_date": obj.get("retirement_date"),
             "environment": obj.get("environment")
         })
         return _obj
