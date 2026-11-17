@@ -2394,7 +2394,7 @@ class NotificationsApi:
     ) -> NotificationPreferences:
         """Replace notification preferences
 
-        Replaces the current user’s notification preferences in the project. They apply to notifications written from now on.
+        Replaces the current user’s notification preferences in the project. They apply to notifications written from now on. The budget_alerts_enabled switch controls both inbox and email budget alerts. Omitting it preserves the saved switch.
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -2467,7 +2467,7 @@ class NotificationsApi:
     ) -> ApiResponse[NotificationPreferences]:
         """Replace notification preferences
 
-        Replaces the current user’s notification preferences in the project. They apply to notifications written from now on.
+        Replaces the current user’s notification preferences in the project. They apply to notifications written from now on. The budget_alerts_enabled switch controls both inbox and email budget alerts. Omitting it preserves the saved switch.
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -2540,7 +2540,7 @@ class NotificationsApi:
     ) -> RESTResponseType:
         """Replace notification preferences
 
-        Replaces the current user’s notification preferences in the project. They apply to notifications written from now on.
+        Replaces the current user’s notification preferences in the project. They apply to notifications written from now on. The budget_alerts_enabled switch controls both inbox and email budget alerts. Omitting it preserves the saved switch.
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str

@@ -23999,6 +23999,33 @@
         "additionalProperties": false,
         "description": "Response from indexing status endpoint"
       },
+      "InferenceBudgetSettings": {
+        "type": "object",
+        "properties": {
+          "daily_limit_usd": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0.01,
+                "maximum": 1000000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The daily project inference alert threshold in USD. Null means the alert is disabled."
+          },
+          "available": {
+            "type": "boolean",
+            "description": "Whether inference budget alerts are available for the project."
+          }
+        },
+        "required": [
+          "daily_limit_usd",
+          "available"
+        ],
+        "additionalProperties": false
+      },
       "InferenceProfile": {
         "type": "object",
         "properties": {
@@ -28091,9 +28118,10 @@
         "enum": [
           "actions",
           "failures",
-          "results"
+          "results",
+          "billing"
         ],
-        "description": "Preference group of a notification: `actions` need the user (questions, approvals, tasks), `failures` report failed runs or intakes, `results` report successful ones."
+        "description": "Preference group of a notification: `actions` need the user (questions, approvals, tasks), `failures` report failed runs or intakes, `results` report successful ones, and `billing` reports budget alerts."
       },
       "NotificationChannelPreferences": {
         "type": "object",
@@ -28134,7 +28162,8 @@
           "agent.finished",
           "agent.turn_finished",
           "task.assigned",
-          "intake.finished"
+          "intake.finished",
+          "inference_budget.exceeded"
         ],
         "description": "What a notification is about. Each kind belongs to one category."
       },
@@ -28196,7 +28225,7 @@
             "additionalProperties": {
               "$ref": "#/components/schemas/NotificationChannelPreferences"
             },
-            "description": "Per category (`actions`, `failures`, `results`), the channels it is delivered to."
+            "description": "Per-category inbox preferences for `actions`, `failures`, `results`, and `billing`."
           },
           "kinds": {
             "type": "object",
@@ -28204,6 +28233,10 @@
               "$ref": "#/components/schemas/NotificationChannelPreferences"
             },
             "description": "Per kind, an override of its category. Today only `agent.turn_finished` is offered."
+          },
+          "budget_alerts_enabled": {
+            "type": "boolean",
+            "description": "Master switch for inference budget alerts in the inbox and by email. Omit when updating to keep the saved choice."
           }
         },
         "required": [
@@ -39602,6 +39635,21 @@
             "description": "The interaction ID, as 24 hexadecimal characters."
           }
         },
+        "additionalProperties": false
+      },
+      "UpdateInferenceBudget": {
+        "type": "object",
+        "properties": {
+          "daily_limit_usd": {
+            "type": "number",
+            "minimum": 0.01,
+            "maximum": 1000000,
+            "description": "The daily project inference alert threshold in USD."
+          }
+        },
+        "required": [
+          "daily_limit_usd"
+        ],
         "additionalProperties": false
       },
       "UpdateInferenceProfilePayload": {
@@ -75273,6 +75321,241 @@
         }
       ]
     },
+    "/cost/budget": {
+      "get": {
+        "operationId": "GetProjectInferenceBudget",
+        "tags": [
+          "Costs"
+        ],
+        "summary": "Read the daily inference budget alert for the current project",
+        "description": "Projects without a saved budget or explicit opt-out have a daily alert threshold of $150 USD.\n\n**Required permissions:** `billing:read`",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "The project inference budget settings.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InferenceBudgetSettings"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [
+          "billing:read"
+        ],
+        "x-vertesia-source": {
+          "file": "../../apps/zeno-server/src/api/cost.ts",
+          "className": "CostResource",
+          "methodName": "getBudget"
+        }
+      },
+      "put": {
+        "operationId": "UpdateProjectInferenceBudget",
+        "tags": [
+          "Costs"
+        ],
+        "summary": "Set the daily inference budget alert for the current project",
+        "description": "Requires a signed-in project administrator with billing read and project settings write access.\n\n**Required permissions:** `project:settings_write`",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OAuth2": [
+              "project:settings_write"
+            ]
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "The updated project inference budget settings.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InferenceBudgetSettings"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "The project inference budget is managed by another deployment"
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [
+          "project:settings_write"
+        ],
+        "x-vertesia-source": {
+          "file": "../../apps/zeno-server/src/api/cost.ts",
+          "className": "CostResource",
+          "methodName": "updateBudget"
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateInferenceBudget"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "DisableProjectInferenceBudget",
+        "tags": [
+          "Costs"
+        ],
+        "summary": "Disable the daily inference budget alert for the current project",
+        "description": "Requires a signed-in project administrator with billing read and project settings write access. Disabling releases the budget so another deployment can set the threshold.\n\n**Required permissions:** `project:settings_write`",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OAuth2": [
+              "project:settings_write"
+            ]
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "The updated project inference budget settings.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InferenceBudgetSettings"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "The project inference budget is managed by another deployment"
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [
+          "project:settings_write"
+        ],
+        "x-vertesia-source": {
+          "file": "../../apps/zeno-server/src/api/cost.ts",
+          "className": "CostResource",
+          "methodName": "disableBudget"
+        }
+      },
+      "parameters": [
+        {
+          "name": "x-api-version",
+          "in": "header",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S",
+            "example": "20260803"
+          },
+          "description": "Required Vertesia API version header. Use `20260803` for the current stable API shape.",
+          "x-vertesia-global-header": true
+        }
+      ]
+    },
     "/cost/analytics": {
       "post": {
         "operationId": "GetCostAnalytics",
@@ -90844,9 +91127,10 @@
               "enum": [
                 "actions",
                 "failures",
-                "results"
+                "results",
+                "billing"
               ],
-              "description": "Preference group of a notification: `actions` need the user (questions, approvals, tasks), `failures` report failed runs or intakes, `results` report successful ones."
+              "description": "Preference group of a notification: `actions` need the user (questions, approvals, tasks), `failures` report failed runs or intakes, `results` report successful ones, and `billing` reports budget alerts."
             },
             "style": "form"
           }
@@ -91346,7 +91630,7 @@
           "Notifications"
         ],
         "summary": "Replace notification preferences",
-        "description": "Replaces the current user’s notification preferences in the project. They apply to notifications written from now on.",
+        "description": "Replaces the current user’s notification preferences in the project. They apply to notifications written from now on. The budget_alerts_enabled switch controls both inbox and email budget alerts. Omitting it preserves the saved switch.",
         "security": [
           {
             "bearerAuth": []

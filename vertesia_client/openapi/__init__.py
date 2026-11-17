@@ -709,6 +709,7 @@ __all__ = [
     "IndexingStatusResponse",
     "IndexingStatusResponseIndex",
     "IndexingStatusResponseReindexProgress",
+    "InferenceBudgetSettings",
     "InferenceProfile",
     "InferenceProfileInvocation",
     "InferenceProfileRecord",
@@ -1199,6 +1200,7 @@ __all__ = [
     "UpdateEventIngestChannelPayload",
     "UpdateEventSubscriptionPayload",
     "UpdateExecutionRunPayload",
+    "UpdateInferenceBudget",
     "UpdateInferenceProfilePayload",
     "UpdateInteractionConfigurationPayload",
     "UpdateOAuthClientPayload",
@@ -2050,6 +2052,7 @@ from vertesia_client.openapi.models.in_code_view_definition import InCodeViewDef
 from vertesia_client.openapi.models.indexing_status_response import IndexingStatusResponse as IndexingStatusResponse
 from vertesia_client.openapi.models.indexing_status_response_index import IndexingStatusResponseIndex as IndexingStatusResponseIndex
 from vertesia_client.openapi.models.indexing_status_response_reindex_progress import IndexingStatusResponseReindexProgress as IndexingStatusResponseReindexProgress
+from vertesia_client.openapi.models.inference_budget_settings import InferenceBudgetSettings as InferenceBudgetSettings
 from vertesia_client.openapi.models.inference_profile import InferenceProfile as InferenceProfile
 from vertesia_client.openapi.models.inference_profile_invocation import InferenceProfileInvocation as InferenceProfileInvocation
 from vertesia_client.openapi.models.inference_profile_record import InferenceProfileRecord as InferenceProfileRecord
@@ -2540,6 +2543,7 @@ from vertesia_client.openapi.models.update_email_route_response import UpdateEma
 from vertesia_client.openapi.models.update_event_ingest_channel_payload import UpdateEventIngestChannelPayload as UpdateEventIngestChannelPayload
 from vertesia_client.openapi.models.update_event_subscription_payload import UpdateEventSubscriptionPayload as UpdateEventSubscriptionPayload
 from vertesia_client.openapi.models.update_execution_run_payload import UpdateExecutionRunPayload as UpdateExecutionRunPayload
+from vertesia_client.openapi.models.update_inference_budget import UpdateInferenceBudget as UpdateInferenceBudget
 from vertesia_client.openapi.models.update_inference_profile_payload import UpdateInferenceProfilePayload as UpdateInferenceProfilePayload
 from vertesia_client.openapi.models.update_interaction_configuration_payload import UpdateInteractionConfigurationPayload as UpdateInteractionConfigurationPayload
 from vertesia_client.openapi.models.update_o_auth_client_payload import UpdateOAuthClientPayload as UpdateOAuthClientPayload

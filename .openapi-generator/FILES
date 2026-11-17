@@ -687,6 +687,7 @@ vertesia_client/openapi/models/in_code_view_definition.py
 vertesia_client/openapi/models/indexing_status_response.py
 vertesia_client/openapi/models/indexing_status_response_index.py
 vertesia_client/openapi/models/indexing_status_response_reindex_progress.py
+vertesia_client/openapi/models/inference_budget_settings.py
 vertesia_client/openapi/models/inference_profile.py
 vertesia_client/openapi/models/inference_profile_invocation.py
 vertesia_client/openapi/models/inference_profile_record.py
@@ -1177,6 +1178,7 @@ vertesia_client/openapi/models/update_email_route_response.py
 vertesia_client/openapi/models/update_event_ingest_channel_payload.py
 vertesia_client/openapi/models/update_event_subscription_payload.py
 vertesia_client/openapi/models/update_execution_run_payload.py
+vertesia_client/openapi/models/update_inference_budget.py
 vertesia_client/openapi/models/update_inference_profile_payload.py
 vertesia_client/openapi/models/update_interaction_configuration_payload.py
 vertesia_client/openapi/models/update_o_auth_client_payload.py

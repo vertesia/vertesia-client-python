@@ -17,8 +17,8 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field
-from typing import Any, ClassVar, Dict
+from pydantic import BaseModel, ConfigDict, Field, StrictBool
+from typing import Any, ClassVar, Dict, Optional
 from vertesia_client.openapi.models.notification_channel_preferences import NotificationChannelPreferences
 from typing import Optional, Set
 from typing_extensions import Self
@@ -28,9 +28,10 @@ class NotificationPreferences(BaseModel):
     """
     The user’s notification preferences in the project. Unset channels are on.
     """ # noqa: E501
-    categories: Dict[str, NotificationChannelPreferences] = Field(description="Per category (`actions`, `failures`, `results`), the channels it is delivered to.")
+    categories: Dict[str, NotificationChannelPreferences] = Field(description="Per-category inbox preferences for `actions`, `failures`, `results`, and `billing`.")
     kinds: Dict[str, NotificationChannelPreferences] = Field(description="Per kind, an override of its category. Today only `agent.turn_finished` is offered.")
-    __properties: ClassVar[List[str]] = ["categories", "kinds"]
+    budget_alerts_enabled: Optional[StrictBool] = Field(default=None, description="Master switch for inference budget alerts in the inbox and by email. Omit when updating to keep the saved choice.")
+    __properties: ClassVar[List[str]] = ["categories", "kinds", "budget_alerts_enabled"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -108,7 +109,8 @@ class NotificationPreferences(BaseModel):
                 for _k, _v in obj["kinds"].items()
             )
             if obj.get("kinds") is not None
-            else None
+            else None,
+            "budget_alerts_enabled": obj.get("budget_alerts_enabled")
         })
         return _obj
 
