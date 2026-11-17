@@ -18,11 +18,23 @@ from typing_extensions import Annotated
 from pydantic import Field, StrictStr, field_validator
 from typing import List, Optional
 from typing_extensions import Annotated
+from vertesia_client.openapi.models.content_source_folders_discovery import ContentSourceFoldersDiscovery
 from vertesia_client.openapi.models.content_source_report import ContentSourceReport
+from vertesia_client.openapi.models.content_source_roots_discovery import ContentSourceRootsDiscovery
+from vertesia_client.openapi.models.content_source_sample_discovery import ContentSourceSampleDiscovery
+from vertesia_client.openapi.models.content_source_schema_discovery import ContentSourceSchemaDiscovery
+from vertesia_client.openapi.models.content_source_site_discovery import ContentSourceSiteDiscovery
 from vertesia_client.openapi.models.content_source_status import ContentSourceStatus
 from vertesia_client.openapi.models.create_content_source_payload import CreateContentSourcePayload
 from vertesia_client.openapi.models.delete_count_result import DeleteCountResult
+from vertesia_client.openapi.models.discover_content_source_folders_payload import DiscoverContentSourceFoldersPayload
+from vertesia_client.openapi.models.discover_content_source_sample_payload import DiscoverContentSourceSamplePayload
+from vertesia_client.openapi.models.discover_content_source_schema_payload import DiscoverContentSourceSchemaPayload
+from vertesia_client.openapi.models.discover_content_source_site_payload import DiscoverContentSourceSitePayload
 from vertesia_client.openapi.models.external_content_source import ExternalContentSource
+from vertesia_client.openapi.models.inspect_content_source_folders_payload import InspectContentSourceFoldersPayload
+from vertesia_client.openapi.models.inspect_content_source_sample_payload import InspectContentSourceSamplePayload
+from vertesia_client.openapi.models.inspect_content_source_schema_payload import InspectContentSourceSchemaPayload
 from vertesia_client.openapi.models.sync_content_source_payload import SyncContentSourcePayload
 from vertesia_client.openapi.models.update_content_source_payload import UpdateContentSourcePayload
 
@@ -64,7 +76,7 @@ class ContentSourcesApi:
     ) -> ExternalContentSource:
         """Register a content source
 
-        Checks the folder with its system (SharePoint or Box) through the OAuth provider, registers the source and starts its first sync, an import of the whole folder. Answers 400 when the system refuses the configuration, 409 when the name is taken, and 503 with `Retry-After` when the system is throttling or unavailable.  **Required permissions:** `project:settings_write`
+        Checks the folder with its system (SharePoint or Box) through the OAuth provider, registers the source with its schedule on hold. Nothing is imported until a sync is asked for (`POST .../sync`): the first one imports the whole folder, and the schedule runs from then on. Answers 400 when the system refuses the configuration, 409 when the name is taken, and 503 with `Retry-After` when the system is throttling or unavailable.  **Required permissions:** Any of `content_source:manage`, `project:settings_write`
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -137,7 +149,7 @@ class ContentSourcesApi:
     ) -> ApiResponse[ExternalContentSource]:
         """Register a content source
 
-        Checks the folder with its system (SharePoint or Box) through the OAuth provider, registers the source and starts its first sync, an import of the whole folder. Answers 400 when the system refuses the configuration, 409 when the name is taken, and 503 with `Retry-After` when the system is throttling or unavailable.  **Required permissions:** `project:settings_write`
+        Checks the folder with its system (SharePoint or Box) through the OAuth provider, registers the source with its schedule on hold. Nothing is imported until a sync is asked for (`POST .../sync`): the first one imports the whole folder, and the schedule runs from then on. Answers 400 when the system refuses the configuration, 409 when the name is taken, and 503 with `Retry-After` when the system is throttling or unavailable.  **Required permissions:** Any of `content_source:manage`, `project:settings_write`
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -210,7 +222,7 @@ class ContentSourcesApi:
     ) -> RESTResponseType:
         """Register a content source
 
-        Checks the folder with its system (SharePoint or Box) through the OAuth provider, registers the source and starts its first sync, an import of the whole folder. Answers 400 when the system refuses the configuration, 409 when the name is taken, and 503 with `Retry-After` when the system is throttling or unavailable.  **Required permissions:** `project:settings_write`
+        Checks the folder with its system (SharePoint or Box) through the OAuth provider, registers the source with its schedule on hold. Nothing is imported until a sync is asked for (`POST .../sync`): the first one imports the whole folder, and the schedule runs from then on. Answers 400 when the system refuses the configuration, 409 when the name is taken, and 503 with `Retry-After` when the system is throttling or unavailable.  **Required permissions:** Any of `content_source:manage`, `project:settings_write`
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -360,7 +372,7 @@ class ContentSourcesApi:
     ) -> DeleteCountResult:
         """Delete a content source
 
-        Stops the sync and removes the source. Synced documents are kept, but their files can no longer be read.  **Required permissions:** `project:settings_write`
+        Stops the sync and removes the source. Synced documents are kept, but their files can no longer be read.  **Required permissions:** Any of `content_source:manage`, `project:settings_write`
 
         :param source_id: (required)
         :type source_id: str
@@ -433,7 +445,7 @@ class ContentSourcesApi:
     ) -> ApiResponse[DeleteCountResult]:
         """Delete a content source
 
-        Stops the sync and removes the source. Synced documents are kept, but their files can no longer be read.  **Required permissions:** `project:settings_write`
+        Stops the sync and removes the source. Synced documents are kept, but their files can no longer be read.  **Required permissions:** Any of `content_source:manage`, `project:settings_write`
 
         :param source_id: (required)
         :type source_id: str
@@ -506,7 +518,7 @@ class ContentSourcesApi:
     ) -> RESTResponseType:
         """Delete a content source
 
-        Stops the sync and removes the source. Synced documents are kept, but their files can no longer be read.  **Required permissions:** `project:settings_write`
+        Stops the sync and removes the source. Synced documents are kept, but their files can no longer be read.  **Required permissions:** Any of `content_source:manage`, `project:settings_write`
 
         :param source_id: (required)
         :type source_id: str
@@ -624,6 +636,1190 @@ class ContentSourcesApi:
 
 
     @validate_call
+    def discover_content_source_folders(
+        self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        discover_content_source_folders_payload: DiscoverContentSourceFoldersPayload,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ContentSourceFoldersDiscovery:
+        """List the subfolders of a folder of a document library
+
+        **Required permissions:** Any of `content_source:manage`, `project:settings_write`
+
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
+        :param discover_content_source_folders_payload: (required)
+        :type discover_content_source_folders_payload: DiscoverContentSourceFoldersPayload
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._discover_content_source_folders_serialize(
+            x_api_version=x_api_version,
+            discover_content_source_folders_payload=discover_content_source_folders_payload,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "ContentSourceFoldersDiscovery",
+            '500': "ErrorResponse",
+            '4XX': "ErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def discover_content_source_folders_with_http_info(
+        self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        discover_content_source_folders_payload: DiscoverContentSourceFoldersPayload,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[ContentSourceFoldersDiscovery]:
+        """List the subfolders of a folder of a document library
+
+        **Required permissions:** Any of `content_source:manage`, `project:settings_write`
+
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
+        :param discover_content_source_folders_payload: (required)
+        :type discover_content_source_folders_payload: DiscoverContentSourceFoldersPayload
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._discover_content_source_folders_serialize(
+            x_api_version=x_api_version,
+            discover_content_source_folders_payload=discover_content_source_folders_payload,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "ContentSourceFoldersDiscovery",
+            '500': "ErrorResponse",
+            '4XX': "ErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def discover_content_source_folders_without_preload_content(
+        self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        discover_content_source_folders_payload: DiscoverContentSourceFoldersPayload,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """List the subfolders of a folder of a document library
+
+        **Required permissions:** Any of `content_source:manage`, `project:settings_write`
+
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
+        :param discover_content_source_folders_payload: (required)
+        :type discover_content_source_folders_payload: DiscoverContentSourceFoldersPayload
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._discover_content_source_folders_serialize(
+            x_api_version=x_api_version,
+            discover_content_source_folders_payload=discover_content_source_folders_payload,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "ContentSourceFoldersDiscovery",
+            '500': "ErrorResponse",
+            '4XX': "ErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _discover_content_source_folders_serialize(
+        self,
+        x_api_version,
+        discover_content_source_folders_payload,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        # process the query parameters
+        # process the header parameters
+        if x_api_version is not None:
+            _header_params['x-api-version'] = x_api_version
+        # process the form parameters
+        # process the body parameter
+        if discover_content_source_folders_payload is not None:
+            _body_params = discover_content_source_folders_payload
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+        # set the HTTP header `Content-Type`
+        if _content_type:
+            _header_params['Content-Type'] = _content_type
+        else:
+            _default_content_type = (
+                self.api_client.select_header_content_type(
+                    [
+                        'application/json'
+                    ]
+                )
+            )
+            if _default_content_type is not None:
+                _header_params['Content-Type'] = _default_content_type
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'OAuth2', 
+            'bearerAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='POST',
+            resource_path='/content-sources/discover/folders',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def discover_content_source_sample(
+        self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        discover_content_source_sample_payload: DiscoverContentSourceSamplePayload,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ContentSourceSampleDiscovery:
+        """Read a sample of the files under a folder
+
+        **Required permissions:** Any of `content_source:manage`, `project:settings_write`
+
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
+        :param discover_content_source_sample_payload: (required)
+        :type discover_content_source_sample_payload: DiscoverContentSourceSamplePayload
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._discover_content_source_sample_serialize(
+            x_api_version=x_api_version,
+            discover_content_source_sample_payload=discover_content_source_sample_payload,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "ContentSourceSampleDiscovery",
+            '500': "ErrorResponse",
+            '4XX': "ErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def discover_content_source_sample_with_http_info(
+        self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        discover_content_source_sample_payload: DiscoverContentSourceSamplePayload,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[ContentSourceSampleDiscovery]:
+        """Read a sample of the files under a folder
+
+        **Required permissions:** Any of `content_source:manage`, `project:settings_write`
+
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
+        :param discover_content_source_sample_payload: (required)
+        :type discover_content_source_sample_payload: DiscoverContentSourceSamplePayload
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._discover_content_source_sample_serialize(
+            x_api_version=x_api_version,
+            discover_content_source_sample_payload=discover_content_source_sample_payload,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "ContentSourceSampleDiscovery",
+            '500': "ErrorResponse",
+            '4XX': "ErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def discover_content_source_sample_without_preload_content(
+        self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        discover_content_source_sample_payload: DiscoverContentSourceSamplePayload,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Read a sample of the files under a folder
+
+        **Required permissions:** Any of `content_source:manage`, `project:settings_write`
+
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
+        :param discover_content_source_sample_payload: (required)
+        :type discover_content_source_sample_payload: DiscoverContentSourceSamplePayload
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._discover_content_source_sample_serialize(
+            x_api_version=x_api_version,
+            discover_content_source_sample_payload=discover_content_source_sample_payload,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "ContentSourceSampleDiscovery",
+            '500': "ErrorResponse",
+            '4XX': "ErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _discover_content_source_sample_serialize(
+        self,
+        x_api_version,
+        discover_content_source_sample_payload,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        # process the query parameters
+        # process the header parameters
+        if x_api_version is not None:
+            _header_params['x-api-version'] = x_api_version
+        # process the form parameters
+        # process the body parameter
+        if discover_content_source_sample_payload is not None:
+            _body_params = discover_content_source_sample_payload
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+        # set the HTTP header `Content-Type`
+        if _content_type:
+            _header_params['Content-Type'] = _content_type
+        else:
+            _default_content_type = (
+                self.api_client.select_header_content_type(
+                    [
+                        'application/json'
+                    ]
+                )
+            )
+            if _default_content_type is not None:
+                _header_params['Content-Type'] = _default_content_type
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'OAuth2', 
+            'bearerAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='POST',
+            resource_path='/content-sources/discover/sample',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def discover_content_source_schema(
+        self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        discover_content_source_schema_payload: DiscoverContentSourceSchemaPayload,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ContentSourceSchemaDiscovery:
+        """Read the content types and columns of a document library
+
+        **Required permissions:** Any of `content_source:manage`, `project:settings_write`
+
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
+        :param discover_content_source_schema_payload: (required)
+        :type discover_content_source_schema_payload: DiscoverContentSourceSchemaPayload
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._discover_content_source_schema_serialize(
+            x_api_version=x_api_version,
+            discover_content_source_schema_payload=discover_content_source_schema_payload,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "ContentSourceSchemaDiscovery",
+            '500': "ErrorResponse",
+            '4XX': "ErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def discover_content_source_schema_with_http_info(
+        self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        discover_content_source_schema_payload: DiscoverContentSourceSchemaPayload,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[ContentSourceSchemaDiscovery]:
+        """Read the content types and columns of a document library
+
+        **Required permissions:** Any of `content_source:manage`, `project:settings_write`
+
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
+        :param discover_content_source_schema_payload: (required)
+        :type discover_content_source_schema_payload: DiscoverContentSourceSchemaPayload
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._discover_content_source_schema_serialize(
+            x_api_version=x_api_version,
+            discover_content_source_schema_payload=discover_content_source_schema_payload,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "ContentSourceSchemaDiscovery",
+            '500': "ErrorResponse",
+            '4XX': "ErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def discover_content_source_schema_without_preload_content(
+        self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        discover_content_source_schema_payload: DiscoverContentSourceSchemaPayload,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Read the content types and columns of a document library
+
+        **Required permissions:** Any of `content_source:manage`, `project:settings_write`
+
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
+        :param discover_content_source_schema_payload: (required)
+        :type discover_content_source_schema_payload: DiscoverContentSourceSchemaPayload
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._discover_content_source_schema_serialize(
+            x_api_version=x_api_version,
+            discover_content_source_schema_payload=discover_content_source_schema_payload,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "ContentSourceSchemaDiscovery",
+            '500': "ErrorResponse",
+            '4XX': "ErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _discover_content_source_schema_serialize(
+        self,
+        x_api_version,
+        discover_content_source_schema_payload,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        # process the query parameters
+        # process the header parameters
+        if x_api_version is not None:
+            _header_params['x-api-version'] = x_api_version
+        # process the form parameters
+        # process the body parameter
+        if discover_content_source_schema_payload is not None:
+            _body_params = discover_content_source_schema_payload
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+        # set the HTTP header `Content-Type`
+        if _content_type:
+            _header_params['Content-Type'] = _content_type
+        else:
+            _default_content_type = (
+                self.api_client.select_header_content_type(
+                    [
+                        'application/json'
+                    ]
+                )
+            )
+            if _default_content_type is not None:
+                _header_params['Content-Type'] = _default_content_type
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'OAuth2', 
+            'bearerAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='POST',
+            resource_path='/content-sources/discover/schema',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def discover_content_source_site(
+        self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        discover_content_source_site_payload: DiscoverContentSourceSitePayload,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ContentSourceSiteDiscovery:
+        """Inspect a SharePoint site
+
+        **Required permissions:** Any of `content_source:manage`, `project:settings_write`
+
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
+        :param discover_content_source_site_payload: (required)
+        :type discover_content_source_site_payload: DiscoverContentSourceSitePayload
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._discover_content_source_site_serialize(
+            x_api_version=x_api_version,
+            discover_content_source_site_payload=discover_content_source_site_payload,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "ContentSourceSiteDiscovery",
+            '500': "ErrorResponse",
+            '4XX': "ErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def discover_content_source_site_with_http_info(
+        self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        discover_content_source_site_payload: DiscoverContentSourceSitePayload,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[ContentSourceSiteDiscovery]:
+        """Inspect a SharePoint site
+
+        **Required permissions:** Any of `content_source:manage`, `project:settings_write`
+
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
+        :param discover_content_source_site_payload: (required)
+        :type discover_content_source_site_payload: DiscoverContentSourceSitePayload
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._discover_content_source_site_serialize(
+            x_api_version=x_api_version,
+            discover_content_source_site_payload=discover_content_source_site_payload,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "ContentSourceSiteDiscovery",
+            '500': "ErrorResponse",
+            '4XX': "ErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def discover_content_source_site_without_preload_content(
+        self,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        discover_content_source_site_payload: DiscoverContentSourceSitePayload,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Inspect a SharePoint site
+
+        **Required permissions:** Any of `content_source:manage`, `project:settings_write`
+
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
+        :param discover_content_source_site_payload: (required)
+        :type discover_content_source_site_payload: DiscoverContentSourceSitePayload
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._discover_content_source_site_serialize(
+            x_api_version=x_api_version,
+            discover_content_source_site_payload=discover_content_source_site_payload,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "ContentSourceSiteDiscovery",
+            '500': "ErrorResponse",
+            '4XX': "ErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _discover_content_source_site_serialize(
+        self,
+        x_api_version,
+        discover_content_source_site_payload,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        # process the query parameters
+        # process the header parameters
+        if x_api_version is not None:
+            _header_params['x-api-version'] = x_api_version
+        # process the form parameters
+        # process the body parameter
+        if discover_content_source_site_payload is not None:
+            _body_params = discover_content_source_site_payload
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+        # set the HTTP header `Content-Type`
+        if _content_type:
+            _header_params['Content-Type'] = _content_type
+        else:
+            _default_content_type = (
+                self.api_client.select_header_content_type(
+                    [
+                        'application/json'
+                    ]
+                )
+            )
+            if _default_content_type is not None:
+                _header_params['Content-Type'] = _default_content_type
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'OAuth2', 
+            'bearerAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='POST',
+            resource_path='/content-sources/discover/site',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
     def get_content_source(
         self,
         source_id: StrictStr,
@@ -643,7 +1839,7 @@ class ContentSourcesApi:
     ) -> ExternalContentSource:
         """Retrieve a content source
 
-        **Required permissions:** `project:settings_write`
+        **Required permissions:** Any of `content_source:manage`, `project:settings_write`
 
         :param source_id: (required)
         :type source_id: str
@@ -716,7 +1912,7 @@ class ContentSourcesApi:
     ) -> ApiResponse[ExternalContentSource]:
         """Retrieve a content source
 
-        **Required permissions:** `project:settings_write`
+        **Required permissions:** Any of `content_source:manage`, `project:settings_write`
 
         :param source_id: (required)
         :type source_id: str
@@ -789,7 +1985,7 @@ class ContentSourcesApi:
     ) -> RESTResponseType:
         """Retrieve a content source
 
-        **Required permissions:** `project:settings_write`
+        **Required permissions:** Any of `content_source:manage`, `project:settings_write`
 
         :param source_id: (required)
         :type source_id: str
@@ -930,7 +2126,7 @@ class ContentSourcesApi:
     ) -> ContentSourceReport:
         """Get a sync round's report
 
-        Pages through the files a sync round created, updated, deleted, skipped or failed, optionally of one action. Round IDs are in the status's `recent_rounds`; the reports of older rounds are deleted. An unknown round has an empty report.  **Required permissions:** `project:settings_write`
+        Pages through the files a sync round created, updated, deleted, skipped or failed, optionally of one action. Round IDs are in the status's `recent_rounds`; the reports of older rounds are deleted. An unknown round has an empty report.  **Required permissions:** Any of `content_source:manage`, `project:settings_write`
 
         :param source_id: (required)
         :type source_id: str
@@ -1019,7 +2215,7 @@ class ContentSourcesApi:
     ) -> ApiResponse[ContentSourceReport]:
         """Get a sync round's report
 
-        Pages through the files a sync round created, updated, deleted, skipped or failed, optionally of one action. Round IDs are in the status's `recent_rounds`; the reports of older rounds are deleted. An unknown round has an empty report.  **Required permissions:** `project:settings_write`
+        Pages through the files a sync round created, updated, deleted, skipped or failed, optionally of one action. Round IDs are in the status's `recent_rounds`; the reports of older rounds are deleted. An unknown round has an empty report.  **Required permissions:** Any of `content_source:manage`, `project:settings_write`
 
         :param source_id: (required)
         :type source_id: str
@@ -1108,7 +2304,7 @@ class ContentSourcesApi:
     ) -> RESTResponseType:
         """Get a sync round's report
 
-        Pages through the files a sync round created, updated, deleted, skipped or failed, optionally of one action. Round IDs are in the status's `recent_rounds`; the reports of older rounds are deleted. An unknown round has an empty report.  **Required permissions:** `project:settings_write`
+        Pages through the files a sync round created, updated, deleted, skipped or failed, optionally of one action. Round IDs are in the status's `recent_rounds`; the reports of older rounds are deleted. An unknown round has an empty report.  **Required permissions:** Any of `content_source:manage`, `project:settings_write`
 
         :param source_id: (required)
         :type source_id: str
@@ -1275,7 +2471,7 @@ class ContentSourcesApi:
     ) -> ContentSourceStatus:
         """Get a content source's sync status
 
-        **Required permissions:** `project:settings_write`
+        **Required permissions:** Any of `content_source:manage`, `project:settings_write`
 
         :param source_id: (required)
         :type source_id: str
@@ -1348,7 +2544,7 @@ class ContentSourcesApi:
     ) -> ApiResponse[ContentSourceStatus]:
         """Get a content source's sync status
 
-        **Required permissions:** `project:settings_write`
+        **Required permissions:** Any of `content_source:manage`, `project:settings_write`
 
         :param source_id: (required)
         :type source_id: str
@@ -1421,7 +2617,7 @@ class ContentSourcesApi:
     ) -> RESTResponseType:
         """Get a content source's sync status
 
-        **Required permissions:** `project:settings_write`
+        **Required permissions:** Any of `content_source:manage`, `project:settings_write`
 
         :param source_id: (required)
         :type source_id: str
@@ -1539,6 +2735,1222 @@ class ContentSourcesApi:
 
 
     @validate_call
+    def inspect_content_source_folders(
+        self,
+        source_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        inspect_content_source_folders_payload: Optional[InspectContentSourceFoldersPayload] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ContentSourceFoldersDiscovery:
+        """List the subfolders of a folder a source reaches
+
+        **Required permissions:** Any of `content_source:manage`, `project:settings_write`
+
+        :param source_id: (required)
+        :type source_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
+        :param inspect_content_source_folders_payload:
+        :type inspect_content_source_folders_payload: InspectContentSourceFoldersPayload
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._inspect_content_source_folders_serialize(
+            source_id=source_id,
+            x_api_version=x_api_version,
+            inspect_content_source_folders_payload=inspect_content_source_folders_payload,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "ContentSourceFoldersDiscovery",
+            '500': "ErrorResponse",
+            '4XX': "ErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def inspect_content_source_folders_with_http_info(
+        self,
+        source_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        inspect_content_source_folders_payload: Optional[InspectContentSourceFoldersPayload] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[ContentSourceFoldersDiscovery]:
+        """List the subfolders of a folder a source reaches
+
+        **Required permissions:** Any of `content_source:manage`, `project:settings_write`
+
+        :param source_id: (required)
+        :type source_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
+        :param inspect_content_source_folders_payload:
+        :type inspect_content_source_folders_payload: InspectContentSourceFoldersPayload
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._inspect_content_source_folders_serialize(
+            source_id=source_id,
+            x_api_version=x_api_version,
+            inspect_content_source_folders_payload=inspect_content_source_folders_payload,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "ContentSourceFoldersDiscovery",
+            '500': "ErrorResponse",
+            '4XX': "ErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def inspect_content_source_folders_without_preload_content(
+        self,
+        source_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        inspect_content_source_folders_payload: Optional[InspectContentSourceFoldersPayload] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """List the subfolders of a folder a source reaches
+
+        **Required permissions:** Any of `content_source:manage`, `project:settings_write`
+
+        :param source_id: (required)
+        :type source_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
+        :param inspect_content_source_folders_payload:
+        :type inspect_content_source_folders_payload: InspectContentSourceFoldersPayload
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._inspect_content_source_folders_serialize(
+            source_id=source_id,
+            x_api_version=x_api_version,
+            inspect_content_source_folders_payload=inspect_content_source_folders_payload,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "ContentSourceFoldersDiscovery",
+            '500': "ErrorResponse",
+            '4XX': "ErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _inspect_content_source_folders_serialize(
+        self,
+        source_id,
+        x_api_version,
+        inspect_content_source_folders_payload,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if source_id is not None:
+            _path_params['sourceId'] = source_id
+        # process the query parameters
+        # process the header parameters
+        if x_api_version is not None:
+            _header_params['x-api-version'] = x_api_version
+        # process the form parameters
+        # process the body parameter
+        if inspect_content_source_folders_payload is not None:
+            _body_params = inspect_content_source_folders_payload
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+        # set the HTTP header `Content-Type`
+        if _content_type:
+            _header_params['Content-Type'] = _content_type
+        else:
+            _default_content_type = (
+                self.api_client.select_header_content_type(
+                    [
+                        'application/json'
+                    ]
+                )
+            )
+            if _default_content_type is not None:
+                _header_params['Content-Type'] = _default_content_type
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'OAuth2', 
+            'bearerAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='POST',
+            resource_path='/content-sources/{sourceId}/discover/folders',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def inspect_content_source_roots(
+        self,
+        source_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ContentSourceRootsDiscovery:
+        """List what a source's connection reaches
+
+        **Required permissions:** Any of `content_source:manage`, `project:settings_write`
+
+        :param source_id: (required)
+        :type source_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._inspect_content_source_roots_serialize(
+            source_id=source_id,
+            x_api_version=x_api_version,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "ContentSourceRootsDiscovery",
+            '500': "ErrorResponse",
+            '4XX': "ErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def inspect_content_source_roots_with_http_info(
+        self,
+        source_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[ContentSourceRootsDiscovery]:
+        """List what a source's connection reaches
+
+        **Required permissions:** Any of `content_source:manage`, `project:settings_write`
+
+        :param source_id: (required)
+        :type source_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._inspect_content_source_roots_serialize(
+            source_id=source_id,
+            x_api_version=x_api_version,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "ContentSourceRootsDiscovery",
+            '500': "ErrorResponse",
+            '4XX': "ErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def inspect_content_source_roots_without_preload_content(
+        self,
+        source_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """List what a source's connection reaches
+
+        **Required permissions:** Any of `content_source:manage`, `project:settings_write`
+
+        :param source_id: (required)
+        :type source_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._inspect_content_source_roots_serialize(
+            source_id=source_id,
+            x_api_version=x_api_version,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "ContentSourceRootsDiscovery",
+            '500': "ErrorResponse",
+            '4XX': "ErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _inspect_content_source_roots_serialize(
+        self,
+        source_id,
+        x_api_version,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if source_id is not None:
+            _path_params['sourceId'] = source_id
+        # process the query parameters
+        # process the header parameters
+        if x_api_version is not None:
+            _header_params['x-api-version'] = x_api_version
+        # process the form parameters
+        # process the body parameter
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'OAuth2', 
+            'bearerAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='POST',
+            resource_path='/content-sources/{sourceId}/discover/roots',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def inspect_content_source_sample(
+        self,
+        source_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        inspect_content_source_sample_payload: Optional[InspectContentSourceSamplePayload] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ContentSourceSampleDiscovery:
+        """Read a sample of the files under a folder a source reaches
+
+        **Required permissions:** Any of `content_source:manage`, `project:settings_write`
+
+        :param source_id: (required)
+        :type source_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
+        :param inspect_content_source_sample_payload:
+        :type inspect_content_source_sample_payload: InspectContentSourceSamplePayload
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._inspect_content_source_sample_serialize(
+            source_id=source_id,
+            x_api_version=x_api_version,
+            inspect_content_source_sample_payload=inspect_content_source_sample_payload,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "ContentSourceSampleDiscovery",
+            '500': "ErrorResponse",
+            '4XX': "ErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def inspect_content_source_sample_with_http_info(
+        self,
+        source_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        inspect_content_source_sample_payload: Optional[InspectContentSourceSamplePayload] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[ContentSourceSampleDiscovery]:
+        """Read a sample of the files under a folder a source reaches
+
+        **Required permissions:** Any of `content_source:manage`, `project:settings_write`
+
+        :param source_id: (required)
+        :type source_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
+        :param inspect_content_source_sample_payload:
+        :type inspect_content_source_sample_payload: InspectContentSourceSamplePayload
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._inspect_content_source_sample_serialize(
+            source_id=source_id,
+            x_api_version=x_api_version,
+            inspect_content_source_sample_payload=inspect_content_source_sample_payload,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "ContentSourceSampleDiscovery",
+            '500': "ErrorResponse",
+            '4XX': "ErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def inspect_content_source_sample_without_preload_content(
+        self,
+        source_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        inspect_content_source_sample_payload: Optional[InspectContentSourceSamplePayload] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Read a sample of the files under a folder a source reaches
+
+        **Required permissions:** Any of `content_source:manage`, `project:settings_write`
+
+        :param source_id: (required)
+        :type source_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
+        :param inspect_content_source_sample_payload:
+        :type inspect_content_source_sample_payload: InspectContentSourceSamplePayload
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._inspect_content_source_sample_serialize(
+            source_id=source_id,
+            x_api_version=x_api_version,
+            inspect_content_source_sample_payload=inspect_content_source_sample_payload,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "ContentSourceSampleDiscovery",
+            '500': "ErrorResponse",
+            '4XX': "ErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _inspect_content_source_sample_serialize(
+        self,
+        source_id,
+        x_api_version,
+        inspect_content_source_sample_payload,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if source_id is not None:
+            _path_params['sourceId'] = source_id
+        # process the query parameters
+        # process the header parameters
+        if x_api_version is not None:
+            _header_params['x-api-version'] = x_api_version
+        # process the form parameters
+        # process the body parameter
+        if inspect_content_source_sample_payload is not None:
+            _body_params = inspect_content_source_sample_payload
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+        # set the HTTP header `Content-Type`
+        if _content_type:
+            _header_params['Content-Type'] = _content_type
+        else:
+            _default_content_type = (
+                self.api_client.select_header_content_type(
+                    [
+                        'application/json'
+                    ]
+                )
+            )
+            if _default_content_type is not None:
+                _header_params['Content-Type'] = _default_content_type
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'OAuth2', 
+            'bearerAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='POST',
+            resource_path='/content-sources/{sourceId}/discover/sample',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def inspect_content_source_schema(
+        self,
+        source_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        inspect_content_source_schema_payload: Optional[InspectContentSourceSchemaPayload] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ContentSourceSchemaDiscovery:
+        """Read how a source’s system describes its documents
+
+        **Required permissions:** Any of `content_source:manage`, `project:settings_write`
+
+        :param source_id: (required)
+        :type source_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
+        :param inspect_content_source_schema_payload:
+        :type inspect_content_source_schema_payload: InspectContentSourceSchemaPayload
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._inspect_content_source_schema_serialize(
+            source_id=source_id,
+            x_api_version=x_api_version,
+            inspect_content_source_schema_payload=inspect_content_source_schema_payload,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "ContentSourceSchemaDiscovery",
+            '500': "ErrorResponse",
+            '4XX': "ErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def inspect_content_source_schema_with_http_info(
+        self,
+        source_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        inspect_content_source_schema_payload: Optional[InspectContentSourceSchemaPayload] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[ContentSourceSchemaDiscovery]:
+        """Read how a source’s system describes its documents
+
+        **Required permissions:** Any of `content_source:manage`, `project:settings_write`
+
+        :param source_id: (required)
+        :type source_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
+        :param inspect_content_source_schema_payload:
+        :type inspect_content_source_schema_payload: InspectContentSourceSchemaPayload
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._inspect_content_source_schema_serialize(
+            source_id=source_id,
+            x_api_version=x_api_version,
+            inspect_content_source_schema_payload=inspect_content_source_schema_payload,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "ContentSourceSchemaDiscovery",
+            '500': "ErrorResponse",
+            '4XX': "ErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def inspect_content_source_schema_without_preload_content(
+        self,
+        source_id: StrictStr,
+        x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        inspect_content_source_schema_payload: Optional[InspectContentSourceSchemaPayload] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Read how a source’s system describes its documents
+
+        **Required permissions:** Any of `content_source:manage`, `project:settings_write`
+
+        :param source_id: (required)
+        :type source_id: str
+        :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
+        :type x_api_version: str
+        :param inspect_content_source_schema_payload:
+        :type inspect_content_source_schema_payload: InspectContentSourceSchemaPayload
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._inspect_content_source_schema_serialize(
+            source_id=source_id,
+            x_api_version=x_api_version,
+            inspect_content_source_schema_payload=inspect_content_source_schema_payload,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "ContentSourceSchemaDiscovery",
+            '500': "ErrorResponse",
+            '4XX': "ErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _inspect_content_source_schema_serialize(
+        self,
+        source_id,
+        x_api_version,
+        inspect_content_source_schema_payload,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if source_id is not None:
+            _path_params['sourceId'] = source_id
+        # process the query parameters
+        # process the header parameters
+        if x_api_version is not None:
+            _header_params['x-api-version'] = x_api_version
+        # process the form parameters
+        # process the body parameter
+        if inspect_content_source_schema_payload is not None:
+            _body_params = inspect_content_source_schema_payload
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+        # set the HTTP header `Content-Type`
+        if _content_type:
+            _header_params['Content-Type'] = _content_type
+        else:
+            _default_content_type = (
+                self.api_client.select_header_content_type(
+                    [
+                        'application/json'
+                    ]
+                )
+            )
+            if _default_content_type is not None:
+                _header_params['Content-Type'] = _default_content_type
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'OAuth2', 
+            'bearerAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='POST',
+            resource_path='/content-sources/{sourceId}/discover/schema',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
     def list_content_sources(
         self,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
@@ -1557,7 +3969,7 @@ class ContentSourcesApi:
     ) -> List[ExternalContentSource]:
         """List content sources
 
-        **Required permissions:** `project:settings_write`
+        **Required permissions:** Any of `content_source:manage`, `project:settings_write`
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1626,7 +4038,7 @@ class ContentSourcesApi:
     ) -> ApiResponse[List[ExternalContentSource]]:
         """List content sources
 
-        **Required permissions:** `project:settings_write`
+        **Required permissions:** Any of `content_source:manage`, `project:settings_write`
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1695,7 +4107,7 @@ class ContentSourcesApi:
     ) -> RESTResponseType:
         """List content sources
 
-        **Required permissions:** `project:settings_write`
+        **Required permissions:** Any of `content_source:manage`, `project:settings_write`
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1827,7 +4239,7 @@ class ContentSourcesApi:
     ) -> ContentSourceStatus:
         """Sync a content source now
 
-        Starts a sync round without waiting for the schedule: an update round that reads the changes, or, with `full`, an import that lists the whole folder and deletes the documents of files that no longer exist. Also hands the sync your credentials, which restarts a sync stopped because its credentials were refused.  **Required permissions:** `project:settings_write`
+        Starts a sync round without waiting for the schedule: an update round that reads the changes, or, with `full`, an import that lists the whole folder and deletes the documents of files that no longer exist. A source that never synced imports its whole folder, and its schedule runs from then on. Also hands the sync your credentials, which restarts a sync stopped because its credentials were refused.  **Required permissions:** Any of `content_source:manage`, `project:settings_write`
 
         :param source_id: (required)
         :type source_id: str
@@ -1904,7 +4316,7 @@ class ContentSourcesApi:
     ) -> ApiResponse[ContentSourceStatus]:
         """Sync a content source now
 
-        Starts a sync round without waiting for the schedule: an update round that reads the changes, or, with `full`, an import that lists the whole folder and deletes the documents of files that no longer exist. Also hands the sync your credentials, which restarts a sync stopped because its credentials were refused.  **Required permissions:** `project:settings_write`
+        Starts a sync round without waiting for the schedule: an update round that reads the changes, or, with `full`, an import that lists the whole folder and deletes the documents of files that no longer exist. A source that never synced imports its whole folder, and its schedule runs from then on. Also hands the sync your credentials, which restarts a sync stopped because its credentials were refused.  **Required permissions:** Any of `content_source:manage`, `project:settings_write`
 
         :param source_id: (required)
         :type source_id: str
@@ -1981,7 +4393,7 @@ class ContentSourcesApi:
     ) -> RESTResponseType:
         """Sync a content source now
 
-        Starts a sync round without waiting for the schedule: an update round that reads the changes, or, with `full`, an import that lists the whole folder and deletes the documents of files that no longer exist. Also hands the sync your credentials, which restarts a sync stopped because its credentials were refused.  **Required permissions:** `project:settings_write`
+        Starts a sync round without waiting for the schedule: an update round that reads the changes, or, with `full`, an import that lists the whole folder and deletes the documents of files that no longer exist. A source that never synced imports its whole folder, and its schedule runs from then on. Also hands the sync your credentials, which restarts a sync stopped because its credentials were refused.  **Required permissions:** Any of `content_source:manage`, `project:settings_write`
 
         :param source_id: (required)
         :type source_id: str
@@ -2138,7 +4550,7 @@ class ContentSourcesApi:
     ) -> ExternalContentSource:
         """Update a content source
 
-        Changes the name, description or sync settings. Saving sync settings also hands the sync your credentials, which restarts a sync stopped because its previous credentials were refused.  **Required permissions:** `project:settings_write`
+        Changes the name, description or sync settings, and, before the first sync, the library and folder to sync (409 afterwards). Saving sync settings also hands the sync your credentials, which restarts a sync stopped because its previous credentials were refused.  **Required permissions:** Any of `content_source:manage`, `project:settings_write`
 
         :param source_id: (required)
         :type source_id: str
@@ -2215,7 +4627,7 @@ class ContentSourcesApi:
     ) -> ApiResponse[ExternalContentSource]:
         """Update a content source
 
-        Changes the name, description or sync settings. Saving sync settings also hands the sync your credentials, which restarts a sync stopped because its previous credentials were refused.  **Required permissions:** `project:settings_write`
+        Changes the name, description or sync settings, and, before the first sync, the library and folder to sync (409 afterwards). Saving sync settings also hands the sync your credentials, which restarts a sync stopped because its previous credentials were refused.  **Required permissions:** Any of `content_source:manage`, `project:settings_write`
 
         :param source_id: (required)
         :type source_id: str
@@ -2292,7 +4704,7 @@ class ContentSourcesApi:
     ) -> RESTResponseType:
         """Update a content source
 
-        Changes the name, description or sync settings. Saving sync settings also hands the sync your credentials, which restarts a sync stopped because its previous credentials were refused.  **Required permissions:** `project:settings_write`
+        Changes the name, description or sync settings, and, before the first sync, the library and folder to sync (409 afterwards). Saving sync settings also hands the sync your credentials, which restarts a sync stopped because its previous credentials were refused.  **Required permissions:** Any of `content_source:manage`, `project:settings_write`
 
         :param source_id: (required)
         :type source_id: str

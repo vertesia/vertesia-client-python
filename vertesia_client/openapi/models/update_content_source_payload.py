@@ -27,12 +27,15 @@ from pydantic_core import to_jsonable_python
 
 class UpdateContentSourcePayload(BaseModel):
     """
-    Changes the name, description or sync settings. Saving sync settings also hands the sync your credentials, which restarts a sync stopped because its previous credentials were refused.
+    Changes the name, description or sync settings, and, before the first sync, the root and folder to sync. Saving sync settings also hands the sync your credentials, which restarts a sync stopped because its previous credentials were refused.
     """ # noqa: E501
     name: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=128)]] = None
     description: Optional[StrictStr] = None
     sync: Optional[ContentSourceSyncSettings] = None
-    __properties: ClassVar[List[str]] = ["name", "description", "sync"]
+    root_id: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="Only before the first sync: the root to sync, as `discover/roots` returned it (a SharePoint document library; for Box, a folder shared with the app). Answers 409 once the source has synced.")
+    folder_id: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="Only before the first sync: the folder to sync, as a folder listing returned its `id`. Answers 409 once the source has synced.")
+    folder_path: Optional[StrictStr] = Field(default=None, description="SharePoint only, and only before the first sync: the folder to sync inside the library, e.g. `Contracts/2026`; empty for the whole library. Answers 409 once the source has synced.")
+    __properties: ClassVar[List[str]] = ["name", "description", "sync", "root_id", "folder_id", "folder_path"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -90,7 +93,10 @@ class UpdateContentSourcePayload(BaseModel):
         _obj = cls.model_validate({
             "name": obj.get("name"),
             "description": obj.get("description"),
-            "sync": ContentSourceSyncSettings.from_dict(obj["sync"]) if obj.get("sync") is not None else None
+            "sync": ContentSourceSyncSettings.from_dict(obj["sync"]) if obj.get("sync") is not None else None,
+            "root_id": obj.get("root_id"),
+            "folder_id": obj.get("folder_id"),
+            "folder_path": obj.get("folder_path")
         })
         return _obj
 

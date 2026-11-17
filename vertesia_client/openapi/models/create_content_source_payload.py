@@ -29,7 +29,7 @@ CREATECONTENTSOURCEPAYLOAD_ONE_OF_SCHEMAS = ["CreateBoxContentSourcePayload", "C
 
 class CreateContentSourcePayload(BaseModel):
     """
-    Registers a content source. The server checks the folder with the system before saving, answers 409 when the name is already used in the project, then starts the first sync.
+    Registers a content source. The server checks the folder with the system before saving, answers 409 when the name is already used in the project. Nothing is imported until a sync is requested.
     """
     # data type: CreateSharePointContentSourcePayload
     oneof_schema_1_validator: Optional[CreateSharePointContentSourcePayload] = None
