@@ -688,6 +688,7 @@ vertesia_client/openapi/models/indexing_status_response.py
 vertesia_client/openapi/models/indexing_status_response_index.py
 vertesia_client/openapi/models/indexing_status_response_reindex_progress.py
 vertesia_client/openapi/models/inference_profile.py
+vertesia_client/openapi/models/inference_profile_invocation.py
 vertesia_client/openapi/models/inference_profile_record.py
 vertesia_client/openapi/models/inference_profile_snapshot.py
 vertesia_client/openapi/models/inference_profile_usage.py

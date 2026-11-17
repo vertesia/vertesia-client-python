@@ -710,6 +710,7 @@ __all__ = [
     "IndexingStatusResponseIndex",
     "IndexingStatusResponseReindexProgress",
     "InferenceProfile",
+    "InferenceProfileInvocation",
     "InferenceProfileRecord",
     "InferenceProfileSnapshot",
     "InferenceProfileUsage",
@@ -2050,6 +2051,7 @@ from vertesia_client.openapi.models.indexing_status_response import IndexingStat
 from vertesia_client.openapi.models.indexing_status_response_index import IndexingStatusResponseIndex as IndexingStatusResponseIndex
 from vertesia_client.openapi.models.indexing_status_response_reindex_progress import IndexingStatusResponseReindexProgress as IndexingStatusResponseReindexProgress
 from vertesia_client.openapi.models.inference_profile import InferenceProfile as InferenceProfile
+from vertesia_client.openapi.models.inference_profile_invocation import InferenceProfileInvocation as InferenceProfileInvocation
 from vertesia_client.openapi.models.inference_profile_record import InferenceProfileRecord as InferenceProfileRecord
 from vertesia_client.openapi.models.inference_profile_snapshot import InferenceProfileSnapshot as InferenceProfileSnapshot
 from vertesia_client.openapi.models.inference_profile_usage import InferenceProfileUsage as InferenceProfileUsage
