@@ -29,7 +29,7 @@ class ContentSourceContentTypeCount(BaseModel):
     ContentSourceContentTypeCount
     """ # noqa: E501
     name: StrictStr
-    count: Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]
+    count: Annotated[int, Field(strict=True)]
     __properties: ClassVar[List[str]] = ["name", "count"]
 
     model_config = ConfigDict(

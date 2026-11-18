@@ -32,7 +32,7 @@ class ContentSourceSampleFile(BaseModel):
     id: StrictStr
     name: StrictStr
     folder_path: StrictStr = Field(description="The folder of the file, inside the library (SharePoint) or below All Files (Box).")
-    size: Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]] = None
+    size: Optional[Annotated[int, Field(strict=True)]] = None
     mime_type: Optional[StrictStr] = None
     web_url: Optional[StrictStr] = None
     modified_at: Optional[datetime] = None

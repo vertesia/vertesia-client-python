@@ -28,8 +28,8 @@ class SubscriptionWorkflowDefinitionTemplatesInner(BaseModel):
     """
     SubscriptionWorkflowDefinitionTemplatesInner
     """ # noqa: E501
-    name: Annotated[str, Field(min_length=1, strict=True)]
-    title: Annotated[str, Field(min_length=1, strict=True)]
+    name: Annotated[str, Field(strict=True)]
+    title: Annotated[str, Field(strict=True)]
     description: StrictStr
     variables: Dict[str, Any]
     __properties: ClassVar[List[str]] = ["name", "title", "description", "variables"]

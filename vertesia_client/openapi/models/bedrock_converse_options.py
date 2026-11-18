@@ -38,7 +38,7 @@ class BedrockConverseOptions(BaseModel):
     reasoning_effort: Optional[ReasoningEffort] = None
     verbosity: Optional[StrictStr] = None
     include_thoughts: Optional[StrictBool] = None
-    service_tier: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="Provider-defined processing tier. Unknown non-empty values are preserved for forward compatibility.")
+    service_tier: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Provider-defined processing tier. Unknown non-empty values are preserved for forward compatibility.")
     __properties: ClassVar[List[str]] = ["_option_id", "max_tokens", "temperature", "top_p", "stop_sequence", "effort", "reasoning_effort", "verbosity", "include_thoughts", "service_tier"]
 
     @field_validator('option_id')

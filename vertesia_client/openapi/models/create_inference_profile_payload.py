@@ -30,35 +30,15 @@ class CreateInferenceProfilePayload(BaseModel):
     """
     Create a profile in the current project. The server assigns its MongoDB ID.
     """ # noqa: E501
-    name: Annotated[str, Field(min_length=1, strict=True, max_length=80)] = Field(description="Editable display name, independent of the stable profile ID.")
-    description: Optional[Annotated[str, Field(strict=True, max_length=1000)]] = None
+    name: Annotated[str, Field(strict=True)] = Field(description="Editable display name, independent of the stable profile ID.")
+    description: Optional[Annotated[str, Field(strict=True)]] = None
     environment: Annotated[str, Field(strict=True)]
-    model: Optional[Annotated[str, Field(min_length=1, strict=True)]] = None
+    model: Optional[Annotated[str, Field(strict=True)]] = None
     model_options: Optional[ModelOptions] = None
     invocation: Optional[InferenceProfileInvocation] = None
-    decision_threshold: Optional[Union[Annotated[float, Field(lt=1, strict=True, gt=0)], Annotated[int, Field(lt=1, strict=True, gt=0)]]] = Field(default=None, description="Minimum confidence a decision answer needs to be used, overriding the interaction's own threshold. Confidence means different things per provider, so set it per profile.")
-    audit_sample_rate: Optional[Union[Annotated[float, Field(le=1, strict=True, ge=0)], Annotated[int, Field(le=1, strict=True, ge=0)]]] = Field(default=None, description="With invocation `decide`: the share of runs that also run regular inference, to compare the two after the switch. Absent means none.")
+    decision_threshold: Optional[Union[Annotated[float, Field(strict=True)], Annotated[int, Field(strict=True)]]] = Field(default=None, description="Minimum confidence a decision answer needs to be used, overriding the interaction's own threshold. Confidence means different things per provider, so set it per profile.")
+    audit_sample_rate: Optional[Union[Annotated[float, Field(strict=True)], Annotated[int, Field(strict=True)]]] = Field(default=None, description="With invocation `decide`: the share of runs that also run regular inference, to compare the two after the switch. Absent means none.")
     __properties: ClassVar[List[str]] = ["name", "description", "environment", "model", "model_options", "invocation", "decision_threshold", "audit_sample_rate"]
-
-    @field_validator('name')
-    def name_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"\S", value):
-            raise ValueError(r"must validate the regular expression /\S/")
-        return value
-
-    @field_validator('environment')
-    def environment_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^[a-fA-F0-9]{24}$", value):
-            raise ValueError(r"must validate the regular expression /^[a-fA-F0-9]{24}$/")
-        return value
 
     model_config = ConfigDict(
         validate_by_name=True,

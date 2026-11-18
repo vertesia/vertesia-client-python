@@ -30,12 +30,12 @@ class AgentRunFeedbackPayload(BaseModel):
     """
     A user rating on an agent run.
     """ # noqa: E501
-    feedback_id: Annotated[str, Field(min_length=1, strict=True, max_length=64)] = Field(description="Client-generated idempotency key (a UUID). A retried request with the same id is a no-op.")
+    feedback_id: Annotated[str, Field(strict=True)] = Field(description="Client-generated idempotency key (a UUID). A retried request with the same id is a no-op.")
     rating: AgentRunFeedbackRating
     reason_code: Optional[AgentRunFeedbackReasonCode] = None
-    comment: Optional[Annotated[str, Field(strict=True, max_length=2000)]] = Field(default=None, description="Free-text comment. Stored with the tenant; only its presence is ever counted.")
+    comment: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Free-text comment. Stored with the tenant; only its presence is ever counted.")
     message_id: Optional[StrictStr] = Field(default=None, description="Rate one message rather than the run as a whole.")
-    message_seq: Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=0)]] = Field(default=None, description="Position of the rated message in the run, when a message is rated.")
+    message_seq: Optional[Annotated[int, Field(strict=True)]] = Field(default=None, description="Position of the rated message in the run, when a message is rated.")
     __properties: ClassVar[List[str]] = ["feedback_id", "rating", "reason_code", "comment", "message_id", "message_seq"]
 
     model_config = ConfigDict(

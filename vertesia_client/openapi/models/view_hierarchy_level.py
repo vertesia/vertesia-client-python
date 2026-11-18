@@ -28,32 +28,12 @@ class ViewHierarchyLevel(BaseModel):
     """
     ViewHierarchyLevel
     """ # noqa: E501
-    id: Annotated[str, Field(min_length=1, strict=True, max_length=64)]
-    label: Annotated[str, Field(min_length=1, strict=True, max_length=120)]
-    var_field: Annotated[str, Field(min_length=1, strict=True, max_length=160)] = Field(alias="field")
-    size: Optional[Union[Annotated[float, Field(multiple_of=1, le=500, strict=True, ge=1)], Annotated[int, Field(le=500, strict=True, ge=1)]]] = None
+    id: Annotated[str, Field(strict=True)]
+    label: Annotated[str, Field(strict=True)]
+    var_field: Annotated[str, Field(strict=True)] = Field(alias="field")
+    size: Optional[Union[Annotated[float, Field(strict=True)], Annotated[int, Field(strict=True)]]] = None
     sort: Optional[StrictStr] = None
     __properties: ClassVar[List[str]] = ["id", "label", "field", "size", "sort"]
-
-    @field_validator('id')
-    def id_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^[a-z][a-z0-9_-]*$", value):
-            raise ValueError(r"must validate the regular expression /^[a-z][a-z0-9_-]*$/")
-        return value
-
-    @field_validator('var_field')
-    def var_field_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^[A-Za-z0-9_]+(?:\.[A-Za-z0-9_]+)*$", value):
-            raise ValueError(r"must validate the regular expression /^[A-Za-z0-9_]+(?:\.[A-Za-z0-9_]+)*$/")
-        return value
 
     @field_validator('sort')
     def sort_validate_enum(cls, value):

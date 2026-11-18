@@ -33,7 +33,7 @@ class ProcessDefinition(BaseModel):
     ProcessDefinition
     """ # noqa: E501
     id: StrictStr
-    edit_revision: Annotated[int, Field(le=9007199254740991, strict=True, ge=1)] = Field(description="Monotonic edit revision used to detect concurrent updates.")
+    edit_revision: Annotated[int, Field(strict=True)] = Field(description="Monotonic edit revision used to detect concurrent updates.")
     account: StrictStr
     project: StrictStr
     name: StrictStr

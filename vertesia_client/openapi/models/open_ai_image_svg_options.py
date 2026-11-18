@@ -29,7 +29,7 @@ class OpenAiImageSvgOptions(BaseModel):
     """
     OpenAiImageSvgOptions
     """ # noqa: E501
-    model: Optional[Annotated[str, Field(min_length=1, strict=True)]] = None
+    model: Optional[Annotated[str, Field(strict=True)]] = None
     reasoning: Optional[OpenAiImageSvgOptionsReasoning] = None
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["model", "reasoning"]

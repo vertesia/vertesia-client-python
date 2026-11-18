@@ -28,7 +28,7 @@ class ValidateUrlRequest(BaseModel):
     """
     ValidateUrlRequest
     """ # noqa: E501
-    url: Annotated[str, Field(min_length=1, strict=True)]
+    url: Annotated[str, Field(strict=True)]
     __properties: ClassVar[List[str]] = ["url"]
 
     model_config = ConfigDict(

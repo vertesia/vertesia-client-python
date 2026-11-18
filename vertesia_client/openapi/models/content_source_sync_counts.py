@@ -28,13 +28,13 @@ class ContentSourceSyncCounts(BaseModel):
     """
     ContentSourceSyncCounts
     """ # noqa: E501
-    listed: Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)] = Field(description="Files listed or reported as changed.")
-    created: Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]
-    updated: Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]
-    unchanged: Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]
-    deleted: Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]
-    skipped: Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)] = Field(description="Files that are not synced (unsupported types, packages).")
-    failed: Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]
+    listed: Annotated[int, Field(strict=True)] = Field(description="Files listed or reported as changed.")
+    created: Annotated[int, Field(strict=True)]
+    updated: Annotated[int, Field(strict=True)]
+    unchanged: Annotated[int, Field(strict=True)]
+    deleted: Annotated[int, Field(strict=True)]
+    skipped: Annotated[int, Field(strict=True)] = Field(description="Files that are not synced (unsupported types, packages).")
+    failed: Annotated[int, Field(strict=True)]
     __properties: ClassVar[List[str]] = ["listed", "created", "updated", "unchanged", "deleted", "skipped", "failed"]
 
     model_config = ConfigDict(

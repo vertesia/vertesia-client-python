@@ -30,22 +30,12 @@ class CustomRoleDefinition(BaseModel):
     """
     CustomRoleDefinition
     """ # noqa: E501
-    name: Annotated[str, Field(strict=True, max_length=64)] = Field(description="Immutable snake_case name without the c: prefix. References in ACEs and tokens use c:<name>.")
-    title: Annotated[str, Field(min_length=1, strict=True, max_length=120)]
-    description: Optional[Annotated[str, Field(strict=True, max_length=1000)]] = None
+    name: Annotated[str, Field(strict=True)] = Field(description="Immutable snake_case name without the c: prefix. References in ACEs and tokens use c:<name>.")
+    title: Annotated[str, Field(strict=True)]
+    description: Optional[Annotated[str, Field(strict=True)]] = None
     base_roles: Optional[List[AssignableRoleName]] = Field(default=None, description="Roles whose permissions are inherited, in addition to permissions below. Use built-in system role names or c:<name> references in this account. Cycles and ABAC roles are not allowed. Changes to a base role apply to newly minted tokens.")
-    permissions: Annotated[List[Permission], Field(max_length=50)]
+    permissions: Annotated[List[Permission], Field()]
     __properties: ClassVar[List[str]] = ["name", "title", "description", "base_roles", "permissions"]
-
-    @field_validator('name')
-    def name_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$", value):
-            raise ValueError(r"must validate the regular expression /^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$/")
-        return value
 
     model_config = ConfigDict(
         validate_by_name=True,

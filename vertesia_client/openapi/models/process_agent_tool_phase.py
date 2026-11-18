@@ -29,14 +29,14 @@ class ProcessAgentToolPhase(BaseModel):
     """
     ProcessAgentToolPhase
     """ # noqa: E501
-    id: Annotated[str, Field(min_length=1, strict=True)]
-    tools: Annotated[List[Annotated[str, Field(min_length=1, strict=True)]], Field(min_length=1)] = Field(description="Any successful tool in this list advances the phase.")
-    continuation_tools: Optional[Annotated[List[Annotated[str, Field(min_length=1, strict=True)]], Field(min_length=1)]] = Field(default=None, description="Additional tools authorized while the phase is active. Successful calls do not advance the phase.")
-    recovery_tools: Optional[Annotated[List[Annotated[str, Field(min_length=1, strict=True)]], Field(min_length=1)]] = Field(default=None, description="Additional tools authorized only after a matching phase tool fails. Successful calls do not advance the phase.")
-    tool_input_contains: Optional[Annotated[List[ProcessAgentToolInputContains], Field(min_length=1)]] = Field(default=None, description="All declared top-level string-field presence, absence, and minimum-length checks must match before a tool call is authorized or advances the phase.")
-    min_successes: Optional[Annotated[int, Field(le=9007199254740991, strict=True, gt=0)]] = Field(default=None, description="Successful matching calls required to advance. Defaults to one.")
-    max_tokens: Optional[Annotated[int, Field(le=9007199254740991, strict=True, gt=0)]] = Field(default=None, description="Optional output-token ceiling for model turns while this action phase is active.")
-    recovery_prompt: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Process-authored instruction used when the agent tries to finish during this phase.")
+    id: Annotated[str, Field(strict=True)]
+    tools: Annotated[List[Annotated[str, Field(strict=True)]], Field()] = Field(description="Any successful tool in this list advances the phase.")
+    continuation_tools: Optional[Annotated[List[Annotated[str, Field(strict=True)]], Field()]] = Field(default=None, description="Additional tools authorized while the phase is active. Successful calls do not advance the phase.")
+    recovery_tools: Optional[Annotated[List[Annotated[str, Field(strict=True)]], Field()]] = Field(default=None, description="Additional tools authorized only after a matching phase tool fails. Successful calls do not advance the phase.")
+    tool_input_contains: Optional[Annotated[List[ProcessAgentToolInputContains], Field()]] = Field(default=None, description="All declared top-level string-field presence, absence, and minimum-length checks must match before a tool call is authorized or advances the phase.")
+    min_successes: Optional[Annotated[int, Field(strict=True)]] = Field(default=None, description="Successful matching calls required to advance. Defaults to one.")
+    max_tokens: Optional[Annotated[int, Field(strict=True)]] = Field(default=None, description="Optional output-token ceiling for model turns while this action phase is active.")
+    recovery_prompt: Annotated[str, Field(strict=True)] = Field(description="Process-authored instruction used when the agent tries to finish during this phase.")
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["id", "tools", "continuation_tools", "recovery_tools", "tool_input_contains", "min_successes", "max_tokens", "recovery_prompt"]
 

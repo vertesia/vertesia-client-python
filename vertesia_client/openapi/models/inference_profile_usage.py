@@ -30,7 +30,7 @@ class InferenceProfileUsage(BaseModel):
     Persisted direct assignments; runtime overrides and inherited usage are not enumerated.
     """ # noqa: E501
     interactions: List[InferenceProfileUsageEntry]
-    total: Annotated[int, Field(le=9007199254740991, strict=True, ge=0)]
+    total: Annotated[int, Field(strict=True)]
     defaults: List[StrictStr] = Field(description="Project default slots directly referencing this profile.")
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["interactions", "total", "defaults"]

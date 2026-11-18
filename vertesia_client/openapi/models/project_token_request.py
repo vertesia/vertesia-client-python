@@ -32,7 +32,7 @@ class ProjectTokenRequest(BaseModel):
     type: StrictStr
     audience: Optional[StrictStr] = None
     algorithm: Optional[SigningAlgorithm] = Field(default=None, description="Signing algorithm - defaults to ES256. Use RS256 for Azure AD compatibility.")
-    project_id: Annotated[str, Field(min_length=1, strict=True)]
+    project_id: Annotated[str, Field(strict=True)]
     account_id: StrictStr
     __properties: ClassVar[List[str]] = ["type", "audience", "algorithm", "project_id", "account_id"]
 

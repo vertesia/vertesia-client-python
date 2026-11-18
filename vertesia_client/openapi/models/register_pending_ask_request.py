@@ -30,11 +30,11 @@ class RegisterPendingAskRequest(BaseModel):
     """
     RegisterPendingAskRequest
     """ # noqa: E501
-    run_id: Annotated[str, Field(min_length=1, strict=True)] = Field(alias="runId")
-    workflow_id: Annotated[str, Field(min_length=1, strict=True)] = Field(alias="workflowId")
-    agent_name: Annotated[str, Field(min_length=1, strict=True)] = Field(alias="agentName")
-    questions: Annotated[List[StrictStr], Field(min_length=1)]
-    timeout_hours: Optional[Union[Annotated[float, Field(strict=True, gt=0)], Annotated[int, Field(strict=True, gt=0)]]] = Field(default=None, description="Hours before the question expires; more than 0. Defaults to 48.", alias="timeoutHours")
+    run_id: Annotated[str, Field(strict=True)] = Field(alias="runId")
+    workflow_id: Annotated[str, Field(strict=True)] = Field(alias="workflowId")
+    agent_name: Annotated[str, Field(strict=True)] = Field(alias="agentName")
+    questions: Annotated[List[StrictStr], Field()]
+    timeout_hours: Optional[Union[Annotated[float, Field(strict=True)], Annotated[int, Field(strict=True)]]] = Field(default=None, description="Hours before the question expires; more than 0. Defaults to 48.", alias="timeoutHours")
     user_channels: List[UserChannel] = Field(alias="userChannels")
     task_fields: Optional[List[TaskField]] = Field(default=None, alias="taskFields")
     request_id: Optional[StrictStr] = Field(default=None, alias="requestId")

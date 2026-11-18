@@ -32,7 +32,7 @@ class S3MultipartUploadSession(BaseModel):
     id: StrictStr = Field(description="Storage URI of the file being uploaded.")
     path: StrictStr
     mime_type: Optional[StrictStr] = None
-    part_size: Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)] = Field(description="Bytes per part to start with. GCS chunks are this size. S3 parts and Azure blocks may be larger, to keep within the 10,000 parts S3 allows and the 50,000 blocks Azure does.")
+    part_size: Annotated[int, Field(strict=True)] = Field(description="Bytes per part to start with. GCS chunks are this size. S3 parts and Azure blocks may be larger, to keep within the 10,000 parts S3 allows and the 50,000 blocks Azure does.")
     upload_id: StrictStr = Field(description="S3 multipart upload ID. Sign part URLs, then complete or abort the upload with it.")
     __properties: ClassVar[List[str]] = ["protocol", "id", "path", "mime_type", "part_size", "upload_id"]
 

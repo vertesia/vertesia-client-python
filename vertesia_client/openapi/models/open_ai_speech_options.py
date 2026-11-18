@@ -29,9 +29,9 @@ class OpenAiSpeechOptions(BaseModel):
     OpenAiSpeechOptions
     """ # noqa: E501
     option_id: Optional[StrictStr] = Field(default=None, alias="_option_id")
-    voice: Optional[Annotated[str, Field(min_length=1, strict=True)]] = None
+    voice: Optional[Annotated[str, Field(strict=True)]] = None
     response_format: Optional[StrictStr] = None
-    speed: Optional[Union[Annotated[float, Field(le=4, strict=True, ge=0.25)], Annotated[int, Field(le=4, strict=True, ge=1)]]] = None
+    speed: Optional[Union[Annotated[float, Field(strict=True)], Annotated[int, Field(strict=True)]]] = None
     instructions: Optional[StrictStr] = None
     __properties: ClassVar[List[str]] = ["_option_id", "voice", "response_format", "speed", "instructions"]
 

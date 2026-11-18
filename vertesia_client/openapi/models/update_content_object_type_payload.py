@@ -39,10 +39,10 @@ class UpdateContentObjectTypePayload(BaseModel):
     table_layout: Optional[List[ColumnLayout]] = Field(default=None, description="Column layout used when listing documents of this type. Only included in ContentObjectTypeItem if explicitly requested; always included in ContentObjectType.")
     object_schema: Optional[Dict[str, Any]] = Field(default=None, description="JSON Schema for the structured properties extracted into documents of this type. Only included in ContentObjectTypeItem if explicitly requested; always included in ContentObjectType.")
     strict_mode: Optional[StrictBool] = Field(default=None, description="Determines if the content will be validated against the object schema a generation time and save/update time.")
-    name: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="Human-readable name or title")
+    name: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Human-readable name or title")
     description: Optional[StrictStr] = Field(default=None, description="Optional detailed description of the object")
     tags: Optional[List[StrictStr]] = Field(default=None, description="Optional array of categorization tags")
-    expected_edit_revision: Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=1)]] = Field(default=None, description="Edit revision returned by the last read. Stale revisions are rejected with HTTP 409. Omit for legacy last-write-wins behavior.")
+    expected_edit_revision: Optional[Annotated[int, Field(strict=True)]] = Field(default=None, description="Edit revision returned by the last read. Stale revisions are rejected with HTTP 409. Omit for legacy last-write-wins behavior.")
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["status", "is_chunkable", "intake", "editing", "table_layout", "object_schema", "strict_mode", "name", "description", "tags", "expected_edit_revision"]
 

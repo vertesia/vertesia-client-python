@@ -30,7 +30,7 @@ class ValidateToolNamesResponse(BaseModel):
     Response from `POST /tools/validate`.
     """ # noqa: E501
     results: List[ToolValidationResult] = Field(description="One entry per requested name, in the same order.")
-    invalid_count: Annotated[int, Field(strict=True, ge=0)] = Field(description="Convenience count of `results.filter(r => !r.valid).length`.")
+    invalid_count: Annotated[int, Field(strict=True)] = Field(description="Convenience count of `results.filter(r => !r.valid).length`.")
     __properties: ClassVar[List[str]] = ["results", "invalid_count"]
 
     model_config = ConfigDict(

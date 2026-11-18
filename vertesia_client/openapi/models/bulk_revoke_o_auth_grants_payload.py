@@ -44,45 +44,6 @@ class BulkRevokeOAuthGrantsPayload(BaseModel):
     include_consent: Optional[StrictBool] = None
     __properties: ClassVar[List[str]] = ["account_id", "project_id", "user_id", "client_id", "resource", "status", "limit", "offset", "sort_by", "sort_order", "grant_ids", "include_consent"]
 
-    @field_validator('account_id')
-    def account_id_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if value is None:
-            return value
-
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^(?:[0-9a-fA-F]{24})?$", value):
-            raise ValueError(r"must validate the regular expression /^(?:[0-9a-fA-F]{24})?$/")
-        return value
-
-    @field_validator('project_id')
-    def project_id_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if value is None:
-            return value
-
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^(?:[0-9a-fA-F]{24})?$", value):
-            raise ValueError(r"must validate the regular expression /^(?:[0-9a-fA-F]{24})?$/")
-        return value
-
-    @field_validator('user_id')
-    def user_id_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if value is None:
-            return value
-
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^(?:[0-9a-fA-F]{24})?$", value):
-            raise ValueError(r"must validate the regular expression /^(?:[0-9a-fA-F]{24})?$/")
-        return value
-
     @field_validator('status')
     def status_validate_enum(cls, value):
         """Validates the enum"""

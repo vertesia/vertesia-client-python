@@ -28,8 +28,8 @@ class CancelEventDeliveryIntentsPayload(BaseModel):
     """
     CancelEventDeliveryIntentsPayload
     """ # noqa: E501
-    subscription_id: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="Restrict cancellation to one subscription.")
-    target_type: Optional[Annotated[List[StrictStr], Field(min_length=1)]] = Field(default=None, description="Restrict cancellation to one or more delivery target types.")
+    subscription_id: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Restrict cancellation to one subscription.")
+    target_type: Optional[Annotated[List[StrictStr], Field()]] = Field(default=None, description="Restrict cancellation to one or more delivery target types.")
     __properties: ClassVar[List[str]] = ["subscription_id", "target_type"]
 
     @field_validator('target_type')

@@ -28,8 +28,8 @@ class InheritedPropertyMetadata(BaseModel):
     """
     Metadata about a single inherited property.
     """ # noqa: E501
-    name: Annotated[str, Field(min_length=1, strict=True)] = Field(description="The property name that was inherited")
-    collection: Annotated[str, Field(min_length=1, strict=True)] = Field(description="The collection ID that provided this property")
+    name: Annotated[str, Field(strict=True)] = Field(description="The property name that was inherited")
+    collection: Annotated[str, Field(strict=True)] = Field(description="The collection ID that provided this property")
     __properties: ClassVar[List[str]] = ["name", "collection"]
 
     model_config = ConfigDict(

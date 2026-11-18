@@ -28,9 +28,9 @@ class AppSessionTokenRequest(BaseModel):
     """
     AppSessionTokenRequest
     """ # noqa: E501
-    app_name: Annotated[str, Field(min_length=1, strict=True)]
+    app_name: Annotated[str, Field(strict=True)]
     scopes: Optional[List[StrictStr]] = None
-    ttl_seconds: Optional[Annotated[int, Field(le=900, strict=True, ge=1)]] = None
+    ttl_seconds: Optional[Annotated[int, Field(strict=True)]] = None
     __properties: ClassVar[List[str]] = ["app_name", "scopes", "ttl_seconds"]
 
     model_config = ConfigDict(

@@ -28,9 +28,9 @@ class ViewExperienceScope(BaseModel):
     """
     ViewExperienceScope
     """ # noqa: E501
-    type_ids: Optional[Annotated[List[Annotated[str, Field(min_length=1, strict=True)]], Field(max_length=100)]] = None
-    locations: Optional[Annotated[List[Annotated[str, Field(min_length=1, strict=True)]], Field(max_length=100)]] = None
-    collection_ids: Optional[Annotated[List[Annotated[str, Field(min_length=1, strict=True)]], Field(max_length=100)]] = None
+    type_ids: Optional[Annotated[List[Annotated[str, Field(strict=True)]], Field()]] = None
+    locations: Optional[Annotated[List[Annotated[str, Field(strict=True)]], Field()]] = None
+    collection_ids: Optional[Annotated[List[Annotated[str, Field(strict=True)]], Field()]] = None
     include_collection_descendants: Optional[StrictBool] = None
     fixed_filter: Optional[Dict[str, Any]] = Field(default=None, description="An author-provided Elasticsearch query subtree validated by the View runtime.")
     head_only: Optional[StrictBool] = None

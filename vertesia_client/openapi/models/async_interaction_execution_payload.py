@@ -33,7 +33,7 @@ class AsyncInteractionExecutionPayload(BaseModel):
     """
     AsyncInteractionExecutionPayload
     """ # noqa: E501
-    interaction: Annotated[str, Field(min_length=1, strict=True)] = Field(description="The interaction name and suffixed by an optional tag or version separated from the name using a @ character If no version/tag part is specified then the latest version is used. Example: ReviewContract, ReviewContract@draft, ReviewContract@1, ReviewContract@some-tag")
+    interaction: Annotated[str, Field(strict=True)] = Field(description="The interaction name and suffixed by an optional tag or version separated from the name using a @ character If no version/tag part is specified then the latest version is used. Example: ReviewContract, ReviewContract@draft, ReviewContract@1, ReviewContract@some-tag")
     data: Optional[Any] = None
     config: Optional[InteractionExecutionConfiguration] = None
     result_schema: Optional[AsyncConversationExecutionPayloadResultSchema] = None

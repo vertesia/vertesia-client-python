@@ -29,7 +29,7 @@ class BatchQueryPayloadQueriesInner(BaseModel):
     BatchQueryPayloadQueriesInner
     """ # noqa: E501
     name: StrictStr
-    sql: Annotated[str, Field(min_length=1, strict=True)]
+    sql: Annotated[str, Field(strict=True)]
     limit: Optional[Union[StrictFloat, StrictInt]] = None
     __properties: ClassVar[List[str]] = ["name", "sql", "limit"]
 

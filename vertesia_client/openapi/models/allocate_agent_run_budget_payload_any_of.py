@@ -28,7 +28,7 @@ class AllocateAgentRunBudgetPayloadAnyOf(BaseModel):
     """
     AllocateAgentRunBudgetPayloadAnyOf
     """ # noqa: E501
-    additional_tokens: Annotated[int, Field(le=9007199254740991, strict=True, gt=0)] = Field(description="Weighted tokens to add to the run allowance.")
+    additional_tokens: Annotated[int, Field(strict=True)] = Field(description="Weighted tokens to add to the run allowance.")
     __properties: ClassVar[List[str]] = ["additional_tokens"]
 
     model_config = ConfigDict(

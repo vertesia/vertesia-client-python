@@ -28,8 +28,8 @@ class NotificationUpdateResult(BaseModel):
     """
     NotificationUpdateResult
     """ # noqa: E501
-    updated: Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]
-    held: Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]] = Field(default=None, description="Occurrences acknowledged before their notification existed.")
+    updated: Annotated[int, Field(strict=True)]
+    held: Optional[Annotated[int, Field(strict=True)]] = Field(default=None, description="Occurrences acknowledged before their notification existed.")
     __properties: ClassVar[List[str]] = ["updated", "held"]
 
     model_config = ConfigDict(

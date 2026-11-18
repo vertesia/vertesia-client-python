@@ -29,9 +29,9 @@ class CompleteUploadSessionPayload(BaseModel):
     """
     CompleteUploadSessionPayload
     """ # noqa: E501
-    id: Annotated[str, Field(min_length=1, strict=True)] = Field(description="The session id.")
-    upload_id: Annotated[str, Field(min_length=1, strict=True)]
-    parts: Annotated[List[CompletedUploadPart], Field(min_length=1, max_length=10000)]
+    id: Annotated[str, Field(strict=True)] = Field(description="The session id.")
+    upload_id: Annotated[str, Field(strict=True)]
+    parts: Annotated[List[CompletedUploadPart], Field()]
     __properties: ClassVar[List[str]] = ["id", "upload_id", "parts"]
 
     model_config = ConfigDict(

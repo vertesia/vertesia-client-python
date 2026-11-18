@@ -31,8 +31,8 @@ class CancelEventDeliveryIntentsResponse(BaseModel):
     """ # noqa: E501
     environment: StrictStr = Field(description="Deployment environment whose queue was changed.")
     cleared_through: datetime = Field(description="Server-side watermark; intents created after this time were not changed.")
-    cancelled: Annotated[int, Field(le=9007199254740991, strict=True, ge=0)] = Field(description="Pending or retrying intents moved to the cancelled terminal state.")
-    active_untouched: Annotated[int, Field(le=9007199254740991, strict=True, ge=0)] = Field(description="Matching evaluating, starting, or running intents left for normal reconciliation.")
+    cancelled: Annotated[int, Field(strict=True)] = Field(description="Pending or retrying intents moved to the cancelled terminal state.")
+    active_untouched: Annotated[int, Field(strict=True)] = Field(description="Matching evaluating, starting, or running intents left for normal reconciliation.")
     __properties: ClassVar[List[str]] = ["environment", "cleared_through", "cancelled", "active_untouched"]
 
     model_config = ConfigDict(

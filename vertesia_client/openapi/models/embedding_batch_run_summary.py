@@ -34,10 +34,10 @@ class EmbeddingBatchRunSummary(BaseModel):
     model: StrictStr
     created_at: datetime
     completed_at: Optional[datetime] = None
-    applied: Annotated[int, Field(le=9007199254740991, strict=True, ge=0)]
-    skipped: Annotated[int, Field(le=9007199254740991, strict=True, ge=0)]
-    failed: Annotated[int, Field(le=9007199254740991, strict=True, ge=0)]
-    stale: Annotated[int, Field(le=9007199254740991, strict=True, ge=0)]
+    applied: Annotated[int, Field(strict=True)]
+    skipped: Annotated[int, Field(strict=True)]
+    failed: Annotated[int, Field(strict=True)]
+    stale: Annotated[int, Field(strict=True)]
     __properties: ClassVar[List[str]] = ["id", "state", "model", "created_at", "completed_at", "applied", "skipped", "failed", "stale"]
 
     @field_validator('state')

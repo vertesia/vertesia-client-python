@@ -29,7 +29,7 @@ class OpenAiAudioOptions(BaseModel):
     OpenAiAudioOptions
     """ # noqa: E501
     option_id: Optional[StrictStr] = Field(default=None, alias="_option_id")
-    voice: Optional[Annotated[str, Field(min_length=1, strict=True)]] = None
+    voice: Optional[Annotated[str, Field(strict=True)]] = None
     response_format: Optional[StrictStr] = None
     __properties: ClassVar[List[str]] = ["_option_id", "voice", "response_format"]
 

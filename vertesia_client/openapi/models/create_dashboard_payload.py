@@ -29,7 +29,7 @@ class CreateDashboardPayload(BaseModel):
     """
     Payload for creating a new dashboard. Requires a SQL data source, as `dataSource` or `query`, and a Vega-Lite spec.
     """ # noqa: E501
-    name: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Dashboard name (unique within store)")
+    name: Annotated[str, Field(strict=True)] = Field(description="Dashboard name (unique within store)")
     summary: Optional[StrictStr] = Field(default=None, description="Dashboard summary")
     data_source: Optional[DashboardSqlDataSource] = Field(default=None, description="SQL data source used to populate Vega `data.values`. Its query, limit and parameters are stored as the dashboard's own; a top-level `query`, `queryLimit` or `queryParameters` sent alongside takes precedence.", alias="dataSource")
     query: Optional[StrictStr] = Field(default=None, description="SQL query that returns all data for the dashboard. Deprecated shortcut for a SQL data source.")

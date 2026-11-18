@@ -32,7 +32,7 @@ class UpdateTaskPayload(BaseModel):
     UpdateTaskPayload
     """ # noqa: E501
     fields: Optional[List[TaskField]] = None
-    title: Optional[Annotated[str, Field(min_length=1, strict=True)]] = None
+    title: Optional[Annotated[str, Field(strict=True)]] = None
     description: Optional[StrictStr] = None
     status: Optional[DurableTaskStatus] = None
     assignee: Optional[StrictStr] = None

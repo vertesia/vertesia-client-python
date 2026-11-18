@@ -28,8 +28,8 @@ class CreateDashboardSnapshotPayload(BaseModel):
     """
     Payload for creating a named snapshot.
     """ # noqa: E501
-    name: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Snapshot name (must be unique within dashboard)")
-    message: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Snapshot description/message")
+    name: Annotated[str, Field(strict=True)] = Field(description="Snapshot name (must be unique within dashboard)")
+    message: Annotated[str, Field(strict=True)] = Field(description="Snapshot description/message")
     __properties: ClassVar[List[str]] = ["name", "message"]
 
     model_config = ConfigDict(

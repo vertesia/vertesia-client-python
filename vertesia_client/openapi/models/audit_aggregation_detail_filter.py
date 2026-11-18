@@ -30,7 +30,7 @@ class AuditAggregationDetailFilter(BaseModel):
     AuditAggregationDetailFilter
     """ # noqa: E501
     var_field: AuditAggregationDetailField = Field(alias="field")
-    values: Annotated[List[Annotated[str, Field(min_length=1, strict=True, max_length=256)]], Field(min_length=1, max_length=50)]
+    values: Annotated[List[Annotated[str, Field(strict=True)]], Field()]
     __properties: ClassVar[List[str]] = ["field", "values"]
 
     model_config = ConfigDict(

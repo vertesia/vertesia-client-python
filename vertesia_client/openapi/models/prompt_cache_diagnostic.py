@@ -34,10 +34,10 @@ class PromptCacheDiagnostic(BaseModel):
     content_hash_prefix: Optional[StrictStr] = None
     model: StrictStr
     scope: Optional[StrictStr] = None
-    cacheable_part_count: Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=0)]] = None
-    preparation_latency_ms: Union[Annotated[float, Field(strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]
-    wait_latency_ms: Optional[Union[Annotated[float, Field(strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None
-    provider_status: Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]] = None
+    cacheable_part_count: Optional[Annotated[int, Field(strict=True)]] = None
+    preparation_latency_ms: Union[Annotated[float, Field(strict=True)], Annotated[int, Field(strict=True)]]
+    wait_latency_ms: Optional[Union[Annotated[float, Field(strict=True)], Annotated[int, Field(strict=True)]]] = None
+    provider_status: Optional[Annotated[int, Field(strict=True)]] = None
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["path", "explicit_cache_used", "content_hash_prefix", "model", "scope", "cacheable_part_count", "preparation_latency_ms", "wait_latency_ms", "provider_status"]
 

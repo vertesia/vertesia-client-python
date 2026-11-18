@@ -28,9 +28,9 @@ class UpdateUserGroupPayload(BaseModel):
     """
     UpdateUserGroupPayload
     """ # noqa: E501
-    name: Annotated[str, Field(min_length=1, strict=True)]
+    name: Annotated[str, Field(strict=True)]
     description: Optional[StrictStr] = None
-    tags: Optional[List[Annotated[str, Field(min_length=1, strict=True)]]] = None
+    tags: Optional[List[Annotated[str, Field(strict=True)]]] = None
     properties: Optional[Dict[str, Any]] = Field(default=None, description="Custom properties for dynamic permission matching")
     clearance: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="BLP clearance level — merged with user clearance using max()")
     compartments: Optional[List[StrictStr]] = Field(default=None, description="Compartments — merged with user compartments using array union")

@@ -37,7 +37,7 @@ class AssignableRoleName(BaseModel):
     # data type: SystemRoles
     anyof_schema_1_validator: Optional[SystemRoles] = None
     # data type: str
-    anyof_schema_2_validator: Optional[Annotated[str, Field(strict=True, max_length=66)]] = None
+    anyof_schema_2_validator: Optional[Annotated[str, Field(strict=True)]] = None
     if TYPE_CHECKING:
         actual_instance: Optional[Union[SystemRoles, str]] = None
     else:

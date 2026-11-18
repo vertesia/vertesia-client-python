@@ -32,7 +32,7 @@ class PromptTemplateCreatePayload(BaseModel):
     """
     PromptTemplateCreatePayload
     """ # noqa: E501
-    name: Annotated[str, Field(min_length=1, strict=True)]
+    name: Annotated[str, Field(strict=True)]
     parent: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="The ID of the prompt this one derives from, as 24 hexadecimal characters.")
     description: Optional[StrictStr] = None
     test_data: Optional[Dict[str, Any]] = None
@@ -40,23 +40,10 @@ class PromptTemplateCreatePayload(BaseModel):
     tags: Optional[List[StrictStr]] = None
     last_published_at: Optional[datetime] = None
     role: PromptRole
-    content: Annotated[str, Field(min_length=1, strict=True)]
+    content: Annotated[str, Field(strict=True)]
     content_type: TemplateType
     input_schema: Optional[JSONSchema] = Field(default=None, alias="inputSchema")
     __properties: ClassVar[List[str]] = ["name", "parent", "description", "test_data", "script", "tags", "last_published_at", "role", "content", "content_type", "inputSchema"]
-
-    @field_validator('parent')
-    def parent_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if value is None:
-            return value
-
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^[a-fA-F0-9]{24}$", value):
-            raise ValueError(r"must validate the regular expression /^[a-fA-F0-9]{24}$/")
-        return value
 
     model_config = ConfigDict(
         validate_by_name=True,

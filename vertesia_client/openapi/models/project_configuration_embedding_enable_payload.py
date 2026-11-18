@@ -28,7 +28,7 @@ class ProjectConfigurationEmbeddingEnablePayload(BaseModel):
     """
     ProjectConfigurationEmbeddingEnablePayload
     """ # noqa: E501
-    environment: Annotated[str, Field(min_length=1, strict=True)] = Field(description="The environment that runs the embedding model.")
+    environment: Annotated[str, Field(strict=True)] = Field(description="The environment that runs the embedding model.")
     max_tokens: Optional[Union[StrictFloat, StrictInt]] = None
     model: Optional[StrictStr] = None
     __properties: ClassVar[List[str]] = ["environment", "max_tokens", "model"]

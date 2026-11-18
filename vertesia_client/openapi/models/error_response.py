@@ -29,7 +29,7 @@ class ErrorResponse(BaseModel):
     Standard JSON error response returned by the server error handler.
     """ # noqa: E501
     error: StrictStr = Field(description="HTTP status text or normalized error type.")
-    status: Annotated[int, Field(le=599, strict=True, ge=400)] = Field(description="HTTP status code. Client errors use a 4xx status code; server errors use 500.")
+    status: Annotated[int, Field(strict=True)] = Field(description="HTTP status code. Client errors use a 4xx status code; server errors use 500.")
     message: Optional[StrictStr] = Field(default=None, description="Human-readable error message.")
     details: Optional[StrictStr] = Field(default=None, description="Optional additional error details.")
     error_code: Optional[StrictStr] = Field(default=None, description="Machine-readable code for the specific failure, present when the error carries one, so clients can branch on it without parsing `message`.", alias="errorCode")

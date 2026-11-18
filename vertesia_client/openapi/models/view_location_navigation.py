@@ -28,26 +28,16 @@ class ViewLocationNavigation(BaseModel):
     """
     ViewLocationNavigation
     """ # noqa: E501
-    id: Annotated[str, Field(min_length=1, strict=True, max_length=64)]
-    label: Annotated[str, Field(min_length=1, strict=True, max_length=120)]
+    id: Annotated[str, Field(strict=True)]
+    label: Annotated[str, Field(strict=True)]
     presentation: Optional[StrictStr] = None
     multi_select: Optional[StrictBool] = None
-    order: Optional[Union[Annotated[float, Field(multiple_of=1, strict=True)], Annotated[int, Field(strict=True)]]] = None
-    renderer: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=120)]] = None
+    order: Optional[Union[Annotated[float, Field(strict=True)], Annotated[int, Field(strict=True)]]] = None
+    renderer: Optional[Annotated[str, Field(strict=True)]] = None
     source: StrictStr
-    roots: Optional[Annotated[List[Annotated[str, Field(strict=True)]], Field(max_length=50)]] = Field(default=None, description="Absolute location roots shown by the hierarchy.")
-    depth: Optional[Union[Annotated[float, Field(multiple_of=1, le=20, strict=True, ge=1)], Annotated[int, Field(le=20, strict=True, ge=1)]]] = None
+    roots: Optional[Annotated[List[Annotated[str, Field(strict=True)]], Field()]] = Field(default=None, description="Absolute location roots shown by the hierarchy.")
+    depth: Optional[Union[Annotated[float, Field(strict=True)], Annotated[int, Field(strict=True)]]] = None
     __properties: ClassVar[List[str]] = ["id", "label", "presentation", "multi_select", "order", "renderer", "source", "roots", "depth"]
-
-    @field_validator('id')
-    def id_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^[a-z][a-z0-9_-]*$", value):
-            raise ValueError(r"must validate the regular expression /^[a-z][a-z0-9_-]*$/")
-        return value
 
     @field_validator('presentation')
     def presentation_validate_enum(cls, value):

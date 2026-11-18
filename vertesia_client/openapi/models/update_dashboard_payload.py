@@ -29,14 +29,14 @@ class UpdateDashboardPayload(BaseModel):
     """
     Payload for updating a dashboard.
     """ # noqa: E501
-    name: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="Dashboard name")
+    name: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Dashboard name")
     summary: Optional[StrictStr] = Field(default=None, description="Dashboard summary")
     data_source: Optional[DashboardSqlDataSource] = Field(default=None, description="SQL data source used to populate Vega `data.values`. Its query, limit and parameters are stored as the dashboard's own; a top-level `query`, `queryLimit` or `queryParameters` sent alongside takes precedence.", alias="dataSource")
     query: Optional[StrictStr] = Field(default=None, description="SQL query that returns all data for the dashboard. Deprecated shortcut for a SQL data source.")
     query_limit: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Maximum rows to return from the query (default: 10000)", alias="queryLimit")
     query_parameters: Optional[Dict[str, StrictStr]] = Field(default=None, description="Default values for SQL {{param}} placeholders", alias="queryParameters")
     spec: Optional[Dict[str, Any]] = Field(default=None, description="Complete Vega-Lite specification (use vconcat/hconcat for multiple panels)")
-    expected_edit_revision: Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=1)]] = Field(default=None, description="Edit revision returned by the last read. Stale revisions are rejected with HTTP 409. Omit for legacy last-write-wins behavior.")
+    expected_edit_revision: Optional[Annotated[int, Field(strict=True)]] = Field(default=None, description="Edit revision returned by the last read. Stale revisions are rejected with HTTP 409. Omit for legacy last-write-wins behavior.")
     skip_versioning: Optional[StrictBool] = Field(default=None, description="Skip auto-version creation")
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["name", "summary", "dataSource", "query", "queryLimit", "queryParameters", "spec", "expected_edit_revision", "skip_versioning"]

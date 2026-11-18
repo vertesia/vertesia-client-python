@@ -45,7 +45,7 @@ class InteractionCreatePayload(BaseModel):
     cache_policy: Optional[CachePolicy] = None
     prompts: List[InteractionPromptSegmentInput]
     last_published_at: Optional[datetime] = None
-    name: Annotated[str, Field(min_length=1, strict=True)]
+    name: Annotated[str, Field(strict=True)]
     description: Optional[StrictStr] = None
     agent_runner_options: Optional[AgentRunnerOptions] = None
     result_schema: Optional[InteractionResultSchema] = None
@@ -59,19 +59,6 @@ class InteractionCreatePayload(BaseModel):
     visibility: Optional[InteractionVisibility] = None
     tags: Optional[List[StrictStr]] = None
     __properties: ClassVar[List[str]] = ["status", "test_data", "interaction_schema", "cache_policy", "prompts", "last_published_at", "name", "description", "agent_runner_options", "result_schema", "environment", "model", "model_options", "inference_profile", "store_media_results", "restriction", "output_modality", "visibility", "tags"]
-
-    @field_validator('inference_profile')
-    def inference_profile_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if value is None:
-            return value
-
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^[a-fA-F0-9]{24}$", value):
-            raise ValueError(r"must validate the regular expression /^[a-fA-F0-9]{24}$/")
-        return value
 
     model_config = ConfigDict(
         validate_by_name=True,

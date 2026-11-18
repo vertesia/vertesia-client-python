@@ -28,7 +28,7 @@ class AppOAuthClientConfig(BaseModel):
     """
     Standalone public PKCE OAuth. The publisher manifest provisions one app-managed registration with these exact callback URLs.
     """ # noqa: E501
-    redirect_uris: Annotated[List[StrictStr], Field(min_length=1)]
+    redirect_uris: Annotated[List[StrictStr], Field()]
     require_consent: Optional[StrictBool] = Field(default=None, description="Deprecated compatibility field. Vertesia-managed apps are authorized by project installation approval, while generic third-party OAuth clients retain per-user consent.")
     __properties: ClassVar[List[str]] = ["redirect_uris", "require_consent"]
 

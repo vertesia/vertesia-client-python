@@ -38,7 +38,7 @@ class InteractionUpdatePayload(BaseModel):
     """
     InteractionUpdatePayload
     """ # noqa: E501
-    expected_edit_revision: Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=1)]] = Field(default=None, description="Edit revision returned by the last read. Stale revisions are rejected with HTTP 409. Omit for legacy last-write-wins behavior.")
+    expected_edit_revision: Optional[Annotated[int, Field(strict=True)]] = Field(default=None, description="Edit revision returned by the last read. Stale revisions are rejected with HTTP 409. Omit for legacy last-write-wins behavior.")
     visibility: Optional[InteractionVisibility] = None
     test_data: Optional[Dict[str, Any]] = None
     interaction_schema: Optional[InteractionResultSchema] = None
@@ -58,19 +58,6 @@ class InteractionUpdatePayload(BaseModel):
     output_modality: Optional[Modalities] = Field(default=None, description="Deprecated: This is deprecated. Use CompletionResult.type information instead.")
     result_schema: Optional[AsyncConversationExecutionPayloadResultSchema] = None
     __properties: ClassVar[List[str]] = ["expected_edit_revision", "visibility", "test_data", "interaction_schema", "cache_policy", "prompts", "name", "endpoint", "description", "tags", "agent_runner_options", "environment", "model", "model_options", "inference_profile", "store_media_results", "restriction", "output_modality", "result_schema"]
-
-    @field_validator('inference_profile')
-    def inference_profile_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if value is None:
-            return value
-
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^[a-fA-F0-9]{24}$", value):
-            raise ValueError(r"must validate the regular expression /^[a-fA-F0-9]{24}$/")
-        return value
 
     model_config = ConfigDict(
         validate_by_name=True,

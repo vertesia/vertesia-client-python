@@ -33,7 +33,7 @@ class XAIGrokImageOptions(BaseModel):
     resolution: Optional[StrictStr] = None
     quality: Optional[StrictStr] = None
     response_format: Optional[StrictStr] = None
-    n: Optional[Annotated[int, Field(le=10, strict=True, ge=1)]] = None
+    n: Optional[Annotated[int, Field(strict=True)]] = None
     __properties: ClassVar[List[str]] = ["_option_id", "aspect_ratio", "resolution", "quality", "response_format", "n"]
 
     @field_validator('option_id')

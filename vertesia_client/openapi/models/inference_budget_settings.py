@@ -28,7 +28,7 @@ class InferenceBudgetSettings(BaseModel):
     """
     InferenceBudgetSettings
     """ # noqa: E501
-    daily_limit_usd: Optional[Union[Annotated[float, Field(le=1000000, strict=True, ge=0.01)], Annotated[int, Field(le=1000000, strict=True, ge=1)]]] = Field(description="The daily project inference alert threshold in USD. Null means the alert is disabled.")
+    daily_limit_usd: Optional[Union[Annotated[float, Field(strict=True)], Annotated[int, Field(strict=True)]]] = Field(description="The daily project inference alert threshold in USD. Null means the alert is disabled.")
     available: StrictBool = Field(description="Whether inference budget alerts are available for the project.")
     __properties: ClassVar[List[str]] = ["daily_limit_usd", "available"]
 

@@ -71,45 +71,6 @@ class UpdateExecutionRunPayload(BaseModel):
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["id", "parent", "evaluation", "tags", "environment", "modelId", "result_schema", "ttl", "status", "finish_reason", "prompt", "token_use", "prompt_cache_diagnostics", "chunks", "execution_time", "created_at", "updated_at", "account", "project", "config", "error", "source", "output_modality", "created_by", "updated_by", "workflow", "interaction"]
 
-    @field_validator('parent')
-    def parent_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if value is None:
-            return value
-
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^[0-9a-fA-F]{24}$", value):
-            raise ValueError(r"must validate the regular expression /^[0-9a-fA-F]{24}$/")
-        return value
-
-    @field_validator('environment')
-    def environment_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if value is None:
-            return value
-
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^[0-9a-fA-F]{24}$", value):
-            raise ValueError(r"must validate the regular expression /^[0-9a-fA-F]{24}$/")
-        return value
-
-    @field_validator('interaction')
-    def interaction_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if value is None:
-            return value
-
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^[0-9a-fA-F]{24}$", value):
-            raise ValueError(r"must validate the regular expression /^[0-9a-fA-F]{24}$/")
-        return value
-
     model_config = ConfigDict(
         validate_by_name=True,
         validate_by_alias=True,

@@ -35,7 +35,7 @@ class AgentRunEvaluation(BaseModel):
     """
     Evaluation summary of an agent run.
     """ # noqa: E501
-    rev: Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)] = Field(description="Bumped on every change to any part of the summary.")
+    rev: Annotated[int, Field(strict=True)] = Field(description="Bumped on every change to any part of the summary.")
     rollup: Optional[AgentRunEvaluationRollup] = None
     feedback_counts: Optional[AgentRunFeedbackCounts] = None
     llm_evaluation: Optional[AgentRunLlmEvaluationResult] = None

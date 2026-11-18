@@ -28,23 +28,10 @@ class CreateUploadSessionPayload(BaseModel):
     """
     Starts an upload of a file too large for a single signed PUT.
     """ # noqa: E501
-    name: Annotated[str, Field(min_length=1, strict=True)]
+    name: Annotated[str, Field(strict=True)]
     id: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="The object name to upload to. A random name is chosen when omitted. It must not be empty, start with `/` or `\\`, or contain a `..` segment.")
     mime_type: Optional[StrictStr] = None
     __properties: ClassVar[List[str]] = ["name", "id", "mime_type"]
-
-    @field_validator('id')
-    def id_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if value is None:
-            return value
-
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^(?:\.\.[^\\/]+|\.(?:[^\\/.][^\\/]*)?|[^\\/.][^\\/]*)(?:[\\/]+(?:\.\.[^\\/]+|\.(?:[^\\/.][^\\/]*)?|[^\\/.][^\\/]*))*[\\/]*$", value):
-            raise ValueError(r"must validate the regular expression /^(?:\.\.[^\\/]+|\.(?:[^\\/.][^\\/]*)?|[^\\/.][^\\/]*)(?:[\\/]+(?:\.\.[^\\/]+|\.(?:[^\\/.][^\\/]*)?|[^\\/.][^\\/]*))*[\\/]*$/")
-        return value
 
     model_config = ConfigDict(
         validate_by_name=True,

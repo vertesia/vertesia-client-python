@@ -29,8 +29,8 @@ class UpdateAccountPayload(BaseModel):
     """
     UpdateAccountPayload
     """ # noqa: E501
-    name: Optional[Annotated[str, Field(min_length=1, strict=True)]] = None
-    app_access_message: Optional[Annotated[str, Field(strict=True, max_length=1000)]] = None
+    name: Optional[Annotated[str, Field(strict=True)]] = None
+    app_access_message: Optional[Annotated[str, Field(strict=True)]] = None
     email_domains: Optional[List[StrictStr]] = None
     billing: Optional[AccountBilling] = None
     __properties: ClassVar[List[str]] = ["name", "app_access_message", "email_domains", "billing"]

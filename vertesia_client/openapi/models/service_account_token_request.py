@@ -33,8 +33,8 @@ class ServiceAccountTokenRequest(BaseModel):
     type: StrictStr
     audience: Optional[StrictStr] = None
     algorithm: Optional[SigningAlgorithm] = Field(default=None, description="Signing algorithm - defaults to ES256. Use RS256 for Azure AD compatibility.")
-    account_id: Annotated[str, Field(min_length=1, strict=True)]
-    project_id: Annotated[str, Field(min_length=1, strict=True)]
+    account_id: Annotated[str, Field(strict=True)]
+    project_id: Annotated[str, Field(strict=True)]
     roles: Optional[List[SystemRoles]] = None
     name: Optional[StrictStr] = None
     email: Optional[StrictStr] = None

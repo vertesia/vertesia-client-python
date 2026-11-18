@@ -28,21 +28,11 @@ class ICreateProjectPayload(BaseModel):
     """
     ICreateProjectPayload
     """ # noqa: E501
-    name: Annotated[str, Field(min_length=1, strict=True)]
+    name: Annotated[str, Field(strict=True)]
     namespace: Annotated[str, Field(strict=True)] = Field(description="Letters, digits, `-`, `_`, `[` and `]`. Must not be the namespace of another project, which the server answers with a 409.")
     description: Optional[StrictStr] = None
     auto_config: Optional[StrictBool] = None
     __properties: ClassVar[List[str]] = ["name", "namespace", "description", "auto_config"]
-
-    @field_validator('namespace')
-    def namespace_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^[a-zA-Z0-9_[\]-]+$", value):
-            raise ValueError(r"must validate the regular expression /^[a-zA-Z0-9_[\]-]+$/")
-        return value
 
     model_config = ConfigDict(
         validate_by_name=True,

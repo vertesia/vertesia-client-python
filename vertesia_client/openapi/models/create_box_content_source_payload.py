@@ -29,14 +29,14 @@ class CreateBoxContentSourcePayload(BaseModel):
     """
     Registers a Box source. The OAuth provider uses Box's client credentials grant, with the token parameters `box_subject_type` and `box_subject_id`.
     """ # noqa: E501
-    name: Annotated[str, Field(min_length=1, strict=True, max_length=128)] = Field(description="Unique within the project.")
+    name: Annotated[str, Field(strict=True)] = Field(description="Unique within the project.")
     description: Optional[StrictStr] = None
-    oauth_provider_id: Annotated[str, Field(min_length=1, strict=True)] = Field(description="An OAuth provider of this project with grant type `client_credentials` for the system.")
+    oauth_provider_id: Annotated[str, Field(strict=True)] = Field(description="An OAuth provider of this project with grant type `client_credentials` for the system.")
     location_root: Optional[StrictStr] = Field(default=None, description="The `location` root for synced documents. Defaults to `/<type>/<name>`.")
     collection_id: Optional[StrictStr] = Field(default=None, description="A collection to add synced documents to.")
     sync: Optional[ContentSourceSyncSettings] = Field(default=None, description="Defaults to scheduled sync disabled, every 60 minutes once enabled.")
     type: StrictStr
-    folder_id: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="The Box folder ID, shared with the Box app's service account. Defaults to `0`, every folder shared with the app, to narrow before the first sync with an update.")
+    folder_id: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="The Box folder ID, shared with the Box app's service account. Defaults to `0`, every folder shared with the app, to narrow before the first sync with an update.")
     __properties: ClassVar[List[str]] = ["name", "description", "oauth_provider_id", "location_root", "collection_id", "sync", "type", "folder_id"]
 
     @field_validator('type')

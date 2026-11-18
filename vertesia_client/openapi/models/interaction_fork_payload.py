@@ -34,19 +34,6 @@ class InteractionForkPayload(BaseModel):
     target_project: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="The project to fork into, as its 24-hexadecimal-character ID. Defaults to the current one.", alias="targetProject")
     __properties: ClassVar[List[str]] = ["newName", "keepTags", "forkPrompts", "targetProject"]
 
-    @field_validator('target_project')
-    def target_project_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if value is None:
-            return value
-
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^[0-9a-fA-F]{24}$", value):
-            raise ValueError(r"must validate the regular expression /^[0-9a-fA-F]{24}$/")
-        return value
-
     model_config = ConfigDict(
         validate_by_name=True,
         validate_by_alias=True,

@@ -28,9 +28,9 @@ class GetUploadPartUrlsPayload(BaseModel):
     """
     GetUploadPartUrlsPayload
     """ # noqa: E501
-    id: Annotated[str, Field(min_length=1, strict=True)] = Field(description="The session id.")
-    upload_id: Annotated[str, Field(min_length=1, strict=True)]
-    part_numbers: Annotated[List[Annotated[int, Field(le=10000, strict=True, ge=1)]], Field(min_length=1, max_length=100)]
+    id: Annotated[str, Field(strict=True)] = Field(description="The session id.")
+    upload_id: Annotated[str, Field(strict=True)]
+    part_numbers: Annotated[List[Annotated[int, Field(strict=True)]], Field()]
     __properties: ClassVar[List[str]] = ["id", "upload_id", "part_numbers"]
 
     model_config = ConfigDict(

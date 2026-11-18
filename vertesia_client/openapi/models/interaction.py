@@ -41,7 +41,7 @@ class Interaction(BaseModel):
     Interaction
     """ # noqa: E501
     id: StrictStr
-    edit_revision: Annotated[int, Field(le=9007199254740991, strict=True, ge=1)] = Field(description="Monotonic edit revision used to detect concurrent updates.")
+    edit_revision: Annotated[int, Field(strict=True)] = Field(description="Monotonic edit revision used to detect concurrent updates.")
     name: StrictStr
     endpoint: StrictStr
     description: Optional[StrictStr] = None
@@ -70,19 +70,6 @@ class Interaction(BaseModel):
     created_at: datetime
     updated_at: datetime
     __properties: ClassVar[List[str]] = ["id", "edit_revision", "name", "endpoint", "description", "project", "tags", "agent_runner_options", "result_schema", "environment", "model", "model_options", "inference_profile", "store_media_results", "restriction", "output_modality", "status", "parent", "visibility", "version", "test_data", "interaction_schema", "cache_policy", "prompts", "last_published_at", "created_by", "updated_by", "created_at", "updated_at"]
-
-    @field_validator('inference_profile')
-    def inference_profile_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if value is None:
-            return value
-
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^[a-fA-F0-9]{24}$", value):
-            raise ValueError(r"must validate the regular expression /^[a-fA-F0-9]{24}$/")
-        return value
 
     model_config = ConfigDict(
         validate_by_name=True,

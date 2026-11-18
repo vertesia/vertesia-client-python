@@ -28,10 +28,10 @@ class InspectContentSourceSamplePayload(BaseModel):
     """
     The folder to read a sample of files from, through a content source’s connection. Defaults to what the source syncs in its own root, and to the top of another root.
     """ # noqa: E501
-    root_id: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="Another root the source’s connection reaches, as `discover/roots` returned it. Defaults to the source’s own root.")
-    folder_id: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="A folder, as a listing returned its `id`. Takes precedence over `folder_path`.")
+    root_id: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Another root the source’s connection reaches, as `discover/roots` returned it. Defaults to the source’s own root.")
+    folder_id: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="A folder, as a listing returned its `id`. Takes precedence over `folder_path`.")
     folder_path: Optional[StrictStr] = Field(default=None, description="SharePoint only: a folder inside the library, e.g. `Contracts/2026`; empty for the library’s root.")
-    limit: Optional[Annotated[int, Field(le=500, strict=True, ge=1)]] = Field(default=None, description="The most files to return. Defaults to 100.")
+    limit: Optional[Annotated[int, Field(strict=True)]] = Field(default=None, description="The most files to return. Defaults to 100.")
     __properties: ClassVar[List[str]] = ["root_id", "folder_id", "folder_path", "limit"]
 
     model_config = ConfigDict(

@@ -28,7 +28,7 @@ class UpdateInferenceBudget(BaseModel):
     """
     UpdateInferenceBudget
     """ # noqa: E501
-    daily_limit_usd: Union[Annotated[float, Field(le=1000000, strict=True, ge=0.01)], Annotated[int, Field(le=1000000, strict=True, ge=1)]] = Field(description="The daily project inference alert threshold in USD.")
+    daily_limit_usd: Union[Annotated[float, Field(strict=True)], Annotated[int, Field(strict=True)]] = Field(description="The daily project inference alert threshold in USD.")
     __properties: ClassVar[List[str]] = ["daily_limit_usd"]
 
     model_config = ConfigDict(

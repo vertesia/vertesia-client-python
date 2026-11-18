@@ -29,9 +29,9 @@ class StartAppDevelopmentTaskRequest(BaseModel):
     """
     StartAppDevelopmentTaskRequest
     """ # noqa: E501
-    prompt: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Development request passed to the App Builder parent.")
-    environment: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Execution environment id for the App Builder run.")
-    model: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Model id for the App Builder run.")
+    prompt: Annotated[str, Field(strict=True)] = Field(description="Development request passed to the App Builder parent.")
+    environment: Annotated[str, Field(strict=True)] = Field(description="Execution environment id for the App Builder run.")
+    model: Annotated[str, Field(strict=True)] = Field(description="Model id for the App Builder run.")
     build_version: Optional[StrictBool] = Field(default=None, description="Create one immutable app version after validation. Defaults to false.")
     budget: Optional[AgentBudgetConfiguration] = Field(default=None, description="Token budget for the whole task, shared by the App Builder run and every step of its development process. Field-wise it overrides the project's `configuration.agent.budget`; `limit_tokens` <= 0 runs the task without a budget.")
     __properties: ClassVar[List[str]] = ["prompt", "environment", "model", "build_version", "budget"]

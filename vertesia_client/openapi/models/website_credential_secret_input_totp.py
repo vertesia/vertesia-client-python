@@ -37,16 +37,6 @@ class WebsiteCredentialSecretInputTotp(BaseModel):
     account: Optional[StrictStr] = None
     __properties: ClassVar[List[str]] = ["seed", "algorithm", "digits", "period", "issuer", "account"]
 
-    @field_validator('seed')
-    def seed_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^[\sA-Za-z2-7=-]*[A-Za-z2-7][\sA-Za-z2-7=-]*$", value):
-            raise ValueError(r"must validate the regular expression /^[\sA-Za-z2-7=-]*[A-Za-z2-7][\sA-Za-z2-7=-]*$/")
-        return value
-
     @field_validator('digits')
     def digits_validate_enum(cls, value):
         """Validates the enum"""

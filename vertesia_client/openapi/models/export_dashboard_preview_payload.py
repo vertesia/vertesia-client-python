@@ -33,8 +33,8 @@ class ExportDashboardPreviewPayload(BaseModel):
     query_parameters: Optional[Dict[str, StrictStr]] = Field(default=None, description="Values for SQL {{param}} placeholders", alias="queryParameters")
     spec: Dict[str, Any] = Field(description="Complete Vega-Lite specification (use vconcat/hconcat for multiple panels)")
     format: Optional[StrictStr] = Field(default=None, description="Image format. Only PNG is supported.")
-    scale: Optional[Union[Annotated[float, Field(le=4, strict=True, gt=0)], Annotated[int, Field(le=4, strict=True, gt=0)]]] = Field(default=None, description="Render scale factor for higher resolution images (default: 1, maximum: 4).")
-    background_color: Optional[Annotated[str, Field(strict=True, max_length=64)]] = Field(default=None, description="CSS background color of the image (default: '#ffffff').")
+    scale: Optional[Union[Annotated[float, Field(strict=True)], Annotated[int, Field(strict=True)]]] = Field(default=None, description="Render scale factor for higher resolution images (default: 1, maximum: 4).")
+    background_color: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="CSS background color of the image (default: '#ffffff').")
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["query", "queryLimit", "queryParameters", "spec", "format", "scale", "background_color"]
 

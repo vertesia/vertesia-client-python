@@ -31,7 +31,7 @@ class TwelvelabsPegasusOptions(BaseModel):
     option_id: Optional[StrictStr] = Field(default=None, alias="_option_id")
     temperature: Optional[Union[StrictFloat, StrictInt]] = None
     max_tokens: Optional[Union[StrictFloat, StrictInt]] = None
-    service_tier: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="Provider-defined processing tier. Unknown non-empty values are preserved for forward compatibility.")
+    service_tier: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Provider-defined processing tier. Unknown non-empty values are preserved for forward compatibility.")
     __properties: ClassVar[List[str]] = ["_option_id", "temperature", "max_tokens", "service_tier"]
 
     @field_validator('option_id')

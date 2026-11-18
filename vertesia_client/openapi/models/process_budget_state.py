@@ -30,11 +30,11 @@ class ProcessBudgetState(BaseModel):
     ProcessBudgetState
     """ # noqa: E501
     mode: Optional[StrictStr] = Field(default=None, description="Absent on historical token-only status.")
-    limit_usd: Optional[Union[Annotated[float, Field(strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None
-    reported_usd: Optional[Union[Annotated[float, Field(strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None
-    estimated_usd: Optional[Union[Annotated[float, Field(strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None
+    limit_usd: Optional[Union[Annotated[float, Field(strict=True)], Annotated[int, Field(strict=True)]]] = None
+    reported_usd: Optional[Union[Annotated[float, Field(strict=True)], Annotated[int, Field(strict=True)]]] = None
+    estimated_usd: Optional[Union[Annotated[float, Field(strict=True)], Annotated[int, Field(strict=True)]]] = None
     accounting_status: Optional[StrictStr] = None
-    unmeasured_calls: Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=0)]] = None
+    unmeasured_calls: Optional[Annotated[int, Field(strict=True)]] = None
     limit_tokens: Union[StrictFloat, StrictInt]
     used_units: Union[StrictFloat, StrictInt] = Field(description="Weighted tokens used by the run and everything it launched.")
     exhausted: StrictBool

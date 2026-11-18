@@ -43,24 +43,11 @@ class ViewAgenticExecutionConfiguration(BaseModel):
     model_options: Optional[Dict[str, Any]] = Field(default=None, description="Model options as authored for this View. Open rather than the driver-discriminated `ModelOptions` union, because a View is saved before a driver is resolved.")
     prompt_cache_key: Optional[StrictStr] = Field(default=None, description="Stable provider-side routing key for automatic prompt caching.")
     prompt_cache_mode: Optional[PromptCacheMode] = Field(default=None, description="Controls provider-side explicit caching: auto falls back safely, off disables it, and required surfaces cache preparation failures for diagnostics.")
-    prompt_cache_ttl_seconds: Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=60)]] = Field(default=None, description="Caller-selected explicit cache lifetime in seconds. Defaults remain provider-specific; Vertex Gemini requires at least 60 seconds.")
+    prompt_cache_ttl_seconds: Optional[Annotated[int, Field(strict=True)]] = Field(default=None, description="Caller-selected explicit cache lifetime in seconds. Defaults remain provider-specific; Vertex Gemini requires at least 60 seconds.")
     prompt_cache_schema_suffix: Optional[StrictBool] = Field(default=None, description="Put the result schema after the cached prefix; Vertesia still validates the returned JSON against it.")
     http_timeout: Optional[HttpTimeoutOptions] = Field(default=None, description="Per-run HTTP timeouts for upstream LLM-provider calls.")
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["id", "inference_profile", "inherit_model_config", "environment", "model", "do_validate", "run_data", "configMode", "model_options", "prompt_cache_key", "prompt_cache_mode", "prompt_cache_ttl_seconds", "prompt_cache_schema_suffix", "http_timeout"]
-
-    @field_validator('inference_profile')
-    def inference_profile_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if value is None:
-            return value
-
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^[a-fA-F0-9]{24}$", value):
-            raise ValueError(r"must validate the regular expression /^[a-fA-F0-9]{24}$/")
-        return value
 
     model_config = ConfigDict(
         validate_by_name=True,

@@ -29,7 +29,7 @@ class RateLimitRequestPayload(BaseModel):
     """
     RateLimitRequestPayload
     """ # noqa: E501
-    interaction: Annotated[str, Field(min_length=1, strict=True)]
+    interaction: Annotated[str, Field(strict=True)]
     environment_id: Optional[StrictStr] = None
     inference_profile: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="MongoDB ObjectId of the inference profile.")
     inherit_model_config: Optional[StrictBool] = None
@@ -38,19 +38,6 @@ class RateLimitRequestPayload(BaseModel):
     rate_limit_id: Optional[StrictStr] = Field(default=None, description="Stable per-execution admission identifier. Preferred over the legacy workflow_run_id.")
     modalities: Optional[PromptModalities] = None
     __properties: ClassVar[List[str]] = ["interaction", "environment_id", "inference_profile", "inherit_model_config", "model_id", "workflow_run_id", "rate_limit_id", "modalities"]
-
-    @field_validator('inference_profile')
-    def inference_profile_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if value is None:
-            return value
-
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^[a-fA-F0-9]{24}$", value):
-            raise ValueError(r"must validate the regular expression /^[a-fA-F0-9]{24}$/")
-        return value
 
     model_config = ConfigDict(
         validate_by_name=True,

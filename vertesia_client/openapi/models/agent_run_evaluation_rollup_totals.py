@@ -28,10 +28,10 @@ class AgentRunEvaluationRollupTotals(BaseModel):
     """
     AgentRunEvaluationRollupTotals
     """ # noqa: E501
-    tool_calls: Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]
-    error_tool_results: Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]
+    tool_calls: Annotated[int, Field(strict=True)]
+    error_tool_results: Annotated[int, Field(strict=True)]
     unrecovered_tools: List[StrictStr]
-    llm_calls: Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]
+    llm_calls: Annotated[int, Field(strict=True)]
     prompt_tokens: Union[StrictFloat, StrictInt]
     completion_tokens: Union[StrictFloat, StrictInt]
     cached_tokens: Union[StrictFloat, StrictInt]
@@ -39,11 +39,11 @@ class AgentRunEvaluationRollupTotals(BaseModel):
     active_ms: Union[StrictFloat, StrictInt]
     ask_user_wait_ms: Union[StrictFloat, StrictInt]
     approval_wait_ms: Union[StrictFloat, StrictInt]
-    followups: Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]
-    approvals_requested: Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]
-    approvals_denied: Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]
-    stop_requests: Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]
-    stall_trips: Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]] = None
+    followups: Annotated[int, Field(strict=True)]
+    approvals_requested: Annotated[int, Field(strict=True)]
+    approvals_denied: Annotated[int, Field(strict=True)]
+    stop_requests: Annotated[int, Field(strict=True)]
+    stall_trips: Optional[Annotated[int, Field(strict=True)]] = None
     __properties: ClassVar[List[str]] = ["tool_calls", "error_tool_results", "unrecovered_tools", "llm_calls", "prompt_tokens", "completion_tokens", "cached_tokens", "retry_completion_tokens", "active_ms", "ask_user_wait_ms", "approval_wait_ms", "followups", "approvals_requested", "approvals_denied", "stop_requests", "stall_trips"]
 
     model_config = ConfigDict(

@@ -45,19 +45,6 @@ class StartAppScaffoldRequest(BaseModel):
     github_repository_creation: Optional[AppGithubRepositoryCreation] = Field(default=None, description="Create an empty repository in the verified GitHub installation before generating the app source.")
     __properties: ClassVar[List[str]] = ["app_id", "title", "description", "modules", "oauth_scopes", "appgen_package_spec", "create_version", "source_mode", "source", "github_connection_id", "github_repository_creation"]
 
-    @field_validator('appgen_package_spec')
-    def appgen_package_spec_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if value is None:
-            return value
-
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^(?:latest|dev|dev-[0-9]+\.[0-9]+|snapshot-[0-9a-f]{7}|[0-9]+\.[0-9]+\.[0-9]+(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?)$", value):
-            raise ValueError(r"must validate the regular expression /^(?:latest|dev|dev-[0-9]+\.[0-9]+|snapshot-[0-9a-f]{7}|[0-9]+\.[0-9]+\.[0-9]+(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?)$/")
-        return value
-
     model_config = ConfigDict(
         validate_by_name=True,
         validate_by_alias=True,

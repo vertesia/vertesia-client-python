@@ -29,7 +29,7 @@ class AuditAggregationBatchQuery(BaseModel):
     """
     Several audit aggregation queries answered by one request. The server may compute queries that share a scope, time range and filter in a single pass over the audit events.
     """ # noqa: E501
-    queries: Annotated[List[AuditAggregationQuery], Field(min_length=1, max_length=12)] = Field(description="The aggregations to run, at most 12. Each one has the same semantics as a single aggregation request.")
+    queries: Annotated[List[AuditAggregationQuery], Field()] = Field(description="The aggregations to run, at most 12. Each one has the same semantics as a single aggregation request.")
     __properties: ClassVar[List[str]] = ["queries"]
 
     model_config = ConfigDict(

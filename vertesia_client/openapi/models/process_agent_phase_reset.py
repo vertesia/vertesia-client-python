@@ -29,9 +29,9 @@ class ProcessAgentPhaseReset(BaseModel):
     """
     ProcessAgentPhaseReset
     """ # noqa: E501
-    tools: Annotated[List[Annotated[str, Field(min_length=1, strict=True)]], Field(min_length=1)] = Field(description="Successful tools that invalidate later phase progress.")
-    tool_input_contains: Optional[Annotated[List[ProcessAgentToolInputContains], Field(min_length=1)]] = Field(default=None, description="Optional input checks applied to the invalidating tool call.")
-    to_phase: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Phase id that must be completed next after invalidation.")
+    tools: Annotated[List[Annotated[str, Field(strict=True)]], Field()] = Field(description="Successful tools that invalidate later phase progress.")
+    tool_input_contains: Optional[Annotated[List[ProcessAgentToolInputContains], Field()]] = Field(default=None, description="Optional input checks applied to the invalidating tool call.")
+    to_phase: Annotated[str, Field(strict=True)] = Field(description="Phase id that must be completed next after invalidation.")
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["tools", "tool_input_contains", "to_phase"]
 

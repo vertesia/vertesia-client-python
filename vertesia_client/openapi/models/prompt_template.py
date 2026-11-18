@@ -42,7 +42,7 @@ class PromptTemplate(BaseModel):
     name: StrictStr
     status: PromptStatus
     version: Union[StrictFloat, StrictInt]
-    edit_revision: Annotated[int, Field(le=9007199254740991, strict=True, ge=1)] = Field(description="Monotonic edit revision used to detect concurrent updates.")
+    edit_revision: Annotated[int, Field(strict=True)] = Field(description="Monotonic edit revision used to detect concurrent updates.")
     parent: Optional[StrictStr] = None
     description: Optional[StrictStr] = None
     test_data: Optional[Dict[str, Any]] = None

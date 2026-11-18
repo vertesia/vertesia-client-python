@@ -31,9 +31,9 @@ class VertexAIGeminiOmniVideoOptions(BaseModel):
     option_id: Optional[StrictStr] = Field(default=None, alias="_option_id")
     task: Optional[StrictStr] = None
     aspect_ratio: Optional[StrictStr] = None
-    duration_seconds: Optional[Annotated[int, Field(le=15, strict=True, ge=3)]] = None
+    duration_seconds: Optional[Annotated[int, Field(strict=True)]] = None
     resolution: Optional[StrictStr] = None
-    seed: Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]] = None
+    seed: Optional[Annotated[int, Field(strict=True)]] = None
     __properties: ClassVar[List[str]] = ["_option_id", "task", "aspect_ratio", "duration_seconds", "resolution", "seed"]
 
     @field_validator('option_id')

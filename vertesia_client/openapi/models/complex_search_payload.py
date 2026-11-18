@@ -33,8 +33,8 @@ class ComplexSearchPayload(BaseModel):
     """ # noqa: E501
     facets: Optional[List[FacetSpec]] = None
     limit_facets: Optional[StrictBool] = Field(default=None, description="If the facets should be limited to the current page of results. Defaults to false. When false, the facets are independent of the search results page.")
-    limit: Optional[Union[Annotated[float, Field(strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None
-    offset: Optional[Union[Annotated[float, Field(strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]] = None
+    limit: Optional[Union[Annotated[float, Field(strict=True)], Annotated[int, Field(strict=True)]]] = None
+    offset: Optional[Union[Annotated[float, Field(strict=True)], Annotated[int, Field(strict=True)]]] = None
     select: Optional[StrictStr] = None
     all_revisions: Optional[StrictBool] = None
     from_root: Optional[StrictStr] = None

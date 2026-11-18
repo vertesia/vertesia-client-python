@@ -28,8 +28,8 @@ class AuditAdoptionActiveDays(BaseModel):
     """
     AuditAdoptionActiveDays
     """ # noqa: E501
-    days: Annotated[int, Field(le=367, strict=True, ge=1)]
-    users: Annotated[int, Field(le=9007199254740991, strict=True, ge=0)]
+    days: Annotated[int, Field(strict=True)]
+    users: Annotated[int, Field(strict=True)]
     __properties: ClassVar[List[str]] = ["days", "users"]
 
     model_config = ConfigDict(

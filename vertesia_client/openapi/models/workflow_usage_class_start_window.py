@@ -28,9 +28,9 @@ class WorkflowUsageClassStartWindow(BaseModel):
     """
     WorkflowUsageClassStartWindow
     """ # noqa: E501
-    limit: Union[Annotated[float, Field(strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]
-    window_ms: Union[Annotated[float, Field(strict=True, gt=0)], Annotated[int, Field(strict=True, gt=0)]]
-    used: Optional[Union[Annotated[float, Field(strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]]
+    limit: Union[Annotated[float, Field(strict=True)], Annotated[int, Field(strict=True)]]
+    window_ms: Union[Annotated[float, Field(strict=True)], Annotated[int, Field(strict=True)]]
+    used: Optional[Union[Annotated[float, Field(strict=True)], Annotated[int, Field(strict=True)]]]
     __properties: ClassVar[List[str]] = ["limit", "window_ms", "used"]
 
     model_config = ConfigDict(

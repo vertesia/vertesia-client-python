@@ -42,7 +42,7 @@ class VertexAIGeminiOptions(BaseModel):
     include_thoughts: Optional[StrictBool] = None
     thinking_budget_tokens: Optional[Union[StrictFloat, StrictInt]] = None
     thinking_level: Optional[ThinkingLevel] = None
-    service_tier: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="Provider-defined processing tier. Unknown non-empty values are preserved for forward compatibility.")
+    service_tier: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Provider-defined processing tier. Unknown non-empty values are preserved for forward compatibility.")
     flex: Optional[StrictBool] = Field(default=None, description="Deprecated: Use service_tier=\"flex\" instead.")
     speech_voice: Optional[StrictStr] = None
     speech_language: Optional[StrictStr] = None

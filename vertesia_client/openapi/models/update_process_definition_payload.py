@@ -29,8 +29,8 @@ class UpdateProcessDefinitionPayload(BaseModel):
     """
     A draft edit. `status` and `version` are server-owned: use the publish, archive and revert endpoints.
     """ # noqa: E501
-    expected_edit_revision: Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=1)]] = Field(default=None, description="Edit revision returned by the last read. Stale revisions are rejected with HTTP 409. Omit for legacy last-write-wins behavior.")
-    name: Optional[Annotated[str, Field(min_length=1, strict=True)]] = None
+    expected_edit_revision: Optional[Annotated[int, Field(strict=True)]] = Field(default=None, description="Edit revision returned by the last read. Stale revisions are rejected with HTTP 409. Omit for legacy last-write-wins behavior.")
+    name: Optional[Annotated[str, Field(strict=True)]] = None
     description: Optional[StrictStr] = None
     tags: Optional[List[StrictStr]] = None
     definition: Optional[ProcessDefinitionBody] = None

@@ -32,7 +32,7 @@ class AuditAdoptionBucket(BaseModel):
     var_from: datetime = Field(alias="from")
     to: datetime
     partial: StrictBool
-    active_users: Annotated[int, Field(le=9007199254740991, strict=True, ge=0)]
+    active_users: Annotated[int, Field(strict=True)]
     __properties: ClassVar[List[str]] = ["from", "to", "partial", "active_users"]
 
     model_config = ConfigDict(

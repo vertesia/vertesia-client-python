@@ -34,7 +34,7 @@ class ContentSourceSampleDiscovery(BaseModel):
     root_name: Optional[StrictStr] = None
     files: List[ContentSourceSampleFile]
     content_type_counts: List[ContentSourceContentTypeCount] = Field(description="How many sampled files have each content type, most frequent first.")
-    folders_read: Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]
+    folders_read: Annotated[int, Field(strict=True)]
     truncated: StrictBool = Field(description="True when the folder holds more than was read: the counts describe a sample, not the whole.")
     __properties: ClassVar[List[str]] = ["root_id", "root_name", "files", "content_type_counts", "folders_read", "truncated"]
 

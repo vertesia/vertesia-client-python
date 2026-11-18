@@ -29,7 +29,7 @@ class IntakeCostByOutcome(BaseModel):
     Intake runs that ended one way.
     """ # noqa: E501
     outcome: StrictStr = Field(description="`not_reported` covers runs still going and runs that closed without reporting.")
-    run_count: Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]
+    run_count: Annotated[int, Field(strict=True)]
     cost_usd: Union[StrictFloat, StrictInt]
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["outcome", "run_count", "cost_usd"]

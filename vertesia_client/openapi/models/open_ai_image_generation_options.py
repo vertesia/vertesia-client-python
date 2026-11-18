@@ -36,13 +36,13 @@ class OpenAiImageGenerationOptions(BaseModel):
     quality: Optional[StrictStr] = None
     background: Optional[StrictStr] = None
     output_format: Optional[StrictStr] = None
-    output_compression: Optional[Annotated[int, Field(le=100, strict=True, ge=0)]] = None
+    output_compression: Optional[Annotated[int, Field(strict=True)]] = None
     moderation: Optional[StrictStr] = None
     input_fidelity: Optional[StrictStr] = None
     partial_images: Optional[Union[StrictFloat, StrictInt]] = None
     complexity: Optional[StrictStr] = None
-    frame_count: Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]] = None
-    frame_duration_ms: Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]] = None
+    frame_count: Optional[Annotated[int, Field(strict=True)]] = None
+    frame_duration_ms: Optional[Annotated[int, Field(strict=True)]] = None
     input_image_mask: Optional[OpenAiImageGenerationMask] = None
     __properties: ClassVar[List[str]] = ["model", "force", "action", "size", "quality", "background", "output_format", "output_compression", "moderation", "input_fidelity", "partial_images", "complexity", "frame_count", "frame_duration_ms", "input_image_mask"]
 

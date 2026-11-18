@@ -29,15 +29,15 @@ class CreateSharePointContentSourcePayload(BaseModel):
     """
     Registers a SharePoint source. The OAuth provider authenticates against Microsoft Entra ID with the scope `https://graph.microsoft.com/.default`.
     """ # noqa: E501
-    name: Annotated[str, Field(min_length=1, strict=True, max_length=128)] = Field(description="Unique within the project.")
+    name: Annotated[str, Field(strict=True)] = Field(description="Unique within the project.")
     description: Optional[StrictStr] = None
-    oauth_provider_id: Annotated[str, Field(min_length=1, strict=True)] = Field(description="An OAuth provider of this project with grant type `client_credentials` for the system.")
+    oauth_provider_id: Annotated[str, Field(strict=True)] = Field(description="An OAuth provider of this project with grant type `client_credentials` for the system.")
     location_root: Optional[StrictStr] = Field(default=None, description="The `location` root for synced documents. Defaults to `/<type>/<name>`.")
     collection_id: Optional[StrictStr] = Field(default=None, description="A collection to add synced documents to.")
     sync: Optional[ContentSourceSyncSettings] = Field(default=None, description="Defaults to scheduled sync disabled, every 60 minutes once enabled.")
     type: StrictStr
-    site_url: Annotated[str, Field(min_length=1, strict=True)] = Field(description="The SharePoint site URL, e.g. `https://contoso.sharepoint.com/sites/legal`.")
-    library_name: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="The document library name. Defaults to the site’s default library.")
+    site_url: Annotated[str, Field(strict=True)] = Field(description="The SharePoint site URL, e.g. `https://contoso.sharepoint.com/sites/legal`.")
+    library_name: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="The document library name. Defaults to the site’s default library.")
     folder_path: Optional[StrictStr] = Field(default=None, description="A folder inside the library, e.g. `Contracts/2026`. Defaults to the whole library.")
     __properties: ClassVar[List[str]] = ["name", "description", "oauth_provider_id", "location_root", "collection_id", "sync", "type", "site_url", "library_name", "folder_path"]
 

@@ -40,7 +40,7 @@ class ProcessTestScenario(BaseModel):
     fixtures: List[ProcessTestNodeFixture]
     human_actions: List[ProcessTestHumanAction]
     assertions: ProcessTestAssertions
-    timeout_seconds: Optional[Annotated[int, Field(le=300, strict=True, ge=1)]] = 30
+    timeout_seconds: Optional[Annotated[int, Field(strict=True)]] = 30
     __properties: ClassVar[List[str]] = ["id", "name", "description", "initial_context", "actors", "fixtures", "human_actions", "assertions", "timeout_seconds"]
 
     model_config = ConfigDict(

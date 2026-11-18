@@ -34,7 +34,7 @@ class UpdateOAuthClientPayload(BaseModel):
     UpdateOAuthClientPayload
     """ # noqa: E501
     client_name: Optional[StrictStr] = None
-    redirect_uris: Optional[Annotated[List[Annotated[str, Field(strict=True)]], Field(min_length=1)]] = None
+    redirect_uris: Optional[Annotated[List[Annotated[str, Field(strict=True)]], Field()]] = None
     grant_types: Optional[List[OAuthGrantType]] = None
     response_types: Optional[List[OAuthResponseType]] = None
     token_endpoint_auth_method: Optional[OAuthTokenEndpointAuthMethod] = None

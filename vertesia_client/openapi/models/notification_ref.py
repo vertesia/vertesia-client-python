@@ -28,8 +28,8 @@ class NotificationRef(BaseModel):
     """
     A typed reference to the item a notification is about.
     """ # noqa: E501
-    type: Annotated[str, Field(min_length=1, strict=True)]
-    id: Annotated[str, Field(min_length=1, strict=True)]
+    type: Annotated[str, Field(strict=True)]
+    id: Annotated[str, Field(strict=True)]
     __properties: ClassVar[List[str]] = ["type", "id"]
 
     model_config = ConfigDict(

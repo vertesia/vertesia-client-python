@@ -36,16 +36,6 @@ class ExportPropertiesPayload(BaseModel):
     table_layout: Optional[List[ColumnLayout]] = None
     __properties: ClassVar[List[str]] = ["objectIds", "type", "query", "table_layout"]
 
-    @field_validator('type')
-    def type_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^(?:JSON|CSV)$", value):
-            raise ValueError(r"must validate the regular expression /^(?:JSON|CSV)$/")
-        return value
-
     model_config = ConfigDict(
         validate_by_name=True,
         validate_by_alias=True,

@@ -28,7 +28,7 @@ class AppMcpProfile(BaseModel):
     """
     An MCP profile: the set of tools the app exposes to an external integration, such as an assistant in another product. The platform MCP server serves it at `/apps/<app name>` for the projects where the app is installed, and lists only the tools declared here.
     """ # noqa: E501
-    builtin_tools: Annotated[List[Annotated[str, Field(min_length=1, strict=True)]], Field(min_length=1, max_length=50)] = Field(description="Names of the platform MCP server tools the profile lists, e.g. `search_documents`. A name the server does not know is ignored.")
+    builtin_tools: Annotated[List[Annotated[str, Field(strict=True)]], Field()] = Field(description="Names of the platform MCP server tools the profile lists, e.g. `search_documents`. A name the server does not know is ignored.")
     scopes: Optional[List[StrictStr]] = Field(default=None, description="The permission scopes the listed tools need. Register the integration’s OAuth client with these scopes and no more: they, not the tool list, limit what its tokens can do.")
     __properties: ClassVar[List[str]] = ["builtin_tools", "scopes"]
 

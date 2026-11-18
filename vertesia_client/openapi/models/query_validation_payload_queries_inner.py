@@ -28,8 +28,8 @@ class QueryValidationPayloadQueriesInner(BaseModel):
     """
     QueryValidationPayloadQueriesInner
     """ # noqa: E501
-    name: Annotated[str, Field(min_length=1, strict=True)]
-    sql: Annotated[str, Field(min_length=1, strict=True)]
+    name: Annotated[str, Field(strict=True)]
+    sql: Annotated[str, Field(strict=True)]
     __properties: ClassVar[List[str]] = ["name", "sql"]
 
     model_config = ConfigDict(

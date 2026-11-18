@@ -30,8 +30,8 @@ class ViewActionsConfiguration(BaseModel):
     ViewActionsConfiguration
     """ # noqa: E501
     include_defaults: Optional[StrictBool] = Field(default=None, description="Include the standard content export and delete actions. Defaults to true when selection is enabled.")
-    exclude_defaults: Optional[Annotated[List[StrictStr], Field(max_length=2)]] = Field(default=None, description="Hide individual standard actions while keeping the remaining defaults.")
-    items: Optional[Annotated[List[ViewActionConfiguration], Field(max_length=30)]] = None
+    exclude_defaults: Optional[Annotated[List[StrictStr], Field()]] = Field(default=None, description="Hide individual standard actions while keeping the remaining defaults.")
+    items: Optional[Annotated[List[ViewActionConfiguration], Field()]] = None
     __properties: ClassVar[List[str]] = ["include_defaults", "exclude_defaults", "items"]
 
     @field_validator('exclude_defaults')

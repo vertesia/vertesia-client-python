@@ -32,7 +32,7 @@ class ModelPricing(BaseModel):
     provider: Optional[StrictStr] = None
     provider_account_id: Optional[StrictStr] = None
     service_tier: Optional[StrictStr] = Field(default=None, description="Processing tier this price applies to")
-    min_prompt_tokens: Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=0)]] = Field(default=None, description="When set, these prices apply to calls whose prompt (input, cached and cache-write tokens) is longer than this many tokens, in place of the prices without it.")
+    min_prompt_tokens: Optional[Annotated[int, Field(strict=True)]] = Field(default=None, description="When set, these prices apply to calls whose prompt (input, cached and cache-write tokens) is longer than this many tokens, in place of the prices without it.")
     input_price_per_m_tokens: Union[StrictFloat, StrictInt]
     cached_input_price_per_m_tokens: Optional[Union[StrictFloat, StrictInt]] = None
     cache_write_input_price_per_m_tokens: Optional[Union[StrictFloat, StrictInt]] = None

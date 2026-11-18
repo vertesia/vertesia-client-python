@@ -30,7 +30,7 @@ class ViewDropConfiguration(BaseModel):
     A declarative result-area drop target. Stored JSON supports the built-in upload action only.
     """ # noqa: E501
     handler: StrictStr
-    accept: Optional[Annotated[List[StrictStr], Field(min_length=1, max_length=1)]] = None
+    accept: Optional[Annotated[List[StrictStr], Field()]] = None
     params: Optional[ViewUploadDropParameters] = None
     __properties: ClassVar[List[str]] = ["handler", "accept", "params"]
 

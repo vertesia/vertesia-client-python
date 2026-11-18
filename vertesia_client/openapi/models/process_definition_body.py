@@ -46,19 +46,6 @@ class ProcessDefinitionBody(BaseModel):
     metadata: Optional[Dict[str, Any]] = None
     __properties: ClassVar[List[str]] = ["format_version", "process", "description", "initial", "inference_profile", "environment", "model", "model_options", "resources", "context", "nodes", "metadata"]
 
-    @field_validator('inference_profile')
-    def inference_profile_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if value is None:
-            return value
-
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^[a-fA-F0-9]{24}$", value):
-            raise ValueError(r"must validate the regular expression /^[a-fA-F0-9]{24}$/")
-        return value
-
     model_config = ConfigDict(
         validate_by_name=True,
         validate_by_alias=True,

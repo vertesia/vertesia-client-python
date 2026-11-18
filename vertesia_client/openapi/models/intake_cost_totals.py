@@ -28,13 +28,13 @@ class IntakeCostTotals(BaseModel):
     """
     Totals over the intake runs of a window.
     """ # noqa: E501
-    run_count: Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]
-    document_count: Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)] = Field(description="Distinct documents the runs processed; the versions of a document count once.")
+    run_count: Annotated[int, Field(strict=True)]
+    document_count: Annotated[int, Field(strict=True)] = Field(description="Distinct documents the runs processed; the versions of a document count once.")
     cost_usd: Union[StrictFloat, StrictInt] = Field(description="What the priced calls cost: the amount the provider billed when it reported one, else the list-price estimate.")
-    priced_calls: Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]
-    unpriced_calls: Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)] = Field(description="Calls with no price, left out of `cost_usd`; their tokens are still counted.")
-    failed_calls: Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]
-    page_count: Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)] = Field(description="Pages of the runs that reported a page count.")
+    priced_calls: Annotated[int, Field(strict=True)]
+    unpriced_calls: Annotated[int, Field(strict=True)] = Field(description="Calls with no price, left out of `cost_usd`; their tokens are still counted.")
+    failed_calls: Annotated[int, Field(strict=True)]
+    page_count: Annotated[int, Field(strict=True)] = Field(description="Pages of the runs that reported a page count.")
     tokens: Dict[str, Union[StrictFloat, StrictInt]] = Field(description="Tokens by meter type (`input`, `output`, ...).")
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["run_count", "document_count", "cost_usd", "priced_calls", "unpriced_calls", "failed_calls", "page_count", "tokens"]

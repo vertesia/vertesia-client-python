@@ -28,9 +28,9 @@ class ViewBoardColumn(BaseModel):
     """
     ViewBoardColumn
     """ # noqa: E501
-    value: Annotated[str, Field(min_length=1, strict=True)]
-    label: Annotated[str, Field(min_length=1, strict=True, max_length=120)]
-    order: Optional[Union[Annotated[float, Field(multiple_of=1, strict=True)], Annotated[int, Field(strict=True)]]] = None
+    value: Annotated[str, Field(strict=True)]
+    label: Annotated[str, Field(strict=True)]
+    order: Optional[Union[Annotated[float, Field(strict=True)], Annotated[int, Field(strict=True)]]] = None
     __properties: ClassVar[List[str]] = ["value", "label", "order"]
 
     model_config = ConfigDict(

@@ -31,7 +31,7 @@ class IntakeCostDocument(BaseModel):
     object_id: StrictStr = Field(description="The latest version of the document the caller can read, else the first version of the document.")
     name: Optional[StrictStr] = Field(default=None, description="Absent when the caller cannot read the document.")
     content_type_name: Optional[StrictStr] = None
-    run_count: Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]
+    run_count: Annotated[int, Field(strict=True)]
     cost_usd: Union[StrictFloat, StrictInt]
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["object_id", "name", "content_type_name", "run_count", "cost_usd"]

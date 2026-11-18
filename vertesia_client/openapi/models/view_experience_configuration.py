@@ -33,12 +33,12 @@ class ViewExperienceConfiguration(BaseModel):
     """
     ViewExperienceConfiguration
     """ # noqa: E501
-    name: Annotated[str, Field(min_length=1, strict=True, max_length=120)]
-    description: Optional[Annotated[str, Field(strict=True, max_length=4000)]] = None
+    name: Annotated[str, Field(strict=True)]
+    description: Optional[Annotated[str, Field(strict=True)]] = None
     enabled: Optional[StrictBool] = None
     layout: Optional[ViewExperienceLayout] = None
     scope: Optional[ViewExperienceScope] = None
-    navigation: Optional[Annotated[List[ViewNavigationItem], Field(max_length=20)]] = None
+    navigation: Optional[Annotated[List[ViewNavigationItem], Field()]] = None
     search: Optional[ViewSearchConfiguration] = None
     results: Optional[ViewResultsConfiguration] = None
     __properties: ClassVar[List[str]] = ["name", "description", "enabled", "layout", "scope", "navigation", "search", "results"]

@@ -41,7 +41,7 @@ class DSLWorkflowDefinitionResponse(BaseModel):
     result: Optional[StrictStr] = None
     debug_mode: Optional[StrictBool] = None
     id: StrictStr = Field(description="Unique identifier for the object")
-    edit_revision: Annotated[int, Field(le=9007199254740991, strict=True, ge=1)] = Field(description="Monotonic edit revision used to detect concurrent updates.")
+    edit_revision: Annotated[int, Field(strict=True)] = Field(description="Monotonic edit revision used to detect concurrent updates.")
     updated_by: StrictStr = Field(description="Identifier of the user who last modified the object")
     created_by: StrictStr = Field(description="Identifier of the user who created the object")
     created_at: StrictStr = Field(description="ISO timestamp of when the object was created")

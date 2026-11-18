@@ -28,8 +28,8 @@ class AppDeploymentAliasTarget(BaseModel):
     """
     AppDeploymentAliasTarget
     """ # noqa: E501
-    version_id: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Immutable AppGen version id.")
-    version_record_id: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Globally unique app-version record id used to resolve the exact build.")
+    version_id: Annotated[str, Field(strict=True)] = Field(description="Immutable AppGen version id.")
+    version_record_id: Annotated[str, Field(strict=True)] = Field(description="Globally unique app-version record id used to resolve the exact build.")
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["version_id", "version_record_id"]
 

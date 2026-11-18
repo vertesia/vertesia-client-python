@@ -28,22 +28,9 @@ class UpdateAccountApiKeyPayload(BaseModel):
     """
     UpdateAccountApiKeyPayload
     """ # noqa: E501
-    name: Optional[Annotated[str, Field(min_length=1, strict=True)]] = None
+    name: Optional[Annotated[str, Field(strict=True)]] = None
     enabled: Optional[StrictBool] = None
     __properties: ClassVar[List[str]] = ["name", "enabled"]
-
-    @field_validator('name')
-    def name_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if value is None:
-            return value
-
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"\S", value):
-            raise ValueError(r"must validate the regular expression /\S/")
-        return value
 
     model_config = ConfigDict(
         validate_by_name=True,

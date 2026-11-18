@@ -29,11 +29,11 @@ class DiscoverContentSourceSamplePayload(BaseModel):
     The folder to read a sample of files from.
     """ # noqa: E501
     type: StrictStr = Field(description="The system to inspect. Only SharePoint can be inspected.")
-    oauth_provider_id: Annotated[str, Field(min_length=1, strict=True)] = Field(description="An OAuth provider of this project with grant type `client_credentials` for the system.")
-    site_url: Annotated[str, Field(min_length=1, strict=True)] = Field(description="The SharePoint site URL, e.g. `https://contoso.sharepoint.com/sites/legal`.")
-    library_name: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="The document library name. Defaults to the site’s default library.")
+    oauth_provider_id: Annotated[str, Field(strict=True)] = Field(description="An OAuth provider of this project with grant type `client_credentials` for the system.")
+    site_url: Annotated[str, Field(strict=True)] = Field(description="The SharePoint site URL, e.g. `https://contoso.sharepoint.com/sites/legal`.")
+    library_name: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="The document library name. Defaults to the site’s default library.")
     folder_path: Optional[StrictStr] = Field(default=None, description="A folder inside the library, e.g. `Contracts/2026`. Defaults to the whole library.")
-    limit: Optional[Annotated[int, Field(le=500, strict=True, ge=1)]] = Field(default=None, description="The most files to return. Defaults to 100.")
+    limit: Optional[Annotated[int, Field(strict=True)]] = Field(default=None, description="The most files to return. Defaults to 100.")
     __properties: ClassVar[List[str]] = ["type", "oauth_provider_id", "site_url", "library_name", "folder_path", "limit"]
 
     @field_validator('type')

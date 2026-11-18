@@ -29,19 +29,9 @@ class CreateAccountApiKeyPayload(BaseModel):
     """
     CreateAccountApiKeyPayload
     """ # noqa: E501
-    name: Annotated[str, Field(min_length=1, strict=True)]
+    name: Annotated[str, Field(strict=True)]
     expires_at: Optional[datetime] = None
     __properties: ClassVar[List[str]] = ["name", "expires_at"]
-
-    @field_validator('name')
-    def name_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"\S", value):
-            raise ValueError(r"must validate the regular expression /\S/")
-        return value
 
     model_config = ConfigDict(
         validate_by_name=True,

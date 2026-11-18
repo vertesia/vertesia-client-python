@@ -28,8 +28,8 @@ class IntakeCostPerPage(BaseModel):
     """
     The cost per page of the intake runs that reported a page count.
     """ # noqa: E501
-    run_count: Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)] = Field(description="Runs that reported a page count.")
-    page_count: Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]
+    run_count: Annotated[int, Field(strict=True)] = Field(description="Runs that reported a page count.")
+    page_count: Annotated[int, Field(strict=True)]
     cost_usd: Union[StrictFloat, StrictInt] = Field(description="What these runs cost.")
     average_usd: Union[StrictFloat, StrictInt] = Field(description="Their cost over their pages.")
     median_usd: Union[StrictFloat, StrictInt] = Field(description="The median of the cost per page of each run.")

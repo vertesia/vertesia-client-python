@@ -29,21 +29,11 @@ class ViewResultField(BaseModel):
     """
     ViewResultField
     """ # noqa: E501
-    var_field: Annotated[str, Field(min_length=1, strict=True, max_length=160)] = Field(alias="field")
-    label: Optional[Annotated[str, Field(strict=True, max_length=120)]] = None
+    var_field: Annotated[str, Field(strict=True)] = Field(alias="field")
+    label: Optional[Annotated[str, Field(strict=True)]] = None
     format: Optional[ViewResultFieldFormat] = None
-    fallback: Optional[Annotated[str, Field(strict=True, max_length=240)]] = None
+    fallback: Optional[Annotated[str, Field(strict=True)]] = None
     __properties: ClassVar[List[str]] = ["field", "label", "format", "fallback"]
-
-    @field_validator('var_field')
-    def var_field_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^[A-Za-z0-9_]+(?:\.[A-Za-z0-9_]+)*$", value):
-            raise ValueError(r"must validate the regular expression /^[A-Za-z0-9_]+(?:\.[A-Za-z0-9_]+)*$/")
-        return value
 
     model_config = ConfigDict(
         validate_by_name=True,

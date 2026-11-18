@@ -37,14 +37,14 @@ class IntakeRunCost(BaseModel):
     content_type_id: Optional[StrictStr] = Field(default=None, description="Content type of the document when the run ended.")
     content_type_name: Optional[StrictStr] = None
     content_nature: Optional[StrictStr] = None
-    page_count: Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]] = None
+    page_count: Optional[Annotated[int, Field(strict=True)]] = None
     started_at: datetime = Field(description="First billable call or closing event.")
     last_event_at: datetime
     closed_at: Optional[datetime] = None
     cost_usd: Union[StrictFloat, StrictInt] = Field(description="What the priced calls cost: the amount the provider billed when it reported one, else the list-price estimate recorded with the call.")
-    priced_calls: Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]
-    unpriced_calls: Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)] = Field(description="Calls with no price, left out of `cost_usd`; their tokens are still counted.")
-    failed_calls: Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]
+    priced_calls: Annotated[int, Field(strict=True)]
+    unpriced_calls: Annotated[int, Field(strict=True)] = Field(description="Calls with no price, left out of `cost_usd`; their tokens are still counted.")
+    failed_calls: Annotated[int, Field(strict=True)]
     calls: Dict[str, Union[StrictFloat, StrictInt]] = Field(description="Billable calls by audit action (`inference`, `embedding`).")
     tokens: Dict[str, Union[StrictFloat, StrictInt]] = Field(description="Tokens by meter type (`input`, `output`, ...).")
     additional_properties: Dict[str, Any] = {}

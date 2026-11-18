@@ -28,8 +28,8 @@ class NotificationCounts(BaseModel):
     """
     NotificationCounts
     """ # noqa: E501
-    unread: Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)] = Field(description="Inbox notifications not read, archived or resolved. Counted up to 100.")
-    needs_action: Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)] = Field(description="Open tasks assigned to the user. Counted up to 100.")
+    unread: Annotated[int, Field(strict=True)] = Field(description="Inbox notifications not read, archived or resolved. Counted up to 100.")
+    needs_action: Annotated[int, Field(strict=True)] = Field(description="Open tasks assigned to the user. Counted up to 100.")
     __properties: ClassVar[List[str]] = ["unread", "needs_action"]
 
     model_config = ConfigDict(

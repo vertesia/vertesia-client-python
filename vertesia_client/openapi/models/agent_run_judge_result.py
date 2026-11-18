@@ -32,7 +32,7 @@ class AgentRunJudgeResult(BaseModel):
     """
     Latest judge result for a run.
     """ # noqa: E501
-    rev: Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]
+    rev: Annotated[int, Field(strict=True)]
     gate: JudgeGateReason
     sample_rate: Union[StrictFloat, StrictInt]
     selected_probability: Union[StrictFloat, StrictInt]
@@ -41,7 +41,7 @@ class AgentRunJudgeResult(BaseModel):
     score: Optional[Union[StrictFloat, StrictInt]] = None
     model: Optional[StrictStr] = None
     prompt_version: StrictStr
-    turns_judged: Optional[List[Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]]] = None
+    turns_judged: Optional[List[Annotated[int, Field(strict=True)]]] = None
     judged_at: datetime
     __properties: ClassVar[List[str]] = ["rev", "gate", "sample_rate", "selected_probability", "outcome", "verdict", "score", "model", "prompt_version", "turns_judged", "judged_at"]
 

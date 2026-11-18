@@ -32,10 +32,10 @@ class ObjectIntakeCostResponse(BaseModel):
     """ # noqa: E501
     object_id: StrictStr
     versions: List[IntakeCostVersion] = Field(description="The versions the cost covers, newest first. For the latest version of a document: every version the caller can read. For an earlier version: that version alone.")
-    run_count: Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)] = Field(description="Intake runs recorded for the versions covered.")
+    run_count: Annotated[int, Field(strict=True)] = Field(description="Intake runs recorded for the versions covered.")
     cost_usd: Union[StrictFloat, StrictInt] = Field(description="Sum of `cost_usd` over every run of the versions covered.")
-    priced_calls: Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]
-    unpriced_calls: Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]
+    priced_calls: Annotated[int, Field(strict=True)]
+    unpriced_calls: Annotated[int, Field(strict=True)]
     runs: List[IntakeRunCost] = Field(description="The most recent runs, newest first.")
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["object_id", "versions", "run_count", "cost_usd", "priced_calls", "unpriced_calls", "runs"]

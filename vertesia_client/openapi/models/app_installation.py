@@ -39,7 +39,7 @@ class AppInstallation(BaseModel):
     display_name: Optional[StrictStr] = None
     installation_version: Optional[Union[StrictFloat, StrictInt]] = None
     namespace_overrides: Optional[Dict[str, StrictStr]] = None
-    reserved_namespaces: Optional[Annotated[List[StrictStr], Field(min_length=1)]] = None
+    reserved_namespaces: Optional[Annotated[List[StrictStr], Field()]] = None
     namespace_conflicts: Optional[List[StrictStr]] = None
     deployment_alias: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Stable deployment alias selected for this installation. The alias is resolved to its current immutable app version at request time.")
     manifest: StrictStr
@@ -63,19 +63,6 @@ class AppInstallation(BaseModel):
         if value is None:
             return value
 
-        return value
-
-    @field_validator('deployment_alias')
-    def deployment_alias_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if value is None:
-            return value
-
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$", value):
-            raise ValueError(r"must validate the regular expression /^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/")
         return value
 
     model_config = ConfigDict(

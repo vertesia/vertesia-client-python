@@ -39,8 +39,8 @@ class ContentTypeIntakePolicyExtraction(BaseModel):
     interaction: Optional[StrictStr] = Field(default=None, description="Property-extraction interaction ID or qualified name. The built-in default is sys:ExtractInformation; media-specific analysis may override it.")
     config: Optional[InteractionExecutionConfiguration] = Field(default=None, description="Model execution config for the standard property-extraction interaction (sys:ExtractInformation). Lets extraction run on a different model/environment than the visual page conversion. Subscription phase settings (including legacy run-wide config) override content-type settings, which override project policy defaults; omitted fields inherit. Unspecified routing uses interaction/project model defaults. Grounded extraction uses grounding.config.")
     scope: Optional[IntakePageScope] = Field(default=None, description="Which pages extraction sees: everything or the locate result.")
-    page_ranges: Optional[List[Annotated[List[Annotated[int, Field(le=2147483647, strict=True, ge=-2147483648)]], Field(min_length=2, max_length=2)]]] = Field(default=None, description="Static page ranges extraction sees (wins over `scope` when set).")
-    max_pages: Optional[Annotated[int, Field(le=2147483647, strict=True, ge=1)]] = Field(default=None, description="Cap on pages sent to extraction. Default 20.")
+    page_ranges: Optional[List[Annotated[List[Annotated[int, Field(strict=True)]], Field()]]] = Field(default=None, description="Static page ranges extraction sees (wins over `scope` when set).")
+    max_pages: Optional[Annotated[int, Field(strict=True)]] = Field(default=None, description="Cap on pages sent to extraction. Default 20.")
     vision: Optional[ContentTypeIntakePolicyExtractionVision] = None
     verification: Optional[ContentTypeIntakePolicyExtractionVerification] = None
     grounding: Optional[ContentTypeExtractionGroundingPolicy] = Field(default=None, description="Controls PDF block-level citation grounding with annotated proof output.")

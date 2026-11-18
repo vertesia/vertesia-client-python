@@ -32,10 +32,10 @@ class EnvironmentTokenRequest(BaseModel):
     type: StrictStr
     audience: Optional[StrictStr] = None
     algorithm: Optional[SigningAlgorithm] = Field(default=None, description="Signing algorithm - defaults to ES256. Use RS256 for Azure AD compatibility.")
-    environment_id: Annotated[str, Field(min_length=1, strict=True)]
-    environment_name: Annotated[str, Field(min_length=1, strict=True)]
-    project_id: Annotated[str, Field(min_length=1, strict=True)]
-    account_id: Annotated[str, Field(min_length=1, strict=True)]
+    environment_id: Annotated[str, Field(strict=True)]
+    environment_name: Annotated[str, Field(strict=True)]
+    project_id: Annotated[str, Field(strict=True)]
+    account_id: Annotated[str, Field(strict=True)]
     __properties: ClassVar[List[str]] = ["type", "audience", "algorithm", "environment_id", "environment_name", "project_id", "account_id"]
 
     @field_validator('type')

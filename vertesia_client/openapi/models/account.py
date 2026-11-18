@@ -36,7 +36,7 @@ class Account(BaseModel):
     id: StrictStr
     name: StrictStr
     namespace: Optional[StrictStr] = Field(default=None, description="Public DNS-label-compatible identifier used by organization app domains.")
-    app_access_message: Optional[Annotated[str, Field(strict=True, max_length=1000)]] = Field(default=None, description="Plain-text instructions shown when a signed-in user has no application access.")
+    app_access_message: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Plain-text instructions shown when a signed-in user has no application access.")
     email_domains: List[StrictStr]
     onboarding: AccountOnboarding
     datacenter: StrictStr
