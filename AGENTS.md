@@ -12,7 +12,7 @@ small hand-written facade with a committed OpenAPI-generated client.
 - `spec/vertesia-openapi.json` and `spec/vertesia-openapi.yaml` are the tracked
   OpenAPI contract used by generation.
 - `scripts/regenerate.sh` runs OpenAPI Generator, patches forward-compatible
-  enum behavior, and runs the unit tests.
+  enum, union and value-constraint behavior, and runs the unit tests.
 - `test/` contains `unittest` tests. `test/test_live.py` contains opt-in live
   integration tests.
 - `.github/workflows/` contains CI, release, generated-code guard, and zizmor
@@ -126,8 +126,10 @@ the user explicitly asks and provides an appropriate environment.
 - The default `x-api-version` header is part of the client contract; update it
   deliberately and test header behavior.
 - Generated models are patched for forward compatibility: unknown response
-  fields are ignored, unknown standalone enum values are preserved, and inline
-  enum validators should not reject raw values of the correct JSON type.
+  fields are ignored, unknown standalone enum values are preserved, inline
+  enum validators should not reject raw values of the correct JSON type, and
+  the spec's value constraints (patterns, ranges, lengths, list sizes) are not
+  checked, in responses or requests; types still are.
 
 ## Release And Version Rules
 
