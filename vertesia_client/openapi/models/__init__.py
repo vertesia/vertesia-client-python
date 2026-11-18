@@ -220,6 +220,7 @@ from vertesia_client.openapi.models.audit_usage_query import AuditUsageQuery
 from vertesia_client.openapi.models.audit_usage_response import AuditUsageResponse
 from vertesia_client.openapi.models.auth_token_response import AuthTokenResponse
 from vertesia_client.openapi.models.autonomous_run_response import AutonomousRunResponse
+from vertesia_client.openapi.models.available_ai_model import AvailableAIModel
 from vertesia_client.openapi.models.aws_configuration import AwsConfiguration
 from vertesia_client.openapi.models.azure_block_blob_upload_session import AzureBlockBlobUploadSession
 from vertesia_client.openapi.models.azure_foundry_chat_options import AzureFoundryChatOptions

@@ -262,6 +262,7 @@ vertesia_client/openapi/models/audit_usage_query.py
 vertesia_client/openapi/models/audit_usage_response.py
 vertesia_client/openapi/models/auth_token_response.py
 vertesia_client/openapi/models/autonomous_run_response.py
+vertesia_client/openapi/models/available_ai_model.py
 vertesia_client/openapi/models/aws_configuration.py
 vertesia_client/openapi/models/azure_block_blob_upload_session.py
 vertesia_client/openapi/models/azure_foundry_chat_options.py

@@ -19,6 +19,7 @@ from pydantic import Field, StrictBool, StrictStr, field_validator
 from typing import List, Optional
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.ai_model import AIModel
+from vertesia_client.openapi.models.available_ai_model import AvailableAIModel
 from vertesia_client.openapi.models.delete_by_id_result import DeleteByIdResult
 from vertesia_client.openapi.models.embeddings_api_request import EmbeddingsApiRequest
 from vertesia_client.openapi.models.embeddings_result import EmbeddingsResult
@@ -2497,7 +2498,7 @@ class EnvironmentsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> List[AIModel]:
+    ) -> List[AvailableAIModel]:
         """List environment models
 
         Lists models available from the environment provider, optionally filtered by text, type, or tags.  **Required permissions:** `account:member`
@@ -2550,7 +2551,7 @@ class EnvironmentsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[AIModel]",
+            '200': "List[AvailableAIModel]",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -2586,7 +2587,7 @@ class EnvironmentsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[List[AIModel]]:
+    ) -> ApiResponse[List[AvailableAIModel]]:
         """List environment models
 
         Lists models available from the environment provider, optionally filtered by text, type, or tags.  **Required permissions:** `account:member`
@@ -2639,7 +2640,7 @@ class EnvironmentsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[AIModel]",
+            '200': "List[AvailableAIModel]",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -2728,7 +2729,7 @@ class EnvironmentsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[AIModel]",
+            '200': "List[AvailableAIModel]",
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
