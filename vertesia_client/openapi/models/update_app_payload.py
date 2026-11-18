@@ -23,6 +23,7 @@ from typing_extensions import Annotated
 from vertesia_client.openapi.models.app_access_control import AppAccessControl
 from vertesia_client.openapi.models.app_capabilities import AppCapabilities
 from vertesia_client.openapi.models.app_manifest_preview_screenshot import AppManifestPreviewScreenshot
+from vertesia_client.openapi.models.app_mcp_profile import AppMcpProfile
 from vertesia_client.openapi.models.app_o_auth_client_config import AppOAuthClientConfig
 from vertesia_client.openapi.models.app_source_config import AppSourceConfig
 from vertesia_client.openapi.models.app_ui_config import AppUIConfig
@@ -51,6 +52,7 @@ class UpdateAppPayload(BaseModel):
     preview_screenshot: Optional[AppManifestPreviewScreenshot] = None
     status: StrictStr
     ui: Optional[AppUIConfig] = Field(default=None, description="The UI configuration of the app. If not specified and the app \"ui\" is in the app capabilities then the ui configuration will be fetched from the endpoint property.")
+    mcp_profile: Optional[AppMcpProfile] = None
     tool_collections: Optional[List[ToolCollectionObject]] = Field(default=None, description="A list of tool collections endpoints to be used by this app. Prefer using endpoint over tool_collections.")
     oauth_providers: Optional[Dict[str, MCPOAuthConfig]] = Field(default=None, description="Named OAuth providers shared across multiple MCP tool collections. Keys must be kebab-case identifiers. Each value is an MCPOAuthConfig blueprint. Collections reference a provider via MCPToolCollectionObject.oauth_provider. One OAuth provider is created per provider at install time; all referencing collections share that app via AppInstallation.provider_bindings.")
     interactions: Optional[StrictStr] = Field(default=None, description="An URL providing interactions definitions in JSON format. The URL must provide 2 endpoints: 1. GET URL - must return a JSON array with the list of interactions (as AppInteractionRef[]) 2. GET URL/{interaction_name} - must return the full interaction definition for the specified interaction. This feature is for advanced composition of interactions. Prefer using endpoint.")
@@ -64,7 +66,7 @@ class UpdateAppPayload(BaseModel):
     access_control: Optional[AppAccessControl] = Field(default=None, description="Access control policy for the app. Defaults to 'all' (ACE-gated everywhere) when undefined. See  {@link  AppAccessControl }  for semantics. May be overridden on the AppInstallation.")
     expected_edit_revision: Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=1)]] = Field(default=None, description="Edit revision returned by the last read. Stale revisions are rejected with HTTP 409. Omit for legacy last-write-wins behavior.")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["parameters", "oauth_scopes", "oauth_client", "name", "visibility", "title", "description", "publisher", "icon", "color", "preview_screenshot", "status", "ui", "tool_collections", "oauth_providers", "interactions", "settings_schema", "capabilities", "endpoint", "endpoint_overrides", "version", "source", "tags", "access_control", "expected_edit_revision"]
+    __properties: ClassVar[List[str]] = ["parameters", "oauth_scopes", "oauth_client", "name", "visibility", "title", "description", "publisher", "icon", "color", "preview_screenshot", "status", "ui", "mcp_profile", "tool_collections", "oauth_providers", "interactions", "settings_schema", "capabilities", "endpoint", "endpoint_overrides", "version", "source", "tags", "access_control", "expected_edit_revision"]
 
     @field_validator('visibility')
     def visibility_validate_enum(cls, value):
@@ -133,6 +135,9 @@ class UpdateAppPayload(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of ui
         if self.ui:
             _dict['ui'] = self.ui.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of mcp_profile
+        if self.mcp_profile:
+            _dict['mcp_profile'] = self.mcp_profile.to_dict()
         # override the default output from pydantic by calling `to_dict()` of each item in tool_collections (list)
         _items = []
         if self.tool_collections:
@@ -188,6 +193,7 @@ class UpdateAppPayload(BaseModel):
             "preview_screenshot": AppManifestPreviewScreenshot.from_dict(obj["preview_screenshot"]) if obj.get("preview_screenshot") is not None else None,
             "status": obj.get("status"),
             "ui": AppUIConfig.from_dict(obj["ui"]) if obj.get("ui") is not None else None,
+            "mcp_profile": AppMcpProfile.from_dict(obj["mcp_profile"]) if obj.get("mcp_profile") is not None else None,
             "tool_collections": [ToolCollectionObject.from_dict(_item) for _item in obj["tool_collections"]] if obj.get("tool_collections") is not None else None,
             "oauth_providers": dict(
                 (_k, MCPOAuthConfig.from_dict(_v))

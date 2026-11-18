@@ -19,8 +19,9 @@ import json
 
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
-from typing import Any, ClassVar, Dict, Optional
+from typing import Any, ClassVar, Dict, Optional, Union
 from typing_extensions import Annotated
+from vertesia_client.openapi.models.inference_profile_invocation import InferenceProfileInvocation
 from vertesia_client.openapi.models.model_options import ModelOptions
 from typing import Optional, Set
 from typing_extensions import Self
@@ -35,11 +36,14 @@ class InferenceProfileRecord(BaseModel):
     environment: Annotated[str, Field(strict=True)]
     model: Optional[Annotated[str, Field(min_length=1, strict=True)]] = None
     model_options: Optional[ModelOptions] = None
+    invocation: Optional[InferenceProfileInvocation] = None
+    decision_threshold: Optional[Union[Annotated[float, Field(lt=1, strict=True, gt=0)], Annotated[int, Field(lt=1, strict=True, gt=0)]]] = Field(default=None, description="Minimum confidence a decision answer needs to be used, overriding the interaction's own threshold. Confidence means different things per provider, so set it per profile.")
+    audit_sample_rate: Optional[Union[Annotated[float, Field(le=1, strict=True, ge=0)], Annotated[int, Field(le=1, strict=True, ge=0)]]] = Field(default=None, description="With invocation `decide`: the share of runs that also run regular inference, to compare the two after the switch. Absent means none.")
     id: Annotated[str, Field(strict=True)]
     project: StrictStr
     created_at: datetime
     updated_at: datetime
-    __properties: ClassVar[List[str]] = ["name", "description", "environment", "model", "model_options", "id", "project", "created_at", "updated_at"]
+    __properties: ClassVar[List[str]] = ["name", "description", "environment", "model", "model_options", "invocation", "decision_threshold", "audit_sample_rate", "id", "project", "created_at", "updated_at"]
 
     @field_validator('name')
     def name_validate_regular_expression(cls, value):
@@ -150,6 +154,9 @@ class InferenceProfileRecord(BaseModel):
             "environment": obj.get("environment"),
             "model": obj.get("model"),
             "model_options": ModelOptions.from_dict(obj["model_options"]) if obj.get("model_options") is not None else None,
+            "invocation": obj.get("invocation"),
+            "decision_threshold": obj.get("decision_threshold"),
+            "audit_sample_rate": obj.get("audit_sample_rate"),
             "id": obj.get("id"),
             "project": obj.get("project"),
             "created_at": obj.get("created_at"),

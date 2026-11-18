@@ -205,6 +205,7 @@ __all__ = [
     "AppManifestPreviewScreenshot",
     "AppManifestSource",
     "AppManifestSourceGit",
+    "AppMcpProfile",
     "AppOAuthClientConfig",
     "AppPackage",
     "AppPackageEventHook",
@@ -283,6 +284,7 @@ __all__ = [
     "AuditUsageResponse",
     "AuthTokenResponse",
     "AutonomousRunResponse",
+    "AvailableAIModel",
     "AwsConfiguration",
     "AzureBlockBlobUploadSession",
     "AzureFoundryChatOptions",
@@ -399,9 +401,22 @@ __all__ = [
     "ContentQueryResultColumnsInner",
     "ContentQueryResultHitsInner",
     "ContentSource",
+    "ContentSourceColumn",
+    "ContentSourceColumnType",
+    "ContentSourceContentType",
+    "ContentSourceContentTypeCount",
+    "ContentSourceFolder",
+    "ContentSourceFoldersDiscovery",
+    "ContentSourceLibrary",
     "ContentSourceReport",
     "ContentSourceReportAction",
     "ContentSourceReportEntry",
+    "ContentSourceRoot",
+    "ContentSourceRootsDiscovery",
+    "ContentSourceSampleDiscovery",
+    "ContentSourceSampleFile",
+    "ContentSourceSchemaDiscovery",
+    "ContentSourceSiteDiscovery",
     "ContentSourceStatus",
     "ContentSourceSyncCounts",
     "ContentSourceSyncRound",
@@ -553,6 +568,10 @@ __all__ = [
     "DeleteFileResult",
     "DeleteOperationResult",
     "DeleteSecretResponse",
+    "DiscoverContentSourceFoldersPayload",
+    "DiscoverContentSourceSamplePayload",
+    "DiscoverContentSourceSchemaPayload",
+    "DiscoverContentSourceSitePayload",
     "DocAnalyzeRunStatusResponse",
     "DocAnalyzerProgress",
     "DocAnalyzerProgressStatus",
@@ -709,13 +728,18 @@ __all__ = [
     "IndexingStatusResponse",
     "IndexingStatusResponseIndex",
     "IndexingStatusResponseReindexProgress",
+    "InferenceBudgetSettings",
     "InferenceProfile",
+    "InferenceProfileInvocation",
     "InferenceProfileRecord",
     "InferenceProfileSnapshot",
     "InferenceProfileUsage",
     "InferenceProfileUsageEntry",
     "InheritedPropertyMetadata",
     "InitialToolCall",
+    "InspectContentSourceFoldersPayload",
+    "InspectContentSourceSamplePayload",
+    "InspectContentSourceSchemaPayload",
     "IntakeCostByContentNature",
     "IntakeCostByContentType",
     "IntakeCostByOutcome",
@@ -1198,6 +1222,7 @@ __all__ = [
     "UpdateEventIngestChannelPayload",
     "UpdateEventSubscriptionPayload",
     "UpdateExecutionRunPayload",
+    "UpdateInferenceBudget",
     "UpdateInferenceProfilePayload",
     "UpdateInteractionConfigurationPayload",
     "UpdateOAuthClientPayload",
@@ -1545,6 +1570,7 @@ from vertesia_client.openapi.models.app_manifest_data import AppManifestData as 
 from vertesia_client.openapi.models.app_manifest_preview_screenshot import AppManifestPreviewScreenshot as AppManifestPreviewScreenshot
 from vertesia_client.openapi.models.app_manifest_source import AppManifestSource as AppManifestSource
 from vertesia_client.openapi.models.app_manifest_source_git import AppManifestSourceGit as AppManifestSourceGit
+from vertesia_client.openapi.models.app_mcp_profile import AppMcpProfile as AppMcpProfile
 from vertesia_client.openapi.models.app_o_auth_client_config import AppOAuthClientConfig as AppOAuthClientConfig
 from vertesia_client.openapi.models.app_package import AppPackage as AppPackage
 from vertesia_client.openapi.models.app_package_event_hook import AppPackageEventHook as AppPackageEventHook
@@ -1623,6 +1649,7 @@ from vertesia_client.openapi.models.audit_usage_query import AuditUsageQuery as 
 from vertesia_client.openapi.models.audit_usage_response import AuditUsageResponse as AuditUsageResponse
 from vertesia_client.openapi.models.auth_token_response import AuthTokenResponse as AuthTokenResponse
 from vertesia_client.openapi.models.autonomous_run_response import AutonomousRunResponse as AutonomousRunResponse
+from vertesia_client.openapi.models.available_ai_model import AvailableAIModel as AvailableAIModel
 from vertesia_client.openapi.models.aws_configuration import AwsConfiguration as AwsConfiguration
 from vertesia_client.openapi.models.azure_block_blob_upload_session import AzureBlockBlobUploadSession as AzureBlockBlobUploadSession
 from vertesia_client.openapi.models.azure_foundry_chat_options import AzureFoundryChatOptions as AzureFoundryChatOptions
@@ -1739,9 +1766,22 @@ from vertesia_client.openapi.models.content_query_result import ContentQueryResu
 from vertesia_client.openapi.models.content_query_result_columns_inner import ContentQueryResultColumnsInner as ContentQueryResultColumnsInner
 from vertesia_client.openapi.models.content_query_result_hits_inner import ContentQueryResultHitsInner as ContentQueryResultHitsInner
 from vertesia_client.openapi.models.content_source import ContentSource as ContentSource
+from vertesia_client.openapi.models.content_source_column import ContentSourceColumn as ContentSourceColumn
+from vertesia_client.openapi.models.content_source_column_type import ContentSourceColumnType as ContentSourceColumnType
+from vertesia_client.openapi.models.content_source_content_type import ContentSourceContentType as ContentSourceContentType
+from vertesia_client.openapi.models.content_source_content_type_count import ContentSourceContentTypeCount as ContentSourceContentTypeCount
+from vertesia_client.openapi.models.content_source_folder import ContentSourceFolder as ContentSourceFolder
+from vertesia_client.openapi.models.content_source_folders_discovery import ContentSourceFoldersDiscovery as ContentSourceFoldersDiscovery
+from vertesia_client.openapi.models.content_source_library import ContentSourceLibrary as ContentSourceLibrary
 from vertesia_client.openapi.models.content_source_report import ContentSourceReport as ContentSourceReport
 from vertesia_client.openapi.models.content_source_report_action import ContentSourceReportAction as ContentSourceReportAction
 from vertesia_client.openapi.models.content_source_report_entry import ContentSourceReportEntry as ContentSourceReportEntry
+from vertesia_client.openapi.models.content_source_root import ContentSourceRoot as ContentSourceRoot
+from vertesia_client.openapi.models.content_source_roots_discovery import ContentSourceRootsDiscovery as ContentSourceRootsDiscovery
+from vertesia_client.openapi.models.content_source_sample_discovery import ContentSourceSampleDiscovery as ContentSourceSampleDiscovery
+from vertesia_client.openapi.models.content_source_sample_file import ContentSourceSampleFile as ContentSourceSampleFile
+from vertesia_client.openapi.models.content_source_schema_discovery import ContentSourceSchemaDiscovery as ContentSourceSchemaDiscovery
+from vertesia_client.openapi.models.content_source_site_discovery import ContentSourceSiteDiscovery as ContentSourceSiteDiscovery
 from vertesia_client.openapi.models.content_source_status import ContentSourceStatus as ContentSourceStatus
 from vertesia_client.openapi.models.content_source_sync_counts import ContentSourceSyncCounts as ContentSourceSyncCounts
 from vertesia_client.openapi.models.content_source_sync_round import ContentSourceSyncRound as ContentSourceSyncRound
@@ -1893,6 +1933,10 @@ from vertesia_client.openapi.models.delete_count_result import DeleteCountResult
 from vertesia_client.openapi.models.delete_file_result import DeleteFileResult as DeleteFileResult
 from vertesia_client.openapi.models.delete_operation_result import DeleteOperationResult as DeleteOperationResult
 from vertesia_client.openapi.models.delete_secret_response import DeleteSecretResponse as DeleteSecretResponse
+from vertesia_client.openapi.models.discover_content_source_folders_payload import DiscoverContentSourceFoldersPayload as DiscoverContentSourceFoldersPayload
+from vertesia_client.openapi.models.discover_content_source_sample_payload import DiscoverContentSourceSamplePayload as DiscoverContentSourceSamplePayload
+from vertesia_client.openapi.models.discover_content_source_schema_payload import DiscoverContentSourceSchemaPayload as DiscoverContentSourceSchemaPayload
+from vertesia_client.openapi.models.discover_content_source_site_payload import DiscoverContentSourceSitePayload as DiscoverContentSourceSitePayload
 from vertesia_client.openapi.models.doc_analyze_run_status_response import DocAnalyzeRunStatusResponse as DocAnalyzeRunStatusResponse
 from vertesia_client.openapi.models.doc_analyzer_progress import DocAnalyzerProgress as DocAnalyzerProgress
 from vertesia_client.openapi.models.doc_analyzer_progress_status import DocAnalyzerProgressStatus as DocAnalyzerProgressStatus
@@ -2049,13 +2093,18 @@ from vertesia_client.openapi.models.in_code_view_definition import InCodeViewDef
 from vertesia_client.openapi.models.indexing_status_response import IndexingStatusResponse as IndexingStatusResponse
 from vertesia_client.openapi.models.indexing_status_response_index import IndexingStatusResponseIndex as IndexingStatusResponseIndex
 from vertesia_client.openapi.models.indexing_status_response_reindex_progress import IndexingStatusResponseReindexProgress as IndexingStatusResponseReindexProgress
+from vertesia_client.openapi.models.inference_budget_settings import InferenceBudgetSettings as InferenceBudgetSettings
 from vertesia_client.openapi.models.inference_profile import InferenceProfile as InferenceProfile
+from vertesia_client.openapi.models.inference_profile_invocation import InferenceProfileInvocation as InferenceProfileInvocation
 from vertesia_client.openapi.models.inference_profile_record import InferenceProfileRecord as InferenceProfileRecord
 from vertesia_client.openapi.models.inference_profile_snapshot import InferenceProfileSnapshot as InferenceProfileSnapshot
 from vertesia_client.openapi.models.inference_profile_usage import InferenceProfileUsage as InferenceProfileUsage
 from vertesia_client.openapi.models.inference_profile_usage_entry import InferenceProfileUsageEntry as InferenceProfileUsageEntry
 from vertesia_client.openapi.models.inherited_property_metadata import InheritedPropertyMetadata as InheritedPropertyMetadata
 from vertesia_client.openapi.models.initial_tool_call import InitialToolCall as InitialToolCall
+from vertesia_client.openapi.models.inspect_content_source_folders_payload import InspectContentSourceFoldersPayload as InspectContentSourceFoldersPayload
+from vertesia_client.openapi.models.inspect_content_source_sample_payload import InspectContentSourceSamplePayload as InspectContentSourceSamplePayload
+from vertesia_client.openapi.models.inspect_content_source_schema_payload import InspectContentSourceSchemaPayload as InspectContentSourceSchemaPayload
 from vertesia_client.openapi.models.intake_cost_by_content_nature import IntakeCostByContentNature as IntakeCostByContentNature
 from vertesia_client.openapi.models.intake_cost_by_content_type import IntakeCostByContentType as IntakeCostByContentType
 from vertesia_client.openapi.models.intake_cost_by_outcome import IntakeCostByOutcome as IntakeCostByOutcome
@@ -2538,6 +2587,7 @@ from vertesia_client.openapi.models.update_email_route_response import UpdateEma
 from vertesia_client.openapi.models.update_event_ingest_channel_payload import UpdateEventIngestChannelPayload as UpdateEventIngestChannelPayload
 from vertesia_client.openapi.models.update_event_subscription_payload import UpdateEventSubscriptionPayload as UpdateEventSubscriptionPayload
 from vertesia_client.openapi.models.update_execution_run_payload import UpdateExecutionRunPayload as UpdateExecutionRunPayload
+from vertesia_client.openapi.models.update_inference_budget import UpdateInferenceBudget as UpdateInferenceBudget
 from vertesia_client.openapi.models.update_inference_profile_payload import UpdateInferenceProfilePayload as UpdateInferenceProfilePayload
 from vertesia_client.openapi.models.update_interaction_configuration_payload import UpdateInteractionConfigurationPayload as UpdateInteractionConfigurationPayload
 from vertesia_client.openapi.models.update_o_auth_client_payload import UpdateOAuthClientPayload as UpdateOAuthClientPayload

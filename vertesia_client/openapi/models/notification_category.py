@@ -20,7 +20,7 @@ from typing_extensions import Self
 
 class NotificationCategory(str, Enum):
     """
-    Preference group of a notification: `actions` need the user (questions, approvals, tasks), `failures` report failed runs or intakes, `results` report successful ones.
+    Preference group of a notification: `actions` need the user (questions, approvals, tasks), `failures` report failed runs or intakes, `results` report successful ones, and `billing` reports budget alerts.
     """
 
     """
@@ -29,6 +29,7 @@ class NotificationCategory(str, Enum):
     ACTIONS = 'actions'
     FAILURES = 'failures'
     RESULTS = 'results'
+    BILLING = 'billing'
 
     @classmethod
     def _missing_(cls, value: object) -> Self:

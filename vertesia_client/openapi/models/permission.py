@@ -66,6 +66,7 @@ class Permission(str, Enum):
     CONTENT_COLON_DELETE = 'content:delete'
     CONTENT_COLON_ADMIN = 'content:admin'
     CONTENT_COLON_SUPERADMIN = 'content:superadmin'
+    CONTENT_SOURCE_COLON_MANAGE = 'content_source:manage'
     WORKFLOW_COLON_READ = 'workflow:read'
     WORKFLOW_COLON_RUN = 'workflow:run'
     WORKFLOW_COLON_ADMIN = 'workflow:admin'

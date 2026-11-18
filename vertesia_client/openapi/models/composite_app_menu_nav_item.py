@@ -36,9 +36,10 @@ class CompositeAppMenuNavItem(BaseModel):
     hidden: Optional[StrictBool] = Field(default=None, description="When true, this item is hidden from the sidebar")
     description: Optional[StrictStr] = Field(default=None, description="Optional description for dashboard cards and summary views. `null` = user explicitly cleared it (show no description, skip fallback). `undefined` / absent = no override (fall back to manifest description).")
     hide_from_dashboard: Optional[StrictBool] = Field(default=None, description="When true, this item is excluded from the Composite App dashboard cards", alias="hideFromDashboard")
+    open_in_app_portal: Optional[StrictBool] = Field(default=None, description="When true, this item navigates to the App Portal form of the URL (`/apps/<appName><route>`) instead of the Composite App form (`/app/<appName><route>`), so the app is opened standalone rather than inside the Composite App shell.", alias="openInAppPortal")
     permissions: Optional[CompositeAppNavItemPermissions] = Field(default=None, description="Optional access control settings for this nav item")
     children: Optional[List[CompositeAppMenuNavItem]] = Field(default=None, description="Ordered child nav-items")
-    __properties: ClassVar[List[str]] = ["id", "label", "icon", "appName", "route", "hidden", "description", "hideFromDashboard", "permissions", "children"]
+    __properties: ClassVar[List[str]] = ["id", "label", "icon", "appName", "route", "hidden", "description", "hideFromDashboard", "openInAppPortal", "permissions", "children"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -114,6 +115,7 @@ class CompositeAppMenuNavItem(BaseModel):
             "hidden": obj.get("hidden"),
             "description": obj.get("description"),
             "hideFromDashboard": obj.get("hideFromDashboard"),
+            "openInAppPortal": obj.get("openInAppPortal"),
             "permissions": CompositeAppNavItemPermissions.from_dict(obj["permissions"]) if obj.get("permissions") is not None else None,
             "children": [CompositeAppMenuNavItem.from_dict(_item) for _item in obj["children"]] if obj.get("children") is not None else None
         })

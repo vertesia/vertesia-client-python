@@ -32,6 +32,7 @@ class NotificationKind(str, Enum):
     AGENT_DOT_TURN_FINISHED = 'agent.turn_finished'
     TASK_DOT_ASSIGNED = 'task.assigned'
     INTAKE_DOT_FINISHED = 'intake.finished'
+    INFERENCE_BUDGET_DOT_EXCEEDED = 'inference_budget.exceeded'
 
     @classmethod
     def _missing_(cls, value: object) -> Self:
