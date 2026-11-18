@@ -408,6 +408,8 @@ __all__ = [
     "ContentSourceFolder",
     "ContentSourceFoldersDiscovery",
     "ContentSourceLibrary",
+    "ContentSourcePermissionSettings",
+    "ContentSourcePermissionStatus",
     "ContentSourceReport",
     "ContentSourceReportAction",
     "ContentSourceReportEntry",
@@ -986,6 +988,7 @@ __all__ = [
     "ProjectConfigurationEmbeddingEnablePayload",
     "ProjectConfigurationEmbeddings",
     "ProjectConfigurationOauthClients",
+    "ProjectContentSourcePermissions",
     "ProjectIndexingConfiguration",
     "ProjectInferenceProfiles",
     "ProjectInferenceProfilesModality",
@@ -1113,6 +1116,7 @@ __all__ = [
     "SetObjectEmbeddingsResponse",
     "SetObjectTextPayload",
     "SharePointContentSource",
+    "SharePointContentSourcePermissions",
     "SignalAgentResponse",
     "SignalEventProperties",
     "SignalEventPropertiesSender",
@@ -1773,6 +1777,8 @@ from vertesia_client.openapi.models.content_source_content_type_count import Con
 from vertesia_client.openapi.models.content_source_folder import ContentSourceFolder as ContentSourceFolder
 from vertesia_client.openapi.models.content_source_folders_discovery import ContentSourceFoldersDiscovery as ContentSourceFoldersDiscovery
 from vertesia_client.openapi.models.content_source_library import ContentSourceLibrary as ContentSourceLibrary
+from vertesia_client.openapi.models.content_source_permission_settings import ContentSourcePermissionSettings as ContentSourcePermissionSettings
+from vertesia_client.openapi.models.content_source_permission_status import ContentSourcePermissionStatus as ContentSourcePermissionStatus
 from vertesia_client.openapi.models.content_source_report import ContentSourceReport as ContentSourceReport
 from vertesia_client.openapi.models.content_source_report_action import ContentSourceReportAction as ContentSourceReportAction
 from vertesia_client.openapi.models.content_source_report_entry import ContentSourceReportEntry as ContentSourceReportEntry
@@ -2351,6 +2357,7 @@ from vertesia_client.openapi.models.project_configuration_embedding import Proje
 from vertesia_client.openapi.models.project_configuration_embedding_enable_payload import ProjectConfigurationEmbeddingEnablePayload as ProjectConfigurationEmbeddingEnablePayload
 from vertesia_client.openapi.models.project_configuration_embeddings import ProjectConfigurationEmbeddings as ProjectConfigurationEmbeddings
 from vertesia_client.openapi.models.project_configuration_oauth_clients import ProjectConfigurationOauthClients as ProjectConfigurationOauthClients
+from vertesia_client.openapi.models.project_content_source_permissions import ProjectContentSourcePermissions as ProjectContentSourcePermissions
 from vertesia_client.openapi.models.project_indexing_configuration import ProjectIndexingConfiguration as ProjectIndexingConfiguration
 from vertesia_client.openapi.models.project_inference_profiles import ProjectInferenceProfiles as ProjectInferenceProfiles
 from vertesia_client.openapi.models.project_inference_profiles_modality import ProjectInferenceProfilesModality as ProjectInferenceProfilesModality
@@ -2478,6 +2485,7 @@ from vertesia_client.openapi.models.set_mcp_api_key_request import SetMcpApiKeyR
 from vertesia_client.openapi.models.set_object_embeddings_response import SetObjectEmbeddingsResponse as SetObjectEmbeddingsResponse
 from vertesia_client.openapi.models.set_object_text_payload import SetObjectTextPayload as SetObjectTextPayload
 from vertesia_client.openapi.models.share_point_content_source import SharePointContentSource as SharePointContentSource
+from vertesia_client.openapi.models.share_point_content_source_permissions import SharePointContentSourcePermissions as SharePointContentSourcePermissions
 from vertesia_client.openapi.models.signal_agent_response import SignalAgentResponse as SignalAgentResponse
 from vertesia_client.openapi.models.signal_event_properties import SignalEventProperties as SignalEventProperties
 from vertesia_client.openapi.models.signal_event_properties_sender import SignalEventPropertiesSender as SignalEventPropertiesSender

@@ -10166,6 +10166,46 @@ components:
         - name
       additionalProperties: false
       description: A document library of a site.
+    ContentSourcePermissionSettings:
+      discriminator:
+        propertyName: mode
+        mapping:
+          project: "#/components/schemas/ProjectContentSourcePermissions"
+          source: "#/components/schemas/SharePointContentSourcePermissions"
+      oneOf:
+        - $ref: "#/components/schemas/ProjectContentSourcePermissions"
+        - $ref: "#/components/schemas/SharePointContentSourcePermissions"
+      type: object
+      required:
+        - mode
+    ContentSourcePermissionStatus:
+      type: object
+      properties:
+        state:
+          type: string
+          description: Permission state, currently activating, current, stale, or
+            failed_closed.
+        version:
+          type: integer
+          minimum: 0
+          maximum: 9007199254740991
+        refreshed_at:
+          type: string
+          format: date-time
+          pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
+        unresolved:
+          type: integer
+          minimum: 0
+          maximum: 9007199254740991
+        reason:
+          type: string
+          description: Status reason, currently reconciling, source_refused,
+            refresh_failed, or verification_expired.
+      required:
+        - state
+        - version
+        - unresolved
+      additionalProperties: false
     ContentSourceReport:
       type: object
       properties:
@@ -10411,6 +10451,8 @@ components:
             - stopped
           description: "`waiting` between syncs, `running` during one, `stopped` when its
             credentials were refused or the source is being deleted."
+        permissions:
+          $ref: "#/components/schemas/ContentSourcePermissionStatus"
         current_round:
           $ref: "#/components/schemas/ContentSourceSyncRound"
         last_round:
@@ -11785,6 +11827,14 @@ components:
         expires_at:
           type: string
           format: date-time
+        scim_entra_tenant_id:
+          type: string
+          format: uuid
+          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+        scim_entra_members_group_id:
+          type: string
+          format: uuid
+          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
       required:
         - name
       additionalProperties: false
@@ -12872,6 +12922,11 @@ components:
             characters; grant_type, client_id, client_secret, scope,
             client_assertion and client_assertion_type are reserved. Not secret:
             returned as stored. On update, an empty object clears them."
+        sharepoint_permission_site:
+          type: string
+          format: uri
+          description: Immutable SharePoint site URL for a dedicated permission reader.
+            Create a replacement provider to change its site or credential.
       required:
         - name
         - display_name
@@ -13052,6 +13107,8 @@ components:
         type:
           type: string
           const: sharepoint
+        permissions:
+          $ref: "#/components/schemas/ContentSourcePermissionSettings"
         site_url:
           type: string
           minLength: 1
@@ -18476,6 +18533,8 @@ components:
           type: string
         path:
           type: string
+        authentication_required:
+          type: boolean
       required:
         - url
         - id
@@ -23372,6 +23431,9 @@ components:
             client_credentials grant. Set by the provider admin: a caller cannot
             request a scope outside this list and default_scopes. On update, an
             empty array clears it."
+        sharepoint_permission_site:
+          type: string
+          format: uri
         use_pkce:
           type: boolean
           description: Whether to use PKCE (Proof Key for Code Exchange) in the
@@ -26251,6 +26313,15 @@ components:
       required:
         - environment
       additionalProperties: false
+    ProjectContentSourcePermissions:
+      type: object
+      properties:
+        mode:
+          type: string
+          const: project
+      required:
+        - mode
+      additionalProperties: false
     ProjectIndexingConfiguration:
       type: object
       properties:
@@ -29065,6 +29136,8 @@ components:
         type:
           type: string
           const: sharepoint
+        permissions:
+          $ref: "#/components/schemas/ContentSourcePermissionSettings"
         site_url:
           type: string
           description: The SharePoint site URL the source was created from.
@@ -29101,6 +29174,39 @@ components:
       description: A SharePoint Online document library, or a folder in one. Synced
         documents reference their file in SharePoint
         (`sharepoint://<source_id>/<item_id>`) instead of a copy.
+    SharePointContentSourcePermissions:
+      type: object
+      properties:
+        mode:
+          type: string
+          const: source
+        entra_tenant_id:
+          type: string
+          format: uuid
+          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+        scim_connection_id:
+          type: string
+          pattern: ^[0-9a-fA-F]{24}$
+        permission_reader_provider_id:
+          type: string
+          pattern: ^[0-9a-fA-F]{24}$
+        tenant_group_id:
+          type: string
+          pattern: ^[0-9a-fA-F]{24}$
+        refresh_minutes:
+          type: integer
+          minimum: 15
+          maximum: 1440
+        max_stale_hours:
+          type: integer
+          minimum: 1
+          maximum: 168
+      required:
+        - mode
+        - entra_tenant_id
+        - scim_connection_id
+        - permission_reader_provider_id
+      additionalProperties: false
     SignalAgentPayload:
       type: object
       additionalProperties: true
@@ -31420,6 +31526,8 @@ components:
           type: string
         sync:
           $ref: "#/components/schemas/ContentSourceSyncSettings"
+        permissions:
+          $ref: "#/components/schemas/ContentSourcePermissionSettings"
         root_id:
           type: string
           minLength: 1
@@ -66001,6 +66109,75 @@ paths:
         file: ../../apps/zeno-server/src/api/content-sources.ts
         className: ContentSourceResource
         methodName: getRoundReport
+    parameters:
+      - name: x-api-version
+        in: header
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          pattern: \S
+          example: "20260803"
+        description: Required Vertesia API version header. Use `20260803` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /files/source-download/{ticket}:
+    get:
+      operationId: RedeemContentSourceDownload
+      tags:
+        - Files
+      summary: Redeem a permission-checked download ticket
+      description: >-
+        Send the issuing principal’s bearer credential. Each redemption rechecks
+        current file permissions.
+
+
+        **Required permissions:** `content:read`
+      security:
+        - bearerAuth: []
+        - OAuth2:
+            - content:read
+      parameters:
+        - name: ticket
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: File bytes.
+          content:
+            application/octet-stream:
+              schema:
+                $ref: "#/components/schemas/BinaryFileResponse"
+        "404":
+          description: The ticket or file is unavailable to the authenticated principal.
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - content:read
+      x-vertesia-source:
+        file: ../../apps/zeno-server/src/api/files.ts
+        className: FilesResource
+        methodName: redeemSourceDownload
     parameters:
       - name: x-api-version
         in: header

@@ -20,6 +20,7 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, Optional
 from typing_extensions import Annotated
+from vertesia_client.openapi.models.content_source_permission_settings import ContentSourcePermissionSettings
 from vertesia_client.openapi.models.content_source_sync_settings import ContentSourceSyncSettings
 from typing import Optional, Set
 from typing_extensions import Self
@@ -32,10 +33,11 @@ class UpdateContentSourcePayload(BaseModel):
     name: Optional[Annotated[str, Field(strict=True)]] = None
     description: Optional[StrictStr] = None
     sync: Optional[ContentSourceSyncSettings] = None
+    permissions: Optional[ContentSourcePermissionSettings] = None
     root_id: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Only before the first sync: the root to sync, as `discover/roots` returned it (a SharePoint document library; for Box, a folder shared with the app). Answers 409 once the source has synced.")
     folder_id: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Only before the first sync: the folder to sync, as a folder listing returned its `id`. Answers 409 once the source has synced.")
     folder_path: Optional[StrictStr] = Field(default=None, description="SharePoint only, and only before the first sync: the folder to sync inside the library, e.g. `Contracts/2026`; empty for the whole library. Answers 409 once the source has synced.")
-    __properties: ClassVar[List[str]] = ["name", "description", "sync", "root_id", "folder_id", "folder_path"]
+    __properties: ClassVar[List[str]] = ["name", "description", "sync", "permissions", "root_id", "folder_id", "folder_path"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -79,6 +81,9 @@ class UpdateContentSourcePayload(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of sync
         if self.sync:
             _dict['sync'] = self.sync.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of permissions
+        if self.permissions:
+            _dict['permissions'] = self.permissions.to_dict()
         return _dict
 
     @classmethod
@@ -94,6 +99,7 @@ class UpdateContentSourcePayload(BaseModel):
             "name": obj.get("name"),
             "description": obj.get("description"),
             "sync": ContentSourceSyncSettings.from_dict(obj["sync"]) if obj.get("sync") is not None else None,
+            "permissions": ContentSourcePermissionSettings.from_dict(obj["permissions"]) if obj.get("permissions") is not None else None,
             "root_id": obj.get("root_id"),
             "folder_id": obj.get("folder_id"),
             "folder_path": obj.get("folder_path")

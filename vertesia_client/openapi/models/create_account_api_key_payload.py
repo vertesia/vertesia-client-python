@@ -21,6 +21,7 @@ from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 from typing import Any, ClassVar, Dict, Optional
 from typing_extensions import Annotated
+from uuid import UUID
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -31,7 +32,9 @@ class CreateAccountApiKeyPayload(BaseModel):
     """ # noqa: E501
     name: Annotated[str, Field(strict=True)]
     expires_at: Optional[datetime] = None
-    __properties: ClassVar[List[str]] = ["name", "expires_at"]
+    scim_entra_tenant_id: Optional[UUID] = None
+    scim_entra_members_group_id: Optional[UUID] = None
+    __properties: ClassVar[List[str]] = ["name", "expires_at", "scim_entra_tenant_id", "scim_entra_members_group_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -85,7 +88,9 @@ class CreateAccountApiKeyPayload(BaseModel):
 
         _obj = cls.model_validate({
             "name": obj.get("name"),
-            "expires_at": obj.get("expires_at")
+            "expires_at": obj.get("expires_at"),
+            "scim_entra_tenant_id": obj.get("scim_entra_tenant_id"),
+            "scim_entra_members_group_id": obj.get("scim_entra_members_group_id")
         })
         return _obj
 
