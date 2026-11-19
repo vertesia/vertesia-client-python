@@ -61,7 +61,7 @@ class UsersApi:
     ) -> User:
         """Add a user to the current account
 
-        Adds a user to the current account with the member role, without sending an invitation. When no user has the address, one is created; it can sign in through the account's identity providers. When one exists, it is added to the account and its profile is left unchanged. Project roles are granted separately, through access control entries. Requires an account administrator or a SCIM provisioning API key.  **Required permissions:** Any of `account:admin`, `account:user:manage`
+        Adds a user to the current account with the member role, without sending an invitation. First sign-in uses the Firebase tenant or configured customer SSO provider (saml.* or oidc.*) of the provisioning account, without requiring email_verified to be true. Shared providers such as microsoft.com require a verified email and account configuration. A tenant login must match the configured Firebase tenant; provider IDs apply only to default-scope logins. Google and deployment OIDC providers with email adoption enabled require a verified email. Accounts without a configured directory require Google for first sign-in. When a user exists, it is added to the account and its profile is left unchanged. Project roles are granted separately, through access control entries. Requires an account administrator or a SCIM provisioning API key.  **Required permissions:** Any of `account:admin`, `account:user:manage`
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -137,7 +137,7 @@ class UsersApi:
     ) -> ApiResponse[User]:
         """Add a user to the current account
 
-        Adds a user to the current account with the member role, without sending an invitation. When no user has the address, one is created; it can sign in through the account's identity providers. When one exists, it is added to the account and its profile is left unchanged. Project roles are granted separately, through access control entries. Requires an account administrator or a SCIM provisioning API key.  **Required permissions:** Any of `account:admin`, `account:user:manage`
+        Adds a user to the current account with the member role, without sending an invitation. First sign-in uses the Firebase tenant or configured customer SSO provider (saml.* or oidc.*) of the provisioning account, without requiring email_verified to be true. Shared providers such as microsoft.com require a verified email and account configuration. A tenant login must match the configured Firebase tenant; provider IDs apply only to default-scope logins. Google and deployment OIDC providers with email adoption enabled require a verified email. Accounts without a configured directory require Google for first sign-in. When a user exists, it is added to the account and its profile is left unchanged. Project roles are granted separately, through access control entries. Requires an account administrator or a SCIM provisioning API key.  **Required permissions:** Any of `account:admin`, `account:user:manage`
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -213,7 +213,7 @@ class UsersApi:
     ) -> RESTResponseType:
         """Add a user to the current account
 
-        Adds a user to the current account with the member role, without sending an invitation. When no user has the address, one is created; it can sign in through the account's identity providers. When one exists, it is added to the account and its profile is left unchanged. Project roles are granted separately, through access control entries. Requires an account administrator or a SCIM provisioning API key.  **Required permissions:** Any of `account:admin`, `account:user:manage`
+        Adds a user to the current account with the member role, without sending an invitation. First sign-in uses the Firebase tenant or configured customer SSO provider (saml.* or oidc.*) of the provisioning account, without requiring email_verified to be true. Shared providers such as microsoft.com require a verified email and account configuration. A tenant login must match the configured Firebase tenant; provider IDs apply only to default-scope logins. Google and deployment OIDC providers with email adoption enabled require a verified email. Accounts without a configured directory require Google for first sign-in. When a user exists, it is added to the account and its profile is left unchanged. Project roles are granted separately, through access control entries. Requires an account administrator or a SCIM provisioning API key.  **Required permissions:** Any of `account:admin`, `account:user:manage`
 
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -1201,7 +1201,7 @@ class UsersApi:
     ) -> User:
         """Update a user
 
-        Updates profile fields for the caller or an administrator. Only account-role administrators may change authorization attributes (properties, clearance, or compartments).  **Required permissions:** Any of `account:member`, `account:user:manage`
+        Updates profile fields for the caller or an administrator. Only account-role administrators may change authorization attributes (properties, clearance, or compartments). The username of a SCIM-provisioned user is its sign-in identifier and is managed by SCIM provisioning: changing it here returns 403, while sending its current value is accepted.  **Required permissions:** Any of `account:member`, `account:user:manage`
 
         :param user_id: (required)
         :type user_id: str
@@ -1278,7 +1278,7 @@ class UsersApi:
     ) -> ApiResponse[User]:
         """Update a user
 
-        Updates profile fields for the caller or an administrator. Only account-role administrators may change authorization attributes (properties, clearance, or compartments).  **Required permissions:** Any of `account:member`, `account:user:manage`
+        Updates profile fields for the caller or an administrator. Only account-role administrators may change authorization attributes (properties, clearance, or compartments). The username of a SCIM-provisioned user is its sign-in identifier and is managed by SCIM provisioning: changing it here returns 403, while sending its current value is accepted.  **Required permissions:** Any of `account:member`, `account:user:manage`
 
         :param user_id: (required)
         :type user_id: str
@@ -1355,7 +1355,7 @@ class UsersApi:
     ) -> RESTResponseType:
         """Update a user
 
-        Updates profile fields for the caller or an administrator. Only account-role administrators may change authorization attributes (properties, clearance, or compartments).  **Required permissions:** Any of `account:member`, `account:user:manage`
+        Updates profile fields for the caller or an administrator. Only account-role administrators may change authorization attributes (properties, clearance, or compartments). The username of a SCIM-provisioned user is its sign-in identifier and is managed by SCIM provisioning: changing it here returns 403, while sending its current value is accepted.  **Required permissions:** Any of `account:member`, `account:user:manage`
 
         :param user_id: (required)
         :type user_id: str
