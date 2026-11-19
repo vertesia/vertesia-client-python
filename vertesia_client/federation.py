@@ -16,6 +16,8 @@ from dataclasses import dataclass, field
 from http.client import HTTPException
 from typing import TYPE_CHECKING
 
+from vertesia_client._user_agent import USER_AGENT
+
 if TYPE_CHECKING:
     from vertesia_client.client import ClientOptions
 
@@ -127,7 +129,11 @@ def _exchange_federation_token(subject_token, federation, options, clock):
     request = urllib.request.Request(
         endpoint,
         data=urllib.parse.urlencode(values).encode(),
-        headers={"Content-Type": "application/x-www-form-urlencoded", "Accept": "application/json"},
+        headers={
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Accept": "application/json",
+            "User-Agent": USER_AGENT,
+        },
         method="POST",
     )
     if federation.client_secret_basic:

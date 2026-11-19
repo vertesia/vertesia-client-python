@@ -10,6 +10,7 @@ from pydantic import StrictStr, ValidationError, validate_call
 
 from scripts.patch_forward_compat_enums import patch_client_headers
 from vertesia_client import Client, ClientOptions, VertesiaClientError
+from vertesia_client._user_agent import USER_AGENT
 from vertesia_client.client import DEFAULT_API_VERSION, _bind_api_version
 from vertesia_client.openapi.models.complex_search_payload import ComplexSearchPayload
 
@@ -32,6 +33,7 @@ class TokenHandler(BaseHTTPRequestHandler):
                 "path": self.path,
                 "authorization": self.headers.get("Authorization"),
                 "api_version": self.headers.get("x-api-version"),
+                "user_agent": self.headers.get("User-Agent"),
                 "body": body,
             }
         )
@@ -67,6 +69,7 @@ class APIHandler(BaseHTTPRequestHandler):
                 "path": self.path,
                 "authorization": self.headers.get("Authorization"),
                 "api_version": self.headers.get("x-api-version"),
+                "user_agent": self.headers.get("User-Agent"),
                 "body": body,
             }
         )
@@ -196,7 +199,11 @@ class ClientTest(unittest.TestCase):
         self.assertEqual(TokenHandler.requests[0]["path"], "/token/issue")
         self.assertEqual(TokenHandler.requests[0]["authorization"], "Bearer sk-secret")
         self.assertEqual(TokenHandler.requests[0]["api_version"], DEFAULT_API_VERSION)
+        self.assertEqual(TokenHandler.requests[0]["user_agent"], USER_AGENT)
         self.assertEqual(json.loads(TokenHandler.requests[0]["body"]), {"type": "apikey", "key": "sk-secret"})
+
+    def test_user_agent_names_sdk_version_and_runtime(self):
+        self.assertRegex(USER_AGENT, r"^vertesia-client-python/\d+\.\d+\.\d+\S* python/\d+\.\d+\.\d+")
 
     def test_invalid_api_key_fails_before_network_access(self):
         with self.assertRaisesRegex(VertesiaClientError, "sk- secret key"):
@@ -254,6 +261,7 @@ class ClientTest(unittest.TestCase):
         for request in APIHandler.requests:
             self.assertEqual(request["authorization"], "Bearer direct-token")
             self.assertEqual(request["api_version"], "20260101")
+            self.assertEqual(request["user_agent"], USER_AGENT)
 
     def test_concurrent_secret_key_refresh_is_coalesced(self):
         with TokenServer() as url:

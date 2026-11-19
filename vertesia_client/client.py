@@ -12,6 +12,7 @@ from dataclasses import dataclass
 from functools import wraps
 from typing import Any, Protocol
 
+from vertesia_client._user_agent import USER_AGENT
 from vertesia_client.federation import FederationOptions, _FederationTokenSource
 from vertesia_client.openapi.api.access_control_entries_api import AccessControlEntriesApi
 from vertesia_client.openapi.api.accounts_api import AccountsApi
@@ -147,6 +148,7 @@ class _APIKeyTokenSource(_TokenSource):
                 "Content-Type": "application/json",
                 "Accept": "application/json",
                 "x-api-version": self._api_version,
+                "User-Agent": USER_AGENT,
             },
         )
 
@@ -339,6 +341,7 @@ def _new_api_client(base_url: str, token_source: _TokenSource, api_version: str)
         if isinstance(token_source, _FederationTokenSource)
         else ApiClient(configuration)
     )
+    api_client.user_agent = USER_AGENT
     api_client.set_default_header("x-api-version", api_version)
     return api_client
 
