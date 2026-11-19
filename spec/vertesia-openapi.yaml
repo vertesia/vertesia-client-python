@@ -46528,11 +46528,17 @@ paths:
       summary: Add a user to the current account
       description: >-
         Adds a user to the current account with the member role, without sending
-        an invitation. When no user has the address, one is created; it can sign
-        in through the account's identity providers. When one exists, it is
-        added to the account and its profile is left unchanged. Project roles
-        are granted separately, through access control entries. Requires an
-        account administrator or a SCIM provisioning API key.
+        an invitation. First sign-in uses the Firebase tenant or configured
+        customer SSO provider (saml.* or oidc.*) of the provisioning account,
+        without requiring email_verified to be true. Shared providers such as
+        microsoft.com require a verified email and account configuration. A
+        tenant login must match the configured Firebase tenant; provider IDs
+        apply only to default-scope logins. Google and deployment OIDC providers
+        with email adoption enabled require a verified email. Accounts without a
+        configured directory require Google for first sign-in. When a user
+        exists, it is added to the account and its profile is left unchanged.
+        Project roles are granted separately, through access control entries.
+        Requires an account administrator or a SCIM provisioning API key.
 
 
         **Required permissions:** Any of `account:admin`, `account:user:manage`
