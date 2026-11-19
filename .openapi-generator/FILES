@@ -183,6 +183,7 @@ vertesia_client/openapi/models/app_manifest_data.py
 vertesia_client/openapi/models/app_manifest_preview_screenshot.py
 vertesia_client/openapi/models/app_manifest_source.py
 vertesia_client/openapi/models/app_manifest_source_git.py
+vertesia_client/openapi/models/app_mcp_profile.py
 vertesia_client/openapi/models/app_o_auth_client_config.py
 vertesia_client/openapi/models/app_package.py
 vertesia_client/openapi/models/app_package_event_hook.py
@@ -377,9 +378,24 @@ vertesia_client/openapi/models/content_query_result.py
 vertesia_client/openapi/models/content_query_result_columns_inner.py
 vertesia_client/openapi/models/content_query_result_hits_inner.py
 vertesia_client/openapi/models/content_source.py
+vertesia_client/openapi/models/content_source_column.py
+vertesia_client/openapi/models/content_source_column_type.py
+vertesia_client/openapi/models/content_source_content_type.py
+vertesia_client/openapi/models/content_source_content_type_count.py
+vertesia_client/openapi/models/content_source_folder.py
+vertesia_client/openapi/models/content_source_folders_discovery.py
+vertesia_client/openapi/models/content_source_library.py
+vertesia_client/openapi/models/content_source_permission_settings.py
+vertesia_client/openapi/models/content_source_permission_status.py
 vertesia_client/openapi/models/content_source_report.py
 vertesia_client/openapi/models/content_source_report_action.py
 vertesia_client/openapi/models/content_source_report_entry.py
+vertesia_client/openapi/models/content_source_root.py
+vertesia_client/openapi/models/content_source_roots_discovery.py
+vertesia_client/openapi/models/content_source_sample_discovery.py
+vertesia_client/openapi/models/content_source_sample_file.py
+vertesia_client/openapi/models/content_source_schema_discovery.py
+vertesia_client/openapi/models/content_source_site_discovery.py
 vertesia_client/openapi/models/content_source_status.py
 vertesia_client/openapi/models/content_source_sync_counts.py
 vertesia_client/openapi/models/content_source_sync_round.py
@@ -520,6 +536,10 @@ vertesia_client/openapi/models/delete_count_result.py
 vertesia_client/openapi/models/delete_file_result.py
 vertesia_client/openapi/models/delete_operation_result.py
 vertesia_client/openapi/models/delete_secret_response.py
+vertesia_client/openapi/models/discover_content_source_folders_payload.py
+vertesia_client/openapi/models/discover_content_source_sample_payload.py
+vertesia_client/openapi/models/discover_content_source_schema_payload.py
+vertesia_client/openapi/models/discover_content_source_site_payload.py
 vertesia_client/openapi/models/doc_analyze_run_status_response.py
 vertesia_client/openapi/models/doc_analyzer_progress.py
 vertesia_client/openapi/models/doc_analyzer_progress_status.py
@@ -694,6 +714,9 @@ vertesia_client/openapi/models/inference_profile_usage.py
 vertesia_client/openapi/models/inference_profile_usage_entry.py
 vertesia_client/openapi/models/inherited_property_metadata.py
 vertesia_client/openapi/models/initial_tool_call.py
+vertesia_client/openapi/models/inspect_content_source_folders_payload.py
+vertesia_client/openapi/models/inspect_content_source_sample_payload.py
+vertesia_client/openapi/models/inspect_content_source_schema_payload.py
 vertesia_client/openapi/models/intake_cost_by_content_nature.py
 vertesia_client/openapi/models/intake_cost_by_content_type.py
 vertesia_client/openapi/models/intake_cost_by_outcome.py
@@ -840,6 +863,7 @@ vertesia_client/openapi/models/o_auth_provider_access_token_response.py
 vertesia_client/openapi/models/o_auth_provider_auth_status.py
 vertesia_client/openapi/models/o_auth_provider_authorize_response.py
 vertesia_client/openapi/models/o_auth_provider_exchange_payload.py
+vertesia_client/openapi/models/o_auth_provider_token_request.py
 vertesia_client/openapi/models/o_auth_registration_source.py
 vertesia_client/openapi/models/o_auth_response_type.py
 vertesia_client/openapi/models/o_auth_token_endpoint_auth_method.py
@@ -939,6 +963,7 @@ vertesia_client/openapi/models/project_configuration_embedding.py
 vertesia_client/openapi/models/project_configuration_embedding_enable_payload.py
 vertesia_client/openapi/models/project_configuration_embeddings.py
 vertesia_client/openapi/models/project_configuration_oauth_clients.py
+vertesia_client/openapi/models/project_content_source_permissions.py
 vertesia_client/openapi/models/project_indexing_configuration.py
 vertesia_client/openapi/models/project_inference_profiles.py
 vertesia_client/openapi/models/project_inference_profiles_modality.py
@@ -1066,6 +1091,7 @@ vertesia_client/openapi/models/set_mcp_api_key_request.py
 vertesia_client/openapi/models/set_object_embeddings_response.py
 vertesia_client/openapi/models/set_object_text_payload.py
 vertesia_client/openapi/models/share_point_content_source.py
+vertesia_client/openapi/models/share_point_content_source_permissions.py
 vertesia_client/openapi/models/signal_agent_response.py
 vertesia_client/openapi/models/signal_event_properties.py
 vertesia_client/openapi/models/signal_event_properties_sender.py

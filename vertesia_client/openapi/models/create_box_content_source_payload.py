@@ -36,7 +36,7 @@ class CreateBoxContentSourcePayload(BaseModel):
     collection_id: Optional[StrictStr] = Field(default=None, description="A collection to add synced documents to.")
     sync: Optional[ContentSourceSyncSettings] = Field(default=None, description="Defaults to scheduled sync disabled, every 60 minutes once enabled.")
     type: StrictStr
-    folder_id: Annotated[str, Field(min_length=1, strict=True)] = Field(description="The Box folder ID, shared with the Box app's service account.")
+    folder_id: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="The Box folder ID, shared with the Box app's service account. Defaults to `0`, every folder shared with the app, to narrow before the first sync with an update.")
     __properties: ClassVar[List[str]] = ["name", "description", "oauth_provider_id", "location_root", "collection_id", "sync", "type", "folder_id"]
 
     @field_validator('type')

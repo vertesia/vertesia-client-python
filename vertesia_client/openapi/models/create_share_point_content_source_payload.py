@@ -20,6 +20,7 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, Optional
 from typing_extensions import Annotated
+from vertesia_client.openapi.models.content_source_permission_settings import ContentSourcePermissionSettings
 from vertesia_client.openapi.models.content_source_sync_settings import ContentSourceSyncSettings
 from typing import Optional, Set
 from typing_extensions import Self
@@ -36,10 +37,11 @@ class CreateSharePointContentSourcePayload(BaseModel):
     collection_id: Optional[StrictStr] = Field(default=None, description="A collection to add synced documents to.")
     sync: Optional[ContentSourceSyncSettings] = Field(default=None, description="Defaults to scheduled sync disabled, every 60 minutes once enabled.")
     type: StrictStr
+    permissions: Optional[ContentSourcePermissionSettings] = None
     site_url: Annotated[str, Field(min_length=1, strict=True)] = Field(description="The SharePoint site URL, e.g. `https://contoso.sharepoint.com/sites/legal`.")
     library_name: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="The document library name. Defaults to the site’s default library.")
     folder_path: Optional[StrictStr] = Field(default=None, description="A folder inside the library, e.g. `Contracts/2026`. Defaults to the whole library.")
-    __properties: ClassVar[List[str]] = ["name", "description", "oauth_provider_id", "location_root", "collection_id", "sync", "type", "site_url", "library_name", "folder_path"]
+    __properties: ClassVar[List[str]] = ["name", "description", "oauth_provider_id", "location_root", "collection_id", "sync", "type", "permissions", "site_url", "library_name", "folder_path"]
 
     @field_validator('type')
     def type_validate_enum(cls, value):
@@ -90,6 +92,9 @@ class CreateSharePointContentSourcePayload(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of sync
         if self.sync:
             _dict['sync'] = self.sync.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of permissions
+        if self.permissions:
+            _dict['permissions'] = self.permissions.to_dict()
         return _dict
 
     @classmethod
@@ -109,6 +114,7 @@ class CreateSharePointContentSourcePayload(BaseModel):
             "collection_id": obj.get("collection_id"),
             "sync": ContentSourceSyncSettings.from_dict(obj["sync"]) if obj.get("sync") is not None else None,
             "type": obj.get("type"),
+            "permissions": ContentSourcePermissionSettings.from_dict(obj["permissions"]) if obj.get("permissions") is not None else None,
             "site_url": obj.get("site_url"),
             "library_name": obj.get("library_name"),
             "folder_path": obj.get("folder_path")

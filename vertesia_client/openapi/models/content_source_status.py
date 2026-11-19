@@ -20,6 +20,7 @@ import json
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
+from vertesia_client.openapi.models.content_source_permission_status import ContentSourcePermissionStatus
 from vertesia_client.openapi.models.content_source_sync_round import ContentSourceSyncRound
 from typing import Optional, Set
 from typing_extensions import Self
@@ -30,13 +31,14 @@ class ContentSourceStatus(BaseModel):
     A content source's sync state.
     """ # noqa: E501
     state: StrictStr = Field(description="`waiting` between syncs, `running` during one, `stopped` when its credentials were refused or the source is being deleted.")
+    permissions: Optional[ContentSourcePermissionStatus] = None
     current_round: Optional[ContentSourceSyncRound] = None
     last_round: Optional[ContentSourceSyncRound] = None
     recent_rounds: Optional[List[ContentSourceSyncRound]] = Field(default=None, description="The last 10 finished rounds, newest first. Their reports are kept; older ones are deleted.")
     cursor_taken_at: Optional[datetime] = Field(default=None, description="When the change cursor in use was taken.")
     next_sync_at: Optional[datetime] = None
     error: Optional[StrictStr] = Field(default=None, description="Why the sync is stopped.")
-    __properties: ClassVar[List[str]] = ["state", "current_round", "last_round", "recent_rounds", "cursor_taken_at", "next_sync_at", "error"]
+    __properties: ClassVar[List[str]] = ["state", "permissions", "current_round", "last_round", "recent_rounds", "cursor_taken_at", "next_sync_at", "error"]
 
     @field_validator('state')
     def state_validate_enum(cls, value):
@@ -82,6 +84,9 @@ class ContentSourceStatus(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of permissions
+        if self.permissions:
+            _dict['permissions'] = self.permissions.to_dict()
         # override the default output from pydantic by calling `to_dict()` of current_round
         if self.current_round:
             _dict['current_round'] = self.current_round.to_dict()
@@ -108,6 +113,7 @@ class ContentSourceStatus(BaseModel):
 
         _obj = cls.model_validate({
             "state": obj.get("state"),
+            "permissions": ContentSourcePermissionStatus.from_dict(obj["permissions"]) if obj.get("permissions") is not None else None,
             "current_round": ContentSourceSyncRound.from_dict(obj["current_round"]) if obj.get("current_round") is not None else None,
             "last_round": ContentSourceSyncRound.from_dict(obj["last_round"]) if obj.get("last_round") is not None else None,
             "recent_rounds": [ContentSourceSyncRound.from_dict(_item) for _item in obj["recent_rounds"]] if obj.get("recent_rounds") is not None else None,

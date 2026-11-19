@@ -33,7 +33,7 @@ class UpdateCustomRolePayload(BaseModel):
     title: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=120)]] = None
     description: Optional[Annotated[str, Field(strict=True, max_length=1000)]] = None
     base_roles: Optional[List[AssignableRoleName]] = Field(default=None, description="Roles whose permissions are inherited, in addition to permissions below. Use built-in system role names or c:<name> references in this account. Cycles and ABAC roles are not allowed. Changes to a base role apply to newly minted tokens.")
-    permissions: Optional[Annotated[List[Permission], Field(max_length=49)]] = None
+    permissions: Optional[Annotated[List[Permission], Field(max_length=50)]] = None
     __properties: ClassVar[List[str]] = ["title", "description", "base_roles", "permissions"]
 
     model_config = ConfigDict(
