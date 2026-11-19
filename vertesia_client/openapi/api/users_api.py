@@ -1201,7 +1201,7 @@ class UsersApi:
     ) -> User:
         """Update a user
 
-        Updates profile fields for the caller or an administrator. Only account-role administrators may change authorization attributes (properties, clearance, or compartments).  **Required permissions:** Any of `account:member`, `account:user:manage`
+        Updates profile fields for the caller or an administrator. Only account-role administrators may change authorization attributes (properties, clearance, or compartments). The username of a SCIM-provisioned user is its sign-in identifier and is managed by SCIM provisioning: changing it here returns 403, while sending its current value is accepted.  **Required permissions:** Any of `account:member`, `account:user:manage`
 
         :param user_id: (required)
         :type user_id: str
@@ -1278,7 +1278,7 @@ class UsersApi:
     ) -> ApiResponse[User]:
         """Update a user
 
-        Updates profile fields for the caller or an administrator. Only account-role administrators may change authorization attributes (properties, clearance, or compartments).  **Required permissions:** Any of `account:member`, `account:user:manage`
+        Updates profile fields for the caller or an administrator. Only account-role administrators may change authorization attributes (properties, clearance, or compartments). The username of a SCIM-provisioned user is its sign-in identifier and is managed by SCIM provisioning: changing it here returns 403, while sending its current value is accepted.  **Required permissions:** Any of `account:member`, `account:user:manage`
 
         :param user_id: (required)
         :type user_id: str
@@ -1355,7 +1355,7 @@ class UsersApi:
     ) -> RESTResponseType:
         """Update a user
 
-        Updates profile fields for the caller or an administrator. Only account-role administrators may change authorization attributes (properties, clearance, or compartments).  **Required permissions:** Any of `account:member`, `account:user:manage`
+        Updates profile fields for the caller or an administrator. Only account-role administrators may change authorization attributes (properties, clearance, or compartments). The username of a SCIM-provisioned user is its sign-in identifier and is managed by SCIM provisioning: changing it here returns 403, while sending its current value is accepted.  **Required permissions:** Any of `account:member`, `account:user:manage`
 
         :param user_id: (required)
         :type user_id: str
