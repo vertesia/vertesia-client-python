@@ -4550,7 +4550,7 @@ class ContentSourcesApi:
     ) -> ExternalContentSource:
         """Update a content source
 
-        Changes the name, description or sync settings, and, before the first sync, the library and folder to sync (409 afterwards). Saving sync settings also hands the sync your credentials, which restarts a sync stopped because its previous credentials were refused.  **Required permissions:** Any of `content_source:manage`, `project:settings_write`
+        Changes the name, description, sync settings or sample, and, before the first sync, the library and folder to sync (409 afterwards). Saving sync settings also hands the sync your credentials, which restarts a sync stopped because its previous credentials were refused. Changing `sample_percent` makes the next sync an import.  **Required permissions:** Any of `content_source:manage`, `project:settings_write`
 
         :param source_id: (required)
         :type source_id: str
@@ -4627,7 +4627,7 @@ class ContentSourcesApi:
     ) -> ApiResponse[ExternalContentSource]:
         """Update a content source
 
-        Changes the name, description or sync settings, and, before the first sync, the library and folder to sync (409 afterwards). Saving sync settings also hands the sync your credentials, which restarts a sync stopped because its previous credentials were refused.  **Required permissions:** Any of `content_source:manage`, `project:settings_write`
+        Changes the name, description, sync settings or sample, and, before the first sync, the library and folder to sync (409 afterwards). Saving sync settings also hands the sync your credentials, which restarts a sync stopped because its previous credentials were refused. Changing `sample_percent` makes the next sync an import.  **Required permissions:** Any of `content_source:manage`, `project:settings_write`
 
         :param source_id: (required)
         :type source_id: str
@@ -4704,7 +4704,7 @@ class ContentSourcesApi:
     ) -> RESTResponseType:
         """Update a content source
 
-        Changes the name, description or sync settings, and, before the first sync, the library and folder to sync (409 afterwards). Saving sync settings also hands the sync your credentials, which restarts a sync stopped because its previous credentials were refused.  **Required permissions:** Any of `content_source:manage`, `project:settings_write`
+        Changes the name, description, sync settings or sample, and, before the first sync, the library and folder to sync (409 afterwards). Saving sync settings also hands the sync your credentials, which restarts a sync stopped because its previous credentials were refused. Changing `sample_percent` makes the next sync an import.  **Required permissions:** Any of `content_source:manage`, `project:settings_write`
 
         :param source_id: (required)
         :type source_id: str

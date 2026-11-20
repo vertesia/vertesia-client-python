@@ -33,7 +33,7 @@ class ContentSourceSyncCounts(BaseModel):
     updated: Annotated[int, Field(strict=True)]
     unchanged: Annotated[int, Field(strict=True)]
     deleted: Annotated[int, Field(strict=True)]
-    skipped: Annotated[int, Field(strict=True)] = Field(description="Files that are not synced (unsupported types, packages).")
+    skipped: Annotated[int, Field(strict=True)] = Field(description="Files that are not synced (unsupported types, packages, files outside the sample).")
     failed: Annotated[int, Field(strict=True)]
     __properties: ClassVar[List[str]] = ["listed", "created", "updated", "unchanged", "deleted", "skipped", "failed"]
 

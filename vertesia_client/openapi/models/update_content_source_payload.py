@@ -28,16 +28,17 @@ from pydantic_core import to_jsonable_python
 
 class UpdateContentSourcePayload(BaseModel):
     """
-    Changes the name, description or sync settings, and, before the first sync, the root and folder to sync. Saving sync settings also hands the sync your credentials, which restarts a sync stopped because its previous credentials were refused.
+    Changes the name, description, sync settings or sample, and, before the first sync, the root and folder to sync. Saving sync settings also hands the sync your credentials, which restarts a sync stopped because its previous credentials were refused.
     """ # noqa: E501
     name: Optional[Annotated[str, Field(strict=True)]] = None
     description: Optional[StrictStr] = None
     sync: Optional[ContentSourceSyncSettings] = None
+    sample_percent: Optional[Annotated[int, Field(strict=True)]] = Field(default=None, description="Sample mode: syncs only about this percentage of the files, to look at real documents before importing them all. A file is in the sample by a hash of its ID, so the same files stay in it from one sync to the next, spread over every folder. A file outside the sample is not imported, and its document is deleted if it has one. `null` removes the sample, so that every file is synced. A change, before or after the first sync, makes the next sync an import that lists the whole folder: it imports the files that entered the sample and deletes the documents of those that left it.")
     permissions: Optional[ContentSourcePermissionSettings] = None
     root_id: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Only before the first sync: the root to sync, as `discover/roots` returned it (a SharePoint document library; for Box, a folder shared with the app). Answers 409 once the source has synced.")
     folder_id: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Only before the first sync: the folder to sync, as a folder listing returned its `id`. Answers 409 once the source has synced.")
     folder_path: Optional[StrictStr] = Field(default=None, description="SharePoint only, and only before the first sync: the folder to sync inside the library, e.g. `Contracts/2026`; empty for the whole library. Answers 409 once the source has synced.")
-    __properties: ClassVar[List[str]] = ["name", "description", "sync", "permissions", "root_id", "folder_id", "folder_path"]
+    __properties: ClassVar[List[str]] = ["name", "description", "sync", "sample_percent", "permissions", "root_id", "folder_id", "folder_path"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -84,6 +85,11 @@ class UpdateContentSourcePayload(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of permissions
         if self.permissions:
             _dict['permissions'] = self.permissions.to_dict()
+        # set to None if sample_percent (nullable) is None
+        # and model_fields_set contains the field
+        if self.sample_percent is None and "sample_percent" in self.model_fields_set:
+            _dict['sample_percent'] = None
+
         return _dict
 
     @classmethod
@@ -99,6 +105,7 @@ class UpdateContentSourcePayload(BaseModel):
             "name": obj.get("name"),
             "description": obj.get("description"),
             "sync": ContentSourceSyncSettings.from_dict(obj["sync"]) if obj.get("sync") is not None else None,
+            "sample_percent": obj.get("sample_percent"),
             "permissions": ContentSourcePermissionSettings.from_dict(obj["permissions"]) if obj.get("permissions") is not None else None,
             "root_id": obj.get("root_id"),
             "folder_id": obj.get("folder_id"),

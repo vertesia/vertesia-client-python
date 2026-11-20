@@ -35,7 +35,7 @@ class ContentSourceSyncRound(BaseModel):
     started_at: datetime
     finished_at: Optional[datetime] = None
     counts: ContentSourceSyncCounts
-    skipped_by_reason: Optional[Dict[str, Annotated[int, Field(strict=True)]]] = Field(default=None, description="The skipped files by reason: `package`, `not_a_file`, `too_large`, `unsupported_type`, or another reason a system reports.")
+    skipped_by_reason: Optional[Dict[str, Annotated[int, Field(strict=True)]]] = Field(default=None, description="The skipped files by reason: `package`, `not_a_file`, `too_large`, `unsupported_type`, `not_sampled` (outside the source's `sample_percent`; counted only, not listed in the report), or another reason a system reports.")
     swept: Optional[StrictBool] = Field(default=None, description="Whether an import ended by deleting the documents of files no longer listed.")
     error: Optional[StrictStr] = None
     __properties: ClassVar[List[str]] = ["id", "kind", "started_at", "finished_at", "counts", "skipped_by_reason", "swept", "error"]

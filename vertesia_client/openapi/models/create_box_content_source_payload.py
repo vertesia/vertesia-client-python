@@ -35,9 +35,10 @@ class CreateBoxContentSourcePayload(BaseModel):
     location_root: Optional[StrictStr] = Field(default=None, description="The `location` root for synced documents. Defaults to `/<type>/<name>`.")
     collection_id: Optional[StrictStr] = Field(default=None, description="A collection to add synced documents to.")
     sync: Optional[ContentSourceSyncSettings] = Field(default=None, description="Defaults to scheduled sync disabled, every 60 minutes once enabled.")
+    sample_percent: Optional[Annotated[int, Field(strict=True)]] = Field(default=None, description="Sample mode: syncs only about this percentage of the files, to look at real documents before importing them all. A file is in the sample by a hash of its ID, so the same files stay in it from one sync to the next, spread over every folder. A file outside the sample is not imported, and its document is deleted if it has one. Leave out to sync every file.")
     type: StrictStr
     folder_id: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="The Box folder ID, shared with the Box app's service account. Defaults to `0`, every folder shared with the app, to narrow before the first sync with an update.")
-    __properties: ClassVar[List[str]] = ["name", "description", "oauth_provider_id", "location_root", "collection_id", "sync", "type", "folder_id"]
+    __properties: ClassVar[List[str]] = ["name", "description", "oauth_provider_id", "location_root", "collection_id", "sync", "sample_percent", "type", "folder_id"]
 
     @field_validator('type')
     def type_validate_enum(cls, value):
@@ -106,6 +107,7 @@ class CreateBoxContentSourcePayload(BaseModel):
             "location_root": obj.get("location_root"),
             "collection_id": obj.get("collection_id"),
             "sync": ContentSourceSyncSettings.from_dict(obj["sync"]) if obj.get("sync") is not None else None,
+            "sample_percent": obj.get("sample_percent"),
             "type": obj.get("type"),
             "folder_id": obj.get("folder_id")
         })
