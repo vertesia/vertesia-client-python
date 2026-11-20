@@ -22,9 +22,11 @@ def package_version(tag, lang, ref):
     if not match:
         raise ValueError("Use vX.Y.Z or vX.Y.Z-dev.YYYYMMDD.HHMMSSZ")
     base = ".".join(match.group(i) for i in (1, 2, 3))
-    expected_ref = "main" if match[4] else "release/" + ".".join(match.group(i) for i in (1, 2))
-    if ref != expected_ref:
-        raise ValueError(f"This version must be published from {expected_ref}")
+    # A dev build comes from main or from its own release line; a stable version only from its release line.
+    release_line = "release/" + ".".join(match.group(i) for i in (1, 2))
+    expected_refs = ("main", release_line) if match[4] else (release_line,)
+    if ref not in expected_refs:
+        raise ValueError(f"This version must be published from {' or '.join(expected_refs)}")
     if lang == "python" and match[4]:
         return base + ".dev" + match[4] + match[5]
     return tag[1:].replace("-dev.", "-alpha.") if lang == "java" else tag[1:]
