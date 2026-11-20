@@ -3,7 +3,7 @@
 Python client for the Vertesia API.
 
 ```sh
-pip install vertesia-client
+pip install vertesia-client==1.7.0.dev20261120100641
 ```
 
 ## Quick Start
