@@ -37,7 +37,8 @@ class ReleaseCohortTest(unittest.TestCase):
     def test_channel_branch_and_version_validation(self):
         for tag, ref in [
             ("v1.6.0", "main"),
-            ("v1.6.0-dev.20261021.123456Z", "release/1.6"),
+            ("v1.6.0-dev.20261021.123456Z", "release/1.5"),
+            ("v1.6.0-dev.20261021.123456Z", "feat-sdk"),
             ("v1.6.0", "release/1.5"),
             ("v1.6.0-dev", "main"),
             ("v01.6.0", "release/01.6"),
@@ -46,6 +47,10 @@ class ReleaseCohortTest(unittest.TestCase):
             with self.subTest(tag=tag, ref=ref), self.assertRaises(ValueError):
                 module.package_version(tag, "go", ref)
         self.assertEqual(module.package_version("v1.6.0", "java", "release/1.6"), "1.6.0")
+        self.assertEqual(
+            module.package_version("v1.6.0-dev.20261021.123456Z", "java", "release/1.6"),
+            "1.6.0-alpha.20261021.123456Z",
+        )
 
     def test_existing_tag_can_be_resumed_but_never_repointed(self):
         self.assertFalse(module.check_tag("v1.6.0", self.source))
