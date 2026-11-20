@@ -393,11 +393,13 @@ vertesia_client/openapi/models/content_source_report_action.py
 vertesia_client/openapi/models/content_source_report_entry.py
 vertesia_client/openapi/models/content_source_root.py
 vertesia_client/openapi/models/content_source_roots_discovery.py
+vertesia_client/openapi/models/content_source_round_summary.py
 vertesia_client/openapi/models/content_source_sample_discovery.py
 vertesia_client/openapi/models/content_source_sample_file.py
 vertesia_client/openapi/models/content_source_schema_discovery.py
 vertesia_client/openapi/models/content_source_site_discovery.py
 vertesia_client/openapi/models/content_source_status.py
+vertesia_client/openapi/models/content_source_summary.py
 vertesia_client/openapi/models/content_source_sync_counts.py
 vertesia_client/openapi/models/content_source_sync_round.py
 vertesia_client/openapi/models/content_source_sync_settings.py
