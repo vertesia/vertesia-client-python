@@ -76,6 +76,11 @@ class ReleaseCohortTest(unittest.TestCase):
         module.stamp("1.6.0", "python")
         self.assertEqual(Path("README.md").read_text(), "pip install vertesia-client==1.6.0" + local)
 
+    def test_repository_readme_has_exactly_one_install_instruction(self):
+        # The release stamp, and the post-release update of the branch README, both refuse any other count.
+        readme = Path(__file__).resolve().parents[1] / "README.md"
+        self.assertEqual(len(module.README_INSTALL.findall(readme.read_text())), 1)
+
     def test_publisher_refuses_a_readme_install_it_cannot_identify(self):
         Path("pyproject.toml").write_text('[project]\nversion = "1.6.0.dev0"\n')
         for readme in ("no install here\n", "pip install vertesia-client\npip install vertesia-client==1.5.0\n"):
