@@ -13,6 +13,8 @@ from urllib.error import HTTPError
 from urllib.request import urlopen
 
 PATTERN = re.compile(r"^v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-dev\.(\d{8})\.(\d{6})Z)?$")
+# The README's install instruction, with or without a pinned version.
+README_INSTALL = re.compile(r"(pip install vertesia-client)(?:==[0-9A-Za-z.]+)?(?![\w.\[-])")
 
 
 def package_version(tag, lang, ref):
@@ -77,12 +79,23 @@ def stamp(version, lang):
             r"(?m)^    <version>.*</version>$", f"    <version>{version}</version>", path.read_text(), count=1
         )
     elif lang == "python":
+        stamp_readme(version)
         path = Path("pyproject.toml")
         text, count = re.subn(r'(?m)^version = "[^"]+"$', f'version = "{version}"', path.read_text(), count=1)
     else:
         return
     if count != 1:
         raise ValueError("Unable to stamp package metadata")
+    path.write_text(text)
+
+
+def stamp_readme(version):
+    # README.md is the PyPI description. The branch's README is pinned only after a release is published, so the
+    # distribution would otherwise tell readers to install the previous version.
+    path = Path("README.md")
+    text, count = README_INSTALL.subn(rf"\g<1>=={version}", path.read_text())
+    if count != 1:
+        raise ValueError(f"Expected one pip install instruction in README.md, found {count}")
     path.write_text(text)
 
 

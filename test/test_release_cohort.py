@@ -60,11 +60,30 @@ class ReleaseCohortTest(unittest.TestCase):
     def test_publisher_stamps_working_metadata_without_a_version_commit(self):
         Path("pom.xml").write_text("<project>\n    <version>1.6.0-SNAPSHOT</version>\n</project>\n")
         Path("pyproject.toml").write_text('[project]\nversion = "1.6.0.dev0"\n')
+        Path("README.md").write_text("```sh\npip install vertesia-client==1.5.0\n```\n")
         module.stamp("1.6.0-dev.20261021.123456Z", "java")
         module.stamp("1.6.0.dev20261021123456", "python")
         self.assertIn("1.6.0-dev.20261021.123456Z", Path("pom.xml").read_text())
         self.assertIn("1.6.0.dev20261021123456", Path("pyproject.toml").read_text())
+        pinned = "pip install vertesia-client==1.6.0.dev20261021123456"
+        self.assertEqual(Path("README.md").read_text(), f"```sh\n{pinned}\n```\n")
         self.assertEqual(module.run("git", "rev-parse", "HEAD").stdout.strip(), self.source)
+
+    def test_publisher_pins_an_unversioned_readme_install(self):
+        Path("pyproject.toml").write_text('[project]\nversion = "1.6.0.dev0"\n')
+        local = "\n\nUse `pip install vertesia-client[dev]` locally.\n"
+        Path("README.md").write_text("pip install vertesia-client" + local)
+        module.stamp("1.6.0", "python")
+        self.assertEqual(Path("README.md").read_text(), "pip install vertesia-client==1.6.0" + local)
+
+    def test_publisher_refuses_a_readme_install_it_cannot_identify(self):
+        Path("pyproject.toml").write_text('[project]\nversion = "1.6.0.dev0"\n')
+        for readme in ("no install here\n", "pip install vertesia-client\npip install vertesia-client==1.5.0\n"):
+            with self.subTest(readme=readme):
+                Path("README.md").write_text(readme)
+                with self.assertRaisesRegex(ValueError, "one pip install instruction"):
+                    module.stamp("1.6.0", "python")
+                self.assertEqual(Path("README.md").read_text(), readme)
 
     def test_registry_version_cannot_be_claimed_without_source_tag(self):
         with patch.object(module, "urlopen", side_effect=lambda *_args, **_kwargs: io.BytesIO(b"{}")):
