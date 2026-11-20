@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Vertesia API",
-    "version": "1.7.0-dev",
+    "version": "1.7.0-dev.20261120.100641Z",
     "x-api-version": "20260803",
     "description": "The Vertesia API provides project-scoped access to interaction execution and content workflows. Use it to run interactions, inspect execution history, stream run progress, replay previous executions, and search content objects and collections. Authenticate requests with a bearer token, or use the official `@vertesia/client` package for typed access from Node.js applications.",
     "contact": {
@@ -13045,6 +13045,42 @@
         "additionalProperties": false,
         "description": "The roots a content source’s connection reaches."
       },
+      "ContentSourceRoundSummary": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "import",
+              "update"
+            ],
+            "description": "`import` lists the whole folder; `update` reads the changes since the previous sync."
+          },
+          "started_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "finished_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "outcome": {
+            "type": "string",
+            "enum": [
+              "succeeded",
+              "failed"
+            ],
+            "description": "Whether the round finished without an error."
+          }
+        },
+        "required": [
+          "kind",
+          "started_at",
+          "outcome"
+        ],
+        "additionalProperties": false,
+        "description": "When a finished sync round ran, and how it ended."
+      },
       "ContentSourceSampleDiscovery": {
         "type": "object",
         "properties": {
@@ -13246,6 +13282,85 @@
         ],
         "additionalProperties": false,
         "description": "A content source's sync state."
+      },
+      "ContentSourceSummary": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "sharepoint",
+              "box"
+            ]
+          },
+          "location_root": {
+            "type": "string",
+            "description": "The `location` under which the source folder's tree is reproduced, e.g. `/sharepoint/legal`."
+          },
+          "site_url": {
+            "type": "string",
+            "description": "SharePoint only: the site URL."
+          },
+          "library_name": {
+            "type": "string",
+            "description": "SharePoint only: the document library name."
+          },
+          "folder_path": {
+            "type": "string",
+            "description": "The folder synced: relative to the library root for SharePoint (empty for the whole library), the folder path below All Files for Box."
+          },
+          "sync": {
+            "$ref": "#/components/schemas/ContentSourceSyncSettings"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "not_started",
+              "running",
+              "waiting",
+              "stopped"
+            ],
+            "description": "`waiting` between syncs, `running` during one, `stopped` when its credentials were refused or the source is being deleted."
+          },
+          "next_sync_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "last_success_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the last round that finished without an error ended. Absent when none has."
+          },
+          "last_round": {
+            "$ref": "#/components/schemas/ContentSourceRoundSummary"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "type",
+          "location_root",
+          "folder_path",
+          "sync",
+          "state"
+        ],
+        "additionalProperties": false,
+        "description": "What a content source syncs into the project and how its sync stands, readable by every member who can read content. Holds no connection, credential or permission settings."
+      },
+      "ContentSourceSummaryArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/ContentSourceSummary"
+        }
       },
       "ContentSourceSyncCounts": {
         "type": "object",
@@ -87914,6 +88029,99 @@
               }
             }
           }
+        }
+      },
+      "parameters": [
+        {
+          "name": "x-api-version",
+          "in": "header",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S",
+            "example": "20260803"
+          },
+          "description": "Required Vertesia API version header. Use `20260803` for the current stable API shape.",
+          "x-vertesia-global-header": true
+        }
+      ]
+    },
+    "/content-sources/summary": {
+      "get": {
+        "operationId": "ListContentSourceSummaries",
+        "tags": [
+          "Content Sources"
+        ],
+        "summary": "Summarize the content sources",
+        "description": "Lists the sources that feed the project: what each one syncs (SharePoint site, library and folder, or Box folder), where its documents are placed, and how its sync stands, with the last successful round. Needs only content read access: no OAuth provider, system ID, permission setting or error is returned.\n\n**Required permissions:** Any of `content:read`, `content_source:manage`, `project:settings_write`",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OAuth2": [
+              "content:read"
+            ]
+          },
+          {
+            "OAuth2": [
+              "project:settings_write"
+            ]
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "The content sources of the current project, by name.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContentSourceSummaryArray"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [
+          "content:read",
+          "content_source:manage",
+          "project:settings_write"
+        ],
+        "x-vertesia-source": {
+          "file": "../../apps/zeno-server/src/api/content-sources.ts",
+          "className": "ContentSourcesResource",
+          "methodName": "summarizeSources"
         }
       },
       "parameters": [
