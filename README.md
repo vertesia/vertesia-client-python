@@ -267,7 +267,10 @@ builds distributions without creating tags or publishing.
 
 Dev artifact versions use PEP 440, for example `1.6.0.dev20261021123456`. The
 publisher stamps this unique version in the build workspace; generator/source
-metadata can keep its existing `.dev0` convention. PyPI trusted publishing uses
+metadata can keep its existing `.dev0` convention. It also pins the install
+command in the Installation section, since this README becomes the PyPI
+description, so each PyPI page shows its own version. The branch's README is
+pinned separately, after publication. PyPI trusted publishing uses
 the existing `pypi` environment and Release workflow identity. GitHub releases
 are marked as prereleases for dev cohorts. Retries never replace a source tag;
 an already published version requires a matching tag at the same commit.
