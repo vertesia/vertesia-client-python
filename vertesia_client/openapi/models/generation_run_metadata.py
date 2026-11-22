@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, Optional
+from vertesia_client.openapi.models.extraction_report import ExtractionReport
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -32,7 +33,8 @@ class GenerationRunMetadata(BaseModel):
     model: StrictStr
     target: Optional[StrictStr] = None
     extraction_fingerprint: Optional[StrictStr] = Field(default=None, description="Fingerprint of the inputs used by property extraction (content etag, type + its object schema, source, instructions, interaction). Lets a later run skip re-extraction when nothing changed.")
-    __properties: ClassVar[List[str]] = ["id", "date", "model", "target", "extraction_fingerprint"]
+    extraction_report: Optional[ExtractionReport] = None
+    __properties: ClassVar[List[str]] = ["id", "date", "model", "target", "extraction_fingerprint", "extraction_report"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -73,6 +75,9 @@ class GenerationRunMetadata(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of extraction_report
+        if self.extraction_report:
+            _dict['extraction_report'] = self.extraction_report.to_dict()
         return _dict
 
     @classmethod
@@ -89,7 +94,8 @@ class GenerationRunMetadata(BaseModel):
             "date": obj.get("date"),
             "model": obj.get("model"),
             "target": obj.get("target"),
-            "extraction_fingerprint": obj.get("extraction_fingerprint")
+            "extraction_fingerprint": obj.get("extraction_fingerprint"),
+            "extraction_report": ExtractionReport.from_dict(obj["extraction_report"]) if obj.get("extraction_report") is not None else None
         })
         return _obj
 

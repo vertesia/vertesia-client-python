@@ -676,6 +676,10 @@ __all__ = [
     "ExternalContentSource",
     "ExternalizedToolInputRef",
     "ExtractAppVersionGitRefTypeBranchTagCommit",
+    "ExtractionNormalization",
+    "ExtractionRepair",
+    "ExtractionReport",
+    "ExtractionValidationError",
     "FacetSpec",
     "FileBucketResponse",
     "FileListResponse",
@@ -2047,6 +2051,10 @@ from vertesia_client.openapi.models.exported_prompt_template_ref import Exported
 from vertesia_client.openapi.models.external_content_source import ExternalContentSource as ExternalContentSource
 from vertesia_client.openapi.models.externalized_tool_input_ref import ExternalizedToolInputRef as ExternalizedToolInputRef
 from vertesia_client.openapi.models.extract_app_version_git_ref_type_branch_tag_commit import ExtractAppVersionGitRefTypeBranchTagCommit as ExtractAppVersionGitRefTypeBranchTagCommit
+from vertesia_client.openapi.models.extraction_normalization import ExtractionNormalization as ExtractionNormalization
+from vertesia_client.openapi.models.extraction_repair import ExtractionRepair as ExtractionRepair
+from vertesia_client.openapi.models.extraction_report import ExtractionReport as ExtractionReport
+from vertesia_client.openapi.models.extraction_validation_error import ExtractionValidationError as ExtractionValidationError
 from vertesia_client.openapi.models.facet_spec import FacetSpec as FacetSpec
 from vertesia_client.openapi.models.file_bucket_response import FileBucketResponse as FileBucketResponse
 from vertesia_client.openapi.models.file_list_response import FileListResponse as FileListResponse

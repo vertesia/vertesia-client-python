@@ -654,6 +654,10 @@ vertesia_client/openapi/models/exported_prompt_template_ref.py
 vertesia_client/openapi/models/external_content_source.py
 vertesia_client/openapi/models/externalized_tool_input_ref.py
 vertesia_client/openapi/models/extract_app_version_git_ref_type_branch_tag_commit.py
+vertesia_client/openapi/models/extraction_normalization.py
+vertesia_client/openapi/models/extraction_repair.py
+vertesia_client/openapi/models/extraction_report.py
+vertesia_client/openapi/models/extraction_validation_error.py
 vertesia_client/openapi/models/facet_spec.py
 vertesia_client/openapi/models/file_bucket_response.py
 vertesia_client/openapi/models/file_list_response.py
