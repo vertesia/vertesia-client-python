@@ -29,16 +29,15 @@ class OpenAiAudioOptions(BaseModel):
     OpenAiAudioOptions
     """ # noqa: E501
     option_id: Optional[StrictStr] = Field(default=None, alias="_option_id")
-    voice: Optional[Annotated[str, Field(min_length=1, strict=True)]] = None
+    voice: Optional[Annotated[str, Field(strict=True)]] = None
     response_format: Optional[StrictStr] = None
     __properties: ClassVar[List[str]] = ["_option_id", "voice", "response_format"]
 
     @field_validator('option_id')
     def option_id_validate_enum(cls, value):
         """Validates the enum"""
-        if value is None:
-            return value
-
+        if value is not None and value != 'openai-audio':
+            raise ValueError('Expected _option_id to be openai-audio')
         return value
 
     @field_validator('response_format')

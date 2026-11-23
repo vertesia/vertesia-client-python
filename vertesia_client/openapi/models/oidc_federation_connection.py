@@ -28,34 +28,24 @@ class OidcFederationConnection(BaseModel):
     """
     OidcFederationConnection
     """ # noqa: E501
-    name: Annotated[str, Field(min_length=1, strict=True, max_length=200)]
+    name: Annotated[str, Field(strict=True)]
     issuer: StrictStr
     jwks_uri: Optional[StrictStr] = None
-    external_id_claim: Annotated[str, Field(min_length=1, strict=True, max_length=256)] = Field(description="Exact top-level verified token claim matched to SCIM externalId within the owning provisioning account.")
-    allowed_audiences: Annotated[List[Annotated[str, Field(min_length=1, strict=True)]], Field(min_length=1, max_length=20)]
-    allowed_algorithms: Annotated[List[StrictStr], Field(min_length=1, max_length=2)]
+    external_id_claim: Annotated[str, Field(strict=True)] = Field(description="Exact top-level verified token claim matched to SCIM externalId within the owning provisioning account.")
+    allowed_audiences: Annotated[List[Annotated[str, Field(strict=True)]], Field()]
+    allowed_algorithms: Annotated[List[StrictStr], Field()]
     subject_token_type: StrictStr
     required_claims: Optional[Dict[str, StrictStr]] = Field(default=None, description="Exact string matches against verified top-level IdP claims, such as tenant or azp.")
     all_projects: Optional[StrictBool] = Field(default=None, description="Explicitly allow all current and future projects in the owning organization, subject to the user’s current access. Defaults to false for existing allowlists. When true, allowed_project_ids must be empty.")
-    allowed_project_ids: Annotated[List[Annotated[str, Field(strict=True)]], Field(max_length=100)] = Field(description="Explicit project allowlist. Must contain 1–100 projects unless all_projects is true.")
-    allowed_client_ids: Optional[Annotated[List[Annotated[str, Field(min_length=1, strict=True, max_length=256)]], Field(min_length=1, max_length=20)]] = Field(default=None, description="When set, require authentication by one of these account-owned confidential OAuth clients. Omit to allow exchanges without separate client authentication.")
-    allowed_scopes: Optional[Annotated[List[Annotated[str, Field(min_length=1, strict=True)]], Field(min_length=1, max_length=100)]] = Field(default=None, description="Optional restriction on delegable Vertesia permissions, excluding account:admin. Omit to use the user’s current permissions. An explicit list further restricts the grant.")
-    max_token_ttl_seconds: Annotated[int, Field(le=300, strict=True, ge=30)]
-    max_subject_token_age_seconds: Annotated[int, Field(le=86400, strict=True, ge=30)]
+    allowed_project_ids: Annotated[List[Annotated[str, Field(strict=True)]], Field()] = Field(description="Explicit project allowlist. Must contain 1–100 projects unless all_projects is true.")
+    allowed_client_ids: Optional[Annotated[List[Annotated[str, Field(strict=True)]], Field()]] = Field(default=None, description="When set, require authentication by one of these account-owned confidential OAuth clients. Omit to allow exchanges without separate client authentication.")
+    allowed_scopes: Optional[Annotated[List[Annotated[str, Field(strict=True)]], Field()]] = Field(default=None, description="Optional restriction on delegable Vertesia permissions, excluding account:admin. Omit to use the user’s current permissions. An explicit list further restricts the grant.")
+    max_token_ttl_seconds: Annotated[int, Field(strict=True)]
+    max_subject_token_age_seconds: Annotated[int, Field(strict=True)]
     enabled: StrictBool
     id: Annotated[str, Field(strict=True)]
     account_id: Annotated[str, Field(strict=True)]
     __properties: ClassVar[List[str]] = ["name", "issuer", "jwks_uri", "external_id_claim", "allowed_audiences", "allowed_algorithms", "subject_token_type", "required_claims", "all_projects", "allowed_project_ids", "allowed_client_ids", "allowed_scopes", "max_token_ttl_seconds", "max_subject_token_age_seconds", "enabled", "id", "account_id"]
-
-    @field_validator('external_id_claim')
-    def external_id_claim_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"\S", value):
-            raise ValueError(r"must validate the regular expression /\S/")
-        return value
 
     @field_validator('allowed_algorithms')
     def allowed_algorithms_validate_enum(cls, value):
@@ -68,26 +58,6 @@ class OidcFederationConnection(BaseModel):
     @field_validator('subject_token_type')
     def subject_token_type_validate_enum(cls, value):
         """Validates the enum"""
-        return value
-
-    @field_validator('id')
-    def id_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^[a-fA-F0-9]{24}$", value):
-            raise ValueError(r"must validate the regular expression /^[a-fA-F0-9]{24}$/")
-        return value
-
-    @field_validator('account_id')
-    def account_id_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^[a-fA-F0-9]{24}$", value):
-            raise ValueError(r"must validate the regular expression /^[a-fA-F0-9]{24}$/")
         return value
 
     model_config = ConfigDict(

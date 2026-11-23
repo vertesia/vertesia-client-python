@@ -28,26 +28,16 @@ class ViewCollectionNavigation(BaseModel):
     """
     ViewCollectionNavigation
     """ # noqa: E501
-    id: Annotated[str, Field(min_length=1, strict=True, max_length=64)]
-    label: Annotated[str, Field(min_length=1, strict=True, max_length=120)]
+    id: Annotated[str, Field(strict=True)]
+    label: Annotated[str, Field(strict=True)]
     presentation: Optional[StrictStr] = None
     multi_select: Optional[StrictBool] = None
-    order: Optional[Union[Annotated[float, Field(multiple_of=1, strict=True)], Annotated[int, Field(strict=True)]]] = None
-    renderer: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=120)]] = None
+    order: Optional[Union[Annotated[float, Field(strict=True)], Annotated[int, Field(strict=True)]]] = None
+    renderer: Optional[Annotated[str, Field(strict=True)]] = None
     source: StrictStr
-    roots: Optional[Annotated[List[Annotated[str, Field(min_length=1, strict=True)]], Field(max_length=50)]] = None
+    roots: Optional[Annotated[List[Annotated[str, Field(strict=True)]], Field()]] = None
     include_descendants: Optional[StrictBool] = None
     __properties: ClassVar[List[str]] = ["id", "label", "presentation", "multi_select", "order", "renderer", "source", "roots", "include_descendants"]
-
-    @field_validator('id')
-    def id_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^[a-z][a-z0-9_-]*$", value):
-            raise ValueError(r"must validate the regular expression /^[a-z][a-z0-9_-]*$/")
-        return value
 
     @field_validator('presentation')
     def presentation_validate_enum(cls, value):

@@ -29,10 +29,10 @@ class IntakeCostByContentNature(BaseModel):
     Intake runs of one kind of content.
     """ # noqa: E501
     content_nature: Optional[StrictStr] = Field(default=None, description="The kind of content: `document`, `image`, `audio`, `video`, `code` or `other`. Absent for runs that never reported one.")
-    run_count: Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]
-    document_count: Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]
+    run_count: Annotated[int, Field(strict=True)]
+    document_count: Annotated[int, Field(strict=True)]
     cost_usd: Union[StrictFloat, StrictInt]
-    page_count: Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)] = Field(description="Pages of the runs that reported a page count.")
+    page_count: Annotated[int, Field(strict=True)] = Field(description="Pages of the runs that reported a page count.")
     duration_seconds: Union[StrictFloat, StrictInt] = Field(description="Length of the audio and video of the runs that reported one, in seconds.")
     cost_per_minute_usd: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="The cost of the runs that reported a length over their minutes. Absent when none reported one.")
     additional_properties: Dict[str, Any] = {}

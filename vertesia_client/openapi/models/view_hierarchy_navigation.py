@@ -29,25 +29,15 @@ class ViewHierarchyNavigation(BaseModel):
     """
     A drill-down hierarchy assembled from independently mapped properties.  Hierarchies represent one selected path, so multi_select may only be false. Selection ids are opaque runtime values and must not be constructed by clients.
     """ # noqa: E501
-    id: Annotated[str, Field(min_length=1, strict=True, max_length=64)]
-    label: Annotated[str, Field(min_length=1, strict=True, max_length=120)]
+    id: Annotated[str, Field(strict=True)]
+    label: Annotated[str, Field(strict=True)]
     presentation: Optional[StrictStr] = None
     multi_select: Optional[StrictBool] = None
-    order: Optional[Union[Annotated[float, Field(multiple_of=1, strict=True)], Annotated[int, Field(strict=True)]]] = None
-    renderer: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=120)]] = None
+    order: Optional[Union[Annotated[float, Field(strict=True)], Annotated[int, Field(strict=True)]]] = None
+    renderer: Optional[Annotated[str, Field(strict=True)]] = None
     source: StrictStr
-    levels: Annotated[List[ViewHierarchyLevel], Field(min_length=2, max_length=10)]
+    levels: Annotated[List[ViewHierarchyLevel], Field()]
     __properties: ClassVar[List[str]] = ["id", "label", "presentation", "multi_select", "order", "renderer", "source", "levels"]
-
-    @field_validator('id')
-    def id_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^[a-z][a-z0-9_-]*$", value):
-            raise ValueError(r"must validate the regular expression /^[a-z][a-z0-9_-]*$/")
-        return value
 
     @field_validator('presentation')
     def presentation_validate_enum(cls, value):

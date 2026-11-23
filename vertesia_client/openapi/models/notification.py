@@ -41,7 +41,7 @@ class Notification(BaseModel):
     parent: Optional[NotificationRef] = Field(default=None, description="Lifecycle parent, usually the agent run.")
     actor: Optional[StrictStr] = Field(default=None, description="Principal that caused the notification, when a person.")
     payload: NotificationPayload
-    payload_version: Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]
+    payload_version: Annotated[int, Field(strict=True)]
     occurred_at: datetime
     created_at: datetime
     read_at: Optional[datetime] = None

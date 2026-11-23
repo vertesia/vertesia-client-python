@@ -29,7 +29,7 @@ class BatchQueryPayload(BaseModel):
     """
     BatchQueryPayload
     """ # noqa: E501
-    queries: Annotated[List[BatchQueryPayloadQueriesInner], Field(min_length=1, max_length=20)]
+    queries: Annotated[List[BatchQueryPayloadQueriesInner], Field()]
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["queries"]
 

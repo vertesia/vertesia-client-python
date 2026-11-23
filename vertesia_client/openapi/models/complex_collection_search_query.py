@@ -32,27 +32,14 @@ class ComplexCollectionSearchQuery(BaseModel):
     parent: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Restrict the search to the children of this collection ID (24 hexadecimal characters). Empty or null searches every collection; a child search takes the parent from its path instead.")
     dynamic: Optional[StrictBool] = None
     status: Optional[CollectionStatus] = None
-    limit: Optional[Union[Annotated[float, Field(multiple_of=1, le=9007199254740991, strict=True, ge=0)], Annotated[int, Field(le=2147483647, strict=True, ge=0)]]] = None
-    offset: Optional[Union[Annotated[float, Field(multiple_of=1, le=9007199254740991, strict=True, ge=0)], Annotated[int, Field(le=2147483647, strict=True, ge=0)]]] = None
+    limit: Optional[Union[Annotated[float, Field(strict=True)], Annotated[int, Field(strict=True)]]] = None
+    offset: Optional[Union[Annotated[float, Field(strict=True)], Annotated[int, Field(strict=True)]]] = None
     name: Optional[StrictStr] = None
     type: Optional[StrictStr] = None
     types: Optional[List[StrictStr]] = None
     match: Optional[Dict[str, Any]] = None
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["parent", "dynamic", "status", "limit", "offset", "name", "type", "types", "match"]
-
-    @field_validator('parent')
-    def parent_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if value is None:
-            return value
-
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^(?:[0-9a-fA-F]{24})?$", value):
-            raise ValueError(r"must validate the regular expression /^(?:[0-9a-fA-F]{24})?$/")
-        return value
 
     model_config = ConfigDict(
         validate_by_name=True,

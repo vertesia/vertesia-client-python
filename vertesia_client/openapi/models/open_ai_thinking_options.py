@@ -41,7 +41,7 @@ class OpenAiThinkingOptions(BaseModel):
     verbosity: Optional[StrictStr] = None
     image_detail: Optional[StrictStr] = None
     include_thoughts: Optional[StrictBool] = None
-    service_tier: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="Provider-defined processing tier. Unknown non-empty values are preserved for forward compatibility.")
+    service_tier: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Provider-defined processing tier. Unknown non-empty values are preserved for forward compatibility.")
     cache_ttl: Optional[StrictStr] = None
     extra_body: Optional[Dict[str, Any]] = Field(default=None, description="Additional provider-specific fields merged into the OpenAI-compatible request body.")
     additional_properties: Dict[str, Any] = {}
@@ -50,9 +50,8 @@ class OpenAiThinkingOptions(BaseModel):
     @field_validator('option_id')
     def option_id_validate_enum(cls, value):
         """Validates the enum"""
-        if value is None:
-            return value
-
+        if value is not None and value != 'openai-thinking':
+            raise ValueError('Expected _option_id to be openai-thinking')
         return value
 
     @field_validator('tool_choice')

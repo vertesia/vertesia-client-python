@@ -32,26 +32,6 @@ class CreateAppRepoBranchRequest(BaseModel):
     source_ref: Annotated[str, Field(strict=True)] = Field(description="The existing branch, tag or commit the new branch starts from.")
     __properties: ClassVar[List[str]] = ["name", "source_ref"]
 
-    @field_validator('name')
-    def name_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"\S", value):
-            raise ValueError(r"must validate the regular expression /\S/")
-        return value
-
-    @field_validator('source_ref')
-    def source_ref_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"\S", value):
-            raise ValueError(r"must validate the regular expression /\S/")
-        return value
-
     model_config = ConfigDict(
         validate_by_name=True,
         validate_by_alias=True,

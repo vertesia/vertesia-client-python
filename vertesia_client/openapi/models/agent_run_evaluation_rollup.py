@@ -33,12 +33,12 @@ class AgentRunEvaluationRollup(BaseModel):
     """
     Fold of the turn evaluations of a run.
     """ # noqa: E501
-    seq: Annotated[int, Field(le=9007199254740991, strict=True, ge=1)] = Field(description="Monotonic per run; the server ignores a rollup older than the one it holds.")
-    detector_version: Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]
-    turns: Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]
+    seq: Annotated[int, Field(strict=True)] = Field(description="Monotonic per run; the server ignores a rollup older than the one it holds.")
+    detector_version: Annotated[int, Field(strict=True)]
+    turns: Annotated[int, Field(strict=True)]
     severity: EvaluationSeverity
     flags: List[TurnEvaluationFlag]
-    worst_turn_seq: Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]] = None
+    worst_turn_seq: Optional[Annotated[int, Field(strict=True)]] = None
     last_terminal_type: Optional[TurnTerminalType] = None
     terminal_error_class: Optional[StrictStr] = None
     partial: Optional[StrictBool] = None

@@ -29,7 +29,7 @@ class CreateProcessDefinitionPayload(BaseModel):
     """
     CreateProcessDefinitionPayload
     """ # noqa: E501
-    name: Annotated[str, Field(min_length=1, strict=True)]
+    name: Annotated[str, Field(strict=True)]
     description: Optional[StrictStr] = None
     status: Optional[StrictStr] = Field(default=None, description="Deprecated: Process definitions are created as drafts, so only `draft` is accepted. Use the publish endpoint to create immutable published versions.")
     version: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="Deprecated: Version is server-owned, so only `1` is accepted. Use the publish endpoint to create the next version.")

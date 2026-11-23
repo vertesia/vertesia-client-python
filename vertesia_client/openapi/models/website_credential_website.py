@@ -33,16 +33,6 @@ class WebsiteCredentialWebsite(BaseModel):
     allowed_origins: Optional[List[StrictStr]] = Field(default=None, description="Optional narrower origin allowlist for this credential.")
     __properties: ClassVar[List[str]] = ["host", "login_url", "allowed_origins"]
 
-    @field_validator('host')
-    def host_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"\S", value):
-            raise ValueError(r"must validate the regular expression /\S/")
-        return value
-
     model_config = ConfigDict(
         validate_by_name=True,
         validate_by_alias=True,

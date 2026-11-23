@@ -37,15 +37,14 @@ class BedrockPalmyraOptions(BaseModel):
     seed: Optional[Union[StrictFloat, StrictInt]] = None
     frequency_penalty: Optional[Union[StrictFloat, StrictInt]] = None
     presence_penalty: Optional[Union[StrictFloat, StrictInt]] = None
-    service_tier: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="Provider-defined processing tier. Unknown non-empty values are preserved for forward compatibility.")
+    service_tier: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Provider-defined processing tier. Unknown non-empty values are preserved for forward compatibility.")
     __properties: ClassVar[List[str]] = ["_option_id", "max_tokens", "temperature", "top_p", "stop_sequence", "min_tokens", "seed", "frequency_penalty", "presence_penalty", "service_tier"]
 
     @field_validator('option_id')
     def option_id_validate_enum(cls, value):
         """Validates the enum"""
-        if value is None:
-            return value
-
+        if value is not None and value != 'bedrock-palmyra':
+            raise ValueError('Expected _option_id to be bedrock-palmyra')
         return value
 
     model_config = ConfigDict(

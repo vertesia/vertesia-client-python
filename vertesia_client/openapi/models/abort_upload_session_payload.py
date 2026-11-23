@@ -28,8 +28,8 @@ class AbortUploadSessionPayload(BaseModel):
     """
     AbortUploadSessionPayload
     """ # noqa: E501
-    id: Annotated[str, Field(min_length=1, strict=True)] = Field(description="The session id.")
-    upload_id: Annotated[str, Field(min_length=1, strict=True)]
+    id: Annotated[str, Field(strict=True)] = Field(description="The session id.")
+    upload_id: Annotated[str, Field(strict=True)]
     __properties: ClassVar[List[str]] = ["id", "upload_id"]
 
     model_config = ConfigDict(

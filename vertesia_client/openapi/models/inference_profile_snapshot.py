@@ -30,34 +30,11 @@ class InferenceProfileSnapshot(BaseModel):
     The selected profile and content revision at execution creation. Effective overrides are recorded in the execution config.
     """ # noqa: E501
     id: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="MongoDB ObjectId of the inference profile.")
-    name: Annotated[str, Field(min_length=1, strict=True, max_length=80)] = Field(description="Editable display name, independent of the stable profile ID.")
+    name: Annotated[str, Field(strict=True)] = Field(description="Editable display name, independent of the stable profile ID.")
     revision: StrictStr
     source: StrictStr
     profile: InferenceProfile
     __properties: ClassVar[List[str]] = ["id", "name", "revision", "source", "profile"]
-
-    @field_validator('id')
-    def id_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if value is None:
-            return value
-
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^[a-fA-F0-9]{24}$", value):
-            raise ValueError(r"must validate the regular expression /^[a-fA-F0-9]{24}$/")
-        return value
-
-    @field_validator('name')
-    def name_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"\S", value):
-            raise ValueError(r"must validate the regular expression /\S/")
-        return value
 
     @field_validator('source')
     def source_validate_enum(cls, value):

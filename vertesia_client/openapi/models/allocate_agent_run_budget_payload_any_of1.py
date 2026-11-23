@@ -28,7 +28,7 @@ class AllocateAgentRunBudgetPayloadAnyOf1(BaseModel):
     """
     AllocateAgentRunBudgetPayloadAnyOf1
     """ # noqa: E501
-    additional_usd: Union[Annotated[float, Field(le=9007199.25474099, strict=True, gt=0)], Annotated[int, Field(le=9007199, strict=True, gt=0)]] = Field(description="USD to add to the dollar allowance.")
+    additional_usd: Union[Annotated[float, Field(strict=True)], Annotated[int, Field(strict=True)]] = Field(description="USD to add to the dollar allowance.")
     __properties: ClassVar[List[str]] = ["additional_usd"]
 
     model_config = ConfigDict(

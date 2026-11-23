@@ -29,8 +29,8 @@ class MarkNotificationsReadPayload(BaseModel):
     """
     MarkNotificationsReadPayload
     """ # noqa: E501
-    ids: Optional[Annotated[List[StrictStr], Field(max_length=200)]] = None
-    occurrences: Optional[Annotated[List[NotificationOccurrenceAck], Field(max_length=200)]] = Field(default=None, description="Occurrences the client rendered. An occurrence with no notification yet is remembered for a day and applied when its notification is written.")
+    ids: Optional[Annotated[List[StrictStr], Field()]] = None
+    occurrences: Optional[Annotated[List[NotificationOccurrenceAck], Field()]] = Field(default=None, description="Occurrences the client rendered. An occurrence with no notification yet is remembered for a day and applied when its notification is written.")
     __properties: ClassVar[List[str]] = ["ids", "occurrences"]
 
     model_config = ConfigDict(

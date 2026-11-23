@@ -28,8 +28,8 @@ class DataStoreMutateRowsPayload(BaseModel):
     """
     Payload for mutating data rows with a single SQL statement.
     """ # noqa: E501
-    sql: Annotated[str, Field(min_length=1, strict=True)] = Field(description="SQL statement. Only UPDATE and DELETE statements are accepted.")
-    message: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Commit message recorded on the resulting data store version.")
+    sql: Annotated[str, Field(strict=True)] = Field(description="SQL statement. Only UPDATE and DELETE statements are accepted.")
+    message: Annotated[str, Field(strict=True)] = Field(description="Commit message recorded on the resulting data store version.")
     allow_full_table: Optional[StrictBool] = Field(default=None, description="Allow UPDATE/DELETE statements without a WHERE clause. Defaults to false.")
     __properties: ClassVar[List[str]] = ["sql", "message", "allow_full_table"]
 

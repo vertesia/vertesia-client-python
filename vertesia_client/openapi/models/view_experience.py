@@ -38,7 +38,7 @@ class ViewExperience(BaseModel):
     enabled: Optional[StrictBool] = None
     layout: Optional[ViewExperienceLayout] = None
     scope: Optional[ViewExperienceScope] = None
-    navigation: Optional[Annotated[List[ViewNavigationItem], Field(max_length=20)]] = None
+    navigation: Optional[Annotated[List[ViewNavigationItem], Field()]] = None
     search: Optional[ViewSearchConfiguration] = None
     results: Optional[ViewResultsConfiguration] = None
     description: StrictStr

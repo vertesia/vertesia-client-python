@@ -34,8 +34,8 @@ class SharePointContentSourcePermissions(BaseModel):
     scim_connection_id: Annotated[str, Field(strict=True)]
     permission_reader_provider_id: Annotated[str, Field(strict=True)]
     tenant_group_id: Optional[Annotated[str, Field(strict=True)]] = None
-    refresh_minutes: Optional[Annotated[int, Field(le=1440, strict=True, ge=15)]] = None
-    max_stale_hours: Optional[Annotated[int, Field(le=168, strict=True, ge=1)]] = None
+    refresh_minutes: Optional[Annotated[int, Field(strict=True)]] = None
+    max_stale_hours: Optional[Annotated[int, Field(strict=True)]] = None
     __properties: ClassVar[List[str]] = ["mode", "entra_tenant_id", "scim_connection_id", "permission_reader_provider_id", "tenant_group_id", "refresh_minutes", "max_stale_hours"]
 
     @field_validator('mode')
@@ -43,49 +43,6 @@ class SharePointContentSourcePermissions(BaseModel):
         """Validates the enum"""
         if value is not None and value != 'source':
             raise ValueError('Expected mode to be source')
-        return value
-
-    @field_validator('entra_tenant_id')
-    def entra_tenant_id_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$", value):
-            raise ValueError(r"must validate the regular expression /^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/")
-        return value
-
-    @field_validator('scim_connection_id')
-    def scim_connection_id_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^[0-9a-fA-F]{24}$", value):
-            raise ValueError(r"must validate the regular expression /^[0-9a-fA-F]{24}$/")
-        return value
-
-    @field_validator('permission_reader_provider_id')
-    def permission_reader_provider_id_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^[0-9a-fA-F]{24}$", value):
-            raise ValueError(r"must validate the regular expression /^[0-9a-fA-F]{24}$/")
-        return value
-
-    @field_validator('tenant_group_id')
-    def tenant_group_id_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if value is None:
-            return value
-
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^[0-9a-fA-F]{24}$", value):
-            raise ValueError(r"must validate the regular expression /^[0-9a-fA-F]{24}$/")
         return value
 
     model_config = ConfigDict(

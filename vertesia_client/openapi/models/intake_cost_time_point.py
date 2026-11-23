@@ -30,7 +30,7 @@ class IntakeCostTimePoint(BaseModel):
     Intake runs that started in one period.
     """ # noqa: E501
     timestamp: datetime = Field(description="Start of the period, in UTC.")
-    run_count: Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]
+    run_count: Annotated[int, Field(strict=True)]
     cost_usd: Union[StrictFloat, StrictInt]
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["timestamp", "run_count", "cost_usd"]

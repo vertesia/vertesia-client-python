@@ -28,20 +28,10 @@ class AppGithubRepositoryCreation(BaseModel):
     """
     AppGithubRepositoryCreation
     """ # noqa: E501
-    name: Annotated[str, Field(min_length=1, strict=True, max_length=100)] = Field(description="Name of the empty GitHub repository to create in the verified installation.")
+    name: Annotated[str, Field(strict=True)] = Field(description="Name of the empty GitHub repository to create in the verified installation.")
     private: Optional[StrictBool] = Field(default=None, description="Create a private repository. Defaults to true when omitted.")
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["name", "private"]
-
-    @field_validator('name')
-    def name_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^[A-Za-z0-9][A-Za-z0-9._-]*$", value):
-            raise ValueError(r"must validate the regular expression /^[A-Za-z0-9][A-Za-z0-9._-]*$/")
-        return value
 
     model_config = ConfigDict(
         validate_by_name=True,

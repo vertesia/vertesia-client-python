@@ -31,14 +31,14 @@ class UpdateWorkflowDefinitionPayloadWithSteps(BaseModel):
     """
     UpdateWorkflowDefinitionPayloadWithSteps
     """ # noqa: E501
-    name: Annotated[str, Field(min_length=1, strict=True)]
+    name: Annotated[str, Field(strict=True)]
     description: Optional[StrictStr] = None
     tags: Optional[List[StrictStr]] = None
     vars: Optional[Dict[str, Any]]
     options: Optional[DSLActivityOptions] = None
     result: Optional[StrictStr] = None
     debug_mode: Optional[StrictBool] = None
-    expected_edit_revision: Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=1)]] = Field(default=None, description="Edit revision returned by the last read. Stale revisions are rejected with HTTP 409. Omit for legacy last-write-wins behavior.")
+    expected_edit_revision: Optional[Annotated[int, Field(strict=True)]] = Field(default=None, description="Edit revision returned by the last read. Stale revisions are rejected with HTTP 409. Omit for legacy last-write-wins behavior.")
     steps: List[DSLWorkflowStep]
     activities: Optional[List[DSLActivitySpec]] = Field(default=None, description="Deprecated: use steps instead")
     spec_format: StrictStr

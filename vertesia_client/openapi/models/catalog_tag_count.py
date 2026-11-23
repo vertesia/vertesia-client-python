@@ -29,7 +29,7 @@ class CatalogTagCount(BaseModel):
     CatalogTagCount
     """ # noqa: E501
     tag: StrictStr
-    count: Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)] = Field(description="The number of matching interactions that carry the tag.")
+    count: Annotated[int, Field(strict=True)] = Field(description="The number of matching interactions that carry the tag.")
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["tag", "count"]
 

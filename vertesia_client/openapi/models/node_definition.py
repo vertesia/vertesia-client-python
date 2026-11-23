@@ -83,19 +83,6 @@ class NodeDefinition(BaseModel):
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["type", "tool", "script", "timeout", "interaction", "process", "process_definition", "process_version", "run_type", "returns", "result_schema", "prompt", "input", "inherit_context", "config", "title", "description", "human_description", "writes", "skippable", "max_retries", "transitions", "tools", "initial_skills", "excluded_tools", "agent_policy", "inference_profile", "environment", "model", "model_options", "task", "foreach", "as", "item_id", "node", "max_concurrency", "collect", "failure_policy", "join", "branches", "metadata"]
 
-    @field_validator('inference_profile')
-    def inference_profile_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if value is None:
-            return value
-
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^[a-fA-F0-9]{24}$", value):
-            raise ValueError(r"must validate the regular expression /^[a-fA-F0-9]{24}$/")
-        return value
-
     model_config = ConfigDict(
         validate_by_name=True,
         validate_by_alias=True,

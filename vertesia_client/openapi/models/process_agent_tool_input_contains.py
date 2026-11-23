@@ -28,10 +28,10 @@ class ProcessAgentToolInputContains(BaseModel):
     """
     ProcessAgentToolInputContains
     """ # noqa: E501
-    var_field: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Top-level tool-input field to inspect.", alias="field")
-    contains: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Case-sensitive substring required in the string field.")
-    not_contains: Optional[Annotated[List[Annotated[str, Field(min_length=1, strict=True)]], Field(min_length=1)]] = Field(default=None, description="Case-sensitive substrings forbidden in the same string field.")
-    min_length: Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=0)]] = Field(default=None, description="Minimum string length required for the same field.")
+    var_field: Annotated[str, Field(strict=True)] = Field(description="Top-level tool-input field to inspect.", alias="field")
+    contains: Annotated[str, Field(strict=True)] = Field(description="Case-sensitive substring required in the string field.")
+    not_contains: Optional[Annotated[List[Annotated[str, Field(strict=True)]], Field()]] = Field(default=None, description="Case-sensitive substrings forbidden in the same string field.")
+    min_length: Optional[Annotated[int, Field(strict=True)]] = Field(default=None, description="Minimum string length required for the same field.")
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["field", "contains", "not_contains", "min_length"]
 

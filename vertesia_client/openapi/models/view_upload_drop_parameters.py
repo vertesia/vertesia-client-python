@@ -28,25 +28,12 @@ class ViewUploadDropParameters(BaseModel):
     """
     ViewUploadDropParameters
     """ # noqa: E501
-    type_id: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=200)]] = None
-    collection_id: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=200)]] = None
-    location: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=2000)]] = None
+    type_id: Optional[Annotated[str, Field(strict=True)]] = None
+    collection_id: Optional[Annotated[str, Field(strict=True)]] = None
+    location: Optional[Annotated[str, Field(strict=True)]] = None
     properties: Optional[Dict[str, Any]] = None
     allow_folders: Optional[StrictBool] = None
     __properties: ClassVar[List[str]] = ["type_id", "collection_id", "location", "properties", "allow_folders"]
-
-    @field_validator('location')
-    def location_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if value is None:
-            return value
-
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^\/", value):
-            raise ValueError(r"must validate the regular expression /^\//")
-        return value
 
     model_config = ConfigDict(
         validate_by_name=True,

@@ -31,19 +31,6 @@ class OAuthProviderTokenRequest(BaseModel):
     scope: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Space-separated scopes to request instead of default_scopes (RFC 6749 §3.3), for example a second resource of the same client. Each scope must be in the provider's default_scopes or allowed_scopes, otherwise the request fails with 400. client_credentials providers only. Omit it for the default scopes.")
     __properties: ClassVar[List[str]] = ["scope"]
 
-    @field_validator('scope')
-    def scope_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if value is None:
-            return value
-
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"\S", value):
-            raise ValueError(r"must validate the regular expression /\S/")
-        return value
-
     model_config = ConfigDict(
         validate_by_name=True,
         validate_by_alias=True,

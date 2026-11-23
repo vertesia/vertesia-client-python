@@ -32,26 +32,6 @@ class CopyFilePayload(BaseModel):
     dest: Annotated[str, Field(strict=True)] = Field(description="The object name to copy to, in the source file's bucket. It must not be empty, start with `/` or `\\`, or contain a `..` segment.")
     __properties: ClassVar[List[str]] = ["source", "dest"]
 
-    @field_validator('source')
-    def source_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^[\u0020\u00a0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000\ufeff]*[^\u0000-\u001f\u007f\u0020\u00a0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000\ufeff][^\u0000-\u001f\u007f]*$", value):
-            raise ValueError(r"must validate the regular expression /^[\u0020\u00a0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000\ufeff]*[^\u0000-\u001f\u007f\u0020\u00a0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000\ufeff][^\u0000-\u001f\u007f]*$/")
-        return value
-
-    @field_validator('dest')
-    def dest_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^(?:\.\.[^\\/]+|\.(?:[^\\/.][^\\/]*)?|[^\\/.][^\\/]*)(?:[\\/]+(?:\.\.[^\\/]+|\.(?:[^\\/.][^\\/]*)?|[^\\/.][^\\/]*))*[\\/]*$", value):
-            raise ValueError(r"must validate the regular expression /^(?:\.\.[^\\/]+|\.(?:[^\\/.][^\\/]*)?|[^\\/.][^\\/]*)(?:[\\/]+(?:\.\.[^\\/]+|\.(?:[^\\/.][^\\/]*)?|[^\\/.][^\\/]*))*[\\/]*$/")
-        return value
-
     model_config = ConfigDict(
         validate_by_name=True,
         validate_by_alias=True,

@@ -28,20 +28,10 @@ class CreateDataStorePayload(BaseModel):
     """
     Payload for creating a new data store.
     """ # noqa: E501
-    name: Annotated[str, Field(min_length=1, strict=True, max_length=128)] = Field(description="Store name (unique within project). 1 to 128 characters; must not contain `/`, `\\` or control characters, start with a dot, or start or end with a space.")
+    name: Annotated[str, Field(strict=True)] = Field(description="Store name (unique within project). 1 to 128 characters; must not contain `/`, `\\` or control characters, start with a dot, or start or end with a space.")
     description: Optional[StrictStr] = Field(default=None, description="Store description")
     tags: Optional[List[StrictStr]] = Field(default=None, description="Tags for organization")
     __properties: ClassVar[List[str]] = ["name", "description", "tags"]
-
-    @field_validator('name')
-    def name_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^[^\x00-\x20\x7f-\x9f\/\\.](?:[^\x00-\x1f\x7f-\x9f\/\\]*[^\x00-\x20\x7f-\x9f\/\\])?$", value):
-            raise ValueError(r"must validate the regular expression /^[^\x00-\x20\x7f-\x9f\/\\.](?:[^\x00-\x1f\x7f-\x9f\/\\]*[^\x00-\x20\x7f-\x9f\/\\])?$/")
-        return value
 
     model_config = ConfigDict(
         validate_by_name=True,

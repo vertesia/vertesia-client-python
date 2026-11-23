@@ -53,9 +53,8 @@ class ImagenOptions(BaseModel):
     @field_validator('option_id')
     def option_id_validate_enum(cls, value):
         """Validates the enum"""
-        if value is None:
-            return value
-
+        if value is not None and value != 'vertexai-imagen':
+            raise ValueError('Expected _option_id to be vertexai-imagen')
         return value
 
     @field_validator('person_generation')

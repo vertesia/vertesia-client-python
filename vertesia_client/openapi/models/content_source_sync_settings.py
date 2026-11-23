@@ -29,7 +29,7 @@ class ContentSourceSyncSettings(BaseModel):
     When the source syncs. A source with scheduled sync disabled still syncs on `POST /content-sources/{id}/sync`.
     """ # noqa: E501
     enabled: StrictBool = Field(description="Whether the source syncs on its own every `interval_minutes`.")
-    interval_minutes: Annotated[int, Field(le=10080, strict=True, ge=15)] = Field(description="Minutes between two scheduled syncs, from one scheduled time to the next.")
+    interval_minutes: Annotated[int, Field(strict=True)] = Field(description="Minutes between two scheduled syncs, from one scheduled time to the next.")
     __properties: ClassVar[List[str]] = ["enabled", "interval_minutes"]
 
     model_config = ConfigDict(

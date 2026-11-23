@@ -32,32 +32,6 @@ class ProjectInferenceProfilesModality(BaseModel):
     video: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="MongoDB ObjectId of the inference profile.")
     __properties: ClassVar[List[str]] = ["image", "video"]
 
-    @field_validator('image')
-    def image_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if value is None:
-            return value
-
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^[a-fA-F0-9]{24}$", value):
-            raise ValueError(r"must validate the regular expression /^[a-fA-F0-9]{24}$/")
-        return value
-
-    @field_validator('video')
-    def video_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if value is None:
-            return value
-
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^[a-fA-F0-9]{24}$", value):
-            raise ValueError(r"must validate the regular expression /^[a-fA-F0-9]{24}$/")
-        return value
-
     model_config = ConfigDict(
         validate_by_name=True,
         validate_by_alias=True,

@@ -35,9 +35,9 @@ class AuditAggregationQuery(BaseModel):
     var_from: Optional[StrictStr] = Field(default=None, description="Start time; defaults to 30 days before to. The server caps the range at 366 days.", alias="from")
     to: Optional[StrictStr] = Field(default=None, description="End time; defaults to the current time.")
     filter: Optional[AuditAggregationFilter] = None
-    group_by: Optional[Annotated[List[AuditAggregationGroup], Field(max_length=2)]] = Field(default=None, description="At most two dimensions, each named once.", alias="groupBy")
-    metrics: Annotated[List[AuditAggregationMetric], Field(min_length=1, max_length=12)] = Field(description="One to twelve metrics, each with a distinct id.")
-    limit: Optional[Union[Annotated[float, Field(multiple_of=1, le=9007199254740991, strict=True, ge=1)], Annotated[int, Field(le=2147483647, strict=True, ge=1)]]] = Field(default=None, description="Maximum groups returned (default 50). A limit above 200 is capped at 200.")
+    group_by: Optional[Annotated[List[AuditAggregationGroup], Field()]] = Field(default=None, description="At most two dimensions, each named once.", alias="groupBy")
+    metrics: Annotated[List[AuditAggregationMetric], Field()] = Field(description="One to twelve metrics, each with a distinct id.")
+    limit: Optional[Union[Annotated[float, Field(strict=True)], Annotated[int, Field(strict=True)]]] = Field(default=None, description="Maximum groups returned (default 50). A limit above 200 is capped at 200.")
     __properties: ClassVar[List[str]] = ["projectId", "from", "to", "filter", "groupBy", "metrics", "limit"]
 
     model_config = ConfigDict(

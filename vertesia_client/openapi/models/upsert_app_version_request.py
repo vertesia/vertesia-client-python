@@ -63,39 +63,6 @@ class UpsertAppVersionRequest(BaseModel):
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["record_id", "app", "app_id", "app_name", "version_id", "kind", "state", "target", "agent_run_id", "development_task_id", "build_workflow_id", "build_workflow_run_id", "sandbox_id", "title", "description", "storage", "source_commit", "urls", "manifest", "files", "file_count", "source_file_count", "screenshot_artifact", "checks", "built_at", "checked_at", "expires_at"]
 
-    @field_validator('record_id')
-    def record_id_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if value is None:
-            return value
-
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^(?:[0-9a-fA-F]{24})?$", value):
-            raise ValueError(r"must validate the regular expression /^(?:[0-9a-fA-F]{24})?$/")
-        return value
-
-    @field_validator('app_id')
-    def app_id_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"\S", value):
-            raise ValueError(r"must validate the regular expression /\S/")
-        return value
-
-    @field_validator('version_id')
-    def version_id_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"\S", value):
-            raise ValueError(r"must validate the regular expression /\S/")
-        return value
-
     model_config = ConfigDict(
         validate_by_name=True,
         validate_by_alias=True,

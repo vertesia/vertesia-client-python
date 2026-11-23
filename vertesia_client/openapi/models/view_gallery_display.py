@@ -30,26 +30,16 @@ class ViewGalleryDisplay(BaseModel):
     """
     ViewGalleryDisplay
     """ # noqa: E501
-    id: Annotated[str, Field(min_length=1, strict=True, max_length=64)]
-    label: Annotated[str, Field(min_length=1, strict=True, max_length=120)]
-    renderer: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=120)]] = None
-    page_size: Optional[Union[Annotated[float, Field(multiple_of=1, le=200, strict=True, ge=1)], Annotated[int, Field(le=200, strict=True, ge=1)]]] = None
+    id: Annotated[str, Field(strict=True)]
+    label: Annotated[str, Field(strict=True)]
+    renderer: Optional[Annotated[str, Field(strict=True)]] = None
+    page_size: Optional[Union[Annotated[float, Field(strict=True)], Annotated[int, Field(strict=True)]]] = None
     type: StrictStr
     media: ViewResultMedia
     title: ViewResultField
     caption: Optional[List[ViewResultField]] = None
     columns: Optional[Union[StrictFloat, StrictInt]] = None
     __properties: ClassVar[List[str]] = ["id", "label", "renderer", "page_size", "type", "media", "title", "caption", "columns"]
-
-    @field_validator('id')
-    def id_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^[a-z][a-z0-9_-]*$", value):
-            raise ValueError(r"must validate the regular expression /^[a-z][a-z0-9_-]*$/")
-        return value
 
     @field_validator('type')
     def type_validate_enum(cls, value):

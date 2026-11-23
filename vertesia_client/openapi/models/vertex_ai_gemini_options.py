@@ -42,7 +42,7 @@ class VertexAIGeminiOptions(BaseModel):
     include_thoughts: Optional[StrictBool] = None
     thinking_budget_tokens: Optional[Union[StrictFloat, StrictInt]] = None
     thinking_level: Optional[ThinkingLevel] = None
-    service_tier: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="Provider-defined processing tier. Unknown non-empty values are preserved for forward compatibility.")
+    service_tier: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Provider-defined processing tier. Unknown non-empty values are preserved for forward compatibility.")
     flex: Optional[StrictBool] = Field(default=None, description="Deprecated: Use service_tier=\"flex\" instead.")
     speech_voice: Optional[StrictStr] = None
     speech_language: Optional[StrictStr] = None
@@ -61,9 +61,8 @@ class VertexAIGeminiOptions(BaseModel):
     @field_validator('option_id')
     def option_id_validate_enum(cls, value):
         """Validates the enum"""
-        if value is None:
-            return value
-
+        if value is not None and value != 'vertexai-gemini':
+            raise ValueError('Expected _option_id to be vertexai-gemini')
         return value
 
     @field_validator('effort')

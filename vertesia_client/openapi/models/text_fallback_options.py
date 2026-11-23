@@ -42,9 +42,8 @@ class TextFallbackOptions(BaseModel):
     @field_validator('option_id')
     def option_id_validate_enum(cls, value):
         """Validates the enum"""
-        if value is None:
-            return value
-
+        if value is not None and value != 'text-fallback':
+            raise ValueError('Expected _option_id to be text-fallback')
         return value
 
     @field_validator('tool_choice')

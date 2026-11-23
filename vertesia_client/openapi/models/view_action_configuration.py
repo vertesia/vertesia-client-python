@@ -30,35 +30,15 @@ class ViewActionConfiguration(BaseModel):
     """
     Declarative action exposed by a View. The handler name is resolved by the embedding application; persisted configuration never contains executable code.
     """ # noqa: E501
-    id: Annotated[str, Field(min_length=1, strict=True, max_length=64)]
-    label: Annotated[str, Field(min_length=1, strict=True, max_length=120)]
-    handler: Annotated[str, Field(min_length=1, strict=True, max_length=64)]
+    id: Annotated[str, Field(strict=True)]
+    label: Annotated[str, Field(strict=True)]
+    handler: Annotated[str, Field(strict=True)]
     placement: Optional[ViewActionPlacement] = None
     requires_selection: Optional[ViewActionSelectionRequirement] = None
     destructive: Optional[StrictBool] = None
     confirm: Optional[StrictBool] = None
     params: Optional[Dict[str, Any]] = None
     __properties: ClassVar[List[str]] = ["id", "label", "handler", "placement", "requires_selection", "destructive", "confirm", "params"]
-
-    @field_validator('id')
-    def id_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^[a-z][a-z0-9_-]*$", value):
-            raise ValueError(r"must validate the regular expression /^[a-z][a-z0-9_-]*$/")
-        return value
-
-    @field_validator('handler')
-    def handler_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^[a-z][a-z0-9_-]*$", value):
-            raise ValueError(r"must validate the regular expression /^[a-z][a-z0-9_-]*$/")
-        return value
 
     model_config = ConfigDict(
         validate_by_name=True,

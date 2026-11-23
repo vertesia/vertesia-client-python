@@ -29,20 +29,10 @@ class ViewSortOption(BaseModel):
     """
     ViewSortOption
     """ # noqa: E501
-    id: Annotated[str, Field(min_length=1, strict=True, max_length=64)]
-    label: Annotated[str, Field(min_length=1, strict=True, max_length=120)]
-    sort: Annotated[List[ViewSortClause], Field(min_length=1)]
+    id: Annotated[str, Field(strict=True)]
+    label: Annotated[str, Field(strict=True)]
+    sort: Annotated[List[ViewSortClause], Field()]
     __properties: ClassVar[List[str]] = ["id", "label", "sort"]
-
-    @field_validator('id')
-    def id_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^[a-z][a-z0-9_-]*$", value):
-            raise ValueError(r"must validate the regular expression /^[a-z][a-z0-9_-]*$/")
-        return value
 
     model_config = ConfigDict(
         validate_by_name=True,

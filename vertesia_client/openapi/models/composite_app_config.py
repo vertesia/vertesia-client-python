@@ -40,7 +40,7 @@ class CompositeAppConfig(BaseModel):
     """
     CompositeApp shell configuration. This is the main configuration interface for storing CompositeApp settings. Used as the MongoDB model for persisting CompositeApp configurations.
     """ # noqa: E501
-    edit_revision: Annotated[int, Field(le=9007199254740991, strict=True, ge=1)] = Field(description="Monotonic edit revision used to detect concurrent updates.")
+    edit_revision: Annotated[int, Field(strict=True)] = Field(description="Monotonic edit revision used to detect concurrent updates.")
     id: Optional[StrictStr] = Field(default=None, description="The unique identifier for this CompositeApp configuration Undefined if the configuration doesn't exists yet.")
     project: StrictStr = Field(description="The project this CompositeApp belongs to")
     card: Optional[CompositeAppCardOverrides] = Field(default=None, description="Card display overrides (includes visibility)")

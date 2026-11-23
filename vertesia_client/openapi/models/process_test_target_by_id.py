@@ -32,16 +32,6 @@ class ProcessTestTargetById(BaseModel):
     app_version: Optional[StrictStr] = Field(default=None, description="Only for an `app:` id.")
     __properties: ClassVar[List[str]] = ["id", "app_version"]
 
-    @field_validator('id')
-    def id_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^(app|sys):", value):
-            raise ValueError(r"must validate the regular expression /^(app|sys):/")
-        return value
-
     model_config = ConfigDict(
         validate_by_name=True,
         validate_by_alias=True,

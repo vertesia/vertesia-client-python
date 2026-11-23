@@ -30,12 +30,12 @@ class UpdateContentSourcePayload(BaseModel):
     """
     Changes the name, description or sync settings, and, before the first sync, the root and folder to sync. Saving sync settings also hands the sync your credentials, which restarts a sync stopped because its previous credentials were refused.
     """ # noqa: E501
-    name: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=128)]] = None
+    name: Optional[Annotated[str, Field(strict=True)]] = None
     description: Optional[StrictStr] = None
     sync: Optional[ContentSourceSyncSettings] = None
     permissions: Optional[ContentSourcePermissionSettings] = None
-    root_id: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="Only before the first sync: the root to sync, as `discover/roots` returned it (a SharePoint document library; for Box, a folder shared with the app). Answers 409 once the source has synced.")
-    folder_id: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="Only before the first sync: the folder to sync, as a folder listing returned its `id`. Answers 409 once the source has synced.")
+    root_id: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Only before the first sync: the root to sync, as `discover/roots` returned it (a SharePoint document library; for Box, a folder shared with the app). Answers 409 once the source has synced.")
+    folder_id: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Only before the first sync: the folder to sync, as a folder listing returned its `id`. Answers 409 once the source has synced.")
     folder_path: Optional[StrictStr] = Field(default=None, description="SharePoint only, and only before the first sync: the folder to sync inside the library, e.g. `Contracts/2026`; empty for the whole library. Answers 409 once the source has synced.")
     __properties: ClassVar[List[str]] = ["name", "description", "sync", "permissions", "root_id", "folder_id", "folder_path"]
 

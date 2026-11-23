@@ -34,7 +34,7 @@ class Dashboard(BaseModel):
     Full dashboard with SQL query and Vega-Lite specification.  **New architecture (v2):** - `dataSource` field with either SQL or Store Elasticsearch DSL - Single `spec` field with complete Vega-Lite spec (vconcat/hconcat for multiple panels) - Cross-panel interactivity via Vega selections - Legacy top-level `query` fields are treated as a SQL data source  **Legacy architecture (v1, deprecated):** - Multiple `queries` with named data sources - Multiple `panels` with separate specs and dataSources references - `layout` for grid positioning - No cross-panel interactivity
     """ # noqa: E501
     id: StrictStr = Field(description="Unique identifier for the object")
-    edit_revision: Annotated[int, Field(le=9007199254740991, strict=True, ge=1)] = Field(description="Monotonic edit revision used to detect concurrent updates.")
+    edit_revision: Annotated[int, Field(strict=True)] = Field(description="Monotonic edit revision used to detect concurrent updates.")
     name: StrictStr = Field(description="Human-readable name or title")
     description: Optional[StrictStr] = Field(default=None, description="Optional detailed description of the object")
     tags: List[StrictStr] = Field(description="Tags for organization")

@@ -30,7 +30,7 @@ class CatalogSearchResult(BaseModel):
     """
     CatalogSearchResult
     """ # noqa: E501
-    total: Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)] = Field(description="The number of matching interactions.")
+    total: Annotated[int, Field(strict=True)] = Field(description="The number of matching interactions.")
     tags: List[CatalogTagCount] = Field(description="The tags of the matching interactions with their counts, most frequent first.")
     interactions: List[CatalogSearchInteractionRef] = Field(description="The matching interactions. Stored interactions are listed most recently updated first; in-code interactions in the order their source defines them.")
     additional_properties: Dict[str, Any] = {}

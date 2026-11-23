@@ -29,7 +29,7 @@ class QueryValidationPayload(BaseModel):
     """
     QueryValidationPayload
     """ # noqa: E501
-    queries: Annotated[List[QueryValidationPayloadQueriesInner], Field(min_length=1, max_length=50)]
+    queries: Annotated[List[QueryValidationPayloadQueriesInner], Field()]
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["queries"]
 

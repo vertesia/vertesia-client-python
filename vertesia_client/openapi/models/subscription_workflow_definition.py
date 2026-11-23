@@ -36,7 +36,7 @@ class SubscriptionWorkflowDefinition(BaseModel):
     description: StrictStr
     variables_schema: JSONSchema
     variables_template: Dict[str, Any]
-    templates: Optional[Annotated[List[SubscriptionWorkflowDefinitionTemplatesInner], Field(min_length=1)]] = None
+    templates: Optional[Annotated[List[SubscriptionWorkflowDefinitionTemplatesInner], Field()]] = None
     system_targets: Optional[List[SubscriptionWorkflowDefinitionSystemTargetsInner]] = Field(default=None, description="Code-defined system targets for this workflow, used to resolve managed execution roles.")
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["endpoint", "title", "description", "variables_schema", "variables_template", "templates", "system_targets"]

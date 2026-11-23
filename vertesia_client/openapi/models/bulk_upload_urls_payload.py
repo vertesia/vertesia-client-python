@@ -29,7 +29,7 @@ class BulkUploadUrlsPayload(BaseModel):
     """
     BulkUploadUrlsPayload
     """ # noqa: E501
-    files: Annotated[List[BulkUploadUrlsPayloadFilesInner], Field(min_length=1, max_length=10000)]
+    files: Annotated[List[BulkUploadUrlsPayloadFilesInner], Field()]
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["files"]
 

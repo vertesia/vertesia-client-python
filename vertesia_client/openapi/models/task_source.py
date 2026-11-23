@@ -29,10 +29,10 @@ class TaskSource(BaseModel):
     TaskSource
     """ # noqa: E501
     type: StrictStr
-    run_id: Annotated[str, Field(min_length=1, strict=True)]
+    run_id: Annotated[str, Field(strict=True)]
     node: Optional[StrictStr] = None
     ask_id: Optional[StrictStr] = None
-    request_key: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=512)]] = Field(default=None, description="Stable key of the agent request this task answers (`<run_id>:<tool_use_id>`). Unique in the project: creating a task whose source repeats an existing request key returns that task instead of creating a second one.")
+    request_key: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Stable key of the agent request this task answers (`<run_id>:<tool_use_id>`). Unique in the project: creating a task whose source repeats an existing request key returns that task instead of creating a second one.")
     request_id: Optional[StrictStr] = Field(default=None, description="Tool-use id of the agent request (the REQUEST_INPUT message) this task answers.")
     approval_key: Optional[StrictStr] = Field(default=None, description="For a tool approval task, the approval key (`tool_name:target`) the decision applies to.")
     __properties: ClassVar[List[str]] = ["type", "run_id", "node", "ask_id", "request_key", "request_id", "approval_key"]

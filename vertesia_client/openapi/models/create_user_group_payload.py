@@ -28,9 +28,9 @@ class CreateUserGroupPayload(BaseModel):
     """
     CreateUserGroupPayload
     """ # noqa: E501
-    name: Annotated[str, Field(min_length=1, strict=True)]
+    name: Annotated[str, Field(strict=True)]
     description: Optional[StrictStr] = None
-    tags: Optional[List[Annotated[str, Field(min_length=1, strict=True)]]] = None
+    tags: Optional[List[Annotated[str, Field(strict=True)]]] = None
     allowed_projects: Optional[List[Annotated[str, Field(strict=True)]]] = Field(default=None, description="Restrict the new group to the given projects (empty/absent = org-wide).")
     __properties: ClassVar[List[str]] = ["name", "description", "tags", "allowed_projects"]
 

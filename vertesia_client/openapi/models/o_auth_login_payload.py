@@ -28,7 +28,7 @@ class OAuthLoginPayload(BaseModel):
     """
     OAuthLoginPayload
     """ # noqa: E501
-    id_token: Annotated[str, Field(min_length=1, strict=True)]
+    id_token: Annotated[str, Field(strict=True)]
     account_id: Optional[StrictStr] = None
     project_id: Optional[StrictStr] = None
     __properties: ClassVar[List[str]] = ["id_token", "account_id", "project_id"]

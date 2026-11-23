@@ -29,35 +29,22 @@ class UpdateOAuthProviderPayload(BaseModel):
     Payload for updating an OAuth Provider. All fields are optional — only provided fields are updated. To clear the client_secret, private_key or certificate, set it to an empty string.
     """ # noqa: E501
     name: Optional[Annotated[str, Field(strict=True)]] = None
-    display_name: Optional[Annotated[str, Field(min_length=1, strict=True)]] = None
+    display_name: Optional[Annotated[str, Field(strict=True)]] = None
     grant_type: Optional[StrictStr] = None
     authorization_endpoint: Optional[StrictStr] = None
     token_endpoint: Optional[StrictStr] = None
-    client_id: Optional[Annotated[str, Field(min_length=1, strict=True)]] = None
+    client_id: Optional[Annotated[str, Field(strict=True)]] = None
     client_secret: Optional[StrictStr] = Field(default=None, description="Optional client secret for confidential clients. Will be encrypted at rest and never returned in API responses.")
     token_endpoint_auth_method: Optional[StrictStr] = Field(default=None, description="How Vertesia authenticates to the token endpoint (RFC 7591 names). - 'client_secret_post': the client_secret in the request body (default). - 'private_key_jwt': a JWT client assertion signed with the private key (RFC 7523). client_credentials grant only.")
     token_endpoint_auth_signing_alg: Optional[StrictStr] = Field(default=None, description="The JWS algorithm that signs the client assertion of private_key_jwt. Defaults to RS256 for an RSA key and ES256 for a P-256 key. Microsoft Entra ID recommends PS256.")
     private_key: Optional[StrictStr] = Field(default=None, description="PEM private key (PKCS#8 or PKCS#1) that signs the client assertion of private_key_jwt: RSA of 2048 bits or more, or EC P-256. Encrypted at rest and never returned in API responses.")
     certificate: Optional[StrictStr] = Field(default=None, description="PEM X.509 certificate of the private key, as uploaded to the provider (for example a Microsoft Entra app registration). Its public key must match the private key.")
     default_scopes: Optional[List[StrictStr]] = None
-    allowed_scopes: Optional[List[Annotated[str, Field(min_length=1, strict=True)]]] = Field(default=None, description="Scopes a token request may ask for instead of default_scopes (POST /oauth-providers/{id}/token with a scope), in addition to default_scopes, which are always allowed. Only used for the client_credentials grant. Set by the provider admin: a caller cannot request a scope outside this list and default_scopes. On update, an empty array clears it.")
+    allowed_scopes: Optional[List[Annotated[str, Field(strict=True)]]] = Field(default=None, description="Scopes a token request may ask for instead of default_scopes (POST /oauth-providers/{id}/token with a scope), in addition to default_scopes, which are always allowed. Only used for the client_credentials grant. Set by the provider admin: a caller cannot request a scope outside this list and default_scopes. On update, an empty array clears it.")
     use_pkce: Optional[StrictBool] = None
     revocation_endpoint: Optional[StrictStr] = None
     token_params: Optional[Dict[str, StrictStr]] = Field(default=None, description="Extra parameters added to the URL-encoded body of every client_credentials token request for this provider, after the standard ones (e.g. Box's box_subject_type and box_subject_id). Only used for the client_credentials grant. At most 10 entries; keys match ^[A-Za-z][A-Za-z0-9_.-]{0,63}$; values are at most 512 characters; grant_type, client_id, client_secret, scope, client_assertion and client_assertion_type are reserved. Not secret: returned as stored. On update, an empty object clears them.")
     __properties: ClassVar[List[str]] = ["name", "display_name", "grant_type", "authorization_endpoint", "token_endpoint", "client_id", "client_secret", "token_endpoint_auth_method", "token_endpoint_auth_signing_alg", "private_key", "certificate", "default_scopes", "allowed_scopes", "use_pkce", "revocation_endpoint", "token_params"]
-
-    @field_validator('name')
-    def name_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if value is None:
-            return value
-
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^[a-z0-9][a-z0-9-]*[a-z0-9]$", value):
-            raise ValueError(r"must validate the regular expression /^[a-z0-9][a-z0-9-]*[a-z0-9]$/")
-        return value
 
     @field_validator('grant_type')
     def grant_type_validate_enum(cls, value):

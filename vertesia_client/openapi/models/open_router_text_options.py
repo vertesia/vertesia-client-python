@@ -42,7 +42,7 @@ class OpenRouterTextOptions(BaseModel):
     stop_sequence: Optional[List[StrictStr]] = None
     image_detail: Optional[StrictStr] = None
     include_thoughts: Optional[StrictBool] = None
-    service_tier: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="Provider-defined processing tier. Unknown non-empty values are preserved for forward compatibility.")
+    service_tier: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Provider-defined processing tier. Unknown non-empty values are preserved for forward compatibility.")
     option_id: Optional[StrictStr] = Field(default=None, alias="_option_id")
     provider_sort: Optional[StrictStr] = None
     provider_order: Optional[List[StrictStr]] = None
@@ -82,9 +82,8 @@ class OpenRouterTextOptions(BaseModel):
     @field_validator('option_id')
     def option_id_validate_enum(cls, value):
         """Validates the enum"""
-        if value is None:
-            return value
-
+        if value is not None and value != 'openrouter-text':
+            raise ValueError('Expected _option_id to be openrouter-text')
         return value
 
     @field_validator('provider_sort')

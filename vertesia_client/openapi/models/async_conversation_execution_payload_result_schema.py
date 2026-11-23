@@ -15,6 +15,8 @@
 from __future__ import annotations
 from inspect import getfullargspec
 import json
+from collections.abc import Callable
+from pydantic import field_serializer
 import pprint
 import re  # noqa: F401
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, ValidationError, field_validator
@@ -82,6 +84,47 @@ class AsyncConversationExecutionPayloadResultSchema(BaseModel):
         else:
             return v
 
+    # The variant added by a newer server, kept as received. Set only by _from_raw(). actual_instance is
+    # raw while it is still this object: an edit of its contents keeps it raw, and any replacement makes
+    # the union typed again, whether assigned, passed to model_copy(update=...) or constructed.
+    _raw: object = None
+
+    def _holds_raw(self, value: object) -> bool:
+        return self._raw is not None and value is self._raw
+
+    def __deepcopy__(self, memo: dict[int, object] | None = None) -> Self:
+        # One memo for actual_instance and _raw, so that a copy's _raw is its own actual_instance.
+        # pydantic before 2.14 copies them with separate memos in model_copy(deep=True).
+        return super().__deepcopy__({} if memo is None else memo)
+
+    @property
+    def raw(self) -> object:
+        """A variant added by a newer server, as it was received, or None for a known variant."""
+        return self.actual_instance if self._holds_raw(self.actual_instance) else None
+
+    @classmethod
+    def _from_raw(cls, value: object) -> Self:
+        instance = cls.model_construct(actual_instance=value)
+        instance._raw = value
+        return instance
+
+    @staticmethod
+    def _check_lossless(json_str: str, variant: object) -> None:
+        # The first branch that validates can drop or rewrite received properties, for example options
+        # merged from several families: then the next branch is tried, and the payload is kept raw if
+        # no branch writes back every received property unchanged.
+        received = json.loads(json_str)
+        written = variant.to_dict() if hasattr(variant, "to_dict") else variant
+        if isinstance(received, dict) and isinstance(written, dict):
+            for key, value in received.items():
+                if key not in written or written[key] != value:
+                    raise ValueError(f"The variant would not keep `{key}`")
+
+    @field_serializer("actual_instance", mode="wrap")
+    def _serialize_actual_instance(self, value: object, handler: Callable[[object], object]) -> object:
+        # A raw variant is none of the declared types: write it as received, without a warning.
+        return value if self._holds_raw(value) else handler(value)
+
     @classmethod
     def from_dict(cls, obj: Dict[str, Any]) -> Self:
         return cls.from_json(json.dumps(obj))
@@ -107,6 +150,9 @@ class AsyncConversationExecutionPayloadResultSchema(BaseModel):
         except (ValidationError, ValueError) as e:
              error_messages.append(str(e))
 
+        if json_str.strip() != "null":
+            # A variant added by a newer server: keep it as received.
+            return cls._from_raw(json.loads(json_str))
         if error_messages:
             # no match
             raise ValueError("No match found when deserializing the JSON string into AsyncConversationExecutionPayloadResultSchema with anyOf schemas: JSONSchema, SchemaRef. Details: " + ", ".join(error_messages))

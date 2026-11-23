@@ -29,35 +29,12 @@ class InferenceProfile(BaseModel):
     """
     A reusable environment, model and inference parameter preset. Credentials remain in the environment.
     """ # noqa: E501
-    name: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=80)]] = Field(default=None, description="Editable display name.")
-    description: Optional[Annotated[str, Field(strict=True, max_length=1000)]] = None
+    name: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Editable display name.")
+    description: Optional[Annotated[str, Field(strict=True)]] = None
     environment: Annotated[str, Field(strict=True)]
-    model: Optional[Annotated[str, Field(min_length=1, strict=True)]] = None
+    model: Optional[Annotated[str, Field(strict=True)]] = None
     model_options: Optional[ModelOptions] = None
     __properties: ClassVar[List[str]] = ["name", "description", "environment", "model", "model_options"]
-
-    @field_validator('name')
-    def name_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if value is None:
-            return value
-
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"\S", value):
-            raise ValueError(r"must validate the regular expression /\S/")
-        return value
-
-    @field_validator('environment')
-    def environment_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^[a-fA-F0-9]{24}$", value):
-            raise ValueError(r"must validate the regular expression /^[a-fA-F0-9]{24}$/")
-        return value
 
     model_config = ConfigDict(
         validate_by_name=True,

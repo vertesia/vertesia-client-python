@@ -29,7 +29,7 @@ class UpdateAgentArtifactContentPayload(BaseModel):
     Conditional text update for an agent artifact.
     """ # noqa: E501
     content: StrictStr
-    generation: Annotated[str, Field(min_length=1, strict=True)] = Field(description="The blob generation the content was read at, as returned by the read.")
+    generation: Annotated[str, Field(strict=True)] = Field(description="The blob generation the content was read at, as returned by the read.")
     __properties: ClassVar[List[str]] = ["content", "generation"]
 
     model_config = ConfigDict(

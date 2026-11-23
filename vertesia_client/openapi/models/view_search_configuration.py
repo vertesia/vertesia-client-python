@@ -31,11 +31,11 @@ class ViewSearchConfiguration(BaseModel):
     """
     ViewSearchConfiguration
     """ # noqa: E501
-    renderer: Optional[Annotated[str, Field(strict=True, max_length=120)]] = None
+    renderer: Optional[Annotated[str, Field(strict=True)]] = None
     mode: Optional[StrictStr] = None
-    placeholder: Optional[Annotated[str, Field(strict=True, max_length=240)]] = None
-    fields: Optional[Annotated[List[ViewSearchFieldDefinition], Field(max_length=50)]] = None
-    key_terms: Optional[Annotated[List[ViewKeyTermDefinition], Field(max_length=50)]] = None
+    placeholder: Optional[Annotated[str, Field(strict=True)]] = None
+    fields: Optional[Annotated[List[ViewSearchFieldDefinition], Field()]] = None
+    key_terms: Optional[Annotated[List[ViewKeyTermDefinition], Field()]] = None
     agentic: Optional[AgenticViewSearchConfiguration] = None
     __properties: ClassVar[List[str]] = ["renderer", "mode", "placeholder", "fields", "key_terms", "agentic"]
 

@@ -39,7 +39,7 @@ class CreateContentObjectTypePayload(BaseModel):
     table_layout: Optional[List[ColumnLayout]] = Field(default=None, description="Column layout used when listing documents of this type. Only included in ContentObjectTypeItem if explicitly requested; always included in ContentObjectType.")
     object_schema: Optional[Dict[str, Any]] = Field(default=None, description="JSON Schema for the structured properties extracted into documents of this type. Only included in ContentObjectTypeItem if explicitly requested; always included in ContentObjectType.")
     strict_mode: Optional[StrictBool] = Field(default=None, description="Determines if the content will be validated against the object schema a generation time and save/update time.")
-    name: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Human-readable name or title")
+    name: Annotated[str, Field(strict=True)] = Field(description="Human-readable name or title")
     description: Optional[StrictStr] = Field(default=None, description="Optional detailed description of the object")
     tags: Optional[List[StrictStr]] = Field(default=None, description="Optional array of categorization tags")
     additional_properties: Dict[str, Any] = {}

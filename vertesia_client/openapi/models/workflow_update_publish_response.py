@@ -29,7 +29,7 @@ class WorkflowUpdatePublishResponse(BaseModel):
     WorkflowUpdatePublishResponse
     """ # noqa: E501
     success: StrictBool
-    timestamp: Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]] = Field(default=None, description="The `timestamp` the published update carries in the run stream, in epoch milliseconds. Absent from servers that predate it.")
+    timestamp: Optional[Annotated[int, Field(strict=True)]] = Field(default=None, description="The `timestamp` the published update carries in the run stream, in epoch milliseconds. Absent from servers that predate it.")
     __properties: ClassVar[List[str]] = ["success", "timestamp"]
 
     model_config = ConfigDict(

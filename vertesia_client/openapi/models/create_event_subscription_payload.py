@@ -43,19 +43,6 @@ class CreateEventSubscriptionPayload(BaseModel):
     priority: Optional[EventPriority] = None
     __properties: ClassVar[List[str]] = ["name", "overrides_system_subscription_id", "description", "scope", "filter", "target", "run_as_role", "enabled", "priority"]
 
-    @field_validator('overrides_system_subscription_id')
-    def overrides_system_subscription_id_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if value is None:
-            return value
-
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"\S", value):
-            raise ValueError(r"must validate the regular expression /\S/")
-        return value
-
     @field_validator('scope')
     def scope_validate_enum(cls, value):
         """Validates the enum"""

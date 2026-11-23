@@ -29,8 +29,8 @@ class DiscoverContentSourceSitePayload(BaseModel):
     The connection to inspect: an OAuth provider and a site. No content source needs to exist.
     """ # noqa: E501
     type: StrictStr = Field(description="The system to inspect. Only SharePoint can be inspected.")
-    oauth_provider_id: Annotated[str, Field(min_length=1, strict=True)] = Field(description="An OAuth provider of this project with grant type `client_credentials` for the system.")
-    site_url: Annotated[str, Field(min_length=1, strict=True)] = Field(description="The SharePoint site URL, e.g. `https://contoso.sharepoint.com/sites/legal`.")
+    oauth_provider_id: Annotated[str, Field(strict=True)] = Field(description="An OAuth provider of this project with grant type `client_credentials` for the system.")
+    site_url: Annotated[str, Field(strict=True)] = Field(description="The SharePoint site URL, e.g. `https://contoso.sharepoint.com/sites/legal`.")
     __properties: ClassVar[List[str]] = ["type", "oauth_provider_id", "site_url"]
 
     @field_validator('type')

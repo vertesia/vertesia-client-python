@@ -43,7 +43,7 @@ class Task(BaseModel):
     result: Optional[Dict[str, Any]] = None
     source: TaskSource
     due_at: Optional[datetime] = None
-    assignment_rev: Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]] = Field(default=None, description="Assignment revision: 1 at creation, incremented every time the assignee changes.")
+    assignment_rev: Optional[Annotated[int, Field(strict=True)]] = Field(default=None, description="Assignment revision: 1 at creation, incremented every time the assignee changes.")
     assigned_at: Optional[datetime] = Field(default=None, description="When the current assignment revision started.")
     created_at: datetime
     completed_at: Optional[datetime] = None

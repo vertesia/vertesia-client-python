@@ -28,7 +28,7 @@ class UploadPartUrl(BaseModel):
     """
     UploadPartUrl
     """ # noqa: E501
-    part_number: Annotated[int, Field(le=10000, strict=True, ge=1)]
+    part_number: Annotated[int, Field(strict=True)]
     url: StrictStr
     __properties: ClassVar[List[str]] = ["part_number", "url"]
 

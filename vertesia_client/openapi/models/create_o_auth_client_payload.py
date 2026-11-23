@@ -35,7 +35,7 @@ class CreateOAuthClientPayload(BaseModel):
     """ # noqa: E501
     client_name: StrictStr
     client_type: Optional[OAuthClientType] = None
-    redirect_uris: Annotated[List[Annotated[str, Field(strict=True)]], Field(min_length=1)]
+    redirect_uris: Annotated[List[Annotated[str, Field(strict=True)]], Field()]
     grant_types: Optional[List[OAuthGrantType]] = None
     response_types: Optional[List[OAuthResponseType]] = None
     token_endpoint_auth_method: Optional[OAuthTokenEndpointAuthMethod] = None

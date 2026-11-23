@@ -30,8 +30,8 @@ class ExportDashboardPayload(BaseModel):
     """ # noqa: E501
     parameter_values: Optional[Dict[str, StrictStr]] = Field(default=None, description="Values for the dashboard's SQL {{param}} placeholders, overriding its saved defaults.")
     format: Optional[StrictStr] = Field(default=None, description="Image format. Only PNG is supported.")
-    scale: Optional[Union[Annotated[float, Field(le=4, strict=True, gt=0)], Annotated[int, Field(le=4, strict=True, gt=0)]]] = Field(default=None, description="Render scale factor for higher resolution images (default: 1, maximum: 4).")
-    background_color: Optional[Annotated[str, Field(strict=True, max_length=64)]] = Field(default=None, description="CSS background color of the image (default: '#ffffff').")
+    scale: Optional[Union[Annotated[float, Field(strict=True)], Annotated[int, Field(strict=True)]]] = Field(default=None, description="Render scale factor for higher resolution images (default: 1, maximum: 4).")
+    background_color: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="CSS background color of the image (default: '#ffffff').")
     __properties: ClassVar[List[str]] = ["parameter_values", "format", "scale", "background_color"]
 
     @field_validator('format')

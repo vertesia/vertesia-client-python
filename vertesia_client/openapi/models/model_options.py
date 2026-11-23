@@ -15,6 +15,8 @@
 from __future__ import annotations
 from inspect import getfullargspec
 import json
+from collections.abc import Callable
+from pydantic import field_serializer
 import pprint
 import re  # noqa: F401
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, ValidationError, field_validator
@@ -349,6 +351,47 @@ class ModelOptions(BaseModel):
         else:
             return v
 
+    # The variant added by a newer server, kept as received. Set only by _from_raw(). actual_instance is
+    # raw while it is still this object: an edit of its contents keeps it raw, and any replacement makes
+    # the union typed again, whether assigned, passed to model_copy(update=...) or constructed.
+    _raw: object = None
+
+    def _holds_raw(self, value: object) -> bool:
+        return self._raw is not None and value is self._raw
+
+    def __deepcopy__(self, memo: dict[int, object] | None = None) -> Self:
+        # One memo for actual_instance and _raw, so that a copy's _raw is its own actual_instance.
+        # pydantic before 2.14 copies them with separate memos in model_copy(deep=True).
+        return super().__deepcopy__({} if memo is None else memo)
+
+    @property
+    def raw(self) -> object:
+        """A variant added by a newer server, as it was received, or None for a known variant."""
+        return self.actual_instance if self._holds_raw(self.actual_instance) else None
+
+    @classmethod
+    def _from_raw(cls, value: object) -> Self:
+        instance = cls.model_construct(actual_instance=value)
+        instance._raw = value
+        return instance
+
+    @staticmethod
+    def _check_lossless(json_str: str, variant: object) -> None:
+        # The first branch that validates can drop or rewrite received properties, for example options
+        # merged from several families: then the next branch is tried, and the payload is kept raw if
+        # no branch writes back every received property unchanged.
+        received = json.loads(json_str)
+        written = variant.to_dict() if hasattr(variant, "to_dict") else variant
+        if isinstance(received, dict) and isinstance(written, dict):
+            for key, value in received.items():
+                if key not in written or written[key] != value:
+                    raise ValueError(f"The variant would not keep `{key}`")
+
+    @field_serializer("actual_instance", mode="wrap")
+    def _serialize_actual_instance(self, value: object, handler: Callable[[object], object]) -> object:
+        # A raw variant is none of the declared types: write it as received, without a warning.
+        return value if self._holds_raw(value) else handler(value)
+
     @classmethod
     def from_dict(cls, obj: Dict[str, Any]) -> Self:
         return cls.from_json(json.dumps(obj))
@@ -361,196 +404,231 @@ class ModelOptions(BaseModel):
         # anyof_schema_1_validator: Optional[TextFallbackOptions] = None
         try:
             instance.actual_instance = TextFallbackOptions.from_json(json_str)
+            cls._check_lossless(json_str, instance.actual_instance)
             return instance
         except (ValidationError, ValueError) as e:
              error_messages.append(str(e))
         # anyof_schema_2_validator: Optional[AzureFoundryChatOptions] = None
         try:
             instance.actual_instance = AzureFoundryChatOptions.from_json(json_str)
+            cls._check_lossless(json_str, instance.actual_instance)
             return instance
         except (ValidationError, ValueError) as e:
              error_messages.append(str(e))
         # anyof_schema_3_validator: Optional[ImagenOptions] = None
         try:
             instance.actual_instance = ImagenOptions.from_json(json_str)
+            cls._check_lossless(json_str, instance.actual_instance)
             return instance
         except (ValidationError, ValueError) as e:
              error_messages.append(str(e))
         # anyof_schema_4_validator: Optional[VertexAIClaudeOptions] = None
         try:
             instance.actual_instance = VertexAIClaudeOptions.from_json(json_str)
+            cls._check_lossless(json_str, instance.actual_instance)
             return instance
         except (ValidationError, ValueError) as e:
              error_messages.append(str(e))
         # anyof_schema_5_validator: Optional[VertexAIGeminiOptions] = None
         try:
             instance.actual_instance = VertexAIGeminiOptions.from_json(json_str)
+            cls._check_lossless(json_str, instance.actual_instance)
             return instance
         except (ValidationError, ValueError) as e:
              error_messages.append(str(e))
         # anyof_schema_6_validator: Optional[VertexAIGeminiOmniVideoOptions] = None
         try:
             instance.actual_instance = VertexAIGeminiOmniVideoOptions.from_json(json_str)
+            cls._check_lossless(json_str, instance.actual_instance)
             return instance
         except (ValidationError, ValueError) as e:
              error_messages.append(str(e))
         # anyof_schema_7_validator: Optional[VertexAIGrokOptions] = None
         try:
             instance.actual_instance = VertexAIGrokOptions.from_json(json_str)
+            cls._check_lossless(json_str, instance.actual_instance)
             return instance
         except (ValidationError, ValueError) as e:
              error_messages.append(str(e))
         # anyof_schema_8_validator: Optional[NovaCanvasOptions] = None
         try:
             instance.actual_instance = NovaCanvasOptions.from_json(json_str)
+            cls._check_lossless(json_str, instance.actual_instance)
             return instance
         except (ValidationError, ValueError) as e:
              error_messages.append(str(e))
         # anyof_schema_9_validator: Optional[BedrockConverseOptions] = None
         try:
             instance.actual_instance = BedrockConverseOptions.from_json(json_str)
+            cls._check_lossless(json_str, instance.actual_instance)
             return instance
         except (ValidationError, ValueError) as e:
              error_messages.append(str(e))
         # anyof_schema_10_validator: Optional[BedrockNovaOptions] = None
         try:
             instance.actual_instance = BedrockNovaOptions.from_json(json_str)
+            cls._check_lossless(json_str, instance.actual_instance)
             return instance
         except (ValidationError, ValueError) as e:
              error_messages.append(str(e))
         # anyof_schema_11_validator: Optional[BedrockMistralOptions] = None
         try:
             instance.actual_instance = BedrockMistralOptions.from_json(json_str)
+            cls._check_lossless(json_str, instance.actual_instance)
             return instance
         except (ValidationError, ValueError) as e:
              error_messages.append(str(e))
         # anyof_schema_12_validator: Optional[BedrockAI21Options] = None
         try:
             instance.actual_instance = BedrockAI21Options.from_json(json_str)
+            cls._check_lossless(json_str, instance.actual_instance)
             return instance
         except (ValidationError, ValueError) as e:
              error_messages.append(str(e))
         # anyof_schema_13_validator: Optional[BedrockCohereCommandOptions] = None
         try:
             instance.actual_instance = BedrockCohereCommandOptions.from_json(json_str)
+            cls._check_lossless(json_str, instance.actual_instance)
             return instance
         except (ValidationError, ValueError) as e:
              error_messages.append(str(e))
         # anyof_schema_14_validator: Optional[BedrockClaudeOptions] = None
         try:
             instance.actual_instance = BedrockClaudeOptions.from_json(json_str)
+            cls._check_lossless(json_str, instance.actual_instance)
             return instance
         except (ValidationError, ValueError) as e:
              error_messages.append(str(e))
         # anyof_schema_15_validator: Optional[BedrockPalmyraOptions] = None
         try:
             instance.actual_instance = BedrockPalmyraOptions.from_json(json_str)
+            cls._check_lossless(json_str, instance.actual_instance)
             return instance
         except (ValidationError, ValueError) as e:
              error_messages.append(str(e))
         # anyof_schema_16_validator: Optional[BedrockGptOssOptions] = None
         try:
             instance.actual_instance = BedrockGptOssOptions.from_json(json_str)
+            cls._check_lossless(json_str, instance.actual_instance)
             return instance
         except (ValidationError, ValueError) as e:
              error_messages.append(str(e))
         # anyof_schema_17_validator: Optional[TwelvelabsPegasusOptions] = None
         try:
             instance.actual_instance = TwelvelabsPegasusOptions.from_json(json_str)
+            cls._check_lossless(json_str, instance.actual_instance)
             return instance
         except (ValidationError, ValueError) as e:
              error_messages.append(str(e))
         # anyof_schema_18_validator: Optional[BedrockMantleResponsesOptions] = None
         try:
             instance.actual_instance = BedrockMantleResponsesOptions.from_json(json_str)
+            cls._check_lossless(json_str, instance.actual_instance)
             return instance
         except (ValidationError, ValueError) as e:
              error_messages.append(str(e))
         # anyof_schema_19_validator: Optional[BedrockMantleChatCompletionsOptions] = None
         try:
             instance.actual_instance = BedrockMantleChatCompletionsOptions.from_json(json_str)
+            cls._check_lossless(json_str, instance.actual_instance)
             return instance
         except (ValidationError, ValueError) as e:
              error_messages.append(str(e))
         # anyof_schema_20_validator: Optional[BedrockMantleClaudeOptions] = None
         try:
             instance.actual_instance = BedrockMantleClaudeOptions.from_json(json_str)
+            cls._check_lossless(json_str, instance.actual_instance)
             return instance
         except (ValidationError, ValueError) as e:
              error_messages.append(str(e))
         # anyof_schema_21_validator: Optional[OpenAiThinkingOptions] = None
         try:
             instance.actual_instance = OpenAiThinkingOptions.from_json(json_str)
+            cls._check_lossless(json_str, instance.actual_instance)
             return instance
         except (ValidationError, ValueError) as e:
              error_messages.append(str(e))
         # anyof_schema_22_validator: Optional[OpenAiTextOptions] = None
         try:
             instance.actual_instance = OpenAiTextOptions.from_json(json_str)
+            cls._check_lossless(json_str, instance.actual_instance)
             return instance
         except (ValidationError, ValueError) as e:
              error_messages.append(str(e))
         # anyof_schema_23_validator: Optional[OpenRouterTextOptions] = None
         try:
             instance.actual_instance = OpenRouterTextOptions.from_json(json_str)
+            cls._check_lossless(json_str, instance.actual_instance)
             return instance
         except (ValidationError, ValueError) as e:
              error_messages.append(str(e))
         # anyof_schema_24_validator: Optional[OpenAiDalleOptions] = None
         try:
             instance.actual_instance = OpenAiDalleOptions.from_json(json_str)
+            cls._check_lossless(json_str, instance.actual_instance)
             return instance
         except (ValidationError, ValueError) as e:
              error_messages.append(str(e))
         # anyof_schema_25_validator: Optional[OpenAiGptImageOptions] = None
         try:
             instance.actual_instance = OpenAiGptImageOptions.from_json(json_str)
+            cls._check_lossless(json_str, instance.actual_instance)
             return instance
         except (ValidationError, ValueError) as e:
              error_messages.append(str(e))
         # anyof_schema_26_validator: Optional[OpenAiTranscriptionOptions] = None
         try:
             instance.actual_instance = OpenAiTranscriptionOptions.from_json(json_str)
+            cls._check_lossless(json_str, instance.actual_instance)
             return instance
         except (ValidationError, ValueError) as e:
              error_messages.append(str(e))
         # anyof_schema_27_validator: Optional[OpenAiSpeechOptions] = None
         try:
             instance.actual_instance = OpenAiSpeechOptions.from_json(json_str)
+            cls._check_lossless(json_str, instance.actual_instance)
             return instance
         except (ValidationError, ValueError) as e:
              error_messages.append(str(e))
         # anyof_schema_28_validator: Optional[OpenAiAudioOptions] = None
         try:
             instance.actual_instance = OpenAiAudioOptions.from_json(json_str)
+            cls._check_lossless(json_str, instance.actual_instance)
             return instance
         except (ValidationError, ValueError) as e:
              error_messages.append(str(e))
         # anyof_schema_29_validator: Optional[XAIGrokImageOptions] = None
         try:
             instance.actual_instance = XAIGrokImageOptions.from_json(json_str)
+            cls._check_lossless(json_str, instance.actual_instance)
             return instance
         except (ValidationError, ValueError) as e:
              error_messages.append(str(e))
         # anyof_schema_30_validator: Optional[GroqOptions] = None
         try:
             instance.actual_instance = GroqOptions.from_json(json_str)
+            cls._check_lossless(json_str, instance.actual_instance)
             return instance
         except (ValidationError, ValueError) as e:
              error_messages.append(str(e))
         # anyof_schema_31_validator: Optional[MistralTextOptions] = None
         try:
             instance.actual_instance = MistralTextOptions.from_json(json_str)
+            cls._check_lossless(json_str, instance.actual_instance)
             return instance
         except (ValidationError, ValueError) as e:
              error_messages.append(str(e))
         # anyof_schema_32_validator: Optional[AnthropicClaudeOptions] = None
         try:
             instance.actual_instance = AnthropicClaudeOptions.from_json(json_str)
+            cls._check_lossless(json_str, instance.actual_instance)
             return instance
         except (ValidationError, ValueError) as e:
              error_messages.append(str(e))
 
+        if json_str.strip() != "null":
+            # A variant added by a newer server: keep it as received.
+            return cls._from_raw(json.loads(json_str))
         if error_messages:
             # no match
             raise ValueError("No match found when deserializing the JSON string into ModelOptions with anyOf schemas: AnthropicClaudeOptions, AzureFoundryChatOptions, BedrockAI21Options, BedrockClaudeOptions, BedrockCohereCommandOptions, BedrockConverseOptions, BedrockGptOssOptions, BedrockMantleChatCompletionsOptions, BedrockMantleClaudeOptions, BedrockMantleResponsesOptions, BedrockMistralOptions, BedrockNovaOptions, BedrockPalmyraOptions, GroqOptions, ImagenOptions, MistralTextOptions, NovaCanvasOptions, OpenAiAudioOptions, OpenAiDalleOptions, OpenAiGptImageOptions, OpenAiSpeechOptions, OpenAiTextOptions, OpenAiThinkingOptions, OpenAiTranscriptionOptions, OpenRouterTextOptions, TextFallbackOptions, TwelvelabsPegasusOptions, VertexAIClaudeOptions, VertexAIGeminiOmniVideoOptions, VertexAIGeminiOptions, VertexAIGrokOptions, XAIGrokImageOptions. Details: " + ", ".join(error_messages))

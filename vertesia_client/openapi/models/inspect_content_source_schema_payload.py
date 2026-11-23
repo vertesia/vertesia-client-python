@@ -28,7 +28,7 @@ class InspectContentSourceSchemaPayload(BaseModel):
     """
     The root to read the schema of, through a content source’s connection.
     """ # noqa: E501
-    root_id: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="Another root the source’s connection reaches, as `discover/roots` returned it. Defaults to the source’s own root.")
+    root_id: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Another root the source’s connection reaches, as `discover/roots` returned it. Defaults to the source’s own root.")
     __properties: ClassVar[List[str]] = ["root_id"]
 
     model_config = ConfigDict(

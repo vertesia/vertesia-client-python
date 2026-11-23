@@ -28,10 +28,10 @@ class WorkflowUsageClassOccupancy(BaseModel):
     """
     WorkflowUsageClassOccupancy
     """ # noqa: E501
-    limit: Optional[Union[Annotated[float, Field(strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]]
-    tenant_limit: Union[Annotated[float, Field(strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]
-    active: Optional[Union[Annotated[float, Field(strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]]
-    tenant_active: Optional[Union[Annotated[float, Field(strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]]
+    limit: Optional[Union[Annotated[float, Field(strict=True)], Annotated[int, Field(strict=True)]]]
+    tenant_limit: Union[Annotated[float, Field(strict=True)], Annotated[int, Field(strict=True)]]
+    active: Optional[Union[Annotated[float, Field(strict=True)], Annotated[int, Field(strict=True)]]]
+    tenant_active: Optional[Union[Annotated[float, Field(strict=True)], Annotated[int, Field(strict=True)]]]
     __properties: ClassVar[List[str]] = ["limit", "tenant_limit", "active", "tenant_active"]
 
     model_config = ConfigDict(

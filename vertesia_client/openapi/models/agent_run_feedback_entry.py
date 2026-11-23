@@ -36,7 +36,7 @@ class AgentRunFeedbackEntry(BaseModel):
     reason_code: Optional[AgentRunFeedbackReasonCode] = None
     comment: Optional[StrictStr] = None
     message_id: Optional[StrictStr] = None
-    message_seq: Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]] = None
+    message_seq: Optional[Annotated[int, Field(strict=True)]] = None
     message_scoped: StrictBool
     user_id: StrictStr
     rated_at: datetime

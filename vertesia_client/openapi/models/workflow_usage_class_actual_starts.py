@@ -28,8 +28,8 @@ class WorkflowUsageClassActualStarts(BaseModel):
     """
     WorkflowUsageClassActualStarts
     """ # noqa: E501
-    count: Optional[Union[Annotated[float, Field(strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]]
-    window_ms: Union[Annotated[float, Field(strict=True, gt=0)], Annotated[int, Field(strict=True, gt=0)]]
+    count: Optional[Union[Annotated[float, Field(strict=True)], Annotated[int, Field(strict=True)]]]
+    window_ms: Union[Annotated[float, Field(strict=True)], Annotated[int, Field(strict=True)]]
     __properties: ClassVar[List[str]] = ["count", "window_ms"]
 
     model_config = ConfigDict(

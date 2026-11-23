@@ -37,16 +37,6 @@ class AuditAggregationMetric(BaseModel):
     meter_type: Optional[StrictStr] = Field(default=None, description="Required for sum_meter and average_meter, as 1 to 128 characters.", alias="meterType")
     __properties: ClassVar[List[str]] = ["id", "operation", "field", "meterCategory", "meterType"]
 
-    @field_validator('id')
-    def id_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^[A-Za-z0-9_-]{1,64}$", value):
-            raise ValueError(r"must validate the regular expression /^[A-Za-z0-9_-]{1,64}$/")
-        return value
-
     model_config = ConfigDict(
         validate_by_name=True,
         validate_by_alias=True,

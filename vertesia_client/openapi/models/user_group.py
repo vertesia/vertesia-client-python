@@ -42,7 +42,7 @@ class UserGroup(BaseModel):
     clearance: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="BLP clearance level — merged with user clearance using max()")
     compartments: Optional[List[StrictStr]] = Field(default=None, description="Compartments — merged with user compartments using array union")
     allowed_projects: Optional[List[StrictStr]] = Field(default=None, description="Projects this group is allowed to be used in. When empty or absent the group is org-wide (usable in any project). When set, the group may only be used to grant permissions in the listed projects.")
-    member_count: Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]] = Field(default=None, description="Number of users in the group. Returned by the group listing only.")
+    member_count: Optional[Annotated[int, Field(strict=True)]] = Field(default=None, description="Number of users in the group. Returned by the group listing only.")
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["id", "account", "name", "description", "tags", "created_at", "updated_at", "created_by", "updated_by", "properties", "clearance", "compartments", "allowed_projects", "member_count"]
 

@@ -40,15 +40,14 @@ class BedrockClaudeOptions(BaseModel):
     effort: Optional[StrictStr] = None
     cache_enabled: Optional[StrictBool] = None
     cache_ttl: Optional[StrictStr] = None
-    service_tier: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="Provider-defined processing tier. Unknown non-empty values are preserved for forward compatibility.")
+    service_tier: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Provider-defined processing tier. Unknown non-empty values are preserved for forward compatibility.")
     __properties: ClassVar[List[str]] = ["_option_id", "max_tokens", "temperature", "top_p", "stop_sequence", "top_k", "thinking_mode", "thinking_budget_tokens", "include_thoughts", "effort", "cache_enabled", "cache_ttl", "service_tier"]
 
     @field_validator('option_id')
     def option_id_validate_enum(cls, value):
         """Validates the enum"""
-        if value is None:
-            return value
-
+        if value is not None and value != 'bedrock-claude':
+            raise ValueError('Expected _option_id to be bedrock-claude')
         return value
 
     @field_validator('thinking_mode')

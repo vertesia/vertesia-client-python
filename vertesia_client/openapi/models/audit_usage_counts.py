@@ -28,16 +28,16 @@ class AuditUsageCounts(BaseModel):
     """
     Direct productive users, run initiators/owners, all run operations and standalone inference audit events.
     """ # noqa: E501
-    active_users: Annotated[int, Field(le=9007199254740991, strict=True, ge=0)]
-    agent_runs: Annotated[int, Field(le=9007199254740991, strict=True, ge=0)] = Field(description="All audited run creations and marked restarts, including automated runs.")
-    user_agent_runs: Annotated[int, Field(le=9007199254740991, strict=True, ge=0)] = Field(description="Run operations initiated directly by authenticated users, including OAuth/MCP.")
-    automated_agent_runs: Annotated[int, Field(le=9007199254740991, strict=True, ge=0)] = Field(description="Other run operations, including schedules, delegated agents, services and API keys.")
-    agent_users: Annotated[int, Field(le=9007199254740991, strict=True, ge=0)] = Field(description="Distinct identifiable user initiators or owners of run operations, including scheduled and delegated runs.")
-    direct_calls: Annotated[int, Field(le=9007199254740991, strict=True, ge=0)]
-    direct_call_users: Annotated[int, Field(le=9007199254740991, strict=True, ge=0)]
-    content_objects: Annotated[int, Field(le=9007199254740991, strict=True, ge=0)]
-    user_content_objects: Annotated[int, Field(le=9007199254740991, strict=True, ge=0)]
-    other_content_objects: Annotated[int, Field(le=9007199254740991, strict=True, ge=0)]
+    active_users: Annotated[int, Field(strict=True)]
+    agent_runs: Annotated[int, Field(strict=True)] = Field(description="All audited run creations and marked restarts, including automated runs.")
+    user_agent_runs: Annotated[int, Field(strict=True)] = Field(description="Run operations initiated directly by authenticated users, including OAuth/MCP.")
+    automated_agent_runs: Annotated[int, Field(strict=True)] = Field(description="Other run operations, including schedules, delegated agents, services and API keys.")
+    agent_users: Annotated[int, Field(strict=True)] = Field(description="Distinct identifiable user initiators or owners of run operations, including scheduled and delegated runs.")
+    direct_calls: Annotated[int, Field(strict=True)]
+    direct_call_users: Annotated[int, Field(strict=True)]
+    content_objects: Annotated[int, Field(strict=True)]
+    user_content_objects: Annotated[int, Field(strict=True)]
+    other_content_objects: Annotated[int, Field(strict=True)]
     __properties: ClassVar[List[str]] = ["active_users", "agent_runs", "user_agent_runs", "automated_agent_runs", "agent_users", "direct_calls", "direct_call_users", "content_objects", "user_content_objects", "other_content_objects"]
 
     model_config = ConfigDict(

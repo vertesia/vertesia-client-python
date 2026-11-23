@@ -28,8 +28,8 @@ class CompletedUploadPart(BaseModel):
     """
     CompletedUploadPart
     """ # noqa: E501
-    part_number: Annotated[int, Field(le=10000, strict=True, ge=1)]
-    etag: Annotated[str, Field(min_length=1, strict=True)] = Field(description="The ETag S3 returned for the part.")
+    part_number: Annotated[int, Field(strict=True)]
+    etag: Annotated[str, Field(strict=True)] = Field(description="The ETag S3 returned for the part.")
     __properties: ClassVar[List[str]] = ["part_number", "etag"]
 
     model_config = ConfigDict(

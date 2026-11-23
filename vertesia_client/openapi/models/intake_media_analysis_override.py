@@ -33,19 +33,6 @@ class IntakeMediaAnalysisOverride(BaseModel):
     config: Optional[InteractionExecutionConfiguration] = Field(default=None, description="Execution configuration for this media analysis step only. Omitted fields inherit; inference_profile: null bypasses profile defaults.")
     __properties: ClassVar[List[str]] = ["interaction", "config"]
 
-    @field_validator('interaction')
-    def interaction_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if value is None:
-            return value
-
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"\S", value):
-            raise ValueError(r"must validate the regular expression /\S/")
-        return value
-
     model_config = ConfigDict(
         validate_by_name=True,
         validate_by_alias=True,

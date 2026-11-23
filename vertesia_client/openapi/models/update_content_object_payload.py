@@ -72,19 +72,6 @@ class UpdateContentObjectPayload(BaseModel):
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["text", "text_etag", "embeddings", "parts", "parts_etag", "transcript", "security", "sensitivity", "compartments", "shared_root", "inherited_properties", "parent", "location", "status", "content", "external_id", "properties", "metadata", "tokens", "revision", "is_deleted", "is_locked", "score", "user_permissions", "name", "description", "tags", "updated_by", "created_by", "id", "type", "generation_run_info"]
 
-    @field_validator('parent')
-    def parent_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if value is None:
-            return value
-
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^[0-9a-fA-F]{24}$", value):
-            raise ValueError(r"must validate the regular expression /^[0-9a-fA-F]{24}$/")
-        return value
-
     model_config = ConfigDict(
         validate_by_name=True,
         validate_by_alias=True,

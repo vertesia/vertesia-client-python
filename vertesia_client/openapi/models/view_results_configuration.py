@@ -33,38 +33,15 @@ class ViewResultsConfiguration(BaseModel):
     """
     ViewResultsConfiguration
     """ # noqa: E501
-    default_display: Annotated[str, Field(min_length=1, strict=True, max_length=64)]
+    default_display: Annotated[str, Field(strict=True)]
     allow_display_switch: Optional[StrictBool] = None
-    displays: Annotated[List[ViewDisplayConfiguration], Field(min_length=1, max_length=10)]
-    default_sort: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=64)]] = None
+    displays: Annotated[List[ViewDisplayConfiguration], Field()]
+    default_sort: Optional[Annotated[str, Field(strict=True)]] = None
     sort_options: Optional[List[ViewSortOption]] = None
     selection: Optional[ViewSelectionConfiguration] = None
     actions: Optional[ViewActionsConfiguration] = None
     drop: Optional[ViewDropConfiguration] = None
     __properties: ClassVar[List[str]] = ["default_display", "allow_display_switch", "displays", "default_sort", "sort_options", "selection", "actions", "drop"]
-
-    @field_validator('default_display')
-    def default_display_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^[a-z][a-z0-9_-]*$", value):
-            raise ValueError(r"must validate the regular expression /^[a-z][a-z0-9_-]*$/")
-        return value
-
-    @field_validator('default_sort')
-    def default_sort_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if value is None:
-            return value
-
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^[a-z][a-z0-9_-]*$", value):
-            raise ValueError(r"must validate the regular expression /^[a-z][a-z0-9_-]*$/")
-        return value
 
     model_config = ConfigDict(
         validate_by_name=True,

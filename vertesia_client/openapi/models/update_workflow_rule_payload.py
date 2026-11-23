@@ -29,7 +29,7 @@ class UpdateWorkflowRulePayload(BaseModel):
     """
     Fields to change on a workflow rule. All optional.
     """ # noqa: E501
-    expected_edit_revision: Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=1)]] = Field(default=None, description="Edit revision returned by the last read. Stale revisions are rejected with HTTP 409. Omit for legacy last-write-wins behavior.")
+    expected_edit_revision: Optional[Annotated[int, Field(strict=True)]] = Field(default=None, description="Edit revision returned by the last read. Stale revisions are rejected with HTTP 409. Omit for legacy last-write-wins behavior.")
     match: Optional[Dict[str, Any]] = None
     config: Optional[Dict[str, Any]] = Field(default=None, description="Activities configuration if any.")
     debug: Optional[StrictBool] = Field(default=False, description="Debug mode for the rule")

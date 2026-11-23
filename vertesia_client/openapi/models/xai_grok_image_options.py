@@ -33,15 +33,14 @@ class XAIGrokImageOptions(BaseModel):
     resolution: Optional[StrictStr] = None
     quality: Optional[StrictStr] = None
     response_format: Optional[StrictStr] = None
-    n: Optional[Annotated[int, Field(le=10, strict=True, ge=1)]] = None
+    n: Optional[Annotated[int, Field(strict=True)]] = None
     __properties: ClassVar[List[str]] = ["_option_id", "aspect_ratio", "resolution", "quality", "response_format", "n"]
 
     @field_validator('option_id')
     def option_id_validate_enum(cls, value):
         """Validates the enum"""
-        if value is None:
-            return value
-
+        if value is not None and value != 'xai-grok-image':
+            raise ValueError('Expected _option_id to be xai-grok-image')
         return value
 
     @field_validator('aspect_ratio')

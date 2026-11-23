@@ -32,7 +32,7 @@ class WebsiteCredentialMetadataUpdate(BaseModel):
     WebsiteCredentialMetadataUpdate
     """ # noqa: E501
     name: Optional[Annotated[str, Field(strict=True)]] = None
-    websites: Optional[Annotated[List[WebsiteCredentialWebsite], Field(min_length=1)]] = None
+    websites: Optional[Annotated[List[WebsiteCredentialWebsite], Field()]] = None
     username: Optional[StrictStr] = None
     username_hint: Optional[StrictStr] = None
     username_secret: Optional[StrictBool] = None
@@ -45,19 +45,6 @@ class WebsiteCredentialMetadataUpdate(BaseModel):
     expires_at: Optional[StrictStr] = Field(default=None, description="Optional ISO timestamp after which the credential is no longer usable. Expired credentials are hidden from lookup and cannot be filled.")
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["name", "websites", "username", "username_hint", "username_secret", "properties", "tags", "enabled", "capabilities", "notes", "totp", "expires_at"]
-
-    @field_validator('name')
-    def name_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if value is None:
-            return value
-
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"\S", value):
-            raise ValueError(r"must validate the regular expression /\S/")
-        return value
 
     model_config = ConfigDict(
         validate_by_name=True,

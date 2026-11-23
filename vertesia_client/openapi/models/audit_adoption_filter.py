@@ -30,9 +30,9 @@ class AuditAdoptionFilter(BaseModel):
     """
     AuditAdoptionFilter
     """ # noqa: E501
-    actions: Optional[Annotated[List[AuditAction], Field(max_length=32)]] = None
-    resource_types: Optional[Annotated[List[Annotated[str, Field(strict=True, max_length=128)]], Field(max_length=16)]] = Field(default=None, alias="resourceTypes")
-    event_categories: Optional[Annotated[List[EventCategory], Field(max_length=6)]] = Field(default=None, alias="eventCategories")
+    actions: Optional[Annotated[List[AuditAction], Field()]] = None
+    resource_types: Optional[Annotated[List[Annotated[str, Field(strict=True)]], Field()]] = Field(default=None, alias="resourceTypes")
+    event_categories: Optional[Annotated[List[EventCategory], Field()]] = Field(default=None, alias="eventCategories")
     __properties: ClassVar[List[str]] = ["actions", "resourceTypes", "eventCategories"]
 
     model_config = ConfigDict(

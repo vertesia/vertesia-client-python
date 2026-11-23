@@ -28,7 +28,7 @@ class UpdateAppInstallationToolPermissionsPayload(BaseModel):
     """
     Updates the tool allowlist and the tools requiring approval of an app installation in one atomic write.
     """ # noqa: E501
-    tool_allowlist: Optional[Annotated[List[StrictStr], Field(min_length=1)]] = Field(default=None, description="Tool names agents may use, at least one. Null removes the restriction; omit to leave the allowlist unchanged.")
+    tool_allowlist: Optional[Annotated[List[StrictStr], Field()]] = Field(default=None, description="Tool names agents may use, at least one. Null removes the restriction; omit to leave the allowlist unchanged.")
     tools_requiring_approval: Optional[List[StrictStr]] = Field(default=None, description="Tool names that always require human approval before an agent runs them. Null clears the list; omit to leave it unchanged.")
     __properties: ClassVar[List[str]] = ["tool_allowlist", "tools_requiring_approval"]
 

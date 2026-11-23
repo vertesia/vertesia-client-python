@@ -69,22 +69,9 @@ class CreateContentObjectPayload(BaseModel):
     id: Optional[StrictStr] = None
     type: Optional[StrictStr] = None
     generation_run_info: Optional[GenerationRunMetadata] = None
-    idempotency_key: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=256)]] = Field(default=None, description="Client-chosen key, unique per intended object, that makes this request safe to retry. A repeat of the request with the same key, body, collection and processing priority returns the object the first request created instead of creating another. Reusing a key with different input is rejected with 409. Keys are scoped to the project and stay bound to their object for as long as it exists.")
+    idempotency_key: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Client-chosen key, unique per intended object, that makes this request safe to retry. A repeat of the request with the same key, body, collection and processing priority returns the object the first request created instead of creating another. Reusing a key with different input is rejected with 409. Keys are scoped to the project and stay bound to their object for as long as it exists.")
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["text", "text_etag", "embeddings", "parts", "parts_etag", "transcript", "security", "sensitivity", "compartments", "shared_root", "inherited_properties", "parent", "location", "status", "content", "external_id", "properties", "metadata", "tokens", "revision", "is_deleted", "is_locked", "score", "user_permissions", "name", "description", "tags", "updated_by", "created_by", "id", "type", "generation_run_info", "idempotency_key"]
-
-    @field_validator('parent')
-    def parent_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if value is None:
-            return value
-
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^[0-9a-fA-F]{24}$", value):
-            raise ValueError(r"must validate the regular expression /^[0-9a-fA-F]{24}$/")
-        return value
 
     model_config = ConfigDict(
         validate_by_name=True,

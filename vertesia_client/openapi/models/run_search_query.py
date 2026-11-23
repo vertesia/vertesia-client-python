@@ -53,19 +53,6 @@ class RunSearchQuery(BaseModel):
     is_agent: Optional[StrictBool] = None
     __properties: ClassVar[List[str]] = ["name", "status", "limit", "offset", "interaction", "environment", "model", "tags", "exclude_tags", "query", "default_query_path", "parent", "is_root", "object", "start", "end", "finish_reason", "created_by", "workflow_run_ids", "workflow_ids", "run_ids", "is_agent"]
 
-    @field_validator('environment')
-    def environment_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if value is None:
-            return value
-
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^(?:[a-fA-F0-9]{24})?$", value):
-            raise ValueError(r"must validate the regular expression /^(?:[a-fA-F0-9]{24})?$/")
-        return value
-
     model_config = ConfigDict(
         validate_by_name=True,
         validate_by_alias=True,

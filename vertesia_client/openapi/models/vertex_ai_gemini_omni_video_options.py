@@ -31,16 +31,15 @@ class VertexAIGeminiOmniVideoOptions(BaseModel):
     option_id: Optional[StrictStr] = Field(default=None, alias="_option_id")
     task: Optional[StrictStr] = None
     aspect_ratio: Optional[StrictStr] = None
-    duration_seconds: Optional[Annotated[int, Field(le=10, strict=True, ge=3)]] = None
+    duration_seconds: Optional[Annotated[int, Field(strict=True)]] = None
     resolution: Optional[StrictStr] = None
     __properties: ClassVar[List[str]] = ["_option_id", "task", "aspect_ratio", "duration_seconds", "resolution"]
 
     @field_validator('option_id')
     def option_id_validate_enum(cls, value):
         """Validates the enum"""
-        if value is None:
-            return value
-
+        if value is not None and value != 'vertexai-gemini-omni-video':
+            raise ValueError('Expected _option_id to be vertexai-gemini-omni-video')
         return value
 
     @field_validator('task')

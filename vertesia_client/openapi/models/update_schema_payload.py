@@ -33,8 +33,8 @@ class UpdateSchemaPayload(BaseModel):
     relationships: Optional[List[DataRelationship]] = Field(default=None, description="Relationships to set")
     description: Optional[StrictStr] = Field(default=None, description="Updated schema description")
     tables: Optional[List[CreateTablePayload]] = Field(default=None, description="Tables to create or update")
-    drop_tables: Optional[List[Annotated[str, Field(min_length=1, strict=True)]]] = Field(default=None, description="Tables to drop. A name that matches no table is ignored.")
-    message: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Commit message (required)")
+    drop_tables: Optional[List[Annotated[str, Field(strict=True)]]] = Field(default=None, description="Tables to drop. A name that matches no table is ignored.")
+    message: Annotated[str, Field(strict=True)] = Field(description="Commit message (required)")
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["relationships", "description", "tables", "drop_tables", "message"]
 

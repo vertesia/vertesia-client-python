@@ -30,8 +30,8 @@ class AuditAdoptionProject(BaseModel):
     """ # noqa: E501
     project_id: StrictStr
     project_name: Optional[StrictStr]
-    active_users: Annotated[int, Field(le=9007199254740991, strict=True, ge=0)]
-    active_user_days: Annotated[int, Field(le=9007199254740991, strict=True, ge=0)]
+    active_users: Annotated[int, Field(strict=True)]
+    active_user_days: Annotated[int, Field(strict=True)]
     __properties: ClassVar[List[str]] = ["project_id", "project_name", "active_users", "active_user_days"]
 
     model_config = ConfigDict(

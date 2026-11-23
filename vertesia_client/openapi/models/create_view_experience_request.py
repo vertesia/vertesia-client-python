@@ -34,37 +34,17 @@ class CreateViewExperienceRequest(BaseModel):
     """
     CreateViewExperienceRequest
     """ # noqa: E501
-    name: Annotated[str, Field(min_length=1, strict=True, max_length=120)]
+    name: Annotated[str, Field(strict=True)]
     enabled: Optional[StrictBool] = None
     layout: Optional[ViewExperienceLayout] = None
     scope: Optional[ViewExperienceScope] = None
-    navigation: Optional[Annotated[List[ViewNavigationItem], Field(max_length=20)]] = None
+    navigation: Optional[Annotated[List[ViewNavigationItem], Field()]] = None
     search: Optional[ViewSearchConfiguration] = None
     results: Optional[ViewResultsConfiguration] = None
-    description: Annotated[str, Field(strict=True, max_length=4000)]
-    id: Annotated[str, Field(strict=True, max_length=64)]
+    description: Annotated[str, Field(strict=True)]
+    id: Annotated[str, Field(strict=True)]
     version: Optional[ViewExperienceSchemaVersion] = None
     __properties: ClassVar[List[str]] = ["name", "enabled", "layout", "scope", "navigation", "search", "results", "description", "id", "version"]
-
-    @field_validator('description')
-    def description_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"\S", value):
-            raise ValueError(r"must validate the regular expression /\S/")
-        return value
-
-    @field_validator('id')
-    def id_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^[a-z0-9]+(?:-[a-z0-9]+)*$", value):
-            raise ValueError(r"must validate the regular expression /^[a-z0-9]+(?:-[a-z0-9]+)*$/")
-        return value
 
     model_config = ConfigDict(
         validate_by_name=True,

@@ -31,7 +31,7 @@ class ContentSourceFolder(BaseModel):
     id: StrictStr = Field(description="The identifier of the folder in its system.")
     name: StrictStr
     path: StrictStr = Field(description="The path inside the library (SharePoint), or below All Files (Box). Pass `id` to go deeper.")
-    child_count: Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]] = Field(default=None, description="How many files and folders it holds directly.")
+    child_count: Optional[Annotated[int, Field(strict=True)]] = Field(default=None, description="How many files and folders it holds directly.")
     __properties: ClassVar[List[str]] = ["id", "name", "path", "child_count"]
 
     model_config = ConfigDict(

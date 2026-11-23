@@ -36,17 +36,17 @@ class AuditAdoptionResponse(BaseModel):
     period: AuditAdoptionPeriod
     previous_period: AuditAdoptionPeriod
     resolution: StrictStr
-    active_users: Annotated[int, Field(le=9007199254740991, strict=True, ge=0)]
-    previous_active_users: Annotated[int, Field(le=9007199254740991, strict=True, ge=0)]
-    retained_users: Annotated[int, Field(le=9007199254740991, strict=True, ge=0)]
-    observed_retention: Optional[Union[Annotated[float, Field(le=1, strict=True, ge=0)], Annotated[int, Field(le=1, strict=True, ge=0)]]]
-    returning_user_share: Optional[Union[Annotated[float, Field(le=1, strict=True, ge=0)], Annotated[int, Field(le=1, strict=True, ge=0)]]]
-    repeat_user_share: Optional[Union[Annotated[float, Field(le=1, strict=True, ge=0)], Annotated[int, Field(le=1, strict=True, ge=0)]]]
-    median_active_days: Optional[Union[Annotated[float, Field(strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]]
-    active_projects: Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=0)]]
+    active_users: Annotated[int, Field(strict=True)]
+    previous_active_users: Annotated[int, Field(strict=True)]
+    retained_users: Annotated[int, Field(strict=True)]
+    observed_retention: Optional[Union[Annotated[float, Field(strict=True)], Annotated[int, Field(strict=True)]]]
+    returning_user_share: Optional[Union[Annotated[float, Field(strict=True)], Annotated[int, Field(strict=True)]]]
+    repeat_user_share: Optional[Union[Annotated[float, Field(strict=True)], Annotated[int, Field(strict=True)]]]
+    median_active_days: Optional[Union[Annotated[float, Field(strict=True)], Annotated[int, Field(strict=True)]]]
+    active_projects: Optional[Annotated[int, Field(strict=True)]]
     timeline: List[AuditAdoptionBucket]
     active_day_distribution: List[AuditAdoptionActiveDays]
-    top_projects: Annotated[List[AuditAdoptionProject], Field(max_length=10)]
+    top_projects: Annotated[List[AuditAdoptionProject], Field()]
     history: AuditAdoptionHistory
     __properties: ClassVar[List[str]] = ["period", "previous_period", "resolution", "active_users", "previous_active_users", "retained_users", "observed_retention", "returning_user_share", "repeat_user_share", "median_active_days", "active_projects", "timeline", "active_day_distribution", "top_projects", "history"]
 

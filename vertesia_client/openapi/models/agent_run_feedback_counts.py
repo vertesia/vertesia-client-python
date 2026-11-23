@@ -30,8 +30,8 @@ class AgentRunFeedbackCounts(BaseModel):
     """
     Ratings over the retained feedback entries, one vote per rater: a user who rated the run and one of its answers counts once, by their latest rating.
     """ # noqa: E501
-    up: Annotated[int, Field(le=9007199254740991, strict=True, ge=0)]
-    down: Annotated[int, Field(le=9007199254740991, strict=True, ge=0)]
+    up: Annotated[int, Field(strict=True)]
+    down: Annotated[int, Field(strict=True)]
     last_rating: Optional[AgentRunFeedbackRating] = None
     last_reason_code: Optional[AgentRunFeedbackReasonCode] = None
     __properties: ClassVar[List[str]] = ["up", "down", "last_rating", "last_reason_code"]

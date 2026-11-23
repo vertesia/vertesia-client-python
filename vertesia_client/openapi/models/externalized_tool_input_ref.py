@@ -30,7 +30,7 @@ class ExternalizedToolInputRef(BaseModel):
     Sidecar metadata for generated tool input fields that were stored outside model-visible tool_input. Keyed by tool_use.id on ConversationState.
     """ # noqa: E501
     tool_name: StrictStr
-    input_path: Annotated[List[StrictStr], Field(min_length=1, max_length=1)]
+    input_path: Annotated[List[StrictStr], Field()]
     ref: TextArtifactReference
     __properties: ClassVar[List[str]] = ["tool_name", "input_path", "ref"]
 

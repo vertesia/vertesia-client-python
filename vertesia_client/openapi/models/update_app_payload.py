@@ -42,11 +42,11 @@ class UpdateAppPayload(BaseModel):
     parameters: Optional[Dict[str, McpConnectionParameter]] = Field(default=None, description="Shared MCP installation parameters available to every collection. Collection-local names must not overlap.")
     oauth_scopes: Optional[List[StrictStr]] = Field(default=None, description="Publisher-managed maximum OAuth scopes this app may request. App code and version promotion cannot expand this permission ceiling.")
     oauth_client: Optional[AppOAuthClientConfig] = None
-    name: Annotated[str, Field(min_length=1, strict=True)] = Field(description="The name of the app, used as the id in the system. Must be in kebab case (e.g. my-app).")
+    name: Annotated[str, Field(strict=True)] = Field(description="The name of the app, used as the id in the system. Must be in kebab case (e.g. my-app).")
     visibility: StrictStr = Field(description="Visibility level of the app: - \"public\": visible to all accounts - \"private\": visible only to the owning account - \"vertesia\": visible only to Vertesia team members (any project)")
     title: StrictStr
     description: StrictStr
-    publisher: Annotated[str, Field(min_length=1, strict=True)] = Field(description="The publisher of the app. Must not be empty.")
+    publisher: Annotated[str, Field(strict=True)] = Field(description="The publisher of the app. Must not be empty.")
     icon: Optional[StrictStr] = Field(default=None, description="A svg icon for the app.")
     color: Optional[StrictStr] = Field(default=None, description="A color name to be used as the color of the app card (e.g. blue, red, green, etc.) If not specified a random color will be picked.")
     preview_screenshot: Optional[AppManifestPreviewScreenshot] = None
@@ -64,7 +64,7 @@ class UpdateAppPayload(BaseModel):
     source: Optional[AppSourceConfig] = Field(default=None, description="Source repository configuration for apps generated and maintained through AppGen. Branches are mutable development lanes; immutable app versions record their exact source commit in AppVersionRecord.source_commit and AppVersionRecord.storage.source_git.")
     tags: Optional[List[StrictStr]] = Field(default=None, description="Free-form tags used for classification and filtering. Platform apps carry `\"system\"` so UIs can skip install/uninstall/manage-permission controls that don't apply to synthetic installations.")
     access_control: Optional[AppAccessControl] = Field(default=None, description="Access control policy for the app. Defaults to 'all' (ACE-gated everywhere) when undefined. See  {@link  AppAccessControl }  for semantics. May be overridden on the AppInstallation.")
-    expected_edit_revision: Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=1)]] = Field(default=None, description="Edit revision returned by the last read. Stale revisions are rejected with HTTP 409. Omit for legacy last-write-wins behavior.")
+    expected_edit_revision: Optional[Annotated[int, Field(strict=True)]] = Field(default=None, description="Edit revision returned by the last read. Stale revisions are rejected with HTTP 409. Omit for legacy last-write-wins behavior.")
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["parameters", "oauth_scopes", "oauth_client", "name", "visibility", "title", "description", "publisher", "icon", "color", "preview_screenshot", "status", "ui", "mcp_profile", "tool_collections", "oauth_providers", "interactions", "settings_schema", "capabilities", "endpoint", "endpoint_overrides", "version", "source", "tags", "access_control", "expected_edit_revision"]
 

@@ -32,21 +32,8 @@ class ImportDataPayload(BaseModel):
     import_id: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Optional client-generated Mongo ObjectId for idempotent retries. Generate once before submitting, then reuse with identical input. New IDs must be less than 24 hours old; existing jobs are returned without executing again, and reusing an ID with different input is rejected with 422. Poll GET /data/:storeId/import/:importId after a timeout.")
     tables: Dict[str, ImportTableData] = Field(description="Map of table name to data specification")
     mode: StrictStr = Field(description="Import mode")
-    message: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Commit message")
+    message: Annotated[str, Field(strict=True)] = Field(description="Commit message")
     __properties: ClassVar[List[str]] = ["import_id", "tables", "mode", "message"]
-
-    @field_validator('import_id')
-    def import_id_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if value is None:
-            return value
-
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^[0-9a-f]{24}$", value):
-            raise ValueError(r"must validate the regular expression /^[0-9a-f]{24}$/")
-        return value
 
     @field_validator('mode')
     def mode_validate_enum(cls, value):

@@ -29,7 +29,7 @@ class AlterTablePayload(BaseModel):
     """
     Payload for altering a table schema.
     """ # noqa: E501
-    changes: Annotated[List[AlterTableOperation], Field(min_length=1)] = Field(description="List of schema changes to apply")
+    changes: Annotated[List[AlterTableOperation], Field()] = Field(description="List of schema changes to apply")
     __properties: ClassVar[List[str]] = ["changes"]
 
     model_config = ConfigDict(

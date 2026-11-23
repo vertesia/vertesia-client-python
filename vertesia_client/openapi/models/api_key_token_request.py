@@ -32,7 +32,7 @@ class ApiKeyTokenRequest(BaseModel):
     type: StrictStr
     audience: Optional[StrictStr] = None
     algorithm: Optional[SigningAlgorithm] = Field(default=None, description="Signing algorithm - defaults to ES256. Use RS256 for Azure AD compatibility.")
-    key: Annotated[str, Field(min_length=1, strict=True)]
+    key: Annotated[str, Field(strict=True)]
     __properties: ClassVar[List[str]] = ["type", "audience", "algorithm", "key"]
 
     @field_validator('type')

@@ -32,8 +32,8 @@ class ContentTypeIntakePolicyExtractionVerification(BaseModel):
     model: Optional[StrictStr] = Field(default=None, description="Reserved model name for the verification pass; not currently used by Standard Intake.")
     environment: Optional[StrictStr] = Field(default=None, description="Reserved execution environment for the verification model; not currently used by Standard Intake.")
     materiality: Optional[StrictStr] = Field(default=None, description="Reserved guidance describing which extraction discrepancies matter; not currently used by Standard Intake.")
-    threshold: Optional[Union[Annotated[float, Field(le=1, strict=True, ge=0)], Annotated[int, Field(le=1, strict=True, ge=0)]]] = Field(default=None, description="Reserved verification score threshold between 0 and 1; not currently used by Standard Intake.")
-    max_retries: Optional[Annotated[int, Field(le=2147483647, strict=True, ge=0)]] = Field(default=None, description="Reserved verification retry limit; not currently used by Standard Intake.")
+    threshold: Optional[Union[Annotated[float, Field(strict=True)], Annotated[int, Field(strict=True)]]] = Field(default=None, description="Reserved verification score threshold between 0 and 1; not currently used by Standard Intake.")
+    max_retries: Optional[Annotated[int, Field(strict=True)]] = Field(default=None, description="Reserved verification retry limit; not currently used by Standard Intake.")
     on_fail: Optional[StrictStr] = Field(default=None, description="Reserved action for failed verification: flag or block. Not currently used by Standard Intake.")
     __properties: ClassVar[List[str]] = ["enabled", "model", "environment", "materiality", "threshold", "max_retries", "on_fail"]
 

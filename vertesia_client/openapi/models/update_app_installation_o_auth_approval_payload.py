@@ -28,7 +28,7 @@ class UpdateAppInstallationOAuthApprovalPayload(BaseModel):
     """
     Approve OAuth scopes for this project installation. An empty list revokes project approval.
     """ # noqa: E501
-    approved_scopes: Annotated[List[Annotated[str, Field(min_length=1, strict=True)]], Field(max_length=200)]
+    approved_scopes: Annotated[List[Annotated[str, Field(strict=True)]], Field()]
     __properties: ClassVar[List[str]] = ["approved_scopes"]
 
     model_config = ConfigDict(

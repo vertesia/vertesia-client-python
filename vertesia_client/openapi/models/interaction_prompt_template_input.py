@@ -42,7 +42,7 @@ class InteractionPromptTemplateInput(BaseModel):
     name: StrictStr
     status: PromptStatus
     version: Union[StrictFloat, StrictInt]
-    edit_revision: Optional[Annotated[int, Field(le=9007199254740991, strict=True, ge=1)]] = Field(default=None, description="Monotonic edit revision used to detect concurrent updates.")
+    edit_revision: Optional[Annotated[int, Field(strict=True)]] = Field(default=None, description="Monotonic edit revision used to detect concurrent updates.")
     parent: Optional[StrictStr] = None
     description: Optional[StrictStr] = None
     test_data: Optional[Dict[str, Any]] = None

@@ -28,7 +28,7 @@ class ArchiveNotificationsPayload(BaseModel):
     """
     ArchiveNotificationsPayload
     """ # noqa: E501
-    ids: Annotated[List[StrictStr], Field(min_length=1, max_length=200)]
+    ids: Annotated[List[StrictStr], Field()]
     __properties: ClassVar[List[str]] = ["ids"]
 
     model_config = ConfigDict(

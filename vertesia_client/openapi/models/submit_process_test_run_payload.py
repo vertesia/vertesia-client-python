@@ -31,8 +31,8 @@ class SubmitProcessTestRunPayload(BaseModel):
     SubmitProcessTestRunPayload
     """ # noqa: E501
     process: ProcessTestTarget
-    scenarios: Annotated[List[ProcessTestScenario], Field(min_length=1)]
-    idempotency_key: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=256)]] = Field(default=None, description="Client-chosen key, unique per intended run, that makes this request safe to retry. A repeat of the request with the same key and the same body returns the run the first request started instead of starting another. Reusing a key with a different body is rejected with 422. Keys are scoped to the project and stay bound to their run for as long as it exists; once the run is deleted, the same key starts a new one.")
+    scenarios: Annotated[List[ProcessTestScenario], Field()]
+    idempotency_key: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Client-chosen key, unique per intended run, that makes this request safe to retry. A repeat of the request with the same key and the same body returns the run the first request started instead of starting another. Reusing a key with a different body is rejected with 422. Keys are scoped to the project and stay bound to their run for as long as it exists; once the run is deleted, the same key starts a new one.")
     __properties: ClassVar[List[str]] = ["process", "scenarios", "idempotency_key"]
 
     model_config = ConfigDict(

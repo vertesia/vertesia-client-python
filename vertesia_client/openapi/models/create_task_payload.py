@@ -32,7 +32,7 @@ class CreateTaskPayload(BaseModel):
     CreateTaskPayload
     """ # noqa: E501
     fields: Optional[List[TaskField]] = None
-    title: Annotated[str, Field(min_length=1, strict=True)]
+    title: Annotated[str, Field(strict=True)]
     description: Optional[StrictStr] = None
     assignee: Optional[StrictStr] = None
     source: TaskSource

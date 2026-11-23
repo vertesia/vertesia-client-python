@@ -29,8 +29,8 @@ class CreateTablesPayload(BaseModel):
     """
     CreateTablesPayload
     """ # noqa: E501
-    tables: Annotated[List[CreateTablePayload], Field(min_length=1)] = Field(description="Table definitions to create")
-    message: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Commit message")
+    tables: Annotated[List[CreateTablePayload], Field()] = Field(description="Table definitions to create")
+    message: Annotated[str, Field(strict=True)] = Field(description="Commit message")
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["tables", "message"]
 

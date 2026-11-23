@@ -45,7 +45,7 @@ class RunCreatePayload(BaseModel):
     workflow: Optional[ExecutionRunWorkflow] = Field(default=None, description="The workflow related to this Interaction Run.")
     prompts: Optional[List[InCodePrompt]] = Field(default=None, description="Only used by ad-hoc interactions which defines the prompt in the execution payload itself These are temporary interactions using \"tmp:\" suffix.")
     async_completion: Optional[AsyncCompletionOptions] = Field(default=None, description="Options for async completion and/or streaming LLM response chunks to Redis. Used by agent workflows for async activity completion and real-time streaming.", alias="asyncCompletion")
-    interaction: Annotated[str, Field(min_length=1, strict=True)] = Field(description="The interaction name and suffixed by an optional tag or version separated from the name using a @ character If no version/tag part is specified then the latest version is used. Example: ReviewContract, ReviewContract@draft, ReviewContract@1, ReviewContract@some-tag")
+    interaction: Annotated[str, Field(strict=True)] = Field(description="The interaction name and suffixed by an optional tag or version separated from the name using a @ character If no version/tag part is specified then the latest version is used. Example: ReviewContract, ReviewContract@draft, ReviewContract@1, ReviewContract@some-tag")
     __properties: ClassVar[List[str]] = ["data", "config", "result_schema", "stream", "do_validate", "tags", "conversation", "tool_definitions", "workflow", "prompts", "asyncCompletion", "interaction"]
 
     model_config = ConfigDict(

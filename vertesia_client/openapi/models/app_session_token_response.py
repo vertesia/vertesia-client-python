@@ -30,7 +30,7 @@ class AppSessionTokenResponse(BaseModel):
     """ # noqa: E501
     token: StrictStr
     token_type: StrictStr
-    expires_in: Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]
+    expires_in: Annotated[int, Field(strict=True)]
     __properties: ClassVar[List[str]] = ["token", "token_type", "expires_in"]
 
     @field_validator('token_type')

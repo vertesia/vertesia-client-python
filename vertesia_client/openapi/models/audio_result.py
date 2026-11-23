@@ -33,8 +33,8 @@ class AudioResult(BaseModel):
     mime_type: Annotated[str, Field(strict=True)]
     container: Optional[StrictStr] = None
     codec: Optional[StrictStr] = None
-    sample_rate: Optional[Annotated[int, Field(le=9007199254740991, strict=True, gt=0)]] = None
-    channels: Optional[Annotated[int, Field(le=9007199254740991, strict=True, gt=0)]] = None
+    sample_rate: Optional[Annotated[int, Field(strict=True)]] = None
+    channels: Optional[Annotated[int, Field(strict=True)]] = None
     sample_encoding: Optional[StrictStr] = None
     byte_order: Optional[StrictStr] = None
     additional_properties: Dict[str, Any] = {}
@@ -45,26 +45,6 @@ class AudioResult(BaseModel):
         """Validates the enum"""
         if value is not None and value != 'audio':
             raise ValueError('Expected type to be audio')
-        return value
-
-    @field_validator('value')
-    def value_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^(?:gs|s3):\/\/[^\/]+\/.+|^artifact:.+", value):
-            raise ValueError(r"must validate the regular expression /^(?:gs|s3):\/\/[^\/]+\/.+|^artifact:.+/")
-        return value
-
-    @field_validator('mime_type')
-    def mime_type_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"^audio\/.*", value):
-            raise ValueError(r"must validate the regular expression /^audio\/.*/")
         return value
 
     @field_validator('byte_order')

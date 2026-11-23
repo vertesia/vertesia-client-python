@@ -30,10 +30,10 @@ class IntakeCostByContentType(BaseModel):
     """ # noqa: E501
     content_type_id: Optional[StrictStr] = Field(default=None, description="Absent for runs that ended without a content type, or never reported one.")
     content_type_name: Optional[StrictStr] = None
-    run_count: Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]
-    document_count: Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]
+    run_count: Annotated[int, Field(strict=True)]
+    document_count: Annotated[int, Field(strict=True)]
     cost_usd: Union[StrictFloat, StrictInt]
-    page_count: Annotated[int, Field(le=9007199254740991, strict=True, ge=-9007199254740991)]
+    page_count: Annotated[int, Field(strict=True)]
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["content_type_id", "content_type_name", "run_count", "document_count", "cost_usd", "page_count"]
 

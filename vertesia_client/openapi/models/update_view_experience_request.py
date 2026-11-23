@@ -34,27 +34,17 @@ class UpdateViewExperienceRequest(BaseModel):
     """
     PUT uses full replacement so omitted optional configuration is removed.
     """ # noqa: E501
-    name: Annotated[str, Field(min_length=1, strict=True, max_length=120)]
+    name: Annotated[str, Field(strict=True)]
     enabled: Optional[StrictBool] = None
     layout: Optional[ViewExperienceLayout] = None
     scope: Optional[ViewExperienceScope] = None
-    navigation: Optional[Annotated[List[ViewNavigationItem], Field(max_length=20)]] = None
+    navigation: Optional[Annotated[List[ViewNavigationItem], Field()]] = None
     search: Optional[ViewSearchConfiguration] = None
     results: Optional[ViewResultsConfiguration] = None
-    description: Annotated[str, Field(strict=True, max_length=4000)]
+    description: Annotated[str, Field(strict=True)]
     version: ViewExperienceSchemaVersion
-    revision: Union[Annotated[float, Field(multiple_of=1, strict=True, ge=1)], Annotated[int, Field(strict=True, ge=1)]]
+    revision: Union[Annotated[float, Field(strict=True)], Annotated[int, Field(strict=True)]]
     __properties: ClassVar[List[str]] = ["name", "enabled", "layout", "scope", "navigation", "search", "results", "description", "version", "revision"]
-
-    @field_validator('description')
-    def description_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if not isinstance(value, str):
-            value = str(value)
-
-        if not re.match(r"\S", value):
-            raise ValueError(r"must validate the regular expression /\S/")
-        return value
 
     model_config = ConfigDict(
         validate_by_name=True,
