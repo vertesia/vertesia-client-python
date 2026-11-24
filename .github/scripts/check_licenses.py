@@ -36,26 +36,101 @@ DENIED_CLASSIFIERS = {
 FREE_TEXT_DENIED = re.compile(r"\b(a|l)?gpl|gnu (affero |lesser |library )?general public|sspl|busl|elastic", re.I)
 
 
+def _license_id_denied(license_id: str) -> bool:
+    return re.sub(r"(-only|-or-later|\+)$", "", license_id.lower()) in DENIED_IDS | DENIED_EXACT
+
+
+class _SpdxParser:
+    """Recursive-descent parser for SPDX license expressions that evaluates "is this expression denied".
+
+    or   := and ('OR' and)*        denied only if every alternative is denied (the user may pick another)
+    and  := with ('AND' with)*     denied if any operand is denied (every operand applies)
+    with := atom ('WITH' id)?      as the licence alone: a linking exception does not lift a denial
+    atom := '(' or ')' | id
+
+    Raises ValueError on a malformed expression, so it can never pass silently as allowed.
+    """
+
+    def __init__(self, expression: str) -> None:
+        self.tokens = re.findall(r"[()]|[^\s()]+", expression)
+        self.pos = 0
+
+    def _peek(self) -> str | None:
+        return self.tokens[self.pos] if self.pos < len(self.tokens) else None
+
+    def _keyword(self, word: str) -> bool:
+        token = self._peek()
+        if token is not None and token.upper() == word:
+            self.pos += 1
+            return True
+        return False
+
+    def parse(self) -> bool:
+        denied = self._or()
+        if self._peek() is not None:
+            raise ValueError(f"unexpected {self._peek()!r}")
+        return denied
+
+    def _or(self) -> bool:
+        results = [self._and()]
+        while self._keyword("OR"):
+            results.append(self._and())
+        return all(results)
+
+    def _and(self) -> bool:
+        results = [self._with()]
+        while self._keyword("AND"):
+            results.append(self._with())
+        return any(results)
+
+    def _with(self) -> bool:
+        denied = self._atom()
+        if self._keyword("WITH"):
+            exception = self._peek()
+            if exception is None or exception in "()" or exception.upper() in ("AND", "OR", "WITH"):
+                raise ValueError("WITH without an exception id")
+            self.pos += 1
+        return denied
+
+    def _atom(self) -> bool:
+        token = self._peek()
+        if token is None:
+            raise ValueError("unexpected end of expression")
+        if token == "(":
+            self.pos += 1
+            denied = self._or()
+            if self._peek() != ")":
+                raise ValueError("unbalanced parentheses")
+            self.pos += 1
+            return denied
+        if token == ")" or token.upper() in ("AND", "OR", "WITH"):
+            raise ValueError(f"unexpected {token!r}")
+        self.pos += 1
+        return _license_id_denied(token)
+
+
 def spdx_denied(expression: str) -> bool:
-    """True when every alternative of an SPDX expression is denied (an OR lets the user pick another)."""
-    for alternative in re.split(r"\s+OR\s+", expression.strip("() "), flags=re.I):
-        parts = re.split(r"\s+(?:AND|WITH)\s+", alternative, flags=re.I)
-        terms = [re.sub(r"(-only|-or-later|\+)$", "", t.strip("() ").lower()) for t in parts]
-        if not any(t in DENIED_IDS or t in DENIED_EXACT for t in terms):
-            return False
-    return True
+    """True when an SPDX expression is denied. Raises ValueError when it is malformed."""
+    return _SpdxParser(expression).parse()
 
 
 def verdict(meta) -> tuple[str, bool]:
     expression = meta.get("License-Expression")
     if expression:
-        return expression, spdx_denied(expression)
+        try:
+            return expression, spdx_denied(expression)
+        except ValueError as error:
+            return f"UNKNOWN (malformed License-Expression {expression!r}: {error})", False
     classifiers = [c for c in meta.get_all("Classifier") or [] if c.startswith("License ::")]
     if classifiers:
         return "; ".join(c.split(" :: ")[-1] for c in classifiers), any(c in DENIED_CLASSIFIERS for c in classifiers)
     text = (meta.get("License") or "").strip()
     if text and len(text) <= 100 and "\n" not in text:
-        return text, bool(FREE_TEXT_DENIED.search(text)) or spdx_denied(text)
+        try:
+            as_spdx = spdx_denied(text)
+        except ValueError:  # free text is rarely an SPDX expression; the pattern above still applies
+            as_spdx = False
+        return text, bool(FREE_TEXT_DENIED.search(text)) or as_spdx
     return "UNKNOWN", False  # reported, not failed, like dependency-review does
 
 
