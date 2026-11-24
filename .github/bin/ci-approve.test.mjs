@@ -701,7 +701,7 @@ test('only server errors and dropped connections count as transient', () => {
     assert.equal(isTransientApiError(new Error('Missing GitHub token')), false);
 });
 
-test('workflow executes only trusted scripts and observes pushes and CI completion', () => {
+test('workflow executes only trusted scripts and observes PR events and CI completion', () => {
     const workflow = readFileSync(new URL('../workflows/ci-approve.yaml', import.meta.url), 'utf8');
     assert.match(workflow, /ref: \$\{\{ github.workflow_sha \}\}/);
     assert.match(workflow, /types: \[completed\]/);
@@ -709,8 +709,9 @@ test('workflow executes only trusted scripts and observes pushes and CI completi
     assert.match(workflow, /GH_MEMBERS_TOKEN:/);
     assert.match(workflow, /continue-on-error: true/);
     assert.doesNotMatch(workflow, /schedule:|requested|in_progress/);
-    assert.match(workflow, /synchronize/);
-    assert.match(workflow, /converted_to_draft/);
+    assert.doesNotMatch(workflow, /^ {2}pull_request(_target)?:$/m);
+    assert.match(workflow, /"\(ci\) PR event"/);
+    assert.match(workflow, /github\.event\.workflow_run\.conclusion != 'skipped'/);
     assert.match(workflow, /permission-pull-requests: write/);
     assert.match(workflow, /Generate automerge hand-off token[\s\S]*permission-contents: write/);
     assert.doesNotMatch(workflow, /pull_request_review|checkout.*head|npm install/);
