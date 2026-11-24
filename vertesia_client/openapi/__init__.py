@@ -894,6 +894,7 @@ __all__ = [
     "OidcFederationConnection",
     "OidcFederationConnectionPayload",
     "OnboardingProgress",
+    "OpenAICompatibleApi",
     "OpenAiAudioOptions",
     "OpenAiDalleOptions",
     "OpenAiGptImageOptions",
@@ -2257,6 +2258,7 @@ from vertesia_client.openapi.models.object_search_response import ObjectSearchRe
 from vertesia_client.openapi.models.oidc_federation_connection import OidcFederationConnection as OidcFederationConnection
 from vertesia_client.openapi.models.oidc_federation_connection_payload import OidcFederationConnectionPayload as OidcFederationConnectionPayload
 from vertesia_client.openapi.models.onboarding_progress import OnboardingProgress as OnboardingProgress
+from vertesia_client.openapi.models.open_ai_compatible_api import OpenAICompatibleApi as OpenAICompatibleApi
 from vertesia_client.openapi.models.open_ai_audio_options import OpenAiAudioOptions as OpenAiAudioOptions
 from vertesia_client.openapi.models.open_ai_dalle_options import OpenAiDalleOptions as OpenAiDalleOptions
 from vertesia_client.openapi.models.open_ai_gpt_image_options import OpenAiGptImageOptions as OpenAiGptImageOptions

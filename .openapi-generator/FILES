@@ -873,6 +873,7 @@ vertesia_client/openapi/models/oidc_federation_connection.py
 vertesia_client/openapi/models/oidc_federation_connection_payload.py
 vertesia_client/openapi/models/onboarding_progress.py
 vertesia_client/openapi/models/open_ai_audio_options.py
+vertesia_client/openapi/models/open_ai_compatible_api.py
 vertesia_client/openapi/models/open_ai_dalle_options.py
 vertesia_client/openapi/models/open_ai_gpt_image_options.py
 vertesia_client/openapi/models/open_ai_image_generation_mask.py

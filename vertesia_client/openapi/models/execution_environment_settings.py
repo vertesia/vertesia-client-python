@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
+from vertesia_client.openapi.models.open_ai_compatible_api import OpenAICompatibleApi
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -28,8 +29,9 @@ class ExecutionEnvironmentSettings(BaseModel):
     ExecutionEnvironmentSettings
     """ # noqa: E501
     default_headers: Optional[Dict[str, StrictStr]] = Field(default=None, description="Custom HTTP headers sent by OpenAI-compatible environments.")
+    openai_api: Optional[OpenAICompatibleApi] = None
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["default_headers"]
+    __properties: ClassVar[List[str]] = ["default_headers", "openai_api"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -89,7 +91,8 @@ class ExecutionEnvironmentSettings(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "default_headers": obj.get("default_headers")
+            "default_headers": obj.get("default_headers"),
+            "openai_api": obj.get("openai_api")
         })
         # store additional fields in additional_properties
         for _key in obj.keys():
