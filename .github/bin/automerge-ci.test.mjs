@@ -67,6 +67,32 @@ for (const conclusion of ['failure', 'cancelled', 'skipped', 'neutral', 'timed_o
         }
     });
 }
+test('a rejection reports the blocking run only when that run has not finished', () => {
+    const policies = JSON.parse(readFileSync(new URL('./automerge-ci-policy.json', import.meta.url), 'utf8'));
+    const [workflow, required] = Object.entries(policies)[0];
+    const rejectFor = (latest, jobs) => {
+        const rejections = [];
+        const pages = (endpoint) =>
+            endpoint.includes(`/workflows/${workflow}/`)
+                ? [{ workflow_runs: [latest] }]
+                : endpoint.includes('/workflows/')
+                  ? [{ workflow_runs: [] }]
+                  : [{ jobs }];
+        const env = { REPO: 'owner/repo', HEAD_BRANCH: 'fix', HEAD_SHA: 'head' };
+        assert.equal(
+            main(env, 12, [workflow], pages, (r) => rejections.push(r)),
+            false,
+        );
+        assert.equal(rejections.length, 1);
+        return rejections[0];
+    };
+    const running = run(1, { status: 'in_progress', conclusion: null });
+    assert.deepEqual(rejectFor(running, []), { workflow, reason: 'run 1 is in_progress', running });
+    // Missing jobs or steps on a finished run are data to wait for, not CI that is still running.
+    assert.equal(rejectFor(run(1), []).running, undefined);
+    assert.equal(rejectFor(run(1), [job(required.jobs[0].example)]).running, undefined);
+});
+
 test('does not accept required jobs from a coordinator run that is still active', () => {
     assert.equal(
         verifyWorkflow(
