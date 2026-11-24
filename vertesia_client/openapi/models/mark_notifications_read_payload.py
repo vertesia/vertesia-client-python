@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.notification_occurrence_ack import NotificationOccurrenceAck
@@ -29,7 +29,7 @@ class MarkNotificationsReadPayload(BaseModel):
     """
     MarkNotificationsReadPayload
     """ # noqa: E501
-    ids: Optional[Annotated[List[StrictStr], Field()]] = None
+    ids: Optional[Annotated[List[Annotated[str, Field(strict=True)]], Field()]] = Field(default=None, description="Notification IDs, as 24 hexadecimal characters.")
     occurrences: Optional[Annotated[List[NotificationOccurrenceAck], Field()]] = Field(default=None, description="Occurrences the client rendered. An occurrence with no notification yet is remembered for a day and applied when its notification is written.")
     __properties: ClassVar[List[str]] = ["ids", "occurrences"]
 

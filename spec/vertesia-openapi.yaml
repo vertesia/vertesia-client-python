@@ -5099,6 +5099,8 @@ components:
           type: array
           items:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+          description: Notification IDs, as 24 hexadecimal characters.
       required:
         - ids
       additionalProperties: false
@@ -6092,6 +6094,35 @@ components:
         - id
         - operation
       additionalProperties: false
+      if:
+        required:
+          - operation
+        properties:
+          operation:
+            enum:
+              - sum_meter
+              - average_meter
+      then:
+        required:
+          - meterCategory
+          - meterType
+        properties:
+          meterCategory:
+            minLength: 1
+            maxLength: 128
+          meterType:
+            minLength: 1
+            maxLength: 128
+      else:
+        if:
+          required:
+            - operation
+          properties:
+            operation:
+              const: count_distinct
+        then:
+          required:
+            - field
     AuditAggregationOperation:
       type: string
       enum:
@@ -12251,9 +12282,9 @@ components:
           type: string
         oauth_provider_id:
           type: string
-          minLength: 1
+          pattern: ^[0-9a-fA-F]{24}$
           description: An OAuth provider of this project with grant type
-            `client_credentials` for the system.
+            `client_credentials` for the system, as 24 hexadecimal characters.
         location_root:
           type: string
           description: The `location` root for synced documents. Defaults to
@@ -13058,8 +13089,24 @@ components:
         - display_name
         - client_id
       additionalProperties: false
+      if:
+        not:
+          required:
+            - grant_type
+          properties:
+            grant_type:
+              const: client_credentials
+      then:
+        properties:
+          token_endpoint_auth_method:
+            not:
+              const: private_key_jwt
+          allowed_scopes:
+            maxItems: 0
       description: Payload for creating an OAuth Provider. The client_secret is
-        accepted as plaintext on create and stored encrypted.
+        accepted as plaintext on create and stored encrypted. `private_key_jwt`
+        and a non-empty `allowed_scopes` require the `client_credentials` grant;
+        the grant defaults to `authorization_code`.
     CreateProcessDefinitionPayload:
       type: object
       properties:
@@ -13217,9 +13264,9 @@ components:
           type: string
         oauth_provider_id:
           type: string
-          minLength: 1
+          pattern: ^[0-9a-fA-F]{24}$
           description: An OAuth provider of this project with grant type
-            `client_credentials` for the system.
+            `client_credentials` for the system, as 24 hexadecimal characters.
         location_root:
           type: string
           description: The `location` root for synced documents. Defaults to
@@ -13347,16 +13394,17 @@ components:
               items:
                 properties:
                   columns:
+                    minItems: 1
                     items:
                       properties:
                         name:
                           type: string
                           pattern: ^[a-zA-Z_][a-zA-Z0-9_]*$
                           maxLength: 64
-      description: Payload for creating multiple tables atomically. Each column name
-        is a SQL identifier of letters, digits and underscores, starting with a
-        letter or underscore, at most 64 characters, and not a reserved SQL
-        keyword.
+      description: Payload for creating multiple tables atomically. Each table has at
+        least one column, and each column name is a SQL identifier of letters,
+        digits and underscores, starting with a letter or underscore, at most 64
+        characters, and not a reserved SQL keyword.
     CreateTaskPayload:
       type: object
       properties:
@@ -15837,9 +15885,9 @@ components:
           description: The system to inspect. Only SharePoint can be inspected.
         oauth_provider_id:
           type: string
-          minLength: 1
+          pattern: ^[0-9a-fA-F]{24}$
           description: An OAuth provider of this project with grant type
-            `client_credentials` for the system.
+            `client_credentials` for the system, as 24 hexadecimal characters.
         site_url:
           type: string
           minLength: 1
@@ -15868,9 +15916,9 @@ components:
           description: The system to inspect. Only SharePoint can be inspected.
         oauth_provider_id:
           type: string
-          minLength: 1
+          pattern: ^[0-9a-fA-F]{24}$
           description: An OAuth provider of this project with grant type
-            `client_credentials` for the system.
+            `client_credentials` for the system, as 24 hexadecimal characters.
         site_url:
           type: string
           minLength: 1
@@ -15904,9 +15952,9 @@ components:
           description: The system to inspect. Only SharePoint can be inspected.
         oauth_provider_id:
           type: string
-          minLength: 1
+          pattern: ^[0-9a-fA-F]{24}$
           description: An OAuth provider of this project with grant type
-            `client_credentials` for the system.
+            `client_credentials` for the system, as 24 hexadecimal characters.
         site_url:
           type: string
           minLength: 1
@@ -15931,9 +15979,9 @@ components:
           description: The system to inspect. Only SharePoint can be inspected.
         oauth_provider_id:
           type: string
-          minLength: 1
+          pattern: ^[0-9a-fA-F]{24}$
           description: An OAuth provider of this project with grant type
-            `client_credentials` for the system.
+            `client_credentials` for the system, as 24 hexadecimal characters.
         site_url:
           type: string
           minLength: 1
@@ -18273,6 +18321,9 @@ components:
           type: array
           items:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+          description: Content object IDs, as 24 hexadecimal characters. Empty exports all
+            objects.
         type:
           type: string
           pattern: ^(?:JSON|CSV)$
@@ -18678,6 +18729,31 @@ components:
       required:
         - config
       additionalProperties: false
+      if:
+        required:
+          - config
+      then:
+        properties:
+          config:
+            properties:
+              http_timeout:
+                properties:
+                  headersTimeout:
+                    multipleOf: 1
+                    minimum: 1
+                    maximum: 9007199254740991
+                  bodyTimeout:
+                    multipleOf: 1
+                    minimum: 1
+                    maximum: 9007199254740991
+                  connectTimeout:
+                    multipleOf: 1
+                    minimum: 1
+                    maximum: 9007199254740991
+                  keepAliveTimeout:
+                    multipleOf: 1
+                    minimum: 1
+                    maximum: 9007199254740991
     GeneratedTestDataRecord:
       type: object
     GeneratedTestDataRecordArray:
@@ -21044,6 +21120,31 @@ components:
             to Redis. Used by agent workflows for async activity completion and
             real-time streaming.
       additionalProperties: false
+      if:
+        required:
+          - config
+      then:
+        properties:
+          config:
+            properties:
+              http_timeout:
+                properties:
+                  headersTimeout:
+                    multipleOf: 1
+                    minimum: 1
+                    maximum: 9007199254740991
+                  bodyTimeout:
+                    multipleOf: 1
+                    minimum: 1
+                    maximum: 9007199254740991
+                  connectTimeout:
+                    multipleOf: 1
+                    minimum: 1
+                    maximum: 9007199254740991
+                  keepAliveTimeout:
+                    multipleOf: 1
+                    minimum: 1
+                    maximum: 9007199254740991
     InteractionExecutionResult:
       type: object
       properties:
@@ -22230,6 +22331,8 @@ components:
           type: array
           items:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+          description: Notification IDs, as 24 hexadecimal characters.
         occurrences:
           maxItems: 200
           type: array
@@ -22684,6 +22787,31 @@ components:
       required:
         - interaction
       additionalProperties: false
+      if:
+        required:
+          - config
+      then:
+        properties:
+          config:
+            properties:
+              http_timeout:
+                properties:
+                  headersTimeout:
+                    multipleOf: 1
+                    minimum: 1
+                    maximum: 9007199254740991
+                  bodyTimeout:
+                    multipleOf: 1
+                    minimum: 1
+                    maximum: 9007199254740991
+                  connectTimeout:
+                    multipleOf: 1
+                    minimum: 1
+                    maximum: 9007199254740991
+                  keepAliveTimeout:
+                    multipleOf: 1
+                    minimum: 1
+                    maximum: 9007199254740991
     NodeDefinition:
       type: object
       properties:
@@ -22981,7 +23109,9 @@ components:
       properties:
         type:
           type: string
-          minLength: 1
+          pattern: ^(?:agent_request|task|agent_run_end|agent_turn|object|inference_budget)$
+          description: "The occurrence type: agent_request, task, agent_run_end,
+            agent_turn, object, inference_budget."
         id:
           type: string
           minLength: 1
@@ -28779,6 +28909,31 @@ components:
       required:
         - interaction
       additionalProperties: false
+      if:
+        required:
+          - config
+      then:
+        properties:
+          config:
+            properties:
+              http_timeout:
+                properties:
+                  headersTimeout:
+                    multipleOf: 1
+                    minimum: 1
+                    maximum: 9007199254740991
+                  bodyTimeout:
+                    multipleOf: 1
+                    minimum: 1
+                    maximum: 9007199254740991
+                  connectTimeout:
+                    multipleOf: 1
+                    minimum: 1
+                    maximum: 9007199254740991
+                  keepAliveTimeout:
+                    multipleOf: 1
+                    minimum: 1
+                    maximum: 9007199254740991
       description: Interaction execution payload for creating a new run It uses
         interaction field (from NamedInteractionExecutionPayload) to pass the
         interaction ID to run
@@ -40289,6 +40444,11 @@ paths:
           required: false
           schema:
             type: string
+            pattern: ^(?:[0-9a-fA-F]{24})?$
+            description: Environment ID, as 24 hexadecimal characters. An empty string
+              applies no filter.
+          description: Environment ID, as 24 hexadecimal characters. An empty string
+            applies no filter.
         - name: is_agent
           in: query
           required: false
@@ -40502,6 +40662,11 @@ paths:
           required: false
           schema:
             type: string
+            pattern: ^(?:[0-9a-fA-F]{24})?$
+            description: Environment ID, as 24 hexadecimal characters. An empty string
+              applies no filter.
+          description: Environment ID, as 24 hexadecimal characters. An empty string
+            applies no filter.
         - name: is_agent
           in: query
           required: false
@@ -66446,6 +66611,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[A-Za-z0-9_-]{1,64}$
+            description: "The sync round ID: 1 to 64 letters, digits, `_` or `-`."
+          description: "The sync round ID: 1 to 64 letters, digits, `_` or `-`."
         - name: action
           in: query
           required: false
@@ -69522,6 +69690,9 @@ paths:
           required: true
           schema:
             type: string
+            pattern: ^[0-9a-fA-F]{24}$
+            description: The notification ID, as 24 hexadecimal characters.
+          description: The notification ID, as 24 hexadecimal characters.
       responses:
         "200":
           description: The notification.

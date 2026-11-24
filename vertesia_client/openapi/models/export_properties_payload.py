@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.column_layout import ColumnLayout
@@ -30,7 +30,7 @@ class ExportPropertiesPayload(BaseModel):
     """
     Each `table_layout` column reads its `field` as a dotted path of non-empty field names, none starting with `$`, except an `objectLink` column, which exports the object title.
     """ # noqa: E501
-    object_ids: List[StrictStr] = Field(alias="objectIds")
+    object_ids: List[Annotated[str, Field(strict=True)]] = Field(description="Content object IDs, as 24 hexadecimal characters. Empty exports all objects.", alias="objectIds")
     type: Annotated[str, Field(strict=True)] = Field(description="The export format: `JSON` or `CSV`.")
     query: Optional[ComplexSearchQuery] = None
     table_layout: Optional[List[ColumnLayout]] = None

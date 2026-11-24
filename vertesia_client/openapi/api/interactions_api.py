@@ -7741,7 +7741,7 @@ class InteractionsApi:
         tags: Optional[List[StrictStr]] = None,
         version: Annotated[Optional[Annotated[str, Field(strict=True)]], Field(description="Filter by version number. Must start with an integer.")] = None,
         model: Optional[StrictStr] = None,
-        environment: Optional[StrictStr] = None,
+        environment: Annotated[Optional[Annotated[str, Field(strict=True)]], Field(description="Environment ID, as 24 hexadecimal characters. An empty string applies no filter.")] = None,
         is_agent: Optional[StrictBool] = None,
         is_tool: Optional[StrictBool] = None,
         is_skill: Optional[StrictBool] = None,
@@ -7782,7 +7782,7 @@ class InteractionsApi:
         :type version: str
         :param model:
         :type model: str
-        :param environment:
+        :param environment: Environment ID, as 24 hexadecimal characters. An empty string applies no filter.
         :type environment: str
         :param is_agent:
         :type is_agent: bool
@@ -7866,7 +7866,7 @@ class InteractionsApi:
         tags: Optional[List[StrictStr]] = None,
         version: Annotated[Optional[Annotated[str, Field(strict=True)]], Field(description="Filter by version number. Must start with an integer.")] = None,
         model: Optional[StrictStr] = None,
-        environment: Optional[StrictStr] = None,
+        environment: Annotated[Optional[Annotated[str, Field(strict=True)]], Field(description="Environment ID, as 24 hexadecimal characters. An empty string applies no filter.")] = None,
         is_agent: Optional[StrictBool] = None,
         is_tool: Optional[StrictBool] = None,
         is_skill: Optional[StrictBool] = None,
@@ -7907,7 +7907,7 @@ class InteractionsApi:
         :type version: str
         :param model:
         :type model: str
-        :param environment:
+        :param environment: Environment ID, as 24 hexadecimal characters. An empty string applies no filter.
         :type environment: str
         :param is_agent:
         :type is_agent: bool
@@ -7991,7 +7991,7 @@ class InteractionsApi:
         tags: Optional[List[StrictStr]] = None,
         version: Annotated[Optional[Annotated[str, Field(strict=True)]], Field(description="Filter by version number. Must start with an integer.")] = None,
         model: Optional[StrictStr] = None,
-        environment: Optional[StrictStr] = None,
+        environment: Annotated[Optional[Annotated[str, Field(strict=True)]], Field(description="Environment ID, as 24 hexadecimal characters. An empty string applies no filter.")] = None,
         is_agent: Optional[StrictBool] = None,
         is_tool: Optional[StrictBool] = None,
         is_skill: Optional[StrictBool] = None,
@@ -8032,7 +8032,7 @@ class InteractionsApi:
         :type version: str
         :param model:
         :type model: str
-        :param environment:
+        :param environment: Environment ID, as 24 hexadecimal characters. An empty string applies no filter.
         :type environment: str
         :param is_agent:
         :type is_agent: bool
@@ -8815,7 +8815,7 @@ class InteractionsApi:
         tags: Optional[List[StrictStr]] = None,
         version: Annotated[Optional[Annotated[str, Field(strict=True)]], Field(description="Filter by version number. Must start with an integer.")] = None,
         model: Optional[StrictStr] = None,
-        environment: Optional[StrictStr] = None,
+        environment: Annotated[Optional[Annotated[str, Field(strict=True)]], Field(description="Environment ID, as 24 hexadecimal characters. An empty string applies no filter.")] = None,
         is_agent: Optional[StrictBool] = None,
         is_tool: Optional[StrictBool] = None,
         is_skill: Optional[StrictBool] = None,
@@ -8856,7 +8856,7 @@ class InteractionsApi:
         :type version: str
         :param model:
         :type model: str
-        :param environment:
+        :param environment: Environment ID, as 24 hexadecimal characters. An empty string applies no filter.
         :type environment: str
         :param is_agent:
         :type is_agent: bool
@@ -8940,7 +8940,7 @@ class InteractionsApi:
         tags: Optional[List[StrictStr]] = None,
         version: Annotated[Optional[Annotated[str, Field(strict=True)]], Field(description="Filter by version number. Must start with an integer.")] = None,
         model: Optional[StrictStr] = None,
-        environment: Optional[StrictStr] = None,
+        environment: Annotated[Optional[Annotated[str, Field(strict=True)]], Field(description="Environment ID, as 24 hexadecimal characters. An empty string applies no filter.")] = None,
         is_agent: Optional[StrictBool] = None,
         is_tool: Optional[StrictBool] = None,
         is_skill: Optional[StrictBool] = None,
@@ -8981,7 +8981,7 @@ class InteractionsApi:
         :type version: str
         :param model:
         :type model: str
-        :param environment:
+        :param environment: Environment ID, as 24 hexadecimal characters. An empty string applies no filter.
         :type environment: str
         :param is_agent:
         :type is_agent: bool
@@ -9065,7 +9065,7 @@ class InteractionsApi:
         tags: Optional[List[StrictStr]] = None,
         version: Annotated[Optional[Annotated[str, Field(strict=True)]], Field(description="Filter by version number. Must start with an integer.")] = None,
         model: Optional[StrictStr] = None,
-        environment: Optional[StrictStr] = None,
+        environment: Annotated[Optional[Annotated[str, Field(strict=True)]], Field(description="Environment ID, as 24 hexadecimal characters. An empty string applies no filter.")] = None,
         is_agent: Optional[StrictBool] = None,
         is_tool: Optional[StrictBool] = None,
         is_skill: Optional[StrictBool] = None,
@@ -9106,7 +9106,7 @@ class InteractionsApi:
         :type version: str
         :param model:
         :type model: str
-        :param environment:
+        :param environment: Environment ID, as 24 hexadecimal characters. An empty string applies no filter.
         :type environment: str
         :param is_agent:
         :type is_agent: bool

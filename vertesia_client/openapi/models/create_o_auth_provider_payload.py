@@ -26,7 +26,7 @@ from pydantic_core import to_jsonable_python
 
 class CreateOAuthProviderPayload(BaseModel):
     """
-    Payload for creating an OAuth Provider. The client_secret is accepted as plaintext on create and stored encrypted.
+    Payload for creating an OAuth Provider. The client_secret is accepted as plaintext on create and stored encrypted. `private_key_jwt` and a non-empty `allowed_scopes` require the `client_credentials` grant; the grant defaults to `authorization_code`.
     """ # noqa: E501
     name: Annotated[str, Field(strict=True)]
     display_name: Annotated[str, Field(strict=True)]

@@ -2107,7 +2107,7 @@ class ContentSourcesApi:
     def get_content_source_round_report(
         self,
         source_id: StrictStr,
-        round_id: StrictStr,
+        round_id: Annotated[str, Field(strict=True, description="The sync round ID: 1 to 64 letters, digits, `_` or `-`.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         action: Annotated[Optional[StrictStr], Field(description="Only the entries of this action.")] = None,
         cursor: Annotated[Optional[StrictStr], Field(description="The `next_cursor` of the previous page.")] = None,
@@ -2131,7 +2131,7 @@ class ContentSourcesApi:
 
         :param source_id: (required)
         :type source_id: str
-        :param round_id: (required)
+        :param round_id: The sync round ID: 1 to 64 letters, digits, `_` or `-`. (required)
         :type round_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -2196,7 +2196,7 @@ class ContentSourcesApi:
     def get_content_source_round_report_with_http_info(
         self,
         source_id: StrictStr,
-        round_id: StrictStr,
+        round_id: Annotated[str, Field(strict=True, description="The sync round ID: 1 to 64 letters, digits, `_` or `-`.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         action: Annotated[Optional[StrictStr], Field(description="Only the entries of this action.")] = None,
         cursor: Annotated[Optional[StrictStr], Field(description="The `next_cursor` of the previous page.")] = None,
@@ -2220,7 +2220,7 @@ class ContentSourcesApi:
 
         :param source_id: (required)
         :type source_id: str
-        :param round_id: (required)
+        :param round_id: The sync round ID: 1 to 64 letters, digits, `_` or `-`. (required)
         :type round_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -2285,7 +2285,7 @@ class ContentSourcesApi:
     def get_content_source_round_report_without_preload_content(
         self,
         source_id: StrictStr,
-        round_id: StrictStr,
+        round_id: Annotated[str, Field(strict=True, description="The sync round ID: 1 to 64 letters, digits, `_` or `-`.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         action: Annotated[Optional[StrictStr], Field(description="Only the entries of this action.")] = None,
         cursor: Annotated[Optional[StrictStr], Field(description="The `next_cursor` of the previous page.")] = None,
@@ -2309,7 +2309,7 @@ class ContentSourcesApi:
 
         :param source_id: (required)
         :type source_id: str
-        :param round_id: (required)
+        :param round_id: The sync round ID: 1 to 64 letters, digits, `_` or `-`. (required)
         :type round_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str

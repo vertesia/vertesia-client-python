@@ -32,7 +32,7 @@ class CreateSharePointContentSourcePayload(BaseModel):
     """ # noqa: E501
     name: Annotated[str, Field(strict=True)] = Field(description="Unique within the project.")
     description: Optional[StrictStr] = None
-    oauth_provider_id: Annotated[str, Field(strict=True)] = Field(description="An OAuth provider of this project with grant type `client_credentials` for the system.")
+    oauth_provider_id: Annotated[str, Field(strict=True)] = Field(description="An OAuth provider of this project with grant type `client_credentials` for the system, as 24 hexadecimal characters.")
     location_root: Optional[StrictStr] = Field(default=None, description="The `location` root for synced documents. Defaults to `/<type>/<name>`.")
     collection_id: Optional[StrictStr] = Field(default=None, description="A collection to add synced documents to.")
     sync: Optional[ContentSourceSyncSettings] = Field(default=None, description="Defaults to scheduled sync disabled, every 60 minutes once enabled.")

@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 from typing import Any, ClassVar, Dict, List
 from typing_extensions import Annotated
 from typing import Optional, Set
@@ -28,7 +28,7 @@ class ArchiveNotificationsPayload(BaseModel):
     """
     ArchiveNotificationsPayload
     """ # noqa: E501
-    ids: Annotated[List[StrictStr], Field()]
+    ids: Annotated[List[Annotated[str, Field(strict=True)]], Field()] = Field(description="Notification IDs, as 24 hexadecimal characters.")
     __properties: ClassVar[List[str]] = ["ids"]
 
     model_config = ConfigDict(

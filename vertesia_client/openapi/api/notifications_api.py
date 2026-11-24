@@ -344,7 +344,7 @@ class NotificationsApi:
     @validate_call
     def get_notification(
         self,
-        notification_id: StrictStr,
+        notification_id: Annotated[str, Field(strict=True, description="The notification ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -363,7 +363,7 @@ class NotificationsApi:
 
         Returns one of the current user’s notifications.
 
-        :param notification_id: (required)
+        :param notification_id: The notification ID, as 24 hexadecimal characters. (required)
         :type notification_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -417,7 +417,7 @@ class NotificationsApi:
     @validate_call
     def get_notification_with_http_info(
         self,
-        notification_id: StrictStr,
+        notification_id: Annotated[str, Field(strict=True, description="The notification ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -436,7 +436,7 @@ class NotificationsApi:
 
         Returns one of the current user’s notifications.
 
-        :param notification_id: (required)
+        :param notification_id: The notification ID, as 24 hexadecimal characters. (required)
         :type notification_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
@@ -490,7 +490,7 @@ class NotificationsApi:
     @validate_call
     def get_notification_without_preload_content(
         self,
-        notification_id: StrictStr,
+        notification_id: Annotated[str, Field(strict=True, description="The notification ID, as 24 hexadecimal characters.")],
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
         _request_timeout: Union[
             None,
@@ -509,7 +509,7 @@ class NotificationsApi:
 
         Returns one of the current user’s notifications.
 
-        :param notification_id: (required)
+        :param notification_id: The notification ID, as 24 hexadecimal characters. (required)
         :type notification_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str

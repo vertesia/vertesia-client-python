@@ -18,7 +18,7 @@ import re  # noqa: F401
 import json
 
 from datetime import datetime
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 from typing import Any, ClassVar, Dict, Optional
 from typing_extensions import Annotated
 from typing import Optional, Set
@@ -29,7 +29,7 @@ class NotificationOccurrenceAck(BaseModel):
     """
     An occurrence the client rendered.
     """ # noqa: E501
-    type: Annotated[str, Field(strict=True)]
+    type: Annotated[str, Field(strict=True)] = Field(description="The occurrence type: agent_request, task, agent_run_end, agent_turn, object, inference_budget.")
     id: Annotated[str, Field(strict=True)]
     as_of: Optional[datetime] = Field(default=None, description="For an occurrence that happens again (`agent_turn`, `object`): the version the client displayed. Only notifications that occurred by then are read, now or when written later. Defaults to now.")
     __properties: ClassVar[List[str]] = ["type", "id", "as_of"]

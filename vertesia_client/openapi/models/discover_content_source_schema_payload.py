@@ -29,7 +29,7 @@ class DiscoverContentSourceSchemaPayload(BaseModel):
     The document library to read the schema of.
     """ # noqa: E501
     type: StrictStr = Field(description="The system to inspect. Only SharePoint can be inspected.")
-    oauth_provider_id: Annotated[str, Field(strict=True)] = Field(description="An OAuth provider of this project with grant type `client_credentials` for the system.")
+    oauth_provider_id: Annotated[str, Field(strict=True)] = Field(description="An OAuth provider of this project with grant type `client_credentials` for the system, as 24 hexadecimal characters.")
     site_url: Annotated[str, Field(strict=True)] = Field(description="The SharePoint site URL, e.g. `https://contoso.sharepoint.com/sites/legal`.")
     library_name: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="The document library name. Defaults to the site’s default library.")
     __properties: ClassVar[List[str]] = ["type", "oauth_provider_id", "site_url", "library_name"]
