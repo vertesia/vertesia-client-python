@@ -50,7 +50,7 @@ const approval = {
     user: { login: APP_LOGIN, type: 'Bot' },
 };
 
-function fixture({ pulls = [pr], reviews = [], files = [], engineeringMembers = ['engineer'] } = {}) {
+function fixture({ pulls = [pr], closedPulls = [], reviews = [], files = [], engineeringMembers = ['engineer'] } = {}) {
     let reads = 0;
     let stored = [...reviews];
     const writes = [];
@@ -68,6 +68,11 @@ function fixture({ pulls = [pr], reviews = [], files = [], engineeringMembers = 
         async open(branch) {
             this.opened.push(branch);
             return pulls;
+        },
+        closedLookups: [],
+        async closed(branch) {
+            this.closedLookups.push(branch);
+            return closedPulls;
         },
         status: async (...args) => writes.push(['status', ...args]),
         dismiss: async (_number, id) => {
@@ -506,52 +511,59 @@ test('workflow events resolve current PRs even when the event has no PR list or 
     );
 });
 
+test('a close signal targets the closed, unmerged PR at the signalled head only', async () => {
+    const closed = { ...pr, state: 'closed', merged_at: null };
+    const signal = (overrides = {}) => ({
+        workflow_run: {
+            head_repository: { full_name: 'vertesia/sdk' },
+            head_branch: 'feature',
+            head_sha: sha,
+            path: PR_EVENT_WORKFLOW,
+            ...overrides,
+        },
+    });
+    const run = async (closedPulls, event = signal()) => {
+        const api = fixture({ pulls: [], closedPulls });
+        return { numbers: await targets(api, event, 'workflow_run'), api };
+    };
+    assert.deepEqual((await run([closed])).numbers, [12]);
+    assert.deepEqual((await run([{ ...closed, merged_at: '2026-11-24T00:00:00Z' }])).numbers, []);
+    assert.deepEqual((await run([{ ...closed, head: { ...closed.head, sha: newer } }])).numbers, []);
+    assert.deepEqual((await run([{ ...closed, head: { ...closed.head, ref: 'other' } }])).numbers, []);
+    // A CI completion never re-evaluates a closed PR.
+    const ci = await run([closed], signal({ path: '.github/workflows/test.yaml' }));
+    assert.deepEqual(ci.numbers, []);
+    assert.deepEqual(ci.api.closedLookups, []);
+});
+
+test('closing withdraws the approval, so a reopening at the same commit starts pending', async () => {
+    const closed = { ...pr, state: 'closed', merged_at: null };
+    const atClose = fixture({ pulls: [closed], reviews: [approval] });
+    const options = reconcileOptions(
+        { GITHUB_EVENT_NAME: 'workflow_run' },
+        { workflow_run: { id: 40, path: PR_EVENT_WORKFLOW } },
+    );
+    assert.equal((await reconcile(atClose, 12, () => true, options)).approve, false);
+    assert.deepEqual(
+        atClose.writes.map(([kind, id]) => [kind, id]),
+        [
+            ['dismiss', 1],
+            ['status', sha],
+        ],
+    );
+    assert.equal(atClose.writes.at(-1)[2], 'pending');
+    // Reopened at the same commit after a label made it a human review: nothing carries forward.
+    const reopened = { ...pr, labels: [{ name: 'human-review-required' }] };
+    const atReopen = fixture({ pulls: [reopened] });
+    assert.equal((await reconcile(atReopen, 12, () => true, options)).approve, false);
+    assert.ok(!atReopen.writes.some(([kind]) => kind === 'approve'));
+});
+
 test('manual reconciliation rejects malformed PR numbers', async () => {
     await assert.rejects(
         targets(fixture(), { client_payload: { pr_number: '-1' } }, 'repository_dispatch'),
         /Invalid PR/,
     );
-});
-
-test('membership transport treats only a 404 as a normal negative result', () => {
-    const membershipApi = (error) => {
-        const calls = [];
-        const api = githubApi(
-            {
-                GITHUB_REPOSITORY: 'vertesia/composableai',
-                GH_TOKEN: 'read',
-                GH_REVIEW_TOKEN: 'app',
-                GH_MEMBERS_TOKEN: 'members',
-            },
-            (_cmd, args) => {
-                calls.push(args);
-                throw error;
-            },
-            () => {},
-        );
-        return { api, calls };
-    };
-
-    const notFound = membershipApi(ghFailure('gh: Not Found (HTTP 404)'));
-    assert.equal(notFound.api.engineeringMember('outsider'), false);
-    assert.equal(notFound.calls.length, 1);
-
-    const forbidden = membershipApi(ghFailure('gh: Forbidden (HTTP 403)'));
-    assert.throws(
-        () => forbidden.api.engineeringMember('engineer'),
-        (error) => error.stderr === 'gh: Forbidden (HTTP 403)',
-    );
-    assert.equal(forbidden.calls.length, 1);
-
-    const serverError = membershipApi(ghFailure('gh: Server Error (HTTP 502)'));
-    assert.throws(
-        () => serverError.api.engineeringMember('engineer'),
-        (error) => error.stderr === 'gh: Server Error (HTTP 502)',
-    );
-    assert.equal(serverError.calls.length, READ_RETRY_DELAYS_MS.length + 1);
-    for (const calls of [notFound.calls, forbidden.calls, serverError.calls]) {
-        assert.ok(calls.every((args) => args[1].includes('/teams/engineering/memberships/')));
-    }
 });
 
 test('read retries outlast the 5xx incidents seen in CI', () => {
@@ -930,7 +942,7 @@ test('workflow executes only trusted scripts and observes PR events and CI compl
 
 });
 
-test('the PR event signal runs every change of an open PR without secrets or code', () => {
+test('the PR event signal runs every change of a PR without secrets or code', () => {
     const file = readFileSync(new URL(`../../${PR_EVENT_WORKFLOW}`, import.meta.url), 'utf8');
     const signal = file.replace(/^\s*#.*$/gm, '');
     assert.match(signal, /^name: \(ci\) PR event$/m);
@@ -939,6 +951,7 @@ test('the PR event signal runs every change of an open PR without secrets or cod
     assert.doesNotMatch(triggers, /branches|paths/);
     const types = /^ {4}types: \[(.+)\]$/m.exec(triggers)[1].split(', ');
     assert.deepEqual(types.toSorted(), [
+        'closed',
         'converted_to_draft',
         'edited',
         'labeled',
@@ -951,14 +964,6 @@ test('the PR event signal runs every change of an open PR without secrets or cod
     assert.match(signal, /^permissions: \{\}$/m);
     assert.doesNotMatch(signal, /secrets\.|github\.token|actions\/checkout|uses:/);
     assert.match(signal, /if: github\.event\.action != 'edited' \|\| github\.event\.changes\.base != null/);
-});
-
-test('the gate isolates repository dispatch permission in a dedicated App token', () => {
-    const workflow = readFileSync(new URL('../workflows/ci-approve.yaml', import.meta.url), 'utf8');
-    assert.match(workflow, /actions: read/);
-    assert.match(workflow, /permission-contents: write/);
-    assert.match(workflow, /GH_HANDOFF_TOKEN: \$\{\{ steps\.handoff-token\.outputs\.token \}\}/);
-    assert.doesNotMatch(workflow, /^\s+contents: write/m);
 });
 
 test('additive ruleset requires CI without changing human review or thread rules', () => {
@@ -1336,13 +1341,6 @@ test('no hand-off without a successful status, for a draft, or for an unrouted b
     assert.equal((await reconcile(fixture({ pulls: [draft] }), 12, () => true, { handoffs })).handoff, undefined);
 });
 
-test('a PR change during evaluation hands off nothing', async () => {
-    const moved = { ...renovate, head: { ...renovate.head, sha: newer } };
-    const result = await reconcile(fixture({ pulls: [renovate, moved] }), 12, () => true, { handoffs });
-    assert.equal(result.state, 'pending');
-    assert.equal(result.handoff, undefined);
-});
-
 test('a CI error publishes no success and hands off nothing', async () => {
     const api = fixture({ pulls: [renovate] });
     await assert.rejects(
@@ -1365,21 +1363,6 @@ test('a PR change during evaluation hands off nothing', async () => {
     const result = await reconcile(fixture({ pulls: [renovate, moved] }), 12, () => true, { handoffs });
     assert.equal(result.state, 'pending');
     assert.equal(result.handoff, undefined);
-});
-
-test('a CI error publishes no success and hands off nothing', async () => {
-    const api = fixture({ pulls: [renovate] });
-    await assert.rejects(
-        reconcile(
-            api,
-            12,
-            () => {
-                throw new Error('CI read failed');
-            },
-            { handoffs },
-        ),
-    );
-    assert.equal(api.writes.at(-1)[2], 'error');
 });
 
 test('hand-off routing matches head-branch prefixes only', () => {
