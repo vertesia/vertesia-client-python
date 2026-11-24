@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, Optional
+from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -31,7 +32,8 @@ class ContentSource(BaseModel):
     type: Optional[StrictStr] = None
     name: Optional[StrictStr] = None
     etag: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["source", "type", "name", "etag"]
+    sha256: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Lowercase hex SHA-256 of the content bytes, as computed by the uploader. Unlike `etag`, it does not depend on how the storage provider stores the file: an S3 object encrypted with a KMS key, or uploaded in parts, has an etag that is not a hash of its bytes. Omitted when the uploader did not compute it.")
+    __properties: ClassVar[List[str]] = ["source", "type", "name", "etag", "sha256"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -87,7 +89,8 @@ class ContentSource(BaseModel):
             "source": obj.get("source"),
             "type": obj.get("type"),
             "name": obj.get("name"),
-            "etag": obj.get("etag")
+            "etag": obj.get("etag"),
+            "sha256": obj.get("sha256")
         })
         return _obj
 

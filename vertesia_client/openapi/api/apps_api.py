@@ -2826,6 +2826,7 @@ class AppsApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "ExchangeAppGithubAuthorizationResponse",
             '500': "ErrorResponse",
+            '503': None,
             '4XX': "ErrorResponse",
         }
         response_data = self.api_client.call_api(
@@ -2899,6 +2900,7 @@ class AppsApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "ExchangeAppGithubAuthorizationResponse",
             '500': "ErrorResponse",
+            '503': None,
             '4XX': "ErrorResponse",
         }
         response_data = self.api_client.call_api(
@@ -2972,6 +2974,7 @@ class AppsApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "ExchangeAppGithubAuthorizationResponse",
             '500': "ErrorResponse",
+            '503': None,
             '4XX': "ErrorResponse",
         }
         response_data = self.api_client.call_api(
@@ -4013,6 +4016,7 @@ class AppsApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "AppGithubRepositorySetup",
             '500': "ErrorResponse",
+            '503': None,
             '4XX': "ErrorResponse",
         }
         response_data = self.api_client.call_api(
@@ -4098,6 +4102,7 @@ class AppsApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "AppGithubRepositorySetup",
             '500': "ErrorResponse",
+            '503': None,
             '4XX': "ErrorResponse",
         }
         response_data = self.api_client.call_api(
@@ -4183,6 +4188,7 @@ class AppsApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "AppGithubRepositorySetup",
             '500': "ErrorResponse",
+            '503': None,
             '4XX': "ErrorResponse",
         }
         response_data = self.api_client.call_api(
@@ -9933,6 +9939,7 @@ class AppsApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "AppGithubRepositoryList",
             '500': "ErrorResponse",
+            '503': None,
             '4XX': "ErrorResponse",
         }
         response_data = self.api_client.call_api(
@@ -10010,6 +10017,7 @@ class AppsApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "AppGithubRepositoryList",
             '500': "ErrorResponse",
+            '503': None,
             '4XX': "ErrorResponse",
         }
         response_data = self.api_client.call_api(
@@ -10087,6 +10095,7 @@ class AppsApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "AppGithubRepositoryList",
             '500': "ErrorResponse",
+            '503': None,
             '4XX': "ErrorResponse",
         }
         response_data = self.api_client.call_api(
@@ -14374,6 +14383,7 @@ class AppsApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "StartAppGithubAuthorizationResponse",
             '500': "ErrorResponse",
+            '503': None,
             '4XX': "ErrorResponse",
         }
         response_data = self.api_client.call_api(
@@ -14443,6 +14453,7 @@ class AppsApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "StartAppGithubAuthorizationResponse",
             '500': "ErrorResponse",
+            '503': None,
             '4XX': "ErrorResponse",
         }
         response_data = self.api_client.call_api(
@@ -14512,6 +14523,7 @@ class AppsApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "StartAppGithubAuthorizationResponse",
             '500': "ErrorResponse",
+            '503': None,
             '4XX': "ErrorResponse",
         }
         response_data = self.api_client.call_api(

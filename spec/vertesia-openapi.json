@@ -12641,6 +12641,11 @@
           },
           "etag": {
             "type": "string"
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "description": "Lowercase hex SHA-256 of the content bytes, as computed by the uploader. Unlike `etag`, it does not depend on how the storage provider stores the file: an S3 object encrypted with a KMS key, or uploaded in parts, has an etag that is not a hash of its bytes. Omitted when the uploader did not compute it."
           }
         },
         "additionalProperties": false
@@ -54313,6 +54318,36 @@
               }
             }
           },
+          "502": {
+            "description": "The failed run: the model provider answered with an error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InteractionExecutionResult"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The failed run: no capacity to run it now; retry later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InteractionExecutionResult"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "The failed run: the model provider timed out.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InteractionExecutionResult"
+                }
+              }
+            }
+          },
           "4XX": {
             "description": "Client error.",
             "content": {
@@ -55507,6 +55542,36 @@
                   "error": "Internal Server Error",
                   "status": 500,
                   "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "The failed run: the model provider answered with an error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InteractionExecutionResult"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The failed run: no capacity to run it now; retry later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InteractionExecutionResult"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "The failed run: the model provider timed out.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InteractionExecutionResult"
                 }
               }
             }
@@ -59600,6 +59665,36 @@
               }
             }
           },
+          "502": {
+            "description": "The failed run: the model provider answered with an error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InteractionExecutionResult"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The failed run: no capacity to run it now; retry later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InteractionExecutionResult"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "The failed run: the model provider timed out.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InteractionExecutionResult"
+                }
+              }
+            }
+          },
           "4XX": {
             "description": "Client error.",
             "content": {
@@ -59823,6 +59918,36 @@
                   "error": "Internal Server Error",
                   "status": 500,
                   "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "The failed run: the model provider answered with an error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InteractionExecutionResult"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The failed run: no capacity to run it now; retry later.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InteractionExecutionResult"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "The failed run: the model provider timed out.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InteractionExecutionResult"
                 }
               }
             }
@@ -62468,6 +62593,9 @@
               }
             }
           },
+          "503": {
+            "description": "The Vertesia GitHub App is not configured on this deployment."
+          },
           "4XX": {
             "description": "Client error.",
             "content": {
@@ -62553,6 +62681,9 @@
                 }
               }
             }
+          },
+          "503": {
+            "description": "The Vertesia GitHub App is not configured on this deployment."
           },
           "4XX": {
             "description": "Client error.",
@@ -62668,6 +62799,9 @@
                 }
               }
             }
+          },
+          "503": {
+            "description": "The Vertesia GitHub App is not configured on this deployment."
           },
           "4XX": {
             "description": "Client error.",
@@ -62791,6 +62925,9 @@
                 }
               }
             }
+          },
+          "503": {
+            "description": "The Vertesia GitHub App is not configured on this deployment."
           },
           "4XX": {
             "description": "Client error.",

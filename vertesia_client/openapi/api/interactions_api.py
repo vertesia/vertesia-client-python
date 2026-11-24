@@ -1311,6 +1311,9 @@ class InteractionsApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "InteractionExecutionResult",
             '500': "ErrorResponse",
+            '502': "InteractionExecutionResult",
+            '503': "InteractionExecutionResult",
+            '504': "InteractionExecutionResult",
             '4XX': "ErrorResponse",
         }
         response_data = self.api_client.call_api(
@@ -1388,6 +1391,9 @@ class InteractionsApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "InteractionExecutionResult",
             '500': "ErrorResponse",
+            '502': "InteractionExecutionResult",
+            '503': "InteractionExecutionResult",
+            '504': "InteractionExecutionResult",
             '4XX': "ErrorResponse",
         }
         response_data = self.api_client.call_api(
@@ -1465,6 +1471,9 @@ class InteractionsApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "InteractionExecutionResult",
             '500': "ErrorResponse",
+            '502': "InteractionExecutionResult",
+            '503': "InteractionExecutionResult",
+            '504': "InteractionExecutionResult",
             '4XX': "ErrorResponse",
         }
         response_data = self.api_client.call_api(
@@ -1930,6 +1939,9 @@ class InteractionsApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "InteractionExecutionResult",
             '500': "ErrorResponse",
+            '502': "InteractionExecutionResult",
+            '503': "InteractionExecutionResult",
+            '504': "InteractionExecutionResult",
             '4XX': "ErrorResponse",
         }
         response_data = self.api_client.call_api(
@@ -2019,6 +2031,9 @@ class InteractionsApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "InteractionExecutionResult",
             '500': "ErrorResponse",
+            '502': "InteractionExecutionResult",
+            '503': "InteractionExecutionResult",
+            '504': "InteractionExecutionResult",
             '4XX': "ErrorResponse",
         }
         response_data = self.api_client.call_api(
@@ -2108,6 +2123,9 @@ class InteractionsApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "InteractionExecutionResult",
             '500': "ErrorResponse",
+            '502': "InteractionExecutionResult",
+            '503': "InteractionExecutionResult",
+            '504': "InteractionExecutionResult",
             '4XX': "ErrorResponse",
         }
         response_data = self.api_client.call_api(
@@ -2278,6 +2296,9 @@ class InteractionsApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "InteractionExecutionResult",
             '500': "ErrorResponse",
+            '502': "InteractionExecutionResult",
+            '503': "InteractionExecutionResult",
+            '504': "InteractionExecutionResult",
             '4XX': "ErrorResponse",
         }
         response_data = self.api_client.call_api(
@@ -2355,6 +2376,9 @@ class InteractionsApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "InteractionExecutionResult",
             '500': "ErrorResponse",
+            '502': "InteractionExecutionResult",
+            '503': "InteractionExecutionResult",
+            '504': "InteractionExecutionResult",
             '4XX': "ErrorResponse",
         }
         response_data = self.api_client.call_api(
@@ -2432,6 +2456,9 @@ class InteractionsApi:
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "InteractionExecutionResult",
             '500': "ErrorResponse",
+            '502': "InteractionExecutionResult",
+            '503': "InteractionExecutionResult",
+            '504': "InteractionExecutionResult",
             '4XX': "ErrorResponse",
         }
         response_data = self.api_client.call_api(
