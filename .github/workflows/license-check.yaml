@@ -31,3 +31,25 @@ jobs:
             LGPL-2.0-only, LGPL-2.0-or-later, LGPL-2.1-only, LGPL-2.1-or-later,
             LGPL-3.0-only, LGPL-3.0-or-later,
             SSPL-1.0, BUSL-1.1, Elastic-2.0, JSON
+
+  # GitHub's dependency graph for this repository lists some direct dependencies without a version and
+  # omits pydantic-core, so the review above cannot see a transitive dependency that changes license.
+  # This job resolves and installs the runtime dependencies (no dev extra) and checks every installed
+  # distribution against the same denied licenses.
+  resolved-licenses:
+    name: Resolved dependency licenses
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+
+      - name: Install the runtime dependencies
+        run: |
+          uv venv "$RUNNER_TEMP/licenses-venv"
+          uv pip install --python "$RUNNER_TEMP/licenses-venv/bin/python" .
+
+      - name: Check the installed licenses
+        run: '"$RUNNER_TEMP/licenses-venv/bin/python" .github/scripts/check_licenses.py'
