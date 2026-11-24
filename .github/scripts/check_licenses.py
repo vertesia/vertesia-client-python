@@ -51,9 +51,10 @@ class _SpdxParser:
     Raises ValueError on a malformed expression, so it can never pass silently as allowed.
     """
 
-    def __init__(self, expression: str) -> None:
+    def __init__(self, expression: str, id_denied=None) -> None:
         self.tokens = re.findall(r"[()]|[^\s()]+", expression)
         self.pos = 0
+        self.id_denied = id_denied or _license_id_denied
 
     def _peek(self) -> str | None:
         return self.tokens[self.pos] if self.pos < len(self.tokens) else None
@@ -106,12 +107,17 @@ class _SpdxParser:
         if token == ")" or token.upper() in ("AND", "OR", "WITH"):
             raise ValueError(f"unexpected {token!r}")
         self.pos += 1
-        return _license_id_denied(token)
+        return self.id_denied(token)
 
 
-def spdx_denied(expression: str) -> bool:
+def spdx_denied(expression: str, id_denied=None) -> bool:
     """True when an SPDX expression is denied. Raises ValueError when it is malformed."""
-    return _SpdxParser(expression).parse()
+    return _SpdxParser(expression, id_denied).parse()
+
+
+def _free_text_id_denied(token: str) -> bool:
+    # The legacy License field also holds ids that are not SPDX, such as "GPLv3".
+    return _license_id_denied(token) or bool(FREE_TEXT_DENIED.search(token))
 
 
 def verdict(meta) -> tuple[str, bool]:
@@ -126,11 +132,12 @@ def verdict(meta) -> tuple[str, bool]:
         return "; ".join(c.split(" :: ")[-1] for c in classifiers), any(c in DENIED_CLASSIFIERS for c in classifiers)
     text = (meta.get("License") or "").strip()
     if text and len(text) <= 100 and "\n" not in text:
+        # A field that parses as an SPDX expression keeps its grouping, so "MIT OR GPL-3.0-only" is allowed;
+        # the pattern judges only prose such as "GNU General Public License v3".
         try:
-            as_spdx = spdx_denied(text)
-        except ValueError:  # free text is rarely an SPDX expression; the pattern above still applies
-            as_spdx = False
-        return text, bool(FREE_TEXT_DENIED.search(text)) or as_spdx
+            return text, spdx_denied(text, _free_text_id_denied)
+        except ValueError:
+            return text, bool(FREE_TEXT_DENIED.search(text))
     return "UNKNOWN", False  # reported, not failed, like dependency-review does
 
 

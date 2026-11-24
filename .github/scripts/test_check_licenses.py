@@ -87,6 +87,17 @@ class VerdictTest(unittest.TestCase):
         self.assertFalse(cl.verdict(meta(license_text="Apache Software License"))[1])
         self.assertFalse(cl.verdict(meta(license_text="MIT License (see file"))[1])
 
+    def test_free_text_spdx_expression_keeps_its_grouping(self):
+        # A valid dual license in the legacy License field is judged by the parser, not the pattern.
+        self.assertFalse(cl.verdict(meta(license_text="MIT OR GPL-3.0-only"))[1])
+        self.assertFalse(cl.verdict(meta(license_text="(MIT OR GPL-3.0-only) AND Apache-2.0"))[1])
+        self.assertFalse(cl.verdict(meta(license_text="MIT OR GPLv3"))[1])
+        self.assertTrue(cl.verdict(meta(license_text="MIT AND GPL-3.0-only"))[1])
+        self.assertTrue(cl.verdict(meta(license_text="GPL-2.0-or-later"))[1])
+        # Ids that are not SPDX, but name a denied family, still count as denied inside an expression.
+        self.assertTrue(cl.verdict(meta(license_text="MIT AND GPLv3"))[1])
+        self.assertTrue(cl.verdict(meta(license_text="LGPL"))[1])
+
     def test_missing_metadata_is_unknown(self):
         self.assertEqual(cl.verdict(meta()), ("UNKNOWN", False))
 
