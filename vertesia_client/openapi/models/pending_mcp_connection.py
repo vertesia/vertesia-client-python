@@ -32,7 +32,9 @@ class PendingMcpConnection(BaseModel):
     name: StrictStr = Field(description="Human-readable label for the server/collection.")
     description: Optional[StrictStr] = Field(default=None, description="Manifest description of what the server provides (used for discovery).")
     namespace: Optional[StrictStr] = Field(default=None, description="Tool-name prefix for this collection.")
-    __properties: ClassVar[List[str]] = ["app_install_id", "collection_id", "name", "description", "namespace"]
+    required_scope: Optional[StrictStr] = Field(default=None, description="The scope the server refused a tool call for (`insufficient_scope`): reconnecting asks for it too.")
+    refused_tool: Optional[StrictStr] = Field(default=None, description="The tool the server refused for `required_scope`.")
+    __properties: ClassVar[List[str]] = ["app_install_id", "collection_id", "name", "description", "namespace", "required_scope", "refused_tool"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -89,7 +91,9 @@ class PendingMcpConnection(BaseModel):
             "collection_id": obj.get("collection_id"),
             "name": obj.get("name"),
             "description": obj.get("description"),
-            "namespace": obj.get("namespace")
+            "namespace": obj.get("namespace"),
+            "required_scope": obj.get("required_scope"),
+            "refused_tool": obj.get("refused_tool")
         })
         return _obj
 

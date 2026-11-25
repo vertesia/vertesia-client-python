@@ -17,8 +17,8 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr
-from typing import Any, ClassVar, Dict
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
+from typing import Any, ClassVar, Dict, Optional
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -28,7 +28,11 @@ class McpOAuthTokenResponse(BaseModel):
     McpOAuthTokenResponse
     """ # noqa: E501
     access_token: StrictStr
-    __properties: ClassVar[List[str]] = ["access_token"]
+    user_grant: Optional[StrictBool] = Field(default=None, description="True when the token is the user's own OAuth grant for this server, which the user can renew with more scope by reconnecting. Absent for project credentials (client credentials, API keys) and from servers older than this field.")
+    step_up_scope: Optional[StrictStr] = Field(default=None, description="The scope the stored grant was last requested for after the server refused a call with `insufficient_scope`. A second refusal for this scope means the grant did not include it, so the user should not be asked to reconnect again.")
+    step_up_tool: Optional[StrictStr] = Field(default=None, description="The tool whose refusal led to `step_up_scope`.")
+    step_up_attempt: Optional[StrictStr] = Field(default=None, description="The id of the reconnect that recorded `step_up_scope`, to send back when reporting its outcome.")
+    __properties: ClassVar[List[str]] = ["access_token", "user_grant", "step_up_scope", "step_up_tool", "step_up_attempt"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -81,7 +85,11 @@ class McpOAuthTokenResponse(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "access_token": obj.get("access_token")
+            "access_token": obj.get("access_token"),
+            "user_grant": obj.get("user_grant"),
+            "step_up_scope": obj.get("step_up_scope"),
+            "step_up_tool": obj.get("step_up_tool"),
+            "step_up_attempt": obj.get("step_up_attempt")
         })
         return _obj
 

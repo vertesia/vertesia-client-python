@@ -16,7 +16,7 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
 from pydantic import Field, StrictStr, field_validator
-from typing import List
+from typing import List, Optional
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.mcp_o_auth_connect_response import McpOAuthConnectResponse
 from vertesia_client.openapi.models.mcp_o_auth_disconnect_response import McpOAuthDisconnectResponse
@@ -50,6 +50,9 @@ class RemoteMCPConnectionsApi:
         app_install_id: StrictStr,
         collection_id: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        required_scope: Annotated[Optional[Annotated[str, Field(strict=True, max_length=512)]], Field(description="A scope the MCP server refused a tool call for (`insufficient_scope`). The authorization request asks for it too, unless the collection uses a shared OAuth provider, whose scope is configured by an administrator. A malformed scope is refused with 400.")] = None,
+        refused_tool: Annotated[Optional[Annotated[str, Field(strict=True, max_length=256)]], Field(description="The tool the server refused, recorded with the step-up.")] = None,
+        scope_mode: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -65,7 +68,7 @@ class RemoteMCPConnectionsApi:
     ) -> OAuthAuthorizeResponse:
         """Authorize a remote MCP connection
 
-        Starts the OAuth flow for an OAuth-enabled MCP collection and returns the authorization URL or immediate connected status.
+        Starts the OAuth flow for an OAuth-enabled MCP collection and returns the authorization URL or immediate connected status. After the MCP server refused a tool call with `insufficient_scope`, `required_scope` asks for that scope too, together with the scope already granted and the server's advertised scopes.
 
         :param app_install_id: (required)
         :type app_install_id: str
@@ -73,6 +76,12 @@ class RemoteMCPConnectionsApi:
         :type collection_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
+        :param required_scope: A scope the MCP server refused a tool call for (`insufficient_scope`). The authorization request asks for it too, unless the collection uses a shared OAuth provider, whose scope is configured by an administrator. A malformed scope is refused with 400.
+        :type required_scope: str
+        :param refused_tool: The tool the server refused, recorded with the step-up.
+        :type refused_tool: str
+        :param scope_mode:
+        :type scope_mode: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -99,6 +108,9 @@ class RemoteMCPConnectionsApi:
             app_install_id=app_install_id,
             collection_id=collection_id,
             x_api_version=x_api_version,
+            required_scope=required_scope,
+            refused_tool=refused_tool,
+            scope_mode=scope_mode,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -127,6 +139,9 @@ class RemoteMCPConnectionsApi:
         app_install_id: StrictStr,
         collection_id: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        required_scope: Annotated[Optional[Annotated[str, Field(strict=True, max_length=512)]], Field(description="A scope the MCP server refused a tool call for (`insufficient_scope`). The authorization request asks for it too, unless the collection uses a shared OAuth provider, whose scope is configured by an administrator. A malformed scope is refused with 400.")] = None,
+        refused_tool: Annotated[Optional[Annotated[str, Field(strict=True, max_length=256)]], Field(description="The tool the server refused, recorded with the step-up.")] = None,
+        scope_mode: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -142,7 +157,7 @@ class RemoteMCPConnectionsApi:
     ) -> ApiResponse[OAuthAuthorizeResponse]:
         """Authorize a remote MCP connection
 
-        Starts the OAuth flow for an OAuth-enabled MCP collection and returns the authorization URL or immediate connected status.
+        Starts the OAuth flow for an OAuth-enabled MCP collection and returns the authorization URL or immediate connected status. After the MCP server refused a tool call with `insufficient_scope`, `required_scope` asks for that scope too, together with the scope already granted and the server's advertised scopes.
 
         :param app_install_id: (required)
         :type app_install_id: str
@@ -150,6 +165,12 @@ class RemoteMCPConnectionsApi:
         :type collection_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
+        :param required_scope: A scope the MCP server refused a tool call for (`insufficient_scope`). The authorization request asks for it too, unless the collection uses a shared OAuth provider, whose scope is configured by an administrator. A malformed scope is refused with 400.
+        :type required_scope: str
+        :param refused_tool: The tool the server refused, recorded with the step-up.
+        :type refused_tool: str
+        :param scope_mode:
+        :type scope_mode: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -176,6 +197,9 @@ class RemoteMCPConnectionsApi:
             app_install_id=app_install_id,
             collection_id=collection_id,
             x_api_version=x_api_version,
+            required_scope=required_scope,
+            refused_tool=refused_tool,
+            scope_mode=scope_mode,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -204,6 +228,9 @@ class RemoteMCPConnectionsApi:
         app_install_id: StrictStr,
         collection_id: StrictStr,
         x_api_version: Annotated[str, Field(min_length=1, strict=True, description="Required Vertesia API version header. Use `20260803` for the current stable API shape.")],
+        required_scope: Annotated[Optional[Annotated[str, Field(strict=True, max_length=512)]], Field(description="A scope the MCP server refused a tool call for (`insufficient_scope`). The authorization request asks for it too, unless the collection uses a shared OAuth provider, whose scope is configured by an administrator. A malformed scope is refused with 400.")] = None,
+        refused_tool: Annotated[Optional[Annotated[str, Field(strict=True, max_length=256)]], Field(description="The tool the server refused, recorded with the step-up.")] = None,
+        scope_mode: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -219,7 +246,7 @@ class RemoteMCPConnectionsApi:
     ) -> RESTResponseType:
         """Authorize a remote MCP connection
 
-        Starts the OAuth flow for an OAuth-enabled MCP collection and returns the authorization URL or immediate connected status.
+        Starts the OAuth flow for an OAuth-enabled MCP collection and returns the authorization URL or immediate connected status. After the MCP server refused a tool call with `insufficient_scope`, `required_scope` asks for that scope too, together with the scope already granted and the server's advertised scopes.
 
         :param app_install_id: (required)
         :type app_install_id: str
@@ -227,6 +254,12 @@ class RemoteMCPConnectionsApi:
         :type collection_id: str
         :param x_api_version: Required Vertesia API version header. Use `20260803` for the current stable API shape. (required)
         :type x_api_version: str
+        :param required_scope: A scope the MCP server refused a tool call for (`insufficient_scope`). The authorization request asks for it too, unless the collection uses a shared OAuth provider, whose scope is configured by an administrator. A malformed scope is refused with 400.
+        :type required_scope: str
+        :param refused_tool: The tool the server refused, recorded with the step-up.
+        :type refused_tool: str
+        :param scope_mode:
+        :type scope_mode: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -253,6 +286,9 @@ class RemoteMCPConnectionsApi:
             app_install_id=app_install_id,
             collection_id=collection_id,
             x_api_version=x_api_version,
+            required_scope=required_scope,
+            refused_tool=refused_tool,
+            scope_mode=scope_mode,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -276,6 +312,9 @@ class RemoteMCPConnectionsApi:
         app_install_id,
         collection_id,
         x_api_version,
+        required_scope,
+        refused_tool,
+        scope_mode,
         _request_auth,
         _content_type,
         _headers,
@@ -302,6 +341,18 @@ class RemoteMCPConnectionsApi:
         if collection_id is not None:
             _path_params['collection_id'] = collection_id
         # process the query parameters
+        if required_scope is not None:
+            
+            _query_params.append(('required_scope', required_scope))
+            
+        if refused_tool is not None:
+            
+            _query_params.append(('refused_tool', refused_tool))
+            
+        if scope_mode is not None:
+            
+            _query_params.append(('scope_mode', scope_mode))
+            
         # process the header parameters
         if x_api_version is not None:
             _header_params['x-api-version'] = x_api_version

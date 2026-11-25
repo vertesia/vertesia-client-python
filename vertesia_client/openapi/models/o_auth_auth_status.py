@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictBool, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, Optional
 from typing import Optional, Set
 from typing_extensions import Self
@@ -33,7 +33,8 @@ class OAuthAuthStatus(BaseModel):
     mcp_server_url: StrictStr
     expires_at: Optional[StrictStr] = None
     scope: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["collection_id", "collection_name", "authenticated", "mcp_server_url", "expires_at", "scope"]
+    step_up_attempt: Optional[StrictStr] = Field(default=None, description="The `step_up_attempt` of the reconnect that stored the user's grant, when that reconnect asked for a scope the MCP server had refused a call for.")
+    __properties: ClassVar[List[str]] = ["collection_id", "collection_name", "authenticated", "mcp_server_url", "expires_at", "scope", "step_up_attempt"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -91,7 +92,8 @@ class OAuthAuthStatus(BaseModel):
             "authenticated": obj.get("authenticated"),
             "mcp_server_url": obj.get("mcp_server_url"),
             "expires_at": obj.get("expires_at"),
-            "scope": obj.get("scope")
+            "scope": obj.get("scope"),
+            "step_up_attempt": obj.get("step_up_attempt")
         })
         return _obj
 

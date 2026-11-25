@@ -17,8 +17,8 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictBool
-from typing import Any, ClassVar, Dict
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
+from typing import Any, ClassVar, Dict, Optional
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -28,7 +28,8 @@ class McpOAuthConnectResponse(BaseModel):
     McpOAuthConnectResponse
     """ # noqa: E501
     success: StrictBool
-    __properties: ClassVar[List[str]] = ["success"]
+    missing_scope: Optional[StrictStr] = Field(default=None, description="After a reconnect that asked for a scope the server had refused a call for: the part of that scope the authorization server did not grant. The account may lack the permission, or an administrator may need to consent to it.")
+    __properties: ClassVar[List[str]] = ["success", "missing_scope"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -81,7 +82,8 @@ class McpOAuthConnectResponse(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "success": obj.get("success")
+            "success": obj.get("success"),
+            "missing_scope": obj.get("missing_scope")
         })
         return _obj
 

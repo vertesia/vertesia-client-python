@@ -693,6 +693,7 @@ vertesia_client/openapi/models/grounded_extraction_result_response.py
 vertesia_client/openapi/models/grounded_extraction_result_response_review.py
 vertesia_client/openapi/models/grounded_extraction_verdict.py
 vertesia_client/openapi/models/grounded_verification_breakdown.py
+vertesia_client/openapi/models/held_mcp_reconnect.py
 vertesia_client/openapi/models/http_timeout_options.py
 vertesia_client/openapi/models/human_task_definition.py
 vertesia_client/openapi/models/i_create_project_payload.py

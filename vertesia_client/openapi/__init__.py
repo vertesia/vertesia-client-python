@@ -715,6 +715,7 @@ __all__ = [
     "GroundedExtractionResultResponseReview",
     "GroundedExtractionVerdict",
     "GroundedVerificationBreakdown",
+    "HeldMcpReconnect",
     "HttpTimeoutOptions",
     "HumanTaskDefinition",
     "ICreateProjectPayload",
@@ -2091,6 +2092,7 @@ from vertesia_client.openapi.models.grounded_extraction_result_response import G
 from vertesia_client.openapi.models.grounded_extraction_result_response_review import GroundedExtractionResultResponseReview as GroundedExtractionResultResponseReview
 from vertesia_client.openapi.models.grounded_extraction_verdict import GroundedExtractionVerdict as GroundedExtractionVerdict
 from vertesia_client.openapi.models.grounded_verification_breakdown import GroundedVerificationBreakdown as GroundedVerificationBreakdown
+from vertesia_client.openapi.models.held_mcp_reconnect import HeldMcpReconnect as HeldMcpReconnect
 from vertesia_client.openapi.models.http_timeout_options import HttpTimeoutOptions as HttpTimeoutOptions
 from vertesia_client.openapi.models.human_task_definition import HumanTaskDefinition as HumanTaskDefinition
 from vertesia_client.openapi.models.i_create_project_payload import ICreateProjectPayload as ICreateProjectPayload

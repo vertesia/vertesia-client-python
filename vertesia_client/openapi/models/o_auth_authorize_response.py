@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictBool, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, Optional
 from typing import Optional, Set
 from typing_extensions import Self
@@ -30,7 +30,8 @@ class OAuthAuthorizeResponse(BaseModel):
     authorization_url: Optional[StrictStr] = None
     state: Optional[StrictStr] = None
     connected: Optional[StrictBool] = None
-    __properties: ClassVar[List[str]] = ["authorization_url", "state", "connected"]
+    step_up_attempt: Optional[StrictStr] = Field(default=None, description="Set when the request asked for `required_scope`: an id for this reconnect. Once the user completes it, the collection status reports it as `step_up_attempt`, so the caller can confirm that the grant is the one it started, even without a message from the callback page.")
+    __properties: ClassVar[List[str]] = ["authorization_url", "state", "connected", "step_up_attempt"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -85,7 +86,8 @@ class OAuthAuthorizeResponse(BaseModel):
         _obj = cls.model_validate({
             "authorization_url": obj.get("authorization_url"),
             "state": obj.get("state"),
-            "connected": obj.get("connected")
+            "connected": obj.get("connected"),
+            "step_up_attempt": obj.get("step_up_attempt")
         })
         return _obj
 

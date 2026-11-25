@@ -28,6 +28,7 @@ from vertesia_client.openapi.models.conversation_strip_options import Conversati
 from vertesia_client.openapi.models.execution_run_doc_ref import ExecutionRunDocRef
 from vertesia_client.openapi.models.execution_token_usage import ExecutionTokenUsage
 from vertesia_client.openapi.models.externalized_tool_input_ref import ExternalizedToolInputRef
+from vertesia_client.openapi.models.held_mcp_reconnect import HeldMcpReconnect
 from vertesia_client.openapi.models.pending_mcp_connection import PendingMcpConnection
 from vertesia_client.openapi.models.pending_tool_approval_results import PendingToolApprovalResults
 from vertesia_client.openapi.models.plan import Plan
@@ -84,6 +85,7 @@ class ConversationState(BaseModel):
     initialization_call_ids: Optional[List[StrictStr]] = Field(default=None, description="Stable ids of initialization tool calls completed before the first model turn.")
     disabled_mcp_collections: Optional[List[StrictStr]] = Field(default=None, description="Denylist of MCP tool-collection ids deactivated for this conversation. `undefined`/empty means all installed/connected MCP collections are active. Updated mid-conversation via the MCP config signal; consumed when tools are re-discovered.")
     pending_mcp_connections: Optional[List[PendingMcpConnection]] = Field(default=None, description="MCP servers that are active (not disabled) and accessible to the user but not yet OAuth-connected. Surfaced to the agent (via discover_tools) so it can offer to connect.")
+    held_mcp_reconnects: Optional[List[HeldMcpReconnect]] = Field(default=None, description="MCP reconnects held after a server refused a tool (`refused_tool`) again although the user reconnected to grant `required_scope`; the agent asked the user whether to reconnect, continue without it, or stop. Until the user answers, that tool does not run again and its server is not offered for reconnection; once they answer, the hold is offered as a reconnect.")
     active_activity_group_id: Optional[StrictStr] = Field(default=None, description="Current activity group ID for internal tool-execution progress messages. All updates emitted during one tool-execution cycle should share this ID.")
     finish_reason: Optional[StrictStr] = Field(default=None, description="LLM stop reason from the latest call (e.g., \"stop\", \"length\", \"tool_use\")")
     llm_attempt: Optional[Annotated[int, Field(strict=True)]] = Field(default=None, description="Attempt number of the activity that made the latest LLM call. Above 1, the call was retried after a failed attempt.")
@@ -91,7 +93,7 @@ class ConversationState(BaseModel):
     launch_id: Optional[StrictStr] = Field(default=None, description="For workstreams: the launch ID assigned by the parent workflow. When set, artifacts are stored under agents/{agent_run_id}/workstreams/{launch_id}/ to consolidate all artifacts under the parent agent run.")
     app_version: Optional[StrictStr] = Field(default=None, description="The exact app version this run is pinned to, derived from the `@version` on the started interaction ref / the `x-vertesia-app-version` header at start. Persisted on the state so it survives resume, and applied to the activity client (`withAppVersion`) so every app-owned ref the run resolves — interactions, types, processes, tools — targets this version instead of the current/promoted one. Undefined → current/promoted. Resolution-time only; never a stored capability-ref version.")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["run", "environment", "options", "tool_use", "tool_approval_mode", "tool_approval_grants", "pending_tool_approval_results", "latest_user_message", "tool_input_refs", "output", "token_usage", "parent", "ancestors", "task_id", "plan", "debug", "strip_options", "conversation_artifacts_base_url", "tool_reference", "tool_catalog_storage_id", "active_tool_names", "pinned_tool_names", "used_skills", "streaming_enabled", "checkpoint_threshold", "checkpoint_tokens", "budget", "user_channels", "resolvedInteraction", "end_conversation", "unlocked_tools", "latest_activity_id", "latest_streaming_id", "skill_instructions_delivered", "initialization_call_ids", "disabled_mcp_collections", "pending_mcp_connections", "active_activity_group_id", "finish_reason", "llm_attempt", "agent_run_id", "launch_id", "app_version"]
+    __properties: ClassVar[List[str]] = ["run", "environment", "options", "tool_use", "tool_approval_mode", "tool_approval_grants", "pending_tool_approval_results", "latest_user_message", "tool_input_refs", "output", "token_usage", "parent", "ancestors", "task_id", "plan", "debug", "strip_options", "conversation_artifacts_base_url", "tool_reference", "tool_catalog_storage_id", "active_tool_names", "pinned_tool_names", "used_skills", "streaming_enabled", "checkpoint_threshold", "checkpoint_tokens", "budget", "user_channels", "resolvedInteraction", "end_conversation", "unlocked_tools", "latest_activity_id", "latest_streaming_id", "skill_instructions_delivered", "initialization_call_ids", "disabled_mcp_collections", "pending_mcp_connections", "held_mcp_reconnects", "active_activity_group_id", "finish_reason", "llm_attempt", "agent_run_id", "launch_id", "app_version"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -225,6 +227,13 @@ class ConversationState(BaseModel):
                 if _item_pending_mcp_connections:
                     _items.append(_item_pending_mcp_connections.to_dict())
             _dict['pending_mcp_connections'] = _items
+        # override the default output from pydantic by calling `to_dict()` of each item in held_mcp_reconnects (list)
+        _items = []
+        if self.held_mcp_reconnects:
+            for _item_held_mcp_reconnects in self.held_mcp_reconnects:
+                if _item_held_mcp_reconnects:
+                    _items.append(_item_held_mcp_reconnects.to_dict())
+            _dict['held_mcp_reconnects'] = _items
         # puts key-value pairs in additional_properties in the top level
         if self.additional_properties is not None:
             for _key, _value in self.additional_properties.items():
@@ -289,6 +298,7 @@ class ConversationState(BaseModel):
             "initialization_call_ids": obj.get("initialization_call_ids"),
             "disabled_mcp_collections": obj.get("disabled_mcp_collections"),
             "pending_mcp_connections": [PendingMcpConnection.from_dict(_item) for _item in obj["pending_mcp_connections"]] if obj.get("pending_mcp_connections") is not None else None,
+            "held_mcp_reconnects": [HeldMcpReconnect.from_dict(_item) for _item in obj["held_mcp_reconnects"]] if obj.get("held_mcp_reconnects") is not None else None,
             "active_activity_group_id": obj.get("active_activity_group_id"),
             "finish_reason": obj.get("finish_reason"),
             "llm_attempt": obj.get("llm_attempt"),
