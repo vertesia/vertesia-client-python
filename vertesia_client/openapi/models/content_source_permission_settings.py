@@ -13,38 +13,43 @@
 
 
 from __future__ import annotations
+from inspect import getfullargspec
 import json
 from collections.abc import Callable
 from pydantic import field_serializer
 import pprint
+import re  # noqa: F401
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, ValidationError, field_validator
-from typing import Any, List, Optional
+from typing import Optional
+from vertesia_client.openapi.models.google_drive_content_source_permissions import GoogleDriveContentSourcePermissions
 from vertesia_client.openapi.models.project_content_source_permissions import ProjectContentSourcePermissions
 from vertesia_client.openapi.models.share_point_content_source_permissions import SharePointContentSourcePermissions
-from pydantic import StrictStr, Field
-from typing import Union, List, Set, Optional, Dict
+from typing import Union, Any, List, Set, TYPE_CHECKING, Optional, Dict
 from typing_extensions import Literal, Self
+from pydantic import Field
 
-CONTENTSOURCEPERMISSIONSETTINGS_ONE_OF_SCHEMAS = ["ProjectContentSourcePermissions", "SharePointContentSourcePermissions"]
+CONTENTSOURCEPERMISSIONSETTINGS_ANY_OF_SCHEMAS = ["GoogleDriveContentSourcePermissions", "ProjectContentSourcePermissions", "SharePointContentSourcePermissions"]
 
 class ContentSourcePermissionSettings(BaseModel):
     """
     ContentSourcePermissionSettings
     """
+
     # data type: ProjectContentSourcePermissions
-    oneof_schema_1_validator: Optional[ProjectContentSourcePermissions] = None
+    anyof_schema_1_validator: Optional[ProjectContentSourcePermissions] = None
     # data type: SharePointContentSourcePermissions
-    oneof_schema_2_validator: Optional[SharePointContentSourcePermissions] = None
-    actual_instance: Optional[Union[ProjectContentSourcePermissions, SharePointContentSourcePermissions]] = None
-    one_of_schemas: Set[str] = { "ProjectContentSourcePermissions", "SharePointContentSourcePermissions" }
+    anyof_schema_2_validator: Optional[SharePointContentSourcePermissions] = None
+    # data type: GoogleDriveContentSourcePermissions
+    anyof_schema_3_validator: Optional[GoogleDriveContentSourcePermissions] = None
+    if TYPE_CHECKING:
+        actual_instance: Optional[Union[GoogleDriveContentSourcePermissions, ProjectContentSourcePermissions, SharePointContentSourcePermissions]] = None
+    else:
+        actual_instance: Any = None
+    any_of_schemas: Set[str] = { "GoogleDriveContentSourcePermissions", "ProjectContentSourcePermissions", "SharePointContentSourcePermissions" }
 
-    model_config = ConfigDict(
-        validate_assignment=True,
-        protected_namespaces=(),
-    )
-
-
-    discriminator_value_class_map: Dict[str, str] = {
+    model_config = {
+        "validate_assignment": True,
+        "protected_namespaces": (),
     }
 
     def __init__(self, *args, **kwargs) -> None:
@@ -58,26 +63,30 @@ class ContentSourcePermissionSettings(BaseModel):
             super().__init__(**kwargs)
 
     @field_validator('actual_instance')
-    def actual_instance_must_validate_oneof(cls, v):
+    def actual_instance_must_validate_anyof(cls, v):
         instance = ContentSourcePermissionSettings.model_construct()
         error_messages = []
-        match = 0
         # validate data type: ProjectContentSourcePermissions
         if not isinstance(v, ProjectContentSourcePermissions):
             error_messages.append(f"Error! Input type `{type(v)}` is not `ProjectContentSourcePermissions`")
         else:
-            match += 1
+            return v
+
         # validate data type: SharePointContentSourcePermissions
         if not isinstance(v, SharePointContentSourcePermissions):
             error_messages.append(f"Error! Input type `{type(v)}` is not `SharePointContentSourcePermissions`")
         else:
-            match += 1
-        if match > 1:
-            # more than 1 match
-            raise ValueError("Multiple matches found when setting `actual_instance` in ContentSourcePermissionSettings with oneOf schemas: ProjectContentSourcePermissions, SharePointContentSourcePermissions. Details: " + ", ".join(error_messages))
-        elif match == 0:
+            return v
+
+        # validate data type: GoogleDriveContentSourcePermissions
+        if not isinstance(v, GoogleDriveContentSourcePermissions):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `GoogleDriveContentSourcePermissions`")
+        else:
+            return v
+
+        if error_messages:
             # no match
-            raise ValueError("No match found when setting `actual_instance` in ContentSourcePermissionSettings with oneOf schemas: ProjectContentSourcePermissions, SharePointContentSourcePermissions. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when setting the actual_instance in ContentSourcePermissionSettings with anyOf schemas: GoogleDriveContentSourcePermissions, ProjectContentSourcePermissions, SharePointContentSourcePermissions. Details: " + ", ".join(error_messages))
         else:
             return v
 
@@ -123,23 +132,41 @@ class ContentSourcePermissionSettings(BaseModel):
         return value if self._holds_raw(value) else handler(value)
 
     @classmethod
-    def from_dict(cls, obj: Union[str, Dict[str, Any]]) -> Self:
+    def from_dict(cls, obj: Dict[str, Any]) -> Self:
         return cls.from_json(json.dumps(obj))
 
     @classmethod
     def from_json(cls, json_str: str) -> Self:
-        """Returns the object represented by the json string, dispatched on `mode`"""
-        data = json.loads(json_str)
-        tag = data.get('mode') if isinstance(data, dict) else None
-        branches = {'project': ProjectContentSourcePermissions, 'source': SharePointContentSourcePermissions}
-        if isinstance(tag, str) and tag in branches:
-            instance = cls.model_construct()
-            instance.actual_instance = branches[tag].from_json(json_str)
+        """Returns the object represented by the json string"""
+        instance = cls.model_construct()
+        error_messages = []
+        # anyof_schema_1_validator: Optional[ProjectContentSourcePermissions] = None
+        try:
+            instance.actual_instance = ProjectContentSourcePermissions.from_json(json_str)
             return instance
-        if isinstance(tag, str) and tag:
+        except (ValidationError, ValueError) as e:
+             error_messages.append(str(e))
+        # anyof_schema_2_validator: Optional[SharePointContentSourcePermissions] = None
+        try:
+            instance.actual_instance = SharePointContentSourcePermissions.from_json(json_str)
+            return instance
+        except (ValidationError, ValueError) as e:
+             error_messages.append(str(e))
+        # anyof_schema_3_validator: Optional[GoogleDriveContentSourcePermissions] = None
+        try:
+            instance.actual_instance = GoogleDriveContentSourcePermissions.from_json(json_str)
+            return instance
+        except (ValidationError, ValueError) as e:
+             error_messages.append(str(e))
+
+        if json_str.strip() != "null":
             # A variant added by a newer server: keep it as received.
-            return cls._from_raw(data)
-        raise ValueError("Missing `mode` when deserializing the JSON string into ContentSourcePermissionSettings: " + json_str)
+            return cls._from_raw(json.loads(json_str))
+        if error_messages:
+            # no match
+            raise ValueError("No match found when deserializing the JSON string into ContentSourcePermissionSettings with anyOf schemas: GoogleDriveContentSourcePermissions, ProjectContentSourcePermissions, SharePointContentSourcePermissions. Details: " + ", ".join(error_messages))
+        else:
+            return instance
 
     def to_json(self) -> str:
         """Returns the JSON representation of the actual instance"""
@@ -151,7 +178,7 @@ class ContentSourcePermissionSettings(BaseModel):
         else:
             return json.dumps(self.actual_instance)
 
-    def to_dict(self) -> Optional[Union[Dict[str, Any], ProjectContentSourcePermissions, SharePointContentSourcePermissions]]:
+    def to_dict(self) -> Optional[Union[Dict[str, Any], GoogleDriveContentSourcePermissions, ProjectContentSourcePermissions, SharePointContentSourcePermissions]]:
         """Returns the dict representation of the actual instance"""
         if self.actual_instance is None:
             return None
@@ -159,7 +186,6 @@ class ContentSourcePermissionSettings(BaseModel):
         if hasattr(self.actual_instance, "to_dict") and callable(self.actual_instance.to_dict):
             return self.actual_instance.to_dict()
         else:
-            # primitive type
             return self.actual_instance
 
     def to_str(self) -> str:

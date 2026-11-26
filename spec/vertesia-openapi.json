@@ -2766,6 +2766,19 @@
           "$ref": "#/components/schemas/AggregatedTool"
         }
       },
+      "AllGoogleDrivesSelection": {
+        "type": "object",
+        "properties": {
+          "mode": {
+            "type": "string",
+            "const": "all"
+          }
+        },
+        "required": [
+          "mode"
+        ],
+        "additionalProperties": false
+      },
       "AllocateAgentRunBudgetPayload": {
         "anyOf": [
           {
@@ -13012,24 +13025,16 @@
         "description": "A document library of a site."
       },
       "ContentSourcePermissionSettings": {
-        "discriminator": {
-          "propertyName": "mode",
-          "mapping": {
-            "project": "#/components/schemas/ProjectContentSourcePermissions",
-            "source": "#/components/schemas/SharePointContentSourcePermissions"
-          }
-        },
-        "oneOf": [
+        "anyOf": [
           {
             "$ref": "#/components/schemas/ProjectContentSourcePermissions"
           },
           {
             "$ref": "#/components/schemas/SharePointContentSourcePermissions"
+          },
+          {
+            "$ref": "#/components/schemas/GoogleDriveContentSourcePermissions"
           }
-        ],
-        "type": "object",
-        "required": [
-          "mode"
         ]
       },
       "ContentSourcePermissionStatus": {
@@ -13460,7 +13465,8 @@
             "type": "string",
             "enum": [
               "sharepoint",
-              "box"
+              "box",
+              "google-drive"
             ]
           },
           "location_root": {
@@ -15086,6 +15092,10 @@
             "type": "string",
             "format": "uuid",
             "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "scim_google_drive_reader_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{24}$"
           }
         },
         "required": [
@@ -15834,7 +15844,7 @@
                     "minLength": 1
                   },
                   "source": {
-                    "pattern": "^(?:gs|s3|az|sharepoint|box)://[^/]+/.+"
+                    "pattern": "^(?:gs|s3|az|sharepoint|box|google-drive)://[^/]+/.+"
                   }
                 }
               }
@@ -15870,7 +15880,7 @@
                     "minLength": 1
                   },
                   "source": {
-                    "pattern": "^(?:gs|s3|az|sharepoint|box)://[^/]+/.+"
+                    "pattern": "^(?:gs|s3|az|sharepoint|box|google-drive)://[^/]+/.+"
                   }
                 }
               }
@@ -15940,13 +15950,17 @@
           },
           {
             "$ref": "#/components/schemas/CreateBoxContentSourcePayload"
+          },
+          {
+            "$ref": "#/components/schemas/CreateGoogleDriveContentSourcePayload"
           }
         ],
         "discriminator": {
           "propertyName": "type",
           "mapping": {
             "sharepoint": "#/components/schemas/CreateSharePointContentSourcePayload",
-            "box": "#/components/schemas/CreateBoxContentSourcePayload"
+            "box": "#/components/schemas/CreateBoxContentSourcePayload",
+            "google-drive": "#/components/schemas/CreateGoogleDriveContentSourcePayload"
           }
         },
         "type": "object",
@@ -16234,6 +16248,59 @@
           "filter",
           "target",
           "run_as_role"
+        ],
+        "additionalProperties": false
+      },
+      "CreateGoogleDriveContentSourcePayload": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "description": "Unique within the project."
+          },
+          "description": {
+            "type": "string"
+          },
+          "location_root": {
+            "type": "string",
+            "description": "The `location` root for synced documents. Defaults to `/<type>/<name>`."
+          },
+          "collection_id": {
+            "type": "string",
+            "description": "A collection to add synced documents to."
+          },
+          "sync": {
+            "$ref": "#/components/schemas/ContentSourceSyncSettings",
+            "description": "Defaults to scheduled sync disabled, every 60 minutes once enabled."
+          },
+          "sample_percent": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 99,
+            "description": "Sample mode: syncs only about this percentage of the files, to look at real documents before importing them all. A file is in the sample by a hash of its ID, so the same files stay in it from one sync to the next, spread over every folder. A file outside the sample is not imported, and its document is deleted if it has one. Leave out to sync every file."
+          },
+          "type": {
+            "type": "string",
+            "const": "google-drive"
+          },
+          "reader_binding_id": {
+            "type": "string",
+            "pattern": "^[0-9a-fA-F]{24}$"
+          },
+          "selection": {
+            "$ref": "#/components/schemas/GoogleDriveSelection"
+          },
+          "permissions": {
+            "$ref": "#/components/schemas/GoogleDrivePermissionOptions"
+          }
+        },
+        "required": [
+          "name",
+          "type",
+          "reader_binding_id",
+          "selection"
         ],
         "additionalProperties": false
       },
@@ -16711,7 +16778,7 @@
             "description": "The approved SharePoint library binding this source is registered for."
           },
           "permissions": {
-            "$ref": "#/components/schemas/ContentSourcePermissionSettings"
+            "$ref": "#/components/schemas/SharePointPermissionOptions"
           },
           "site_url": {
             "type": "string",
@@ -23297,13 +23364,17 @@
           },
           {
             "$ref": "#/components/schemas/BoxContentSource"
+          },
+          {
+            "$ref": "#/components/schemas/GoogleDriveContentSource"
           }
         ],
         "discriminator": {
           "propertyName": "type",
           "mapping": {
             "sharepoint": "#/components/schemas/SharePointContentSource",
-            "box": "#/components/schemas/BoxContentSource"
+            "box": "#/components/schemas/BoxContentSource",
+            "google-drive": "#/components/schemas/GoogleDriveContentSource"
           }
         },
         "type": "object",
@@ -24095,6 +24166,201 @@
           "enabled"
         ],
         "additionalProperties": false
+      },
+      "GoogleDriveContentSource": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "location_root": {
+            "type": "string",
+            "description": "The `location` under which the source folder's tree is reproduced, e.g. `/sharepoint/legal`."
+          },
+          "collection_id": {
+            "type": "string",
+            "description": "Collection that synced documents are added to, if any."
+          },
+          "sync": {
+            "$ref": "#/components/schemas/ContentSourceSyncSettings"
+          },
+          "sample_percent": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 99,
+            "description": "Sample mode: syncs only about this percentage of the files, to look at real documents before importing them all. A file is in the sample by a hash of its ID, so the same files stay in it from one sync to the next, spread over every folder. A file outside the sample is not imported, and its document is deleted if it has one. Absent when the source syncs every file."
+          },
+          "created_by": {
+            "type": "string"
+          },
+          "updated_by": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "type": {
+            "type": "string",
+            "const": "google-drive"
+          },
+          "reader_binding_id": {
+            "type": "string",
+            "pattern": "^[0-9a-fA-F]{24}$"
+          },
+          "selection": {
+            "$ref": "#/components/schemas/GoogleDriveSelection"
+          },
+          "permissions": {
+            "$ref": "#/components/schemas/GoogleDrivePermissionOptions"
+          },
+          "parent_source_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "location_root",
+          "sync",
+          "type",
+          "reader_binding_id",
+          "selection"
+        ],
+        "additionalProperties": false
+      },
+      "GoogleDriveContentSourcePermissions": {
+        "type": "object",
+        "properties": {
+          "mode": {
+            "type": "string",
+            "const": "source"
+          },
+          "provider": {
+            "type": "string",
+            "const": "google-drive"
+          },
+          "scim_connection_id": {
+            "type": "string",
+            "pattern": "^[0-9a-fA-F]{24}$"
+          },
+          "refresh_minutes": {
+            "type": "integer",
+            "minimum": 15,
+            "maximum": 1440
+          },
+          "max_stale_hours": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 168
+          }
+        },
+        "required": [
+          "mode",
+          "provider",
+          "scim_connection_id"
+        ],
+        "additionalProperties": false
+      },
+      "GoogleDrivePermissionOptions": {
+        "discriminator": {
+          "propertyName": "mode",
+          "mapping": {
+            "project": "#/components/schemas/ProjectContentSourcePermissions",
+            "source": "#/components/schemas/GoogleDriveContentSourcePermissions"
+          }
+        },
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/ProjectContentSourcePermissions"
+          },
+          {
+            "$ref": "#/components/schemas/GoogleDriveContentSourcePermissions"
+          }
+        ],
+        "type": "object",
+        "required": [
+          "mode"
+        ]
+      },
+      "GoogleDriveReader": {
+        "type": "object",
+        "properties": {
+          "audience": {
+            "type": "string",
+            "pattern": "^\\/\\/iam\\.googleapis\\.com\\/projects\\/[0-9]+\\/locations\\/global\\/workloadIdentityPools\\/[a-z0-9-]+\\/providers\\/[a-z0-9-]+$"
+          },
+          "service_account": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+@[a-z0-9-]+\\.iam\\.gserviceaccount\\.com$"
+          },
+          "id": {
+            "type": "string"
+          },
+          "issuer": {
+            "type": "string"
+          },
+          "subject": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "audience",
+          "service_account",
+          "id",
+          "issuer",
+          "subject"
+        ],
+        "additionalProperties": false
+      },
+      "GoogleDriveReaderConfig": {
+        "type": "object",
+        "properties": {
+          "audience": {
+            "type": "string",
+            "pattern": "^\\/\\/iam\\.googleapis\\.com\\/projects\\/[0-9]+\\/locations\\/global\\/workloadIdentityPools\\/[a-z0-9-]+\\/providers\\/[a-z0-9-]+$"
+          },
+          "service_account": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+@[a-z0-9-]+\\.iam\\.gserviceaccount\\.com$"
+          }
+        },
+        "required": [
+          "audience",
+          "service_account"
+        ],
+        "additionalProperties": false
+      },
+      "GoogleDriveSelection": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/SingleGoogleDriveSelection"
+          },
+          {
+            "$ref": "#/components/schemas/AllGoogleDrivesSelection"
+          }
+        ],
+        "discriminator": {
+          "propertyName": "mode",
+          "mapping": {
+            "single": "#/components/schemas/SingleGoogleDriveSelection",
+            "all": "#/components/schemas/AllGoogleDrivesSelection"
+          }
+        },
+        "type": "object",
+        "required": [
+          "mode"
+        ]
       },
       "GroqOptions": {
         "type": "object",
@@ -37931,6 +38197,10 @@
             "type": "string",
             "description": "The extracted text to store for the object."
           },
+          "expected_content_etag": {
+            "type": "string",
+            "description": "Reject stale text when the current content etag differs."
+          },
           "etag": {
             "type": "string",
             "description": "The etag of the content the text was extracted from. When provided, the server records it as the object text_etag so extraction can be skipped while the content is unchanged."
@@ -37999,7 +38269,7 @@
             "description": "The managed library uses its organization reader, without a project OAuth provider."
           },
           "permissions": {
-            "$ref": "#/components/schemas/ContentSourcePermissionSettings"
+            "$ref": "#/components/schemas/SharePointPermissionOptions"
           },
           "site_url": {
             "type": "string",
@@ -38456,6 +38726,27 @@
         ],
         "additionalProperties": false
       },
+      "SharePointPermissionOptions": {
+        "discriminator": {
+          "propertyName": "mode",
+          "mapping": {
+            "project": "#/components/schemas/ProjectContentSourcePermissions",
+            "source": "#/components/schemas/SharePointContentSourcePermissions"
+          }
+        },
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/ProjectContentSourcePermissions"
+          },
+          {
+            "$ref": "#/components/schemas/SharePointContentSourcePermissions"
+          }
+        ],
+        "type": "object",
+        "required": [
+          "mode"
+        ]
+      },
       "SharePointRegion": {
         "type": "object",
         "properties": {
@@ -38663,6 +38954,24 @@
           "ES256",
           "RS256"
         ]
+      },
+      "SingleGoogleDriveSelection": {
+        "type": "object",
+        "properties": {
+          "mode": {
+            "type": "string",
+            "const": "single"
+          },
+          "drive_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]{1,256}$"
+          }
+        },
+        "required": [
+          "mode",
+          "drive_id"
+        ],
+        "additionalProperties": false
       },
       "SkillContextTriggers": {
         "type": "object",
@@ -41270,7 +41579,7 @@
                   "minLength": 1
                 },
                 "source": {
-                  "pattern": "^(?:gs|s3|az|sharepoint|box)://[^/]+/.+"
+                  "pattern": "^(?:gs|s3|az|sharepoint|box|google-drive)://[^/]+/.+"
                 }
               }
             }
@@ -41339,6 +41648,9 @@
       "UpdateContentSourcePayload": {
         "type": "object",
         "properties": {
+          "selection": {
+            "$ref": "#/components/schemas/GoogleDriveSelection"
+          },
           "name": {
             "type": "string",
             "minLength": 1,
@@ -73195,6 +73507,293 @@
         }
       ]
     },
+    "/google-drive-readers": {
+      "post": {
+        "operationId": "ConfigureGoogleDriveReader",
+        "tags": [
+          "Content Sources"
+        ],
+        "summary": "Register a federated shared-drive reader",
+        "description": "**Required permissions:** `project:settings_write`",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OAuth2": [
+              "project:settings_write"
+            ]
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GoogleDriveReader"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [
+          "project:settings_write"
+        ],
+        "x-vertesia-source": {
+          "file": "../../apps/studio-server/src/api/google-drive-readers.ts",
+          "className": "GoogleDriveReadersResource",
+          "methodName": "configure"
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GoogleDriveReaderConfig"
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "x-api-version",
+          "in": "header",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S",
+            "example": "20260803"
+          },
+          "description": "Required Vertesia API version header. Use `20260803` for the current stable API shape.",
+          "x-vertesia-global-header": true
+        }
+      ]
+    },
+    "/google-drive-readers/{id}/drives": {
+      "get": {
+        "operationId": "ListGoogleDriveReaderDrives",
+        "tags": [
+          "Content Sources"
+        ],
+        "summary": "Discover shared drives the federated reader belongs to",
+        "description": "**Required permissions:** Any of `content_source:manage`, `project:settings_write`",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OAuth2": [
+              "project:settings_write"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContentSourceRootsDiscovery"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [
+          "content_source:manage",
+          "project:settings_write"
+        ],
+        "x-vertesia-source": {
+          "file": "../../apps/studio-server/src/api/google-drive-readers.ts",
+          "className": "GoogleDriveReadersResource",
+          "methodName": "drives"
+        }
+      },
+      "parameters": [
+        {
+          "name": "x-api-version",
+          "in": "header",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S",
+            "example": "20260803"
+          },
+          "description": "Required Vertesia API version header. Use `20260803` for the current stable API shape.",
+          "x-vertesia-global-header": true
+        }
+      ]
+    },
+    "/google-drive-readers/{id}": {
+      "delete": {
+        "operationId": "DisconnectGoogleDriveReader",
+        "tags": [
+          "Content Sources"
+        ],
+        "summary": "Disconnect the federated reader from all its sources",
+        "description": "**Required permissions:** `project:settings_write`",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OAuth2": [
+              "project:settings_write"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [
+          "project:settings_write"
+        ],
+        "x-vertesia-source": {
+          "file": "../../apps/studio-server/src/api/google-drive-readers.ts",
+          "className": "GoogleDriveReadersResource",
+          "methodName": "disconnect"
+        }
+      },
+      "parameters": [
+        {
+          "name": "x-api-version",
+          "in": "header",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S",
+            "example": "20260803"
+          },
+          "description": "Required Vertesia API version header. Use `20260803` for the current stable API shape.",
+          "x-vertesia-global-header": true
+        }
+      ]
+    },
     "/sharepoint-entry/region": {
       "get": {
         "operationId": "DiscoverSharePointRegion",
@@ -85977,6 +86576,101 @@
         }
       ]
     },
+    "/objects/{objectId}/import-drive-text": {
+      "post": {
+        "operationId": "ImportGoogleDocText",
+        "tags": [
+          "Objects"
+        ],
+        "summary": "Store a native Google Doc’s current Markdown export as its object text",
+        "description": "**Required permissions:** `content:write`",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OAuth2": [
+              "content:write"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "objectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The indexed Markdown text.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContentObjectTextResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [
+          "content:write"
+        ],
+        "x-vertesia-source": {
+          "file": "../../apps/zeno-server/src/api/objects.ts",
+          "className": "ContentObjectResource",
+          "methodName": "importDriveText"
+        }
+      },
+      "parameters": [
+        {
+          "name": "x-api-version",
+          "in": "header",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S",
+            "example": "20260803"
+          },
+          "description": "Required Vertesia API version header. Use `20260803` for the current stable API shape.",
+          "x-vertesia-global-header": true
+        }
+      ]
+    },
     "/objects/{objectId}/content-source": {
       "get": {
         "operationId": "GetObjectContentSource",
@@ -91852,6 +92546,112 @@
         },
         "requestBody": {
           "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SyncContentSourcePayload"
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "x-api-version",
+          "in": "header",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S",
+            "example": "20260803"
+          },
+          "description": "Required Vertesia API version header. Use `20260803` for the current stable API shape.",
+          "x-vertesia-global-header": true
+        }
+      ]
+    },
+    "/content-sources/{sourceId}/reconcile-drives": {
+      "post": {
+        "operationId": "ReconcileGoogleSharedDrives",
+        "tags": [
+          "Content Sources"
+        ],
+        "summary": "Discover selected shared drives and start their sync rounds",
+        "description": "**Required permissions:** Any of `content_source:manage`, `project:settings_write`",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "OAuth2": [
+              "project:settings_write"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "sourceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The selected drives were scheduled.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Internal Server Error",
+                  "status": 500,
+                  "message": "Internal server error."
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Bad Request",
+                  "status": 400,
+                  "message": "Request validation failed."
+                }
+              }
+            }
+          }
+        },
+        "x-vertesia-permissions": [
+          "content_source:manage",
+          "project:settings_write"
+        ],
+        "x-vertesia-source": {
+          "file": "../../apps/zeno-server/src/api/content-sources.ts",
+          "className": "ContentSourceResource",
+          "methodName": "reconcileDrives"
+        },
+        "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {

@@ -20,8 +20,8 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, Optional
 from typing_extensions import Annotated
-from vertesia_client.openapi.models.content_source_permission_settings import ContentSourcePermissionSettings
 from vertesia_client.openapi.models.content_source_sync_settings import ContentSourceSyncSettings
+from vertesia_client.openapi.models.share_point_permission_options import SharePointPermissionOptions
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -39,7 +39,7 @@ class CreateSharePointContentSourcePayload(BaseModel):
     sample_percent: Optional[Annotated[int, Field(strict=True)]] = Field(default=None, description="Sample mode: syncs only about this percentage of the files, to look at real documents before importing them all. A file is in the sample by a hash of its ID, so the same files stay in it from one sync to the next, spread over every folder. A file outside the sample is not imported, and its document is deleted if it has one. Leave out to sync every file.")
     type: StrictStr
     sharepoint_library_binding_id: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="The approved SharePoint library binding this source is registered for.")
-    permissions: Optional[ContentSourcePermissionSettings] = None
+    permissions: Optional[SharePointPermissionOptions] = None
     site_url: Annotated[str, Field(strict=True)] = Field(description="The SharePoint site URL, e.g. `https://contoso.sharepoint.com/sites/legal`.")
     library_name: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="The document library name. Defaults to the site’s default library.")
     folder_path: Optional[StrictStr] = Field(default=None, description="A folder inside the library, e.g. `Contracts/2026`. Defaults to the whole library.")
@@ -118,7 +118,7 @@ class CreateSharePointContentSourcePayload(BaseModel):
             "sample_percent": obj.get("sample_percent"),
             "type": obj.get("type"),
             "sharepoint_library_binding_id": obj.get("sharepoint_library_binding_id"),
-            "permissions": ContentSourcePermissionSettings.from_dict(obj["permissions"]) if obj.get("permissions") is not None else None,
+            "permissions": SharePointPermissionOptions.from_dict(obj["permissions"]) if obj.get("permissions") is not None else None,
             "site_url": obj.get("site_url"),
             "library_name": obj.get("library_name"),
             "folder_path": obj.get("folder_path")

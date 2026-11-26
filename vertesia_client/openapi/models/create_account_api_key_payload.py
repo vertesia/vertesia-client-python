@@ -34,7 +34,8 @@ class CreateAccountApiKeyPayload(BaseModel):
     expires_at: Optional[datetime] = None
     scim_entra_tenant_id: Optional[UUID] = None
     scim_entra_members_group_id: Optional[UUID] = None
-    __properties: ClassVar[List[str]] = ["name", "expires_at", "scim_entra_tenant_id", "scim_entra_members_group_id"]
+    scim_google_drive_reader_id: Optional[Annotated[str, Field(strict=True)]] = None
+    __properties: ClassVar[List[str]] = ["name", "expires_at", "scim_entra_tenant_id", "scim_entra_members_group_id", "scim_google_drive_reader_id"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -90,7 +91,8 @@ class CreateAccountApiKeyPayload(BaseModel):
             "name": obj.get("name"),
             "expires_at": obj.get("expires_at"),
             "scim_entra_tenant_id": obj.get("scim_entra_tenant_id"),
-            "scim_entra_members_group_id": obj.get("scim_entra_members_group_id")
+            "scim_entra_members_group_id": obj.get("scim_entra_members_group_id"),
+            "scim_google_drive_reader_id": obj.get("scim_google_drive_reader_id")
         })
         return _obj
 

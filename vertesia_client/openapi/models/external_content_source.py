@@ -20,12 +20,13 @@ import pprint
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, ValidationError, field_validator
 from typing import Any, List, Optional
 from vertesia_client.openapi.models.box_content_source import BoxContentSource
+from vertesia_client.openapi.models.google_drive_content_source import GoogleDriveContentSource
 from vertesia_client.openapi.models.share_point_content_source import SharePointContentSource
 from pydantic import StrictStr, Field
 from typing import Union, List, Set, Optional, Dict
 from typing_extensions import Literal, Self
 
-EXTERNALCONTENTSOURCE_ONE_OF_SCHEMAS = ["BoxContentSource", "SharePointContentSource"]
+EXTERNALCONTENTSOURCE_ONE_OF_SCHEMAS = ["BoxContentSource", "GoogleDriveContentSource", "SharePointContentSource"]
 
 class ExternalContentSource(BaseModel):
     """
@@ -35,8 +36,10 @@ class ExternalContentSource(BaseModel):
     oneof_schema_1_validator: Optional[SharePointContentSource] = None
     # data type: BoxContentSource
     oneof_schema_2_validator: Optional[BoxContentSource] = None
-    actual_instance: Optional[Union[BoxContentSource, SharePointContentSource]] = None
-    one_of_schemas: Set[str] = { "BoxContentSource", "SharePointContentSource" }
+    # data type: GoogleDriveContentSource
+    oneof_schema_3_validator: Optional[GoogleDriveContentSource] = None
+    actual_instance: Optional[Union[BoxContentSource, GoogleDriveContentSource, SharePointContentSource]] = None
+    one_of_schemas: Set[str] = { "BoxContentSource", "GoogleDriveContentSource", "SharePointContentSource" }
 
     model_config = ConfigDict(
         validate_assignment=True,
@@ -72,12 +75,17 @@ class ExternalContentSource(BaseModel):
             error_messages.append(f"Error! Input type `{type(v)}` is not `BoxContentSource`")
         else:
             match += 1
+        # validate data type: GoogleDriveContentSource
+        if not isinstance(v, GoogleDriveContentSource):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `GoogleDriveContentSource`")
+        else:
+            match += 1
         if match > 1:
             # more than 1 match
-            raise ValueError("Multiple matches found when setting `actual_instance` in ExternalContentSource with oneOf schemas: BoxContentSource, SharePointContentSource. Details: " + ", ".join(error_messages))
+            raise ValueError("Multiple matches found when setting `actual_instance` in ExternalContentSource with oneOf schemas: BoxContentSource, GoogleDriveContentSource, SharePointContentSource. Details: " + ", ".join(error_messages))
         elif match == 0:
             # no match
-            raise ValueError("No match found when setting `actual_instance` in ExternalContentSource with oneOf schemas: BoxContentSource, SharePointContentSource. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when setting `actual_instance` in ExternalContentSource with oneOf schemas: BoxContentSource, GoogleDriveContentSource, SharePointContentSource. Details: " + ", ".join(error_messages))
         else:
             return v
 
@@ -131,7 +139,7 @@ class ExternalContentSource(BaseModel):
         """Returns the object represented by the json string, dispatched on `type`"""
         data = json.loads(json_str)
         tag = data.get('type') if isinstance(data, dict) else None
-        branches = {'sharepoint': SharePointContentSource, 'box': BoxContentSource}
+        branches = {'sharepoint': SharePointContentSource, 'box': BoxContentSource, 'google-drive': GoogleDriveContentSource}
         if isinstance(tag, str) and tag in branches:
             instance = cls.model_construct()
             instance.actual_instance = branches[tag].from_json(json_str)
@@ -151,7 +159,7 @@ class ExternalContentSource(BaseModel):
         else:
             return json.dumps(self.actual_instance)
 
-    def to_dict(self) -> Optional[Union[Dict[str, Any], BoxContentSource, SharePointContentSource]]:
+    def to_dict(self) -> Optional[Union[Dict[str, Any], BoxContentSource, GoogleDriveContentSource, SharePointContentSource]]:
         """Returns the dict representation of the actual instance"""
         if self.actual_instance is None:
             return None

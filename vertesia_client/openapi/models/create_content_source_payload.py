@@ -20,12 +20,13 @@ import pprint
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, ValidationError, field_validator
 from typing import Any, List, Optional
 from vertesia_client.openapi.models.create_box_content_source_payload import CreateBoxContentSourcePayload
+from vertesia_client.openapi.models.create_google_drive_content_source_payload import CreateGoogleDriveContentSourcePayload
 from vertesia_client.openapi.models.create_share_point_content_source_payload import CreateSharePointContentSourcePayload
 from pydantic import StrictStr, Field
 from typing import Union, List, Set, Optional, Dict
 from typing_extensions import Literal, Self
 
-CREATECONTENTSOURCEPAYLOAD_ONE_OF_SCHEMAS = ["CreateBoxContentSourcePayload", "CreateSharePointContentSourcePayload"]
+CREATECONTENTSOURCEPAYLOAD_ONE_OF_SCHEMAS = ["CreateBoxContentSourcePayload", "CreateGoogleDriveContentSourcePayload", "CreateSharePointContentSourcePayload"]
 
 class CreateContentSourcePayload(BaseModel):
     """
@@ -35,8 +36,10 @@ class CreateContentSourcePayload(BaseModel):
     oneof_schema_1_validator: Optional[CreateSharePointContentSourcePayload] = None
     # data type: CreateBoxContentSourcePayload
     oneof_schema_2_validator: Optional[CreateBoxContentSourcePayload] = None
-    actual_instance: Optional[Union[CreateBoxContentSourcePayload, CreateSharePointContentSourcePayload]] = None
-    one_of_schemas: Set[str] = { "CreateBoxContentSourcePayload", "CreateSharePointContentSourcePayload" }
+    # data type: CreateGoogleDriveContentSourcePayload
+    oneof_schema_3_validator: Optional[CreateGoogleDriveContentSourcePayload] = None
+    actual_instance: Optional[Union[CreateBoxContentSourcePayload, CreateGoogleDriveContentSourcePayload, CreateSharePointContentSourcePayload]] = None
+    one_of_schemas: Set[str] = { "CreateBoxContentSourcePayload", "CreateGoogleDriveContentSourcePayload", "CreateSharePointContentSourcePayload" }
 
     model_config = ConfigDict(
         validate_assignment=True,
@@ -72,12 +75,17 @@ class CreateContentSourcePayload(BaseModel):
             error_messages.append(f"Error! Input type `{type(v)}` is not `CreateBoxContentSourcePayload`")
         else:
             match += 1
+        # validate data type: CreateGoogleDriveContentSourcePayload
+        if not isinstance(v, CreateGoogleDriveContentSourcePayload):
+            error_messages.append(f"Error! Input type `{type(v)}` is not `CreateGoogleDriveContentSourcePayload`")
+        else:
+            match += 1
         if match > 1:
             # more than 1 match
-            raise ValueError("Multiple matches found when setting `actual_instance` in CreateContentSourcePayload with oneOf schemas: CreateBoxContentSourcePayload, CreateSharePointContentSourcePayload. Details: " + ", ".join(error_messages))
+            raise ValueError("Multiple matches found when setting `actual_instance` in CreateContentSourcePayload with oneOf schemas: CreateBoxContentSourcePayload, CreateGoogleDriveContentSourcePayload, CreateSharePointContentSourcePayload. Details: " + ", ".join(error_messages))
         elif match == 0:
             # no match
-            raise ValueError("No match found when setting `actual_instance` in CreateContentSourcePayload with oneOf schemas: CreateBoxContentSourcePayload, CreateSharePointContentSourcePayload. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when setting `actual_instance` in CreateContentSourcePayload with oneOf schemas: CreateBoxContentSourcePayload, CreateGoogleDriveContentSourcePayload, CreateSharePointContentSourcePayload. Details: " + ", ".join(error_messages))
         else:
             return v
 
@@ -131,7 +139,7 @@ class CreateContentSourcePayload(BaseModel):
         """Returns the object represented by the json string, dispatched on `type`"""
         data = json.loads(json_str)
         tag = data.get('type') if isinstance(data, dict) else None
-        branches = {'sharepoint': CreateSharePointContentSourcePayload, 'box': CreateBoxContentSourcePayload}
+        branches = {'sharepoint': CreateSharePointContentSourcePayload, 'box': CreateBoxContentSourcePayload, 'google-drive': CreateGoogleDriveContentSourcePayload}
         if isinstance(tag, str) and tag in branches:
             instance = cls.model_construct()
             instance.actual_instance = branches[tag].from_json(json_str)
@@ -151,7 +159,7 @@ class CreateContentSourcePayload(BaseModel):
         else:
             return json.dumps(self.actual_instance)
 
-    def to_dict(self) -> Optional[Union[Dict[str, Any], CreateBoxContentSourcePayload, CreateSharePointContentSourcePayload]]:
+    def to_dict(self) -> Optional[Union[Dict[str, Any], CreateBoxContentSourcePayload, CreateGoogleDriveContentSourcePayload, CreateSharePointContentSourcePayload]]:
         """Returns the dict representation of the actual instance"""
         if self.actual_instance is None:
             return None

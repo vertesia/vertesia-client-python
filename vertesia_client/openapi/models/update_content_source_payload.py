@@ -22,6 +22,7 @@ from typing import Any, ClassVar, Dict, Optional
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.content_source_permission_settings import ContentSourcePermissionSettings
 from vertesia_client.openapi.models.content_source_sync_settings import ContentSourceSyncSettings
+from vertesia_client.openapi.models.google_drive_selection import GoogleDriveSelection
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -30,6 +31,7 @@ class UpdateContentSourcePayload(BaseModel):
     """
     Changes the name, description, sync settings or sample, and, before the first sync, the root and folder to sync. Saving sync settings also hands the sync your credentials, which restarts a sync stopped because its previous credentials were refused.
     """ # noqa: E501
+    selection: Optional[GoogleDriveSelection] = None
     name: Optional[Annotated[str, Field(strict=True)]] = None
     description: Optional[StrictStr] = None
     sync: Optional[ContentSourceSyncSettings] = None
@@ -38,7 +40,7 @@ class UpdateContentSourcePayload(BaseModel):
     root_id: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Only before the first sync: the root to sync, as `discover/roots` returned it (a SharePoint document library; for Box, a folder shared with the app). Answers 409 once the source has synced.")
     folder_id: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Only before the first sync: the folder to sync, as a folder listing returned its `id`. Answers 409 once the source has synced.")
     folder_path: Optional[StrictStr] = Field(default=None, description="SharePoint only, and only before the first sync: the folder to sync inside the library, e.g. `Contracts/2026`; empty for the whole library. Answers 409 once the source has synced.")
-    __properties: ClassVar[List[str]] = ["name", "description", "sync", "sample_percent", "permissions", "root_id", "folder_id", "folder_path"]
+    __properties: ClassVar[List[str]] = ["selection", "name", "description", "sync", "sample_percent", "permissions", "root_id", "folder_id", "folder_path"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -79,6 +81,9 @@ class UpdateContentSourcePayload(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of selection
+        if self.selection:
+            _dict['selection'] = self.selection.to_dict()
         # override the default output from pydantic by calling `to_dict()` of sync
         if self.sync:
             _dict['sync'] = self.sync.to_dict()
@@ -102,6 +107,7 @@ class UpdateContentSourcePayload(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "selection": GoogleDriveSelection.from_dict(obj["selection"]) if obj.get("selection") is not None else None,
             "name": obj.get("name"),
             "description": obj.get("description"),
             "sync": ContentSourceSyncSettings.from_dict(obj["sync"]) if obj.get("sync") is not None else None,

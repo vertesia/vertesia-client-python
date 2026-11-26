@@ -123,6 +123,7 @@ vertesia_client/openapi/models/agentic_view_search_configuration.py
 vertesia_client/openapi/models/aggregated_tool.py
 vertesia_client/openapi/models/ai_model.py
 vertesia_client/openapi/models/ai_model_status.py
+vertesia_client/openapi/models/all_google_drives_selection.py
 vertesia_client/openapi/models/allocate_agent_run_budget_payload.py
 vertesia_client/openapi/models/allocate_agent_run_budget_payload_any_of.py
 vertesia_client/openapi/models/allocate_agent_run_budget_payload_any_of1.py
@@ -465,6 +466,7 @@ vertesia_client/openapi/models/create_email_route_request.py
 vertesia_client/openapi/models/create_email_route_response.py
 vertesia_client/openapi/models/create_event_ingest_channel_payload.py
 vertesia_client/openapi/models/create_event_subscription_payload.py
+vertesia_client/openapi/models/create_google_drive_content_source_payload.py
 vertesia_client/openapi/models/create_inference_profile_payload.py
 vertesia_client/openapi/models/create_o_auth_client_payload.py
 vertesia_client/openapi/models/create_o_auth_provider_payload.py
@@ -694,6 +696,12 @@ vertesia_client/openapi/models/github_configuration.py
 vertesia_client/openapi/models/github_configuration_input.py
 vertesia_client/openapi/models/gladia_configuration.py
 vertesia_client/openapi/models/gladia_configuration_input.py
+vertesia_client/openapi/models/google_drive_content_source.py
+vertesia_client/openapi/models/google_drive_content_source_permissions.py
+vertesia_client/openapi/models/google_drive_permission_options.py
+vertesia_client/openapi/models/google_drive_reader.py
+vertesia_client/openapi/models/google_drive_reader_config.py
+vertesia_client/openapi/models/google_drive_selection.py
 vertesia_client/openapi/models/groq_options.py
 vertesia_client/openapi/models/grounded_assistant_response.py
 vertesia_client/openapi/models/grounded_extraction_request.py
@@ -1123,6 +1131,7 @@ vertesia_client/openapi/models/share_point_organization.py
 vertesia_client/openapi/models/share_point_organization_link_attempt.py
 vertesia_client/openapi/models/share_point_organization_reader.py
 vertesia_client/openapi/models/share_point_organizations.py
+vertesia_client/openapi/models/share_point_permission_options.py
 vertesia_client/openapi/models/share_point_region.py
 vertesia_client/openapi/models/share_point_request_project.py
 vertesia_client/openapi/models/signal_agent_response.py
@@ -1130,6 +1139,7 @@ vertesia_client/openapi/models/signal_event_properties.py
 vertesia_client/openapi/models/signal_event_properties_sender.py
 vertesia_client/openapi/models/signal_task.py
 vertesia_client/openapi/models/signing_algorithm.py
+vertesia_client/openapi/models/single_google_drive_selection.py
 vertesia_client/openapi/models/skill_context_triggers.py
 vertesia_client/openapi/models/sort_option.py
 vertesia_client/openapi/models/sort_order.py

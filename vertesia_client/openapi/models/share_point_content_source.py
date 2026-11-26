@@ -21,8 +21,8 @@ from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, Optional
 from typing_extensions import Annotated
-from vertesia_client.openapi.models.content_source_permission_settings import ContentSourcePermissionSettings
 from vertesia_client.openapi.models.content_source_sync_settings import ContentSourceSyncSettings
+from vertesia_client.openapi.models.share_point_permission_options import SharePointPermissionOptions
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
@@ -45,7 +45,7 @@ class SharePointContentSource(BaseModel):
     updated_at: Optional[datetime] = None
     type: StrictStr
     reader_mode: Optional[StrictStr] = Field(default=None, description="The managed library uses its organization reader, without a project OAuth provider.")
-    permissions: Optional[ContentSourcePermissionSettings] = None
+    permissions: Optional[SharePointPermissionOptions] = None
     site_url: StrictStr = Field(description="The SharePoint site URL the source was created from.")
     site_id: StrictStr = Field(description="The Microsoft Graph site ID.")
     drive_id: StrictStr = Field(description="The Microsoft Graph drive ID of the document library.")
@@ -140,7 +140,7 @@ class SharePointContentSource(BaseModel):
             "updated_at": obj.get("updated_at"),
             "type": obj.get("type"),
             "reader_mode": obj.get("reader_mode"),
-            "permissions": ContentSourcePermissionSettings.from_dict(obj["permissions"]) if obj.get("permissions") is not None else None,
+            "permissions": SharePointPermissionOptions.from_dict(obj["permissions"]) if obj.get("permissions") is not None else None,
             "site_url": obj.get("site_url"),
             "site_id": obj.get("site_id"),
             "drive_id": obj.get("drive_id"),

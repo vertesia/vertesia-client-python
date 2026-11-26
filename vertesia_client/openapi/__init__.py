@@ -145,6 +145,7 @@ __all__ = [
     "AgenticViewRerankConfiguration",
     "AgenticViewSearchConfiguration",
     "AggregatedTool",
+    "AllGoogleDrivesSelection",
     "AllocateAgentRunBudgetPayload",
     "AllocateAgentRunBudgetPayloadAnyOf",
     "AllocateAgentRunBudgetPayloadAnyOf1",
@@ -487,6 +488,7 @@ __all__ = [
     "CreateEmailRouteResponse",
     "CreateEventIngestChannelPayload",
     "CreateEventSubscriptionPayload",
+    "CreateGoogleDriveContentSourcePayload",
     "CreateInferenceProfilePayload",
     "CreateOAuthClientPayload",
     "CreateOAuthProviderPayload",
@@ -716,6 +718,12 @@ __all__ = [
     "GithubConfigurationInput",
     "GladiaConfiguration",
     "GladiaConfigurationInput",
+    "GoogleDriveContentSource",
+    "GoogleDriveContentSourcePermissions",
+    "GoogleDrivePermissionOptions",
+    "GoogleDriveReader",
+    "GoogleDriveReaderConfig",
+    "GoogleDriveSelection",
     "GroqOptions",
     "GroundedAssistantResponse",
     "GroundedExtractionRequest",
@@ -1145,6 +1153,7 @@ __all__ = [
     "SharePointOrganizationLinkAttempt",
     "SharePointOrganizationReader",
     "SharePointOrganizations",
+    "SharePointPermissionOptions",
     "SharePointRegion",
     "SharePointRequestProject",
     "SignalAgentResponse",
@@ -1152,6 +1161,7 @@ __all__ = [
     "SignalEventPropertiesSender",
     "SignalTask",
     "SigningAlgorithm",
+    "SingleGoogleDriveSelection",
     "SkillContextTriggers",
     "SortOption",
     "SortOrder",
@@ -1544,6 +1554,7 @@ from vertesia_client.openapi.models.agent_tool_definition import AgentToolDefini
 from vertesia_client.openapi.models.agentic_view_rerank_configuration import AgenticViewRerankConfiguration as AgenticViewRerankConfiguration
 from vertesia_client.openapi.models.agentic_view_search_configuration import AgenticViewSearchConfiguration as AgenticViewSearchConfiguration
 from vertesia_client.openapi.models.aggregated_tool import AggregatedTool as AggregatedTool
+from vertesia_client.openapi.models.all_google_drives_selection import AllGoogleDrivesSelection as AllGoogleDrivesSelection
 from vertesia_client.openapi.models.allocate_agent_run_budget_payload import AllocateAgentRunBudgetPayload as AllocateAgentRunBudgetPayload
 from vertesia_client.openapi.models.allocate_agent_run_budget_payload_any_of import AllocateAgentRunBudgetPayloadAnyOf as AllocateAgentRunBudgetPayloadAnyOf
 from vertesia_client.openapi.models.allocate_agent_run_budget_payload_any_of1 import AllocateAgentRunBudgetPayloadAnyOf1 as AllocateAgentRunBudgetPayloadAnyOf1
@@ -1886,6 +1897,7 @@ from vertesia_client.openapi.models.create_email_route_request import CreateEmai
 from vertesia_client.openapi.models.create_email_route_response import CreateEmailRouteResponse as CreateEmailRouteResponse
 from vertesia_client.openapi.models.create_event_ingest_channel_payload import CreateEventIngestChannelPayload as CreateEventIngestChannelPayload
 from vertesia_client.openapi.models.create_event_subscription_payload import CreateEventSubscriptionPayload as CreateEventSubscriptionPayload
+from vertesia_client.openapi.models.create_google_drive_content_source_payload import CreateGoogleDriveContentSourcePayload as CreateGoogleDriveContentSourcePayload
 from vertesia_client.openapi.models.create_inference_profile_payload import CreateInferenceProfilePayload as CreateInferenceProfilePayload
 from vertesia_client.openapi.models.create_o_auth_client_payload import CreateOAuthClientPayload as CreateOAuthClientPayload
 from vertesia_client.openapi.models.create_o_auth_provider_payload import CreateOAuthProviderPayload as CreateOAuthProviderPayload
@@ -2115,6 +2127,12 @@ from vertesia_client.openapi.models.github_configuration import GithubConfigurat
 from vertesia_client.openapi.models.github_configuration_input import GithubConfigurationInput as GithubConfigurationInput
 from vertesia_client.openapi.models.gladia_configuration import GladiaConfiguration as GladiaConfiguration
 from vertesia_client.openapi.models.gladia_configuration_input import GladiaConfigurationInput as GladiaConfigurationInput
+from vertesia_client.openapi.models.google_drive_content_source import GoogleDriveContentSource as GoogleDriveContentSource
+from vertesia_client.openapi.models.google_drive_content_source_permissions import GoogleDriveContentSourcePermissions as GoogleDriveContentSourcePermissions
+from vertesia_client.openapi.models.google_drive_permission_options import GoogleDrivePermissionOptions as GoogleDrivePermissionOptions
+from vertesia_client.openapi.models.google_drive_reader import GoogleDriveReader as GoogleDriveReader
+from vertesia_client.openapi.models.google_drive_reader_config import GoogleDriveReaderConfig as GoogleDriveReaderConfig
+from vertesia_client.openapi.models.google_drive_selection import GoogleDriveSelection as GoogleDriveSelection
 from vertesia_client.openapi.models.groq_options import GroqOptions as GroqOptions
 from vertesia_client.openapi.models.grounded_assistant_response import GroundedAssistantResponse as GroundedAssistantResponse
 from vertesia_client.openapi.models.grounded_extraction_request import GroundedExtractionRequest as GroundedExtractionRequest
@@ -2544,6 +2562,7 @@ from vertesia_client.openapi.models.share_point_organization import SharePointOr
 from vertesia_client.openapi.models.share_point_organization_link_attempt import SharePointOrganizationLinkAttempt as SharePointOrganizationLinkAttempt
 from vertesia_client.openapi.models.share_point_organization_reader import SharePointOrganizationReader as SharePointOrganizationReader
 from vertesia_client.openapi.models.share_point_organizations import SharePointOrganizations as SharePointOrganizations
+from vertesia_client.openapi.models.share_point_permission_options import SharePointPermissionOptions as SharePointPermissionOptions
 from vertesia_client.openapi.models.share_point_region import SharePointRegion as SharePointRegion
 from vertesia_client.openapi.models.share_point_request_project import SharePointRequestProject as SharePointRequestProject
 from vertesia_client.openapi.models.signal_agent_response import SignalAgentResponse as SignalAgentResponse
@@ -2551,6 +2570,7 @@ from vertesia_client.openapi.models.signal_event_properties import SignalEventPr
 from vertesia_client.openapi.models.signal_event_properties_sender import SignalEventPropertiesSender as SignalEventPropertiesSender
 from vertesia_client.openapi.models.signal_task import SignalTask as SignalTask
 from vertesia_client.openapi.models.signing_algorithm import SigningAlgorithm as SigningAlgorithm
+from vertesia_client.openapi.models.single_google_drive_selection import SingleGoogleDriveSelection as SingleGoogleDriveSelection
 from vertesia_client.openapi.models.skill_context_triggers import SkillContextTriggers as SkillContextTriggers
 from vertesia_client.openapi.models.sort_option import SortOption as SortOption
 from vertesia_client.openapi.models.sort_order import SortOrder as SortOrder

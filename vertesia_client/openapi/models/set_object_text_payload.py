@@ -28,8 +28,9 @@ class SetObjectTextPayload(BaseModel):
     Payload for storing the extracted text of a content object as a text artifact.
     """ # noqa: E501
     text: StrictStr = Field(description="The extracted text to store for the object.")
+    expected_content_etag: Optional[StrictStr] = Field(default=None, description="Reject stale text when the current content etag differs.")
     etag: Optional[StrictStr] = Field(default=None, description="The etag of the content the text was extracted from. When provided, the server records it as the object text_etag so extraction can be skipped while the content is unchanged.")
-    __properties: ClassVar[List[str]] = ["text", "etag"]
+    __properties: ClassVar[List[str]] = ["text", "expected_content_etag", "etag"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -83,6 +84,7 @@ class SetObjectTextPayload(BaseModel):
 
         _obj = cls.model_validate({
             "text": obj.get("text"),
+            "expected_content_etag": obj.get("expected_content_etag"),
             "etag": obj.get("etag")
         })
         return _obj
