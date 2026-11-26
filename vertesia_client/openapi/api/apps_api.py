@@ -14657,6 +14657,7 @@ class AppsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "StartAppScaffoldResponse",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -14730,6 +14731,7 @@ class AppsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "StartAppScaffoldResponse",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }
@@ -14803,6 +14805,7 @@ class AppsApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "StartAppScaffoldResponse",
+            '409': None,
             '500': "ErrorResponse",
             '4XX': "ErrorResponse",
         }

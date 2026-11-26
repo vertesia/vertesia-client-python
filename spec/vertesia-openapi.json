@@ -66978,6 +66978,9 @@
               }
             }
           },
+          "409": {
+            "description": "The app name is not available: another app in the region already uses it."
+          },
           "500": {
             "description": "Internal server error.",
             "content": {
