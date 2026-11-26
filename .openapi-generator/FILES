@@ -392,9 +392,11 @@ vertesia_client/openapi/models/content_source_column.py
 vertesia_client/openapi/models/content_source_column_type.py
 vertesia_client/openapi/models/content_source_content_type.py
 vertesia_client/openapi/models/content_source_content_type_count.py
+vertesia_client/openapi/models/content_source_file_download.py
 vertesia_client/openapi/models/content_source_folder.py
 vertesia_client/openapi/models/content_source_folders_discovery.py
 vertesia_client/openapi/models/content_source_library.py
+vertesia_client/openapi/models/content_source_notification_status.py
 vertesia_client/openapi/models/content_source_permission_settings.py
 vertesia_client/openapi/models/content_source_permission_status.py
 vertesia_client/openapi/models/content_source_report.py
@@ -549,6 +551,7 @@ vertesia_client/openapi/models/delete_count_result.py
 vertesia_client/openapi/models/delete_file_result.py
 vertesia_client/openapi/models/delete_operation_result.py
 vertesia_client/openapi/models/delete_secret_response.py
+vertesia_client/openapi/models/discover_content_source_file_payload.py
 vertesia_client/openapi/models/discover_content_source_folders_payload.py
 vertesia_client/openapi/models/discover_content_source_sample_payload.py
 vertesia_client/openapi/models/discover_content_source_schema_payload.py
@@ -740,6 +743,7 @@ vertesia_client/openapi/models/inference_profile_usage.py
 vertesia_client/openapi/models/inference_profile_usage_entry.py
 vertesia_client/openapi/models/inherited_property_metadata.py
 vertesia_client/openapi/models/initial_tool_call.py
+vertesia_client/openapi/models/inspect_content_source_file_payload.py
 vertesia_client/openapi/models/inspect_content_source_folders_payload.py
 vertesia_client/openapi/models/inspect_content_source_sample_payload.py
 vertesia_client/openapi/models/inspect_content_source_schema_payload.py

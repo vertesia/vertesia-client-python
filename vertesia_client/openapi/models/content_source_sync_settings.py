@@ -18,7 +18,7 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool
-from typing import Any, ClassVar, Dict
+from typing import Any, ClassVar, Dict, Optional
 from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
@@ -30,7 +30,8 @@ class ContentSourceSyncSettings(BaseModel):
     """ # noqa: E501
     enabled: StrictBool = Field(description="Whether the source syncs on its own every `interval_minutes`.")
     interval_minutes: Annotated[int, Field(strict=True)] = Field(description="Minutes between two scheduled syncs, from one scheduled time to the next.")
-    __properties: ClassVar[List[str]] = ["enabled", "interval_minutes"]
+    notifications: Optional[StrictBool] = Field(default=None, description="Also sync as soon as the system notifies a change, instead of waiting for the next scheduled sync. Off unless set to `true`. Needs `enabled`, a system that sends change notifications (SharePoint) and a region where they are available: the status says whether they are active. When absent in an update, the stored value is kept.")
+    __properties: ClassVar[List[str]] = ["enabled", "interval_minutes", "notifications"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -84,7 +85,8 @@ class ContentSourceSyncSettings(BaseModel):
 
         _obj = cls.model_validate({
             "enabled": obj.get("enabled"),
-            "interval_minutes": obj.get("interval_minutes")
+            "interval_minutes": obj.get("interval_minutes"),
+            "notifications": obj.get("notifications")
         })
         return _obj
 

@@ -18,7 +18,7 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
-from typing import Any, ClassVar, Dict, Optional
+from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.content_source_permission_settings import ContentSourcePermissionSettings
 from vertesia_client.openapi.models.content_source_sync_settings import ContentSourceSyncSettings
@@ -35,12 +35,13 @@ class UpdateContentSourcePayload(BaseModel):
     name: Optional[Annotated[str, Field(strict=True)]] = None
     description: Optional[StrictStr] = None
     sync: Optional[ContentSourceSyncSettings] = None
-    sample_percent: Optional[Annotated[int, Field(strict=True)]] = Field(default=None, description="Sample mode: syncs only about this percentage of the files, to look at real documents before importing them all. A file is in the sample by a hash of its ID, so the same files stay in it from one sync to the next, spread over every folder. A file outside the sample is not imported, and its document is deleted if it has one. `null` removes the sample, so that every file is synced. A change, before or after the first sync, makes the next sync an import that lists the whole folder: it imports the files that entered the sample and deletes the documents of those that left it.")
+    sample_percent: Optional[Annotated[int, Field(strict=True)]] = Field(default=None, description="Sample mode: syncs only about this percentage of the files, to look at real documents before importing them all. A file is in the sample by a hash of its ID, so the same files stay in it from one sync to the next, spread over every folder. A file outside the sample is not imported, and its document is deleted if it has one. `null` removes the sample, of either kind, so that every file is synced. A change, before or after the first sync, makes the next sync an import that lists the whole folder: it imports the files that entered the sample and deletes the documents of those that left it. A percentage replaces a sample of chosen files.")
+    sample_item_ids: Optional[Annotated[List[Annotated[str, Field(strict=True)]], Field()]] = Field(default=None, description="Sample mode with chosen files: syncs only the files with these IDs, as a sample or a file listing returned them, at most 200. A file outside the list is not imported, and its document is deleted if it has one. The list replaces a percentage, and `sample_percent: null` removes either kind of sample; giving both fields in one request is refused. A change makes the next sync an import, as for `sample_percent`.")
     permissions: Optional[ContentSourcePermissionSettings] = None
     root_id: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Only before the first sync: the root to sync, as `discover/roots` returned it (a SharePoint document library; for Box, a folder shared with the app). Answers 409 once the source has synced.")
     folder_id: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Only before the first sync: the folder to sync, as a folder listing returned its `id`. Answers 409 once the source has synced.")
     folder_path: Optional[StrictStr] = Field(default=None, description="SharePoint only, and only before the first sync: the folder to sync inside the library, e.g. `Contracts/2026`; empty for the whole library. Answers 409 once the source has synced.")
-    __properties: ClassVar[List[str]] = ["selection", "name", "description", "sync", "sample_percent", "permissions", "root_id", "folder_id", "folder_path"]
+    __properties: ClassVar[List[str]] = ["selection", "name", "description", "sync", "sample_percent", "sample_item_ids", "permissions", "root_id", "folder_id", "folder_path"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -112,6 +113,7 @@ class UpdateContentSourcePayload(BaseModel):
             "description": obj.get("description"),
             "sync": ContentSourceSyncSettings.from_dict(obj["sync"]) if obj.get("sync") is not None else None,
             "sample_percent": obj.get("sample_percent"),
+            "sample_item_ids": obj.get("sample_item_ids"),
             "permissions": ContentSourcePermissionSettings.from_dict(obj["permissions"]) if obj.get("permissions") is not None else None,
             "root_id": obj.get("root_id"),
             "folder_id": obj.get("folder_id"),

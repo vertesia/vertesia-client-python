@@ -414,9 +414,11 @@ __all__ = [
     "ContentSourceColumnType",
     "ContentSourceContentType",
     "ContentSourceContentTypeCount",
+    "ContentSourceFileDownload",
     "ContentSourceFolder",
     "ContentSourceFoldersDiscovery",
     "ContentSourceLibrary",
+    "ContentSourceNotificationStatus",
     "ContentSourcePermissionSettings",
     "ContentSourcePermissionStatus",
     "ContentSourceReport",
@@ -582,6 +584,7 @@ __all__ = [
     "DeleteFileResult",
     "DeleteOperationResult",
     "DeleteSecretResponse",
+    "DiscoverContentSourceFilePayload",
     "DiscoverContentSourceFoldersPayload",
     "DiscoverContentSourceSamplePayload",
     "DiscoverContentSourceSchemaPayload",
@@ -762,6 +765,7 @@ __all__ = [
     "InferenceProfileUsageEntry",
     "InheritedPropertyMetadata",
     "InitialToolCall",
+    "InspectContentSourceFilePayload",
     "InspectContentSourceFoldersPayload",
     "InspectContentSourceSamplePayload",
     "InspectContentSourceSchemaPayload",
@@ -1823,9 +1827,11 @@ from vertesia_client.openapi.models.content_source_column import ContentSourceCo
 from vertesia_client.openapi.models.content_source_column_type import ContentSourceColumnType as ContentSourceColumnType
 from vertesia_client.openapi.models.content_source_content_type import ContentSourceContentType as ContentSourceContentType
 from vertesia_client.openapi.models.content_source_content_type_count import ContentSourceContentTypeCount as ContentSourceContentTypeCount
+from vertesia_client.openapi.models.content_source_file_download import ContentSourceFileDownload as ContentSourceFileDownload
 from vertesia_client.openapi.models.content_source_folder import ContentSourceFolder as ContentSourceFolder
 from vertesia_client.openapi.models.content_source_folders_discovery import ContentSourceFoldersDiscovery as ContentSourceFoldersDiscovery
 from vertesia_client.openapi.models.content_source_library import ContentSourceLibrary as ContentSourceLibrary
+from vertesia_client.openapi.models.content_source_notification_status import ContentSourceNotificationStatus as ContentSourceNotificationStatus
 from vertesia_client.openapi.models.content_source_permission_settings import ContentSourcePermissionSettings as ContentSourcePermissionSettings
 from vertesia_client.openapi.models.content_source_permission_status import ContentSourcePermissionStatus as ContentSourcePermissionStatus
 from vertesia_client.openapi.models.content_source_report import ContentSourceReport as ContentSourceReport
@@ -1991,6 +1997,7 @@ from vertesia_client.openapi.models.delete_count_result import DeleteCountResult
 from vertesia_client.openapi.models.delete_file_result import DeleteFileResult as DeleteFileResult
 from vertesia_client.openapi.models.delete_operation_result import DeleteOperationResult as DeleteOperationResult
 from vertesia_client.openapi.models.delete_secret_response import DeleteSecretResponse as DeleteSecretResponse
+from vertesia_client.openapi.models.discover_content_source_file_payload import DiscoverContentSourceFilePayload as DiscoverContentSourceFilePayload
 from vertesia_client.openapi.models.discover_content_source_folders_payload import DiscoverContentSourceFoldersPayload as DiscoverContentSourceFoldersPayload
 from vertesia_client.openapi.models.discover_content_source_sample_payload import DiscoverContentSourceSamplePayload as DiscoverContentSourceSamplePayload
 from vertesia_client.openapi.models.discover_content_source_schema_payload import DiscoverContentSourceSchemaPayload as DiscoverContentSourceSchemaPayload
@@ -2171,6 +2178,7 @@ from vertesia_client.openapi.models.inference_profile_usage import InferenceProf
 from vertesia_client.openapi.models.inference_profile_usage_entry import InferenceProfileUsageEntry as InferenceProfileUsageEntry
 from vertesia_client.openapi.models.inherited_property_metadata import InheritedPropertyMetadata as InheritedPropertyMetadata
 from vertesia_client.openapi.models.initial_tool_call import InitialToolCall as InitialToolCall
+from vertesia_client.openapi.models.inspect_content_source_file_payload import InspectContentSourceFilePayload as InspectContentSourceFilePayload
 from vertesia_client.openapi.models.inspect_content_source_folders_payload import InspectContentSourceFoldersPayload as InspectContentSourceFoldersPayload
 from vertesia_client.openapi.models.inspect_content_source_sample_payload import InspectContentSourceSamplePayload as InspectContentSourceSamplePayload
 from vertesia_client.openapi.models.inspect_content_source_schema_payload import InspectContentSourceSchemaPayload as InspectContentSourceSchemaPayload

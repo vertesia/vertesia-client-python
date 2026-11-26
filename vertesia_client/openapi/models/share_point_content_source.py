@@ -19,7 +19,7 @@ import json
 
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
-from typing import Any, ClassVar, Dict, Optional
+from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.content_source_sync_settings import ContentSourceSyncSettings
 from vertesia_client.openapi.models.share_point_permission_options import SharePointPermissionOptions
@@ -38,7 +38,8 @@ class SharePointContentSource(BaseModel):
     location_root: StrictStr = Field(description="The `location` under which the source folder's tree is reproduced, e.g. `/sharepoint/legal`.")
     collection_id: Optional[StrictStr] = Field(default=None, description="Collection that synced documents are added to, if any.")
     sync: ContentSourceSyncSettings
-    sample_percent: Optional[Annotated[int, Field(strict=True)]] = Field(default=None, description="Sample mode: syncs only about this percentage of the files, to look at real documents before importing them all. A file is in the sample by a hash of its ID, so the same files stay in it from one sync to the next, spread over every folder. A file outside the sample is not imported, and its document is deleted if it has one. Absent when the source syncs every file.")
+    sample_percent: Optional[Annotated[int, Field(strict=True)]] = Field(default=None, description="Sample mode: syncs only about this percentage of the files, to look at real documents before importing them all. A file is in the sample by a hash of its ID, so the same files stay in it from one sync to the next, spread over every folder. A file outside the sample is not imported, and its document is deleted if it has one. Absent when the source syncs every file. 1 beside `sample_item_ids`, for clients that predate the list: the list decides.")
+    sample_item_ids: Optional[Annotated[List[Annotated[str, Field(strict=True)]], Field()]] = Field(default=None, description="Sample mode with chosen files: syncs only the files with these IDs, as a sample or a file listing returned them, at most 200. A file outside the list is not imported, and its document is deleted if it has one. Absent unless the sample is of chosen files.")
     created_by: Optional[StrictStr] = None
     updated_by: Optional[StrictStr] = None
     created_at: Optional[datetime] = None
@@ -52,7 +53,7 @@ class SharePointContentSource(BaseModel):
     library_name: StrictStr = Field(description="The document library name.")
     folder_path: StrictStr = Field(description="The folder synced, relative to the library root. Empty for the whole library.")
     folder_item_id: StrictStr = Field(description="The Microsoft Graph item ID of the synced folder.")
-    __properties: ClassVar[List[str]] = ["id", "name", "description", "oauth_provider_id", "location_root", "collection_id", "sync", "sample_percent", "created_by", "updated_by", "created_at", "updated_at", "type", "reader_mode", "permissions", "site_url", "site_id", "drive_id", "library_name", "folder_path", "folder_item_id"]
+    __properties: ClassVar[List[str]] = ["id", "name", "description", "oauth_provider_id", "location_root", "collection_id", "sync", "sample_percent", "sample_item_ids", "created_by", "updated_by", "created_at", "updated_at", "type", "reader_mode", "permissions", "site_url", "site_id", "drive_id", "library_name", "folder_path", "folder_item_id"]
 
     @field_validator('type')
     def type_validate_enum(cls, value):
@@ -134,6 +135,7 @@ class SharePointContentSource(BaseModel):
             "collection_id": obj.get("collection_id"),
             "sync": ContentSourceSyncSettings.from_dict(obj["sync"]) if obj.get("sync") is not None else None,
             "sample_percent": obj.get("sample_percent"),
+            "sample_item_ids": obj.get("sample_item_ids"),
             "created_by": obj.get("created_by"),
             "updated_by": obj.get("updated_by"),
             "created_at": obj.get("created_at"),

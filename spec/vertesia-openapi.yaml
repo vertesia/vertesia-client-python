@@ -7417,7 +7417,19 @@ components:
             sample by a hash of its ID, so the same files stay in it from one
             sync to the next, spread over every folder. A file outside the
             sample is not imported, and its document is deleted if it has one.
-            Absent when the source syncs every file."
+            Absent when the source syncs every file. 1 beside `sample_item_ids`,
+            for clients that predate the list: the list decides."
+        sample_item_ids:
+          minItems: 1
+          maxItems: 200
+          type: array
+          items:
+            type: string
+            minLength: 1
+          description: "Sample mode with chosen files: syncs only the files with these
+            IDs, as a sample or a file listing returned them, at most 200. A
+            file outside the list is not imported, and its document is deleted
+            if it has one. Absent unless the sample is of chosen files."
         created_by:
           type: string
         updated_by:
@@ -10231,6 +10243,40 @@ components:
         - name
         - count
       additionalProperties: false
+    ContentSourceFileDownload:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        size:
+          type: integer
+          minimum: -9007199254740991
+          maximum: 9007199254740991
+        mime_type:
+          type: string
+        too_large:
+          type: boolean
+          description: "True when the file is larger than `max_bytes`: no download URL is
+            given."
+        max_bytes:
+          type: integer
+          minimum: -9007199254740991
+          maximum: 9007199254740991
+          description: The largest file a download URL is given for.
+        download_url:
+          type: string
+          description: "The system’s short-lived, pre-authenticated URL of the file’s
+            content. It grants access on its own: never store or log it. Absent
+            when the file is too large."
+      required:
+        - id
+        - name
+        - too_large
+        - max_bytes
+      additionalProperties: false
+      description: A file to read without importing it, up to 20 MiB.
     ContentSourceFolder:
       type: object
       properties:
@@ -10300,6 +10346,35 @@ components:
         - name
       additionalProperties: false
       description: A document library of a site.
+    ContentSourceNotificationStatus:
+      type: object
+      properties:
+        state:
+          type: string
+          enum:
+            - active
+            - unavailable
+          description: "`active` when the system notifies Vertesia of changes, so a change
+            is synced within about a minute; `unavailable` when the subscription
+            could not be created or renewed, in which case the source syncs on
+            its schedule only and `error` says why."
+        expires_at:
+          type: string
+          format: date-time
+          description: When the subscription ends unless it is renewed. It is renewed well
+            before.
+        last_notification_at:
+          type: string
+          format: date-time
+          description: When the system last notified a change.
+        error:
+          type: string
+          description: Why change notifications are unavailable, as the system reported it.
+      required:
+        - state
+      additionalProperties: false
+      description: The state of a source's change notifications. The scheduled sync
+        keeps running either way, as a fallback.
     ContentSourcePermissionSettings:
       anyOf:
         - $ref: "#/components/schemas/ProjectContentSourcePermissions"
@@ -10609,6 +10684,11 @@ components:
             credentials were refused or the source is being deleted."
         permissions:
           $ref: "#/components/schemas/ContentSourcePermissionStatus"
+        notifications:
+          $ref: "#/components/schemas/ContentSourceNotificationStatus"
+          description: The state of the source's change notifications. Absent unless the
+            source asks for them with `sync.notifications`, and before the first
+            attempt to subscribe.
         current_round:
           $ref: "#/components/schemas/ContentSourceSyncRound"
         last_round:
@@ -10799,6 +10879,13 @@ components:
           maximum: 10080
           description: Minutes between two scheduled syncs, from one scheduled time to the
             next.
+        notifications:
+          type: boolean
+          description: "Also sync as soon as the system notifies a change, instead of
+            waiting for the next scheduled sync. Off unless set to `true`. Needs
+            `enabled`, a system that sends change notifications (SharePoint) and
+            a region where they are available: the status says whether they are
+            active. When absent in an update, the stored value is kept."
       required:
         - enabled
         - interval_minutes
@@ -12396,7 +12483,19 @@ components:
             sample by a hash of its ID, so the same files stay in it from one
             sync to the next, spread over every folder. A file outside the
             sample is not imported, and its document is deleted if it has one.
-            Leave out to sync every file."
+            Leave out to sync every file. Not with `sample_item_ids`."
+        sample_item_ids:
+          minItems: 1
+          maxItems: 200
+          type: array
+          items:
+            type: string
+            minLength: 1
+          description: "Sample mode with chosen files: syncs only the files with these
+            IDs, as a sample or a file listing returned them, at most 200. A
+            file outside the list is not imported, and its document is deleted
+            if it has one. Leave out to sync every file. Not with
+            `sample_percent`."
         type:
           type: string
           const: box
@@ -13024,7 +13123,19 @@ components:
             sample by a hash of its ID, so the same files stay in it from one
             sync to the next, spread over every folder. A file outside the
             sample is not imported, and its document is deleted if it has one.
-            Leave out to sync every file."
+            Leave out to sync every file. Not with `sample_item_ids`."
+        sample_item_ids:
+          minItems: 1
+          maxItems: 200
+          type: array
+          items:
+            type: string
+            minLength: 1
+          description: "Sample mode with chosen files: syncs only the files with these
+            IDs, as a sample or a file listing returned them, at most 200. A
+            file outside the list is not imported, and its document is deleted
+            if it has one. Leave out to sync every file. Not with
+            `sample_percent`."
         type:
           type: string
           const: google-drive
@@ -13421,7 +13532,19 @@ components:
             sample by a hash of its ID, so the same files stay in it from one
             sync to the next, spread over every folder. A file outside the
             sample is not imported, and its document is deleted if it has one.
-            Leave out to sync every file."
+            Leave out to sync every file. Not with `sample_item_ids`."
+        sample_item_ids:
+          minItems: 1
+          maxItems: 200
+          type: array
+          items:
+            type: string
+            minLength: 1
+          description: "Sample mode with chosen files: syncs only the files with these
+            IDs, as a sample or a file listing returned them, at most 200. A
+            file outside the list is not imported, and its document is deleted
+            if it has one. Leave out to sync every file. Not with
+            `sample_percent`."
         type:
           type: string
           const: sharepoint
@@ -16015,6 +16138,41 @@ components:
       required:
         - ok
       additionalProperties: false
+    DiscoverContentSourceFilePayload:
+      type: object
+      properties:
+        type:
+          type: string
+          const: sharepoint
+          description: The system to inspect. Only SharePoint can be inspected.
+        oauth_provider_id:
+          type: string
+          pattern: ^[0-9a-fA-F]{24}$
+          description: An OAuth provider of this project with grant type
+            `client_credentials` for the system, as 24 hexadecimal characters.
+        site_url:
+          type: string
+          minLength: 1
+          description: The SharePoint site URL, e.g.
+            `https://contoso.sharepoint.com/sites/legal`.
+        root_id:
+          type: string
+          minLength: 1
+          description: The document library of the file, as a sample returned its
+            `root_id`. It must be a library of the site.
+        item_id:
+          type: string
+          minLength: 1
+          description: The file, as a sample returned its `id`.
+      required:
+        - type
+        - oauth_provider_id
+        - site_url
+        - root_id
+        - item_id
+      additionalProperties: false
+      description: A file of a document library to read without importing it. No
+        content source needs to exist.
     DiscoverContentSourceFoldersPayload:
       type: object
       properties:
@@ -19153,7 +19311,19 @@ components:
             sample by a hash of its ID, so the same files stay in it from one
             sync to the next, spread over every folder. A file outside the
             sample is not imported, and its document is deleted if it has one.
-            Absent when the source syncs every file."
+            Absent when the source syncs every file. 1 beside `sample_item_ids`,
+            for clients that predate the list: the list decides."
+        sample_item_ids:
+          minItems: 1
+          maxItems: 200
+          type: array
+          items:
+            type: string
+            minLength: 1
+          description: "Sample mode with chosen files: syncs only the files with these
+            IDs, as a sample or a file listing returned them, at most 200. A
+            file outside the list is not imported, and its document is deleted
+            if it has one. Absent unless the sample is of chosen files."
         created_by:
           type: string
         updated_by:
@@ -20479,6 +20649,23 @@ components:
       description: A tool invocation executed before the first model turn of a
         conversation. Results are injected into the initial context so the agent
         starts with them in hand.
+    InspectContentSourceFilePayload:
+      type: object
+      properties:
+        root_id:
+          type: string
+          minLength: 1
+          description: Another root the source’s connection reaches, as `discover/roots`
+            returned it. Defaults to the source’s own root.
+        item_id:
+          type: string
+          minLength: 1
+          description: The file, as a sample returned its `id`.
+      required:
+        - item_id
+      additionalProperties: false
+      description: A file to read without importing it, through a content source’s
+        connection.
     InspectContentSourceFoldersPayload:
       type: object
       properties:
@@ -29941,7 +30128,19 @@ components:
             sample by a hash of its ID, so the same files stay in it from one
             sync to the next, spread over every folder. A file outside the
             sample is not imported, and its document is deleted if it has one.
-            Absent when the source syncs every file."
+            Absent when the source syncs every file. 1 beside `sample_item_ids`,
+            for clients that predate the list: the list decides."
+        sample_item_ids:
+          minItems: 1
+          maxItems: 200
+          type: array
+          items:
+            type: string
+            minLength: 1
+          description: "Sample mode with chosen files: syncs only the files with these
+            IDs, as a sample or a file listing returned them, at most 200. A
+            file outside the list is not imported, and its document is deleted
+            if it has one. Absent unless the sample is of chosen files."
         created_by:
           type: string
         updated_by:
@@ -32690,10 +32889,25 @@ components:
             sample by a hash of its ID, so the same files stay in it from one
             sync to the next, spread over every folder. A file outside the
             sample is not imported, and its document is deleted if it has one.
-            `null` removes the sample, so that every file is synced. A change,
-            before or after the first sync, makes the next sync an import that
-            lists the whole folder: it imports the files that entered the sample
-            and deletes the documents of those that left it."
+            `null` removes the sample, of either kind, so that every file is
+            synced. A change, before or after the first sync, makes the next
+            sync an import that lists the whole folder: it imports the files
+            that entered the sample and deletes the documents of those that left
+            it. A percentage replaces a sample of chosen files."
+        sample_item_ids:
+          minItems: 1
+          maxItems: 200
+          type: array
+          items:
+            type: string
+            minLength: 1
+          description: "Sample mode with chosen files: syncs only the files with these
+            IDs, as a sample or a file listing returned them, at most 200. A
+            file outside the list is not imported, and its document is deleted
+            if it has one. The list replaces a percentage, and `sample_percent:
+            null` removes either kind of sample; giving both fields in one
+            request is refused. A change makes the next sync an import, as for
+            `sample_percent`."
         permissions:
           $ref: "#/components/schemas/ContentSourcePermissionSettings"
         root_id:
@@ -68234,6 +68448,71 @@ paths:
         description: Required Vertesia API version header. Use `20260803` for the
           current stable API shape.
         x-vertesia-global-header: true
+  /content-sources/discover/file:
+    post:
+      operationId: DiscoverContentSourceFile
+      tags:
+        - Content Sources
+      summary: Get the download URL of a file of a document library
+      description: "**Required permissions:** Any of `content_source:manage`,
+        `project:settings_write`"
+      security:
+        - bearerAuth: []
+        - OAuth2:
+            - project:settings_write
+      parameters: []
+      responses:
+        "200":
+          description: The file and its download URL.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContentSourceFileDownload"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - content_source:manage
+        - project:settings_write
+      x-vertesia-source:
+        file: ../../apps/zeno-server/src/api/content-sources.ts
+        className: ContentSourcesResource
+        methodName: discoverFile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DiscoverContentSourceFilePayload"
+    parameters:
+      - name: x-api-version
+        in: header
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          pattern: \S
+          example: "20260803"
+        description: Required Vertesia API version header. Use `20260803` for the
+          current stable API shape.
+        x-vertesia-global-header: true
   /content-sources/{sourceId}:
     get:
       operationId: GetContentSource
@@ -68296,7 +68575,8 @@ paths:
         first sync, the library and folder to sync (409 afterwards). Saving sync
         settings also hands the sync your credentials, which restarts a sync
         stopped because its previous credentials were refused. Changing
-        `sample_percent` makes the next sync an import.
+        `sample_percent` or `sample_item_ids` makes the next sync an import;
+        giving both in one request answers 400.
 
 
         **Required permissions:** Any of `content_source:manage`,
@@ -68894,6 +69174,76 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/InspectContentSourceSamplePayload"
+    parameters:
+      - name: x-api-version
+        in: header
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          pattern: \S
+          example: "20260803"
+        description: Required Vertesia API version header. Use `20260803` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /content-sources/{sourceId}/discover/file:
+    post:
+      operationId: InspectContentSourceFile
+      tags:
+        - Content Sources
+      summary: Get the download URL of a file a source reaches
+      description: "**Required permissions:** Any of `content_source:manage`,
+        `project:settings_write`"
+      security:
+        - bearerAuth: []
+        - OAuth2:
+            - project:settings_write
+      parameters:
+        - name: sourceId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The file and its download URL.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContentSourceFileDownload"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - content_source:manage
+        - project:settings_write
+      x-vertesia-source:
+        file: ../../apps/zeno-server/src/api/content-sources.ts
+        className: ContentSourceResource
+        methodName: inspectFile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InspectContentSourceFilePayload"
     parameters:
       - name: x-api-version
         in: header

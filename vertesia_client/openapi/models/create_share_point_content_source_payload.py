@@ -18,7 +18,7 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
-from typing import Any, ClassVar, Dict, Optional
+from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
 from vertesia_client.openapi.models.content_source_sync_settings import ContentSourceSyncSettings
 from vertesia_client.openapi.models.share_point_permission_options import SharePointPermissionOptions
@@ -36,14 +36,15 @@ class CreateSharePointContentSourcePayload(BaseModel):
     location_root: Optional[StrictStr] = Field(default=None, description="The `location` root for synced documents. Defaults to `/<type>/<name>`.")
     collection_id: Optional[StrictStr] = Field(default=None, description="A collection to add synced documents to.")
     sync: Optional[ContentSourceSyncSettings] = Field(default=None, description="Defaults to scheduled sync disabled, every 60 minutes once enabled.")
-    sample_percent: Optional[Annotated[int, Field(strict=True)]] = Field(default=None, description="Sample mode: syncs only about this percentage of the files, to look at real documents before importing them all. A file is in the sample by a hash of its ID, so the same files stay in it from one sync to the next, spread over every folder. A file outside the sample is not imported, and its document is deleted if it has one. Leave out to sync every file.")
+    sample_percent: Optional[Annotated[int, Field(strict=True)]] = Field(default=None, description="Sample mode: syncs only about this percentage of the files, to look at real documents before importing them all. A file is in the sample by a hash of its ID, so the same files stay in it from one sync to the next, spread over every folder. A file outside the sample is not imported, and its document is deleted if it has one. Leave out to sync every file. Not with `sample_item_ids`.")
+    sample_item_ids: Optional[Annotated[List[Annotated[str, Field(strict=True)]], Field()]] = Field(default=None, description="Sample mode with chosen files: syncs only the files with these IDs, as a sample or a file listing returned them, at most 200. A file outside the list is not imported, and its document is deleted if it has one. Leave out to sync every file. Not with `sample_percent`.")
     type: StrictStr
     sharepoint_library_binding_id: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="The approved SharePoint library binding this source is registered for.")
     permissions: Optional[SharePointPermissionOptions] = None
     site_url: Annotated[str, Field(strict=True)] = Field(description="The SharePoint site URL, e.g. `https://contoso.sharepoint.com/sites/legal`.")
     library_name: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="The document library name. Defaults to the site’s default library.")
     folder_path: Optional[StrictStr] = Field(default=None, description="A folder inside the library, e.g. `Contracts/2026`. Defaults to the whole library.")
-    __properties: ClassVar[List[str]] = ["name", "description", "oauth_provider_id", "location_root", "collection_id", "sync", "sample_percent", "type", "sharepoint_library_binding_id", "permissions", "site_url", "library_name", "folder_path"]
+    __properties: ClassVar[List[str]] = ["name", "description", "oauth_provider_id", "location_root", "collection_id", "sync", "sample_percent", "sample_item_ids", "type", "sharepoint_library_binding_id", "permissions", "site_url", "library_name", "folder_path"]
 
     @field_validator('type')
     def type_validate_enum(cls, value):
@@ -116,6 +117,7 @@ class CreateSharePointContentSourcePayload(BaseModel):
             "collection_id": obj.get("collection_id"),
             "sync": ContentSourceSyncSettings.from_dict(obj["sync"]) if obj.get("sync") is not None else None,
             "sample_percent": obj.get("sample_percent"),
+            "sample_item_ids": obj.get("sample_item_ids"),
             "type": obj.get("type"),
             "sharepoint_library_binding_id": obj.get("sharepoint_library_binding_id"),
             "permissions": SharePointPermissionOptions.from_dict(obj["permissions"]) if obj.get("permissions") is not None else None,
