@@ -20,7 +20,7 @@ from typing_extensions import Self
 
 class OpenAICompatibleApi(str, Enum):
     """
-    The OpenAI API an OpenAI-compatible environment calls: `responses` (the default when omitted) or `chat_completions`, for services that implement only Chat Completions.
+    The OpenAI API the environment calls: `responses` or `chat_completions`. Supported by OpenAI-compatible, OpenRouter, Groq, Together AI and xAI environments. When omitted, OpenAI-compatible and xAI environments call `responses`, and OpenRouter, Groq and Together AI environments call `chat_completions`.
     """
 
     """
