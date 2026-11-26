@@ -34,7 +34,7 @@ class SharePointContentSource(BaseModel):
     id: StrictStr
     name: StrictStr
     description: Optional[StrictStr] = None
-    oauth_provider_id: StrictStr = Field(description="The project's OAuth provider (grant type `client_credentials`) that issues the system's tokens.")
+    oauth_provider_id: Optional[StrictStr] = Field(default=None, description="The project's OAuth provider (grant type `client_credentials`) that issues the system's tokens.")
     location_root: StrictStr = Field(description="The `location` under which the source folder's tree is reproduced, e.g. `/sharepoint/legal`.")
     collection_id: Optional[StrictStr] = Field(default=None, description="Collection that synced documents are added to, if any.")
     sync: ContentSourceSyncSettings
@@ -44,6 +44,7 @@ class SharePointContentSource(BaseModel):
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
     type: StrictStr
+    reader_mode: Optional[StrictStr] = Field(default=None, description="The managed library uses its organization reader, without a project OAuth provider.")
     permissions: Optional[ContentSourcePermissionSettings] = None
     site_url: StrictStr = Field(description="The SharePoint site URL the source was created from.")
     site_id: StrictStr = Field(description="The Microsoft Graph site ID.")
@@ -51,13 +52,21 @@ class SharePointContentSource(BaseModel):
     library_name: StrictStr = Field(description="The document library name.")
     folder_path: StrictStr = Field(description="The folder synced, relative to the library root. Empty for the whole library.")
     folder_item_id: StrictStr = Field(description="The Microsoft Graph item ID of the synced folder.")
-    __properties: ClassVar[List[str]] = ["id", "name", "description", "oauth_provider_id", "location_root", "collection_id", "sync", "sample_percent", "created_by", "updated_by", "created_at", "updated_at", "type", "permissions", "site_url", "site_id", "drive_id", "library_name", "folder_path", "folder_item_id"]
+    __properties: ClassVar[List[str]] = ["id", "name", "description", "oauth_provider_id", "location_root", "collection_id", "sync", "sample_percent", "created_by", "updated_by", "created_at", "updated_at", "type", "reader_mode", "permissions", "site_url", "site_id", "drive_id", "library_name", "folder_path", "folder_item_id"]
 
     @field_validator('type')
     def type_validate_enum(cls, value):
         """Validates the enum"""
         if value is not None and value != 'sharepoint':
             raise ValueError('Expected type to be sharepoint')
+        return value
+
+    @field_validator('reader_mode')
+    def reader_mode_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
         return value
 
     model_config = ConfigDict(
@@ -130,6 +139,7 @@ class SharePointContentSource(BaseModel):
             "created_at": obj.get("created_at"),
             "updated_at": obj.get("updated_at"),
             "type": obj.get("type"),
+            "reader_mode": obj.get("reader_mode"),
             "permissions": ContentSourcePermissionSettings.from_dict(obj["permissions"]) if obj.get("permissions") is not None else None,
             "site_url": obj.get("site_url"),
             "site_id": obj.get("site_id"),

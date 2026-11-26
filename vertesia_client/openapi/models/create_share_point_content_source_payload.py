@@ -32,17 +32,18 @@ class CreateSharePointContentSourcePayload(BaseModel):
     """ # noqa: E501
     name: Annotated[str, Field(strict=True)] = Field(description="Unique within the project.")
     description: Optional[StrictStr] = None
-    oauth_provider_id: Annotated[str, Field(strict=True)] = Field(description="An OAuth provider of this project with grant type `client_credentials` for the system, as 24 hexadecimal characters.")
+    oauth_provider_id: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Required for a project OAuth source. Omitted for trusted registration of an organization-managed library.")
     location_root: Optional[StrictStr] = Field(default=None, description="The `location` root for synced documents. Defaults to `/<type>/<name>`.")
     collection_id: Optional[StrictStr] = Field(default=None, description="A collection to add synced documents to.")
     sync: Optional[ContentSourceSyncSettings] = Field(default=None, description="Defaults to scheduled sync disabled, every 60 minutes once enabled.")
     sample_percent: Optional[Annotated[int, Field(strict=True)]] = Field(default=None, description="Sample mode: syncs only about this percentage of the files, to look at real documents before importing them all. A file is in the sample by a hash of its ID, so the same files stay in it from one sync to the next, spread over every folder. A file outside the sample is not imported, and its document is deleted if it has one. Leave out to sync every file.")
     type: StrictStr
+    sharepoint_library_binding_id: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="The approved SharePoint library binding this source is registered for.")
     permissions: Optional[ContentSourcePermissionSettings] = None
     site_url: Annotated[str, Field(strict=True)] = Field(description="The SharePoint site URL, e.g. `https://contoso.sharepoint.com/sites/legal`.")
     library_name: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="The document library name. Defaults to the site’s default library.")
     folder_path: Optional[StrictStr] = Field(default=None, description="A folder inside the library, e.g. `Contracts/2026`. Defaults to the whole library.")
-    __properties: ClassVar[List[str]] = ["name", "description", "oauth_provider_id", "location_root", "collection_id", "sync", "sample_percent", "type", "permissions", "site_url", "library_name", "folder_path"]
+    __properties: ClassVar[List[str]] = ["name", "description", "oauth_provider_id", "location_root", "collection_id", "sync", "sample_percent", "type", "sharepoint_library_binding_id", "permissions", "site_url", "library_name", "folder_path"]
 
     @field_validator('type')
     def type_validate_enum(cls, value):
@@ -116,6 +117,7 @@ class CreateSharePointContentSourcePayload(BaseModel):
             "sync": ContentSourceSyncSettings.from_dict(obj["sync"]) if obj.get("sync") is not None else None,
             "sample_percent": obj.get("sample_percent"),
             "type": obj.get("type"),
+            "sharepoint_library_binding_id": obj.get("sharepoint_library_binding_id"),
             "permissions": ContentSourcePermissionSettings.from_dict(obj["permissions"]) if obj.get("permissions") is not None else None,
             "site_url": obj.get("site_url"),
             "library_name": obj.get("library_name"),

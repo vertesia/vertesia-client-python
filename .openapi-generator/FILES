@@ -41,6 +41,7 @@ vertesia_client/openapi/api/remote_mcp_connections_api.py
 vertesia_client/openapi/api/rendering_api.py
 vertesia_client/openapi/api/roles_api.py
 vertesia_client/openapi/api/secrets_api.py
+vertesia_client/openapi/api/share_point_onboarding_api.py
 vertesia_client/openapi/api/tasks_api.py
 vertesia_client/openapi/api/token_service_api.py
 vertesia_client/openapi/api/tools_api.py
@@ -217,6 +218,9 @@ vertesia_client/openapi/models/app_version_storage.py
 vertesia_client/openapi/models/app_version_target.py
 vertesia_client/openapi/models/app_version_urls.py
 vertesia_client/openapi/models/app_widget_info.py
+vertesia_client/openapi/models/approve_share_point_library_payload.py
+vertesia_client/openapi/models/approve_share_point_library_payload_any_of.py
+vertesia_client/openapi/models/approve_share_point_library_payload_any_of1.py
 vertesia_client/openapi/models/archive_notifications_payload.py
 vertesia_client/openapi/models/ask_user_webhook_configuration.py
 vertesia_client/openapi/models/ask_user_webhook_configuration_input.py
@@ -281,6 +285,7 @@ vertesia_client/openapi/models/bedrock_mantle_responses_options.py
 vertesia_client/openapi/models/bedrock_mistral_options.py
 vertesia_client/openapi/models/bedrock_nova_options.py
 vertesia_client/openapi/models/bedrock_palmyra_options.py
+vertesia_client/openapi/models/begin_share_point_organization_link_payload.py
 vertesia_client/openapi/models/billing_method.py
 vertesia_client/openapi/models/box_content_source.py
 vertesia_client/openapi/models/branch_definition.py
@@ -320,6 +325,7 @@ vertesia_client/openapi/models/collection_security_settings_response.py
 vertesia_client/openapi/models/collection_status.py
 vertesia_client/openapi/models/column_layout.py
 vertesia_client/openapi/models/compact_message.py
+vertesia_client/openapi/models/complete_share_point_organization_link_payload.py
 vertesia_client/openapi/models/complete_task_payload.py
 vertesia_client/openapi/models/complete_upload_session_payload.py
 vertesia_client/openapi/models/complete_upload_session_response.py
@@ -353,6 +359,8 @@ vertesia_client/openapi/models/compute_object_facet_payload.py
 vertesia_client/openapi/models/compute_prompt_facet_payload.py
 vertesia_client/openapi/models/computed_facet_response.py
 vertesia_client/openapi/models/config_modes.py
+vertesia_client/openapi/models/configure_share_point_library_reader_payload.py
+vertesia_client/openapi/models/configure_share_point_organization_reader_payload.py
 vertesia_client/openapi/models/content_embedding_map.py
 vertesia_client/openapi/models/content_object_api_response.py
 vertesia_client/openapi/models/content_object_api_response_search_type_result_inner.py
@@ -801,6 +809,7 @@ vertesia_client/openapi/models/llm_call_type.py
 vertesia_client/openapi/models/load_balancing_env_config.py
 vertesia_client/openapi/models/load_balancing_env_entry_config.py
 vertesia_client/openapi/models/magic_pdf_configuration.py
+vertesia_client/openapi/models/managed_share_point_library.py
 vertesia_client/openapi/models/mark_all_notifications_read_payload.py
 vertesia_client/openapi/models/mark_notifications_read_payload.py
 vertesia_client/openapi/models/markdown_rendition_format.py
@@ -991,6 +1000,7 @@ vertesia_client/openapi/models/project_ref.py
 vertesia_client/openapi/models/project_search_property_mapping.py
 vertesia_client/openapi/models/project_search_property_type.py
 vertesia_client/openapi/models/project_search_tier.py
+vertesia_client/openapi/models/project_share_point_library_response.py
 vertesia_client/openapi/models/project_token_request.py
 vertesia_client/openapi/models/project_tool_info.py
 vertesia_client/openapi/models/projected_content_object_api_response.py
@@ -1103,6 +1113,18 @@ vertesia_client/openapi/models/set_object_embeddings_response.py
 vertesia_client/openapi/models/set_object_text_payload.py
 vertesia_client/openapi/models/share_point_content_source.py
 vertesia_client/openapi/models/share_point_content_source_permissions.py
+vertesia_client/openapi/models/share_point_library_approval.py
+vertesia_client/openapi/models/share_point_library_connection.py
+vertesia_client/openapi/models/share_point_library_context.py
+vertesia_client/openapi/models/share_point_library_receipt.py
+vertesia_client/openapi/models/share_point_library_request.py
+vertesia_client/openapi/models/share_point_library_requests.py
+vertesia_client/openapi/models/share_point_organization.py
+vertesia_client/openapi/models/share_point_organization_link_attempt.py
+vertesia_client/openapi/models/share_point_organization_reader.py
+vertesia_client/openapi/models/share_point_organizations.py
+vertesia_client/openapi/models/share_point_region.py
+vertesia_client/openapi/models/share_point_request_project.py
 vertesia_client/openapi/models/signal_agent_response.py
 vertesia_client/openapi/models/signal_event_properties.py
 vertesia_client/openapi/models/signal_event_properties_sender.py

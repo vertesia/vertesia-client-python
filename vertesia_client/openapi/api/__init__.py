@@ -41,6 +41,7 @@ from vertesia_client.openapi.api.remote_mcp_connections_api import RemoteMCPConn
 from vertesia_client.openapi.api.rendering_api import RenderingApi
 from vertesia_client.openapi.api.roles_api import RolesApi
 from vertesia_client.openapi.api.secrets_api import SecretsApi
+from vertesia_client.openapi.api.share_point_onboarding_api import SharePointOnboardingApi
 from vertesia_client.openapi.api.tasks_api import TasksApi
 from vertesia_client.openapi.api.token_service_api import TokenServiceApi
 from vertesia_client.openapi.api.tools_api import ToolsApi

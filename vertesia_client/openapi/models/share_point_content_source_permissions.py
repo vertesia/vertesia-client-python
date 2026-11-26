@@ -31,12 +31,11 @@ class SharePointContentSourcePermissions(BaseModel):
     """ # noqa: E501
     mode: StrictStr
     entra_tenant_id: UUID
-    scim_connection_id: Annotated[str, Field(strict=True)]
-    permission_reader_provider_id: Annotated[str, Field(strict=True)]
+    scim_connection_id: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="Optional verified Entra SCIM connection. Required for tenant_group_id.")
     tenant_group_id: Optional[Annotated[str, Field(strict=True)]] = None
     refresh_minutes: Optional[Annotated[int, Field(strict=True)]] = None
     max_stale_hours: Optional[Annotated[int, Field(strict=True)]] = None
-    __properties: ClassVar[List[str]] = ["mode", "entra_tenant_id", "scim_connection_id", "permission_reader_provider_id", "tenant_group_id", "refresh_minutes", "max_stale_hours"]
+    __properties: ClassVar[List[str]] = ["mode", "entra_tenant_id", "scim_connection_id", "tenant_group_id", "refresh_minutes", "max_stale_hours"]
 
     @field_validator('mode')
     def mode_validate_enum(cls, value):
@@ -99,7 +98,6 @@ class SharePointContentSourcePermissions(BaseModel):
             "mode": obj.get("mode"),
             "entra_tenant_id": obj.get("entra_tenant_id"),
             "scim_connection_id": obj.get("scim_connection_id"),
-            "permission_reader_provider_id": obj.get("permission_reader_provider_id"),
             "tenant_group_id": obj.get("tenant_group_id"),
             "refresh_minutes": obj.get("refresh_minutes"),
             "max_stale_hours": obj.get("max_stale_hours")

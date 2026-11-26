@@ -5090,6 +5090,44 @@ components:
       type: object
       additionalProperties:
         $ref: "#/components/schemas/AppWidgetInfo"
+    ApproveSharePointLibraryPayload:
+      anyOf:
+        - type: object
+          properties:
+            manager_id:
+              type: string
+              pattern: ^[0-9a-fA-F]{24}$
+            reader_group_id:
+              type: string
+              pattern: ^[0-9a-fA-F]{24}$
+            audience:
+              type: string
+              enum:
+                - uniform
+                - mirrored
+            project_name:
+              type: string
+              minLength: 1
+              maxLength: 128
+          required:
+            - manager_id
+            - reader_group_id
+            - audience
+          additionalProperties: false
+        - type: object
+          properties:
+            project_id:
+              type: string
+              pattern: ^[0-9a-fA-F]{24}$
+            audience:
+              type: string
+              enum:
+                - uniform
+                - mirrored
+          required:
+            - project_id
+            - audience
+          additionalProperties: false
     ArchiveNotificationsPayload:
       type: object
       properties:
@@ -7322,6 +7360,15 @@ components:
           description: Provider-defined processing tier. Unknown non-empty values are
             preserved for forward compatibility.
       additionalProperties: false
+    BeginSharePointOrganizationLinkPayload:
+      type: object
+      properties:
+        tenant_id:
+          type: string
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      required:
+        - tenant_id
+      additionalProperties: false
     BillingMethod:
       type: string
       enum:
@@ -8317,6 +8364,15 @@ components:
       description: Compact message format for efficient wire transfer. Primary type
         used throughout the system. ~85% smaller than legacy AgentMessage
         format.
+    CompleteSharePointOrganizationLinkPayload:
+      type: object
+      properties:
+        state:
+          type: string
+          pattern: ^[A-Za-z0-9_-]{43}$
+      required:
+        - state
+      additionalProperties: false
     CompleteTaskPayload:
       type: object
       properties:
@@ -9191,6 +9247,26 @@ components:
         - RUN_AND_INTERACTION_CONFIG
         - RUN_CONFIG_ONLY
         - INTERACTION_CONFIG_ONLY
+    ConfigureSharePointLibraryReaderPayload:
+      type: object
+      properties:
+        permissions:
+          $ref: "#/components/schemas/SharePointContentSourcePermissions"
+        site_policy_confirmed:
+          type: boolean
+          description: Required for mirrored permissions. The account administrator
+            confirms that RestrictedAccessControl and BlockDownloadPolicy are
+            both off on the exact bound site.
+      additionalProperties: false
+    ConfigureSharePointOrganizationReaderPayload:
+      type: object
+      properties:
+        client_id:
+          type: string
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      required:
+        - client_id
+      additionalProperties: false
     ContentEmbeddingMap:
       type: object
       properties:
@@ -13089,11 +13165,6 @@ components:
             characters; grant_type, client_id, client_secret, scope,
             client_assertion and client_assertion_type are reserved. Not secret:
             returned as stored. On update, an empty object clears them."
-        sharepoint_permission_site:
-          type: string
-          format: uri
-          description: Immutable SharePoint site URL for a dedicated permission reader.
-            Create a replacement provider to change its site or credential.
       required:
         - name
         - display_name
@@ -13275,8 +13346,8 @@ components:
         oauth_provider_id:
           type: string
           pattern: ^[0-9a-fA-F]{24}$
-          description: An OAuth provider of this project with grant type
-            `client_credentials` for the system, as 24 hexadecimal characters.
+          description: Required for a project OAuth source. Omitted for trusted
+            registration of an organization-managed library.
         location_root:
           type: string
           description: The `location` root for synced documents. Defaults to
@@ -13300,6 +13371,11 @@ components:
         type:
           type: string
           const: sharepoint
+        sharepoint_library_binding_id:
+          type: string
+          pattern: ^[0-9a-fA-F]{24}$
+          description: The approved SharePoint library binding this source is registered
+            for.
         permissions:
           $ref: "#/components/schemas/ContentSourcePermissionSettings"
         site_url:
@@ -13317,7 +13393,6 @@ components:
             whole library.
       required:
         - name
-        - oauth_provider_id
         - type
         - site_url
       additionalProperties: false
@@ -22368,6 +22443,42 @@ components:
         - integration
         - enabled
       additionalProperties: false
+    ManagedSharePointLibrary:
+      type: object
+      properties:
+        id:
+          type: string
+          pattern: ^[0-9a-fA-F]{24}$
+        tenant_id:
+          type: string
+        site_id:
+          type: string
+        site_url:
+          type: string
+        drive_id:
+          type: string
+        audience:
+          type: string
+          enum:
+            - uniform
+            - mirrored
+        reader_mode:
+          type: string
+          const: organization
+        lifecycle:
+          type: string
+          enum:
+            - disconnecting
+            - disconnected
+      required:
+        - id
+        - tenant_id
+        - site_id
+        - site_url
+        - drive_id
+        - audience
+      additionalProperties: false
+      readOnly: true
     MarkAllNotificationsReadPayload:
       type: object
       properties:
@@ -23868,9 +23979,6 @@ components:
             client_credentials grant. Set by the provider admin: a caller cannot
             request a scope outside this list and default_scopes. On update, an
             empty array clears it."
-        sharepoint_permission_site:
-          type: string
-          format: uri
         use_pkce:
           type: boolean
           description: Whether to use PKCE (Proof Key for Code Exchange) in the
@@ -26604,6 +26712,13 @@ components:
           type: string
         account:
           type: string
+        sharepoint_library_binding:
+          $ref: "#/components/schemas/ManagedSharePointLibrary"
+        sharepoint_library_attachments:
+          type: array
+          items:
+            $ref: "#/components/schemas/ManagedSharePointLibrary"
+          readOnly: true
         configuration:
           $ref: "#/components/schemas/ProjectConfiguration"
         integrations:
@@ -27093,6 +27208,19 @@ components:
       enum:
         - standard
         - performance
+    ProjectSharePointLibraryResponse:
+      type: object
+      properties:
+        library:
+          anyOf:
+            - $ref: "#/components/schemas/SharePointLibraryConnection"
+            - type: "null"
+        libraries:
+          type: array
+          items:
+            $ref: "#/components/schemas/SharePointLibraryConnection"
+      required:
+        - library
     ProjectTokenRequest:
       type: object
       properties:
@@ -29623,6 +29751,11 @@ components:
         type:
           type: string
           const: sharepoint
+        reader_mode:
+          type: string
+          const: organization
+          description: The managed library uses its organization reader, without a project
+            OAuth provider.
         permissions:
           $ref: "#/components/schemas/ContentSourcePermissionSettings"
         site_url:
@@ -29647,7 +29780,6 @@ components:
       required:
         - id
         - name
-        - oauth_provider_id
         - location_root
         - sync
         - type
@@ -29674,9 +29806,8 @@ components:
         scim_connection_id:
           type: string
           pattern: ^[0-9a-fA-F]{24}$
-        permission_reader_provider_id:
-          type: string
-          pattern: ^[0-9a-fA-F]{24}$
+          description: Optional verified Entra SCIM connection. Required for
+            tenant_group_id.
         tenant_group_id:
           type: string
           pattern: ^[0-9a-fA-F]{24}$
@@ -29691,8 +29822,312 @@ components:
       required:
         - mode
         - entra_tenant_id
-        - scim_connection_id
-        - permission_reader_provider_id
+      additionalProperties: false
+    SharePointLibraryApproval:
+      type: object
+      properties:
+        manager_id:
+          type: string
+          pattern: ^[0-9a-fA-F]{24}$
+        reader_group_id:
+          type: string
+          pattern: ^[0-9a-fA-F]{24}$
+        audience:
+          type: string
+          enum:
+            - uniform
+            - mirrored
+        project_name:
+          type: string
+          minLength: 1
+          maxLength: 128
+        approved_by:
+          type: string
+          pattern: ^[0-9a-fA-F]{24}$
+        approved_at:
+          type: string
+          format: date-time
+          pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
+      required:
+        - manager_id
+        - reader_group_id
+        - audience
+        - project_name
+        - approved_by
+        - approved_at
+    SharePointLibraryConnection:
+      type: object
+      properties:
+        id:
+          type: string
+          pattern: ^[0-9a-fA-F]{24}$
+        tenant_id:
+          type: string
+        site_id:
+          type: string
+        list_id:
+          type: string
+        drive_id:
+          type: string
+        site_url:
+          type: string
+        library_url:
+          type: string
+        library_name:
+          type: string
+        project_name:
+          type: string
+          minLength: 1
+          maxLength: 128
+        audience:
+          type: string
+          enum:
+            - uniform
+            - mirrored
+        can_manage:
+          type: boolean
+        stage:
+          type: string
+          enum:
+            - pending_approval
+            - provisioning_project
+            - configure_reader
+            - ready
+            - disconnecting
+            - disconnected
+        project_id:
+          type: string
+          pattern: ^[0-9a-fA-F]{24}$
+        project_mode:
+          type: string
+          enum:
+            - dedicated
+            - existing
+        reader_mode:
+          type: string
+          const: organization
+        organization_reader_available:
+          type: boolean
+        source_id:
+          type: string
+          pattern: ^[0-9a-fA-F]{24}$
+        approval:
+          $ref: "#/components/schemas/SharePointLibraryApproval"
+        sync:
+          $ref: "#/components/schemas/ContentSourceSummary"
+      required:
+        - id
+        - tenant_id
+        - site_id
+        - list_id
+        - drive_id
+        - site_url
+        - library_url
+        - library_name
+        - can_manage
+        - stage
+    SharePointLibraryConnectionArray:
+      type: array
+      items:
+        $ref: "#/components/schemas/SharePointLibraryConnection"
+    SharePointLibraryContext:
+      type: object
+      properties:
+        site_hostname:
+          type: string
+          maxLength: 253
+          pattern: ^[a-zA-Z0-9][a-zA-Z0-9-]*\.sharepoint\.com$
+        site_collection_id:
+          type: string
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+        web_id:
+          type: string
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+        list_id:
+          type: string
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      required:
+        - site_hostname
+        - site_collection_id
+        - web_id
+        - list_id
+      additionalProperties: false
+    SharePointLibraryReceipt:
+      type: object
+      properties:
+        id:
+          type: string
+          pattern: ^[0-9a-f]{24}$
+        status:
+          type: string
+          enum:
+            - pending_resolution
+            - awaiting_site_grant
+            - library_unavailable
+            - awaiting_approval
+            - approved
+            - connected
+            - disconnected
+      required:
+        - id
+        - status
+      additionalProperties: false
+    SharePointLibraryRequest:
+      type: object
+      properties:
+        site_hostname:
+          type: string
+          maxLength: 253
+          pattern: ^[a-zA-Z0-9][a-zA-Z0-9-]*\.sharepoint\.com$
+        site_collection_id:
+          type: string
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+        web_id:
+          type: string
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+        list_id:
+          type: string
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+        id:
+          type: string
+          pattern: ^[0-9a-f]{24}$
+        tenant_id:
+          type: string
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+        binding_id:
+          type: string
+          pattern: ^[0-9a-f]{24}$
+        site_url:
+          type: string
+          format: uri
+        library_url:
+          type: string
+          format: uri
+        library_name:
+          type: string
+          minLength: 1
+        status:
+          type: string
+          enum:
+            - pending_resolution
+            - awaiting_site_grant
+            - library_unavailable
+            - awaiting_approval
+            - approved
+            - connected
+            - disconnected
+        created_at:
+          type: string
+          format: date-time
+          pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
+      required:
+        - site_hostname
+        - site_collection_id
+        - web_id
+        - list_id
+        - id
+        - tenant_id
+        - status
+        - created_at
+      additionalProperties: false
+    SharePointLibraryRequests:
+      type: object
+      properties:
+        requests:
+          type: array
+          items:
+            $ref: "#/components/schemas/SharePointLibraryRequest"
+        next_cursor:
+          type: string
+          pattern: ^[0-9a-f]{24}$
+      required:
+        - requests
+      additionalProperties: false
+    SharePointOrganization:
+      type: object
+      properties:
+        tenant_id:
+          type: string
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+        linked_at:
+          type: string
+          format: date-time
+          pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
+        reader:
+          $ref: "#/components/schemas/SharePointOrganizationReader"
+      required:
+        - tenant_id
+        - linked_at
+      additionalProperties: false
+    SharePointOrganizationLinkAttempt:
+      type: object
+      properties:
+        state:
+          type: string
+          pattern: ^[A-Za-z0-9_-]{43}$
+        expires_at:
+          type: string
+          format: date-time
+          pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
+      required:
+        - state
+        - expires_at
+      additionalProperties: false
+    SharePointOrganizationReader:
+      type: object
+      properties:
+        client_id:
+          type: string
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+        issuer:
+          type: string
+          format: uri
+        subject:
+          type: string
+          minLength: 1
+        audience:
+          type: string
+          minLength: 1
+      required:
+        - client_id
+        - issuer
+        - subject
+        - audience
+      additionalProperties: false
+    SharePointOrganizations:
+      type: object
+      properties:
+        organizations:
+          type: array
+          items:
+            $ref: "#/components/schemas/SharePointOrganization"
+      required:
+        - organizations
+      additionalProperties: false
+    SharePointRegion:
+      type: object
+      properties:
+        region:
+          type: string
+          minLength: 1
+          description: Assigned Vertesia region identifier.
+      required:
+        - region
+      additionalProperties: false
+    SharePointRequestProject:
+      type: object
+      properties:
+        project_id:
+          type: string
+          pattern: ^[0-9a-f]{24}$
+        binding_id:
+          type: string
+          pattern: ^[0-9a-f]{24}$
+        source_id:
+          type: string
+          minLength: 1
+      required:
+        - project_id
       additionalProperties: false
     SignalAgentPayload:
       type: object
@@ -54478,6 +54913,1195 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/WebsiteCredentialFillRequest"
+    parameters:
+      - name: x-api-version
+        in: header
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          pattern: \S
+          example: "20260803"
+        description: Required Vertesia API version header. Use `20260803` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /sharepoint-entry/region:
+    get:
+      operationId: DiscoverSharePointRegion
+      tags:
+        - SharePoint Onboarding
+      summary: Discover the assigned region using a Microsoft Entra access token
+      security:
+        - bearerAuth: []
+      parameters: []
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SharePointRegion"
+        "404":
+          description: No confirmed organization link exists.
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions: []
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/sharepoint-entry.ts
+        className: SharePointEntryResource
+        methodName: discoverRegion
+    parameters:
+      - name: x-api-version
+        in: header
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          pattern: \S
+          example: "20260803"
+        description: Required Vertesia API version header. Use `20260803` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /sharepoint-entry/organization/link:
+    post:
+      operationId: CompleteSharePointOrganizationLink
+      tags:
+        - SharePoint Onboarding
+      summary: Complete a SharePoint organization link using a Microsoft Entra
+        administrator access token
+      security:
+        - bearerAuth: []
+      parameters: []
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SharePointOrganization"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions: []
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/sharepoint-entry.ts
+        className: SharePointEntryResource
+        methodName: link
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CompleteSharePointOrganizationLinkPayload"
+    parameters:
+      - name: x-api-version
+        in: header
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          pattern: \S
+          example: "20260803"
+        description: Required Vertesia API version header. Use `20260803` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /sharepoint-entry/library-requests:
+    post:
+      operationId: SubmitSharePointLibraryRequest
+      tags:
+        - SharePoint Onboarding
+      summary: Submit or reopen a library request using a Microsoft Entra access token
+      security:
+        - bearerAuth: []
+      parameters: []
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SharePointLibraryReceipt"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions: []
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/sharepoint-entry.ts
+        className: SharePointEntryResource
+        methodName: submit
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SharePointLibraryContext"
+    get:
+      operationId: FindSharePointLibraryReceipt
+      tags:
+        - SharePoint Onboarding
+      summary: Find the Microsoft Entra caller's receipt for a library
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: site_hostname
+          in: query
+          required: true
+          schema:
+            type: string
+            maxLength: 253
+            pattern: ^[a-zA-Z0-9][a-zA-Z0-9-]*\.sharepoint\.com$
+        - name: site_collection_id
+          in: query
+          required: true
+          schema:
+            type: string
+            pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+        - name: web_id
+          in: query
+          required: true
+          schema:
+            type: string
+            pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+        - name: list_id
+          in: query
+          required: true
+          schema:
+            type: string
+            pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SharePointLibraryReceipt"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions: []
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/sharepoint-entry.ts
+        className: SharePointEntryResource
+        methodName: find
+    parameters:
+      - name: x-api-version
+        in: header
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          pattern: \S
+          example: "20260803"
+        description: Required Vertesia API version header. Use `20260803` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /sharepoint-entry/library-requests/{id}:
+    get:
+      operationId: GetSharePointLibraryReceipt
+      tags:
+        - SharePoint Onboarding
+      summary: Read the Microsoft Entra caller's library request receipt
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SharePointLibraryReceipt"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions: []
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/sharepoint-entry.ts
+        className: SharePointEntryResource
+        methodName: retrieve
+    parameters:
+      - name: x-api-version
+        in: header
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          pattern: \S
+          example: "20260803"
+        description: Required Vertesia API version header. Use `20260803` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /sharepoint-onboarding/libraries:
+    get:
+      operationId: ListSharePointLibraries
+      tags:
+        - SharePoint Onboarding
+      summary: List verified SharePoint libraries in the account
+      security:
+        - bearerAuth: []
+        - OAuth2: []
+      parameters: []
+      responses:
+        "200":
+          description: The verified library bindings.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SharePointLibraryConnectionArray"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions: []
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/sharepoint-libraries.ts
+        className: SharePointLibrariesResource
+        methodName: listLibraries
+    parameters:
+      - name: x-api-version
+        in: header
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          pattern: \S
+          example: "20260803"
+        description: Required Vertesia API version header. Use `20260803` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /sharepoint-onboarding/libraries/current-project:
+    get:
+      operationId: GetProjectSharePointLibrary
+      tags:
+        - SharePoint Onboarding
+      summary: Look up the library of the selected project
+      security:
+        - bearerAuth: []
+        - OAuth2: []
+      parameters: []
+      responses:
+        "200":
+          description: The managed library and sync status.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProjectSharePointLibraryResponse"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions: []
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/sharepoint-libraries.ts
+        className: SharePointLibrariesResource
+        methodName: getProjectLibrary
+    parameters:
+      - name: x-api-version
+        in: header
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          pattern: \S
+          example: "20260803"
+        description: Required Vertesia API version header. Use `20260803` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /sharepoint-onboarding/libraries/{bindingId}:
+    get:
+      operationId: GetSharePointLibrary
+      tags:
+        - SharePoint Onboarding
+      summary: Get a library binding and its sync status
+      security:
+        - bearerAuth: []
+        - OAuth2: []
+      parameters:
+        - name: bindingId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^[0-9a-fA-F]{24}$
+      responses:
+        "200":
+          description: The requested library binding.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SharePointLibraryConnection"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions: []
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/sharepoint-libraries.ts
+        className: SharePointLibrariesResource
+        methodName: getLibrary
+    parameters:
+      - name: x-api-version
+        in: header
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          pattern: \S
+          example: "20260803"
+        description: Required Vertesia API version header. Use `20260803` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /sharepoint-onboarding/libraries/{bindingId}/approve:
+    post:
+      operationId: ApproveSharePointLibrary
+      tags:
+        - SharePoint Onboarding
+      summary: Approve a verified library and provision its project
+      description: "**Required permissions:** `account:admin`"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: bindingId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^[0-9a-fA-F]{24}$
+      responses:
+        "200":
+          description: The approved library binding.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SharePointLibraryConnection"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - account:admin
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/sharepoint-libraries.ts
+        className: SharePointLibrariesResource
+        methodName: approveLibrary
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ApproveSharePointLibraryPayload"
+    parameters:
+      - name: x-api-version
+        in: header
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          pattern: \S
+          example: "20260803"
+        description: Required Vertesia API version header. Use `20260803` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /sharepoint-onboarding/libraries/{bindingId}/configure-reader:
+    post:
+      operationId: ConfigureSharePointLibraryReader
+      tags:
+        - SharePoint Onboarding
+      summary: Configure the project reader and register the paused primary source
+      description: "**Required permissions:** `account:admin`"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: bindingId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^[0-9a-fA-F]{24}$
+      responses:
+        "200":
+          description: The library binding with its source.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SharePointLibraryConnection"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - account:admin
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/sharepoint-libraries.ts
+        className: SharePointLibrariesResource
+        methodName: configureLibraryReader
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ConfigureSharePointLibraryReaderPayload"
+    parameters:
+      - name: x-api-version
+        in: header
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          pattern: \S
+          example: "20260803"
+        description: Required Vertesia API version header. Use `20260803` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /sharepoint-onboarding/libraries/{bindingId}/disconnect:
+    post:
+      operationId: DisconnectSharePointLibrary
+      tags:
+        - SharePoint Onboarding
+      summary: Block indexed access and stop a managed library sync
+      security:
+        - bearerAuth: []
+        - OAuth2: []
+      parameters:
+        - name: bindingId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^[0-9a-fA-F]{24}$
+      responses:
+        "200":
+          description: The disconnected library binding.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SharePointLibraryConnection"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions: []
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/sharepoint-libraries.ts
+        className: SharePointLibrariesResource
+        methodName: disconnectLibrary
+    parameters:
+      - name: x-api-version
+        in: header
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          pattern: \S
+          example: "20260803"
+        description: Required Vertesia API version header. Use `20260803` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /sharepoint-onboarding/organization/link-attempts:
+    post:
+      operationId: BeginSharePointOrganizationLink
+      tags:
+        - SharePoint Onboarding
+      summary: Create a short-lived organization link code for a Microsoft Entra
+        administrator
+      description: "**Required permissions:** `account:admin`"
+      security:
+        - bearerAuth: []
+      parameters: []
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SharePointOrganizationLinkAttempt"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - account:admin
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/sharepoint-onboarding.ts
+        className: SharePointOnboardingResource
+        methodName: begin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BeginSharePointOrganizationLinkPayload"
+    parameters:
+      - name: x-api-version
+        in: header
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          pattern: \S
+          example: "20260803"
+        description: Required Vertesia API version header. Use `20260803` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /sharepoint-onboarding/organization:
+    get:
+      operationId: ListSharePointOrganizations
+      tags:
+        - SharePoint Onboarding
+      summary: List the signed-in Vertesia account's Microsoft organization links
+      description: "**Required permissions:** `account:admin`"
+      security:
+        - bearerAuth: []
+      parameters: []
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SharePointOrganizations"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - account:admin
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/sharepoint-onboarding.ts
+        className: SharePointOnboardingResource
+        methodName: organizations
+    parameters:
+      - name: x-api-version
+        in: header
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          pattern: \S
+          example: "20260803"
+        description: Required Vertesia API version header. Use `20260803` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /sharepoint-onboarding/organization/{tenantId}:
+    get:
+      operationId: GetSharePointOrganization
+      tags:
+        - SharePoint Onboarding
+      summary: Read the signed-in Vertesia account's Microsoft organization link
+      description: "**Required permissions:** `account:admin`"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: tenantId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SharePointOrganization"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - account:admin
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/sharepoint-onboarding.ts
+        className: SharePointOnboardingResource
+        methodName: organization
+    parameters:
+      - name: x-api-version
+        in: header
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          pattern: \S
+          example: "20260803"
+        description: Required Vertesia API version header. Use `20260803` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /sharepoint-onboarding/organization/{tenantId}/reader:
+    put:
+      operationId: ConfigureSharePointOrganizationReader
+      tags:
+        - SharePoint Onboarding
+      summary: Set the federated Graph reader for a linked Microsoft tenant
+      description: "**Required permissions:** `account:admin`"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: tenantId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SharePointOrganization"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - account:admin
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/sharepoint-onboarding.ts
+        className: SharePointOnboardingResource
+        methodName: configureReader
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ConfigureSharePointOrganizationReaderPayload"
+    delete:
+      operationId: RemoveSharePointOrganizationReader
+      tags:
+        - SharePoint Onboarding
+      summary: Disable the federated Graph reader for a linked Microsoft tenant
+      description: "**Required permissions:** `account:admin`"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: tenantId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SharePointOrganization"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - account:admin
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/sharepoint-onboarding.ts
+        className: SharePointOnboardingResource
+        methodName: removeReader
+    parameters:
+      - name: x-api-version
+        in: header
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          pattern: \S
+          example: "20260803"
+        description: Required Vertesia API version header. Use `20260803` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /sharepoint-onboarding/library-requests:
+    get:
+      operationId: ListSharePointLibraryRequests
+      tags:
+        - SharePoint Onboarding
+      summary: List the signed-in Vertesia account's SharePoint library requests
+      description: "**Required permissions:** `account:admin`"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: cursor
+          in: query
+          required: false
+          schema:
+            type: string
+            pattern: ^[0-9a-f]{24}$
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SharePointLibraryRequests"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - account:admin
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/sharepoint-onboarding.ts
+        className: SharePointOnboardingResource
+        methodName: list
+    parameters:
+      - name: x-api-version
+        in: header
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          pattern: \S
+          example: "20260803"
+        description: Required Vertesia API version header. Use `20260803` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /sharepoint-onboarding/library-requests/{id}:
+    get:
+      operationId: GetSharePointLibraryRequest
+      tags:
+        - SharePoint Onboarding
+      summary: Read a SharePoint library request as its Vertesia account administrator
+      description: "**Required permissions:** `account:admin`"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SharePointLibraryRequest"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - account:admin
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/sharepoint-onboarding.ts
+        className: SharePointOnboardingResource
+        methodName: retrieve
+    parameters:
+      - name: x-api-version
+        in: header
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          pattern: \S
+          example: "20260803"
+        description: Required Vertesia API version header. Use `20260803` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /sharepoint-onboarding/library-requests/{id}/refresh:
+    post:
+      operationId: RefreshSharePointLibraryRequest
+      tags:
+        - SharePoint Onboarding
+      summary: Retry exact library resolution for an unresolved SharePoint request
+      description: "**Required permissions:** `account:admin`"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SharePointLibraryRequest"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions:
+        - account:admin
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/sharepoint-onboarding.ts
+        className: SharePointOnboardingResource
+        methodName: refresh
+    parameters:
+      - name: x-api-version
+        in: header
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          pattern: \S
+          example: "20260803"
+        description: Required Vertesia API version header. Use `20260803` for the
+          current stable API shape.
+        x-vertesia-global-header: true
+  /sharepoint-onboarding/library-requests/{id}/project:
+    get:
+      operationId: ResolveSharePointRequestProject
+      tags:
+        - SharePoint Onboarding
+      summary: Open the linked project using a signed-in Vertesia identity with
+        project access
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SharePointRequestProject"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Internal Server Error
+                status: 500
+                message: Internal server error.
+        4XX:
+          description: Client error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Bad Request
+                status: 400
+                message: Request validation failed.
+      x-vertesia-permissions: []
+      x-vertesia-source:
+        file: ../../apps/studio-server/src/api/sharepoint-onboarding.ts
+        className: SharePointOnboardingResource
+        methodName: project
     parameters:
       - name: x-api-version
         in: header

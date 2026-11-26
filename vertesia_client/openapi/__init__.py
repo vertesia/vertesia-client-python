@@ -58,6 +58,7 @@ __all__ = [
     "RenderingApi",
     "RolesApi",
     "SecretsApi",
+    "SharePointOnboardingApi",
     "TasksApi",
     "TokenServiceApi",
     "ToolsApi",
@@ -239,6 +240,9 @@ __all__ = [
     "AppVersionTarget",
     "AppVersionUrls",
     "AppWidgetInfo",
+    "ApproveSharePointLibraryPayload",
+    "ApproveSharePointLibraryPayloadAnyOf",
+    "ApproveSharePointLibraryPayloadAnyOf1",
     "ArchiveNotificationsPayload",
     "AskUserWebhookConfiguration",
     "AskUserWebhookConfigurationInput",
@@ -303,6 +307,7 @@ __all__ = [
     "BedrockMistralOptions",
     "BedrockNovaOptions",
     "BedrockPalmyraOptions",
+    "BeginSharePointOrganizationLinkPayload",
     "BillingMethod",
     "BoxContentSource",
     "BranchDefinition",
@@ -342,6 +347,7 @@ __all__ = [
     "CollectionStatus",
     "ColumnLayout",
     "CompactMessage",
+    "CompleteSharePointOrganizationLinkPayload",
     "CompleteTaskPayload",
     "CompleteUploadSessionPayload",
     "CompleteUploadSessionResponse",
@@ -375,6 +381,8 @@ __all__ = [
     "ComputePromptFacetPayload",
     "ComputedFacetResponse",
     "ConfigModes",
+    "ConfigureSharePointLibraryReaderPayload",
+    "ConfigureSharePointOrganizationReaderPayload",
     "ContentEmbeddingMap",
     "ContentObjectApiResponse",
     "ContentObjectApiResponseSearchTypeResultInner",
@@ -827,6 +835,7 @@ __all__ = [
     "MCPToolAnnotations",
     "MCPToolCollectionObject",
     "MagicPdfConfiguration",
+    "ManagedSharePointLibrary",
     "MarkAllNotificationsReadPayload",
     "MarkNotificationsReadPayload",
     "MarkdownRenditionFormat",
@@ -1013,6 +1022,7 @@ __all__ = [
     "ProjectSearchPropertyMapping",
     "ProjectSearchPropertyType",
     "ProjectSearchTier",
+    "ProjectSharePointLibraryResponse",
     "ProjectTokenRequest",
     "ProjectToolInfo",
     "ProjectedContentObjectApiResponse",
@@ -1125,6 +1135,18 @@ __all__ = [
     "SetObjectTextPayload",
     "SharePointContentSource",
     "SharePointContentSourcePermissions",
+    "SharePointLibraryApproval",
+    "SharePointLibraryConnection",
+    "SharePointLibraryContext",
+    "SharePointLibraryReceipt",
+    "SharePointLibraryRequest",
+    "SharePointLibraryRequests",
+    "SharePointOrganization",
+    "SharePointOrganizationLinkAttempt",
+    "SharePointOrganizationReader",
+    "SharePointOrganizations",
+    "SharePointRegion",
+    "SharePointRequestProject",
     "SignalAgentResponse",
     "SignalEventProperties",
     "SignalEventPropertiesSender",
@@ -1431,6 +1453,7 @@ from vertesia_client.openapi.api.remote_mcp_connections_api import RemoteMCPConn
 from vertesia_client.openapi.api.rendering_api import RenderingApi as RenderingApi
 from vertesia_client.openapi.api.roles_api import RolesApi as RolesApi
 from vertesia_client.openapi.api.secrets_api import SecretsApi as SecretsApi
+from vertesia_client.openapi.api.share_point_onboarding_api import SharePointOnboardingApi as SharePointOnboardingApi
 from vertesia_client.openapi.api.tasks_api import TasksApi as TasksApi
 from vertesia_client.openapi.api.token_service_api import TokenServiceApi as TokenServiceApi
 from vertesia_client.openapi.api.tools_api import ToolsApi as ToolsApi
@@ -1616,6 +1639,9 @@ from vertesia_client.openapi.models.app_version_storage import AppVersionStorage
 from vertesia_client.openapi.models.app_version_target import AppVersionTarget as AppVersionTarget
 from vertesia_client.openapi.models.app_version_urls import AppVersionUrls as AppVersionUrls
 from vertesia_client.openapi.models.app_widget_info import AppWidgetInfo as AppWidgetInfo
+from vertesia_client.openapi.models.approve_share_point_library_payload import ApproveSharePointLibraryPayload as ApproveSharePointLibraryPayload
+from vertesia_client.openapi.models.approve_share_point_library_payload_any_of import ApproveSharePointLibraryPayloadAnyOf as ApproveSharePointLibraryPayloadAnyOf
+from vertesia_client.openapi.models.approve_share_point_library_payload_any_of1 import ApproveSharePointLibraryPayloadAnyOf1 as ApproveSharePointLibraryPayloadAnyOf1
 from vertesia_client.openapi.models.archive_notifications_payload import ArchiveNotificationsPayload as ArchiveNotificationsPayload
 from vertesia_client.openapi.models.ask_user_webhook_configuration import AskUserWebhookConfiguration as AskUserWebhookConfiguration
 from vertesia_client.openapi.models.ask_user_webhook_configuration_input import AskUserWebhookConfigurationInput as AskUserWebhookConfigurationInput
@@ -1680,6 +1706,7 @@ from vertesia_client.openapi.models.bedrock_mantle_responses_options import Bedr
 from vertesia_client.openapi.models.bedrock_mistral_options import BedrockMistralOptions as BedrockMistralOptions
 from vertesia_client.openapi.models.bedrock_nova_options import BedrockNovaOptions as BedrockNovaOptions
 from vertesia_client.openapi.models.bedrock_palmyra_options import BedrockPalmyraOptions as BedrockPalmyraOptions
+from vertesia_client.openapi.models.begin_share_point_organization_link_payload import BeginSharePointOrganizationLinkPayload as BeginSharePointOrganizationLinkPayload
 from vertesia_client.openapi.models.billing_method import BillingMethod as BillingMethod
 from vertesia_client.openapi.models.box_content_source import BoxContentSource as BoxContentSource
 from vertesia_client.openapi.models.branch_definition import BranchDefinition as BranchDefinition
@@ -1719,6 +1746,7 @@ from vertesia_client.openapi.models.collection_security_settings_response import
 from vertesia_client.openapi.models.collection_status import CollectionStatus as CollectionStatus
 from vertesia_client.openapi.models.column_layout import ColumnLayout as ColumnLayout
 from vertesia_client.openapi.models.compact_message import CompactMessage as CompactMessage
+from vertesia_client.openapi.models.complete_share_point_organization_link_payload import CompleteSharePointOrganizationLinkPayload as CompleteSharePointOrganizationLinkPayload
 from vertesia_client.openapi.models.complete_task_payload import CompleteTaskPayload as CompleteTaskPayload
 from vertesia_client.openapi.models.complete_upload_session_payload import CompleteUploadSessionPayload as CompleteUploadSessionPayload
 from vertesia_client.openapi.models.complete_upload_session_response import CompleteUploadSessionResponse as CompleteUploadSessionResponse
@@ -1752,6 +1780,8 @@ from vertesia_client.openapi.models.compute_object_facet_payload import ComputeO
 from vertesia_client.openapi.models.compute_prompt_facet_payload import ComputePromptFacetPayload as ComputePromptFacetPayload
 from vertesia_client.openapi.models.computed_facet_response import ComputedFacetResponse as ComputedFacetResponse
 from vertesia_client.openapi.models.config_modes import ConfigModes as ConfigModes
+from vertesia_client.openapi.models.configure_share_point_library_reader_payload import ConfigureSharePointLibraryReaderPayload as ConfigureSharePointLibraryReaderPayload
+from vertesia_client.openapi.models.configure_share_point_organization_reader_payload import ConfigureSharePointOrganizationReaderPayload as ConfigureSharePointOrganizationReaderPayload
 from vertesia_client.openapi.models.content_embedding_map import ContentEmbeddingMap as ContentEmbeddingMap
 from vertesia_client.openapi.models.content_object_api_response import ContentObjectApiResponse as ContentObjectApiResponse
 from vertesia_client.openapi.models.content_object_api_response_search_type_result_inner import ContentObjectApiResponseSearchTypeResultInner as ContentObjectApiResponseSearchTypeResultInner
@@ -2204,6 +2234,7 @@ from vertesia_client.openapi.models.mcpo_auth_config import MCPOAuthConfig as MC
 from vertesia_client.openapi.models.mcp_tool_annotations import MCPToolAnnotations as MCPToolAnnotations
 from vertesia_client.openapi.models.mcp_tool_collection_object import MCPToolCollectionObject as MCPToolCollectionObject
 from vertesia_client.openapi.models.magic_pdf_configuration import MagicPdfConfiguration as MagicPdfConfiguration
+from vertesia_client.openapi.models.managed_share_point_library import ManagedSharePointLibrary as ManagedSharePointLibrary
 from vertesia_client.openapi.models.mark_all_notifications_read_payload import MarkAllNotificationsReadPayload as MarkAllNotificationsReadPayload
 from vertesia_client.openapi.models.mark_notifications_read_payload import MarkNotificationsReadPayload as MarkNotificationsReadPayload
 from vertesia_client.openapi.models.markdown_rendition_format import MarkdownRenditionFormat as MarkdownRenditionFormat
@@ -2390,6 +2421,7 @@ from vertesia_client.openapi.models.project_ref import ProjectRef as ProjectRef
 from vertesia_client.openapi.models.project_search_property_mapping import ProjectSearchPropertyMapping as ProjectSearchPropertyMapping
 from vertesia_client.openapi.models.project_search_property_type import ProjectSearchPropertyType as ProjectSearchPropertyType
 from vertesia_client.openapi.models.project_search_tier import ProjectSearchTier as ProjectSearchTier
+from vertesia_client.openapi.models.project_share_point_library_response import ProjectSharePointLibraryResponse as ProjectSharePointLibraryResponse
 from vertesia_client.openapi.models.project_token_request import ProjectTokenRequest as ProjectTokenRequest
 from vertesia_client.openapi.models.project_tool_info import ProjectToolInfo as ProjectToolInfo
 from vertesia_client.openapi.models.projected_content_object_api_response import ProjectedContentObjectApiResponse as ProjectedContentObjectApiResponse
@@ -2502,6 +2534,18 @@ from vertesia_client.openapi.models.set_object_embeddings_response import SetObj
 from vertesia_client.openapi.models.set_object_text_payload import SetObjectTextPayload as SetObjectTextPayload
 from vertesia_client.openapi.models.share_point_content_source import SharePointContentSource as SharePointContentSource
 from vertesia_client.openapi.models.share_point_content_source_permissions import SharePointContentSourcePermissions as SharePointContentSourcePermissions
+from vertesia_client.openapi.models.share_point_library_approval import SharePointLibraryApproval as SharePointLibraryApproval
+from vertesia_client.openapi.models.share_point_library_connection import SharePointLibraryConnection as SharePointLibraryConnection
+from vertesia_client.openapi.models.share_point_library_context import SharePointLibraryContext as SharePointLibraryContext
+from vertesia_client.openapi.models.share_point_library_receipt import SharePointLibraryReceipt as SharePointLibraryReceipt
+from vertesia_client.openapi.models.share_point_library_request import SharePointLibraryRequest as SharePointLibraryRequest
+from vertesia_client.openapi.models.share_point_library_requests import SharePointLibraryRequests as SharePointLibraryRequests
+from vertesia_client.openapi.models.share_point_organization import SharePointOrganization as SharePointOrganization
+from vertesia_client.openapi.models.share_point_organization_link_attempt import SharePointOrganizationLinkAttempt as SharePointOrganizationLinkAttempt
+from vertesia_client.openapi.models.share_point_organization_reader import SharePointOrganizationReader as SharePointOrganizationReader
+from vertesia_client.openapi.models.share_point_organizations import SharePointOrganizations as SharePointOrganizations
+from vertesia_client.openapi.models.share_point_region import SharePointRegion as SharePointRegion
+from vertesia_client.openapi.models.share_point_request_project import SharePointRequestProject as SharePointRequestProject
 from vertesia_client.openapi.models.signal_agent_response import SignalAgentResponse as SignalAgentResponse
 from vertesia_client.openapi.models.signal_event_properties import SignalEventProperties as SignalEventProperties
 from vertesia_client.openapi.models.signal_event_properties_sender import SignalEventPropertiesSender as SignalEventPropertiesSender

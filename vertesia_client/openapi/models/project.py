@@ -20,6 +20,7 @@ import json
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
+from vertesia_client.openapi.models.managed_share_point_library import ManagedSharePointLibrary
 from vertesia_client.openapi.models.project_configuration import ProjectConfiguration
 from typing import Optional, Set
 from typing_extensions import Self
@@ -34,6 +35,8 @@ class Project(BaseModel):
     namespace: StrictStr
     description: Optional[StrictStr] = None
     account: StrictStr
+    sharepoint_library_binding: Optional[ManagedSharePointLibrary] = None
+    sharepoint_library_attachments: Optional[List[ManagedSharePointLibrary]] = None
     configuration: ProjectConfiguration
     integrations: Optional[Dict[str, Any]] = None
     plugins: List[StrictStr]
@@ -44,7 +47,7 @@ class Project(BaseModel):
     created_at: datetime
     updated_at: datetime
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["id", "name", "namespace", "description", "account", "configuration", "integrations", "plugins", "annotations", "last_activity_at", "created_by", "updated_by", "created_at", "updated_at"]
+    __properties: ClassVar[List[str]] = ["id", "name", "namespace", "description", "account", "sharepoint_library_binding", "sharepoint_library_attachments", "configuration", "integrations", "plugins", "annotations", "last_activity_at", "created_by", "updated_by", "created_at", "updated_at"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -76,9 +79,11 @@ class Project(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * OpenAPI `readOnly` fields are excluded.
         * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "sharepoint_library_attachments",
             "additional_properties",
         ])
 
@@ -87,6 +92,16 @@ class Project(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of sharepoint_library_binding
+        if self.sharepoint_library_binding:
+            _dict['sharepoint_library_binding'] = self.sharepoint_library_binding.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of each item in sharepoint_library_attachments (list)
+        _items = []
+        if self.sharepoint_library_attachments:
+            for _item_sharepoint_library_attachments in self.sharepoint_library_attachments:
+                if _item_sharepoint_library_attachments:
+                    _items.append(_item_sharepoint_library_attachments.to_dict())
+            _dict['sharepoint_library_attachments'] = _items
         # override the default output from pydantic by calling `to_dict()` of configuration
         if self.configuration:
             _dict['configuration'] = self.configuration.to_dict()
@@ -117,6 +132,8 @@ class Project(BaseModel):
             "namespace": obj.get("namespace"),
             "description": obj.get("description"),
             "account": obj.get("account"),
+            "sharepoint_library_binding": ManagedSharePointLibrary.from_dict(obj["sharepoint_library_binding"]) if obj.get("sharepoint_library_binding") is not None else None,
+            "sharepoint_library_attachments": [ManagedSharePointLibrary.from_dict(_item) for _item in obj["sharepoint_library_attachments"]] if obj.get("sharepoint_library_attachments") is not None else None,
             "configuration": ProjectConfiguration.from_dict(obj["configuration"]) if obj.get("configuration") is not None else None,
             "integrations": obj.get("integrations"),
             "plugins": obj.get("plugins"),
