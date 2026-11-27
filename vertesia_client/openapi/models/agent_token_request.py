@@ -39,7 +39,8 @@ class AgentTokenRequest(BaseModel):
     project_id: Annotated[str, Field(strict=True)]
     name: Optional[StrictStr] = None
     on_behalf_of: Annotated[str, Field(strict=True)] = Field(description="User information.  The value of this field can be either:   - a signed Vertesia token used to verify the user context   - a user ID prefixed with `user:` to indicate the user on behalf of whom the agent is     acting.")
-    __properties: ClassVar[List[str]] = ["type", "delegation_grant_id", "delegation_policy_hash", "continuation_token", "audience", "algorithm", "account_id", "project_id", "name", "on_behalf_of"]
+    ttl_seconds: Optional[Annotated[int, Field(strict=True)]] = Field(default=None, description="Shortens the lifetime of the issued token to this many seconds. It never extends it: the token expires at the earliest of this lifetime, the default lifetime and, when `on_behalf_of` is a signed token, the expiry of that token.")
+    __properties: ClassVar[List[str]] = ["type", "delegation_grant_id", "delegation_policy_hash", "continuation_token", "audience", "algorithm", "account_id", "project_id", "name", "on_behalf_of", "ttl_seconds"]
 
     @field_validator('type')
     def type_validate_enum(cls, value):
@@ -108,7 +109,8 @@ class AgentTokenRequest(BaseModel):
             "account_id": obj.get("account_id"),
             "project_id": obj.get("project_id"),
             "name": obj.get("name"),
-            "on_behalf_of": obj.get("on_behalf_of")
+            "on_behalf_of": obj.get("on_behalf_of"),
+            "ttl_seconds": obj.get("ttl_seconds")
         })
         return _obj
 
